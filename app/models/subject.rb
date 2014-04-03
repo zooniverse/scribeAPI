@@ -10,7 +10,7 @@ class Subject
   field :retire_count, type: Integer, default: 0
   field :state , type: String, default: "active"
   field :type,   type: String, default: "root" 
-  field :metadata,   type: Hash
+  field :meta_data,   type: Hash
 
 
 
