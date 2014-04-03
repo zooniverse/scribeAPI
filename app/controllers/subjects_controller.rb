@@ -1,0 +1,9 @@
+class SubjectsController < ApplicationController
+  respond_to :json 
+
+  def index
+  	workflow_id  = params["workflow_id"]
+  	respond_with  Subject.random(:workflow_ids => BSON::ObjectId.from_string(workflow_id) ).first
+  end
+
+end

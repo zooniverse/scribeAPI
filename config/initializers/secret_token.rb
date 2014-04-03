@@ -9,4 +9,4 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-Scribe::Application.config.secret_key_base = '5a54324ece113420b70e830ece46fd2799de7636514f2cb14c57e6c470dc6699fc5fb440de39f603f1b0099822a04ad220a2d4bc4366f67189e7491803920041'
+API::Application.config.secret_key_base = 'a98063c8376671a76f96df307c219e7a0abc48931f4abbc3aacac874d525da6451f7997b50a224a55a075739af1c549eff33badb200448e3d76bf5d0fae35490'

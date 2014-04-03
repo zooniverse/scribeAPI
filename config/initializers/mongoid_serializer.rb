@@ -1,0 +1,1 @@
+Mongoid::Serializer.configure!

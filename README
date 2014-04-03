@@ -1,4 +1,4 @@
-Scribe
+Api
 ========================
 
 This application was generated with the rails_apps_composer gem:
@@ -9,50 +9,10 @@ http://railsapps.github.io/
 ________________________
 
 Recipes:
-
-* apps4
-* controllers
-* core
-* email
-* extras
-* frontend
-* gems
-* git
-* init
-* models
-* prelaunch
-* railsapps
-* readme
-* routes
-* saas
-* setup
-* testing
-* views
+["apps4", "controllers", "core", "email", "extras", "frontend", "gems", "git", "init", "models", "prelaunch", "railsapps", "readme", "routes", "saas", "setup", "testing", "views"]
 
 Preferences:
-
-* git: true
-* apps4: none
-* dev_webserver: unicorn
-* prod_webserver: unicorn
-* database: mongodb
-* orm: mongoid
-* templates: erb
-* unit_test: rspec
-* integration: none
-* continuous_testing: none
-* fixtures: none
-* frontend: bootstrap3
-* email: gmail
-* authentication: devise
-* devise_modules: default
-* authorization: none
-* form_builder: none
-* starter_app: home_app
-* rvmrc: true
-* quiet_assets: true
-* better_errors: true
-* ban_spiders: true
+{:git=>true, :apps4=>"none", :dev_webserver=>"webrick", :prod_webserver=>"same", :database=>"mongodb", :orm=>"mongoid", :templates=>"erb", :unit_test=>"rspec", :integration=>"cucumber", :continuous_testing=>"none", :fixtures=>"none", :frontend=>"none", :email=>"gmail", :authentication=>"devise", :devise_modules=>"default", :authorization=>"none", :form_builder=>"none", :starter_app=>"users_app", :rvmrc=>false, :quiet_assets=>true, :better_errors=>true}
 
 ________________________
 
