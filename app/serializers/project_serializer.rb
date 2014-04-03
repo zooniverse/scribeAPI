@@ -1,5 +1,5 @@
 class ProjectSerializer < ActiveModel::MongoidSerializer
-  attributes :id, :title ,:summary ,:description ,:organizations ,:scientists ,:developers, :workflows
+  attributes :id, :title ,:summary ,:description ,:organizations ,:scientists ,:developers, :workflows, :background, :pages
   has_many :workflows
 
   def id

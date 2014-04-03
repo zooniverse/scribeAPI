@@ -8,6 +8,8 @@ class Project
 	field  :organizations, 	type: Array, default: [ {name: "zooniverse", location: "Chicago IL", description: "blah balh", url:["https://www.zooniverse.org/"]}]
 	field  :scientists, 	type: Array, default:[{name: "Stuart Lynn", location: "Chicago, IL", description: "me", url:["https://github.com/brian-c"]}]
 	field  :developers, 	type: Array, default:[{name: "Stuart Lynn", location: "Chicago, IL", description: "me", url:["https://github.com/brian-c"]}]
+	field  :pages 	  ,     type: Array, default:[]
+	field  :background,     type: String 
 
 	has_many :workflows
 	has_many :subjects
