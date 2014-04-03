@@ -1,12 +1,21 @@
 class Workflow 
   include Mongoid::Document
   
-  field    :name, 				type: String 
-  field    :tasks, 				type: Array 
-  field    :retire, 		    type: Integer, default: 10
+  field    :key, 				        type: String 
+  field    :label,              type: String 
+  field    :tasks, 			      	type: Hash 
+  field    :first_task,         type: String 
+  field    :retire_limit, 		  type: Integer, default: 10
   field    :enables_workflows,  type: Hash
 
 
   has_many :classifications 
   belongs_to :project
+
+  def trigger_follow_up_workflow(subject)
+  	enables_workflows.each_pair do |workflow_id, details|
+  		# for_each 	
+  		# details["averaged_keys"]
+  	end
+  end
 end
