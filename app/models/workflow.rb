@@ -7,6 +7,7 @@ class Workflow
   field    :first_task,         type: String 
   field    :retire_limit, 		  type: Integer, default: 10
   field    :enables_workflows,  type: Hash
+  field    :active_subjects,    type: Integer, default: 0 
 
 
   has_many :classifications 
