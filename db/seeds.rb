@@ -5,9 +5,9 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-puts 'DEFAULT USERS'
-user = User.create! :name => ENV['ADMIN_NAME'].dup, :email => ENV['ADMIN_EMAIL'].dup, :password => ENV['ADMIN_PASSWORD'].dup, :password_confirmation => ENV['ADMIN_PASSWORD'].dup
-puts 'user: ' << user.name
+# puts 'DEFAULT USERS'
+# user = User.create! :name => ENV['ADMIN_NAME'].dup, :email => ENV['ADMIN_EMAIL'].dup, :password => ENV['ADMIN_PASSWORD'].dup, :password_confirmation => ENV['ADMIN_PASSWORD'].dup
+# puts 'user: ' << user.name
 
 Project.destroy_all
 Subject.destroy_all
@@ -67,12 +67,12 @@ marking_tasks = {
   }
 
 # verify_workflow    = Workflow.create({name: "verify", tasks:[]  , project: p })
-transcribe_workflow  = Workflow.create({key: "transcribe", label:"Transcribe Contnet", tasks:{}, enables_workflows: {}, project: p })
-marking_workflow   = Workflow.create({key: "marking", label: "Mark Content", enables_workflows: {transcribe_workflow.id.to_s => {} }, tasks:marking_tasks, project: p })
+transcribe_workflow  = Workflow.create({key: "transcribe", label:"Transcribe Contnet", first_task:"", tasks:{}, enables_workflows: {}, project: p })
+marking_workflow   = Workflow.create({key: "marking", label: "Mark Content",  first_task:"drawSomething", enables_workflows: {transcribe_workflow.id.to_s => {} }, tasks:marking_tasks, project: p })
 
 example_images = ["https://s3.amazonaws.com/programs-cropped.nypl.org/10/00261.jpg","https://s3.amazonaws.com/programs-cropped.nypl.org/10/00262.1.jpg","https://s3.amazonaws.com/programs-cropped.nypl.org/10/00262.2.jpg"]
 
 
 10.times do |i|
-  Subject.create(name:"subject_#{i}", url: example_images.sample, metadata: { width:504, height:782}, workflows: [marking_workflow])
+  Subject.create(name:"subject_#{i}", location: {standard: example_images.sample}, meta_data: { width:504, height:782}, workflows: [marking_workflow])
 end
