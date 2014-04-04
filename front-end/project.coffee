@@ -1,6 +1,6 @@
 module.exports =
   id: 'project_id'
-  background: 'hero.jpg'
+  background: 'the-milky-way-fpo.jpg'
 
   producer: 'The name of your group'
   title: 'Project title'
