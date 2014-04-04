@@ -1,5 +1,5 @@
 class SubjectSerializer < ActiveModel::Serializer
-  attributes :id, :name, :url, :classification_count, :child_subjects 
+  attributes :id, :name, :location, :classification_count, :child_subjects, :meta_data
 
   def id
     object._id.to_s
