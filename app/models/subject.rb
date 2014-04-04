@@ -4,7 +4,7 @@ class Subject
 
 
   field :name, type: String
-  field :url , type: String
+  field :location, type: Hash
   field :random_no , type: Float
   field :classification_count, type: Integer, default: 0
   field :retire_count, type: Integer, default: 0
@@ -24,8 +24,15 @@ class Subject
   end
 
   def retire!
-    state="inactive"
+    state="done"
+    workflows.each{|workflow| workflow.inc(:active_subjects => -1 )}
     save
+  end
+
+  def activate!
+    state="active"
+    workflows.each{|workflow| workflow.inc(:active_subjects => 1 )}
+    save 
   end
 end
 
