@@ -13,7 +13,7 @@ class Subject
   field :meta_data,   type: Hash
 
 
-
+  belongs_to :group
   has_and_belongs_to_many :workflows, inverse_of: nil
   has_one :parent_subject, :class_name => "Subject"
 

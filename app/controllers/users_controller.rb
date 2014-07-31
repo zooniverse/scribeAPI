@@ -14,7 +14,6 @@ class UsersController < ApplicationController
   end
 
   def current_user 
-    binding.pry
     respond_with current_user
   end
 
