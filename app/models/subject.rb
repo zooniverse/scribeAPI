@@ -3,14 +3,16 @@ class Subject
   include Randomizer
 
 
-  field :name, type: String
-  field :location, type: Hash
-  field :random_no , type: Float
+  field :name,                 type: String
+  field :location,             type: String
+  field :group_name,           type: String
+  field :group,                type: Hash
+  field :random_no ,           type: Float
   field :classification_count, type: Integer, default: 0
-  field :retire_count, type: Integer, default: 0
-  field :state , type: String, default: "active"
-  field :type,   type: String, default: "root" 
-  field :meta_data,   type: Hash
+  field :retire_count,         type: Integer, default: 0
+  field :state ,               type: String, default: "active"
+  field :type,                 type: String, default: "root" 
+  field :meta_data,            type: Hash
 
 
   belongs_to :group
