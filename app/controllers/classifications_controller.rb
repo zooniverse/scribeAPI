@@ -8,7 +8,4 @@ class ClassificationsController < ApplicationController
 
   	Classification.create(workflow_id: workflow_id, subject_id: subject_id, user_id: user_id)
   end
-  
-
-
 end
