@@ -1,0 +1,33 @@
+@-webkit-keyframes loading-indicator-bounce
+  0%
+    transform: translateY(-0.3em)
+  100%
+    transform: translateY(0.3em)
+
+@keyframes loading-indicator-bounce
+  0%
+    transform: translateY(-0.3em)
+  100%
+    transform: translateY(0.3em)
+
+.loading-indicator
+  position fixed
+  top 50vh
+  color #000
+  letter-spacing: 0.1em
+  display inline-block
+
+
+  > *
+    TIME = 500ms
+
+    animation: loading-indicator-bounce TIME ease-in-out infinite alternate
+    -webkit-animation: loading-indicator-bounce TIME ease-in-out infinite alternate
+
+    display: inline-block
+
+    &:nth-child(3n-1)
+      animation-delay: unit(TIME / 3, unit(TIME))
+
+    &:nth-child(3n-2)
+      animation-delay: unit(TIME / 1.5, unit(TIME))

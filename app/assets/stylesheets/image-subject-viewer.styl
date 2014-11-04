@@ -1,0 +1,42 @@
+.image-subject-viewer
+  text-align center
+  .subject-container    
+    background-color #fff
+    margin-bottom 80px
+    .marking-surface
+      width 840px
+      text-align center
+      display inline-block
+    .subject-ui
+      background-color rgba(0,0,0,0.75)
+      position fixed
+      bottom 0px
+      width 100%
+      height 80px
+  .subject-viewer-svg
+    width 840px
+    height 100%
+    .drawing-tool
+      cursor grab
+      cursor -webkit-grab
+      &:active
+        cursor grabbing
+        cursor -webkit-grabbing
+      .drawing-tool-resize-button
+        cursor grab
+        cursor -webkit-grab
+        &:active
+          cursor grabbing
+          cursor -webkit-grabbing
+      .drawing-tool-delete-button
+        cursor pointer
+        
+  .text-entry
+    position absolute
+    height 120px
+    width 400px
+    background-color "rgba(0,0,0,0.75)"
+    .left
+      float left
+    .right
+      float right
