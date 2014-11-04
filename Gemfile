@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.0.0'
+ruby '2.1.1'
 
 gem 'rails', '4.0.2'
 gem 'sass-rails', '~> 4.0.0'
@@ -12,10 +12,14 @@ gem 'jbuilder', '~> 1.2'
 gem 'devise'
 gem 'mongoid', :github=>"mongoid/mongoid"
 gem 'active_model_serializers'
-gem 'mongoid-serializer' 
+gem 'mongoid-serializer'
 gem 'rack-cors', :require => 'rack/cors'
 gem "bson"
 gem "moped"
+gem 'react-rails', github: 'reactjs/react-rails'
+gem 'sprockets-coffee-react'
+gem 'stylus'
+
 
 group :development do
   gem 'better_errors'
