@@ -66,6 +66,8 @@ GEM
       erubis (>= 2.6.6)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
+    browserify-rails (0.4.2)
+      sprockets (~> 2.0)
     bson (2.0.0)
     builder (3.1.4)
     capybara (2.2.0)
@@ -236,6 +238,7 @@ DEPENDENCIES
   active_model_serializers
   better_errors
   binding_of_caller
+  browserify-rails (~> 0.4.1)
   bson
   capybara
   coffee-rails (~> 4.0.0)
@@ -255,7 +258,7 @@ DEPENDENCIES
   rack-cors
   rails (= 4.0.2)
   rails_layout
-  react-rails!
+  react-rails (~> 1.0.0.pre)!
   rspec-rails
   sass-rails (~> 4.0.0)
   sprockets-coffee-react

@@ -16,10 +16,10 @@ gem 'mongoid-serializer'
 gem 'rack-cors', :require => 'rack/cors'
 gem "bson"
 gem "moped"
-gem 'react-rails', github: 'reactjs/react-rails'
 gem 'sprockets-coffee-react'
 gem 'stylus'
-
+gem 'browserify-rails', '~> 0.4.1'
+gem 'react-rails', '~> 1.0.0.pre', github: 'reactjs/react-rails'
 
 group :development do
   gem 'better_errors'
