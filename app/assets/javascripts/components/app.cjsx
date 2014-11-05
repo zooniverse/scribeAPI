@@ -1,6 +1,6 @@
 # @cjsx React.DOM
 
-React = require 'react'
+# React = require 'react'
 {Router, Routes, Route, Link} = require 'react-router'
 # require components here:
 

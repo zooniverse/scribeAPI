@@ -1,4 +1,4 @@
-React = require('react')
+# App = require("react")
 App = require("./components/app")
 
 $(document).ready ->
