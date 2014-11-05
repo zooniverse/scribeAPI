@@ -17,14 +17,11 @@ module API
     # don't generate RSpec tests for views and helpers
     config.generators do |g|
       g.test_framework :rspec
-      
-      
-      
-      
       g.view_specs false
       g.helper_specs false
     end
 
+    config.browserify_rails.commandline_options = "-t coffee-reactify  --extension=\".cjsx\""
 
     config.middleware.use Rack::Cors do
       allow do
