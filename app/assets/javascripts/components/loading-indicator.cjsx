@@ -1,5 +1,6 @@
 # @cjsx React.DOM
 
+React = require 'react'
 
 LoadingIndicator = React.createClass
   displayName: 'LoadingIndicator'
@@ -12,4 +13,4 @@ LoadingIndicator = React.createClass
       <span>•</span>
     </span>
 
-window.LoadingIndicator = LoadingIndicator
+module.exports = LoadingIndicator

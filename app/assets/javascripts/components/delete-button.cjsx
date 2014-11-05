@@ -2,7 +2,7 @@
 
 React = require 'react'
 
-DeleteButton = React.createClass
+module.exports = React.createClass
   displayName: 'DeleteButton'
 
   render: ->
@@ -24,5 +24,3 @@ DeleteButton = React.createClass
       <circle r={radius} fill={fillColor} />
       <path d={cross} transform="rotate(45)" />
     </g>
-
-window.delete_button =

@@ -1,5 +1,6 @@
 # @cjsx React.DOM
 
+React = require 'react'
 
 ActionButton = React.createClass
   displayName: "ActionButton"
@@ -17,4 +18,4 @@ ActionButton = React.createClass
       <a onClick={@handleClick} className="button white action-button">{@props.label}</a>
 
 
-window.ActionButton = ActionButton
+module.exports = ActionButton

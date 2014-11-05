@@ -10,4 +10,4 @@ SubjectMetadata = React.createClass
       <h3>Metadata</h3>
     </div>
 
-window.SubjectMetadata = SubjectMetadata
+module.exports = SubjectMetadata

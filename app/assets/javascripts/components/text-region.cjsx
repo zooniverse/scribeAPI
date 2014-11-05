@@ -1,7 +1,9 @@
 # @cjsx React.DOM
 # Model = require '../../data/model'
-
-
+React = require 'react'
+Draggable = require '../lib/draggable'
+DeleteButton = require './delete-button'
+ResizeButton = require './resize-button'
 
 TextRegionTool = React.createClass
   displayName: 'TextRegionTool'
@@ -38,13 +40,13 @@ TextRegionTool = React.createClass
 
   handleMouseOver: ->
     console.log 'onMouseOver()'
-    @setState
+    @setState 
       strokeColor: '#fff'
       fillColor: 'rgba(0,0,0,0.25)'
 
   handleMouseOut: ->
     console.log 'onMouseOut()'
-    @setState
+    @setState 
       strokeColor: 'rgba(255,255,255,0.75)'
       fillColor: 'rgba(0,0,0,0.5)'
 
@@ -53,10 +55,10 @@ TextRegionTool = React.createClass
     {x,y} = @props.getEventOffset(e)
 
     # prevent dragging mark beyond image bounds
-    return if (y-@state.markHeight/2) < 0
+    return if (y-@state.markHeight/2) < 0 
     return if (y+@state.markHeight/2) > @props.imageHeight
 
-    @setState
+    @setState 
       centerX: Math.round x
       centerY: Math.round y
       yUpper: Math.round( y - @state.markHeight/2 )
@@ -72,7 +74,7 @@ TextRegionTool = React.createClass
     {x,y} = @props.getEventOffset e
 
     # prevent dragging mark beyond image bounds
-    return if y < 0
+    return if y < 0 
     return if y > @props.imageHeight
 
     @setState
@@ -80,7 +82,7 @@ TextRegionTool = React.createClass
       markHeight: Math.round( Math.abs( @state.markHeight - @state.offset ) )
       yUpper: Math.round y
       yLower: Math.abs( y + @state.markHeight )
-
+    
     # DEBUG CODE
     # NOTE: yUpper and yLower are the same (refactor?)
     console.log 'MARK CENTER             : ', @state.centerY
@@ -97,7 +99,7 @@ TextRegionTool = React.createClass
     {x,y} = @props.getEventOffset e
 
     # prevent dragging mark beyond image bounds
-    return if y < 0
+    return if y < 0 
     return if y > @props.imageHeight
 
     @setState
@@ -105,7 +107,7 @@ TextRegionTool = React.createClass
       markHeight: Math.round( Math.abs( @state.markHeight + @state.offset ) )
       yUpper: y
       yLower: Math.round( Math.abs( y + @state.markHeight ) )
-
+    
     # DEBUG CODE
     # NOTE: yUpper and yLower are the same (refactor?)
     console.log 'MARK CENTER             : ', @state.centerY
@@ -122,26 +124,26 @@ TextRegionTool = React.createClass
     console.log 'MARK HEIGHT: ', @state.markHeight
 
     if @props.selected
-      deleteButton =
-        <DeleteButton
-          transform = "translate(25, #{@state.markHeight/2})"
+      deleteButton = 
+        <DeleteButton 
+          transform = "translate(25, #{@state.markHeight/2})" 
           onClick = {@props.onClickDelete.bind null, @props.key}
           workflow = {@props.workflow}
         />
     else
       deleteButton = null
 
-    <g
-      className = "point drawing-tool"
-      transform = {"translate(0, #{@state.centerY-@state.markHeight/2})"}
-      data-disabled = {@props.disabled || null}
+    <g 
+      className = "point drawing-tool" 
+      transform = {"translate(0, #{@state.centerY-@state.markHeight/2})"} 
+      data-disabled = {@props.disabled || null} 
       data-selected = {@props.selected || null}
     >
 
       <Draggable
-        onStart = {@props.select.bind null, @props.mark}
+        onStart = {@props.select.bind null, @props.mark} 
         onDrag = {@handleDrag} >
-        <rect
+        <rect 
           className   = "mark-rectangle"
           x           = 0
           y           = 0
@@ -154,20 +156,20 @@ TextRegionTool = React.createClass
         />
       </Draggable>
 
-      <ResizeButton
+      <ResizeButton 
         viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
         className = "upperResize"
-        handleResize = {@handleUpperResize}
-        transform = {"translate( #{@props.imageWidth/2}, #{ @state.offset - @props.scrubberHeight/2 } )"}
+        handleResize = {@handleUpperResize} 
+        transform = {"translate( #{@props.imageWidth/2}, #{ @state.offset - @props.scrubberHeight/2 } )"} 
         scrubberHeight = {@props.scrubberHeight}
         scrubberWidth = {@props.scrubberWidth}
         workflow = {@props.workflow}
       />
 
-      <ResizeButton
+      <ResizeButton 
         className = "lowerResize"
-        handleResize = {@handleLowerResize}
-        transform = {"translate( #{@props.imageWidth/2}, #{ @state.offset + Math.round(@state.markHeight) - @props.scrubberHeight/2 } )"}
+        handleResize = {@handleLowerResize} 
+        transform = {"translate( #{@props.imageWidth/2}, #{ @state.offset + Math.round(@state.markHeight) - @props.scrubberHeight/2 } )"} 
         scrubberHeight = {@props.scrubberHeight}
         scrubberWidth = {@props.scrubberWidth}
         workflow = {@props.workflow}
@@ -176,4 +178,5 @@ TextRegionTool = React.createClass
       {deleteButton}
     </g>
 
-window.TextRegionTool = TextRegionTool
+module.exports = TextRegionTool
+  

@@ -1,10 +1,18 @@
 # @cjsx React.DOM
 
 React                         = require 'react'
-{Router, Routes, Route, Link} = ReactRouter
+{Router, Routes, Route, Link} = require 'react-router'
 example_subjects              = require '../lib/example_subject.json'
+$                             = require '../lib/jquery-2.1.0.min.js'
+SVGImage                      = require './svg-image'
 Draggable                     = require '../lib/draggable'
-
+LoadingIndicator              = require './loading-indicator'
+SubjectMetadata               = require './subject-metadata'
+ActionButton                  = require './action-button'
+TextRegionTool                = require './text-region'
+TextEntryTool                = require './text-entry'
+PointTool                     = require './point'
+Classification                = require '../models/classification'
 
 ImageSubjectViewer = React.createClass # rename to Classifier
   displayName: 'ImageSubjectViewer'
@@ -48,14 +56,14 @@ SubjectViewer = React.createClass
 
   componentWillMount: ->
     @updateDimensions()
-
+    
   componentWillUnmount: ->
     window.removeEventListener "resize", this.updateDimensions
 
   updateDimensions: ->
     console.log 'updating dimensions'
     @setState
-      windowInnerWidth: window.innerWidth
+      windowInnerWidth: window.innerWidth 
       windowInnerHeight: window.innerHeight
 
   fetchSubjects: ->
@@ -80,14 +88,14 @@ SubjectViewer = React.createClass
       ).bind(this)
     return
 
-  loadImage: (url) ->
+  loadImage: (url) ->    
     # console.log 'Loading image...' # DEBUG CODE
     @setState loading: true, =>
       img = new Image()
       img.src = url
       img.onload = =>
         if @isMounted()
-          @setState
+          @setState 
             url: url
             imageWidth: img.width
             imageHeight: img.height
@@ -107,7 +115,7 @@ SubjectViewer = React.createClass
     console.log JSON.stringify @state.classification # DEBUG CODE
     @state.classification.send()
     @setState
-      workflow: "text-region"
+      workflow: "text-region" 
       marks: [] # clear marks for next subject
 
     # prepare new classification
@@ -157,7 +165,7 @@ SubjectViewer = React.createClass
       currentMark.yUpper = currentMark.y - dist
       currentMark.yLower = currentMark.y + dist
 
-      @setState
+      @setState 
         selectedMark: currentMark, =>
           console.log 'STATE: ', @state.selectedMark
 
@@ -176,7 +184,7 @@ SubjectViewer = React.createClass
 
   getEventOffset: (e) ->
     rect = @refs.sizeRect.getDOMNode().getBoundingClientRect()
-
+    
     # console.log 'RECT: ', rect
     {horizontal, vertical} = @getScale()
     x: ((e.pageX - pageXOffset - rect.left) / horizontal) + @state.viewX
@@ -189,7 +197,7 @@ SubjectViewer = React.createClass
     console.log 'handleToolMouseDown()'
 
   selectMark: (mark) ->
-    return if mark is @state.selectedMark
+    return if mark is @state.selectedMark 
     @setState selectedMark: mark
 
   onClickDelete: (key) ->
@@ -201,8 +209,8 @@ SubjectViewer = React.createClass
 
   beginTextEntry: ->
     console.log 'beginTextEntry()'
-    return unless @state.marks.length > 0
-    @setState
+    return unless @state.marks.length > 0    
+    @setState 
       workflow: "text-entry"
       selectedMark: @state.marks[0], =>
         console.log 'SELECTED MARK: ', @state.selectedMark
@@ -211,7 +219,7 @@ SubjectViewer = React.createClass
 
   nextTextEntry: ->
     console.log "nextTextEntry()"
-
+    
     key = @state.selectedMark.key
     if key+1 > @state.marks.length-1
       console.log "That's all the marks for now!"
@@ -232,7 +240,7 @@ SubjectViewer = React.createClass
       <div className="subject-container">
         <div className="marking-surface">
           <LoadingIndicator/>
-        </div>
+        </div>       
         <p>{@state.subjects[0].location}</p>
         <div className="subject-ui">
           <ActionButton loading={@state.loading} />
@@ -247,42 +255,42 @@ SubjectViewer = React.createClass
         action_button =  <ActionButton label={"FINISH"} onActionSubmit={@nextSubject} />
 
       else if @state.marks.length > 0
-
+        
         if @state.workflow is "text-entry"
           action_button = <ActionButton label={"NEXT"} onActionSubmit={@nextTextEntry} />
         else
           action_button =  <ActionButton label={"FINISHED MARKING"} onActionSubmit={@beginTextEntry} />
-
+      
       <div className="subject-container">
         <div className="marking-surface">
-
-          <svg
-            className = "subject-viewer-svg"
-            width = {@state.imageWidth}
-            height = {@state.imageHeight}
-            viewBox = {viewBox}
+          
+          <svg 
+            className = "subject-viewer-svg" 
+            width = {@state.imageWidth} 
+            height = {@state.imageHeight} 
+            viewBox = {viewBox} 
             data-tool = {@props.selectedDrawingTool?.type} >
 
-            <rect
-              ref = "sizeRect"
-              width = {@state.imageWidth}
+            <rect 
+              ref = "sizeRect" 
+              width = {@state.imageWidth} 
               height = {@state.imageHeight} />
-
-            <Draggable
-              onStart = {@handleInitStart}
-              onDrag  = {@handleInitDrag}
+            
+            <Draggable 
+              onStart = {@handleInitStart} 
+              onDrag  = {@handleInitDrag} 
               onEnd   = {@handleInitRelease} >
-              <SVGImage
-                src = {@state.subjects[0].location}
-                width = {@state.imageWidth}
+              <SVGImage 
+                src = {@state.subjects[0].location} 
+                width = {@state.imageWidth} 
                 height = {@state.imageHeight} />
 
             </Draggable>
 
             { @state.marks.map ((mark, i) ->
 
-              <TextRegionTool
-                key = {mark.key}
+              <TextRegionTool 
+                key = {mark.key} 
                 mark = {mark}
                 disabled = {false}
                 imageWidth = {@state.imageWidth}
@@ -303,10 +311,10 @@ SubjectViewer = React.createClass
 
           { if @state.workflow is "text-entry"
             console.log ">>>>>>>>> TOP: ", @getScale().vertical * @state.selectedMark.y - window.innerHeight/2 + 8
-            <TextEntryTool
-              top={ @getScale().vertical * @state.selectedMark.yLower + 20 }
-              left={@state.windowInnerWidth/2 - 200}
-            />
+            <TextEntryTool 
+              top={ @getScale().vertical * @state.selectedMark.yLower + 20 } 
+              left={@state.windowInnerWidth/2 - 200} 
+            /> 
           }
 
         </div>
@@ -316,4 +324,5 @@ SubjectViewer = React.createClass
         </div>
       </div>
 
-window.ImageSubjectViewer = ImageSubjectViewer
+module.exports = ImageSubjectViewer
+window.React = React

@@ -1,5 +1,6 @@
 # @cjsx React.DOM
-
+React = require 'react'
+Draggable = require '../lib/draggable'
 
 TextEntryTool = React.createClass
   displayName: 'TextEntryTool'
@@ -10,7 +11,7 @@ TextEntryTool = React.createClass
     @setProps
       top: @props.top
       left: @props.left
-
+    
   render: ->
 
     style =
@@ -24,11 +25,11 @@ TextEntryTool = React.createClass
       <div className="left">
         <div className="input_field state text">
           <a href="#" className="yellow button">ok</a>
-          <input
-            type="text"
-            placeholder="Date"
-            className=""
-            role="textbox"
+          <input 
+            type="text" 
+            placeholder="Date" 
+            className="" 
+            role="textbox" 
           />
         </div>
       </div>
@@ -39,4 +40,4 @@ TextEntryTool = React.createClass
       </div>
     </div>
 
-window.TextEntryTool = TextEntryTool
+module.exports = TextEntryTool

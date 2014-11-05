@@ -1,9 +1,10 @@
 # @cjsx React.DOM
 # Model = require '../../data/model'
+React = require 'react'
 Draggable = require '../lib/draggable'
+DeleteButton = require './delete-button'
 
-
-PointTool = React.createClass
+module.exports = React.createClass
   displayName: 'PointTool'
 
   statics:
@@ -25,7 +26,7 @@ PointTool = React.createClass
     @setState {x,y}
 
   render: ->
-
+    
     fillColor   = 'rgba(0,0,0,0.5)'
     strokeColor = '#fff'
     radius = 40
@@ -62,5 +63,3 @@ PointTool = React.createClass
 
   handleDrag: (e) ->
     @updateMark @props.getEventOffset(e)
-
-window.PointTool = PointTool

@@ -1,7 +1,9 @@
 # @cjsx React.DOM
 
+React = require 'react'
+Draggable = require '../lib/draggable'
 
-ResizeButton = React.createClass
+module.exports = React.createClass
   displayName: 'ResizeButton'
 
   getInitialState: ->
@@ -12,25 +14,23 @@ ResizeButton = React.createClass
     scrubberHeight: @props.scrubberHeight
 
   render: ->
-
-    <Draggable
-      onStart = {@props.handleResize}
-      onDrag  = {@props.handleResize}
+  
+    <Draggable 
+      onStart = {@props.handleResize} 
+      onDrag  = {@props.handleResize} 
     >
-      <g
-        transform   = {@props.transform}
-        className   = "clickable drawing-tool-resize-button"
-        stroke      = {@state.strokeColor}
+      <g 
+        transform   = {@props.transform} 
+        className   = "clickable drawing-tool-resize-button" 
+        stroke      = {@state.strokeColor} 
         strokeWidth = {@state.strokeWidth} >
-
+        
         { if @props.workflow is "text-region"
           <rect
             width  = {@state.scrubberWidth}
-            height = {@state.scrubberHeight}
-            fill   = {@state.fillColor}
+            height = {@state.scrubberHeight} 
+            fill   = {@state.fillColor} 
           />
         }
       </g>
     </Draggable>
-
-window.ResizeButton = ResizeButton
