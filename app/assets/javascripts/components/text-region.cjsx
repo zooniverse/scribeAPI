@@ -96,30 +96,30 @@ TextRegionTool = React.createClass
     console.log 'OFFSET                  : ', @state.offset
     console.log '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< HANDLE UPPER RESIZE()'
 
-  handleLowerResize: (e) ->
-    # return if @props.workflow isnt "text-region"
+  # handleLowerResize: (e) ->
+  #   # return if @props.workflow isnt "text-region"
 
-    {x,y} = @props.getEventOffset e
+  #   {x,y} = @props.getEventOffset e
 
-    # prevent dragging mark beyond image bounds
-    return if y < 0 
-    return if y > @props.imageHeight
+  #   # prevent dragging mark beyond image bounds
+  #   return if y < 0 
+  #   return if y > @props.imageHeight
 
-    @setState
-      offset: Math.round( y-@state.centerY-@state.markHeight/2 )
-      markHeight: Math.round( Math.abs( @state.markHeight + @state.offset ) )
-      yUpper: y
-      yLower: Math.round( Math.abs( y + @state.markHeight ) )
+  #   @setState
+  #     offset: Math.round( y-@state.centerY-@state.markHeight/2 )
+  #     markHeight: Math.round( Math.abs( @state.markHeight + @state.offset ) )
+  #     yUpper: y
+  #     yLower: Math.round( Math.abs( y + @state.markHeight ) )
     
-    # DEBUG CODE
-    # NOTE: yUpper and yLower are the same (refactor?)
-    console.log 'MARK CENTER             : ', @state.centerY
-    console.log '[yUpper,yLower]         : ', "[#{@state.yUpper},#{@state.yLower}]"
-    # console.log 'DIST. CENTER (UPPER)    : ', @state.yUpper - @state.centerY
-    console.log 'DIST. CENTER (LOWER)    : ', @state.yLower - @state.centerY
-    console.log 'MARK HEIGHT             : ', @state.markHeight
-    console.log 'OFFSET                  : ', @state.offset
-    console.log '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< HANDLE LOWER RESIZE()'
+  #   # DEBUG CODE
+  #   # NOTE: yUpper and yLower are the same (refactor?)
+  #   console.log 'MARK CENTER             : ', @state.centerY
+  #   console.log '[yUpper,yLower]         : ', "[#{@state.yUpper},#{@state.yLower}]"
+  #   # console.log 'DIST. CENTER (UPPER)    : ', @state.yUpper - @state.centerY
+  #   console.log 'DIST. CENTER (LOWER)    : ', @state.yLower - @state.centerY
+  #   console.log 'MARK HEIGHT             : ', @state.markHeight
+  #   console.log 'OFFSET                  : ', @state.offset
+  #   console.log '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< HANDLE LOWER RESIZE()'
 
   render: ->
     if @props.selected
@@ -167,8 +167,8 @@ TextRegionTool = React.createClass
 
       <ResizeButton 
         className = "lowerResize"
-        handleResize = {@handleLowerResize} 
-        transform = {"translate( #{@props.imageWidth/2}, #{ @state.offset + Math.round(@state.markHeight) - @props.scrubberHeight/2 } )"} 
+        handleResize = {@props.handleLowerResize} 
+        transform = {"translate( #{@props.imageWidth/2}, #{ Math.round(@state.markHeight) - @props.scrubberHeight/2 } )"} 
         scrubberHeight = {@props.scrubberHeight}
         scrubberWidth = {@props.scrubberWidth}
         workflow = {@props.workflow}
