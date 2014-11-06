@@ -24,13 +24,10 @@ module.exports = React.createClass
         className   = "clickable drawing-tool-resize-button" 
         stroke      = {@state.strokeColor} 
         strokeWidth = {@state.strokeWidth} >
-        
-        { if @props.workflow is "text-region"
           <rect
             width  = {@state.scrubberWidth}
             height = {@state.scrubberHeight} 
             fill   = {@state.fillColor} 
           />
-        }
       </g>
     </Draggable>

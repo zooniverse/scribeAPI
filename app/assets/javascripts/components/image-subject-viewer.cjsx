@@ -152,6 +152,7 @@ SubjectViewer = React.createClass
     # @forceUpdate()
 
   handleInitDrag: (e) ->
+    return unless @state.workflow is "text-region"
     console.log 'handleInitDrag()'
     {x,y} = @getEventOffset e
 
@@ -197,6 +198,25 @@ SubjectViewer = React.createClass
 
   handleToolMouseDown: ->
     console.log 'handleToolMouseDown()'
+
+
+  handleDragMark: (e) ->
+    console.log 'handleDragMark()'
+    return unless @state.workflow is "text-region"
+    {x,y} = @getEventOffset e
+
+    # # DEBUG CODE
+    # console.log "DRAG (#{x},#{y})"
+    # console.log 'SELECTED MARK CENTER: ', @state.selectedMark.y
+    # console.log 'SELECTED MARK DISTANCE FROM CENTER: ', Math.abs( @state.selectedMark.y - y )
+
+    currentMark = @state.selectedMark
+    currentMark.x = Math.round x
+    currentMark.y = Math.round y
+
+    @setState 
+      selectedMark: currentMark, =>
+        console.log 'STATE: ', @state.selectedMark
 
   selectMark: (mark) ->
     return if mark is @state.selectedMark
@@ -286,7 +306,6 @@ SubjectViewer = React.createClass
                 src = {@state.subjects[0].location}
                 width = {@state.imageWidth}
                 height = {@state.imageHeight} />
-
             </Draggable>
 
             { @state.marks.map ((mark, i) ->
@@ -304,6 +323,7 @@ SubjectViewer = React.createClass
                 scrubberWidth = {64}
                 scrubberHeight = {16}
                 workflow = {@state.workflow}
+                handleDragMark = {@handleDragMark}
               >
               </TextRegionTool>
             ), @}

@@ -33,9 +33,12 @@ TextRegionTool = React.createClass
     markHeight: @props.mark.yLower - @props.mark.yUpper
 
   componentWillReceiveProps: ->
+    console.log 'TextRegion::componentWillReceiveProps()'
     @setState
       yUpper: @props.mark.yUpper
       yLower: @props.mark.yLower
+      centerX: @props.mark.x
+      centerY: @props.mark.y
       markHeight: @props.mark.yLower - @props.mark.yUpper
 
   handleMouseOver: ->
@@ -51,7 +54,7 @@ TextRegionTool = React.createClass
       fillColor: 'rgba(0,0,0,0.5)'
 
   handleDrag: (e) ->
-    return if @props.workflow isnt "text-region"
+    # return if @props.workflow isnt "text-region"
     {x,y} = @props.getEventOffset(e)
 
     # prevent dragging mark beyond image bounds
@@ -69,7 +72,7 @@ TextRegionTool = React.createClass
     console.log "[yUpper,yLower]    : [#{@state.yUpper},#{@state.yLower}]"
 
   handleUpperResize: (e) ->
-    return if @props.workflow isnt "text-region"
+    # return if @props.workflow isnt "text-region"
 
     {x,y} = @props.getEventOffset e
 
@@ -94,7 +97,7 @@ TextRegionTool = React.createClass
     console.log '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< HANDLE UPPER RESIZE()'
 
   handleLowerResize: (e) ->
-    return if @props.workflow isnt "text-region"
+    # return if @props.workflow isnt "text-region"
 
     {x,y} = @props.getEventOffset e
 
@@ -118,14 +121,7 @@ TextRegionTool = React.createClass
     console.log 'OFFSET                  : ', @state.offset
     console.log '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< HANDLE LOWER RESIZE()'
 
-
-  componentDidUpdate: ->
-    console.log '*****************************'
-    console.log 'THIS IS: ', @parent
-
   render: ->
-    console.log 'MARK HEIGHT: ', @state.markHeight
-
     if @props.selected
       deleteButton = 
         <DeleteButton 
@@ -145,7 +141,7 @@ TextRegionTool = React.createClass
 
       <Draggable
         onStart = {@props.select.bind null, @props.mark} 
-        onDrag = {@handleDrag} >
+        onDrag = {@props.handleDragMark} >
         <rect 
           className   = "mark-rectangle"
           x           = 0
