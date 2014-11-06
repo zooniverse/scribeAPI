@@ -143,7 +143,10 @@ SubjectViewer = React.createClass
 
     # console.log "NEW MARK ADDED: [#{yUpper},#{yLower}]"
 
-    @setState marks: marks
+    @setState 
+      marks: marks
+      offset: $(e.nativeEvent.target).offset()
+
     @selectMark @state.marks[@state.marks.length-1]
 
     # @forceUpdate()
@@ -309,9 +312,8 @@ SubjectViewer = React.createClass
           </svg>
 
           { if @state.workflow is "text-entry"
-            console.log ">>>>>>>>> TOP: ", @getScale().vertical * @state.selectedMark.y - window.innerHeight/2 + 8
             <TextEntryTool
-              top={ @getScale().vertical * @state.selectedMark.yLower + 20 }
+              top={ @getScale().vertical * @state.selectedMark.yLower + 20 + @state.offset.top }
               left={@state.windowInnerWidth/2 - 200}
             />
           }

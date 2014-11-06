@@ -119,6 +119,9 @@ TextRegionTool = React.createClass
     console.log '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< HANDLE LOWER RESIZE()'
 
 
+  componentDidUpdate: ->
+    console.log '*****************************'
+    console.log 'THIS IS: ', @parent
 
   render: ->
     console.log 'MARK HEIGHT: ', @state.markHeight
