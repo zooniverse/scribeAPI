@@ -218,10 +218,28 @@ SubjectViewer = React.createClass
       selectedMark: currentMark, =>
         console.log 'STATE: ', @state.selectedMark
 
+  handleUpperResize: (e) ->
+    {x,y} = @getEventOffset e
+
+    # prevent dragging mark beyond image bounds
+    return if y < 0 
+    return if y > @state.imageHeight
+
+    currentMark = @state.selectedMark
+    markHeight = currentMark.yLower - currentMark.yUpper
+    offset = Math.round( y - currentMark.yUpper )
+
+    currentMark.yUpper = Math.round( Math.abs( y  + offset ) )
+
+    @setState
+      markHeight: Math.round( Math.abs( currentMark.yLower - currentMark.yUpper ) )
+      selectedMark: currentMark
 
   handleLowerResize: (e) ->
-    console.log 'HANDLE_LOWER_RESIZE'
     {x,y} = @getEventOffset e
+
+    x = Math.round x
+    y = Math.round y
 
     # prevent dragging mark beyond image bounds
     return if y < 0 
@@ -232,9 +250,12 @@ SubjectViewer = React.createClass
     offset = Math.round( y - currentMark.yLower )
     
     # currentMark.yUpper = Math.round y
-    currentMark.yLower = Math.round( Math.abs( y + markHeight + offset ) )
+    currentMark.yLower = Math.round( Math.abs( y + markHeight/2 + offset ) )
 
-    console.log 'CURRENT MARK: ', currentMark
+    # DEBUG CODE
+    console.log '============-=-=-=-=-=-=-=-=-=-=============='
+    console.log 'OFFSET: ', offset, currentMark
+
     @setState
       markHeight: Math.round( Math.abs( currentMark.yLower - currentMark.yUpper ) )
       selectedMark: currentMark
@@ -345,6 +366,7 @@ SubjectViewer = React.createClass
                 scrubberHeight = {16}
                 workflow = {@state.workflow}
                 handleDragMark = {@handleDragMark}
+                handleUpperResize = {@handleUpperResize}
                 handleLowerResize = {@handleLowerResize}
               >
               </TextRegionTool>

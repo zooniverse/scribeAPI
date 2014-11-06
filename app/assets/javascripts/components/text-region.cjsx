@@ -20,14 +20,13 @@ TextRegionTool = React.createClass
 
   getInitialState: ->
     console.log "PROPS [#{@props.mark.yUpper},#{@props.mark.yLower}]"
-    console.log "INITIAL (STATE.X, STATE.Y): (#{@props.mark.x},#{@props.mark.y})"
+    console.log "INITIAL (STATE.X, STATE.Y): (#{Math.round @props.mark.x},#{Math.round @props.mark.y})"
     centerX: @props.mark.x
     centerY: @props.mark.y
     markHeight: @props.defaultMarkHeight
     fillColor: 'rgba(0,0,0,0.5)'
     strokeColor: '#26baff'
     strokeWidth: 3
-    offset: 0
     yUpper: @props.mark.yUpper
     yLower: @props.mark.yLower
     markHeight: @props.mark.yLower - @props.mark.yUpper
@@ -71,30 +70,30 @@ TextRegionTool = React.createClass
     console.log "UPDATED MARK CENTER: #{@state.centerY}"
     console.log "[yUpper,yLower]    : [#{@state.yUpper},#{@state.yLower}]"
 
-  handleUpperResize: (e) ->
-    # return if @props.workflow isnt "text-region"
+  # handleUpperResize: (e) ->
+  #   # return if @props.workflow isnt "text-region"
 
-    {x,y} = @props.getEventOffset e
+  #   {x,y} = @props.getEventOffset e
 
-    # prevent dragging mark beyond image bounds
-    return if y < 0 
-    return if y > @props.imageHeight
+  #   # prevent dragging mark beyond image bounds
+  #   return if y < 0 
+  #   return if y > @props.imageHeight
 
-    @setState
-      offset: Math.round( y-@state.centerY+@state.markHeight/2 )
-      markHeight: Math.round( Math.abs( @state.markHeight - @state.offset ) )
-      yUpper: Math.round y
-      yLower: Math.abs( y + @state.markHeight )
+  #   @setState
+  #     offset: Math.round( y-@state.centerY+@state.markHeight/2 )
+  #     markHeight: Math.round( Math.abs( @state.markHeight - @state.offset ) )
+  #     yUpper: Math.round y
+  #     yLower: Math.abs( y + @state.markHeight )
     
-    # DEBUG CODE
-    # NOTE: yUpper and yLower are the same (refactor?)
-    console.log 'MARK CENTER             : ', @state.centerY
-    console.log '[yUpper,yLower]         : ', "[#{@state.yUpper},#{@state.yLower}]"
-    console.log 'DIST. CENTER (UPPER)    : ', @state.yUpper - @state.centerY
-    # console.log 'DIST. CENTER (LOWER)    : ', @state.yLower - @state.centerY
-    console.log 'MARK HEIGHT             : ', @state.markHeight
-    console.log 'OFFSET                  : ', @state.offset
-    console.log '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< HANDLE UPPER RESIZE()'
+  #   # DEBUG CODE
+  #   # NOTE: yUpper and yLower are the same (refactor?)
+  #   console.log 'MARK CENTER             : ', @state.centerY
+  #   console.log '[yUpper,yLower]         : ', "[#{@state.yUpper},#{@state.yLower}]"
+  #   console.log 'DIST. CENTER (UPPER)    : ', @state.yUpper - @state.centerY
+  #   # console.log 'DIST. CENTER (LOWER)    : ', @state.yLower - @state.centerY
+  #   console.log 'MARK HEIGHT             : ', @state.markHeight
+  #   console.log 'OFFSET                  : ', @state.offset
+  #   console.log '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< HANDLE UPPER RESIZE()'
 
   # handleLowerResize: (e) ->
   #   # return if @props.workflow isnt "text-region"
@@ -158,8 +157,8 @@ TextRegionTool = React.createClass
       <ResizeButton 
         viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
         className = "upperResize"
-        handleResize = {@handleUpperResize} 
-        transform = {"translate( #{@props.imageWidth/2}, #{ @state.offset - @props.scrubberHeight/2 } )"} 
+        handleResize = {@props.handleUpperResize} 
+        transform = {"translate( #{@props.imageWidth/2}, #{ @props.scrubberHeight/2 } )"} 
         scrubberHeight = {@props.scrubberHeight}
         scrubberWidth = {@props.scrubberWidth}
         workflow = {@props.workflow}
