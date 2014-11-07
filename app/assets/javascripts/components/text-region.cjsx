@@ -19,8 +19,9 @@ TextRegionTool = React.createClass
       {x, y}
 
   getInitialState: ->
-    console.log "PROPS [#{@props.mark.yUpper},#{@props.mark.yLower}]"
-    console.log "INITIAL (STATE.X, STATE.Y): (#{Math.round @props.mark.x},#{Math.round @props.mark.y})"
+    # # DEBUG CODE
+    # console.log "PROPS [#{@props.mark.yUpper},#{@props.mark.yLower}]"
+    # console.log "INITIAL (STATE.X, STATE.Y): (#{Math.round @props.mark.x},#{Math.round @props.mark.y})"
     centerX: @props.mark.x
     centerY: @props.mark.y
     markHeight: @props.defaultMarkHeight
@@ -32,7 +33,6 @@ TextRegionTool = React.createClass
     markHeight: @props.mark.yLower - @props.mark.yUpper
 
   componentWillReceiveProps: ->
-    console.log 'TextRegion::componentWillReceiveProps()'
     @setState
       yUpper: @props.mark.yUpper
       yLower: @props.mark.yLower
@@ -52,24 +52,6 @@ TextRegionTool = React.createClass
       strokeColor: 'rgba(255,255,255,0.75)'
       fillColor: 'rgba(0,0,0,0.5)'
 
-  handleDrag: (e) ->
-    # return if @props.workflow isnt "text-region"
-    {x,y} = @props.getEventOffset(e)
-
-    # prevent dragging mark beyond image bounds
-    return if (y-@state.markHeight/2) < 0 
-    return if (y+@state.markHeight/2) > @props.imageHeight
-
-    @setState 
-      centerX: Math.round x
-      centerY: Math.round y
-      yUpper: Math.round( y - @state.markHeight/2 )
-      yLower: Math.round( y + @state.markHeight/2 )
-
-    # DEBUG CODE
-    console.log "UPDATED MARK CENTER: #{@state.centerY}"
-    console.log "[yUpper,yLower]    : [#{@state.yUpper},#{@state.yLower}]"
-
   render: ->
 
     <g 
@@ -80,7 +62,7 @@ TextRegionTool = React.createClass
     >
 
       <Draggable
-        onStart = {@props.select.bind null, @props.mark} 
+        onStart = {@props.handleMarkClick.bind null, @props.mark} 
         onDrag = {@props.handleDragMark} >
         <rect 
           className   = "mark-rectangle"

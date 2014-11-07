@@ -109,7 +109,8 @@ SubjectViewer = React.createClass
         y_upper: mark.yUpper
         y_lower: mark.yLower
 
-    console.log 'CLASSIFICATION: ', @state.classification
+    # # DEBUG CODE  
+    # console.log 'CLASSIFICATION: ', @state.classification
 
     console.log JSON.stringify @state.classification # DEBUG CODE
     @state.classification.send()
@@ -127,7 +128,8 @@ SubjectViewer = React.createClass
     @state.classification = new Classification @state.subjects[0]
 
   handleInitStart: (e) ->
-    console.log 'handleInitStart()'
+    # console.log 'handleInitStart()'
+
     return if @state.workflow is "text-entry"
 
     {horizontal, vertical} = @getScale()
@@ -141,25 +143,17 @@ SubjectViewer = React.createClass
     marks = @state.marks
     marks.push {yUpper, yLower, x, y, key, timestamp}
 
-    # console.log "NEW MARK ADDED: [#{yUpper},#{yLower}]"
-
     @setState 
       marks: marks
       offset: $(e.nativeEvent.target).offset()
 
     @selectMark @state.marks[@state.marks.length-1]
 
-    # @forceUpdate()
-
   handleInitDrag: (e) ->
-    return unless @state.workflow is "text-region"
-    console.log 'handleInitDrag()'
-    {x,y} = @getEventOffset e
+    # console.log 'handleInitDrag()'
 
-    # # DEBUG CODE
-    # console.log "DRAG (#{x},#{y})"
-    # console.log 'SELECTED MARK CENTER: ', @state.selectedMark.y
-    # console.log 'SELECTED MARK DISTANCE FROM CENTER: ', Math.abs( @state.selectedMark.y - y )
+    return unless @state.workflow is "text-region"
+    {x,y} = @getEventOffset e
 
     dist = Math.abs( @state.selectedMark.y - y )
 
@@ -175,30 +169,11 @@ SubjectViewer = React.createClass
   handleInitRelease: (e) ->
     # console.log 'handleInitRelease()'
 
-  setView: (viewX, viewY, viewWidth, viewHeight) ->
-    @setState {viewX, viewY, viewWidth, viewHeight}
-
-  getScale: ->
-    rect = @refs.sizeRect?.getDOMNode().getBoundingClientRect()
-    rect ?= width: 0, height: 0
-
-    horizontal: rect.width / @state.imageWidth
-    vertical: rect.height / @state.imageHeight
-
-  getEventOffset: (e) ->
-    rect = @refs.sizeRect.getDOMNode().getBoundingClientRect()
-
-    # console.log 'RECT: ', rect
-    {horizontal, vertical} = @getScale()
-    x: ((e.pageX - pageXOffset - rect.left) / horizontal) + @state.viewX
-    y: ((e.pageY - pageYOffset - rect.top) / vertical) + @state.viewY
-
-    # x: ((e.pageX - pageXOffset - rect.left)) + @state.viewX
-    # y: ((e.pageY - pageYOffset - rect.top)) + @state.viewY
-
   handleToolMouseDown: ->
-    console.log 'handleToolMouseDown()'
+    # console.log 'handleToolMouseDown()'
 
+  handleMarkClick: (e, mark) ->
+    @selectMark mark
 
   handleDragMark: (e) ->
     console.log 'handleDragMark()'
@@ -222,7 +197,8 @@ SubjectViewer = React.createClass
 
     @setState 
       selectedMark: currentMark, =>
-        console.log 'STATE: ', @state.selectedMark
+        # # DEBUG CODE
+        # console.log 'STATE: ', @state.selectedMark
 
   handleUpperResize: (e) ->
     {x,y} = @getEventOffset e
@@ -274,6 +250,27 @@ SubjectViewer = React.createClass
     @setState
       # markHeight: Math.round( Math.abs( currentMark.yLower - currentMark.yUpper ) )
       selectedMark: currentMark
+
+  setView: (viewX, viewY, viewWidth, viewHeight) ->
+    @setState {viewX, viewY, viewWidth, viewHeight}
+
+  getScale: ->
+    rect = @refs.sizeRect?.getDOMNode().getBoundingClientRect()
+    rect ?= width: 0, height: 0
+
+    horizontal: rect.width / @state.imageWidth
+    vertical: rect.height / @state.imageHeight
+
+  getEventOffset: (e) ->
+    rect = @refs.sizeRect.getDOMNode().getBoundingClientRect()
+
+    # console.log 'RECT: ', rect
+    {horizontal, vertical} = @getScale()
+    x: ((e.pageX - pageXOffset - rect.left) / horizontal) + @state.viewX
+    y: ((e.pageY - pageYOffset - rect.top) / vertical) + @state.viewY
+
+    # x: ((e.pageX - pageXOffset - rect.left)) + @state.viewX
+    # y: ((e.pageY - pageYOffset - rect.top)) + @state.viewY
 
   selectMark: (mark) ->
     return if mark is @state.selectedMark
@@ -383,6 +380,7 @@ SubjectViewer = React.createClass
                 handleDragMark = {@handleDragMark}
                 handleUpperResize = {@handleUpperResize}
                 handleLowerResize = {@handleLowerResize}
+                handleMarkClick = {@handleMarkClick.bind null, mark}
               >
               </TextRegionTool>
             ), @}
