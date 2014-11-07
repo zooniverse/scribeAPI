@@ -211,21 +211,23 @@ SubjectViewer = React.createClass
       selectedMark: currentMark
 
   handleUpperResize: (e) ->
-
     {x,y} = @getEventOffset e
 
-    # prevent dragging mark beyond image bounds
-    return if y < 0 
-    return if y > @state.imageHeight
+    x = Math.round x
+    y = Math.round y
 
     currentMark = @state.selectedMark
-    markHeight = currentMark.yLower - currentMark.yUpper
-    offset = Math.round( y - currentMark.yUpper )
 
-    currentMark.yUpper = Math.round( Math.abs( y  + offset ) )
+    dy = currentMark.yLower - y # NOTE: reverse sign for upper resize
+    yUpper_p = y
+    markHeight_p = currentMark.yLower - currentMark.yUpper + dy
+    y_p = yUpper_p - markHeight_p/2
+
+    currentMark.yUpper = yUpper_p
+    currentMark.markHeight = markHeight_p
+    currentMark.y = y_p
 
     @setState
-      markHeight: Math.round( Math.abs( currentMark.yLower - currentMark.yUpper ) )
       selectedMark: currentMark
 
   handleLowerResize: (e) ->
