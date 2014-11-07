@@ -172,33 +172,35 @@ SubjectViewer = React.createClass
   handleToolMouseDown: ->
     # console.log 'handleToolMouseDown()'
 
-  handleMarkClick: (e, mark) ->
+  handleMarkClick: (mark, e) ->
+    {x,y} = @getEventOffset e
     @selectMark mark
 
+    # save click offset from mark center
+    @setState 
+      markOffset: { 
+        x: @state.selectedMark.x - x, 
+        y: @state.selectedMark.y - y
+      }
+    
   handleDragMark: (e) ->
     console.log 'handleDragMark()'
     return unless @state.workflow is "text-region"
     
     {x,y} = @getEventOffset e
 
-    # # DEBUG CODE
-    # console.log "DRAG (#{x},#{y})"
-    # console.log 'SELECTED MARK CENTER: ', @state.selectedMark.y
-    # console.log 'SELECTED MARK DISTANCE FROM CENTER: ', Math.abs( @state.selectedMark.y - y )
-
     currentMark = @state.selectedMark
-    currentMark.x = Math.round x
-    currentMark.y = Math.round y
+    currentMark.x = Math.round x + @state.markOffset.x
+    currentMark.y = Math.round y + @state.markOffset.y
     markHeight = currentMark.yLower - currentMark.yUpper
 
     # prevent dragging mark beyond image bounds
-    return if (y-markHeight/2) < 0 
-    return if (y+markHeight/2) > @state.imageHeight
+    offset = @state.markOffset.y
+    return if ( y + offset - markHeight/2 ) < 0 
+    return if ( y + offset + markHeight/2 ) > @state.imageHeight
 
     @setState 
-      selectedMark: currentMark, =>
-        # # DEBUG CODE
-        # console.log 'STATE: ', @state.selectedMark
+      selectedMark: currentMark
 
   handleUpperResize: (e) ->
     {x,y} = @getEventOffset e
@@ -308,7 +310,7 @@ SubjectViewer = React.createClass
       $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
 
   render: ->
-    console.log 'subject-viewer render():'
+    # console.log 'subject-viewer render():'
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
 
     # LOADING

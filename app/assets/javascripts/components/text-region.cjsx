@@ -62,7 +62,7 @@ TextRegionTool = React.createClass
     >
 
       <Draggable
-        onStart = {@props.handleMarkClick.bind null, @props.mark} 
+        onStart = {@props.handleMarkClick.bind @props.mark} 
         onDrag = {@props.handleDragMark} >
         <rect 
           className   = "mark-rectangle"
