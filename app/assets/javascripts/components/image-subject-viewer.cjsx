@@ -218,10 +218,10 @@ SubjectViewer = React.createClass
 
     currentMark = @state.selectedMark
 
-    dy = currentMark.yLower - y # NOTE: reverse sign for upper resize
+    dy = currentMark.yUpper - y # NOTE: reverse sign for upper resize
     yUpper_p = y
     markHeight_p = currentMark.yLower - currentMark.yUpper + dy
-    y_p = yUpper_p - markHeight_p/2
+    y_p = yUpper_p + markHeight_p/2
 
     currentMark.yUpper = yUpper_p
     currentMark.markHeight = markHeight_p
