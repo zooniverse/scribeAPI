@@ -203,6 +203,7 @@ SubjectViewer = React.createClass
   handleDragMark: (e) ->
     console.log 'handleDragMark()'
     return unless @state.workflow is "text-region"
+    
     {x,y} = @getEventOffset e
 
     # # DEBUG CODE
@@ -213,6 +214,11 @@ SubjectViewer = React.createClass
     currentMark = @state.selectedMark
     currentMark.x = Math.round x
     currentMark.y = Math.round y
+    markHeight = currentMark.yLower - currentMark.yUpper
+
+    # prevent dragging mark beyond image bounds
+    return if (y-markHeight/2) < 0 
+    return if (y+markHeight/2) > @state.imageHeight
 
     @setState 
       selectedMark: currentMark, =>
@@ -246,18 +252,27 @@ SubjectViewer = React.createClass
     return if y > @state.imageHeight
 
     currentMark = @state.selectedMark
-    markHeight = currentMark.yLower - currentMark.yUpper
+
+
+    dist = Math.abs( @state.selectedMark.y - y )
+
+    # if dist < 50/2
+    #   console.log 'SBAKLJSHKLJSHKLAJHSKLJHDKLJ'
+    #   currentMark = @state.selectedMark
+    #   currentMark.yUpper = currentMark.y - dist
+    #   currentMark.yLower = currentMark.y + dist
+    # else
+    
     offset = Math.round( y - currentMark.yLower )
+    markHeight = currentMark.yLower - currentMark.yUpper
     
     # currentMark.yUpper = Math.round y
     currentMark.yLower = Math.round( Math.abs( y + markHeight/2 + offset ) )
 
-
     console.log 'CURRENT MARK: ', @state.selectedMark, 'OFFSET: ', offset, 'MARK HEIGHt: ', currentMark.yLower - currentMark.yUpper
 
-
     @setState
-      markHeight: Math.round( Math.abs( currentMark.yLower - currentMark.yUpper ) )
+      # markHeight: Math.round( Math.abs( currentMark.yLower - currentMark.yUpper ) )
       selectedMark: currentMark
 
   selectMark: (mark) ->
