@@ -25,6 +25,8 @@ ImageSubjectViewer = React.createClass # rename to Classifier
 SubjectViewer = React.createClass
   displayName: 'SubjectViewer'
 
+  resizing: false
+
   getInitialState: ->
     subjects: example_subjects # TODO: need to remove this
 
@@ -150,7 +152,9 @@ SubjectViewer = React.createClass
     @selectMark @state.marks[@state.marks.length-1]
 
   handleInitDrag: (e) ->
-    # console.log 'handleInitDrag()'
+    console.log 'handleInitDrag()'
+    console.log 'SELECTED MARK: ', @state.selectedMark
+
 
     return unless @state.workflow is "text-region"
     {x,y} = @getEventOffset e
@@ -163,8 +167,7 @@ SubjectViewer = React.createClass
       currentMark.yLower = currentMark.y + dist
 
       @setState
-        selectedMark: currentMark, =>
-          console.log 'STATE: ', @state.selectedMark
+        selectedMark: currentMark
 
   handleInitRelease: (e) ->
     # console.log 'handleInitRelease()'
@@ -185,6 +188,8 @@ SubjectViewer = React.createClass
     
   handleDragMark: (e) ->
     console.log 'handleDragMark()'
+    console.log 'SELECTED MARK: ', @state.selectedMark
+
     return unless @state.workflow is "text-region"
     
     {x,y} = @getEventOffset e
@@ -193,6 +198,9 @@ SubjectViewer = React.createClass
     currentMark.x = Math.round x + @state.markOffset.x
     currentMark.y = Math.round y + @state.markOffset.y
     markHeight = currentMark.yLower - currentMark.yUpper
+    currentMark.yUpper = Math.round currentMark.y - markHeight/2
+    currentMark.yLower = Math.round currentMark.y + markHeight/2
+    
 
     # prevent dragging mark beyond image bounds
     offset = @state.markOffset.y
@@ -203,6 +211,7 @@ SubjectViewer = React.createClass
       selectedMark: currentMark
 
   handleUpperResize: (e) ->
+
     {x,y} = @getEventOffset e
 
     # prevent dragging mark beyond image bounds
@@ -225,32 +234,18 @@ SubjectViewer = React.createClass
     x = Math.round x
     y = Math.round y
 
-    # prevent dragging mark beyond image bounds
-    return if y < 0 
-    return if y > @state.imageHeight
-
     currentMark = @state.selectedMark
 
+    dy = y - currentMark.yLower # NOTE: reverse sign for upper resize
+    yLower_p = y
+    markHeight_p = currentMark.yLower - currentMark.yUpper + dy
+    y_p = yLower_p - markHeight_p/2
 
-    dist = Math.abs( @state.selectedMark.y - y )
-
-    # if dist < 50/2
-    #   console.log 'SBAKLJSHKLJSHKLAJHSKLJHDKLJ'
-    #   currentMark = @state.selectedMark
-    #   currentMark.yUpper = currentMark.y - dist
-    #   currentMark.yLower = currentMark.y + dist
-    # else
-    
-    offset = Math.round( y - currentMark.yLower )
-    markHeight = currentMark.yLower - currentMark.yUpper
-    
-    # currentMark.yUpper = Math.round y
-    currentMark.yLower = Math.round( Math.abs( y + markHeight/2 + offset ) )
-
-    console.log 'CURRENT MARK: ', @state.selectedMark, 'OFFSET: ', offset, 'MARK HEIGHt: ', currentMark.yLower - currentMark.yUpper
+    currentMark.yLower = yLower_p
+    currentMark.markHeight = markHeight_p
+    currentMark.y = y_p
 
     @setState
-      # markHeight: Math.round( Math.abs( currentMark.yLower - currentMark.yUpper ) )
       selectedMark: currentMark
 
   setView: (viewX, viewY, viewWidth, viewHeight) ->
@@ -377,7 +372,7 @@ SubjectViewer = React.createClass
                 selected = {mark is @state.selectedMark}
                 onClickDelete = {@onClickDelete}
                 scrubberWidth = {64}
-                scrubberHeight = {16}
+                scrubberHeight = {32}
                 workflow = {@state.workflow}
                 handleDragMark = {@handleDragMark}
                 handleUpperResize = {@handleUpperResize}

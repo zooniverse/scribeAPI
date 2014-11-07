@@ -40,18 +40,6 @@ TextRegionTool = React.createClass
       centerY: @props.mark.y
       markHeight: @props.mark.yLower - @props.mark.yUpper
 
-  handleMouseOver: ->
-    console.log 'onMouseOver()'
-    @setState 
-      strokeColor: '#fff'
-      fillColor: 'rgba(0,0,0,0.25)'
-
-  handleMouseOut: ->
-    console.log 'onMouseOut()'
-    @setState 
-      strokeColor: 'rgba(255,255,255,0.75)'
-      fillColor: 'rgba(0,0,0,0.5)'
-
   render: ->
 
     <g 
