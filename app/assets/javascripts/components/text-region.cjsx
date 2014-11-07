@@ -71,15 +71,6 @@ TextRegionTool = React.createClass
     console.log "[yUpper,yLower]    : [#{@state.yUpper},#{@state.yLower}]"
 
   render: ->
-    if @props.selected
-      deleteButton = 
-        <DeleteButton 
-          transform = "translate(25, #{@state.markHeight/2})" 
-          onClick = {@props.onClickDelete.bind null, @props.key}
-          workflow = {@props.workflow}
-        />
-    else
-      deleteButton = null
 
     <g 
       className = "point drawing-tool" 
@@ -112,6 +103,7 @@ TextRegionTool = React.createClass
         scrubberHeight = {@props.scrubberHeight}
         scrubberWidth = {@props.scrubberWidth}
         workflow = {@props.workflow}
+        isSelected = {@props.selected}
       />
 
       <ResizeButton 
@@ -121,9 +113,16 @@ TextRegionTool = React.createClass
         scrubberHeight = {@props.scrubberHeight}
         scrubberWidth = {@props.scrubberWidth}
         workflow = {@props.workflow}
+        isSelected = {@props.selected}
+
       />
 
-      {deleteButton}
+      <DeleteButton 
+        transform = "translate(25, #{@state.markHeight/2})" 
+        onClick = {@props.onClickDelete.bind null, @props.key}
+        workflow = {@props.workflow}
+        isSelected = {@props.selected}
+      />
     </g>
 
 module.exports = TextRegionTool

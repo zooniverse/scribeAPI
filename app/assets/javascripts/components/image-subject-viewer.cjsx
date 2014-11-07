@@ -252,9 +252,9 @@ SubjectViewer = React.createClass
     # currentMark.yUpper = Math.round y
     currentMark.yLower = Math.round( Math.abs( y + markHeight/2 + offset ) )
 
-    # DEBUG CODE
-    console.log '============-=-=-=-=-=-=-=-=-=-=============='
-    console.log 'OFFSET: ', offset, currentMark
+
+    console.log 'CURRENT MARK: ', @state.selectedMark, 'OFFSET: ', offset, 'MARK HEIGHt: ', currentMark.yLower - currentMark.yUpper
+
 
     @setState
       markHeight: Math.round( Math.abs( currentMark.yLower - currentMark.yUpper ) )

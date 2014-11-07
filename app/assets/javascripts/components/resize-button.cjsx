@@ -14,6 +14,8 @@ module.exports = React.createClass
     scrubberHeight: @props.scrubberHeight
 
   render: ->
+    unless @props.isSelected # hide button
+      return null
   
     <Draggable 
       onStart = {@props.handleResize} 
