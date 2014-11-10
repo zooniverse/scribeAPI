@@ -237,7 +237,7 @@ SubjectViewer = React.createClass
     console.log 'handleLowerResize()'
     {x,y} = @getEventOffset e
 
-    console.log 'y: ', y
+    # console.log 'y: ', y
 
     x = Math.round x
     y = Math.round y
@@ -250,6 +250,10 @@ SubjectViewer = React.createClass
     if y > @state.imageHeight
       y = @state.imageHeight 
       return
+
+    # if y - currentMark.yUpper < 50
+    #   currentMark.yLower = y + 
+    #   console.log 'WARNING: mark too small'
 
     dy = y - currentMark.yLower
     yLower_p = y
