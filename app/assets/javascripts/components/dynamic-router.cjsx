@@ -14,7 +14,7 @@ DynamicRouter = React.createClass
         </div>
 
   render:->
-    console.log @, @state
+    # console.log @, @state
     <Routes>
       <Route path='/' handler={HomePageController} name="root" />
       <Route path='/transcribe' handler={ImageSubjectViewer} name='transcribe' />

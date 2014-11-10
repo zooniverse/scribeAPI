@@ -129,7 +129,7 @@ SubjectViewer = React.createClass
     @state.classification = new Classification @state.subjects[0]
 
   handleInitStart: (e) ->
-    # console.log 'handleInitStart()'
+    console.log 'handleInitStart()'
 
     return if @state.workflow is "text-entry"
 
@@ -151,7 +151,7 @@ SubjectViewer = React.createClass
     @selectMark @state.marks[@state.marks.length-1]
 
   handleInitDrag: (e) ->
-    # console.log 'handleInitDrag()'
+    console.log 'handleInitDrag()'
 
     return unless @state.workflow is "text-region"
     {x,y} = @getEventOffset e
@@ -162,15 +162,16 @@ SubjectViewer = React.createClass
       currentMark = @state.selectedMark
       currentMark.yUpper = currentMark.y - dist
       currentMark.yLower = currentMark.y + dist
+      currentMark.markHeight = currentMark.yLower - currentMark.yUpper
 
       @setState
         selectedMark: currentMark
 
   handleInitRelease: (e) ->
-    # console.log 'handleInitRelease()'
+    console.log 'handleInitRelease()'
 
   handleToolMouseDown: ->
-    # console.log 'handleToolMouseDown()'
+    console.log 'handleToolMouseDown()'
 
   handleMarkClick: (mark, e) ->
     {x,y} = @getEventOffset e
@@ -184,7 +185,7 @@ SubjectViewer = React.createClass
       }
 
   handleDragMark: (e) ->
-    # console.log 'handleDragMark()'
+    console.log 'handleDragMark()'
 
     return unless @state.workflow is "text-region"
     
@@ -207,14 +208,20 @@ SubjectViewer = React.createClass
       selectedMark: currentMark
 
   handleUpperResize: (e) ->
+    console.log 'handleUpperResize()'
     {x,y} = @getEventOffset e
 
     x = Math.round x
     y = Math.round y
 
+    # enforce bounds
+    if y < 0
+      y = 0 
+      return
+
     currentMark = @state.selectedMark
 
-    dy = currentMark.yUpper - y # NOTE: reverse sign for upper resize
+    dy = currentMark.yUpper - y
     yUpper_p = y
     markHeight_p = currentMark.yLower - currentMark.yUpper + dy
     y_p = yUpper_p + markHeight_p/2
@@ -227,14 +234,24 @@ SubjectViewer = React.createClass
       selectedMark: currentMark
 
   handleLowerResize: (e) ->
+    console.log 'handleLowerResize()'
     {x,y} = @getEventOffset e
+
+    console.log 'y: ', y
 
     x = Math.round x
     y = Math.round y
 
     currentMark = @state.selectedMark
 
-    dy = y - currentMark.yLower # NOTE: reverse sign for upper resize
+    # console.log 'mark height: ', currentMark.markHeight
+    
+    # enforce bounds
+    if y > @state.imageHeight
+      y = @state.imageHeight 
+      return
+
+    dy = y - currentMark.yLower
     yLower_p = y
     markHeight_p = currentMark.yLower - currentMark.yUpper + dy
     y_p = yLower_p - markHeight_p/2
