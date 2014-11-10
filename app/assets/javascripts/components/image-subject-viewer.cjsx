@@ -177,15 +177,15 @@ SubjectViewer = React.createClass
 
   handleMarkClick: (mark, e) ->
     {x,y} = @getEventOffset e
-    @selectMark mark
 
     # save click offset from mark center
     @setState 
+      selectedMark: mark
       markOffset: { 
-        x: @state.selectedMark.x - x, 
-        y: @state.selectedMark.y - y
+        x: mark.x - x, 
+        y: mark.y - y
       }
-    
+      
   handleDragMark: (e) ->
     console.log 'handleDragMark()'
     console.log 'SELECTED MARK: ', @state.selectedMark
