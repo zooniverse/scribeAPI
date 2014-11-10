@@ -7,7 +7,6 @@ class Classification
     @annotations ?= []
 
   annotate: (annotation) ->
-    console.log 'FOO!'
     @annotations.push annotation
     return annotation
 

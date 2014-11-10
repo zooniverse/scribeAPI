@@ -7,7 +7,7 @@ TextEntryTool = React.createClass
 
   componentWillReceiveProps: ->
     return
-    console.log 'RECEIVING PROPS...'
+    # console.log 'RECEIVING PROPS...'
     @setProps
       top: @props.top
       left: @props.left

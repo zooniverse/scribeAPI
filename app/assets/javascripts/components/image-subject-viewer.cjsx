@@ -62,7 +62,6 @@ SubjectViewer = React.createClass
     window.removeEventListener "resize", this.updateDimensions
 
   updateDimensions: ->
-    console.log 'updating dimensions'
     @setState
       windowInnerWidth: window.innerWidth
       windowInnerHeight: window.innerHeight
@@ -152,9 +151,7 @@ SubjectViewer = React.createClass
     @selectMark @state.marks[@state.marks.length-1]
 
   handleInitDrag: (e) ->
-    console.log 'handleInitDrag()'
-    console.log 'SELECTED MARK: ', @state.selectedMark
-
+    # console.log 'handleInitDrag()'
 
     return unless @state.workflow is "text-region"
     {x,y} = @getEventOffset e
@@ -185,10 +182,9 @@ SubjectViewer = React.createClass
         x: mark.x - x, 
         y: mark.y - y
       }
-      
+
   handleDragMark: (e) ->
-    console.log 'handleDragMark()'
-    console.log 'SELECTED MARK: ', @state.selectedMark
+    # console.log 'handleDragMark()'
 
     return unless @state.workflow is "text-region"
     
@@ -283,26 +279,24 @@ SubjectViewer = React.createClass
     @setState marks: marks
 
   beginTextEntry: ->
-    console.log 'beginTextEntry()'
+    # console.log 'beginTextEntry()'
     return unless @state.marks.length > 0
     @setState
       workflow: "text-entry"
       selectedMark: @state.marks[0], =>
-        console.log 'SELECTED MARK: ', @state.selectedMark
         {horizontal, vertical} = @getScale()
         $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
 
   nextTextEntry: ->
-    console.log "nextTextEntry()"
+    # console.log "nextTextEntry()"
 
     key = @state.selectedMark.key
     if key+1 > @state.marks.length-1
-      console.log "That's all the marks for now!"
+      # console.log "That's all the marks for now!"
       @setState workflow: "finished"
       return
 
     @setState selectedMark: @state.marks[key+1], =>
-      console.log 'SELECTED MARK: ', @state.selectedMark
       {horizontal, vertical} = @getScale()
       $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
 
