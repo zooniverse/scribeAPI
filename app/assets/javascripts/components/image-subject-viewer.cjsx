@@ -139,8 +139,8 @@ SubjectViewer = React.createClass
     timestamp = (new Date).toUTCString()
     key = @state.marks.length
     {x, y} = @getEventOffset e
-    yUpper = y-50/2
-    yLower = y+50/2
+    yUpper = Math.round( y - 50/2 )
+    yLower = Math.round( y + 50/2 )
 
     marks = @state.marks
     marks.push {yUpper, yLower, x, y, key, timestamp}
@@ -223,7 +223,7 @@ SubjectViewer = React.createClass
       return
 
     if currentMark.yLower - y < 50      
-      currentMark.yUpper = -50 + currentMark.yLower 
+      currentMark.yUpper = Math.round( -50 + currentMark.yLower ) 
       @setState selectedMark: currentMark
       return
 
@@ -255,7 +255,7 @@ SubjectViewer = React.createClass
       return
 
     if y - currentMark.yUpper < 50
-      currentMark.yLower = 50 + currentMark.yUpper
+      currentMark.yLower = Math.round( 50 + currentMark.yUpper )
       @setState selectedMark: currentMark
       return
       

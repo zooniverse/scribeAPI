@@ -44,7 +44,7 @@ TextRegionTool = React.createClass
 
     <g 
       className = "point drawing-tool" 
-      transform = {"translate(0, #{@state.centerY-@state.markHeight/2})"} 
+      transform = {"translate(0, #{Math.round( @state.centerY - @state.markHeight/2 ) })"} 
       data-disabled = {@props.disabled || null} 
       data-selected = {@props.selected || null}
     >
@@ -79,7 +79,7 @@ TextRegionTool = React.createClass
       <ResizeButton 
         className = "lowerResize"
         handleResize = {@props.handleLowerResize} 
-        transform = {"translate( #{@props.imageWidth/2}, #{ Math.round(@state.markHeight) - @props.scrubberHeight/2 } )"} 
+        transform = {"translate( #{@props.imageWidth/2}, #{ Math.round( @state.markHeight - @props.scrubberHeight/2 ) } )"} 
         scrubberHeight = {@props.scrubberHeight}
         scrubberWidth = {@props.scrubberWidth}
         workflow = {@props.workflow}
@@ -88,7 +88,7 @@ TextRegionTool = React.createClass
       />
 
       <DeleteButton 
-        transform = "translate(25, #{@state.markHeight/2})" 
+        transform = "translate(25, #{Math.round @state.markHeight/2})" 
         onClick = {@props.onClickDelete.bind null, @props.key}
         workflow = {@props.workflow}
         isSelected = {@props.selected}
