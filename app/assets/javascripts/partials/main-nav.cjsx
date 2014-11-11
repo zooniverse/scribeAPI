@@ -9,7 +9,7 @@ module.exports = React.createClass
         &nbsp;
         Scribe 2.0
       </a>
-      <a href="/#/transcribe" className="main-header-item">Transcribe</a>
+      <a href="/#/mark" className="main-header-item">Mark</a>
       <a href="/#/transcribe" className="main-header-item">Transcribe</a>
       <a href="/#/science" className="main-header-item">Science</a>
     </nav>
