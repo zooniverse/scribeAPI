@@ -9,7 +9,7 @@ LoadingIndicator              = require './loading-indicator'
 SubjectMetadata               = require './subject-metadata'
 ActionButton                  = require './action-button'
 TextRegionTool                = require './text-region'
-TextEntryTool                = require './text-entry'
+TextEntryTool                 = require './text-entry'
 PointTool                     = require './point'
 Classification                = require '../models/classification'
 
@@ -43,7 +43,8 @@ SubjectViewer = React.createClass
     viewWidth: 0
     viewHeight: 0
 
-    workflow: "text-region"
+    # defines which workflow is active (mark, transcribe, etc.)
+    workflow: "mark"
 
     classification: null
 
@@ -116,7 +117,7 @@ SubjectViewer = React.createClass
     console.log JSON.stringify @state.classification # DEBUG CODE
     @state.classification.send()
     @setState
-      workflow: "text-region"
+      workflow: "mark"
       marks: [] # clear marks for next subject
 
     # prepare new classification
@@ -131,7 +132,7 @@ SubjectViewer = React.createClass
   handleInitStart: (e) ->
     console.log 'handleInitStart()'
 
-    return if @state.workflow is "text-entry"
+    return if @state.workflow is "transcribe"
 
     {horizontal, vertical} = @getScale()
     rect = @refs.sizeRect?.getDOMNode().getBoundingClientRect()
@@ -153,7 +154,7 @@ SubjectViewer = React.createClass
   handleInitDrag: (e) ->
     console.log 'handleInitDrag()'
 
-    return unless @state.workflow is "text-region"
+    return unless @state.workflow is "mark"
     {x,y} = @getEventOffset e
 
     dist = Math.abs( @state.selectedMark.y - y )
@@ -187,7 +188,7 @@ SubjectViewer = React.createClass
   handleDragMark: (e) ->
     console.log 'handleDragMark()'
 
-    return unless @state.workflow is "text-region"
+    return unless @state.workflow is "mark"
     
     {x,y} = @getEventOffset e
 
@@ -306,7 +307,7 @@ SubjectViewer = React.createClass
     # console.log 'beginTextEntry()'
     return unless @state.marks.length > 0
     @setState
-      workflow: "text-entry"
+      workflow: "transcribe"
       selectedMark: @state.marks[0], =>
         {horizontal, vertical} = @getScale()
         $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
@@ -349,7 +350,7 @@ SubjectViewer = React.createClass
 
       else if @state.marks.length > 0
 
-        if @state.workflow is "text-entry"
+        if @state.workflow is "transcribe"
           action_button = <ActionButton label={"NEXT"} onActionSubmit={@nextTextEntry} />
         else
           action_button =  <ActionButton label={"FINISHED MARKING"} onActionSubmit={@beginTextEntry} />
@@ -405,7 +406,7 @@ SubjectViewer = React.createClass
 
           </svg>
 
-          { if @state.workflow is "text-entry"
+          { if @state.workflow is "transcribe"
             <TextEntryTool
               top={ @getScale().vertical * @state.selectedMark.yLower + 20 + @state.offset.top }
               left={@state.windowInnerWidth/2 - 200}
