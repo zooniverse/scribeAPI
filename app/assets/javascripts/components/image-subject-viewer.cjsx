@@ -214,12 +214,17 @@ SubjectViewer = React.createClass
     x = Math.round x
     y = Math.round y
 
+    currentMark = @state.selectedMark
+
     # enforce bounds
     if y < 0
       y = 0 
       return
 
-    currentMark = @state.selectedMark
+    if currentMark.yLower - y < 50      
+      currentMark.yUpper = -50 + currentMark.yLower 
+      @setState selectedMark: currentMark
+      return
 
     dy = currentMark.yUpper - y
     yUpper_p = y
@@ -237,14 +242,11 @@ SubjectViewer = React.createClass
     console.log 'handleLowerResize()'
     {x,y} = @getEventOffset e
 
-    # console.log 'y: ', y
-
     x = Math.round x
     y = Math.round y
 
     currentMark = @state.selectedMark
 
-    # console.log 'mark height: ', currentMark.markHeight
     
     # enforce bounds
     if y > @state.imageHeight
@@ -252,10 +254,7 @@ SubjectViewer = React.createClass
       return
 
     if y - currentMark.yUpper < 50
-      console.log 'WARNING: mark too small'
       currentMark.yLower = 50 + currentMark.yUpper
-
-      console.log 'currentMark.yLower ', currentMark.yLower
       @setState selectedMark: currentMark
       return
       
