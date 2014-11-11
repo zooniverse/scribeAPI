@@ -1,3 +1,35 @@
+BACKGROUND = white
+FOREGROUND = #333
+MAIN_HIGHLIGHT = #f60
+
+SANS_SERIF = Montserrat, "Gill Sans", Arial, sans-serif
+SERIF = "Playfair Display", Georgia, serif
+
+background-stripes(color1, color2, size)
+  background: linear-gradient(-45deg, color1 25%, color2 25%, color2 50%, color1 50%, color1 75%, color2 75%)
+  background-size: size size
+
+$reset-button
+  background: transparent
+  border: 0
+  color: inherit
+  cursor: pointer
+  font: inherit
+  line-height: inherit
+  margin: 0
+  padding: 0
+  text-decoration: none
+
+$text-input
+  border: 1px solid gray
+  box-shadow: 0 1px 3px rgba(black, 0.2) inset
+  box-sizing: border-box
+  font: inherit
+  padding: 0.1em 0.5vw
+
+  &.full
+    width: 100%
+
 -webkit-font-smoothing antialiased
 
 body

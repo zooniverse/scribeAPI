@@ -13,8 +13,6 @@ App = React.createClass
 
   render: ->
     <div className="sample-component">
-      <h1>Scribe 2.0</h1>
-      <p>For all your transcription needs</p>
       <DynamicRouter pages= {pages} />
     </div>
 
