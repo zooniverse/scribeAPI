@@ -251,10 +251,14 @@ SubjectViewer = React.createClass
       y = @state.imageHeight 
       return
 
-    # if y - currentMark.yUpper < 50
-    #   currentMark.yLower = y + 
-    #   console.log 'WARNING: mark too small'
+    if y - currentMark.yUpper < 50
+      console.log 'WARNING: mark too small'
+      currentMark.yLower = 50 + currentMark.yUpper
 
+      console.log 'currentMark.yLower ', currentMark.yLower
+      @setState selectedMark: currentMark
+      return
+      
     dy = y - currentMark.yLower
     yLower_p = y
     markHeight_p = currentMark.yLower - currentMark.yUpper + dy
