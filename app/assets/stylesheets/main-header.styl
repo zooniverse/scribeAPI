@@ -2,8 +2,14 @@
   display: flex
   flex-wrap: wrap
   justify-content: space-between
+  height 40px
 
 .main-header-group
+  position: fixed
+  top 0px
+  width 100%
+  background: rgba(0,0,0,0.75)
+
   display: flex
   flex-direction: row
   flex-wrap: wrap
@@ -24,9 +30,12 @@
   display: flex
   padding: 0.5rem 1.5vw 0.2em
   white-space: nowrap
-
-  &:not(:last-child)
-    border-right: 1px solid rgba(FOREGROUND, 0.5)
+  border-right: 1px solid rgba(FOREGROUND, 1.0)
+  // &:not(:last-child)
+  //   border-right: 1px solid rgba(FOREGROUND, 0.85)
+    
+  &:hover
+    background: rgba(MEDIUM_GRAY, 0.5)
 
   &.logo
     font-size: 1.3em

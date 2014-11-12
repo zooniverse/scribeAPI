@@ -24,7 +24,7 @@ module.exports = React.createClass
   #   @promiseToSetState user: auth.checkCurrent()
 
   render: ->
-    <header className="main-header">
+    <header classNameim="main-header">
       <MainNav />
       <div className="main-header-group"></div>
     </header>

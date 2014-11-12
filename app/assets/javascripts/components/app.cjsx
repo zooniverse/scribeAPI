@@ -12,8 +12,10 @@ App = React.createClass
   displayname: 'app'
 
   render: ->
-    <div className="sample-component">
+    <div>
+      <div className="readymade-site-background">
+        <div className="readymade-site-background-effect"></div>
+      </div>
       <DynamicRouter pages= {pages} />
     </div>
-
 module.exports = App

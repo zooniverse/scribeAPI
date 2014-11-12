@@ -11,7 +11,7 @@ module.exports = React.createClass
     fillColor = '#26baff'
     strokeColor = '#000'
     strokeWidth = 3
-    radius = 15
+    radius = 20
 
     cross = "
       M #{-radius * 0.6 } 0
