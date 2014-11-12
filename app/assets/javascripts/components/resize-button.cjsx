@@ -7,8 +7,8 @@ module.exports = React.createClass
   displayName: 'ResizeButton'
 
   getInitialState: ->
-    fillColor: '#26baff'
-    strokeColor: '#000'
+    fillColor: 'rgb(50,50,50)'
+    strokeColor: 'rgba(0,0,0,0.5)'
     strokeWidth: 1
     scrubberWidth: @props.scrubberWidth
     scrubberHeight: @props.scrubberHeight

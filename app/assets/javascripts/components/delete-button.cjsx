@@ -8,7 +8,7 @@ module.exports = React.createClass
   render: ->
     unless @props.isSelected # hide button
       return null
-    fillColor = '#26baff'
+    fillColor = 'red'
     strokeColor = '#000'
     strokeWidth = 3
     radius = 20

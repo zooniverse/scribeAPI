@@ -27,8 +27,8 @@ TextRegionTool = React.createClass
     centerY: @props.mark.y
     markHeight: @props.defaultMarkHeight
     fillColor: 'rgba(0,0,0,0.5)'
-    strokeColor: '#26baff'
-    strokeWidth: 3
+    strokeColor: 'rgba(0,0,0,0.5)'
+    strokeWidth: 6
     yUpper: @props.mark.yUpper
     yLower: @props.mark.yLower
     markHeight: @props.mark.yLower - @props.mark.yUpper
@@ -41,10 +41,13 @@ TextRegionTool = React.createClass
       centerY: @props.mark.y
       markHeight: @props.mark.yLower - @props.mark.yUpper
 
+  handleMarkDone: ->
+    console.log 'MARK DONE!'
+
   render: ->
       <g 
         className = "point drawing-tool" 
-        transform = {"translate(0, #{Math.round( @state.centerY - @state.markHeight/2 ) })"} 
+        transform = {"translate(#{Math.ceil @state.strokeWidth}, #{Math.round( @state.centerY - @state.markHeight/2 ) })"} 
         data-disabled = {@props.disabled || null} 
         data-selected = {@props.selected || null}
       >
@@ -57,21 +60,13 @@ TextRegionTool = React.createClass
             x           = 0
             y           = 0
             viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
-            width       = {@props.imageWidth}
+            width       = {Math.ceil( @props.imageWidth - 2*@state.strokeWidth ) }
             height      = {@state.markHeight}
-            fill        = {if @props.selected then "rgba(10,10,200,0.25)" else "rgba(0,0,0,0.5)"}
+            fill        = {if @props.selected then "rgba(255,102,0,0.25)" else "rgba(0,0,0,0.5)"}
             stroke      = {@state.strokeColor}
             strokeWidth = {@state.strokeWidth}
           />
         </Draggable>
-
-        <DoneCheckbox
-          handleResize = {@props.handleUpperResize} 
-          transform = {"translate( #{@props.imageWidth-50}, #{ Math.round @state.markHeight/2 -@props.scrubberHeight/2 } )"} 
-          scrubberHeight = {@props.scrubberHeight}
-          scrubberWidth = {@props.scrubberWidth}
-        />
-
 
         <ResizeButton 
           viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
@@ -101,6 +96,12 @@ TextRegionTool = React.createClass
           workflow = {@props.workflow}
           isSelected = {@props.selected}
         />
+
+        <DoneCheckbox
+          handleMarkDone = {@handleMarkDone}
+          transform = {"translate( #{@props.imageWidth-100}, #{ Math.round @state.markHeight/2 -@props.scrubberHeight/2 } )"} 
+        />
+
 
       </g>
 
