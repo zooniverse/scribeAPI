@@ -33,6 +33,9 @@ TextRegionTool = React.createClass
     yLower: @props.mark.yLower
     markHeight: @props.mark.yLower - @props.mark.yUpper
 
+    markComplete: false
+    transcribeComplete: false
+
   componentWillReceiveProps: ->
     @setState
       yUpper: @props.mark.yUpper
@@ -41,8 +44,13 @@ TextRegionTool = React.createClass
       centerY: @props.mark.y
       markHeight: @props.mark.yLower - @props.mark.yUpper
 
-  handleMarkDone: ->
-    console.log 'MARK DONE!'
+  handleToolProgress: ->
+    if @state.markComplete is false
+      console.log 'MARK COMPLETE!'
+      @setState markComplete: true
+    else
+      console.log 'TRANSCRIBE COMPLETE!'
+      @setState transcribeComplete: true
 
   render: ->
     <g 
@@ -98,8 +106,10 @@ TextRegionTool = React.createClass
       />
 
       <DoneCheckbox
-        handleMarkDone = {@handleMarkDone}
-        transform = {"translate( #{@props.imageWidth-150}, #{ Math.round @state.markHeight/2 -@props.scrubberHeight/2 } )"} 
+        markComplete = {@state.markComplete}
+        transcribeComplete = {@state.transcribeComplete}
+        handleToolProgress = {@handleToolProgress}
+        transform = {"translate( #{@props.imageWidth-250}, #{ Math.round @state.markHeight/2 -@props.scrubberHeight/2 } )"} 
       />
     </g>
 

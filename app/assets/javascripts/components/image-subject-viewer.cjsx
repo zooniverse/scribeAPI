@@ -327,6 +327,7 @@ SubjectViewer = React.createClass
 
   render: ->
     # console.log 'subject-viewer render():'
+    
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
 
     # LOADING
