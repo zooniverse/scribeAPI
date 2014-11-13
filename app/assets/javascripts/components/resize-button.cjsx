@@ -10,8 +10,9 @@ module.exports = React.createClass
     fillColor: 'rgb(50,50,50)'
     strokeColor: 'rgba(0,0,0,0.5)'
     strokeWidth: 1
-    scrubberWidth: @props.scrubberWidth
-    scrubberHeight: @props.scrubberHeight
+    width: @props.scrubberWidth
+    height: @props.scrubberHeight
+    borderRadius: 4
 
   render: ->
     unless @props.isSelected # hide button
@@ -27,8 +28,10 @@ module.exports = React.createClass
         stroke      = {@state.strokeColor} 
         strokeWidth = {@state.strokeWidth} >
           <rect
-            width  = {@state.scrubberWidth}
-            height = {@state.scrubberHeight} 
+            rx     = {@state.borderRadius}
+            ry     = {@state.borderRadius}
+            width  = {@state.width}
+            height = {@state.height} 
             fill   = {@state.fillColor} 
           />
       </g>

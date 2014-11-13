@@ -45,65 +45,63 @@ TextRegionTool = React.createClass
     console.log 'MARK DONE!'
 
   render: ->
-      <g 
-        className = "point drawing-tool" 
-        transform = {"translate(#{Math.ceil @state.strokeWidth}, #{Math.round( @state.centerY - @state.markHeight/2 ) })"} 
-        data-disabled = {@props.disabled || null} 
-        data-selected = {@props.selected || null}
-      >
+    <g 
+      className = "point drawing-tool" 
+      transform = {"translate(#{Math.ceil @state.strokeWidth}, #{Math.round( @state.centerY - @state.markHeight/2 ) })"} 
+      data-disabled = {@props.disabled || null} 
+      data-selected = {@props.selected || null}
+    >
 
-        <Draggable
-          onStart = {@props.handleMarkClick.bind @props.mark} 
-          onDrag = {@props.handleDragMark} >
-          <rect 
-            className   = "mark-rectangle"
-            x           = 0
-            y           = 0
-            viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
-            width       = {Math.ceil( @props.imageWidth - 2*@state.strokeWidth ) }
-            height      = {@state.markHeight}
-            fill        = {if @props.selected then "rgba(255,102,0,0.25)" else "rgba(0,0,0,0.5)"}
-            stroke      = {@state.strokeColor}
-            strokeWidth = {@state.strokeWidth}
-          />
-        </Draggable>
-
-        <ResizeButton 
+      <Draggable
+        onStart = {@props.handleMarkClick.bind @props.mark} 
+        onDrag = {@props.handleDragMark} >
+        <rect 
+          className   = "mark-rectangle"
+          x           = 0
+          y           = 0
           viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
-          className = "upperResize"
-          handleResize = {@props.handleUpperResize} 
-          transform = {"translate( #{@props.imageWidth/2}, #{ - Math.round @props.scrubberHeight/2 } )"} 
-          scrubberHeight = {@props.scrubberHeight}
-          scrubberWidth = {@props.scrubberWidth}
-          workflow = {@props.workflow}
-          isSelected = {@props.selected}
+          width       = {Math.ceil( @props.imageWidth - 2*@state.strokeWidth ) }
+          height      = {@state.markHeight}
+          fill        = {if @props.selected then "rgba(255,102,0,0.25)" else "rgba(0,0,0,0.5)"}
+          stroke      = {@state.strokeColor}
+          strokeWidth = {@state.strokeWidth}
         />
+      </Draggable>
 
-        <ResizeButton 
-          className = "lowerResize"
-          handleResize = {@props.handleLowerResize} 
-          transform = {"translate( #{@props.imageWidth/2}, #{ Math.round( @state.markHeight - @props.scrubberHeight/2 ) } )"} 
-          scrubberHeight = {@props.scrubberHeight}
-          scrubberWidth = {@props.scrubberWidth}
-          workflow = {@props.workflow}
-          isSelected = {@props.selected}
+      <ResizeButton 
+        viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
+        className = "upperResize"
+        handleResize = {@props.handleUpperResize} 
+        transform = {"translate( #{@props.imageWidth/2}, #{ - Math.round @props.scrubberHeight/2 } )"} 
+        scrubberHeight = {@props.scrubberHeight}
+        scrubberWidth = {@props.scrubberWidth}
+        workflow = {@props.workflow}
+        isSelected = {@props.selected}
+      />
 
-        />
+      <ResizeButton 
+        className = "lowerResize"
+        handleResize = {@props.handleLowerResize} 
+        transform = {"translate( #{@props.imageWidth/2}, #{ Math.round( @state.markHeight - @props.scrubberHeight/2 ) } )"} 
+        scrubberHeight = {@props.scrubberHeight}
+        scrubberWidth = {@props.scrubberWidth}
+        workflow = {@props.workflow}
+        isSelected = {@props.selected}
 
-        <DeleteButton 
-          transform = "translate(50, #{Math.round @state.markHeight/2})" 
-          onClick = {@props.onClickDelete.bind null, @props.key}
-          workflow = {@props.workflow}
-          isSelected = {@props.selected}
-        />
+      />
 
-        <DoneCheckbox
-          handleMarkDone = {@handleMarkDone}
-          transform = {"translate( #{@props.imageWidth-100}, #{ Math.round @state.markHeight/2 -@props.scrubberHeight/2 } )"} 
-        />
+      <DeleteButton 
+        transform = "translate(50, #{Math.round @state.markHeight/2})" 
+        onClick = {@props.onClickDelete.bind null, @props.key}
+        workflow = {@props.workflow}
+        isSelected = {@props.selected}
+      />
 
-
-      </g>
+      <DoneCheckbox
+        handleMarkDone = {@handleMarkDone}
+        transform = {"translate( #{@props.imageWidth-150}, #{ Math.round @state.markHeight/2 -@props.scrubberHeight/2 } )"} 
+      />
+    </g>
 
 module.exports = TextRegionTool
   
