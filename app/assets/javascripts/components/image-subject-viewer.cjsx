@@ -12,6 +12,7 @@ TextRegionTool                = require './text-region'
 TextEntryTool                 = require './text-entry'
 PointTool                     = require './point'
 Classification                = require '../models/classification'
+getUrlParamByName             = require '../lib/getUrlParamByName'
 
 
 ImageSubjectViewer = React.createClass # rename to Classifier
@@ -28,21 +29,32 @@ SubjectViewer = React.createClass
 
   resizing: false
 
-  getParameterByName: (name) ->
-    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]")
-    regex = new RegExp("[\\?&]" + name + "=([^&#]*)")
-    results = regex.exec(location.search)
-    (if not results? then "" else decodeURIComponent(results[1].replace(/\+/g, " ")))
+      # marks = [{
+      #   markHeight: 365.74468085106366
+      #   timestamp: "Wed, 19 Nov 2014 06:27:39 GMT"
+      #   x: 748.4723537170884
+      #   y: 504.7276595744681
+      #   yLower: 687.5999999999999
+      #   yUpper: 321.85531914893625
+      # }]
 
   checkForTranscribeSubject: ->
-    subject_url = @getParameterByName("subject_url")
-    y_upper     = @getParameterByName("y_yupper")
-    y_lower     = @getParameterByName("y_lower")
+    # subject_url = getUrlParamByName("subject_url")
+    # y_upper     = getUrlParamByName("y_yupper")
+    # y_lower     = getUrlParamByName("y_lower")
 
-    if subject_url isnt "" and y_upper isnt "" and y_lower isnt ""
-      console.log 'FOUND SUBJECT URL'      
+    # if subject_url isnt "" and y_upper isnt "" and y_lower isnt ""
+    #   console.log 'FOUND SUBJECT URL'  
+    #   return true    
+    # else
+    #   console.log 'Nothing to see here. Move along.'
+    #   return false
+
+    fake_url_subject = getUrlParamByName('fake_url_subject')
+    if fake_url_subject is "true"
+      return true
     else
-      console.log 'Nothing to see here. Move along.'
+      return false
 
   getInitialState: ->
     subjects: example_subjects # TODO: need to remove this
@@ -70,7 +82,18 @@ SubjectViewer = React.createClass
   componentDidMount: ->
     @setView 0, 0, @state.imageWidth, @state.imageHeight
     # console.log 'FOO: ', @getParameterByName("foo")
-    @checkForTranscribeSubject()
+    
+    if @checkForTranscribeSubject()
+      console.log 'USING FAKE URL SUBJECT'
+      marks = [{
+        markHeight: 365.74468085106366
+        timestamp: "Wed, 19 Nov 2014 06:27:39 GMT"
+        x: 748.4723537170884
+        y: 504.7276595744681
+        yLower: 687.5999999999999
+        yUpper: 321.85531914893625
+      }]
+      @setState marks: marks
     @fetchSubjects()
 
     window.addEventListener "resize", this.updateDimensions
@@ -345,6 +368,7 @@ SubjectViewer = React.createClass
       $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
 
   render: ->
+    console.log 'MARKS: ', @state.marks
     # console.log 'subject-viewer render():'
     
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
