@@ -407,12 +407,6 @@ SubjectViewer = React.createClass
 
           </svg>
 
-          { if @state.workflow is "transcribe"
-            <TextEntryTool
-              top={ @getScale().vertical * @state.selectedMark.yLower + 20 + @state.offset.top }
-              left={@state.windowInnerWidth/2 - 200}
-            />
-          }
 
         </div>
         <p>{@state.subjects[0].location}</p>

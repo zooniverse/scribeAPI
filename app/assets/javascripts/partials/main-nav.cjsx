@@ -11,5 +11,5 @@ module.exports = React.createClass
       </a>
       <a href="/#/mark" className="main-header-item">Mark</a>
       <a href="/#/transcribe" className="main-header-item">Transcribe</a>
-      <a href="/#/science" className="main-header-item">Science</a>
+      <a href="/#/about" className="main-header-item">About</a>
     </nav>
