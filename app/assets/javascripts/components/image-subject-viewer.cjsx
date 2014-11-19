@@ -13,6 +13,7 @@ TextEntryTool                 = require './text-entry'
 PointTool                     = require './point'
 Classification                = require '../models/classification'
 
+
 ImageSubjectViewer = React.createClass # rename to Classifier
   displayName: 'ImageSubjectViewer'
 
@@ -26,6 +27,22 @@ SubjectViewer = React.createClass
   displayName: 'SubjectViewer'
 
   resizing: false
+
+  getParameterByName: (name) ->
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]")
+    regex = new RegExp("[\\?&]" + name + "=([^&#]*)")
+    results = regex.exec(location.search)
+    (if not results? then "" else decodeURIComponent(results[1].replace(/\+/g, " ")))
+
+  checkForTranscribeSubject: ->
+    subject_url = @getParameterByName("subject_url")
+    y_upper     = @getParameterByName("y_yupper")
+    y_lower     = @getParameterByName("y_lower")
+
+    if subject_url isnt "" and y_upper isnt "" and y_lower isnt ""
+      console.log 'FOUND SUBJECT URL'      
+    else
+      console.log 'Nothing to see here. Move along.'
 
   getInitialState: ->
     subjects: example_subjects # TODO: need to remove this
@@ -52,6 +69,8 @@ SubjectViewer = React.createClass
 
   componentDidMount: ->
     @setView 0, 0, @state.imageWidth, @state.imageHeight
+    # console.log 'FOO: ', @getParameterByName("foo")
+    @checkForTranscribeSubject()
     @fetchSubjects()
 
     window.addEventListener "resize", this.updateDimensions
