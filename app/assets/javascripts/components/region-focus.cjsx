@@ -64,22 +64,22 @@ RegionFocusTool = React.createClass
           <rect 
             className   = "mark-rectangle"
             x           = 0
-            y           = {-@state.yUpper}
+            y           = { -@state.yUpper }
             viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
             width       = {( @props.imageWidth - 2*@state.strokeWidth ) }
             height      = {@state.yUpper}
-            fill        = {if @props.selected then "rgba(0,102,255,0.25)" else "rgba(0,0,0,0.5)"}
+            fill        = {if @props.selected then "rgba(0,0,0,0.80)" else "rgba(0,0,0,0)"}
             stroke      = {@state.strokeColor}
             strokeWidth = {@state.strokeWidth}
           />
           <rect 
             className   = "mark-rectangle"
             x           = 0
-            y           = 0
+            y           = { @state.markHeight }
             viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
             width       = {( @props.imageWidth - 2*@state.strokeWidth ) }
-            height      = {@state.markHeight}
-            fill        = {if @props.selected then "rgba(255,102,0,0.25)" else "rgba(0,0,0,0.5)"}
+            height      = { @props.imageHeight - @state.yLower }
+            fill        = {if @props.selected then "rgba(0,0,0,0.90)" else "rgba(0,0,0,0)"}
             stroke      = {@state.strokeColor}
             strokeWidth = {@state.strokeWidth}
           />
