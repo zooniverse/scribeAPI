@@ -84,7 +84,6 @@ SubjectViewer = React.createClass
     # console.log 'FOO: ', @getParameterByName("foo")
     
     if @checkForTranscribeSubject()
-      console.log 'USING FAKE URL SUBJECT'
       marks = [{
         markHeight: 365.74468085106366
         timestamp: "Wed, 19 Nov 2014 06:27:39 GMT"
@@ -92,8 +91,13 @@ SubjectViewer = React.createClass
         y: 504.7276595744681
         yLower: 687.5999999999999
         yUpper: 321.85531914893625
+        key: 0
       }]
-      @setState marks: marks
+      @setState 
+        # workflow: "transcribe"
+        offset: 0 #$(e.nativeEvent.target).offset()
+        marks: marks, =>
+          @beginTextEntry() # @setState selectedMark: @state.marks[0]
     @fetchSubjects()
 
     window.addEventListener "resize", this.updateDimensions
@@ -343,7 +347,10 @@ SubjectViewer = React.createClass
     for mark, i in [ marks... ]
       if mark.key is key
         marks.splice(i, 1)
-    @setState marks: marks
+    @setState 
+      marks: marks
+      selectedMark: null
+
 
   beginTextEntry: ->
     # console.log 'beginTextEntry()'
@@ -356,6 +363,7 @@ SubjectViewer = React.createClass
 
   nextTextEntry: ->
     # console.log "nextTextEntry()"
+    console.log 'selected mark: ', @state.selectedMark
 
     key = @state.selectedMark.key
     if key+1 > @state.marks.length-1
@@ -369,6 +377,9 @@ SubjectViewer = React.createClass
 
   render: ->
     console.log 'MARKS: ', @state.marks
+    if @checkForTranscribeSubject
+      console.log 'SELECTED MARK: ', @state.selectedMark
+
     # console.log 'subject-viewer render():'
     
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
@@ -450,6 +461,12 @@ SubjectViewer = React.createClass
 
           </svg>
 
+          { if @state.workflow is "transcribe" and @state.selectedMark isnt null
+            <TextEntryTool
+              top={ @getScale().vertical * @state.selectedMark.yLower + 20 + @state.offset.top }
+              left={@state.windowInnerWidth/2 - 200}
+            />
+          }
 
         </div>
         <p>{@state.subjects[0].location}</p>
