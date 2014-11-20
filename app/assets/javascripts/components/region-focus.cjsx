@@ -63,17 +63,41 @@ RegionFocusTool = React.createClass
         onStart = {@props.handleMarkClick.bind @props.mark} 
         onDrag = {@props.handleDragMark} >
         <g>
+          <defs>
+            <linearGradient 
+              id="upperGradient"
+              x1="0%" 
+              y1="0%"
+              x2="0%" 
+              y2="100%"
+              spreadMethod="pad" >
+              <stop stopColor="rgb(0,0,0)"    offset="0.50" stopOpacity="0.8"/>
+              <stop stopColor="rgba(0,0,0,0)" offset="1"    stopOpacity="0.4"/>
+            </linearGradient>
+
+
+          </defs>
           <rect 
             className   = "mark-rectangle"
             x           = 0
-            y           = { -@state.yUpper }
+            y           = { -@state.yUpper-80 }
             viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
             width       = {( @props.imageWidth - 2*@state.strokeWidth ) }
             height      = {@state.yUpper}
-            fill        = "rgba(0,0,0,0.80)"
-            stroke      = {@state.strokeColor}
+            fill        = "rgba(0,0,0,0.8)"
             strokeWidth = {@state.strokeWidth}
           />
+          <rect 
+            className   = "mark-rectangle"
+            x           = 0
+            y           = { -80 }
+            viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
+            width       = {( @props.imageWidth - 2*@state.strokeWidth ) }
+            height      = {80}
+            fill        = "url(#upperGradient)"
+            strokeWidth = {@state.strokeWidth}
+          />
+
           <rect 
             className   = "mark-rectangle"
             x           = 0
