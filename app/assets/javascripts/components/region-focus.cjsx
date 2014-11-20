@@ -17,6 +17,7 @@ RegionFocusTool = React.createClass
       {x, y}
 
   getInitialState: ->
+    console.log 'MARK PRO{P: ', @props.mark
     # # DEBUG CODE
     # console.log "PROPS [#{@props.mark.yUpper},#{@props.mark.yLower}]"
     # console.log "INITIAL (STATE.X, STATE.Y): (#{Math.round @props.mark.x},#{Math.round @props.mark.y})"
@@ -39,7 +40,8 @@ RegionFocusTool = React.createClass
       yLower: @props.mark.yLower
       centerX: @props.mark.x
       centerY: @props.mark.y
-      markHeight: @props.mark.yLower - @props.mark.yUpper
+      markHeight: @props.mark.yLower - @props.mark.yUpper, =>
+        @forceUpdate()
 
   handleToolProgress: ->
     if @state.markComplete is false
@@ -68,7 +70,7 @@ RegionFocusTool = React.createClass
             viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
             width       = {( @props.imageWidth - 2*@state.strokeWidth ) }
             height      = {@state.yUpper}
-            fill        = {if @props.selected then "rgba(0,0,0,0.80)" else "rgba(0,0,0,0)"}
+            fill        = "rgba(0,0,0,0.80)"
             stroke      = {@state.strokeColor}
             strokeWidth = {@state.strokeWidth}
           />
@@ -79,7 +81,7 @@ RegionFocusTool = React.createClass
             viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
             width       = {( @props.imageWidth - 2*@state.strokeWidth ) }
             height      = { @props.imageHeight - @state.yLower }
-            fill        = {if @props.selected then "rgba(0,0,0,0.90)" else "rgba(0,0,0,0)"}
+            fill        = "rgba(0,0,0,0.90)"
             stroke      = {@state.strokeColor}
             strokeWidth = {@state.strokeWidth}
           />
@@ -94,7 +96,7 @@ RegionFocusTool = React.createClass
         scrubberHeight = {@props.scrubberHeight}
         scrubberWidth = {@props.scrubberWidth}
         workflow = {@props.workflow}
-        isSelected = {@props.selected}
+        isSelected = "true"
       />
 
       <ResizeButton 
@@ -104,7 +106,7 @@ RegionFocusTool = React.createClass
         scrubberHeight = {@props.scrubberHeight}
         scrubberWidth = {@props.scrubberWidth}
         workflow = {@props.workflow}
-        isSelected = {@props.selected}
+        isSelected = "true"
 
       />
 

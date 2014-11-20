@@ -363,8 +363,7 @@ SubjectViewer = React.createClass
         $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
 
   nextTextEntry: ->
-    # console.log "nextTextEntry()"
-    console.log 'selected mark: ', @state.selectedMark
+    console.log "[[[[[[[[[[ nextTextEntry() ]]]]]]]]]]]"
 
     key = @state.selectedMark.key
     if key+1 > @state.marks.length-1
@@ -437,9 +436,8 @@ SubjectViewer = React.createClass
             </Draggable>
 
             { 
-
-              @state.marks.map ((mark, i) ->
-                if @state.workflow is "mark"
+              if @state.workflow is "mark"
+                @state.marks.map ((mark, i) ->
                   <TextRegionTool
                     key = {mark.key}
                     mark = {mark}
@@ -458,27 +456,27 @@ SubjectViewer = React.createClass
                     handleLowerResize = {@handleLowerResize}
                     handleMarkClick = {@handleMarkClick.bind null, mark}
                   />
-                else
-                  <RegionFocusTool 
-                    key = {mark.key}
-                    mark = {mark}
-                    disabled = {false}
-                    imageWidth = {@state.imageWidth}
-                    imageHeight = {@state.imageHeight}
-                    getEventOffset = {@getEventOffset}
-                    select = {@selectMark.bind null, mark}
-                    selected = {mark is @state.selectedMark}
-                    onClickDelete = {@onClickDelete}
-                    scrubberWidth = {64}
-                    scrubberHeight = {32}
-                    workflow = {@state.workflow}
-                    handleDragMark = {@handleDragMark}
-                    handleUpperResize = {@handleUpperResize}
-                    handleLowerResize = {@handleLowerResize}
-                    handleMarkClick = {@handleMarkClick.bind null, mark}
-                  />
-
-              ), @
+                ), @
+              else
+                console.log 'SELECTED MARK KEY: ', @state.selectedMark.key
+                <RegionFocusTool 
+                  key = {@state.selectedMark.key}
+                  mark = {@state.selectedMark}
+                  disabled = {false}
+                  imageWidth = {@state.imageWidth}
+                  imageHeight = {@state.imageHeight}
+                  getEventOffset = {@getEventOffset}
+                  select = {@selectMark.bind null, @state.selectedMark}
+                  selected = {true}
+                  onClickDelete = {@onClickDelete}
+                  scrubberWidth = {64}
+                  scrubberHeight = {32}
+                  workflow = {@state.workflow}
+                  handleDragMark = {@handleDragMark}
+                  handleUpperResize = {@handleUpperResize}
+                  handleLowerResize = {@handleLowerResize}
+                  handleMarkClick = {@handleMarkClick.bind null, @state.selectedMark}
+                />
             }
 
 
