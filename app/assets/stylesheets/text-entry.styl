@@ -1,9 +1,28 @@
 .text-entry
   position absolute
-  height 120px
+  height 40px
   width 400px
-  background-color "rgba(0,0,0,0.75)"
+  background-color rgba(0,0,0,0.75)
+  border 1px solid #000
+  border-radius 6px
+  padding 10px
+  
+  line-height 40px
+
   .left
     float left
   .right
     float right
+
+  .button
+    @extends $button
+    border-radius 2px
+    padding 2px 2px
+    margin 2px
+    width 140px
+    height 30px
+    text-decoration none
+    font-size 12px
+    border 2px solid #fff
+    cursor pointer
+    opacity 0.75

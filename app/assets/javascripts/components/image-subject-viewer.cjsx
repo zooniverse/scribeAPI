@@ -10,6 +10,7 @@ SubjectMetadata               = require './subject-metadata'
 ActionButton                  = require './action-button'
 TextRegionTool                = require './text-region'
 TextEntryTool                 = require './text-entry'
+RegionFocusTool               = require './region-focus'
 PointTool                     = require './point'
 Classification                = require '../models/classification'
 getUrlParamByName             = require '../lib/getUrlParamByName'
@@ -435,28 +436,50 @@ SubjectViewer = React.createClass
                 height = {@state.imageHeight} />
             </Draggable>
 
-            { @state.marks.map ((mark, i) ->
+            { 
 
-              <TextRegionTool
-                key = {mark.key}
-                mark = {mark}
-                disabled = {false}
-                imageWidth = {@state.imageWidth}
-                imageHeight = {@state.imageHeight}
-                getEventOffset = {@getEventOffset}
-                select = {@selectMark.bind null, mark}
-                selected = {mark is @state.selectedMark}
-                onClickDelete = {@onClickDelete}
-                scrubberWidth = {64}
-                scrubberHeight = {32}
-                workflow = {@state.workflow}
-                handleDragMark = {@handleDragMark}
-                handleUpperResize = {@handleUpperResize}
-                handleLowerResize = {@handleLowerResize}
-                handleMarkClick = {@handleMarkClick.bind null, mark}
-              >
-              </TextRegionTool>
-            ), @}
+              @state.marks.map ((mark, i) ->
+                if @state.workflow is "mark"
+                  <TextRegionTool
+                    key = {mark.key}
+                    mark = {mark}
+                    disabled = {false}
+                    imageWidth = {@state.imageWidth}
+                    imageHeight = {@state.imageHeight}
+                    getEventOffset = {@getEventOffset}
+                    select = {@selectMark.bind null, mark}
+                    selected = {mark is @state.selectedMark}
+                    onClickDelete = {@onClickDelete}
+                    scrubberWidth = {64}
+                    scrubberHeight = {32}
+                    workflow = {@state.workflow}
+                    handleDragMark = {@handleDragMark}
+                    handleUpperResize = {@handleUpperResize}
+                    handleLowerResize = {@handleLowerResize}
+                    handleMarkClick = {@handleMarkClick.bind null, mark}
+                  />
+                else
+                  <RegionFocusTool 
+                    key = {mark.key}
+                    mark = {mark}
+                    disabled = {false}
+                    imageWidth = {@state.imageWidth}
+                    imageHeight = {@state.imageHeight}
+                    getEventOffset = {@getEventOffset}
+                    select = {@selectMark.bind null, mark}
+                    selected = {mark is @state.selectedMark}
+                    onClickDelete = {@onClickDelete}
+                    scrubberWidth = {64}
+                    scrubberHeight = {32}
+                    workflow = {@state.workflow}
+                    handleDragMark = {@handleDragMark}
+                    handleUpperResize = {@handleUpperResize}
+                    handleLowerResize = {@handleLowerResize}
+                    handleMarkClick = {@handleMarkClick.bind null, mark}
+                  />
+
+              ), @
+            }
 
 
           </svg>
