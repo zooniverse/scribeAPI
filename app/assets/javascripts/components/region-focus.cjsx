@@ -66,14 +66,26 @@ RegionFocusTool = React.createClass
           <defs>
             <linearGradient 
               id="upperGradient"
-              x1="0%" 
-              y1="0%"
-              x2="0%" 
-              y2="100%"
-              spreadMethod="pad" >
-              <stop stopColor="rgb(0,0,0)"    offset="0.50" stopOpacity="0.8"/>
-              <stop stopColor="rgba(0,0,0,0)" offset="1"    stopOpacity="0.4"/>
+              x1="0" 
+              y1="0"
+              x2="0" 
+              y2="1"
+              spreadMethod="reflect" >
+              <stop stopColor="#000" offset="0.50" stopOpacity="0.8"/>
+              <stop stopColor="#000" offset="1"    stopOpacity="0"/>
             </linearGradient>
+
+            <linearGradient  
+              id="lowerGradient" 
+              x1="1" 
+              y1="0"  
+              x2="1" 
+              y2="1" 
+              spreadMethod="reflect" >
+              <stop stopColor="#000" offset="0"   stopOpacity="0"/>
+              <stop stopColor="#000" offset="0.5" stopOpacity="0.8"/>
+            </linearGradient>
+            
 
 
           </defs>
@@ -97,15 +109,24 @@ RegionFocusTool = React.createClass
             fill        = "url(#upperGradient)"
             strokeWidth = {@state.strokeWidth}
           />
-
           <rect 
             className   = "mark-rectangle"
             x           = 0
             y           = { @state.markHeight }
             viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
             width       = {( @props.imageWidth - 2*@state.strokeWidth ) }
+            height      = {80}
+            fill        = "url(#lowerGradient)"
+            strokeWidth = {@state.strokeWidth}
+          />
+          <rect 
+            className   = "mark-rectangle"
+            x           = 0
+            y           = { @state.markHeight+80 }
+            viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
+            width       = {( @props.imageWidth - 2*@state.strokeWidth ) }
             height      = { @props.imageHeight - @state.yLower }
-            fill        = "rgba(0,0,0,0.90)"
+            fill        = "rgba(0,0,0,0.8)"
             stroke      = {@state.strokeColor}
             strokeWidth = {@state.strokeWidth}
           />
