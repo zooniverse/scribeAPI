@@ -38,7 +38,7 @@ SubjectViewer = React.createClass
       return false
 
   getInitialState: ->
-    subjects: example_subjects # TODO: need to remove this
+    subjects: null
 
     subject: null
     subjectEndpoint: @props.endpoint
@@ -73,7 +73,6 @@ SubjectViewer = React.createClass
 
   componentDidMount: ->
     @setView 0, 0, @state.imageWidth, @state.imageHeight
-    # console.log 'FOO: ', @getParameterByName("foo")
     
     if @usingFakeSubject()
       console.log 'Using fake subjects...'
@@ -346,7 +345,6 @@ SubjectViewer = React.createClass
         $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
 
   nextTextEntry: ->
-    console.log "[[[[[[[[[[ nextTextEntry() ]]]]]]]]]]]"
 
     key = @state.selectedMark.key
     if key+1 > @state.marks.length-1
@@ -359,6 +357,7 @@ SubjectViewer = React.createClass
       $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
 
   render: ->
+    return null if @state.subjects is null
     console.log 'subjects: ', @state.subjects[0]
 
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
