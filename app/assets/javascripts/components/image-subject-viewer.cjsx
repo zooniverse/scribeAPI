@@ -32,7 +32,7 @@ SubjectViewer = React.createClass
 
   usingFakeSubject: ->
     if getUrlParamByName('use_fake_subject') is "true"
-      console.log 'Using fake subject...'
+      console.log 'DEBUG NOTE: USING FAKE SUBJECTS'
       return true
     else
       return false
@@ -75,11 +75,9 @@ SubjectViewer = React.createClass
     @setView 0, 0, @state.imageWidth, @state.imageHeight
     
     if @usingFakeSubject()
-      console.log 'Using fake subjects...'
       @setState subjectEndpoint: "./offline/example_subjects/marking_subjects.json", =>
         @fetchSubjects(@state.subjectEndpoint)
     else
-      console.log 'Using regular subjects...'
       @fetchSubjects(@state.subjectEndpoint)
 
     window.addEventListener "resize", this.updateDimensions
@@ -150,11 +148,9 @@ SubjectViewer = React.createClass
 
     # prepare new classification
     if @state.subjects.shift() is undefined or @state.subjects.length <= 0
-      console.log 'Out of subjects. Fetching some more...'
       @fetchSubjects(@state.subjectEndpoint)
       return
     else
-      console.log 'Loading current subject image...'
       @loadImage @state.subjects[0].location
 
     @state.classification = new Classification @state.subjects[0]
@@ -357,8 +353,8 @@ SubjectViewer = React.createClass
       $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
 
   render: ->
-    return null if @state.subjects is null
-    console.log 'subjects: ', @state.subjects[0]
+    # don't render if ya ain't got subjects (yet)
+    return null if @state.subjects is null or @state.subjects.length is 0
 
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
 
