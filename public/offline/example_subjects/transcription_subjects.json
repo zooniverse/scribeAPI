@@ -1,0 +1,68 @@
+[
+  {
+    "classification": {
+      "subject": {
+        "id": "53f26a6c45626f6d54080000",
+        "name": null,
+        "location": "https://zooniverse-static.s3.amazonaws.com/scribe_subjects/logbookofalfredg1851unse_0008.jpg",
+        "classification_count": 0,
+        "child_subjects": [],
+        "meta_data": null
+      },
+      "annotations": [
+        {
+          "timestamp": "Sun, 23 Nov 2014 19:54:12 GMT",
+          "y_upper": 14.631578947368439,
+          "y_lower": 478
+        },
+        {
+          "timestamp": "Sun, 23 Nov 2014 19:54:20 GMT",
+          "y_upper": 451,
+          "y_lower": 731.578947368421
+        },
+        {
+          "timestamp": "Sun, 23 Nov 2014 19:54:32 GMT",
+          "y_upper": 702.3157894736842,
+          "y_lower": 1139
+        },
+        {
+          "timestamp": "Sun, 23 Nov 2014 19:54:37 GMT",
+          "y_upper": 1122,
+          "y_lower": 1470
+        },
+        {
+          "timestamp": "Sun, 23 Nov 2014 19:54:46 GMT",
+          "y_upper": 1463,
+          "y_lower": 1711.8947368421052
+        },
+        {
+          "timestamp": "Sun, 23 Nov 2014 19:54:51 GMT",
+          "y_upper": 1680.1929824561403,
+          "y_lower": 2044
+        },
+        {
+          "timestamp": "Sun, 23 Nov 2014 19:54:58 GMT",
+          "y_upper": 2036.228070175439,
+          "y_lower": 2380
+        },
+        {
+          "timestamp": "Sun, 23 Nov 2014 19:55:04 GMT",
+          "y_upper": 2360.561403508772,
+          "y_lower": 2817
+        },
+        {
+          "timestamp": "Sun, 23 Nov 2014 19:55:10 GMT",
+          "y_upper": 2784.8771929824557,
+          "y_lower": 3304
+        },
+        {
+          "started_at": "Sun, 23 Nov 2014 19:50:04 GMT",
+          "finished_at": "Sun, 23 Nov 2014 19:50:41 GMT"
+        },
+        {
+          "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36"
+        }
+      ]
+    }
+  }
+]

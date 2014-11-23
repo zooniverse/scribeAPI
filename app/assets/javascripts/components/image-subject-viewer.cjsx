@@ -30,35 +30,18 @@ SubjectViewer = React.createClass
 
   resizing: false
 
-      # marks = [{
-      #   markHeight: 365.74468085106366
-      #   timestamp: "Wed, 19 Nov 2014 06:27:39 GMT"
-      #   x: 748.4723537170884
-      #   y: 504.7276595744681
-      #   yLower: 687.5999999999999
-      #   yUpper: 321.85531914893625
-      # }]
-
-  checkForTranscribeSubject: ->
-    # subject_url = getUrlParamByName("subject_url")
-    # y_upper     = getUrlParamByName("y_yupper")
-    # y_lower     = getUrlParamByName("y_lower")
-
-    # if subject_url isnt "" and y_upper isnt "" and y_lower isnt ""
-    #   console.log 'FOUND SUBJECT URL'  
-    #   return true    
-    # else
-    #   console.log 'Nothing to see here. Move along.'
-    #   return false
-
-    fake_url_subject = getUrlParamByName('fake_url_subject')
-    if fake_url_subject is "true"
+  usingFakeSubject: ->
+    if getUrlParamByName('use_fake_subject') is "true"
+      console.log 'Using fake subject...'
       return true
     else
       return false
 
   getInitialState: ->
     subjects: example_subjects # TODO: need to remove this
+
+    subject: null
+    subjectEndpoint: @props.endpoint
 
     marks: []
     tools: []
@@ -80,26 +63,25 @@ SubjectViewer = React.createClass
 
     selectedMark: null # TODO: currently not in use
 
+  getFakeSubject: (group) ->
+    if group is "transcribe"
+      transcriptionSubject = "THIS IS A TRANSCRIPTION SUBJECT"
+      return transcriptionSubject
+    if group is "mark"
+      markingSubject = "THIS IS A MARKING SUBJECT"
+      return markingSubject
+
   componentDidMount: ->
     @setView 0, 0, @state.imageWidth, @state.imageHeight
     # console.log 'FOO: ', @getParameterByName("foo")
     
-    if @checkForTranscribeSubject()
-      marks = [{
-        markHeight: 365.74468085106366
-        timestamp: "Wed, 19 Nov 2014 06:27:39 GMT"
-        x: 748.4723537170884
-        y: 504.7276595744681
-        yLower: 687.5999999999999
-        yUpper: 321.85531914893625
-        key: 0
-      }]
-      @setState 
-        # workflow: "transcribe"
-        offset: 0 #$(e.nativeEvent.target).offset()
-        marks: marks, =>
-          @beginTextEntry() # @setState selectedMark: @state.marks[0]
-    @fetchSubjects()
+    if @usingFakeSubject()
+      console.log 'Using fake subjects...'
+      @setState subjectEndpoint: "./offline/example_subjects/marking_subjects.json", =>
+        @fetchSubjects(@state.subjectEndpoint)
+    else
+      console.log 'Using regular subjects...'
+      @fetchSubjects(@state.subjectEndpoint)
 
     window.addEventListener "resize", this.updateDimensions
 
@@ -114,9 +96,9 @@ SubjectViewer = React.createClass
       windowInnerWidth: window.innerWidth
       windowInnerHeight: window.innerHeight
 
-  fetchSubjects: ->
+  fetchSubjects: (endpoint) ->
     $.ajax
-      url: @props.endpoint
+      url: endpoint
       dataType: "json"
       success: ((data) ->
         # DEBUG CODE
@@ -169,9 +151,11 @@ SubjectViewer = React.createClass
 
     # prepare new classification
     if @state.subjects.shift() is undefined or @state.subjects.length <= 0
-      @fetchSubjects()
+      console.log 'Out of subjects. Fetching some more...'
+      @fetchSubjects(@state.subjectEndpoint)
       return
     else
+      console.log 'Loading current subject image...'
       @loadImage @state.subjects[0].location
 
     @state.classification = new Classification @state.subjects[0]
@@ -352,7 +336,6 @@ SubjectViewer = React.createClass
       marks: marks
       selectedMark: null
 
-
   beginTextEntry: ->
     # console.log 'beginTextEntry()'
     return unless @state.marks.length > 0
@@ -376,12 +359,8 @@ SubjectViewer = React.createClass
       $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
 
   render: ->
-    console.log 'MARKS: ', @state.marks
-    if @checkForTranscribeSubject
-      console.log 'SELECTED MARK: ', @state.selectedMark
+    console.log 'subjects: ', @state.subjects[0]
 
-    # console.log 'subject-viewer render():'
-    
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
 
     # LOADING
