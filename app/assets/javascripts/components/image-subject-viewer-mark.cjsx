@@ -16,17 +16,17 @@ Classification                = require '../models/classification'
 getUrlParamByName             = require '../lib/getUrlParamByName'
 
 
-ImageSubjectViewer_transcribe = React.createClass # rename to Classifier
-  displayName: 'ImageSubjectViewer_transcribe'
+ImageSubjectViewer_mark = React.createClass # rename to Classifier
+  displayName: 'ImageSubjectViewer_mark'
 
   render: ->
     endpoint = "http://localhost:3000/workflows/533cd4dd4954738018030000/subjects.json?limit=5"
     <div className="image-subject-viewer">
-      <SubjectViewer endpoint=endpoint />
+      <SubjectViewer endpoint=endpoint task={@props.task} />
     </div>
 
-  componentDidMount: ->
-    console.log 'TASK: ', @props.task
+  # componentDidMount: ->
+  #   console.log 'TASK: ', @props.task
 
 
 SubjectViewer = React.createClass
@@ -75,6 +75,7 @@ SubjectViewer = React.createClass
       return markingSubject
 
   componentDidMount: ->
+    console.log 'TASK = ', @props.task
     @setView 0, 0, @state.imageWidth, @state.imageHeight
     
     if @usingFakeSubject()
@@ -473,5 +474,5 @@ SubjectViewer = React.createClass
         </div>
       </div>
 
-module.exports = ImageSubjectViewer_transcribe
+module.exports = ImageSubjectViewer_mark
 window.React = React
