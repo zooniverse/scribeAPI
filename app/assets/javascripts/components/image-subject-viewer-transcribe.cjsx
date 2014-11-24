@@ -112,9 +112,11 @@ SubjectViewer = React.createClass
         # DEBUG CODE
         console.log 'FETCHED SUBJECTS: ', data
 
-        @setState subjects: data, =>
-          @state.classification = new Classification @state.subjects[0]
-          @loadImage @state.subjects[0].classification.subject.location
+        @setState 
+          subjects: data
+          subject: data[0], =>
+            @state.classification = new Classification @state.subject
+            @loadImage ((if @usingFakeSubject() then @state.subject.classification.subject.location else @state.subject.location))
 
         # console.log 'Fetched Images.' # DEBUG CODE
 
@@ -137,9 +139,9 @@ SubjectViewer = React.createClass
             url: url
             imageWidth: img.width
             imageHeight: img.height
-            loading: false , =>
-              console.log @state.loading
-              console.log "Finished Loading."
+            loading: false #, =>
+              # console.log @state.loading
+              # console.log "Finished Loading."
 
   nextSubject: () ->
     for mark in [ @state.marks... ]
@@ -162,9 +164,10 @@ SubjectViewer = React.createClass
       @fetchSubjects(@state.subjectEndpoint)
       return
     else
-      @loadImage @state.subjects[0].location
+      @setState subject: @state.subjects[0], =>
+        @loadImage ((if @usingFakeSubject() then @state.subject.classification.subject.location else @state.subject.location))
 
-    @state.classification = new Classification @state.subjects[0]
+    @state.classification = new Classification @state.subject
 
   handleInitStart: (e) ->
     console.log 'handleInitStart()'
@@ -375,7 +378,7 @@ SubjectViewer = React.createClass
         <div className="marking-surface">
           <LoadingIndicator/>
         </div>
-        <p>{@state.subjects[0].location}</p>
+        <p>{((if @usingFakeSubject() then @state.subject.classification.subject.location else @state.subject.location))}</p>
         <div className="subject-ui">
           <ActionButton loading={@state.loading} />
         </div>
@@ -415,7 +418,7 @@ SubjectViewer = React.createClass
               onDrag  = {@handleInitDrag}
               onEnd   = {@handleInitRelease} >
               <SVGImage
-                src = {@state.subjects[0].classification.subject.location}
+                src = {((if @usingFakeSubject() then @state.subject.classification.subject.location else @state.subject.location))}
                 width = {@state.imageWidth}
                 height = {@state.imageHeight} />
             </Draggable>
@@ -475,7 +478,7 @@ SubjectViewer = React.createClass
           }
 
         </div>
-        <p>{@state.subjects[0].location}</p>
+        <p>{@state.subjects.location}</p>
         <div className="subject-ui">
           {action_button}
         </div>
