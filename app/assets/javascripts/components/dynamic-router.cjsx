@@ -3,7 +3,8 @@ React = require("react")
 
 MainHeader         = require('../partials/main-header')
 HomePageController = require("./home-page-controller")
-ImageSubjectViewer = require('./image-subject-viewer')
+ImageSubjectViewer_mark = require('./image-subject-viewer-mark')
+ImageSubjectViewer_transcribe = require('./image-subject-viewer-transcribe')
 
 DynamicRouter = React.createClass
   controllerForPage:(p)->
@@ -21,12 +22,11 @@ DynamicRouter = React.createClass
       <div className="main-content">
         <Routes>
           <Route path='/' handler={HomePageController} name="root" />
-          <Route path='/mark' handler={ImageSubjectViewer} name='mark' />
-          <Route path='/transcribe' handler={ImageSubjectViewer} name='transcribe' />
+          <Route path='/mark' handler={ImageSubjectViewer_mark} name='mark' task='mark' />
+          <Route path='/transcribe' handler={ImageSubjectViewer_transcribe} name='transcribe' task='transcribe'  />
 
-
-          {@props.pages.map (p)=>
-            <Route path="/#{p.name}" handler={@controllerForPage(p)} name={p.name} />
+          {@props.pages.map (p, key)=>
+            <Route path="/#{p.name}" handler={@controllerForPage(p)} name={p.name} key={key} />
           }
         </Routes>
       </div>
