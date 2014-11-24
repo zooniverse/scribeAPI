@@ -115,11 +115,11 @@ SubjectViewer = React.createClass
         @setState 
           subjects:     data
           subject:      data[0]
-          marks:        data[0].classification.annotations
-          selectedMark: data[0].classification.annotations[0], =>
+          marks:        data[0].annotations
+          selectedMark: data[0].annotations[0], =>
             console.log 'MARKS: ', @state.marks
             @state.classification = new Classification @state.subject
-            @loadImage ((if @usingFakeSubject() then @state.subject.classification.subject.location else @state.subject.location))
+            @loadImage @state.subject.location
               
         # console.log 'Fetched Images.' # DEBUG CODE
 
@@ -168,7 +168,7 @@ SubjectViewer = React.createClass
       return
     else
       @setState subject: @state.subjects[0], =>
-        @loadImage ((if @usingFakeSubject() then @state.subject.classification.subject.location else @state.subject.location))
+        @loadImage @state.subject.location
 
     @state.classification = new Classification @state.subject
 
@@ -388,7 +388,7 @@ SubjectViewer = React.createClass
         <div className="marking-surface">
           <LoadingIndicator/>
         </div>
-        <p>{((if @usingFakeSubject() then @state.subject.classification.subject.location else @state.subject.location))}</p>
+        <p>{ @state.subject.location }</p>
         <div className="subject-ui">
           <ActionButton loading={@state.loading} />
         </div>
@@ -428,7 +428,7 @@ SubjectViewer = React.createClass
               onDrag  = {@handleInitDrag}
               onEnd   = {@handleInitRelease} >
               <SVGImage
-                src = {((if @usingFakeSubject() then @state.subject.classification.subject.location else @state.subject.location))}
+                src = { @state.subject.location }
                 width = {@state.imageWidth}
                 height = {@state.imageHeight} />
             </Draggable>

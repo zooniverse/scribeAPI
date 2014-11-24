@@ -136,7 +136,7 @@ RegionFocusTool = React.createClass
       </Draggable>
 
       <ResizeButton 
-        viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
+        viewBox = {"0 0 @props.imageWidth @props.imageHeight"}
         className = "upperResize"
         handleResize = {@props.handleUpperResize} 
         transform = {"translate( #{@props.imageWidth/2}, #{ - Math.round @props.scrubberHeight/2 } )"} 
@@ -149,7 +149,7 @@ RegionFocusTool = React.createClass
       <ResizeButton 
         className = "lowerResize"
         handleResize = {@props.handleLowerResize} 
-        transform = {"translate( #{@props.imageWidth/2}, #{ Math.round( @state.markHeight - @props.scrubberHeight/2 ) } )"} 
+        transform = {"translate( #{@props.imageWidth/2}, #{ Math.round( markHeight - @props.scrubberHeight/2 ) } )"} 
         scrubberHeight = {@props.scrubberHeight}
         scrubberWidth = {@props.scrubberWidth}
         workflow = {@props.workflow}
