@@ -25,7 +25,6 @@ DynamicRouter = React.createClass
           <Route path='/mark' handler={ImageSubjectViewer_mark} name='mark' task='mark' />
           <Route path='/transcribe' handler={ImageSubjectViewer_transcribe} name='transcribe' task='transcribe'  />
 
-
           {@props.pages.map (p, key)=>
             <Route path="/#{p.name}" handler={@controllerForPage(p)} name={p.name} key={key} />
           }

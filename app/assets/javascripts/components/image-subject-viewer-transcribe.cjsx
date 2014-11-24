@@ -66,20 +66,27 @@ SubjectViewer = React.createClass
 
     selectedMark: null # TODO: currently not in use
 
-  getFakeSubject: (group) ->
-    if group is "transcribe"
-      transcriptionSubject = "THIS IS A TRANSCRIPTION SUBJECT"
-      return transcriptionSubject
-    if group is "mark"
-      markingSubject = "THIS IS A MARKING SUBJECT"
-      return markingSubject
+  # NOT BEING USED 
+  # getFakeSubject: (group) ->
+  #   if group is "transcribe"
+  #     transcriptionSubject = "THIS IS A TRANSCRIPTION SUBJECT"
+  #     return transcriptionSubject
+  #   if group is "mark"
+  #     markingSubject = "THIS IS A MARKING SUBJECT"
+  #     return markingSubject
 
   componentDidMount: ->
     console.log 'TASK = ', @props.task
     @setView 0, 0, @state.imageWidth, @state.imageHeight
     
     if @usingFakeSubject()
-      @setState subjectEndpoint: "./offline/example_subjects/marking_subjects.json", =>
+      if @props.task is 'mark'
+        console.log 'using MARKING subjects'
+        subjectEndpoint = "./offline/example_subjects/marking_subjects.json"
+      else 
+        console.log 'using TRANSCRIPTION subjects'
+        subjectEndpoint = "./offline/example_subjects/transcription_subjects.json"
+      @setState subjectEndpoint: subjectEndpoint, =>
         @fetchSubjects(@state.subjectEndpoint)
     else
       @fetchSubjects(@state.subjectEndpoint)
@@ -103,11 +110,11 @@ SubjectViewer = React.createClass
       dataType: "json"
       success: ((data) ->
         # DEBUG CODE
-        # console.log 'FETCHED SUBJECTS: ', subject.location for subject in data
+        console.log 'FETCHED SUBJECTS: ', data
 
         @setState subjects: data, =>
           @state.classification = new Classification @state.subjects[0]
-          @loadImage @state.subjects[0].location
+          @loadImage @state.subjects[0].classification.subject.location
 
         # console.log 'Fetched Images.' # DEBUG CODE
 
@@ -120,7 +127,7 @@ SubjectViewer = React.createClass
     return
 
   loadImage: (url) ->
-    # console.log 'Loading image...' # DEBUG CODE
+    console.log 'Loading image... ', url # DEBUG CODE
     @setState loading: true, =>
       img = new Image()
       img.src = url
@@ -130,9 +137,9 @@ SubjectViewer = React.createClass
             url: url
             imageWidth: img.width
             imageHeight: img.height
-            loading: false #, =>
-            # console.log @state.loading
-            # console.log "Finished Loading."
+            loading: false , =>
+              console.log @state.loading
+              console.log "Finished Loading."
 
   nextSubject: () ->
     for mark in [ @state.marks... ]
@@ -408,7 +415,7 @@ SubjectViewer = React.createClass
               onDrag  = {@handleInitDrag}
               onEnd   = {@handleInitRelease} >
               <SVGImage
-                src = {@state.subjects[0].location}
+                src = {@state.subjects[0].classification.subject.location}
                 width = {@state.imageWidth}
                 height = {@state.imageHeight} />
             </Draggable>

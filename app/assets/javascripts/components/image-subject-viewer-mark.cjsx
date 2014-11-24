@@ -79,7 +79,13 @@ SubjectViewer = React.createClass
     @setView 0, 0, @state.imageWidth, @state.imageHeight
     
     if @usingFakeSubject()
-      @setState subjectEndpoint: "./offline/example_subjects/marking_subjects.json", =>
+      if @props.task is 'mark'
+        console.log 'using MARKING subjects'
+        subjectEndpoint = "./offline/example_subjects/marking_subjects.json"
+      else 
+        console.log 'using TRANSCRIPTION subjects'
+        subjectEndpoint = "./offline/example_subjects/transcription_subjects.json"
+      @setState subjectEndpoint: subjectEndpoint, =>
         @fetchSubjects(@state.subjectEndpoint)
     else
       @fetchSubjects(@state.subjectEndpoint)
@@ -103,7 +109,7 @@ SubjectViewer = React.createClass
       dataType: "json"
       success: ((data) ->
         # DEBUG CODE
-        # console.log 'FETCHED SUBJECTS: ', subject.location for subject in data
+        console.log 'FETCHED SUBJECTS: ', data
 
         @setState subjects: data, =>
           @state.classification = new Classification @state.subjects[0]
