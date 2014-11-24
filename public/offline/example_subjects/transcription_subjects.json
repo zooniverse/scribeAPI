@@ -1,44 +1,52 @@
 [
   {
     "subject": {
-      "id": "some_id_291839283"
       "parent_id": "53f26a6c45626f6d54080000",
       "location": "https://zooniverse-static.s3.amazonaws.com/scribe_subjects/logbookofalfredg1851unse_0083.jpg",
       "meta_data": null,
-      "annotations": [
+       "annotations": [
         {
+          "timestamp": "Sun, 23 Nov 2014 19:54:12 GMT",
           "y_upper": 14,
           "y_lower": 478
         },
         {
+          "timestamp": "Sun, 23 Nov 2014 19:54:20 GMT",
           "y_upper": 451,
           "y_lower": 731
         },
         {
+          "timestamp": "Sun, 23 Nov 2014 19:54:32 GMT",
           "y_upper": 702,
           "y_lower": 1139
         },
         {
+          "timestamp": "Sun, 23 Nov 2014 19:54:37 GMT",
           "y_upper": 1122,
           "y_lower": 1470
         },
         {
+          "timestamp": "Sun, 23 Nov 2014 19:54:46 GMT",
           "y_upper": 1463,
           "y_lower": 1711
         },
         {
+          "timestamp": "Sun, 23 Nov 2014 19:54:51 GMT",
           "y_upper": 1680,
           "y_lower": 2044
         },
         {
+          "timestamp": "Sun, 23 Nov 2014 19:54:58 GMT",
           "y_upper": 2036,
           "y_lower": 2380
         },
         {
+          "timestamp": "Sun, 23 Nov 2014 19:55:04 GMT",
           "y_upper": 2360,
           "y_lower": 2817
         },
         {
+          "timestamp": "Sun, 23 Nov 2014 19:55:10 GMT",
           "y_upper": 2784,
           "y_lower": 3304
         }
