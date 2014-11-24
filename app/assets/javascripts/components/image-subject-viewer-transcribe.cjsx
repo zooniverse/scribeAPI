@@ -60,7 +60,7 @@ SubjectViewer = React.createClass
     viewHeight: 0
 
     # defines which workflow is active (mark, transcribe, etc.)
-    workflow: "mark"
+    workflow: "transcribe"
 
     classification: null
 
@@ -113,11 +113,14 @@ SubjectViewer = React.createClass
         console.log 'FETCHED SUBJECTS: ', data
 
         @setState 
-          subjects: data
-          subject: data[0], =>
+          subjects:     data
+          subject:      data[0]
+          marks:        data[0].classification.annotations
+          selectedMark: data[0].classification.annotations[0], =>
+            console.log 'MARKS: ', @state.marks
             @state.classification = new Classification @state.subject
             @loadImage ((if @usingFakeSubject() then @state.subject.classification.subject.location else @state.subject.location))
-
+              
         # console.log 'Fetched Images.' # DEBUG CODE
 
         return
@@ -192,6 +195,7 @@ SubjectViewer = React.createClass
     @selectMark @state.marks[@state.marks.length-1]
 
   handleInitDrag: (e) ->
+    return # dont use
     console.log 'handleInitDrag()'
 
     return unless @state.workflow is "mark"
@@ -226,6 +230,7 @@ SubjectViewer = React.createClass
       }
 
   handleDragMark: (e) ->
+    return # don't use
     console.log 'handleDragMark()'
 
     return unless @state.workflow is "mark"
@@ -355,6 +360,8 @@ SubjectViewer = React.createClass
         $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
 
   nextTextEntry: ->
+    console.log 'nextTextEntry()'
+    console.log 'SELECETD MARK: ', @state.selectedMark
 
     key = @state.selectedMark.key
     if key+1 > @state.marks.length-1
@@ -367,6 +374,9 @@ SubjectViewer = React.createClass
       $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
 
   render: ->
+    console.log 'render()'
+    # return null if @state.selectedMark is null
+    console.log 'SELECTED MARK: ', @state.selectedMark
     # don't render if ya ain't got subjects (yet)
     return null if @state.subjects is null or @state.subjects.length is 0
 
@@ -422,60 +432,26 @@ SubjectViewer = React.createClass
                 width = {@state.imageWidth}
                 height = {@state.imageHeight} />
             </Draggable>
-
-            { 
-              if @state.workflow is "mark"
-                @state.marks.map ((mark, i) ->
-                  <TextRegionTool
-                    key = {mark.key}
-                    mark = {mark}
-                    disabled = {false}
-                    imageWidth = {@state.imageWidth}
-                    imageHeight = {@state.imageHeight}
-                    getEventOffset = {@getEventOffset}
-                    select = {@selectMark.bind null, mark}
-                    selected = {mark is @state.selectedMark}
-                    onClickDelete = {@onClickDelete}
-                    scrubberWidth = {64}
-                    scrubberHeight = {32}
-                    workflow = {@state.workflow}
-                    handleDragMark = {@handleDragMark}
-                    handleUpperResize = {@handleUpperResize}
-                    handleLowerResize = {@handleLowerResize}
-                    handleMarkClick = {@handleMarkClick.bind null, mark}
-                  />
-                ), @
-              else
-                console.log 'SELECTED MARK KEY: ', @state.selectedMark.key
-                <RegionFocusTool 
-                  key = {@state.selectedMark.key}
-                  mark = {@state.selectedMark}
-                  disabled = {false}
-                  imageWidth = {@state.imageWidth}
-                  imageHeight = {@state.imageHeight}
-                  getEventOffset = {@getEventOffset}
-                  select = {@selectMark.bind null, @state.selectedMark}
-                  selected = {true}
-                  onClickDelete = {@onClickDelete}
-                  scrubberWidth = {64}
-                  scrubberHeight = {32}
-                  workflow = {@state.workflow}
-                  handleDragMark = {@handleDragMark}
-                  handleUpperResize = {@handleUpperResize}
-                  handleLowerResize = {@handleLowerResize}
-                  handleMarkClick = {@handleMarkClick.bind null, @state.selectedMark}
-                />
-            }
-
-
+            <RegionFocusTool 
+              key = {@state.selectedMark.key}
+              mark = {@state.selectedMark}
+              disabled = {false}
+              imageWidth = {@state.imageWidth}
+              imageHeight = {@state.imageHeight}
+              getEventOffset = {@getEventOffset}
+              select = {@selectMark.bind null, @state.selectedMark}
+              selected = {true}
+              onClickDelete = {@onClickDelete}
+              scrubberWidth = {64}
+              scrubberHeight = {32}
+              workflow = {@state.workflow}
+              handleDragMark = {@handleDragMark}
+              handleUpperResize = {@handleUpperResize}
+              handleLowerResize = {@handleLowerResize}
+              handleMarkClick = {@handleMarkClick.bind null, @state.selectedMark}
+            />
           </svg>
 
-          { if @state.workflow is "transcribe" and @state.selectedMark isnt null
-            <TextEntryTool
-              top={ @getScale().vertical * @state.selectedMark.yLower + 20 + @state.offset.top }
-              left={@state.windowInnerWidth/2 - 200}
-            />
-          }
 
         </div>
         <p>{@state.subjects.location}</p>
