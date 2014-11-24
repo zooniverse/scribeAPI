@@ -114,14 +114,14 @@ SubjectViewer = React.createClass
 
         @setState 
           subjects:     data
-          subject:      data[0]
-          marks:        data[0].annotations
-          selectedMark: data[0].annotations[0], =>
+          subject:      data[0].subject
+          marks:        data[0].subject.annotations
+          selectedMark: data[0].subject.annotations[0], =>
             console.log 'MARKS: ', @state.marks
             @state.classification = new Classification @state.subject
             @loadImage @state.subject.location
               
-        # console.log 'Fetched Images.' # DEBUG CODE
+        console.log 'Fetched Images.' # DEBUG CODE
 
         return
       ).bind(this)
