@@ -376,6 +376,7 @@ SubjectViewer = React.createClass
 
   render: ->
     console.log 'render()'
+    console.log 'marks: ', @state.marks
     # return null if @state.selectedMark is null
     console.log 'SELECTED MARK: ', @state.selectedMark
     # don't render if ya ain't got subjects (yet)

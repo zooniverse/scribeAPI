@@ -6,40 +6,67 @@
       "meta_data": null,
        "annotations": [
         {
+          "key": 0,
           "y_upper": 14,
-          "y_lower": 478
+          "y_lower": 478,
+          "x": 0,
+          "y": 0
         },
         {
+          "key": 1,
           "y_upper": 451,
-          "y_lower": 731
+          "y_lower": 731,
+          "x": 0,
+          "y": 0
         },
         {
+          "key": 2,
           "y_upper": 702,
-          "y_lower": 1139
+          "y_lower": 1139,
+          "x": 0,
+          "y": 0
         },
         {
+          "key": 3,
           "y_upper": 1122,
-          "y_lower": 1470
+          "y_lower": 1470,
+          "x": 0,
+          "y": 0
         },
         {
+          "key": 4,
           "y_upper": 1463,
-          "y_lower": 1711
+          "y_lower": 1711,
+          "x": 0,
+          "y": 0
         },
         {
+          "key": 5,
           "y_upper": 1680,
-          "y_lower": 2044
+          "y_lower": 2044,
+          "x": 0,
+          "y": 0
         },
         {
+          "key": 6,
           "y_upper": 2036,
-          "y_lower": 2380
+          "y_lower": 2380,
+          "x": 0,
+          "y": 0
         },
         {
+          "key": 7,
           "y_upper": 2360,
-          "y_lower": 2817
+          "y_lower": 2817,
+          "x": 0,
+          "y": 0
         },
         {
+          "key": 8,
           "y_upper": 2784,
-          "y_lower": 3304
+          "y_lower": 3304,
+          "x": 0,
+          "y": 0
         }
       ]
     }
