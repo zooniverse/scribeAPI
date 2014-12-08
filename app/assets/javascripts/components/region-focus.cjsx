@@ -57,7 +57,7 @@ RegionFocusTool = React.createClass
     markHeight = @props.mark.y_lower - @props.mark.y_upper
     <g 
       className = "point drawing-tool" 
-      transform = {"translate(#{Math.ceil @state.strokeWidth}, #{Math.round( markHeight/2 ) })"} 
+      transform = {"translate(#{Math.ceil @state.strokeWidth}, #{Math.round( @props.mark.y - markHeight/2 ) })"} 
       data-disabled = {@props.disabled || null} 
       data-selected = {@props.selected || null}
     >

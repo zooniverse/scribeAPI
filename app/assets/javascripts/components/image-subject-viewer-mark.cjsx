@@ -147,8 +147,11 @@ SubjectViewer = React.createClass
     for mark in [ @state.marks... ]
       @state.classification.annotate
         timestamp: mark.timestamp
+        key: mark.key
         y_upper: mark.yUpper
         y_lower: mark.yLower
+        x: mark.x
+        y: mark.y
 
     # # DEBUG CODE  
     # console.log 'CLASSIFICATION: ', @state.classification
