@@ -20,7 +20,7 @@ ImageSubjectViewer_transcribe = React.createClass # rename to Classifier
   displayName: 'ImageSubjectViewer_transcribe'
 
   render: ->
-    endpoint = "http://localhost:3000/workflows/533cd4dd4954738018030000/subjects.json?limit=5"
+    endpoint = "http://localhost:3000/offline/example_subjects/transcription_subjects.json"
     <div className="image-subject-viewer">
       <SubjectViewer endpoint=endpoint task={@props.task} />
     </div>
@@ -110,7 +110,9 @@ SubjectViewer = React.createClass
       dataType: "json"
       success: ((data) ->
         # DEBUG CODE
-        console.log 'FETCHED SUBJECTS: ', data
+        console.log 'FETCHED SUBJECTS: ', data[0]
+
+
 
         @setState 
           subjects:     data
@@ -293,7 +295,6 @@ SubjectViewer = React.createClass
 
     currentMark = @state.selectedMark
 
-    
     # enforce bounds
     if y > @state.imageHeight
       y = @state.imageHeight 
