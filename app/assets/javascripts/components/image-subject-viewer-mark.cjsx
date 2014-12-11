@@ -350,7 +350,9 @@ SubjectViewer = React.createClass
       selectedMark: null
 
   beginTextEntry: ->
-    # console.log 'beginTextEntry()'
+    console.log 'beginTextEntry()'
+    @nextSubject()
+    return # just load next subject for now
     return unless @state.marks.length > 0
     @setState
       workflow: "transcribe"

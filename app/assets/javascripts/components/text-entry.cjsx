@@ -6,7 +6,6 @@ TextEntryTool = React.createClass
   displayName: 'TextEntryTool'
 
   componentWillReceiveProps: ->
-    console.log 'TRANSCRIBE STEPS: ', @props.transcribeSteps
     return
     # console.log 'RECEIVING PROPS...'
     @setProps
