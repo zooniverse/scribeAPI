@@ -48,6 +48,8 @@ SubjectViewer = React.createClass
     subject: null
     subjectEndpoint: @props.endpoint
 
+    resizeDisabled: true
+
     marks: []
     tools: []
     loading: false
@@ -258,6 +260,7 @@ SubjectViewer = React.createClass
       selectedMark: currentMark
 
   handleUpperResize: (e) ->
+    return
     console.log 'handleUpperResize()'
     {x,y} = @getEventOffset e
 
@@ -289,6 +292,7 @@ SubjectViewer = React.createClass
       selectedMark: currentMark
 
   handleLowerResize: (e) ->
+    return
     console.log 'handleLowerResize()'
     {x,y} = @getEventOffset e
 
@@ -448,6 +452,7 @@ SubjectViewer = React.createClass
               scrubberWidth = {64}
               scrubberHeight = {32}
               workflow = {@state.workflow}
+              resizeDisabled = {@state.resizeDisabled}
               handleDragMark = {@handleDragMark}
               handleUpperResize = {@handleUpperResize}
               handleLowerResize = {@handleLowerResize}

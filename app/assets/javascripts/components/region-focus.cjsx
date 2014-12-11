@@ -90,6 +90,7 @@ RegionFocusTool = React.createClass
             </linearGradient>
             
 
+
           </defs>
           <rect 
             className   = "mark-rectangle"
@@ -135,27 +136,29 @@ RegionFocusTool = React.createClass
         </g>
       </Draggable>
 
-      <ResizeButton 
-        viewBox = {"0 0 @props.imageWidth @props.imageHeight"}
-        className = "upperResize"
-        handleResize = {@props.handleUpperResize} 
-        transform = {"translate( #{@props.imageWidth/2}, #{ - Math.round @props.scrubberHeight/2 } )"} 
-        scrubberHeight = {@props.scrubberHeight}
-        scrubberWidth = {@props.scrubberWidth}
-        workflow = {@props.workflow}
-        isSelected = "true"
-      />
+      {
+        if not @props.resizeDisabled
+          <ResizeButton 
+            viewBox = {"0 0 @props.imageWidth @props.imageHeight"}
+            className = "upperResize"
+            handleResize = {@props.handleUpperResize} 
+            transform = {"translate( #{@props.imageWidth/2}, #{ - Math.round @props.scrubberHeight/2 } )"} 
+            scrubberHeight = {@props.scrubberHeight}
+            scrubberWidth = {@props.scrubberWidth}
+            workflow = {@props.workflow}
+            isSelected = "true"
+          />
 
-      <ResizeButton 
-        className = "lowerResize"
-        handleResize = {@props.handleLowerResize} 
-        transform = {"translate( #{@props.imageWidth/2}, #{ Math.round( markHeight - @props.scrubberHeight/2 ) } )"} 
-        scrubberHeight = {@props.scrubberHeight}
-        scrubberWidth = {@props.scrubberWidth}
-        workflow = {@props.workflow}
-        isSelected = "true"
-
-      />
+          <ResizeButton 
+            className = "lowerResize"
+            handleResize = {@props.handleLowerResize} 
+            transform = {"translate( #{@props.imageWidth/2}, #{ Math.round( markHeight - @props.scrubberHeight/2 ) } )"} 
+            scrubberHeight = {@props.scrubberHeight}
+            scrubberWidth = {@props.scrubberWidth}
+            workflow = {@props.workflow}
+            isSelected = "true"
+          />
+      }
 
     </g>
 
