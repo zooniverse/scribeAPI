@@ -52,8 +52,8 @@ RegionFocusTool = React.createClass
       @setState transcribeComplete: true
 
   render: ->
-    console.log 'props: ', @props
-    console.log 'mark: ', @props.mark
+    # console.log 'props: ', @props
+    # console.log 'mark: ', @props.mark
     markHeight = @props.mark.y_lower - @props.mark.y_upper
     <g 
       className = "point drawing-tool" 
@@ -89,7 +89,6 @@ RegionFocusTool = React.createClass
               <stop stopColor="#000" offset="0.5" stopOpacity="0.8"/>
             </linearGradient>
             
-
 
           </defs>
           <rect 

@@ -7,6 +7,11 @@ ImageSubjectViewer_mark = require('./image-subject-viewer-mark')
 ImageSubjectViewer_transcribe = require('./image-subject-viewer-transcribe')
 
 DynamicRouter = React.createClass
+
+  componentWillReceiveProps: ->
+    console.log 'Psdfsdfdsf: ', @props.project.workflow.transcribe
+    null
+
   controllerForPage:(p)->
     React.createClass
       displayname: "#{p.name}_page"
@@ -23,9 +28,15 @@ DynamicRouter = React.createClass
         <Routes>
           <Route path='/' handler={HomePageController} name="root" />
           <Route path='/mark' handler={ImageSubjectViewer_mark} name='mark' task='mark' />
-          <Route path='/transcribe' handler={ImageSubjectViewer_transcribe} name='transcribe' task='transcribe'  />
+          <Route 
+            path='/transcribe' 
+            handler={ImageSubjectViewer_transcribe} 
+            name='transcribe' 
+            task='transcribe'
+            transcribeSteps={@props.project.workflow.transcribe.steps}  
+          />
 
-          {@props.pages.map (p, key)=>
+          {@props.project.pages.map (p, key)=>
             <Route path="/#{p.name}" handler={@controllerForPage(p)} name={p.name} key={key} />
           }
         </Routes>

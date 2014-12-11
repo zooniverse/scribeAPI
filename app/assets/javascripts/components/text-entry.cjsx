@@ -6,25 +6,27 @@ TextEntryTool = React.createClass
   displayName: 'TextEntryTool'
 
   componentWillReceiveProps: ->
+    console.log 'TRANSCRIBE STEPS: ', @props.transcribeSteps
     return
     # console.log 'RECEIVING PROPS...'
     @setProps
-      top: @props.top
+      # not in use (anymore)
+      top: @props.top 
       left: @props.left
     
   render: ->
 
-    style =
-      top: "#{@props.top}"
-      left: "#{@props.left}"
+    # style =
+    #   top: "#{@props.top}"
+    #   left: "#{@props.left}"
 
-    <div className="text-entry" style={style}>
+    <div className="text-entry">
       <div className="left">
         <div className="input_field state text">
 
           <input 
             type="text" 
-            placeholder="Date" 
+            placeholder={@props.label} 
             className="" 
             role="textbox" 
           />

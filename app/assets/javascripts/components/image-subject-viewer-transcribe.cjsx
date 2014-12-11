@@ -22,11 +22,12 @@ ImageSubjectViewer_transcribe = React.createClass # rename to Classifier
   render: ->
     endpoint = "http://localhost:3000/offline/example_subjects/transcription_subjects.json"
     <div className="image-subject-viewer">
-      <SubjectViewer endpoint=endpoint task={@props.task} />
+      <SubjectViewer 
+        endpoint=endpoint 
+        workflow={@props.workflow} 
+        task={@props.task} 
+      />
     </div>
-
-  # componentDidMount: ->
-  #   console.log 'TASK: ', @props.task
 
 
 SubjectViewer = React.createClass
@@ -42,6 +43,7 @@ SubjectViewer = React.createClass
       return false
 
   getInitialState: ->
+    console.log 'TRANSCRIBE WORKFLOW: ', @props.workflow
     subjects: null
     subject: null
     subjectEndpoint: @props.endpoint
@@ -362,7 +364,7 @@ SubjectViewer = React.createClass
 
   nextTextEntry: ->
     console.log 'nextTextEntry()'
-    console.log 'SELECETD MARK: ', @state.selectedMark
+    # console.log 'SELECETD MARK: ', @state.selectedMark # DEBUG CODE
 
     key = @state.selectedMark.key
     if key+1 > @state.marks.length-1
@@ -376,9 +378,7 @@ SubjectViewer = React.createClass
 
   render: ->
     console.log 'render()'
-    console.log 'marks: ', @state.marks
     # return null if @state.selectedMark is null
-    console.log 'SELECTED MARK: ', @state.selectedMark
     # don't render if ya ain't got subjects (yet)
     return null if @state.subjects is null or @state.subjects.length is 0
 
@@ -434,6 +434,7 @@ SubjectViewer = React.createClass
                 width = {@state.imageWidth}
                 height = {@state.imageHeight} />
             </Draggable>
+
             <RegionFocusTool 
               key = {@state.selectedMark.key}
               mark = {@state.selectedMark}
@@ -452,12 +453,13 @@ SubjectViewer = React.createClass
               handleLowerResize = {@handleLowerResize}
               handleMarkClick = {@handleMarkClick.bind null, @state.selectedMark}
             />
-          </svg>
 
+          </svg>
 
         </div>
         <p>{@state.subjects.location}</p>
         <div className="subject-ui">
+          <TextEntryTool/>
           {action_button}
         </div>
       </div>
