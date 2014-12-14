@@ -336,6 +336,12 @@ SubjectViewer = React.createClass
       marks: marks
       selectedMark: null
 
+
+  recordTranscription: (field, content) ->
+    console.log "RECORDING TRANSCRIPTION: [#{field}, #{content}]"
+    # currentMark = @state.currentMark
+
+
   beginTextEntry: ->
     # console.log 'beginTextEntry()'
     return unless @state.marks.length > 0
@@ -435,7 +441,10 @@ SubjectViewer = React.createClass
         </div>
         <p>{@state.subjects.location}</p>
         <div className="subject-ui">
-          <TextEntryTool transcribeSteps={@props.transcribeSteps} />
+          <TextEntryTool 
+            transcribeSteps={@props.transcribeSteps} 
+            recordTranscription={@recordTranscription}
+          />
           { action_button }
         </div>
       </div>

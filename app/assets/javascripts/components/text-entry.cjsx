@@ -5,6 +5,10 @@ Draggable = require '../lib/draggable'
 TextEntryTool = React.createClass
   displayName: 'TextEntryTool'
 
+  componentWillReceiveProps: ->
+    console.log 'ksdhksljdhskjdhlskjdhslkjdhslkjdh; ', @props
+
+
   getInitialState: ->
     console.log 'TRANSCRIBE STEPS: ', @props.transcribeSteps
     currentStep: 0
@@ -12,7 +16,9 @@ TextEntryTool = React.createClass
 
   handleTranscription: ->
     console.log 'handleTranscription()'
-    return unless @nextStepAvailable()
+    unless @nextStepAvailable()
+      @props.recordTranscription('FOO', 'BAR')
+      return
     @setState currentStep: @state.currentStep + 1
 
   nextStep: ->
