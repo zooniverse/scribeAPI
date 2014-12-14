@@ -15,7 +15,6 @@ PointTool                     = require './point'
 Classification                = require '../models/classification'
 getUrlParamByName             = require '../lib/getUrlParamByName'
 
-
 ImageSubjectViewer_transcribe = React.createClass # rename to Classifier
   displayName: 'ImageSubjectViewer_transcribe'
 
@@ -31,7 +30,6 @@ ImageSubjectViewer_transcribe = React.createClass # rename to Classifier
 
 SubjectViewer = React.createClass
   displayName: 'SubjectViewer'
-
   resizing: false
 
   usingFakeSubject: ->
@@ -42,7 +40,6 @@ SubjectViewer = React.createClass
       return false
 
   getInitialState: ->
-    console.log 'TRANSCRIBE WORKFLOW: ', @props.workflow
     subjects: null
     subject: null
     subjectEndpoint: @props.endpoint
@@ -62,21 +59,8 @@ SubjectViewer = React.createClass
     viewWidth: 0
     viewHeight: 0
 
-    # defines which workflow is active (mark, transcribe, etc.)
-    # workflow: "transcribe"
-
     classification: null
-
     selectedMark: null # TODO: currently not in use
-
-  # NOT BEING USED 
-  # getFakeSubject: (group) ->
-  #   if group is "transcribe"
-  #     transcriptionSubject = "THIS IS A TRANSCRIPTION SUBJECT"
-  #     return transcriptionSubject
-  #   if group is "mark"
-  #     markingSubject = "THIS IS A MARKING SUBJECT"
-  #     return markingSubject
 
   componentDidMount: ->
     console.log 'TASK = ', @props.task
@@ -114,8 +98,6 @@ SubjectViewer = React.createClass
       success: ((data) ->
         # DEBUG CODE
         console.log 'FETCHED SUBJECTS: ', data[0]
-
-
 
         @setState 
           subjects:     data
@@ -183,8 +165,6 @@ SubjectViewer = React.createClass
   handleInitStart: (e) ->
     console.log 'handleInitStart()'
 
-    # return if @state.workflow is "transcribe"
-
     {horizontal, vertical} = @getScale()
     rect = @refs.sizeRect?.getDOMNode().getBoundingClientRect()
     timestamp = (new Date).toUTCString()
@@ -206,7 +186,6 @@ SubjectViewer = React.createClass
     return # dont use
     console.log 'handleInitDrag()'
 
-    # return unless @state.workflow is "mark"
     {x,y} = @getEventOffset e
 
     dist = Math.abs( @state.selectedMark.y - y )
@@ -240,8 +219,6 @@ SubjectViewer = React.createClass
   handleDragMark: (e) ->
     return # don't use
     console.log 'handleDragMark()'
-
-    # return unless @state.workflow is "mark"
     
     {x,y} = @getEventOffset e
 
@@ -363,7 +340,6 @@ SubjectViewer = React.createClass
     # console.log 'beginTextEntry()'
     return unless @state.marks.length > 0
     @setState
-      # workflow: "transcribe"
       selectedMark: @state.marks[0], =>
         {horizontal, vertical} = @getScale()
         $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
