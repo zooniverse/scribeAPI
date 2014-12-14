@@ -13,14 +13,16 @@ project =
     transcribe:
       steps: [
           {
+            key: '0',
             name: 'date',
             label: 'Date'
             description: 'Please type-in the log date.'
           },
           {
+            key: '1',
             name: 'entry'
             label: 'Journal Entry'
-            descrition: 'Please type-in the journal entry for this day.'
+            description: 'Please type-in the journal entry for this day.'
           }
       ]
   pages: [
