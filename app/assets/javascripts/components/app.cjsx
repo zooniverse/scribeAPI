@@ -23,6 +23,12 @@ project =
             name: 'entry'
             label: 'Journal Entry'
             description: 'Please type-in the journal entry for this day.'
+          },
+          {
+            key: '1',
+            name: 'entry'
+            label: 'Other Entry'
+            description: 'This is some other entry.'
           }
       ]
   pages: [
