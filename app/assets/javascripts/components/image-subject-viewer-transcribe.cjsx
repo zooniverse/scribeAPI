@@ -23,7 +23,7 @@ ImageSubjectViewer_transcribe = React.createClass # rename to Classifier
     <div className="image-subject-viewer">
       <SubjectViewer 
         endpoint=endpoint 
-        workflow={@props.workflow} 
+        transcribeSteps={@props.transcribeSteps} 
         task={@props.task} 
       />
     </div>
@@ -360,7 +360,6 @@ SubjectViewer = React.createClass
 
   render: ->
     console.log 'render()'
-    console.log 'state.marks.length: ', @state.marks.length
 
     # return null if @state.selectedMark is null
     # don't render if ya ain't got subjects (yet)
@@ -436,7 +435,7 @@ SubjectViewer = React.createClass
         </div>
         <p>{@state.subjects.location}</p>
         <div className="subject-ui">
-          <TextEntryTool/>
+          <TextEntryTool transcribeSteps={@props.transcribeSteps} />
           { action_button }
         </div>
       </div>

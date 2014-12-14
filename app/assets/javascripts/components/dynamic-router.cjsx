@@ -8,10 +8,6 @@ ImageSubjectViewer_transcribe = require('./image-subject-viewer-transcribe')
 
 DynamicRouter = React.createClass
 
-  componentWillReceiveProps: ->
-    console.log 'Psdfsdfdsf: ', @props.project.workflow.transcribe
-    null
-
   controllerForPage:(p)->
     React.createClass
       displayname: "#{p.name}_page"
@@ -21,7 +17,6 @@ DynamicRouter = React.createClass
         </div>
 
   render:->
-    # console.log @, @state
     <div className="panoptes-main">
       <MainHeader />
       <div className="main-content">
@@ -33,7 +28,7 @@ DynamicRouter = React.createClass
             handler={ImageSubjectViewer_transcribe} 
             name='transcribe' 
             task='transcribe'
-            transcribeSteps={@props.project.workflow.transcribe.steps}  
+            transcribeSteps={@props.project.workflow.transcribe}  
           />
 
           {@props.project.pages.map (p, key)=>

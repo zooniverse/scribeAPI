@@ -34,8 +34,6 @@ project =
     }
   ]
 
-console.log 'PROJECT: ', project
-
 App = React.createClass
   displayname: 'app'
 
