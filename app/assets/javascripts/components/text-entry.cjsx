@@ -17,6 +17,7 @@ TextEntryTool = React.createClass
   handleTranscription: ->
     console.log 'handleTranscription()'
     unless @nextStepAvailable()
+      console.log 'FOOODSKJLHDLKJSHDLKSJDHKSJDH ', $('transcribe-input').val()
       @props.recordTranscription('FOO', 'BAR')
       return
     @setState currentStep: @state.currentStep + 1
