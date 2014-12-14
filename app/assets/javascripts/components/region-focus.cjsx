@@ -145,7 +145,6 @@ RegionFocusTool = React.createClass
             transform = {"translate( #{@props.imageWidth/2}, #{ - Math.round @props.scrubberHeight/2 } )"} 
             scrubberHeight = {@props.scrubberHeight}
             scrubberWidth = {@props.scrubberWidth}
-            workflow = {@props.workflow}
             isSelected = "true"
           />
 
@@ -155,7 +154,6 @@ RegionFocusTool = React.createClass
             transform = {"translate( #{@props.imageWidth/2}, #{ Math.round( markHeight - @props.scrubberHeight/2 ) } )"} 
             scrubberHeight = {@props.scrubberHeight}
             scrubberWidth = {@props.scrubberWidth}
-            workflow = {@props.workflow}
             isSelected = "true"
           />
       }

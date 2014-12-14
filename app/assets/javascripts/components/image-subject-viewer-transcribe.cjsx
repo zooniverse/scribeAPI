@@ -29,7 +29,6 @@ ImageSubjectViewer_transcribe = React.createClass # rename to Classifier
       />
     </div>
 
-
 SubjectViewer = React.createClass
   displayName: 'SubjectViewer'
 
@@ -64,7 +63,7 @@ SubjectViewer = React.createClass
     viewHeight: 0
 
     # defines which workflow is active (mark, transcribe, etc.)
-    workflow: "transcribe"
+    # workflow: "transcribe"
 
     classification: null
 
@@ -153,19 +152,22 @@ SubjectViewer = React.createClass
               # console.log "Finished Loading."
 
   nextSubject: () ->
-    for mark in [ @state.marks... ]
-      @state.classification.annotate
-        timestamp: mark.timestamp
-        y_upper: mark.yUpper
-        y_lower: mark.yLower
+    console.log 'nextSubject()'
+    # TODO: annotate new transcription and submit as new classification!!!
+
+    # for mark in [ @state.marks... ]
+    #   @state.classification.annotate
+    #     timestamp: mark.timestamp
+    #     y_upper: mark.yUpper
+    #     y_lower: mark.yLower
 
     # # DEBUG CODE  
     # console.log 'CLASSIFICATION: ', @state.classification
 
-    console.log JSON.stringify @state.classification # DEBUG CODE
-    @state.classification.send()
+    # console.log JSON.stringify @state.classification # DEBUG CODE
+    # @state.classification.send()
+    
     @setState
-      workflow: "mark"
       marks: [] # clear marks for next subject
 
     # prepare new classification
@@ -181,7 +183,7 @@ SubjectViewer = React.createClass
   handleInitStart: (e) ->
     console.log 'handleInitStart()'
 
-    return if @state.workflow is "transcribe"
+    # return if @state.workflow is "transcribe"
 
     {horizontal, vertical} = @getScale()
     rect = @refs.sizeRect?.getDOMNode().getBoundingClientRect()
@@ -204,7 +206,7 @@ SubjectViewer = React.createClass
     return # dont use
     console.log 'handleInitDrag()'
 
-    return unless @state.workflow is "mark"
+    # return unless @state.workflow is "mark"
     {x,y} = @getEventOffset e
 
     dist = Math.abs( @state.selectedMark.y - y )
@@ -239,7 +241,7 @@ SubjectViewer = React.createClass
     return # don't use
     console.log 'handleDragMark()'
 
-    return unless @state.workflow is "mark"
+    # return unless @state.workflow is "mark"
     
     {x,y} = @getEventOffset e
 
@@ -361,27 +363,29 @@ SubjectViewer = React.createClass
     # console.log 'beginTextEntry()'
     return unless @state.marks.length > 0
     @setState
-      workflow: "transcribe"
+      # workflow: "transcribe"
       selectedMark: @state.marks[0], =>
         {horizontal, vertical} = @getScale()
         $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
 
   nextTextEntry: ->
     console.log 'nextTextEntry()'
-    # console.log 'SELECETD MARK: ', @state.selectedMark # DEBUG CODE
+    console.log 'SELECETD MARK: ', @state.selectedMark # DEBUG CODE
 
     key = @state.selectedMark.key
     if key+1 > @state.marks.length-1
-      # console.log "That's all the marks for now!"
-      @setState workflow: "finished"
+      console.log "That's all the marks for now!"
       return
 
-    @setState selectedMark: @state.marks[key+1], =>
-      {horizontal, vertical} = @getScale()
-      $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
+    @setState 
+      selectedMark: @state.marks[key+1], =>
+        {horizontal, vertical} = @getScale()
+        $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
 
   render: ->
     console.log 'render()'
+    console.log 'state.marks.length: ', @state.marks.length
+
     # return null if @state.selectedMark is null
     # don't render if ya ain't got subjects (yet)
     return null if @state.subjects is null or @state.subjects.length is 0
@@ -402,17 +406,10 @@ SubjectViewer = React.createClass
 
     else
 
-      if @state.marks.length is 0
-        action_button =  <ActionButton label={"NEXT PAGE"} onActionSubmit={@nextSubject} />
-      else if @state.workflow is "finished"
-        action_button =  <ActionButton label={"FINISH"} onActionSubmit={@nextSubject} />
-
-      else if @state.marks.length > 0
-
-        if @state.workflow is "transcribe"
-          action_button = <ActionButton label={"NEXT"} onActionSubmit={@nextTextEntry} />
-        else
-          action_button =  <ActionButton label={"FINISHED MARKING"} onActionSubmit={@beginTextEntry} />
+      if @state.selectedMark.key is @state.marks.length - 1 # we're done 
+        action_button = <ActionButton label={"NEXT PAGE"} onActionSubmit={@nextSubject} />        
+      else
+        action_button = <ActionButton label={"NEXT"} onActionSubmit={@nextTextEntry} />        
 
       <div className="subject-container">
         <div className="marking-surface">
@@ -451,7 +448,6 @@ SubjectViewer = React.createClass
               onClickDelete = {@onClickDelete}
               scrubberWidth = {64}
               scrubberHeight = {32}
-              workflow = {@state.workflow}
               resizeDisabled = {@state.resizeDisabled}
               handleDragMark = {@handleDragMark}
               handleUpperResize = {@handleUpperResize}
@@ -465,7 +461,7 @@ SubjectViewer = React.createClass
         <p>{@state.subjects.location}</p>
         <div className="subject-ui">
           <TextEntryTool/>
-          {action_button}
+          { action_button }
         </div>
       </div>
 
