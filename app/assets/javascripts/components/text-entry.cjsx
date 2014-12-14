@@ -12,14 +12,34 @@ TextEntryTool = React.createClass
 
 
   handleTranscription: ->
-    if @state.currentStep + 1 > @props.transcribeSteps.length - 1
-      console.log 'NO MORE STEPS'
-      @setState finished: true
-      return
+    return unless @nextStepAvailable()
     console.log 'handleTranscription()'
     @setState currentStep: @state.currentStep + 1
 
-    
+  nextStep: ->
+    console.log 'nextStep()'
+    return unless @nextStepAvailable()
+
+  prevStep: ->
+    console.log 'prevStep()'
+    return unless @prevStepAvailable
+
+  nextStepAvailable: ->
+    if @state.currentStep + 1 > @props.transcribeSteps.length - 1
+      console.log 'THERE IS NO NEXT STEP'
+      return false
+    else
+      console.log 'NEXT STEP...'
+      return true
+
+  prevStepAvailable: ->
+    if @state.currentStep - 1 >= 0
+      console.log 'PREV STEP...'
+      return true
+    else
+      console.log 'THERE IS NO PREV STEP'
+      return false
+
   render: ->
 
     console.log 'render()'
