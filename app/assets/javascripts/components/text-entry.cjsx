@@ -5,6 +5,9 @@ Draggable = require '../lib/draggable'
 TextEntryTool = React.createClass
   displayName: 'TextEntryTool'
 
+  getInitialState: ->
+    currentStep: @props.transcribeSteps[0]
+
   componentWillReceiveProps: ->
     console.log 'TRANSCRIBE STEPS: ', @props.transcribeSteps
     return
@@ -16,20 +19,16 @@ TextEntryTool = React.createClass
     
   render: ->
 
-    # style =
-    #   top: "#{@props.top}"
-    #   left: "#{@props.left}"
-
     <div className="text-entry">
       <div className="left">
-        <div className="input_field state text">
-
+        <div className="input-field state text">
           <input 
             type="text" 
-            placeholder={@props.label} 
-            className="" 
+            placeholder={@state.currentStep.label} 
+            className="transcribe-input" 
             role="textbox" 
           />
+          <label>{@state.currentStep.description}</label>
         </div>
       </div>
       <div className="right">

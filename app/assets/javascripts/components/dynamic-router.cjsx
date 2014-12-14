@@ -28,7 +28,7 @@ DynamicRouter = React.createClass
             handler={ImageSubjectViewer_transcribe} 
             name='transcribe' 
             task='transcribe'
-            transcribeSteps={@props.project.workflow.transcribe}  
+            transcribeSteps={@props.project.workflow.transcribe.steps}  
           />
 
           {@props.project.pages.map (p, key)=>
