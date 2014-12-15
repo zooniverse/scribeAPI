@@ -15,7 +15,7 @@ TextEntryTool = React.createClass
 
     transcription = []
     for step, i in @props.transcribeSteps
-      transcription.push { field_name: "#{step.field_name}", value: $('.transcribe-input').val() }
+      transcription.push { field_name: "#{step.field_name}", value: $(".transcribe-input:eq(#{step.key})").val() }
 
     console.log 'TRANSCRIPTION:::::::::::::::::: -> ', transcription
 
@@ -62,19 +62,21 @@ TextEntryTool = React.createClass
 
     if @nextStepAvailable()
       next_button = <a className="red button back" onClick={@nextStep}>&gt;</a>
-      done_button = <a className="green button finish" onClick={@handleTranscription}>Done</a>
+      # done_button = <a className="green button finish" onClick={@handleTranscription}>Done</a>
     else
       next_button = <a className="red button back disabled">&gt;</a>
-      done_button = <a className="green button finish" onClick={@props.nextTextEntry}>Next Entry</a>
+      # done_button = <a className="green button finish" onClick={@props.nextTextEntry}>Next Entry</a>
+
+    done_button = <a className="green button finish" onClick={@handleTranscription}>Done</a>
 
     <div className="text-entry">
       <div className="left">
         {
           for step in @props.transcribeSteps
             if step.key is @state.currentStep
-              class_name = 'input-field'
+              class_name = 'input-field active'
             else
-              class_name = 'input-field hide'
+              class_name = 'input-field'
             
             <div className={class_name}>
               <label>{step.instruction}</label>
