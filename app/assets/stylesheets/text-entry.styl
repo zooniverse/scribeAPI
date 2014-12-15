@@ -1,36 +1,47 @@
 .text-entry
   position absolute
   bottom 80px
-  height 40px
+  // height 40px
   width 100%
   background-color #fff
+  line-height 2em
   // background-color rgba(0,0,0,0.75)
   // border 1px solid #f60
   // border-radius 6px
-  padding 10px
-  
-  line-height 40px
+  // padding 10px  
+  // line-height 40px
 
   .left
+    // background-color rgb(20,100,20)
     float left
+    input
+      outline none
     .input-field
+      display none // auto hide
+      input
+        // text-transform uppercase
       label
+        display inherit
         color black
         padding-left 10px
+      &.active
+        display block
         
   .right
+    line-height 4em
     margin-right 20px
     float right
 
   .button
     @extends $button
-    border-radius 2px
-    padding 2px 2px
+    color #fff
+    border-radius 4px
+    padding 5px
     margin 2px
     width 140px
     height 30px
     text-decoration none
     font-size 12px
-    border 2px solid #fff
+    // border 2px solid #fff
     cursor pointer
     opacity 0.75

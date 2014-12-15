@@ -112,6 +112,7 @@ body
 h1
   color purple
   font-weight 400
+
   
 $button
   border-radius 5px
@@ -122,6 +123,7 @@ $button
   border 2px solid transparent
   cursor pointer
   opacity 0.75
+  color #000
   &.yellow
     background-color yellow
   &.red
@@ -130,7 +132,8 @@ $button
     background-color blue
   &.white
     background-color #fff
-    color #000
+  &.green
+    background-color #693
   &.disabled
     opacity 0.25
     &:hover
@@ -144,3 +147,10 @@ $button
   &:hover
     opacity 1.0
     // border 2px solid #000
+      
+  -webkit-touch-callout none
+  -webkit-user-select none
+  -khtml-user-select none
+  -moz-user-select none
+  -ms-user-select none
+  user-select none
