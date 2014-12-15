@@ -453,6 +453,7 @@ SubjectViewer = React.createClass
           <TextEntryTool 
             transcribeSteps={@props.transcribeSteps} 
             recordTranscription={@recordTranscription}
+            nextTextEntry={@nextTextEntry}
           />
           { action_button }
         </div>

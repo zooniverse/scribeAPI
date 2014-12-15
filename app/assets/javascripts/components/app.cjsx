@@ -14,20 +14,23 @@ project =
       steps: [
           {
             key: '0',
-            name: 'date',
-            label: 'Date'
+            type: 'date', # type of input
+            field_name: 'date',
+            label: 'Date',
             description: 'Please type-in the log date.'
           },
           {
             key: '1',
-            name: 'entry'
-            label: 'Journal Entry'
+            type: 'text',
+            field_name: 'journal_entry',
+            label: 'Journal Entry',
             description: 'Please type-in the journal entry for this day.'
           },
           {
             key: '1',
-            name: 'entry'
-            label: 'Other Entry'
+            type: 'text',
+            field_name: 'other_entry',
+            label: 'Other Entry',
             description: 'This is some other entry.'
           }
       ]

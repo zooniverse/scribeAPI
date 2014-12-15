@@ -6,7 +6,6 @@ TextEntryTool = React.createClass
   displayName: 'TextEntryTool'
 
   componentWillReceiveProps: ->
-    console.log 'ksdhksljdhskjdhlskjdhslkjdhslkjdh; ', @props
 
 
   getInitialState: ->
@@ -16,10 +15,9 @@ TextEntryTool = React.createClass
 
   handleTranscription: ->
     console.log 'handleTranscription()'
-    unless @nextStepAvailable()
-      console.log 'FOOODSKJLHDLKJSHDLKSJDHKSJDH ', $('transcribe-input').val()
-      @props.recordTranscription('FOO', 'BAR')
-      return
+    field_name = @props.transcribeSteps[@state.currentStep].field_name
+    field_data = $('.transcribe-input').val()
+    @props.recordTranscription(field_name, field_data)
     @setState currentStep: @state.currentStep + 1
 
   nextStep: ->
@@ -57,16 +55,18 @@ TextEntryTool = React.createClass
 
     if @nextStepAvailable()
       next_button = <a className="red button back" onClick={@nextStep}>&gt;</a>
+      done_button = <a className="green button finish" onClick={@handleTranscription}>Done</a>
     else
       next_button = <a className="red button back disabled">&gt;</a>
+      done_button = <a className="green button finish" onClick={@props.nextTextEntry}>Next Entry</a>
 
 
     <div className="text-entry">
       <div className="left">
         <div className="input-field state text">
-          <label>{@props.transcribeSteps[currentStep].description}</label>
+          <label value="FOO">{@props.transcribeSteps[currentStep].description}</label>
           <input 
-            type="text" 
+            type="date" 
             placeholder={@props.transcribeSteps[currentStep].label} 
             className="transcribe-input" 
             role="textbox" 
@@ -76,7 +76,7 @@ TextEntryTool = React.createClass
       <div className="right">
         {prev_button}
         {next_button}
-        <a className="green button finish" onClick={@handleTranscription}>Done</a>
+        {done_button}
       </div>
     </div>
 
