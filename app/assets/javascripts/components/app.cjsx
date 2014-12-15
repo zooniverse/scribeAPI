@@ -13,25 +13,25 @@ project =
     transcribe:
       steps: [
           {
-            key: '0',
+            key: 0,
             type: 'date', # type of input
             field_name: 'date',
             label: 'Date',
-            description: 'Please type-in the log date.'
+            instruction: 'Please type-in the log date.'
           },
           {
-            key: '1',
+            key: 1,
             type: 'text',
             field_name: 'journal_entry',
             label: 'Journal Entry',
-            description: 'Please type-in the journal entry for this day.'
+            instruction: 'Please type-in the journal entry for this day.'
           },
           {
-            key: '1',
+            key: 2,
             type: 'text',
             field_name: 'other_entry',
             label: 'Other Entry',
-            description: 'This is some other entry.'
+            instruction: 'Just enter something. I don\'t care.'
           }
       ]
   pages: [

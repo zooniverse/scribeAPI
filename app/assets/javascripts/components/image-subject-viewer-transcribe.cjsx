@@ -336,7 +336,6 @@ SubjectViewer = React.createClass
       marks: marks
       selectedMark: null
 
-
   recordTranscription: (field, content) ->
     console.log 'SELECTED MARK: ', @state.selectedMark
     console.log "RECORDING TRANSCRIPTION: [#{field}, #{content}]"
@@ -348,7 +347,6 @@ SubjectViewer = React.createClass
 
     @setState selectedMark: selectedMark, =>
       console.log 'SELECTED MARK: ', @state.selectedMark
-
 
 
   beginTextEntry: ->
@@ -454,6 +452,7 @@ SubjectViewer = React.createClass
             transcribeSteps={@props.transcribeSteps} 
             recordTranscription={@recordTranscription}
             nextTextEntry={@nextTextEntry}
+            selectedMark={@state.selectedMark}
           />
           { action_button }
         </div>

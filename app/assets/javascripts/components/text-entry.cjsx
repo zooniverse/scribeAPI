@@ -5,9 +5,6 @@ Draggable = require '../lib/draggable'
 TextEntryTool = React.createClass
   displayName: 'TextEntryTool'
 
-  componentWillReceiveProps: ->
-
-
   getInitialState: ->
     console.log 'TRANSCRIBE STEPS: ', @props.transcribeSteps
     currentStep: 0
@@ -15,10 +12,19 @@ TextEntryTool = React.createClass
 
   handleTranscription: ->
     console.log 'handleTranscription()'
-    field_name = @props.transcribeSteps[@state.currentStep].field_name
-    field_data = $('.transcribe-input').val()
-    @props.recordTranscription(field_name, field_data)
-    @setState currentStep: @state.currentStep + 1
+
+    transcription = []
+    for step, i in @props.transcribeSteps
+      transcription.push { field_name: "#{step.field_name}", value: $('.transcribe-input').val() }
+
+    console.log 'TRANSCRIPTION:::::::::::::::::: -> ', transcription
+
+    # field_name = @props.transcribeSteps[@state.currentStep].field_name
+    # field_data = $('.transcribe-input').val()
+
+
+    @props.recordTranscription(transcription)
+    @setState currentStep: 0
 
   nextStep: ->
     return unless @nextStepAvailable()
@@ -46,6 +52,7 @@ TextEntryTool = React.createClass
 
   render: ->
     console.log 'render()'
+    console.log 'SELECTED MARK --------------------: ', @props.selectedMark
     currentStep = @state.currentStep
 
     if @prevStepAvailable()
@@ -60,18 +67,24 @@ TextEntryTool = React.createClass
       next_button = <a className="red button back disabled">&gt;</a>
       done_button = <a className="green button finish" onClick={@props.nextTextEntry}>Next Entry</a>
 
-
     <div className="text-entry">
       <div className="left">
-        <div className="input-field state text">
-          <label value="FOO">{@props.transcribeSteps[currentStep].description}</label>
-          <input 
-            type="date" 
-            placeholder={@props.transcribeSteps[currentStep].label} 
-            className="transcribe-input" 
-            role="textbox" 
-          />
-        </div>
+        {
+          for step in @props.transcribeSteps
+            if step.key is @state.currentStep
+              class_name = 'input-field'
+            else
+              class_name = 'input-field hide'
+            
+            <div className={class_name}>
+              <label>{step.instruction}</label>
+              <input 
+                className="transcribe-input" 
+                type={step.type} 
+                placeholder={step.label} 
+              />
+            </div>
+        }
       </div>
       <div className="right">
         {prev_button}
