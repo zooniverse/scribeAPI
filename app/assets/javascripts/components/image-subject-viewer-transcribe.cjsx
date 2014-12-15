@@ -338,6 +338,7 @@ SubjectViewer = React.createClass
             nextTextEntry={@nextTextEntry}
             selectedMark={@state.selectedMark}
           />
+          {action_button}
         </div>
       </div>
 

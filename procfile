@@ -1,1 +1,1 @@
-web: bundle exec rails server
+web: npm install; bundle exec rails server
