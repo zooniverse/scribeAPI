@@ -143,11 +143,15 @@ SubjectViewer = React.createClass
             # console.log "Finished Loading."
 
   nextSubject: () ->
+    console.log 'MARKS: ', @state.marks
     for mark in [ @state.marks... ]
       @state.classification.annotate
         timestamp: mark.timestamp
+        key: mark.key
         y_upper: mark.yUpper
         y_lower: mark.yLower
+        x: mark.x
+        y: mark.y
 
     # # DEBUG CODE  
     # console.log 'CLASSIFICATION: ', @state.classification
@@ -346,7 +350,9 @@ SubjectViewer = React.createClass
       selectedMark: null
 
   beginTextEntry: ->
-    # console.log 'beginTextEntry()'
+    console.log 'beginTextEntry()'
+    @nextSubject()
+    return # just load next subject for now
     return unless @state.marks.length > 0
     @setState
       workflow: "transcribe"
@@ -418,7 +424,7 @@ SubjectViewer = React.createClass
               onDrag  = {@handleInitDrag}
               onEnd   = {@handleInitRelease} >
               <SVGImage
-                src = {@state.subject.location}
+                src = {"https://zooniverse-static.s3.amazonaws.com/scribe_subjects/logbookofalfredg1851unse_0083.jpg"}
                 width = {@state.imageWidth}
                 height = {@state.imageHeight} />
             </Draggable>

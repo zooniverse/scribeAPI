@@ -17,9 +17,9 @@ RegionFocusTool = React.createClass
       {x, y}
 
   getInitialState: ->
-    console.log 'MARK PRO{P: ', @props.mark
+    console.log 'REGION FOCUS: MARK PROP: ', @props.mark
     # # DEBUG CODE
-    # console.log "PROPS [#{@props.mark.yUpper},#{@props.mark.yLower}]"
+    # console.log "PROPS [#{@props.mark.y_upper},#{@props.mark.y_lower}]"
     # console.log "INITIAL (STATE.X, STATE.Y): (#{Math.round @props.mark.x},#{Math.round @props.mark.y})"
     centerX: @props.mark.x
     centerY: @props.mark.y
@@ -27,34 +27,37 @@ RegionFocusTool = React.createClass
     fillColor: 'rgba(0,0,0,0.5)'
     strokeColor: 'rgba(0,0,0,0.5)'
     strokeWidth: 6
-    yUpper: @props.mark.yUpper
-    yLower: @props.mark.yLower
-    markHeight: @props.mark.yLower - @props.mark.yUpper
+    yUpper: @props.mark.y_upper
+    yLower: @props.mark.y_lower
+    markHeight: @props.mark.y_lower - @props.mark.y_upper
 
     markComplete: false
     transcribeComplete: false
 
   componentWillReceiveProps: ->
     @setState
-      yUpper: @props.mark.yUpper
-      yLower: @props.mark.yLower
+      yUpper: @props.mark.y_upper
+      yLower: @props.mark.y_lower
       centerX: @props.mark.x
       centerY: @props.mark.y
-      markHeight: @props.mark.yLower - @props.mark.yUpper, =>
+      markHeight: @props.mark.y_lower - @props.mark.y_upper, =>
         @forceUpdate()
 
   handleToolProgress: ->
     if @state.markComplete is false
-      console.log 'MARK COMPLETE!'
+      # console.log 'MARK COMPLETE!'
       @setState markComplete: true
     else
-      console.log 'TRANSCRIBE COMPLETE!'
+      # console.log 'TRANSCRIBE COMPLETE!'
       @setState transcribeComplete: true
 
   render: ->
+    # console.log 'props: ', @props
+    # console.log 'mark: ', @props.mark
+    markHeight = @props.mark.y_lower - @props.mark.y_upper
     <g 
       className = "point drawing-tool" 
-      transform = {"translate(#{Math.ceil @state.strokeWidth}, #{Math.round( @state.centerY - @state.markHeight/2 ) })"} 
+      transform = {"translate(#{Math.ceil @state.strokeWidth}, #{Math.round( @props.mark.y - markHeight/2 ) })"} 
       data-disabled = {@props.disabled || null} 
       data-selected = {@props.selected || null}
     >
@@ -95,7 +98,7 @@ RegionFocusTool = React.createClass
             y           = { -@state.yUpper-80 }
             viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
             width       = {( @props.imageWidth - 2*@state.strokeWidth ) }
-            height      = {@state.yUpper}
+            height      = {@props.mark.y_upper}
             fill        = "rgba(0,0,0,0.8)"
             strokeWidth = {@state.strokeWidth}
           />
@@ -112,7 +115,7 @@ RegionFocusTool = React.createClass
           <rect 
             className   = "mark-rectangle"
             x           = 0
-            y           = { @state.markHeight }
+            y           = { markHeight }
             viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
             width       = {( @props.imageWidth - 2*@state.strokeWidth ) }
             height      = {80}
@@ -122,10 +125,10 @@ RegionFocusTool = React.createClass
           <rect 
             className   = "mark-rectangle"
             x           = 0
-            y           = { @state.markHeight+80 }
+            y           = { markHeight+80 }
             viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
             width       = {( @props.imageWidth - 2*@state.strokeWidth ) }
-            height      = { @props.imageHeight - @state.yLower }
+            height      = { @props.imageHeight - @props.mark.y_lower }
             fill        = "rgba(0,0,0,0.8)"
             stroke      = {@state.strokeColor}
             strokeWidth = {@state.strokeWidth}
@@ -133,27 +136,27 @@ RegionFocusTool = React.createClass
         </g>
       </Draggable>
 
-      <ResizeButton 
-        viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
-        className = "upperResize"
-        handleResize = {@props.handleUpperResize} 
-        transform = {"translate( #{@props.imageWidth/2}, #{ - Math.round @props.scrubberHeight/2 } )"} 
-        scrubberHeight = {@props.scrubberHeight}
-        scrubberWidth = {@props.scrubberWidth}
-        workflow = {@props.workflow}
-        isSelected = "true"
-      />
+      {
+        if not @props.resizeDisabled
+          <ResizeButton 
+            viewBox = {"0 0 @props.imageWidth @props.imageHeight"}
+            className = "upperResize"
+            handleResize = {@props.handleUpperResize} 
+            transform = {"translate( #{@props.imageWidth/2}, #{ - Math.round @props.scrubberHeight/2 } )"} 
+            scrubberHeight = {@props.scrubberHeight}
+            scrubberWidth = {@props.scrubberWidth}
+            isSelected = "true"
+          />
 
-      <ResizeButton 
-        className = "lowerResize"
-        handleResize = {@props.handleLowerResize} 
-        transform = {"translate( #{@props.imageWidth/2}, #{ Math.round( @state.markHeight - @props.scrubberHeight/2 ) } )"} 
-        scrubberHeight = {@props.scrubberHeight}
-        scrubberWidth = {@props.scrubberWidth}
-        workflow = {@props.workflow}
-        isSelected = "true"
-
-      />
+          <ResizeButton 
+            className = "lowerResize"
+            handleResize = {@props.handleLowerResize} 
+            transform = {"translate( #{@props.imageWidth/2}, #{ Math.round( markHeight - @props.scrubberHeight/2 ) } )"} 
+            scrubberHeight = {@props.scrubberHeight}
+            scrubberWidth = {@props.scrubberWidth}
+            isSelected = "true"
+          />
+      }
 
     </g>
 

@@ -15,23 +15,21 @@ PointTool                     = require './point'
 Classification                = require '../models/classification'
 getUrlParamByName             = require '../lib/getUrlParamByName'
 
-
 ImageSubjectViewer_transcribe = React.createClass # rename to Classifier
   displayName: 'ImageSubjectViewer_transcribe'
 
   render: ->
-    endpoint = "http://localhost:3000/workflows/533cd4dd4954738018030000/subjects.json?limit=5"
+    endpoint = "http://localhost:3000/offline/example_subjects/transcription_subjects.json"
     <div className="image-subject-viewer">
-      <SubjectViewer endpoint=endpoint task={@props.task} />
+      <SubjectViewer 
+        endpoint=endpoint 
+        transcribeSteps={@props.transcribeSteps} 
+        task={@props.task} 
+      />
     </div>
-
-  # componentDidMount: ->
-  #   console.log 'TASK: ', @props.task
-
 
 SubjectViewer = React.createClass
   displayName: 'SubjectViewer'
-
   resizing: false
 
   usingFakeSubject: ->
@@ -46,6 +44,8 @@ SubjectViewer = React.createClass
     subject: null
     subjectEndpoint: @props.endpoint
 
+    resizeDisabled: true
+
     marks: []
     tools: []
     loading: false
@@ -59,21 +59,8 @@ SubjectViewer = React.createClass
     viewWidth: 0
     viewHeight: 0
 
-    # defines which workflow is active (mark, transcribe, etc.)
-    workflow: "mark"
-
     classification: null
-
     selectedMark: null # TODO: currently not in use
-
-  # NOT BEING USED 
-  # getFakeSubject: (group) ->
-  #   if group is "transcribe"
-  #     transcriptionSubject = "THIS IS A TRANSCRIPTION SUBJECT"
-  #     return transcriptionSubject
-  #   if group is "mark"
-  #     markingSubject = "THIS IS A MARKING SUBJECT"
-  #     return markingSubject
 
   componentDidMount: ->
     console.log 'TASK = ', @props.task
@@ -110,15 +97,18 @@ SubjectViewer = React.createClass
       dataType: "json"
       success: ((data) ->
         # DEBUG CODE
-        console.log 'FETCHED SUBJECTS: ', data
+        console.log 'FETCHED SUBJECTS: ', data[0]
 
         @setState 
-          subjects: data
-          subject: data[0], =>
+          subjects:     data
+          subject:      data[0].subject
+          marks:        data[0].subject.annotations
+          selectedMark: data[0].subject.annotations[0], =>
+            console.log 'MARKS: ', @state.marks
             @state.classification = new Classification @state.subject
-            @loadImage ((if @usingFakeSubject() then @state.subject.classification.subject.location else @state.subject.location))
-
-        # console.log 'Fetched Images.' # DEBUG CODE
+            @loadImage @state.subject.location
+              
+        console.log 'Fetched Images.' # DEBUG CODE
 
         return
       ).bind(this)
@@ -144,20 +134,25 @@ SubjectViewer = React.createClass
               # console.log "Finished Loading."
 
   nextSubject: () ->
+    console.log 'nextSubject()'
+    # TODO: annotate new transcription and submit as new classification!!!
+
     for mark in [ @state.marks... ]
-      @state.classification.annotate
-        timestamp: mark.timestamp
-        y_upper: mark.yUpper
-        y_lower: mark.yLower
+      if mark.transcription isnt undefined
+        @state.classification.annotate
+          timestamp: mark.timestamp
+          transcription: mark.transcription
 
-    # # DEBUG CODE  
-    # console.log 'CLASSIFICATION: ', @state.classification
+    # DEBUG CODE  
+    console.log 'CLASSIFICATION: ', @state.classification
 
-    console.log JSON.stringify @state.classification # DEBUG CODE
-    @state.classification.send()
+    # console.log JSON.stringify @state.classification # DEBUG CODE
+    # @state.classification.send()
+    
     @setState
-      workflow: "mark"
       marks: [] # clear marks for next subject
+
+    @resetTranscriptionFields()
 
     # prepare new classification
     if @state.subjects.shift() is undefined or @state.subjects.length <= 0
@@ -165,14 +160,13 @@ SubjectViewer = React.createClass
       return
     else
       @setState subject: @state.subjects[0], =>
-        @loadImage ((if @usingFakeSubject() then @state.subject.classification.subject.location else @state.subject.location))
+        @loadImage @state.subject.location
 
     @state.classification = new Classification @state.subject
 
   handleInitStart: (e) ->
+    return
     console.log 'handleInitStart()'
-
-    return if @state.workflow is "transcribe"
 
     {horizontal, vertical} = @getScale()
     rect = @refs.sizeRect?.getDOMNode().getBoundingClientRect()
@@ -192,9 +186,9 @@ SubjectViewer = React.createClass
     @selectMark @state.marks[@state.marks.length-1]
 
   handleInitDrag: (e) ->
+    return # dont use
     console.log 'handleInitDrag()'
 
-    return unless @state.workflow is "mark"
     {x,y} = @getEventOffset e
 
     dist = Math.abs( @state.selectedMark.y - y )
@@ -226,9 +220,8 @@ SubjectViewer = React.createClass
       }
 
   handleDragMark: (e) ->
+    return # don't use
     console.log 'handleDragMark()'
-
-    return unless @state.workflow is "mark"
     
     {x,y} = @getEventOffset e
 
@@ -249,6 +242,7 @@ SubjectViewer = React.createClass
       selectedMark: currentMark
 
   handleUpperResize: (e) ->
+    return
     console.log 'handleUpperResize()'
     {x,y} = @getEventOffset e
 
@@ -280,6 +274,7 @@ SubjectViewer = React.createClass
       selectedMark: currentMark
 
   handleLowerResize: (e) ->
+    return
     console.log 'handleLowerResize()'
     {x,y} = @getEventOffset e
 
@@ -288,7 +283,6 @@ SubjectViewer = React.createClass
 
     currentMark = @state.selectedMark
 
-    
     # enforce bounds
     if y > @state.imageHeight
       y = @state.imageHeight 
@@ -345,28 +339,47 @@ SubjectViewer = React.createClass
       marks: marks
       selectedMark: null
 
+  recordTranscription: (transcription) ->
+    console.log 'SELECTED MARK: ', @state.selectedMark
+    console.log "RECORDING TRANSCRIPTION: #{transcription}"
+    selectedMark = @state.selectedMark
+    selectedMark.transcription = transcription
+
+    @setState selectedMark: selectedMark, =>
+      console.log 'SELECTED MARK: ', @state.selectedMark
+
+  resetTranscriptionFields: ->
+    console.log 'resetTranscriptionFields()'
+    $('.transcribe-input').val("")
+
   beginTextEntry: ->
     # console.log 'beginTextEntry()'
     return unless @state.marks.length > 0
     @setState
-      workflow: "transcribe"
       selectedMark: @state.marks[0], =>
         {horizontal, vertical} = @getScale()
         $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
 
   nextTextEntry: ->
+    console.log 'nextTextEntry()'
+    console.log 'SELECETD MARK: ', @state.selectedMark # DEBUG CODE
 
     key = @state.selectedMark.key
     if key+1 > @state.marks.length-1
-      # console.log "That's all the marks for now!"
-      @setState workflow: "finished"
+      console.log "That's all the marks for now!"
       return
 
-    @setState selectedMark: @state.marks[key+1], =>
-      {horizontal, vertical} = @getScale()
-      $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
+    @setState 
+      selectedMark: @state.marks[key+1], =>
+        {horizontal, vertical} = @getScale()
+        $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
+
+    @resetTranscriptionFields()
 
   render: ->
+    console.log 'render()'
+
+    # return null if @state.selectedMark is null
     # don't render if ya ain't got subjects (yet)
     return null if @state.subjects is null or @state.subjects.length is 0
 
@@ -378,7 +391,7 @@ SubjectViewer = React.createClass
         <div className="marking-surface">
           <LoadingIndicator/>
         </div>
-        <p>{((if @usingFakeSubject() then @state.subject.classification.subject.location else @state.subject.location))}</p>
+        <p>{ @state.subject.location }</p>
         <div className="subject-ui">
           <ActionButton loading={@state.loading} />
         </div>
@@ -386,17 +399,10 @@ SubjectViewer = React.createClass
 
     else
 
-      if @state.marks.length is 0
-        action_button =  <ActionButton label={"NEXT PAGE"} onActionSubmit={@nextSubject} />
-      else if @state.workflow is "finished"
-        action_button =  <ActionButton label={"FINISH"} onActionSubmit={@nextSubject} />
-
-      else if @state.marks.length > 0
-
-        if @state.workflow is "transcribe"
-          action_button = <ActionButton label={"NEXT"} onActionSubmit={@nextTextEntry} />
-        else
-          action_button =  <ActionButton label={"FINISHED MARKING"} onActionSubmit={@beginTextEntry} />
+      if @state.selectedMark.key is @state.marks.length - 1 # we're done 
+        action_button = <ActionButton label={"NEXT PAGE"} onActionSubmit={@nextSubject} />        
+      else
+        action_button = <ActionButton label={"NEXT"} onActionSubmit={@nextTextEntry} />        
 
       <div className="subject-container">
         <div className="marking-surface">
@@ -418,69 +424,42 @@ SubjectViewer = React.createClass
               onDrag  = {@handleInitDrag}
               onEnd   = {@handleInitRelease} >
               <SVGImage
-                src = {((if @usingFakeSubject() then @state.subject.classification.subject.location else @state.subject.location))}
+                src = { @state.subject.location }
                 width = {@state.imageWidth}
                 height = {@state.imageHeight} />
             </Draggable>
 
-            { 
-              if @state.workflow is "mark"
-                @state.marks.map ((mark, i) ->
-                  <TextRegionTool
-                    key = {mark.key}
-                    mark = {mark}
-                    disabled = {false}
-                    imageWidth = {@state.imageWidth}
-                    imageHeight = {@state.imageHeight}
-                    getEventOffset = {@getEventOffset}
-                    select = {@selectMark.bind null, mark}
-                    selected = {mark is @state.selectedMark}
-                    onClickDelete = {@onClickDelete}
-                    scrubberWidth = {64}
-                    scrubberHeight = {32}
-                    workflow = {@state.workflow}
-                    handleDragMark = {@handleDragMark}
-                    handleUpperResize = {@handleUpperResize}
-                    handleLowerResize = {@handleLowerResize}
-                    handleMarkClick = {@handleMarkClick.bind null, mark}
-                  />
-                ), @
-              else
-                console.log 'SELECTED MARK KEY: ', @state.selectedMark.key
-                <RegionFocusTool 
-                  key = {@state.selectedMark.key}
-                  mark = {@state.selectedMark}
-                  disabled = {false}
-                  imageWidth = {@state.imageWidth}
-                  imageHeight = {@state.imageHeight}
-                  getEventOffset = {@getEventOffset}
-                  select = {@selectMark.bind null, @state.selectedMark}
-                  selected = {true}
-                  onClickDelete = {@onClickDelete}
-                  scrubberWidth = {64}
-                  scrubberHeight = {32}
-                  workflow = {@state.workflow}
-                  handleDragMark = {@handleDragMark}
-                  handleUpperResize = {@handleUpperResize}
-                  handleLowerResize = {@handleLowerResize}
-                  handleMarkClick = {@handleMarkClick.bind null, @state.selectedMark}
-                />
-            }
-
+            <RegionFocusTool 
+              key = {@state.selectedMark.key}
+              mark = {@state.selectedMark}
+              disabled = {false}
+              imageWidth = {@state.imageWidth}
+              imageHeight = {@state.imageHeight}
+              getEventOffset = {@getEventOffset}
+              select = {@selectMark.bind null, @state.selectedMark}
+              selected = {true}
+              onClickDelete = {@onClickDelete}
+              scrubberWidth = {64}
+              scrubberHeight = {32}
+              resizeDisabled = {@state.resizeDisabled}
+              handleDragMark = {@handleDragMark}
+              handleUpperResize = {@handleUpperResize}
+              handleLowerResize = {@handleLowerResize}
+              handleMarkClick = {@handleMarkClick.bind null, @state.selectedMark}
+            />
 
           </svg>
-
-          { if @state.workflow is "transcribe" and @state.selectedMark isnt null
-            <TextEntryTool
-              top={ @getScale().vertical * @state.selectedMark.yLower + 20 + @state.offset.top }
-              left={@state.windowInnerWidth/2 - 200}
-            />
-          }
 
         </div>
         <p>{@state.subjects.location}</p>
         <div className="subject-ui">
-          {action_button}
+          <TextEntryTool 
+            transcribeSteps={@props.transcribeSteps} 
+            recordTranscription={@recordTranscription}
+            nextTextEntry={@nextTextEntry}
+            selectedMark={@state.selectedMark}
+          />
+          { action_button }
         </div>
       </div>
 
