@@ -138,9 +138,10 @@ SubjectViewer = React.createClass
     # TODO: annotate new transcription and submit as new classification!!!
 
     for mark in [ @state.marks... ]
-      @state.classification.annotate
-        timestamp: mark.timestamp
-        transcription: mark.transcription
+      if mark.transcription isnt undefined
+        @state.classification.annotate
+          timestamp: mark.timestamp
+          transcription: mark.transcription
 
     # DEBUG CODE  
     console.log 'CLASSIFICATION: ', @state.classification
@@ -336,18 +337,14 @@ SubjectViewer = React.createClass
       marks: marks
       selectedMark: null
 
-  recordTranscription: (field, content) ->
+  recordTranscription: (transcription) ->
     console.log 'SELECTED MARK: ', @state.selectedMark
-    console.log "RECORDING TRANSCRIPTION: [#{field}, #{content}]"
-    transcription = 
-      field: field
-      content: content
+    console.log "RECORDING TRANSCRIPTION: #{transcription}"
     selectedMark = @state.selectedMark
     selectedMark.transcription = transcription
 
     @setState selectedMark: selectedMark, =>
       console.log 'SELECTED MARK: ', @state.selectedMark
-
 
   beginTextEntry: ->
     # console.log 'beginTextEntry()'
