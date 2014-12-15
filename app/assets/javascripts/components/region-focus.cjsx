@@ -17,7 +17,6 @@ RegionFocusTool = React.createClass
       {x, y}
 
   getInitialState: ->
-    console.log 'REGION FOCUS: MARK PROP: ', @props.mark
     # # DEBUG CODE
     # console.log "PROPS [#{@props.mark.y_upper},#{@props.mark.y_lower}]"
     # console.log "INITIAL (STATE.X, STATE.Y): (#{Math.round @props.mark.x},#{Math.round @props.mark.y})"

@@ -6,7 +6,6 @@ TextEntryTool = React.createClass
   displayName: 'TextEntryTool'
 
   getInitialState: ->
-    console.log 'TRANSCRIBE STEPS: ', @props.transcribeSteps
     currentStep: 0
     finished: false
 
@@ -16,8 +15,6 @@ TextEntryTool = React.createClass
     transcription = []
     for step, i in @props.transcribeSteps
       transcription.push { field_name: "#{step.field_name}", value: $(".transcribe-input:eq(#{step.key})").val() }
-
-    console.log 'TRANSCRIPTION:::::::::::::::::: -> ', transcription
 
     # field_name = @props.transcribeSteps[@state.currentStep].field_name
     # field_data = $('.transcribe-input').val()
@@ -51,8 +48,7 @@ TextEntryTool = React.createClass
       return false
 
   render: ->
-    console.log 'render()'
-    console.log 'SELECTED MARK --------------------: ', @props.selectedMark
+    # console.log 'render()'
     currentStep = @state.currentStep
 
     if @prevStepAvailable()

@@ -96,19 +96,17 @@ SubjectViewer = React.createClass
       url: endpoint
       dataType: "json"
       success: ((data) ->
-        # DEBUG CODE
-        console.log 'FETCHED SUBJECTS: ', data[0]
+        # # DEBUG CODE
+        # console.log 'FETCHED SUBJECTS: ', data[0]
 
         @setState 
           subjects:     data
           subject:      data[0].subject
           marks:        data[0].subject.annotations
           selectedMark: data[0].subject.annotations[0], =>
-            console.log 'MARKS: ', @state.marks
+            # console.log 'MARKS: ', @state.marks
             @state.classification = new Classification @state.subject
             @loadImage @state.subject.location
-              
-        console.log 'Fetched Images.' # DEBUG CODE
 
         return
       ).bind(this)
@@ -119,7 +117,7 @@ SubjectViewer = React.createClass
     return
 
   loadImage: (url) ->
-    console.log 'Loading image... ', url # DEBUG CODE
+    # console.log 'Loading image... ', url # DEBUG CODE
     @setState loading: true, =>
       img = new Image()
       img.src = url
@@ -145,7 +143,6 @@ SubjectViewer = React.createClass
 
     # DEBUG CODE  
     console.log 'CLASSIFICATION: ', @state.classification
-
     # console.log JSON.stringify @state.classification # DEBUG CODE
     # @state.classification.send()
     
@@ -164,146 +161,39 @@ SubjectViewer = React.createClass
 
     @state.classification = new Classification @state.subject
 
+  # EVENT HANDLERS (CURRENTLY NOT IN USE)
+
   handleInitStart: (e) ->
-    return
     console.log 'handleInitStart()'
-
-    {horizontal, vertical} = @getScale()
-    rect = @refs.sizeRect?.getDOMNode().getBoundingClientRect()
-    timestamp = (new Date).toUTCString()
-    key = @state.marks.length
-    {x, y} = @getEventOffset e
-    yUpper = Math.round( y - 50/2 )
-    yLower = Math.round( y + 50/2 )
-
-    marks = @state.marks
-    marks.push {yUpper, yLower, x, y, key, timestamp}
-
-    @setState 
-      marks: marks
-      offset: $(e.nativeEvent.target).offset()
-
-    @selectMark @state.marks[@state.marks.length-1]
+    return # don't do anything
 
   handleInitDrag: (e) ->
-    return # dont use
     console.log 'handleInitDrag()'
-
-    {x,y} = @getEventOffset e
-
-    dist = Math.abs( @state.selectedMark.y - y )
-
-    if dist > 50/2
-      currentMark = @state.selectedMark
-      currentMark.yUpper = currentMark.y - dist
-      currentMark.yLower = currentMark.y + dist
-      currentMark.markHeight = currentMark.yLower - currentMark.yUpper
-
-      @setState
-        selectedMark: currentMark
+    return # don't do anything
 
   handleInitRelease: (e) ->
     console.log 'handleInitRelease()'
+    return # don't do anything
 
   handleToolMouseDown: ->
     console.log 'handleToolMouseDown()'
+    return # don't do anything
 
   handleMarkClick: (mark, e) ->
-    {x,y} = @getEventOffset e
-
-    # save click offset from mark center
-    @setState 
-      selectedMark: mark
-      markOffset: { 
-        x: mark.x - x, 
-        y: mark.y - y
-      }
+    console.log 'handleMarkClick()'
+    return # don't do anything
 
   handleDragMark: (e) ->
-    return # don't use
     console.log 'handleDragMark()'
-    
-    {x,y} = @getEventOffset e
-
-    currentMark = @state.selectedMark
-    currentMark.x = Math.round x + @state.markOffset.x
-    currentMark.y = Math.round y + @state.markOffset.y
-    markHeight = currentMark.yLower - currentMark.yUpper
-    currentMark.yUpper = Math.round currentMark.y - markHeight/2
-    currentMark.yLower = Math.round currentMark.y + markHeight/2
-    
-
-    # prevent dragging mark beyond image bounds
-    offset = @state.markOffset.y
-    return if ( y + offset - markHeight/2 ) < 0 
-    return if ( y + offset + markHeight/2 ) > @state.imageHeight
-
-    @setState 
-      selectedMark: currentMark
+    return # don't do anything
 
   handleUpperResize: (e) ->
-    return
     console.log 'handleUpperResize()'
-    {x,y} = @getEventOffset e
-
-    x = Math.round x
-    y = Math.round y
-
-    currentMark = @state.selectedMark
-
-    # enforce bounds
-    if y < 0
-      y = 0 
-      return
-
-    if currentMark.yLower - y < 50      
-      currentMark.yUpper = Math.round( -50 + currentMark.yLower ) 
-      @setState selectedMark: currentMark
-      return
-
-    dy = currentMark.yUpper - y
-    yUpper_p = y
-    markHeight_p = currentMark.yLower - currentMark.yUpper + dy
-    y_p = yUpper_p + markHeight_p/2
-
-    currentMark.yUpper = yUpper_p
-    currentMark.markHeight = markHeight_p
-    currentMark.y = y_p
-
-    @setState
-      selectedMark: currentMark
+    return # don't do anything
 
   handleLowerResize: (e) ->
-    return
     console.log 'handleLowerResize()'
-    {x,y} = @getEventOffset e
-
-    x = Math.round x
-    y = Math.round y
-
-    currentMark = @state.selectedMark
-
-    # enforce bounds
-    if y > @state.imageHeight
-      y = @state.imageHeight 
-      return
-
-    if y - currentMark.yUpper < 50
-      currentMark.yLower = Math.round( 50 + currentMark.yUpper )
-      @setState selectedMark: currentMark
-      return
-      
-    dy = y - currentMark.yLower
-    yLower_p = y
-    markHeight_p = currentMark.yLower - currentMark.yUpper + dy
-    y_p = yLower_p - markHeight_p/2
-
-    currentMark.yLower = yLower_p
-    currentMark.markHeight = markHeight_p
-    currentMark.y = y_p
-
-    @setState
-      selectedMark: currentMark
+    return # don't do anything
 
   setView: (viewX, viewY, viewWidth, viewHeight) ->
     @setState {viewX, viewY, viewWidth, viewHeight}
@@ -317,14 +207,9 @@ SubjectViewer = React.createClass
 
   getEventOffset: (e) ->
     rect = @refs.sizeRect.getDOMNode().getBoundingClientRect()
-
-    # console.log 'RECT: ', rect
     {horizontal, vertical} = @getScale()
     x: ((e.pageX - pageXOffset - rect.left) / horizontal) + @state.viewX
     y: ((e.pageY - pageYOffset - rect.top) / vertical) + @state.viewY
-
-    # x: ((e.pageX - pageXOffset - rect.left)) + @state.viewX
-    # y: ((e.pageY - pageYOffset - rect.top)) + @state.viewY
 
   selectMark: (mark) ->
     return if mark is @state.selectedMark
@@ -340,20 +225,16 @@ SubjectViewer = React.createClass
       selectedMark: null
 
   recordTranscription: (transcription) ->
-    console.log 'SELECTED MARK: ', @state.selectedMark
-    console.log "RECORDING TRANSCRIPTION: #{transcription}"
     selectedMark = @state.selectedMark
     selectedMark.transcription = transcription
-
-    @setState selectedMark: selectedMark, =>
-      console.log 'SELECTED MARK: ', @state.selectedMark
+    @setState selectedMark: selectedMark #, =>
+      # console.log 'SELECTED MARK: ', @state.selectedMark
 
   resetTranscriptionFields: ->
     console.log 'resetTranscriptionFields()'
     $('.transcribe-input').val("")
 
   beginTextEntry: ->
-    # console.log 'beginTextEntry()'
     return unless @state.marks.length > 0
     @setState
       selectedMark: @state.marks[0], =>
@@ -362,8 +243,6 @@ SubjectViewer = React.createClass
 
   nextTextEntry: ->
     console.log 'nextTextEntry()'
-    console.log 'SELECETD MARK: ', @state.selectedMark # DEBUG CODE
-
     key = @state.selectedMark.key
     if key+1 > @state.marks.length-1
       console.log "That's all the marks for now!"
@@ -377,7 +256,7 @@ SubjectViewer = React.createClass
     @resetTranscriptionFields()
 
   render: ->
-    console.log 'render()'
+    # console.log 'render()'
 
     # return null if @state.selectedMark is null
     # don't render if ya ain't got subjects (yet)

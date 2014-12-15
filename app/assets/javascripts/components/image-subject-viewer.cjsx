@@ -25,10 +25,6 @@ ImageSubjectViewer_transcribe = React.createClass # rename to Classifier
       <SubjectViewer endpoint=endpoint />
     </div>
 
-  componentDidMount: ->
-    console.log 'TASK: ', @props.task
-
-
 SubjectViewer = React.createClass
   displayName: 'SubjectViewer'
 
