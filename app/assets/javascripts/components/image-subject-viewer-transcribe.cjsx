@@ -152,6 +152,8 @@ SubjectViewer = React.createClass
     @setState
       marks: [] # clear marks for next subject
 
+    @resetTranscriptionFields()
+
     # prepare new classification
     if @state.subjects.shift() is undefined or @state.subjects.length <= 0
       @fetchSubjects(@state.subjectEndpoint)
@@ -346,6 +348,10 @@ SubjectViewer = React.createClass
     @setState selectedMark: selectedMark, =>
       console.log 'SELECTED MARK: ', @state.selectedMark
 
+  resetTranscriptionFields: ->
+    console.log 'resetTranscriptionFields()'
+    $('.transcribe-input').val("")
+
   beginTextEntry: ->
     # console.log 'beginTextEntry()'
     return unless @state.marks.length > 0
@@ -367,6 +373,8 @@ SubjectViewer = React.createClass
       selectedMark: @state.marks[key+1], =>
         {horizontal, vertical} = @getScale()
         $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
+
+    @resetTranscriptionFields()
 
   render: ->
     console.log 'render()'
