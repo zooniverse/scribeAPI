@@ -162,6 +162,7 @@ SubjectViewer = React.createClass
     @state.classification = new Classification @state.subject
 
   handleInitStart: (e) ->
+    return
     console.log 'handleInitStart()'
 
     {horizontal, vertical} = @getScale()
