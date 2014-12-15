@@ -137,14 +137,13 @@ SubjectViewer = React.createClass
     console.log 'nextSubject()'
     # TODO: annotate new transcription and submit as new classification!!!
 
-    # for mark in [ @state.marks... ]
-    #   @state.classification.annotate
-    #     timestamp: mark.timestamp
-    #     y_upper: mark.yUpper
-    #     y_lower: mark.yLower
+    for mark in [ @state.marks... ]
+      @state.classification.annotate
+        timestamp: mark.timestamp
+        transcription: mark.transcription
 
-    # # DEBUG CODE  
-    # console.log 'CLASSIFICATION: ', @state.classification
+    # DEBUG CODE  
+    console.log 'CLASSIFICATION: ', @state.classification
 
     # console.log JSON.stringify @state.classification # DEBUG CODE
     # @state.classification.send()
