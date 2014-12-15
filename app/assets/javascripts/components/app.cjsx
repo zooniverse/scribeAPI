@@ -31,7 +31,7 @@ project =
             type: 'text',
             field_name: 'other_entry',
             label: 'Other Entry',
-            instruction: 'Some other entry. Just type something. Anything.'
+            instruction: 'Type something, anything.'
           }
       ]
   pages: [

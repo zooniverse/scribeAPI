@@ -244,10 +244,6 @@ SubjectViewer = React.createClass
   nextTextEntry: ->
     console.log 'nextTextEntry()'
     key = @state.selectedMark.key
-    if key+1 > @state.marks.length-1
-      console.log "That's all the marks for now!"
-      return
-
     @setState 
       selectedMark: @state.marks[key+1], =>
         {horizontal, vertical} = @getScale()
