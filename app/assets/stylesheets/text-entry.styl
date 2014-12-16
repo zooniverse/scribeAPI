@@ -1,47 +1,48 @@
-.text-entry
-  position absolute
-  bottom 80px
-  // height 40px
-  // width 100%
-  width 480px
-  background-color rgba(255,255,255,0.75)
-  box-shadow: 0 0 5px 3px rgba(0,0,0,.4);
-  border-radius 6px
-  line-height 2em
+.text-entry-container
+  .text-entry
+    position fixed
+    width 480px
+    left 100px
+    top 100px
+    background-color rgba(255,255,255,0.75)
+    box-shadow 0 0 5px 3px rgba(0,0,0,.4)
+    border-radius 6px
+    line-height 2em
+    cursor move
 
-  .left
-    // background-color rgb(20,100,20)
-    float left
-    input
+    .left
+      // background-color rgb(20,100,20)
       float left
-      margin-left 10px
-      outline none
-    .input-field
-      display none // auto hide
       input
-        // text-transform uppercase
-      label
-        display inherit
+        float left
         margin-left 10px
-        color black
-      &.active
-        display block
-        
-  .right
-    line-height 4em
-    margin-right 20px
-    float right
+        outline none
+      .input-field
+        display none // auto hide
+        input
+          // text-transform uppercase
+        label
+          display inherit
+          margin-left 10px
+          color black
+        &.active
+          display block
+          
+    .right
+      line-height 4em
+      margin-right 20px
+      float right
 
-  .button
-    @extends $button
-    color #fff
-    border-radius 4px
-    padding 5px
-    margin 2px
-    width 140px
-    height 30px
-    text-decoration none
-    font-size 12px
-    // border 2px solid #fff
-    cursor pointer
-    opacity 0.75
+    .button
+      @extends $button
+      color #fff
+      border-radius 4px
+      padding 5px
+      margin 2px
+      width 140px
+      height 30px
+      text-decoration none
+      font-size 12px
+      // border 2px solid #fff
+      cursor pointer
+      opacity 0.75

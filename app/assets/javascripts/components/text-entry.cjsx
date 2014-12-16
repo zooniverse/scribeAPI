@@ -46,6 +46,21 @@ TextEntryTool = React.createClass
       # console.log 'THERE IS NO PREV STEP'
       return false
 
+  handleInitStart: (e) ->
+    console.log 'handleInitStart() '
+    @setState
+      xClick: e.pageX - $('.text-entry').offset().left
+      yClick: e.pageY - $('.text-entry').offset().top
+
+  handleInitDrag: (e) ->
+    console.log 'handleInitDrag()'
+    @setState
+      xOffset: e.pageX - @state.xClick
+      yOffset: e.pageY - @state.yClick
+
+  handleInitRelease: ->
+    # console.log 'handleInitRelease()'
+
   render: ->
     # console.log 'render()'
     currentStep = @state.currentStep
@@ -64,30 +79,42 @@ TextEntryTool = React.createClass
 
     done_button = <a className="green button finish" onClick={@handleTranscription}>Done</a>
 
-    <div className="text-entry">
-      <div className="left">
-        {
-          for step in @props.transcribeSteps
-            if step.key is @state.currentStep
-              class_name = 'input-field active'
-            else
-              class_name = 'input-field'
-            
-            <div className={class_name}>
-              <label>{step.instruction}</label>
-              <input 
-                className="transcribe-input" 
-                type={step.type} 
-                placeholder={step.label} 
-              />
-            </div>
-        }
-      </div>
-      <div className="right">
-        {prev_button}
-        {next_button}
-        {done_button}
-      </div>
+    style = 
+      left: @state.xOffset,
+      top:  @state.yOffset
+
+    <div className="text-entry-container">
+      <Draggable
+        onStart = {@handleInitStart}
+        onDrag  = {@handleInitDrag}
+        onEnd   = {@handleInitRelease}>
+
+        <div className="text-entry" style={style}>
+          <div className="left">
+            {
+              for step in @props.transcribeSteps
+                if step.key is @state.currentStep
+                  class_name = 'input-field active'
+                else
+                  class_name = 'input-field'
+                
+                <div className={class_name}>
+                  <label>{step.instruction}</label>
+                  <input 
+                    className="transcribe-input" 
+                    type={step.type} 
+                    placeholder={step.label} 
+                  />
+                </div>
+            }
+          </div>
+          <div className="right">
+            {prev_button}
+            {next_button}
+            {done_button}
+          </div>
+        </div>
+      </Draggable>
     </div>
 
 module.exports = TextEntryTool
