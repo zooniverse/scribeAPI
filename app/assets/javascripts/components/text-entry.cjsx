@@ -22,7 +22,7 @@ TextEntryTool = React.createClass
     @props.recordTranscription(transcription)
     @setState currentStep: 0
 
-  nextStep: ->
+  nextStep: (e) ->
     return unless @nextStepAvailable()
     @setState currentStep: @state.currentStep + 1
 
@@ -47,16 +47,23 @@ TextEntryTool = React.createClass
       return false
 
   handleInitStart: (e) ->
-    console.log 'handleInitStart() '
+    # console.log 'handleInitStart() ', e.nativeEvent
     @setState
       xClick: e.pageX - $('.text-entry').offset().left
       yClick: e.pageY - $('.text-entry').offset().top
 
   handleInitDrag: (e) ->
-    console.log 'handleInitDrag()'
+    # # DEBUG CODE
+    # console.log 'handleInitDrag()'
+    # console.log 'OFFSET: ', $('.text-entry').offset()
+
+    dx = e.pageX - @state.xClick
+    dy = e.pageY - @state.yClick
+
     @setState
-      xOffset: e.pageX - @state.xClick
-      yOffset: e.pageY - @state.yClick
+      dx: dx
+      dy: dy #, =>
+        #console.log "[xOffset, yOffset] = [#{@state.xOffset}, #{@state.yOffset}]"
 
   handleInitRelease: ->
     # console.log 'handleInitRelease()'
@@ -80,8 +87,8 @@ TextEntryTool = React.createClass
     done_button = <a className="green button finish" onClick={@handleTranscription}>Done</a>
 
     style = 
-      left: @state.xOffset,
-      top:  @state.yOffset
+      left: @state.dx,
+      top:  @state.dy
 
     <div className="text-entry-container">
       <Draggable
