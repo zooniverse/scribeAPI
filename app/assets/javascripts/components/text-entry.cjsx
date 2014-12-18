@@ -6,8 +6,12 @@ TextEntryTool = React.createClass
   displayName: 'TextEntryTool'
 
   getInitialState: ->
+    console.log 'PROPS:', @props
     currentStep: 0
-    finished: false
+    dx: 0
+    dy: 0
+
+  # componentWillReceiveProps: ->
 
   handleTranscription: ->
     console.log 'handleTranscription()'
@@ -47,7 +51,14 @@ TextEntryTool = React.createClass
       return false
 
   handleInitStart: (e) ->
-    # console.log 'handleInitStart() ', e.nativeEvent
+    console.log 'handleInitStart() '
+    console.log 'TARGET: ', e.target.nodeName
+    @setState preventDrag: false
+    if e.target.nodeName is "INPUT"
+      @setState preventDrag: true
+      
+    console.log "[left, top] = [#{@state.dx}, #{@state.dy}]"
+
     @setState
       xClick: e.pageX - $('.text-entry').offset().left
       yClick: e.pageY - $('.text-entry').offset().top
@@ -57,13 +68,15 @@ TextEntryTool = React.createClass
     # console.log 'handleInitDrag()'
     # console.log 'OFFSET: ', $('.text-entry').offset()
 
+    return if @state.preventDrag
+    
     dx = e.pageX - @state.xClick
     dy = e.pageY - @state.yClick
 
     @setState
       dx: dx
-      dy: dy #, =>
-        #console.log "[xOffset, yOffset] = [#{@state.xOffset}, #{@state.yOffset}]"
+      dy: dy , =>
+        console.log "DRAG: [left, top] = [#{@state.dx}, #{@state.dy}]"
 
   handleInitRelease: ->
     # console.log 'handleInitRelease()'

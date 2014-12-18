@@ -24,7 +24,7 @@ module.exports = React.createClass
 
   handleStart: (e) ->
     # console.log 'DRAGGABLE: handleStart()'
-    e.preventDefault()
+    # e.preventDefault()
     document.addEventListener 'mousemove', @handleDrag
     document.addEventListener 'mouseup', @handleEnd
 
