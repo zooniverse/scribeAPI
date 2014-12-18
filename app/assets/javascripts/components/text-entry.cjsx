@@ -27,7 +27,9 @@ TextEntryTool = React.createClass
     @setState currentStep: 0
 
   nextTextEntry: ->
+    console.log 'next step available? ', @nextStepAvailable()
     @setState
+      currentStep: 0
       dx: window.innerWidth/2 - 200
       dy: @props.scale.vertical * @props.selectedMark.yLower + 20, =>
         @props.nextTextEntry()
@@ -91,20 +93,17 @@ TextEntryTool = React.createClass
     # console.log 'render()'
     currentStep = @state.currentStep
 
-    done_button = <a className="green button finish" onClick={@handleTranscription}>Done</a>
+    done_button = <button className="green button finish" onClick={@handleTranscription}>Done</button>
+    prev_button = <button className="blue button back" onClick={@prevStep}>&lt; Back</button>
 
-    if @prevStepAvailable()
-      prev_button = <a className="blue button back" onClick={@prevStep}>&lt; Back</a>
-    else
-      prev_button = <a className="blue button back disabled">&lt; Back</a>
-
+    if @prevStepAvailable() 
+      $('.back.button').addClass 'disabled'
+    
     if @nextStepAvailable()
-      next_button = <a className="red button back" onClick={@nextStep}>Skip &gt;</a>
-      # done_button = <a className="green button finish" onClick={@handleTranscription}>Done</a>
+      next_button = <button className="red button skip" onClick={@nextStep}>Skip &gt;</button>
     else
-      next_button = <a className="red button back disabled">Skip &gt;</a>
-      done_button = <a className="green button finish" onClick={@nextTextEntry}>Next Entry</a>
-      # done_button = <a className="green button finish" onClick={@props.nextTextEntry}>Next Entry</a>
+      next_button = <button className="red button skip disabled">Skip &gt;</button>
+      done_button = <button className="green button finish" onClick={@nextTextEntry}>Next Entry</button>
 
     style = 
       left: @state.dx,
