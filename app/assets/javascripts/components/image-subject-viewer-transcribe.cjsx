@@ -242,6 +242,7 @@ SubjectViewer = React.createClass
         $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
 
   nextTextEntry: ->
+    console.log '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
     console.log 'nextTextEntry()'
     key = @state.selectedMark.key
     @setState 
@@ -333,6 +334,7 @@ SubjectViewer = React.createClass
             recordTranscription={@recordTranscription}
             nextTextEntry={@nextTextEntry}
             selectedMark={@state.selectedMark}
+            scale={@getScale}
           />
           {action_button}
         </div>

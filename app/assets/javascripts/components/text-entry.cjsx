@@ -8,9 +8,9 @@ TextEntryTool = React.createClass
   getInitialState: ->
     console.log 'PROPS:', @props
     currentStep: 0
-    dx: 0
-    dy: 0
-
+    dx: window.innerWidth/2 - 200
+    dy: @props.scale.vertical * @props.selectedMark.yLower + 20
+    
   # componentWillReceiveProps: ->
 
   handleTranscription: ->
@@ -25,6 +25,12 @@ TextEntryTool = React.createClass
 
     @props.recordTranscription(transcription)
     @setState currentStep: 0
+
+  nextTextEntry: ->
+    @setState
+      dx: window.innerWidth/2 - 200
+      dy: @props.scale.vertical * @props.selectedMark.yLower + 20, =>
+        @props.nextTextEntry()
 
   nextStep: (e) ->
     return unless @nextStepAvailable()
@@ -69,14 +75,14 @@ TextEntryTool = React.createClass
     # console.log 'OFFSET: ', $('.text-entry').offset()
 
     return if @state.preventDrag
-    
-    dx = e.pageX - @state.xClick
-    dy = e.pageY - @state.yClick
+
+    dx = e.pageX - @state.xClick - window.scrollX
+    dy = e.pageY - @state.yClick - window.scrollY
 
     @setState
       dx: dx
-      dy: dy , =>
-        console.log "DRAG: [left, top] = [#{@state.dx}, #{@state.dy}]"
+      dy: dy #, =>
+        # console.log "DRAG: [left, top] = [#{@state.dx}, #{@state.dy}]"
 
   handleInitRelease: ->
     # console.log 'handleInitRelease()'
@@ -84,6 +90,8 @@ TextEntryTool = React.createClass
   render: ->
     # console.log 'render()'
     currentStep = @state.currentStep
+
+    done_button = <a className="green button finish" onClick={@handleTranscription}>Done</a>
 
     if @prevStepAvailable()
       prev_button = <a className="blue button back" onClick={@prevStep}>&lt; Back</a>
@@ -95,9 +103,8 @@ TextEntryTool = React.createClass
       # done_button = <a className="green button finish" onClick={@handleTranscription}>Done</a>
     else
       next_button = <a className="red button back disabled">Skip &gt;</a>
+      done_button = <a className="green button finish" onClick={@nextTextEntry}>Next Entry</a>
       # done_button = <a className="green button finish" onClick={@props.nextTextEntry}>Next Entry</a>
-
-    done_button = <a className="green button finish" onClick={@handleTranscription}>Done</a>
 
     style = 
       left: @state.dx,
