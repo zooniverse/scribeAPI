@@ -9,7 +9,7 @@ LoadingIndicator              = require './loading-indicator'
 SubjectMetadata               = require './subject-metadata'
 ActionButton                  = require './action-button'
 TextRegionTool                = require './text-region'
-TextEntryTool                 = require './text-entry'
+# TextEntryTool                 = require './text-entry'
 RegionFocusTool               = require './region-focus'
 PointTool                     = require './point'
 Classification                = require '../models/classification'
@@ -476,12 +476,6 @@ SubjectViewer = React.createClass
 
           </svg>
 
-          { if @state.workflow is "transcribe" and @state.selectedMark isnt null
-            <TextEntryTool
-              top={ @getScale().vertical * @state.selectedMark.yLower + 20 + @state.offset.top }
-              left={@state.windowInnerWidth/2 - 200}
-            />
-          }
 
         </div>
         <p>{@state.subject.location}</p>

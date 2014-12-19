@@ -1,9 +1,10 @@
 # @cjsx React.DOM
 React = require 'react'
-Draggable = require '../lib/draggable'
+Draggable  = require '../../lib/draggable'
 
-TextEntryTool = React.createClass
-  displayName: 'TextEntryTool'
+
+TranscribeTool = React.createClass
+  displayName: 'TranscribeTool'
 
   getInitialState: ->
     console.log 'PROPS:', @props
@@ -52,10 +53,10 @@ TextEntryTool = React.createClass
 
   prevStepAvailable: ->
     if @state.currentStep - 1 >= 0
-      # console.log 'PREV STEP...'
+      console.log 'PREV STEP...'
       return true
     else
-      # console.log 'THERE IS NO PREV STEP'
+      console.log 'THERE IS NO PREV STEP'
       return false
 
   handleInitStart: (e) ->
@@ -68,13 +69,13 @@ TextEntryTool = React.createClass
     console.log "[left, top] = [#{@state.dx}, #{@state.dy}]"
 
     @setState
-      xClick: e.pageX - $('.text-entry').offset().left
-      yClick: e.pageY - $('.text-entry').offset().top
+      xClick: e.pageX - $('.transcribe-tool').offset().left
+      yClick: e.pageY - $('.transcribe-tool').offset().top
 
   handleInitDrag: (e) ->
     # # DEBUG CODE
     # console.log 'handleInitDrag()'
-    # console.log 'OFFSET: ', $('.text-entry').offset()
+    # console.log 'OFFSET: ', $('.transcribe-tool').offset()
 
     return if @state.preventDrag
 
@@ -93,29 +94,33 @@ TextEntryTool = React.createClass
     # console.log 'render()'
     currentStep = @state.currentStep
 
-    done_button = <button className="green button finish" onClick={@handleTranscription}>Done</button>
-    prev_button = <button className="blue button back" onClick={@prevStep}>&lt; Back</button>
+    done_button = <button className="button green finish" onClick = { @handleTranscription }>Done</button>
+    prev_button = <button className="button blue back"    onClick = { @prevStep }>&lt; Back</button>
+    next_button = <button className="button red skip"     onClick = { @nextStep }>Skip &gt;</button>
 
-    if @prevStepAvailable() 
-      $('.back.button').addClass 'disabled'
-    
-    if @nextStepAvailable()
-      next_button = <button className="red button skip" onClick={@nextStep}>Skip &gt;</button>
+    console.log 'IS PREV STEP AVAILABLE? ', @prevStepAvailable()
+
+    unless @prevStepAvailable()
+      $('.back.button').addClass('disabled')
     else
-      next_button = <button className="red button skip disabled">Skip &gt;</button>
-      done_button = <button className="green button finish" onClick={@nextTextEntry}>Next Entry</button>
-
+      $('.back.button').removeClass('disabled')
+    
+    unless @nextStepAvailable()
+      $('.skip.button').addClass 'disabled'
+    else
+      $('.skip.button').removeClass 'disabled'
+    
     style = 
       left: @state.dx,
       top:  @state.dy
 
-    <div className="text-entry-container">
+    <div className="transcribe-tool-container">
       <Draggable
         onStart = {@handleInitStart}
         onDrag  = {@handleInitDrag}
         onEnd   = {@handleInitRelease}>
 
-        <div className="text-entry" style={style}>
+        <div className="transcribe-tool" style={style}>
           <div className="left">
             {
               for step in @props.transcribeSteps
@@ -143,4 +148,4 @@ TextEntryTool = React.createClass
       </Draggable>
     </div>
 
-module.exports = TextEntryTool
+module.exports = TranscribeTool

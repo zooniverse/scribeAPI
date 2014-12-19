@@ -9,7 +9,7 @@ LoadingIndicator              = require './loading-indicator'
 SubjectMetadata               = require './subject-metadata'
 ActionButton                  = require './action-button'
 TextRegionTool                = require './text-region'
-TextEntryTool                 = require './text-entry'
+TranscribeTool                 = require './transcribe/transcribe-tool'
 RegionFocusTool               = require './region-focus'
 PointTool                     = require './point'
 Classification                = require '../models/classification'
@@ -341,7 +341,7 @@ SubjectViewer = React.createClass
         </div>
         <p>{@state.subjects.location}</p>
         <div className="subject-ui">
-          <TextEntryTool 
+          <TranscribeTool 
             transcribeSteps={@props.transcribeSteps} 
             recordTranscription={@recordTranscription}
             nextTextEntry={@nextTextEntry}
