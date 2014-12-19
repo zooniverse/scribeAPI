@@ -3,7 +3,7 @@ React = require 'react'
 Draggable  = require '../../lib/draggable'
 PrevButton = require './prev-button'
 NextButton = require './next-button'
-# DoneButton = require './done-button'
+DoneButton = require './done-button'
 
 TranscribeTool = React.createClass
   displayName: 'TranscribeTool'
@@ -128,7 +128,8 @@ TranscribeTool = React.createClass
           </div>
           <div className="right">
             <PrevButton prevStepAvailable = {@prevStepAvailable} prevStep = {@prevStep} />
-            <NextButton nextStepAvailable = {@nextStepAvailable} nextStep = {@nextStep}/>
+            <NextButton nextStepAvailable = {@nextStepAvailable} nextStep = {@nextStep} />
+            <DoneButton />
           </div>
         </div>
       </Draggable>
