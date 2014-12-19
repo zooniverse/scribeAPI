@@ -1,7 +1,9 @@
 # @cjsx React.DOM
 React = require 'react'
 Draggable  = require '../../lib/draggable'
-
+PrevButton = require './prev-button'
+# NextButton = require './next-button'
+# DoneButton = require './done-button'
 
 TranscribeTool = React.createClass
   displayName: 'TranscribeTool'
@@ -93,22 +95,6 @@ TranscribeTool = React.createClass
   render: ->
     # console.log 'render()'
     currentStep = @state.currentStep
-
-    done_button = <button className="button green finish" onClick = { @handleTranscription }>Done</button>
-    prev_button = <button className="button blue back"    onClick = { @prevStep }>&lt; Back</button>
-    next_button = <button className="button red skip"     onClick = { @nextStep }>Skip &gt;</button>
-
-    console.log 'IS PREV STEP AVAILABLE? ', @prevStepAvailable()
-
-    unless @prevStepAvailable()
-      $('.back.button').addClass('disabled')
-    else
-      $('.back.button').removeClass('disabled')
-    
-    unless @nextStepAvailable()
-      $('.skip.button').addClass 'disabled'
-    else
-      $('.skip.button').removeClass 'disabled'
     
     style = 
       left: @state.dx,
@@ -140,9 +126,7 @@ TranscribeTool = React.createClass
             }
           </div>
           <div className="right">
-            {prev_button}
-            {next_button}
-            {done_button}
+            <PrevButton prevStepAvailable = {@prevStepAvailable} />
           </div>
         </div>
       </Draggable>
