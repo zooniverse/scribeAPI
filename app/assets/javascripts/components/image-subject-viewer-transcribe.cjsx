@@ -338,9 +338,6 @@ SubjectViewer = React.createClass
 
           </svg>
 
-        </div>
-        <p>{@state.subjects.location}</p>
-        <div className="subject-ui">
           <TranscribeTool 
             transcribeSteps={@props.transcribeSteps} 
             recordTranscription={@recordTranscription}
@@ -349,6 +346,10 @@ SubjectViewer = React.createClass
             selectedMark={@state.selectedMark}
             scale={@getScale()}
           />
+
+        </div>
+        <p>{@state.subjects.location}</p>
+        <div className="subject-ui">
           {action_button}
         </div>
       </div>
