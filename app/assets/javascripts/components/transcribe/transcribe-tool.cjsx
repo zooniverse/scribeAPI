@@ -1,9 +1,13 @@
 # @cjsx React.DOM
 React = require 'react'
-Draggable = require '../lib/draggable'
+Draggable       = require '../../lib/draggable'
+PrevButton      = require './prev-button'
+NextButton      = require './next-button'
+DoneButton      = require './done-button'
+TranscribeInput = require './transcribe-input'
 
-TextEntryTool = React.createClass
-  displayName: 'TextEntryTool'
+TranscribeTool = React.createClass
+  displayName: 'TranscribeTool'
 
   getInitialState: ->
     console.log 'PROPS:', @props
@@ -28,6 +32,7 @@ TextEntryTool = React.createClass
 
   nextTextEntry: ->
     @setState
+      currentStep: 0
       dx: window.innerWidth/2 - 200
       dy: @props.scale.vertical * @props.selectedMark.yLower + 20, =>
         @props.nextTextEntry()
@@ -50,31 +55,29 @@ TextEntryTool = React.createClass
 
   prevStepAvailable: ->
     if @state.currentStep - 1 >= 0
-      # console.log 'PREV STEP...'
       return true
     else
-      # console.log 'THERE IS NO PREV STEP'
       return false
 
   handleInitStart: (e) ->
-    console.log 'handleInitStart() '
-    console.log 'TARGET: ', e.target.nodeName
+    # console.log 'handleInitStart() '
+    # console.log 'TARGET: ', e.target.nodeName
     @setState preventDrag: false
-    if e.target.nodeName is "INPUT"
+    if e.target.nodeName is "INPUT" or e.target.nodeName is "TEXTAREA"
       @setState preventDrag: true
       
     console.log "[left, top] = [#{@state.dx}, #{@state.dy}]"
 
     @setState
-      xClick: e.pageX - $('.text-entry').offset().left
-      yClick: e.pageY - $('.text-entry').offset().top
+      xClick: e.pageX - $('.transcribe-tool').offset().left
+      yClick: e.pageY - $('.transcribe-tool').offset().top
 
   handleInitDrag: (e) ->
     # # DEBUG CODE
     # console.log 'handleInitDrag()'
-    # console.log 'OFFSET: ', $('.text-entry').offset()
+    # console.log 'OFFSET: ', $('.transcribe-tool').offset()
 
-    return if @state.preventDrag
+    return if @state.preventDrag # not too happy about this one
 
     dx = e.pageX - @state.xClick - window.scrollX
     dy = e.pageY - @state.yClick - window.scrollY
@@ -90,58 +93,31 @@ TextEntryTool = React.createClass
   render: ->
     # console.log 'render()'
     currentStep = @state.currentStep
-
-    done_button = <a className="green button finish" onClick={@handleTranscription}>Done</a>
-
-    if @prevStepAvailable()
-      prev_button = <a className="blue button back" onClick={@prevStep}>&lt; Back</a>
-    else
-      prev_button = <a className="blue button back disabled">&lt; Back</a>
-
-    if @nextStepAvailable()
-      next_button = <a className="red button back" onClick={@nextStep}>Skip &gt;</a>
-      # done_button = <a className="green button finish" onClick={@handleTranscription}>Done</a>
-    else
-      next_button = <a className="red button back disabled">Skip &gt;</a>
-      done_button = <a className="green button finish" onClick={@nextTextEntry}>Next Entry</a>
-      # done_button = <a className="green button finish" onClick={@props.nextTextEntry}>Next Entry</a>
-
+    
     style = 
       left: @state.dx,
       top:  @state.dy
 
-    <div className="text-entry-container">
+    <div className="transcribe-tool-container">
       <Draggable
         onStart = {@handleInitStart}
         onDrag  = {@handleInitDrag}
         onEnd   = {@handleInitRelease}>
 
-        <div className="text-entry" style={style}>
+        <div className="transcribe-tool" style={style}>
           <div className="left">
             {
               for step in @props.transcribeSteps
-                if step.key is @state.currentStep
-                  class_name = 'input-field active'
-                else
-                  class_name = 'input-field'
-                
-                <div className={class_name}>
-                  <label>{step.instruction}</label>
-                  <input 
-                    className="transcribe-input" 
-                    type={step.type} 
-                    placeholder={step.label} 
-                  />
-                </div>
+                <TranscribeInput step = {step} currentStep = {@state.currentStep} />
             }
           </div>
           <div className="right">
-            {prev_button}
-            {next_button}
-            {done_button}
+            <PrevButton prevStepAvailable = {@prevStepAvailable} prevStep = {@prevStep} />
+            <NextButton nextStepAvailable = {@nextStepAvailable} nextStep = {@nextStep} />
+            <DoneButton nextStepAvailable = {@nextStepAvailable} nextTextEntry = {@nextTextEntry} />
           </div>
         </div>
       </Draggable>
     </div>
 
-module.exports = TextEntryTool
+module.exports = TranscribeTool

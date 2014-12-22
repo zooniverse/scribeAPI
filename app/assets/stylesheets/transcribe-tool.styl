@@ -1,7 +1,7 @@
-.text-entry-container
-  .text-entry
+.transcribe-tool-container
+  .transcribe-tool
     position fixed
-    width 480px
+    width 640px
     left 240px
     top 75%
     background-color rgba(255,255,255,0.75)
@@ -27,6 +27,21 @@
           color black
         &.active
           display block
+        textarea
+          font-family COURIER
+          font-size 1em
+          resize none
+          width 600px
+          height 140px
+          background-color #000
+          padding 10px
+          outline none
+          color #fff
+          border none
+          border-top-left-radius 6px
+          opacity 0.5
+          &:focus
+            opacity 1.0
           
     .right
       line-height 4em
@@ -34,15 +49,24 @@
       float right
 
     .button
+      outline none
       @extends $button
       color #fff
       border-radius 4px
       padding 5px
       margin 2px
-      width 140px
+      // width 140px
+      width auto
       height 30px
       text-decoration none
       font-size 12px
       // border 2px solid #fff
       cursor pointer
       opacity 0.75
+      &.prev
+        background-color blue
+      &.next
+        background-color red
+      &.done
+        background-color green
+

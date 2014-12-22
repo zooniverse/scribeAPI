@@ -9,7 +9,7 @@ LoadingIndicator              = require './loading-indicator'
 SubjectMetadata               = require './subject-metadata'
 ActionButton                  = require './action-button'
 TextRegionTool                = require './text-region'
-TextEntryTool                 = require './text-entry'
+TranscribeTool                 = require './transcribe/transcribe-tool'
 RegionFocusTool               = require './region-focus'
 PointTool                     = require './point'
 Classification                = require '../models/classification'
@@ -243,14 +243,26 @@ SubjectViewer = React.createClass
 
   nextTextEntry: ->
     console.log '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
-    console.log 'nextTextEntry()'
+    console.log 'nextTextEntry() '
     key = @state.selectedMark.key
+
+    # if key > @state.marks.length - 1
+    #   console.log 'NO MORE MARKS'
     @setState 
       selectedMark: @state.marks[key+1], =>
         {horizontal, vertical} = @getScale()
         $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
 
     @resetTranscriptionFields()
+
+
+    console.log 'KEY : ', key
+    console.log 'LENGTH: ', @state.marks.length - 1
+
+    if key+2 > @state.marks.length - 1
+      console.log 'NO MORE MARKS'
+      return false
+    return true
 
   render: ->
     # console.log 'render()'
@@ -329,12 +341,13 @@ SubjectViewer = React.createClass
         </div>
         <p>{@state.subjects.location}</p>
         <div className="subject-ui">
-          <TextEntryTool 
+          <TranscribeTool 
             transcribeSteps={@props.transcribeSteps} 
             recordTranscription={@recordTranscription}
             nextTextEntry={@nextTextEntry}
+            nextSubject = {@nextSubject}
             selectedMark={@state.selectedMark}
-            scale={@getScale}
+            scale={@getScale()}
           />
           {action_button}
         </div>
