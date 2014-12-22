@@ -154,9 +154,9 @@ SubjectViewer = React.createClass
         y: mark.y
 
     # # DEBUG CODE  
-    # console.log 'CLASSIFICATION: ', @state.classification
+    console.log 'CLASSIFICATION: ', @state.classification
 
-    console.log JSON.stringify @state.classification # DEBUG CODE
+    # console.log JSON.stringify @state.classification # DEBUG CODE
     @state.classification.send()
     @setState
       workflow: "mark"

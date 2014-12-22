@@ -6,7 +6,6 @@
       "meta_data": null,
        "annotations": [
         {
-          "timestamp": "Mon, 08 Dec 2014 17:41:25 GMT",
           "key": 0,
           "y_upper": 458,
           "y_lower": 763,
@@ -14,7 +13,6 @@
           "y": 610.5
         },
         {
-          "timestamp": "Mon, 08 Dec 2014 17:41:46 GMT",
           "key": 1,
           "y_upper": 1743.6507936507937,
           "y_lower": 2099.69696969697,
@@ -22,7 +20,6 @@
           "y": 1921.6738816738819
         },
         {
-          "timestamp": "Mon, 08 Dec 2014 17:41:50 GMT",
           "key": 2,
           "y_upper": 2046.0461760461767,
           "y_lower": 2431.3564213564214,
