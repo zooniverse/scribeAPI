@@ -1,9 +1,10 @@
 # @cjsx React.DOM
 React = require 'react'
-Draggable  = require '../../lib/draggable'
-PrevButton = require './prev-button'
-NextButton = require './next-button'
-DoneButton = require './done-button'
+Draggable       = require '../../lib/draggable'
+PrevButton      = require './prev-button'
+NextButton      = require './next-button'
+DoneButton      = require './done-button'
+TranscribeInput = require './transcribe-input'
 
 TranscribeTool = React.createClass
   displayName: 'TranscribeTool'
@@ -30,7 +31,6 @@ TranscribeTool = React.createClass
     @setState currentStep: 0
 
   nextTextEntry: ->
-    console.log 'next step available? ', @nextStepAvailable()
     @setState
       currentStep: 0
       dx: window.innerWidth/2 - 200
@@ -38,7 +38,6 @@ TranscribeTool = React.createClass
         @props.nextTextEntry()
 
   nextStep: (e) ->
-    console.log 'nextStep()'
     return unless @nextStepAvailable()
     @setState currentStep: @state.currentStep + 1
 
@@ -56,15 +55,13 @@ TranscribeTool = React.createClass
 
   prevStepAvailable: ->
     if @state.currentStep - 1 >= 0
-      console.log 'PREV STEP...'
       return true
     else
-      console.log 'THERE IS NO PREV STEP'
       return false
 
   handleInitStart: (e) ->
-    console.log 'handleInitStart() '
-    console.log 'TARGET: ', e.target.nodeName
+    # console.log 'handleInitStart() '
+    # console.log 'TARGET: ', e.target.nodeName
     @setState preventDrag: false
     if e.target.nodeName is "INPUT"
       @setState preventDrag: true
@@ -111,25 +108,13 @@ TranscribeTool = React.createClass
           <div className="left">
             {
               for step in @props.transcribeSteps
-                if step.key is @state.currentStep
-                  class_name = 'input-field active'
-                else
-                  class_name = 'input-field'
-                
-                <div className={class_name}>
-                  <label>{step.instruction}</label>
-                  <input 
-                    className="transcribe-input" 
-                    type={step.type} 
-                    placeholder={step.label} 
-                  />
-                </div>
+                <TranscribeInput step = {step} currentStep = {@state.currentStep} />
             }
           </div>
           <div className="right">
             <PrevButton prevStepAvailable = {@prevStepAvailable} prevStep = {@prevStep} />
             <NextButton nextStepAvailable = {@nextStepAvailable} nextStep = {@nextStep} />
-            <DoneButton />
+            <DoneButton nextStepAvailable = {@nextStepAvailable} nextTextEntry = {@nextTextEntry} />
           </div>
         </div>
       </Draggable>

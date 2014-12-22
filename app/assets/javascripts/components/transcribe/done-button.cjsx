@@ -6,9 +6,11 @@ DoneButton = React.createClass
 
   render: ->
     classes = 'button done'
-      
-    <button className = {classes} onClick = {@props.prevStep} >
-      Done
+    classes = classes + ' disabled' if @props.nextStepAvailable()
+    title   = 'Next Entry'
+    
+    <button className = {classes} onClick = {@props.nextTextEntry} >
+      {title}
     </button>
 
 module.exports = DoneButton

@@ -28,7 +28,7 @@ project =
           },
           {
             key: 2,
-            type: 'text',
+            type: 'textarea',
             field_name: 'other_entry',
             label: 'Other Entry',
             instruction: 'Type something, anything.'
