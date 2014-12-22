@@ -8,7 +8,7 @@ Draggable                     = require '../lib/draggable'
 LoadingIndicator              = require './loading-indicator'
 SubjectMetadata               = require './subject-metadata'
 ActionButton                  = require './action-button'
-TextRegionTool                = require './mark/text-region'
+TextRowTool                   = require './mark/text-row-tool'
 Classification                = require '../models/classification'
 getUrlParamByName             = require '../lib/getUrlParamByName'
 
@@ -413,7 +413,7 @@ SubjectViewer = React.createClass
 
             { 
               @state.marks.map ((mark, i) ->
-                <TextRegionTool
+                <TextRowTool
                   key = {mark.key}
                   mark = {mark}
                   disabled = {false}

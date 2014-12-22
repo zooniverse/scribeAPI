@@ -6,8 +6,8 @@ DeleteButton = require './delete-button'
 ResizeButton = require './resize-button'
 DoneCheckbox = require './done-checkbox'
 
-TextRegionTool = React.createClass
-  displayName: 'TextRegionTool'
+TextRowTool = React.createClass
+  displayName: 'TextRowTool'
 
   statics:
     defaultValues: ->
@@ -113,5 +113,5 @@ TextRegionTool = React.createClass
       />
     </g>
 
-module.exports = TextRegionTool
+module.exports = TextRowTool
   
