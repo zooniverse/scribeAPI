@@ -5,7 +5,6 @@ TranscribeInput = React.createClass
   displayName: 'TranscribeInput'
 
   render: ->
-    console.log '@props.step: ', @props.step
     if @props.step.key is @props.currentStep
       classes = 'input-field active'
     else

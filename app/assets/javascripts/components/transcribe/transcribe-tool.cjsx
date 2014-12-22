@@ -10,25 +10,9 @@ TranscribeTool = React.createClass
   displayName: 'TranscribeTool'
 
   getInitialState: ->
-    console.log 'PROPS:', @props
     currentStep: 0
     dx: window.innerWidth/2 - 200
     dy: @props.scale.vertical * @props.selectedMark.yLower + 20
-    
-  # componentWillReceiveProps: ->
-
-  handleTranscription: ->
-    console.log 'handleTranscription()'
-
-    transcription = []
-    for step, i in @props.transcribeSteps
-      transcription.push { field_name: "#{step.field_name}", value: $(".transcribe-input:eq(#{step.key})").val() }
-
-    # field_name = @props.transcribeSteps[@state.currentStep].field_name
-    # field_data = $('.transcribe-input').val()
-
-    @props.recordTranscription(transcription)
-    @setState currentStep: 0
 
   nextTextEntry: ->
     @setState
@@ -38,9 +22,24 @@ TranscribeTool = React.createClass
         @props.nextTextEntry()
 
   nextStep: (e) ->
-    return unless @nextStepAvailable()
-    @setState currentStep: @state.currentStep + 1
+    # record transcription
+    transcription = []
+    
+    for step, i in @props.transcribeSteps
+      transcription.push { 
+        field_name: "#{step.field_name}", 
+        value: $(".transcribe-input:eq(#{step.key})").val() 
+      }
 
+    @props.recordTranscription(transcription)
+    
+    if @nextStepAvailable
+      currentStep = @state.currentStep + 1
+    else
+      currentStep = 0
+
+    @setState currentStep: currentStep
+    
   prevStep: ->
     return unless @prevStepAvailable()
     @setState currentStep: @state.currentStep - 1

@@ -63,7 +63,7 @@ SubjectViewer = React.createClass
     selectedMark: null # TODO: currently not in use
 
   componentDidMount: ->
-    console.log 'TASK = ', @props.task
+    # console.log 'TASK = ', @props.task
     @setView 0, 0, @state.imageWidth, @state.imageHeight
     
     if @usingFakeSubject()
@@ -164,35 +164,35 @@ SubjectViewer = React.createClass
   # EVENT HANDLERS (CURRENTLY NOT IN USE)
 
   handleInitStart: (e) ->
-    console.log 'handleInitStart()'
+    # console.log 'handleInitStart()'
     return # don't do anything
 
   handleInitDrag: (e) ->
-    console.log 'handleInitDrag()'
+    # console.log 'handleInitDrag()'
     return # don't do anything
 
   handleInitRelease: (e) ->
-    console.log 'handleInitRelease()'
+    # console.log 'handleInitRelease()'
     return # don't do anything
 
   handleToolMouseDown: ->
-    console.log 'handleToolMouseDown()'
+    # console.log 'handleToolMouseDown()'
     return # don't do anything
 
   handleMarkClick: (mark, e) ->
-    console.log 'handleMarkClick()'
+    # console.log 'handleMarkClick()'
     return # don't do anything
 
   handleDragMark: (e) ->
-    console.log 'handleDragMark()'
+    # console.log 'handleDragMark()'
     return # don't do anything
 
   handleUpperResize: (e) ->
-    console.log 'handleUpperResize()'
+    # console.log 'handleUpperResize()'
     return # don't do anything
 
   handleLowerResize: (e) ->
-    console.log 'handleLowerResize()'
+    # console.log 'handleLowerResize()'
     return # don't do anything
 
   setView: (viewX, viewY, viewWidth, viewHeight) ->
@@ -231,7 +231,7 @@ SubjectViewer = React.createClass
       # console.log 'SELECTED MARK: ', @state.selectedMark
 
   resetTranscriptionFields: ->
-    console.log 'resetTranscriptionFields()'
+    # console.log 'resetTranscriptionFields()'
     $('.transcribe-input').val("")
 
   beginTextEntry: ->
@@ -256,11 +256,11 @@ SubjectViewer = React.createClass
     @resetTranscriptionFields()
 
 
-    console.log 'KEY : ', key
-    console.log 'LENGTH: ', @state.marks.length - 1
+    # console.log 'KEY : ', key
+    # console.log 'LENGTH: ', @state.marks.length - 1
 
-    if key+2 > @state.marks.length - 1
-      console.log 'NO MORE MARKS'
+    if key+2 > @state.marks.length
+      # console.log 'NO MORE MARKS'
       return false
     return true
 
