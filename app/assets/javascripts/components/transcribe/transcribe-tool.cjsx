@@ -63,7 +63,7 @@ TranscribeTool = React.createClass
     # console.log 'handleInitStart() '
     # console.log 'TARGET: ', e.target.nodeName
     @setState preventDrag: false
-    if e.target.nodeName is "INPUT"
+    if e.target.nodeName is "INPUT" or e.target.nodeName is "TEXTAREA"
       @setState preventDrag: true
       
     console.log "[left, top] = [#{@state.dx}, #{@state.dy}]"
@@ -77,7 +77,7 @@ TranscribeTool = React.createClass
     # console.log 'handleInitDrag()'
     # console.log 'OFFSET: ', $('.transcribe-tool').offset()
 
-    return if @state.preventDrag
+    return if @state.preventDrag # not too happy about this one
 
     dx = e.pageX - @state.xClick - window.scrollX
     dy = e.pageY - @state.yClick - window.scrollY
