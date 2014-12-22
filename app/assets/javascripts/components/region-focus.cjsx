@@ -1,7 +1,7 @@
 # @cjsx React.DOM
 React = require 'react'
 Draggable = require '../lib/draggable'
-ResizeButton = require './resize-button'
+ResizeButton = require './mark/resize-button'
 
 RegionFocusTool = React.createClass
   displayName: 'RegionFocusTool'

@@ -16,7 +16,7 @@ module.exports = React.createClass
     markComplete: false
     transcribeComplete: false
 
-    buttonLabel: "DONE"
+    buttonLabel: "SUBMIT"
 
   componentWillReceiveProps: ->
     @setState
