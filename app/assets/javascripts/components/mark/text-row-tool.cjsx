@@ -52,7 +52,9 @@ TextRowTool = React.createClass
         console.log 'Mark submitted. Click TRANSCRIBE to begin transcribing.'
       when 'mark-finished'
         @setState markStatus: 'transcribe'
+        @props.onClickTranscribe()
         # @transcribeMark(mark)
+
         console.log 'Going into TRANSCRIBE mode. Stand by.'
       when 'transcribe'
         @setState markStatus: 'transcribe-finished'

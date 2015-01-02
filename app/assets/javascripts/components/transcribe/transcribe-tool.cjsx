@@ -10,6 +10,7 @@ TranscribeTool = React.createClass
   displayName: 'TranscribeTool'
 
   getInitialState: ->
+    console.log 'yLower: ', @props.selectedMark.yLower
     currentStep: 0
     dx: window.innerWidth/2 - 200
     dy: @props.scale.vertical * @props.selectedMark.yLower + 20
@@ -92,6 +93,8 @@ TranscribeTool = React.createClass
   render: ->
     # console.log 'render()'
     currentStep = @state.currentStep
+
+    console.log "[left, top] = [#{@state.dx}, #{@state.dy}]"
     
     style = 
       left: @state.dx,

@@ -9,8 +9,36 @@ LoadingIndicator              = require './loading-indicator'
 SubjectMetadata               = require './subject-metadata'
 ActionButton                  = require './action-button'
 TextRowTool                   = require './mark/text-row-tool'
+
+TranscribeTool                = require './transcribe/transcribe-tool'
+
 Classification                = require '../models/classification'
 getUrlParamByName             = require '../lib/getUrlParamByName'
+
+# temporary
+transcribeSteps = [ 
+  {
+    key: 0,
+    type: 'date', # type of input
+    field_name: 'date',
+    label: 'Date',
+    instruction: 'Please type-in the log date.'
+  },
+  {
+    key: 1,
+    type: 'text',
+    field_name: 'journal_entry',
+    label: 'Journal Entry',
+    instruction: 'Please type-in the journal entry for this day.'
+  },
+  {
+    key: 2,
+    type: 'textarea',
+    field_name: 'other_entry',
+    label: 'Other Entry',
+    instruction: 'Type something, anything.'
+  } 
+]
 
 
 ImageSubjectViewer_mark = React.createClass # rename to Classifier
@@ -59,6 +87,8 @@ SubjectViewer = React.createClass
     classification: null
 
     selectedMark: null # TODO: currently not in use
+
+    showTranscribeTool: false
 
   getFakeSubject: (group) ->
     if group is "transcribe"
@@ -358,8 +388,17 @@ SubjectViewer = React.createClass
       {horizontal, vertical} = @getScale()
       $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
 
+  onClickTranscribe: ->
+    console.log 'onClickTranscribe()'
+    @setState showTranscribeTool: true
+
+  # dummy placeholder
+  recordTranscription: ->
+    console.log 'recordTranscription()'
+
   render: ->
     # don't render if ya ain't got subjects (yet)
+    console.log 'showTranscribeTool is ', @state.showTranscribeTool
     return null if @state.subjects is null or @state.subjects.length is 0
 
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
@@ -423,6 +462,7 @@ SubjectViewer = React.createClass
                   select = {@selectMark.bind null, mark}
                   selected = {mark is @state.selectedMark}
                   onClickDelete = {@onClickDelete}
+                  onClickTranscribe = {@onClickTranscribe}
                   scrubberWidth = {64}
                   scrubberHeight = {32}
                   handleDragMark = {@handleDragMark}
@@ -434,6 +474,17 @@ SubjectViewer = React.createClass
             }
 
           </svg>
+
+          { if @state.showTranscribeTool
+            <TranscribeTool 
+              transcribeSteps={transcribeSteps} 
+              recordTranscription={@recordTranscription}
+              nextTextEntry={@nextTextEntry}
+              nextSubject = {@nextSubject}
+              selectedMark={@state.selectedMark}
+              scale={@getScale()}
+            />          
+          }
 
         </div>
         <p>{@state.subject.location}</p>
