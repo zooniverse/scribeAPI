@@ -167,7 +167,7 @@ SubjectViewer = React.createClass
     @state.classification = new Classification @state.subject
 
   handleInitStart: (e) ->
-    console.log 'handleInitStart()'
+    # console.log 'handleInitStart()'
 
     {horizontal, vertical} = @getScale()
     rect = @refs.sizeRect?.getDOMNode().getBoundingClientRect()
@@ -187,7 +187,7 @@ SubjectViewer = React.createClass
     @selectMark @state.marks[@state.marks.length-1]
 
   handleInitDrag: (e) ->
-    console.log 'handleInitDrag()'
+    # console.log 'handleInitDrag()'
 
     {x,y} = @getEventOffset e
 
@@ -203,10 +203,10 @@ SubjectViewer = React.createClass
         selectedMark: currentMark
 
   handleInitRelease: (e) ->
-    console.log 'handleInitRelease()'
+    # console.log 'handleInitRelease()'
 
   handleToolMouseDown: ->
-    console.log 'handleToolMouseDown()'
+    # console.log 'handleToolMouseDown()'
 
   handleMarkClick: (mark, e) ->
     {x,y} = @getEventOffset e
@@ -220,7 +220,7 @@ SubjectViewer = React.createClass
       }
 
   handleDragMark: (e) ->
-    console.log 'handleDragMark()'
+    # console.log 'handleDragMark()'
     
     {x,y} = @getEventOffset e
 
@@ -241,7 +241,7 @@ SubjectViewer = React.createClass
       selectedMark: currentMark
 
   handleUpperResize: (e) ->
-    console.log 'handleUpperResize()'
+    # console.log 'handleUpperResize()'
     {x,y} = @getEventOffset e
 
     x = Math.round x
@@ -272,7 +272,7 @@ SubjectViewer = React.createClass
       selectedMark: currentMark
 
   handleLowerResize: (e) ->
-    console.log 'handleLowerResize()'
+    # console.log 'handleLowerResize()'
     {x,y} = @getEventOffset e
 
     x = Math.round x
@@ -338,7 +338,7 @@ SubjectViewer = React.createClass
       selectedMark: null
 
   beginTextEntry: ->
-    console.log 'beginTextEntry()'
+    # console.log 'beginTextEntry()'
     @nextSubject()
     return # just load next subject for now
     return unless @state.marks.length > 0

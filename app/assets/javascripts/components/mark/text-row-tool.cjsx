@@ -32,9 +32,7 @@ TextRowTool = React.createClass
     yUpper: @props.mark.yUpper
     yLower: @props.mark.yLower
     markHeight: @props.mark.yLower - @props.mark.yUpper
-
-    markComplete: false
-    transcribeComplete: false
+    markStatus: 'mark'
 
   componentWillReceiveProps: ->
     @setState
@@ -44,15 +42,41 @@ TextRowTool = React.createClass
       centerY: @props.mark.y
       markHeight: @props.mark.yLower - @props.mark.yUpper
 
-  handleToolProgress: ->
-    if @state.markComplete is false
-      console.log 'MARK COMPLETE!'
-      @setState markComplete: true
-    else
-      console.log 'TRANSCRIBE COMPLETE!'
-      @setState transcribeComplete: true
+  advanceToolProgress: ->
+    markStatus = @state.markStatus
+    console.log 'markStatus is ', markStatus
+    switch markStatus
+      when 'mark'
+        @setState markStatus: 'mark-finished'
+        # @submitMark()
+        console.log 'Mark submitted. Click TRANSCRIBE to begin transcribing.'
+      when 'mark-finished'
+        @setState markStatus: 'transcribe'
+        # @transcribeMark(mark)
+        console.log 'Going into TRANSCRIBE mode. Stand by.'
+      when 'transcribe'
+        @setState markStatus: 'transcribe-finished'
+        # @submitTranscription()
+        console.log 'Transcription submitted.'
+      when 'transcribe-finished'
+        console.log 'All done. Nothing left to do here.'
+      else
+        console.log 'WARNING: Unknown state in handleToolProgress()'
+
+    # if @state.markStatus is 'mark'
+    #   console.log 'Please mark the area...'
+    # else if @state.markStatus is 'transcribe'
+    #   console.log 'You may now transcribe, if you wish.'
+    # else if @state.markStatus is 'complete'
+    #   console.log 'All done. Nothing left to do here.'
 
   render: ->
+
+    unless @state.markStatus is 'mark'
+      markDragHandler = null
+    else
+      markDragHandler = @props.handleDragMark
+
     <g 
       className = "point drawing-tool" 
       transform = {"translate(#{Math.ceil @state.strokeWidth}, #{Math.round( @state.centerY - @state.markHeight/2 ) })"} 
@@ -62,7 +86,7 @@ TextRowTool = React.createClass
 
       <Draggable
         onStart = {@props.handleMarkClick.bind @props.mark} 
-        onDrag = {@props.handleDragMark} >
+        onDrag = {markDragHandler} >
         <rect 
           className   = "mark-rectangle"
           x           = 0
@@ -76,39 +100,40 @@ TextRowTool = React.createClass
         />
       </Draggable>
 
-      <ResizeButton 
-        viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
-        className = "upperResize"
-        handleResize = {@props.handleUpperResize} 
-        transform = {"translate( #{@props.imageWidth/2}, #{ - Math.round @props.scrubberHeight/2 } )"} 
-        scrubberHeight = {@props.scrubberHeight}
-        scrubberWidth = {@props.scrubberWidth}
-        workflow = {@props.workflow}
-        isSelected = {@props.selected}
-      />
+      { if @state.markStatus is 'mark'
+          <g>
+            <ResizeButton 
+              viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
+              className = "upperResize"
+              handleResize = {@props.handleUpperResize} 
+              transform = {"translate( #{@props.imageWidth/2}, #{ - Math.round @props.scrubberHeight/2 } )"} 
+              scrubberHeight = {@props.scrubberHeight}
+              scrubberWidth = {@props.scrubberWidth}
+              workflow = {@props.workflow}
+              isSelected = {@props.selected}
+            />
 
-      <ResizeButton 
-        className = "lowerResize"
-        handleResize = {@props.handleLowerResize} 
-        transform = {"translate( #{@props.imageWidth/2}, #{ Math.round( @state.markHeight - @props.scrubberHeight/2 ) } )"} 
-        scrubberHeight = {@props.scrubberHeight}
-        scrubberWidth = {@props.scrubberWidth}
-        workflow = {@props.workflow}
-        isSelected = {@props.selected}
+            <ResizeButton 
+              className = "lowerResize"
+              handleResize = {@props.handleLowerResize} 
+              transform = {"translate( #{@props.imageWidth/2}, #{ Math.round( @state.markHeight - @props.scrubberHeight/2 ) } )"} 
+              scrubberHeight = {@props.scrubberHeight}
+              scrubberWidth = {@props.scrubberWidth}
+              workflow = {@props.workflow}
+              isSelected = {@props.selected}
+            />
 
-      />
-
-      <DeleteButton 
-        transform = "translate(50, #{Math.round @state.markHeight/2})" 
-        onClick = {@props.onClickDelete.bind null, @props.key}
-        workflow = {@props.workflow}
-        isSelected = {@props.selected}
-      />
-
+            <DeleteButton 
+              transform = "translate(50, #{Math.round @state.markHeight/2})" 
+              onClick = {@props.onClickDelete.bind null, @props.key}
+              workflow = {@props.workflow}
+              isSelected = {@props.selected}
+            />
+          </g>
+      }
       <DoneCheckbox
-        markComplete = {@state.markComplete}
-        transcribeComplete = {@state.transcribeComplete}
-        handleToolProgress = {@handleToolProgress}
+        markStatus = {@state.markStatus}
+        advanceToolProgress = {@advanceToolProgress}
         transform = {"translate( #{@props.imageWidth-250}, #{ Math.round @state.markHeight/2 -@props.scrubberHeight/2 } )"} 
       />
     </g>
