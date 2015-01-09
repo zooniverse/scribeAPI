@@ -19,12 +19,12 @@ ImageSubjectViewer_transcribe = React.createClass # rename to Classifier
   displayName: 'ImageSubjectViewer_transcribe'
 
   render: ->
-    endpoint = "http://localhost:3000/offline/example_subjects/transcription_subjects.json"
+    endpoint = "/offline/example_subjects/transcription_subjects.json"
     <div className="image-subject-viewer">
-      <SubjectViewer 
-        endpoint=endpoint 
-        transcribeSteps={@props.transcribeSteps} 
-        task={@props.task} 
+      <SubjectViewer
+        endpoint=endpoint
+        transcribeSteps={@props.transcribeSteps}
+        task={@props.task}
       />
     </div>
 
@@ -65,12 +65,12 @@ SubjectViewer = React.createClass
   componentDidMount: ->
     # console.log 'TASK = ', @props.task
     @setView 0, 0, @state.imageWidth, @state.imageHeight
-    
+
     if @usingFakeSubject()
       if @props.task is 'mark'
         console.log 'using MARKING subjects'
         subjectEndpoint = "./offline/example_subjects/marking_subjects.json"
-      else 
+      else
         console.log 'using TRANSCRIPTION subjects'
         subjectEndpoint = "./offline/example_subjects/transcription_subjects.json"
       @setState subjectEndpoint: subjectEndpoint, =>
@@ -99,7 +99,7 @@ SubjectViewer = React.createClass
         # # DEBUG CODE
         # console.log 'FETCHED SUBJECTS: ', data[0]
 
-        @setState 
+        @setState
           subjects:     data
           subject:      data[0].subject
           marks:        data[0].subject.annotations
@@ -141,11 +141,11 @@ SubjectViewer = React.createClass
           timestamp: mark.timestamp
           transcription: mark.transcription
 
-    # DEBUG CODE  
+    # DEBUG CODE
     console.log 'CLASSIFICATION: ', @state.classification
     # console.log JSON.stringify @state.classification # DEBUG CODE
     # @state.classification.send()
-    
+
     @setState
       marks: [] # clear marks for next subject
 
@@ -220,7 +220,7 @@ SubjectViewer = React.createClass
     for mark, i in [ marks... ]
       if mark.key is key
         marks.splice(i, 1)
-    @setState 
+    @setState
       marks: marks
       selectedMark: null
 
@@ -248,7 +248,7 @@ SubjectViewer = React.createClass
 
     # if key > @state.marks.length - 1
     #   console.log 'NO MORE MARKS'
-    @setState 
+    @setState
       selectedMark: @state.marks[key+1], =>
         {horizontal, vertical} = @getScale()
         $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
@@ -287,10 +287,10 @@ SubjectViewer = React.createClass
 
     else
 
-      if @state.selectedMark.key is @state.marks.length - 1 # we're done 
-        action_button = <ActionButton label={"NEXT PAGE"} onActionSubmit={@nextSubject} />        
+      if @state.selectedMark.key is @state.marks.length - 1 # we're done
+        action_button = <ActionButton label={"NEXT PAGE"} onActionSubmit={@nextSubject} />
       else
-        action_button = <ActionButton label={"NEXT"} onActionSubmit={@nextTextEntry} />        
+        action_button = <ActionButton label={"NEXT"} onActionSubmit={@nextTextEntry} />
 
       <div className="subject-container">
         <div className="marking-surface">
@@ -317,7 +317,7 @@ SubjectViewer = React.createClass
                 height = {@state.imageHeight} />
             </Draggable>
 
-            <RegionFocusTool 
+            <RegionFocusTool
               key = {@state.selectedMark.key}
               mark = {@state.selectedMark}
               disabled = {false}
@@ -338,8 +338,8 @@ SubjectViewer = React.createClass
 
           </svg>
 
-          <TranscribeTool 
-            transcribeSteps={@props.transcribeSteps} 
+          <TranscribeTool
+            transcribeSteps={@props.transcribeSteps}
             recordTranscription={@recordTranscription}
             nextTextEntry={@nextTextEntry}
             nextSubject = {@nextSubject}
