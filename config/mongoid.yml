@@ -46,3 +46,16 @@ development:
         # refresh_interval specifies the number of seconds to cache information
         # about a node. Default is 300 seconds (5 minutes).
         refresh_interval: 10
+
+test:
+  sessions:
+    default:
+      database: api_test
+      hosts:
+        - localhost:27017
+      options:
+        read: primary
+        # In the test environment we lower the retries and retry interval to
+        # low amounts for fast failures.
+        max_retries: 1
+        retry_interval: 0
