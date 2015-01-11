@@ -8,10 +8,9 @@ Draggable                     = require '../lib/draggable'
 LoadingIndicator              = require './loading-indicator'
 SubjectMetadata               = require './subject-metadata'
 ActionButton                  = require './action-button'
-TextRegionTool                = require './text-region'
-TranscribeTool                 = require './transcribe/transcribe-tool'
-RegionFocusTool               = require './region-focus'
-PointTool                     = require './point'
+TextRowTool                   = require './mark/text-row-tool'
+TranscribeTool                = require './transcribe/transcribe-tool'
+RowFocusTool                  = require './row-focus-tool'
 Classification                = require '../models/classification'
 getUrlParamByName             = require '../lib/getUrlParamByName'
 
@@ -317,7 +316,7 @@ SubjectViewer = React.createClass
                 height = {@state.imageHeight} />
             </Draggable>
 
-            <RegionFocusTool 
+            <RowFocusTool 
               key = {@state.selectedMark.key}
               mark = {@state.selectedMark}
               disabled = {false}

@@ -1,10 +1,10 @@
 # @cjsx React.DOM
 React = require 'react'
 Draggable = require '../lib/draggable'
-ResizeButton = require './resize-button'
+ResizeButton = require './mark/resize-button'
 
-RegionFocusTool = React.createClass
-  displayName: 'RegionFocusTool'
+RowFocusTool = React.createClass
+  displayName: 'RowFocusTool'
 
   statics:
     defaultValues: ->
@@ -159,5 +159,5 @@ RegionFocusTool = React.createClass
 
     </g>
 
-module.exports = RegionFocusTool
+module.exports = RowFocusTool
   

@@ -2,7 +2,7 @@
 # Model = require '../../data/model'
 React = require 'react'
 Draggable = require '../lib/draggable'
-DeleteButton = require './delete-button'
+DeleteButton = require './mark/delete-button'
 
 module.exports = React.createClass
   displayName: 'PointTool'
