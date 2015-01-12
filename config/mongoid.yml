@@ -2,7 +2,7 @@
 #
 # As discussed in: http://blog.mongolab.com/2014/02/mongodb-driver-tips-tricks-mongoid-3
 #
-development: 
+production: 
   sessions:
     default:
 
