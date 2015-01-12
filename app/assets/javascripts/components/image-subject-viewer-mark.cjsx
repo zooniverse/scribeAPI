@@ -45,7 +45,7 @@ ImageSubjectViewer_mark = React.createClass # rename to Classifier
   displayName: 'ImageSubjectViewer_mark'
 
   render: ->
-    endpoint = "http://localhost:3000/workflows/533cd4dd4954738018030000/subjects.json?limit=5"
+    endpoint = "/workflows/533cd4dd4954738018030000/subjects.json?limit=5"
     <div className="image-subject-viewer">
       <SubjectViewer endpoint=endpoint task={@props.task} />
     </div>
@@ -101,12 +101,12 @@ SubjectViewer = React.createClass
   componentDidMount: ->
     console.log 'TASK = ', @props.task
     @setView 0, 0, @state.imageWidth, @state.imageHeight
-    
+
     if @usingFakeSubject()
       if @props.task is 'mark'
         console.log 'using MARKING subjects'
         subjectEndpoint = "./offline/example_subjects/marking_subjects.json"
-      else 
+      else
         console.log 'using TRANSCRIPTION subjects'
         subjectEndpoint = "./offline/example_subjects/transcription_subjects.json"
       @setState subjectEndpoint: subjectEndpoint, =>
@@ -135,7 +135,7 @@ SubjectViewer = React.createClass
         # DEBUG CODE
         console.log 'FETCHED SUBJECTS: ', data
 
-        @setState 
+        @setState
           subjects: data
           subject: data[0], =>
             @state.classification = new Classification @state.subject
@@ -177,7 +177,7 @@ SubjectViewer = React.createClass
         x: mark.x
         y: mark.y
 
-    # # DEBUG CODE  
+    # # DEBUG CODE
     console.log 'CLASSIFICATION: ', @state.classification
 
     # console.log JSON.stringify @state.classification # DEBUG CODE
@@ -210,7 +210,7 @@ SubjectViewer = React.createClass
     marks = @state.marks
     marks.push {yUpper, yLower, x, y, key, timestamp}
 
-    @setState 
+    @setState
       marks: marks
       offset: $(e.nativeEvent.target).offset()
 
@@ -242,16 +242,17 @@ SubjectViewer = React.createClass
     {x,y} = @getEventOffset e
 
     # save click offset from mark center
-    @setState 
+    @setState
       selectedMark: mark
-      markOffset: { 
-        x: mark.x - x, 
+      markOffset: {
+        x: mark.x - x,
         y: mark.y - y
       }
 
   handleDragMark: (e) ->
     # console.log 'handleDragMark()'
-    
+    # return unless @state.workflow is "mark"
+
     {x,y} = @getEventOffset e
 
     currentMark = @state.selectedMark
@@ -260,14 +261,14 @@ SubjectViewer = React.createClass
     markHeight = currentMark.yLower - currentMark.yUpper
     currentMark.yUpper = Math.round currentMark.y - markHeight/2
     currentMark.yLower = Math.round currentMark.y + markHeight/2
-    
+
 
     # prevent dragging mark beyond image bounds
     offset = @state.markOffset.y
-    return if ( y + offset - markHeight/2 ) < 0 
+    return if ( y + offset - markHeight/2 ) < 0
     return if ( y + offset + markHeight/2 ) > @state.imageHeight
 
-    @setState 
+    @setState
       selectedMark: currentMark
 
   handleUpperResize: (e) ->
@@ -281,11 +282,11 @@ SubjectViewer = React.createClass
 
     # enforce bounds
     if y < 0
-      y = 0 
+      y = 0
       return
 
-    if currentMark.yLower - y < 50      
-      currentMark.yUpper = Math.round( -50 + currentMark.yLower ) 
+    if currentMark.yLower - y < 50
+      currentMark.yUpper = Math.round( -50 + currentMark.yLower )
       @setState selectedMark: currentMark
       return
 
@@ -310,17 +311,17 @@ SubjectViewer = React.createClass
 
     currentMark = @state.selectedMark
 
-    
+
     # enforce bounds
     if y > @state.imageHeight
-      y = @state.imageHeight 
+      y = @state.imageHeight
       return
 
     if y - currentMark.yUpper < 50
       currentMark.yLower = Math.round( 50 + currentMark.yUpper )
       @setState selectedMark: currentMark
       return
-      
+
     dy = y - currentMark.yLower
     yLower_p = y
     markHeight_p = currentMark.yLower - currentMark.yUpper + dy
@@ -363,7 +364,7 @@ SubjectViewer = React.createClass
     for mark, i in [ marks... ]
       if mark.key is key
         marks.splice(i, 1)
-    @setState 
+    @setState
       marks: marks
       selectedMark: null
 
@@ -450,11 +451,41 @@ SubjectViewer = React.createClass
                 height = {@state.imageHeight} />
             </Draggable>
 
+<<<<<<< HEAD
             { 
               @state.marks.map ((mark, i) ->
                 <TextRowTool
                   key = {mark.key}
                   mark = {mark}
+=======
+            {
+              if @state.workflow is "mark"
+                @state.marks.map ((mark, i) ->
+                  <TextRegionTool
+                    key = {mark.key}
+                    mark = {mark}
+                    disabled = {false}
+                    imageWidth = {@state.imageWidth}
+                    imageHeight = {@state.imageHeight}
+                    getEventOffset = {@getEventOffset}
+                    select = {@selectMark.bind null, mark}
+                    selected = {mark is @state.selectedMark}
+                    onClickDelete = {@onClickDelete}
+                    scrubberWidth = {64}
+                    scrubberHeight = {32}
+                    workflow = {@state.workflow}
+                    handleDragMark = {@handleDragMark}
+                    handleUpperResize = {@handleUpperResize}
+                    handleLowerResize = {@handleLowerResize}
+                    handleMarkClick = {@handleMarkClick.bind null, mark}
+                  />
+                ), @
+              else
+                console.log 'SELECTED MARK KEY: ', @state.selectedMark.key
+                <RegionFocusTool
+                  key = {@state.selectedMark.key}
+                  mark = {@state.selectedMark}
+>>>>>>> 06d215e323ef5d8b3ca06c313aac0ef23976f859
                   disabled = {false}
                   imageWidth = {@state.imageWidth}
                   imageHeight = {@state.imageHeight}
