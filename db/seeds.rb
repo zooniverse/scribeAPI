@@ -15,64 +15,123 @@ Workflow.destroy_all
 Classification.destroy_all
 
 
-pages = [{ science:  """
-            <h1> Science Page</h1>
-             """,
-       about:    """
-            <h1> About Page</h1>
-             """,
-       library:  """
-            <h1> Library Page</h1>
-             """
-      }]
-
-p = Project.create(:pages => pages)
-
-marking_tasks = {
-      "drawSomething" => {
-        "type" => "drawing",
-        "question" => "Draw something.",
-        "choices" => [ {
-          "value" => "point",
-          "image" => "//placehold.it/30.png",
-          "label" => "Show Date",
-          "color" => "# "
-        },
-        {
-          "value" => "point",
-          "image" => "//placehold.it/30.png",
-          "label" => "Location",
-          "color" => "#ff0"
-        },
-        {
-          "value" => "point",
-          "image" => "//placehold.it/30.png",
-          "label" => "Cast Member",
-          "color" => "#ff0"
-        },
-        {
-          "value" => "point",
-          "image" => "//placehold.it/30.png",
-          "label" => "Production Staff",
-          "color" => "#ff0"
-        },
-        {
-          "value" => "point",
-          "image" => "//placehold.it/30.png",
-          "label" => "Thearter Name",
-          "color" => "#ff0"
-        }
-        ]
-    }
+pages = [
+  {
+    name: 'science',
+    content: 
+      """
+      <h1> Science Page</h1>
+      """
+  },
+  {
+    name: 'about',
+    content:    
+      """
+      <h1> About Page</h1>
+      """
+  },
+  {
+    name: 'foo',
+    content:
+      """
+      <h1> This is a foo page</h1>
+      """
   }
+]
+
+project = Project.create(:pages => pages)
+
+# marking_tasks = {
+#       "drawSomething" => {
+#         "type" => "drawing",
+#         "question" => "Draw something.",
+#         "choices" => [ {
+#           "value" => "point",
+#           "image" => "//placehold.it/30.png",
+#           "label" => "Show Date",
+#           "color" => "# "
+#         },
+#         {
+#           "value" => "point",
+#           "image" => "//placehold.it/30.png",
+#           "label" => "Location",
+#           "color" => "#ff0"
+#         },
+#         {
+#           "value" => "point",
+#           "image" => "//placehold.it/30.png",
+#           "label" => "Cast Member",
+#           "color" => "#ff0"
+#         },
+#         {
+#           "value" => "point",
+#           "image" => "//placehold.it/30.png",
+#           "label" => "Production Staff",
+#           "color" => "#ff0"
+#         },
+#         {
+#           "value" => "point",
+#           "image" => "//placehold.it/30.png",
+#           "label" => "Thearter Name",
+#           "color" => "#ff0"
+#         }
+#         ]
+#     }
+#   }
+
+transcribe_tasks = [
+    {
+      :key         => 0,
+      :type        => 'date', # type of input
+      :field_name  => 'date',
+      :label       => 'Date',
+      :instruction => 'Please type-in the log date.'
+    },
+    {
+      :key         => 1,
+      :type        => 'text',
+      :field_name  => 'journal_entry',
+      :label       => 'Journal Entry',
+      :instruction => 'Please type-in the journal entry for this day.'
+    },
+    {
+      :key         => 2,
+      :type        => 'textarea',
+      :field_name  => 'other_entry',
+      :label       => 'Other Entry',
+      :instruction => 'Type something, anything.'
+    }
+]
+
+marking_tasks = ""
+
+transcribe_workflow = Workflow.create(
+  {
+    key:               "transcribe", 
+    label:             "Transcribe Contnet", 
+    first_task:        "", 
+    tasks:             transcribe_tasks, 
+    enables_workflows: {}, 
+    project:           project 
+  }
+)
+
+marking_workflow = Workflow.create(
+  {
+    key: "marking", 
+    label: "Mark Content",  
+    first_task:"drawSomething", 
+    enables_workflows: {transcribe_workflow.id.to_s => {} }, 
+    tasks:marking_tasks, 
+    project: project 
+  }
+)
 
 # verify_workflow    = Workflow.create({name: "verify", tasks:[]  , project: p })
-transcribe_workflow  = Workflow.create({key: "transcribe", label:"Transcribe Contnet", first_task:"", tasks:{}, enables_workflows: {}, project: p })
-marking_workflow   = Workflow.create({key: "marking", label: "Mark Content",  first_task:"drawSomething", enables_workflows: {transcribe_workflow.id.to_s => {} }, tasks:marking_tasks, project: p })
+# transcribe_workflow  = Workflow.create({key: "transcribe", label:"Transcribe Contnet", first_task:"", tasks:{}, enables_workflows: {}, project: project })
 
-example_images = ["https://s3.amazonaws.com/programs-cropped.nypl.org/10/00261.jpg","https://s3.amazonaws.com/programs-cropped.nypl.org/10/00262.1.jpg","https://s3.amazonaws.com/programs-cropped.nypl.org/10/00262.2.jpg"]
+# example_images = ["https://s3.amazonaws.com/programs-cropped.nypl.org/10/00261.jpg","https://s3.amazonaws.com/programs-cropped.nypl.org/10/00262.1.jpg","https://s3.amazonaws.com/programs-cropped.nypl.org/10/00262.2.jpg"]
 
-
-10.times do |i|
-  Subject.create(name:"subject_#{i}", location: {standard: example_images.sample}, meta_data: { width:504, height:782}, workflows: [marking_workflow])
-end
+# 10.times do |i|
+#   Subject.create(name:"subject_#{i}", location: {standard: example_images.sample}, meta_data: { width:504, height:782}, workflows: [marking_workflow])
+# end
