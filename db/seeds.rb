@@ -39,11 +39,8 @@ pages = [
   }
 ]
 
-puts pages
-
 project = Project.create(:pages => pages)
 
-puts project
 
 # marking_tasks = {
 #       "drawSomething" => {
@@ -107,8 +104,6 @@ transcribe_tasks = [
     }
 ]
 
-puts transcribe_tasks
-
 marking_tasks = ""
 
 transcribe_workflow = Workflow.create(
@@ -122,7 +117,6 @@ transcribe_workflow = Workflow.create(
   }
 )
 
-puts transcribe_workflow
 
 marking_workflow = Workflow.create(
   {
