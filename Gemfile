@@ -22,16 +22,18 @@ gem 'browserify-rails', '~> 0.4.1'
 gem 'react-rails', '~> 1.0.0.pre', github: 'reactjs/react-rails'
 gem 'rails_12factor'
 
-group :development do
+group :development, :production do
   gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_19, :mri_20, :rbx]
   gem 'quiet_assets'
   gem 'rails_layout'
   gem 'pry'
 end
-group :development, :test do
+
+group :development, :test, :production do
   gem 'rspec-rails'
 end
+
 group :test do
   gem 'capybara'
   gem 'cucumber-rails', :require=>false
