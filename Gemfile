@@ -20,6 +20,7 @@ gem 'sprockets-coffee-react'
 gem 'stylus', '~> 1.0.1'
 gem 'browserify-rails', '~> 0.4.1'
 gem 'react-rails', '~> 1.0.0.pre', github: 'reactjs/react-rails'
+gem 'rails_12factor'
 
 group :development do
   gem 'better_errors'
