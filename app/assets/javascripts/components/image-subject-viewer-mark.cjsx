@@ -450,42 +450,11 @@ SubjectViewer = React.createClass
                 width = {@state.imageWidth}
                 height = {@state.imageHeight} />
             </Draggable>
-
-<<<<<<< HEAD
             { 
               @state.marks.map ((mark, i) ->
                 <TextRowTool
                   key = {mark.key}
                   mark = {mark}
-=======
-            {
-              if @state.workflow is "mark"
-                @state.marks.map ((mark, i) ->
-                  <TextRegionTool
-                    key = {mark.key}
-                    mark = {mark}
-                    disabled = {false}
-                    imageWidth = {@state.imageWidth}
-                    imageHeight = {@state.imageHeight}
-                    getEventOffset = {@getEventOffset}
-                    select = {@selectMark.bind null, mark}
-                    selected = {mark is @state.selectedMark}
-                    onClickDelete = {@onClickDelete}
-                    scrubberWidth = {64}
-                    scrubberHeight = {32}
-                    workflow = {@state.workflow}
-                    handleDragMark = {@handleDragMark}
-                    handleUpperResize = {@handleUpperResize}
-                    handleLowerResize = {@handleLowerResize}
-                    handleMarkClick = {@handleMarkClick.bind null, mark}
-                  />
-                ), @
-              else
-                console.log 'SELECTED MARK KEY: ', @state.selectedMark.key
-                <RegionFocusTool
-                  key = {@state.selectedMark.key}
-                  mark = {@state.selectedMark}
->>>>>>> 06d215e323ef5d8b3ca06c313aac0ef23976f859
                   disabled = {false}
                   imageWidth = {@state.imageWidth}
                   imageHeight = {@state.imageHeight}
