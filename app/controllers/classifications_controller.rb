@@ -1,5 +1,8 @@
 class ClassificationsController < ApplicationController
 
+  def new
+  end
+
   def create 
   	annotations = params["annotations"]
   	subject_id  = BSON::ObjectId.from_string params["subject_id"]
