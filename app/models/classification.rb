@@ -1,7 +1,7 @@
 class Classification 
   include Mongoid::Document
   
-  field :annotations, type: Array
+  field :annotations
 
   belongs_to :workflow
   belongs_to :user

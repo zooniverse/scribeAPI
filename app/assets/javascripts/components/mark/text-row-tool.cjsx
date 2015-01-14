@@ -42,13 +42,13 @@ TextRowTool = React.createClass
       centerY: @props.mark.y
       markHeight: @props.mark.yLower - @props.mark.yUpper
 
-  advanceToolProgress: ->
+  onClickMarkButton: ->
     markStatus = @state.markStatus
     console.log 'markStatus is ', markStatus
     switch markStatus
       when 'mark'
         @setState markStatus: 'mark-finished'
-        # @submitMark()
+        @props.submitMark(@props.key)
         console.log 'Mark submitted. Click TRANSCRIBE to begin transcribing.'
       when 'mark-finished'
         @setState markStatus: 'transcribe'
@@ -135,7 +135,7 @@ TextRowTool = React.createClass
       }
       <DoneCheckbox
         markStatus = {@state.markStatus}
-        advanceToolProgress = {@advanceToolProgress}
+        onClickMarkButton = {@onClickMarkButton}
         transform = {"translate( #{@props.imageWidth-250}, #{ Math.round @state.markHeight/2 -@props.scrubberHeight/2 } )"} 
       />
     </g>
