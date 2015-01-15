@@ -17,7 +17,6 @@ pages = [
   }
 ]
 
-
 DynamicRouter = React.createClass
 
   getInitialState: ->
@@ -37,20 +36,16 @@ DynamicRouter = React.createClass
         </div>
 
   render:->
+    # do nothing until workflow loaded
     return null if @state.transcribe_workflow is null
       
     <div className="panoptes-main">
       <MainHeader />
       <div className="main-content">
         <Routes>
-          <Route path='/' handler={HomePageController} name="root" />
-          <Route path='/mark' handler={ImageSubjectViewer_mark} name='mark' task='mark' />
-          <Route 
-            path='/transcribe' 
-            handler={ImageSubjectViewer_transcribe} 
-            name='transcribe' 
-            task='transcribe'
-            transcribeSteps={@state.transcribe_workflow.tasks}  
+          <Route path='/'           handler={HomePageController}            name="root" />
+          <Route path='/mark'       handler={ImageSubjectViewer_mark}       name='mark' />
+          <Route path='/transcribe' handler={ImageSubjectViewer_transcribe} name='transcribe' tasks={@state.transcribe_workflow.tasks}  
           />
 
           {pages.map (p, key)=>

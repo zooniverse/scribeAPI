@@ -22,7 +22,7 @@ ImageSubjectViewer_transcribe = React.createClass # rename to Classifier
     <div className="image-subject-viewer">
       <SubjectViewer
         endpoint=endpoint
-        transcribeSteps={@props.transcribeSteps}
+        tasks={@props.tasks}
         task={@props.task}
       />
     </div>
@@ -342,7 +342,7 @@ SubjectViewer = React.createClass
           </svg>
 
           <TranscribeTool
-            transcribeSteps={@props.transcribeSteps}
+            tasks={@props.tasks}
             recordTranscription={@recordTranscription}
             nextTextEntry={@nextTextEntry}
             nextSubject = {@nextSubject}
