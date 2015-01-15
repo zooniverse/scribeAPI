@@ -1,5 +1,6 @@
 class Workflow 
   include Mongoid::Document
+  include Randomizer
   
   field    :key, 				        type: String 
   field    :label,              type: String 
