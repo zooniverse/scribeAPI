@@ -35,15 +35,14 @@ DynamicRouter = React.createClass
     return null if @state.project is null or @state.mark_tasks is null or @state.transcribe_tasks is null
 
     <div className="panoptes-main">
-      <MainHeader />
+      <MainHeader pages={@state.pages} />
       <div className="main-content">
         <Routes>
           <Route path='/'             handler={HomePageController}            name="root" />
           <Route path='/mark'         handler={ImageSubjectViewer_mark}       name='mark'       tasks={@state.mark_tasks} />
           <Route path='/transcribe'   handler={ImageSubjectViewer_transcribe} name='transcribe' tasks={@state.transcribe_tasks} />
 
-          {
-            @state.pages.map (page, key) =>
+          { @state.pages.map (page, key) =>
               <Route path={'/'+page.name} handler={@controllerForPage(page)} name={page.name} key={key} />
           }
           
