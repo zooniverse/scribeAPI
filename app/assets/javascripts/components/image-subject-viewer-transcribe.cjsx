@@ -39,6 +39,7 @@ SubjectViewer = React.createClass
       return false
 
   getInitialState: ->
+
     subjects: null
     subject: null
     subjectEndpoint: @props.endpoint
@@ -60,6 +61,9 @@ SubjectViewer = React.createClass
 
     classification: null
     selectedMark: null # TODO: currently not in use
+
+  componentWillReceiveProps: ->
+    console.log 'TRANSCRIE STEPS: ', @props
 
   componentDidMount: ->
     # console.log 'TASK = ', @props.task

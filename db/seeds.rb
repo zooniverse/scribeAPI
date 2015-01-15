@@ -90,18 +90,21 @@ project = Project.create(
 
 transcribe_tasks = {
   0 => {
+      key:          0,
       type:         'date',
       field_name:   'date',
       label:        'Date',
       instruction:  'Please type-in the log date.'
   },
   1 =>{
+      key:          1,
       type:        'text',
       field_name:  'journal_entry',
       label:       'Journal Entry',
       instruction: 'Please type-in the journal entry for this day.'
   },
   2 => {
+      key:          2,
       type:         'textarea',
       field_name:   'other_entry',
       label:        'Other Entry',

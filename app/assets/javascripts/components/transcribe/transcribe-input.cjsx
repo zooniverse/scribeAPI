@@ -4,11 +4,16 @@ React = require 'react'
 TranscribeInput = React.createClass
   displayName: 'TranscribeInput'
 
+  componentWillReceiveProps: ->
+    console.log 'PROPS ASHA: ', @props
+
   render: ->
     if @props.step.key is @props.currentStep
       classes = 'input-field active'
+      console.log 'INACTIVE'
     else
       classes = 'input-field'
+      console.log 'ACTIVE'
 
     <div className={classes}>
       { 
