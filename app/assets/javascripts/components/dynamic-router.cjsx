@@ -6,52 +6,49 @@ HomePageController = require("./home-page-controller")
 ImageSubjectViewer_mark = require('./image-subject-viewer-mark')
 ImageSubjectViewer_transcribe = require('./image-subject-viewer-transcribe')
 
-pages = [
-  {
-    name:    'info', 
-    content: 'I am a content thingie'
-  },
-  {
-    name:    'science', 
-    content: 'I am science'
-  }
-]
-
 DynamicRouter = React.createClass
 
   getInitialState: ->
-    transcribe_workflow: null
-
+    project: null
+    mark_tasks: null
+    transcribe_tasks: null
+    
   componentDidMount: ->
-    $.getJSON '/workflows/transcribe', (result) => 
-      # console.log 'SETTING WORKFLOW: ', result
-      @setState transcribe_workflow: result
+    $.getJSON '/project', (result) => 
+      @setState project: result
+      @setState pages: @state.project.pages
+      console.log 'PAGES: ', @state.pages
+      for workflow in @state.project.workflows
+        @setState mark_tasks: workflow.tasks if workflow.key is 'mark'
+        @setState transcribe_tasks: workflow.tasks if workflow.key is 'transcribe'
 
-  controllerForPage:(p)->
+  controllerForPage: (page) ->
+    console.log 'controllerForPage()'
     React.createClass
-      displayname: "#{p.name}_page"
-      render:->
-        <div>
-          {p.content}
-        </div>
+      displayName: "#{page.name}Page"
+      render: ->
+        <div dangerouslySetInnerHTML={{__html: page.content}} />
 
-  render:->
-    # do nothing until workflow loaded
-    return null if @state.transcribe_workflow is null
-      
+  render: ->
+    # do nothing until project loads from API
+    # return null # just for now
+    return null if @state.project is null or @state.mark_tasks is null or @state.transcribe_tasks is null
+
     <div className="panoptes-main">
       <MainHeader />
       <div className="main-content">
         <Routes>
-          <Route path='/'           handler={HomePageController}            name="root" />
-          <Route path='/mark'       handler={ImageSubjectViewer_mark}       name='mark' />
-          <Route path='/transcribe' handler={ImageSubjectViewer_transcribe} name='transcribe' tasks={@state.transcribe_workflow.tasks}  
-          />
+          <Route path='/'             handler={HomePageController}            name="root" />
+          <Route path='/mark'         handler={ImageSubjectViewer_mark}       name='mark'       tasks={@state.mark_tasks} />
+          <Route path='/transcribe'   handler={ImageSubjectViewer_transcribe} name='transcribe' tasks={@state.transcribe_tasks} />
 
-          {pages.map (p, key)=>
-            <Route path="/#{p.name}" handler={@controllerForPage(p)} name={p.name} key={key} />
+          {
+            @state.pages.map (page, key) =>
+              <Route path={'/'+page.name} handler={@controllerForPage(page)} name={page.name} key={key} />
           }
+          
         </Routes>
       </div>
     </div>
+
 module.exports = DynamicRouter

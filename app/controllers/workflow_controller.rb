@@ -2,8 +2,12 @@ class WorkflowController < ApplicationController
   respond_to :json 
 
   def index
-  	key  = params["key"]
-    respond_with  Workflow.find_by(:key => key )
+  	respond_with  Workflow.all
+  end
+
+  def show
+    workflow  = Workflow.find_by(key: params[:id]) || Workflow.find_by(id: params[:id])
+    respond_with workflow 
   end
 
 end

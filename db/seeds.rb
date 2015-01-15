@@ -10,7 +10,7 @@
 # puts 'user: ' << user.name
 
 Project.destroy_all
-# Subject.destroy_all
+# Subject.destroy_all # keep all subjects for now
 Workflow.destroy_all
 Classification.destroy_all
 
@@ -24,6 +24,7 @@ pages = [
     content: 
       """
       <h1> Science Page</h1>
+      <p>I am a science!</p>
       """
   },
   {
@@ -31,13 +32,15 @@ pages = [
     content:    
       """
       <h1> About Page</h1>
+      <p>This is the about page.</p>
       """
   },
   {
     name: 'foo',
     content:
       """
-      <h1> This is a foo page</h1>
+      <h1>Foo</h1>
+      <p>This is the Foo page.</p>
       """
   }
 ]
@@ -112,8 +115,6 @@ transcribe_tasks = {
   }
 }
 
-# marking_tasks = ""
-
 transcribe_workflow = Workflow.create(
   {
     key:               "transcribe", 
@@ -125,23 +126,15 @@ transcribe_workflow = Workflow.create(
   }
 )
 
+mark_workflow = Workflow.create(
+  {
+    key:               "mark", 
+    label:             "Mark Contnet", 
+    first_task:        "", 
+    tasks:             transcribe_tasks, 
+    enables_workflows: {}, 
+    project:           project 
+  }
+)
 
-# marking_workflow = Workflow.create(
-#   {
-#     key: "marking", 
-#     label: "Mark Content",  
-#     first_task:"drawSomething", 
-#     enables_workflows: {transcribe_workflow.id.to_s => {} }, 
-#     tasks:marking_tasks, 
-#     project: project 
-#   }
-# )
 
-# verify_workflow    = Workflow.create({name: "verify", tasks:[]  , project: p })
-# transcribe_workflow  = Workflow.create({key: "transcribe", label:"Transcribe Contnet", first_task:"", tasks:{}, enables_workflows: {}, project: project })
-
-# example_images = ["https://s3.amazonaws.com/programs-cropped.nypl.org/10/00261.jpg","https://s3.amazonaws.com/programs-cropped.nypl.org/10/00262.1.jpg","https://s3.amazonaws.com/programs-cropped.nypl.org/10/00262.2.jpg"]
-
-# 10.times do |i|
-#   Subject.create(name:"subject_#{i}", location: {standard: example_images.sample}, meta_data: { width:504, height:782}, workflows: [marking_workflow])
-# end

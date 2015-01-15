@@ -1,7 +1,7 @@
 React = require("react")
 
 HomePageController = React.createClass
-  displayname : "homePageController"
+  displayName : "homePageController"
 
   render:->
     <div className="home-page">
@@ -9,7 +9,5 @@ HomePageController = React.createClass
         <h1> This is the home page </h1>
       </div>
     </div>
-
-
 
 module.exports = HomePageController
