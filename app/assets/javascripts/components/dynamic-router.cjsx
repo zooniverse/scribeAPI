@@ -15,9 +15,11 @@ DynamicRouter = React.createClass
     
   componentDidMount: ->
     $.getJSON '/project', (result) => 
-      @setState project: result
-      @setState pages: @state.project.pages
-      console.log 'PAGES: ', @state.pages
+      @setState project:           result
+      @setState home_page_content: @state.project.home_page_content 
+      @setState pages:             @state.project.pages
+
+      console.log 'project ', @state.project
       for workflow in @state.project.workflows
         @setState mark_tasks: workflow.tasks if workflow.key is 'mark'
         @setState transcribe_tasks: workflow.tasks if workflow.key is 'transcribe'
@@ -38,7 +40,7 @@ DynamicRouter = React.createClass
       <MainHeader pages={@state.pages} />
       <div className="main-content">
         <Routes>
-          <Route path='/'             handler={HomePageController}            name="root" />
+          <Route path='/'             handler={HomePageController}            name="root"  content={@state.home_page_content} />
           <Route path='/mark'         handler={ImageSubjectViewer_mark}       name='mark'       tasks={@state.mark_tasks} />
           <Route path='/transcribe'   handler={ImageSubjectViewer_transcribe} name='transcribe' tasks={@state.transcribe_tasks} />
 

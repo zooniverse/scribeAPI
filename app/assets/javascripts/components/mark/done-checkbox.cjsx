@@ -58,7 +58,6 @@ module.exports = React.createClass
         height    = "#{height}" 
         fill      = "#{fillColor}" />
       <text
-
         transform = "translate(12,24)"
         fontSize  = "26">
         {buttonLabel}
