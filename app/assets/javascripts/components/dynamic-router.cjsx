@@ -6,30 +6,6 @@ HomePageController = require("./home-page-controller")
 ImageSubjectViewer_mark = require('./image-subject-viewer-mark')
 ImageSubjectViewer_transcribe = require('./image-subject-viewer-transcribe')
 
-
-transcribe_steps = [
-    {
-      key: 0,
-      type: 'date', # type of input
-      field_name: 'date',
-      label: 'Date',
-      instruction: 'Please type-in the log date.'
-    },
-    {
-      key: 1,
-      type: 'text',
-      field_name: 'journal_entry',
-      label: 'Journal Entry',
-      instruction: 'Please type-in the journal entry for this day.'
-    },
-    {
-      key: 2,
-      type: 'textarea',
-      field_name: 'other_entry',
-      label: 'Other Entry',
-      instruction: 'Type something, anything.'
-    }
-]
 pages = [
   {
     name:    'info', 
