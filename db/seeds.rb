@@ -14,6 +14,9 @@ Project.destroy_all
 Workflow.destroy_all
 Classification.destroy_all
 
+#
+# gather project info
+#
 
 pages = [
   {
@@ -39,72 +42,74 @@ pages = [
   }
 ]
 
-project = Project.create(:pages => pages)
-
-
-# marking_tasks = {
-#       "drawSomething" => {
-#         "type" => "drawing",
-#         "question" => "Draw something.",
-#         "choices" => [ {
-#           "value" => "point",
-#           "image" => "//placehold.it/30.png",
-#           "label" => "Show Date",
-#           "color" => "# "
-#         },
-#         {
-#           "value" => "point",
-#           "image" => "//placehold.it/30.png",
-#           "label" => "Location",
-#           "color" => "#ff0"
-#         },
-#         {
-#           "value" => "point",
-#           "image" => "//placehold.it/30.png",
-#           "label" => "Cast Member",
-#           "color" => "#ff0"
-#         },
-#         {
-#           "value" => "point",
-#           "image" => "//placehold.it/30.png",
-#           "label" => "Production Staff",
-#           "color" => "#ff0"
-#         },
-#         {
-#           "value" => "point",
-#           "image" => "//placehold.it/30.png",
-#           "label" => "Thearter Name",
-#           "color" => "#ff0"
-#         }
-#         ]
-#     }
-#   }
-
-transcribe_tasks = [
-    {
-      'key'         => 0,
-      'type'        => 'date', # type of input
-      'field_name'  => 'date',
-      'label'       => 'Date',
-      'instruction' => 'Please type-in the log date.'
-    },
-    {
-      'key'         => 1,
-      'type'        => 'text',
-      'field_name'  => 'journal_entry',
-      'label'       => 'Journal Entry',
-      'instruction' => 'Please type-in the journal entry for this day.'
-    },
-    {
-      'key'         => 2,
-      'type'        => 'textarea',
-      'field_name'  => 'other_entry',
-      'label'       => 'Other Entry',
-      'instruction' => 'Type something, anything.'
-    }
+organizations =[ 
+  {
+    name:        "Zooniverse", 
+    location:    "Chicago IL", 
+    description: "World leaders in Citizen Science", 
+    url:         "https://www.zooniverse.org"
+  },
+  {
+    name:        "New Bedford Whaling Museum", 
+    location:    "New Bedford, MA", 
+    description: "", 
+    url:         "http://www.whalingmuseum.org"
+  }
 ]
 
-marking_tasks = ""
+scientists = [
+  {
+    name:        "John Doe", 
+    location:    "New Bedford, MA", 
+    description: "", 
+    url:         "http://www.whalingmuseum.org"
+  }
+]
+
+developers = [
+  {
+    name:        "Stuart Lynn", 
+    location:    "Chicago, IL", 
+    description: "", 
+    url:         "https://github.com/stuartlynn"
+  }
+]
+
+# create new project
+project = Project.create(
+  producer:      'Zooniverse/NYPL',
+  title:         'Whale Tales',
+  description:   'The world\'s largest whaling library has been digitized. As a citizen scientist, you will dig through the logbooks of ship captains to read and extract weather related data.  Weather descriptions contained in the logbooks will help improve weather prediction capabilities while making an important part of Massachussetts history during the mid- to late 1800s widely available for anyone interested.',
+  summary:       'Transcribe ship logs from the New Bedford Whaling Museum',
+  organizations: organizations,
+  scientists:    scientists, 
+  developers:    developers,
+  pages:         pages,
+  background:    ''
+)
+
+transcribe_tasks = {
+  0 => {
+      type:         'date',
+      field_name:   'date',
+      label:        'Date',
+      instruction:  'Please type-in the log date.'
+  },
+  1 =>{
+      type:        'text',
+      field_name:  'journal_entry',
+      label:       'Journal Entry',
+      instruction: 'Please type-in the journal entry for this day.'
+  },
+  2 => {
+      type:         'textarea',
+      field_name:   'other_entry',
+      label:        'Other Entry',
+      instruction:  'Type something, anything.'
+  }
+}
+
+# marking_tasks = ""
 
 transcribe_workflow = Workflow.create(
   {
@@ -118,16 +123,16 @@ transcribe_workflow = Workflow.create(
 )
 
 
-marking_workflow = Workflow.create(
-  {
-    key: "marking", 
-    label: "Mark Content",  
-    first_task:"drawSomething", 
-    enables_workflows: {transcribe_workflow.id.to_s => {} }, 
-    tasks:marking_tasks, 
-    project: project 
-  }
-)
+# marking_workflow = Workflow.create(
+#   {
+#     key: "marking", 
+#     label: "Mark Content",  
+#     first_task:"drawSomething", 
+#     enables_workflows: {transcribe_workflow.id.to_s => {} }, 
+#     tasks:marking_tasks, 
+#     project: project 
+#   }
+# )
 
 # verify_workflow    = Workflow.create({name: "verify", tasks:[]  , project: p })
 # transcribe_workflow  = Workflow.create({key: "transcribe", label:"Transcribe Contnet", first_task:"", tasks:{}, enables_workflows: {}, project: project })

@@ -183,6 +183,7 @@ SubjectViewer = React.createClass
     # prepare classification
     mark = @state.marks[key]
     classification = new Classification @state.subject
+    classification.workflow_id = "mark"
     classification.annotate
       timestamp: mark.timestamp
       key: mark.key
