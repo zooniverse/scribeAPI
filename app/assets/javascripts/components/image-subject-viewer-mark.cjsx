@@ -166,8 +166,7 @@ SubjectViewer = React.createClass
             # console.log @state.loading
             # console.log "Finished Loading."
 
-  nextSubject: () ->
-    console.log 'MARKS: ', @state.marks
+  prepareClassification: ->
     for mark in [ @state.marks... ]
       @state.classification.annotate
         timestamp: mark.timestamp
@@ -176,6 +175,40 @@ SubjectViewer = React.createClass
         y_lower: mark.yLower
         x: mark.x
         y: mark.y
+
+    # DEBUG CODE
+    console.log @state.classification.annotations
+
+  submitMark: (key) ->
+    # prepare classification
+    mark = @state.marks[key]
+    classification = new Classification @state.subject
+    classification.workflow_id = "mark"
+    classification.annotate
+      timestamp: mark.timestamp
+      key: mark.key
+      y_upper: mark.yUpper
+      y_lower: mark.yLower
+      x: mark.x
+      y: mark.y
+
+    # send classification
+    $.post('/classifications', { annotations: classification.annotations } )
+      .done ->
+        console.log "Success"
+        return
+      .fail ->
+        console.log "Failure"
+        return
+      # .always ->
+      #   console.log "Always"
+      #   return
+
+  nextSubject: () ->
+    console.log 'MARKS: ', @state.marks
+
+    @prepareClassification()
+    @sendMarkClassification()
 
     # # DEBUG CODE
     console.log 'CLASSIFICATION: ', @state.classification
@@ -459,10 +492,11 @@ SubjectViewer = React.createClass
                   imageWidth = {@state.imageWidth}
                   imageHeight = {@state.imageHeight}
                   getEventOffset = {@getEventOffset}
-                  select = {@selectMark.bind null, mark}
+                  select = {@selectMark.bind null, mark} 
                   selected = {mark is @state.selectedMark}
                   onClickDelete = {@onClickDelete}
                   onClickTranscribe = {@onClickTranscribe}
+                  submitMark = {@submitMark}
                   scrubberWidth = {64}
                   scrubberHeight = {32}
                   handleDragMark = {@handleDragMark}

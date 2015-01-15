@@ -22,7 +22,7 @@ ImageSubjectViewer_transcribe = React.createClass # rename to Classifier
     <div className="image-subject-viewer">
       <SubjectViewer
         endpoint=endpoint
-        transcribeSteps={@props.transcribeSteps}
+        tasks={@props.tasks}
         task={@props.task}
       />
     </div>
@@ -39,6 +39,7 @@ SubjectViewer = React.createClass
       return false
 
   getInitialState: ->
+
     subjects: null
     subject: null
     subjectEndpoint: @props.endpoint
@@ -60,6 +61,9 @@ SubjectViewer = React.createClass
 
     classification: null
     selectedMark: null # TODO: currently not in use
+
+  componentWillReceiveProps: ->
+    console.log 'TRANSCRIE STEPS: ', @props
 
   componentDidMount: ->
     # console.log 'TASK = ', @props.task
@@ -338,7 +342,7 @@ SubjectViewer = React.createClass
           </svg>
 
           <TranscribeTool
-            transcribeSteps={@props.transcribeSteps}
+            tasks={@props.tasks}
             recordTranscription={@recordTranscription}
             nextTextEntry={@nextTextEntry}
             nextSubject = {@nextSubject}

@@ -3,6 +3,7 @@ class Classification
   constructor: (subject) ->
     @started_at = (new Date).toUTCString()
     @subject = subject
+    @subject_id = subject.subject_id
     @user_agent = window.navigator.userAgent
     @annotations ?= []
 

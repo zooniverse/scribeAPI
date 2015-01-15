@@ -9,6 +9,11 @@ TranscribeInput = require './transcribe-input'
 TranscribeTool = React.createClass
   displayName: 'TranscribeTool'
 
+  componentWillReceiveProps: ->
+    console.log 'componentDidReceiveProps() ', @props
+    for step in [ @props.tasks... ]
+      console.log 'STEP: ', step
+
   getInitialState: ->
     console.log 'yLower: ', @props.selectedMark.yLower
     currentStep: 0
@@ -26,7 +31,7 @@ TranscribeTool = React.createClass
     # record transcription
     transcription = []
     
-    for step, i in @props.transcribeSteps
+    for step, i in @props.tasks
       transcription.push { 
         field_name: "#{step.field_name}", 
         value: $(".transcribe-input:eq(#{step.key})").val() 
@@ -46,7 +51,7 @@ TranscribeTool = React.createClass
     @setState currentStep: @state.currentStep - 1
 
   nextStepAvailable: ->
-    if @state.currentStep + 1 > @props.transcribeSteps.length - 1
+    if @state.currentStep + 1 > @props.tasks.length - 1
       # console.log 'THERE IS NO NEXT STEP'
       return false
     else
@@ -92,6 +97,8 @@ TranscribeTool = React.createClass
 
   render: ->
     # console.log 'render()'
+
+
     currentStep = @state.currentStep
 
     console.log "[left, top] = [#{@state.dx}, #{@state.dy}]"
@@ -109,8 +116,8 @@ TranscribeTool = React.createClass
         <div className="transcribe-tool" style={style}>
           <div className="left">
             {
-              for step in @props.transcribeSteps
-                <TranscribeInput step = {step} currentStep = {@state.currentStep} />
+              for key, task of @props.tasks # NOTE: remember tasks is Object
+                <TranscribeInput task = {task} currentStep = {@state.currentStep} />
             }
           </div>
           <div className="right">

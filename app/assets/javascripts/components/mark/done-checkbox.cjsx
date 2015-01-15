@@ -45,7 +45,7 @@ module.exports = React.createClass
         console.log 'WARNING: Unknown state in DoneCheckbox.render()'
 
     <g 
-      onClick     = {@props.advanceToolProgress}
+      onClick     = {@props.onClickMarkButton}
       transform   = {@props.transform} 
       className   = "clickable drawing-tool-done-button" 
       stroke      = {strokeColor} 
@@ -58,7 +58,6 @@ module.exports = React.createClass
         height    = "#{height}" 
         fill      = "#{fillColor}" />
       <text
-
         transform = "translate(12,24)"
         fontSize  = "26">
         {buttonLabel}

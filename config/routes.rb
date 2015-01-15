@@ -4,12 +4,14 @@ API::Application.routes.draw do
 
   devise_for :users, :controllers => {:registrations => "registrations"}
 
+  get '/project',        to: 'projects#index', defaults: { format: 'json' }
+  get '/workflows',      to: 'workflow#index', defaults: { format: 'json' }  
+  get '/workflows/:id',  to: 'workflow#show',  defaults: { format: 'json' }  
+  
   get '/workflows/:workflow_id/subjects' => 'subjects#index'
-  get '/project' => 'projects#index'
   get '/current_user' => "users#current_user"
 
-  # post '/workflows/:workflows_id/classifications'
-
+  resources :subjects
   resources :classifications, :defaults => { :format => 'json' }
   get  '/current_user' => "users#current_user"
 end
