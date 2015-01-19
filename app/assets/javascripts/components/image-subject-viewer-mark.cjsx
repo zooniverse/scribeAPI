@@ -9,23 +9,20 @@ LoadingIndicator              = require './loading-indicator'
 SubjectMetadata               = require './subject-metadata'
 ActionButton                  = require './action-button'
 TextRowTool                   = require './mark/text-row-tool'
-
 TranscribeTool                = require './transcribe/transcribe-tool'
-
 Classification                = require '../models/classification'
 getUrlParamByName             = require '../lib/getUrlParamByName'
+
+WORKFLOW_ID = '533cd4dd4954738018030000'
 
 ImageSubjectViewer_mark = React.createClass # rename to Classifier
   displayName: 'ImageSubjectViewer_mark'
 
   render: ->
-    endpoint = "/workflows/533cd4dd4954738018030000/subjects.json?limit=5"
+    endpoint = "/workflows/#{WORKFLOW_ID}/subjects.json?limit=5"
     <div className="image-subject-viewer">
       <SubjectViewer endpoint=endpoint task={@props.task} />
     </div>
-
-  # componentDidMount: ->
-  #   console.log 'TASK: ', @props.task
 
 SubjectViewer = React.createClass
   displayName: 'SubjectViewer'
@@ -157,7 +154,7 @@ SubjectViewer = React.createClass
     mark = @state.marks[key]
     classification = new Classification @state.subject
     classification.subject_id = @state.subject.id
-    classification.workflow_id = "mark" # TODO: set to real workflow id
+    classification.workflow_id = WORKFLOW_ID
     classification.annotate
       timestamp: mark.timestamp
       key: mark.key
