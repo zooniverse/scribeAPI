@@ -25,7 +25,7 @@ RowFocusTool = React.createClass
     markHeight: @props.defaultMarkHeight
     fillColor: 'rgba(0,0,0,0.5)'
     strokeColor: 'rgba(0,0,0,0.5)'
-    strokeWidth: 6
+    strokeWidth: 0
     yUpper: @props.mark.y_upper
     yLower: @props.mark.y_lower
     markHeight: @props.mark.y_lower - @props.mark.y_upper
@@ -73,7 +73,7 @@ RowFocusTool = React.createClass
               x2="0" 
               y2="1"
               spreadMethod="reflect" >
-              <stop stopColor="#000" offset="0.50" stopOpacity="0.8"/>
+              <stop stopColor="#000" offset="0.5" stopOpacity="0.6"/>
               <stop stopColor="#000" offset="1"    stopOpacity="0"/>
             </linearGradient>
 
@@ -85,52 +85,45 @@ RowFocusTool = React.createClass
               y2="1" 
               spreadMethod="reflect" >
               <stop stopColor="#000" offset="0"   stopOpacity="0"/>
-              <stop stopColor="#000" offset="0.5" stopOpacity="0.8"/>
+              <stop stopColor="#000" offset="0.5" stopOpacity="0.6"/>
             </linearGradient>
             
-
-
           </defs>
           <rect 
             className   = "mark-rectangle"
             x           = 0
             y           = { -@state.yUpper-80 }
             viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
-            width       = {( @props.imageWidth - 2*@state.strokeWidth ) }
-            height      = {@props.mark.y_upper}
-            fill        = "rgba(0,0,0,0.8)"
-            strokeWidth = {@state.strokeWidth}
+            width       = {( @props.imageWidth ) }
+            height      = { Math.round(@props.mark.y_upper) }
+            fill        = "rgba(0,0,0,0.6)"
           />
           <rect 
             className   = "mark-rectangle"
             x           = 0
             y           = { -80 }
             viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
-            width       = {( @props.imageWidth - 2*@state.strokeWidth ) }
+            width       = {( @props.imageWidth ) }
             height      = {80}
             fill        = "url(#upperGradient)"
-            strokeWidth = {@state.strokeWidth}
           />
           <rect 
             className   = "mark-rectangle"
             x           = 0
-            y           = { markHeight }
+            y           = { Math.round(markHeight) }
             viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
-            width       = {( @props.imageWidth - 2*@state.strokeWidth ) }
+            width       = {( @props.imageWidth ) }
             height      = {80}
             fill        = "url(#lowerGradient)"
-            strokeWidth = {@state.strokeWidth}
           />
           <rect 
             className   = "mark-rectangle"
             x           = 0
             y           = { markHeight+80 }
             viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
-            width       = {( @props.imageWidth - 2*@state.strokeWidth ) }
-            height      = { @props.imageHeight - @props.mark.y_lower }
-            fill        = "rgba(0,0,0,0.8)"
-            stroke      = {@state.strokeColor}
-            strokeWidth = {@state.strokeWidth}
+            width       = {( @props.imageWidth ) }
+            height      = { Math.abs( Math.round(@props.imageHeight - @props.mark.y_lower) ) }
+            fill        = "rgba(0,0,0,0.6)"
           />
         </g>
       </Draggable>

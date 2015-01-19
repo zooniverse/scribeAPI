@@ -11,11 +11,11 @@ TranscribeTool = React.createClass
 
   componentWillReceiveProps: ->
     console.log 'componentWillReceiveProps() ', @props
-    for step in [ @props.tasks... ]
-      console.log 'STEP: ', step
+    # for step in [ @props.tasks... ]
+    #   console.log 'STEP: ', step
 
   getInitialState: ->
-    console.log 'yLower: ', @props.selectedMark.yLower
+    # console.log 'yLower: ', @props.selectedMark.yLower
     
     # convert task object to array (to use .length method)
     tasksArray = []
@@ -58,14 +58,12 @@ TranscribeTool = React.createClass
     @setState currentStep: @state.currentStep - 1
 
   nextStepAvailable: ->
-    console.log 'nextStepAvailable()'
-    console.log 'CURRENT STEP: ', @state.currentStep
-    console.log 'TASKS -=-=-=-=-: ', @state.tasks
+    # console.log 'nextStepAvailable()'
     if @state.currentStep + 1 > @state.tasks.length - 1
-      console.log 'THERE IS NO NEXT STEP.'
+      # console.log 'THERE IS NO NEXT STEP.'
       return false
     else
-      console.log 'NEXT STEP AVAILABLE.'
+      # console.log 'NEXT STEP AVAILABLE.'
       return true
 
   prevStepAvailable: ->

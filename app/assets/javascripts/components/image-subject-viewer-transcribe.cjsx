@@ -18,7 +18,6 @@ ImageSubjectViewer_transcribe = React.createClass # rename to Classifier
 
   render: ->
     endpoint = "/offline/example_subjects/transcription_subjects.json"
-    console.log 'TASKS: ', @props.tasks
     <div className="image-subject-viewer">
       <SubjectViewer
         endpoint=endpoint
@@ -51,7 +50,6 @@ SubjectViewer = React.createClass
     showTranscribeTool: true
 
   componentWillReceiveProps: ->
-    console.log 'TRANSCRIE STEPS: ', @props
 
   componentDidMount: ->
     # console.log 'TASK = ', @props.task
@@ -222,15 +220,14 @@ SubjectViewer = React.createClass
         $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
 
   nextTextEntry: ->
-    console.log '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
     console.log 'nextTextEntry() '
 
     console.log 'STATE.SELECTEDMARK.KEY: ', @state.selectedMark.key
     console.log 'STATE.MARKS.LENGTH: ', @state.marks.length
 
+    # hide transcribe-tool unless more text entries available
     if @state.selectedMark.key + 1 > @state.marks.length - 1
       @setState showTranscribeTool: false
-      console.log 'no more monkey business!'
       return
 
     key = @state.selectedMark.key
@@ -256,6 +253,9 @@ SubjectViewer = React.createClass
     # console.log 'render()'
     # return null if @state.selectedMark is null
     # don't render if ya ain't got subjects (yet)
+
+    console.log 'IMAGE WIDTH: ', @state.imageWidth
+    console.log 'IMAGE HEIGHT: ', @state.imageHeight
     return null if @state.subjects is null or @state.subjects.length is 0
 
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
@@ -299,7 +299,7 @@ SubjectViewer = React.createClass
               onDrag  = {@handleInitDrag}
               onEnd   = {@handleInitRelease} >
               <SVGImage
-                src = { @state.subject.location }
+                src = { "https://zooniverse-static.s3.amazonaws.com/scribe_subjects/logbookofalfredg1851unse_0083.jpg" }
                 width = {@state.imageWidth}
                 height = {@state.imageHeight} />
             </Draggable>
