@@ -11,9 +11,8 @@ ActionButton                  = require './action-button'
 TextRowTool                   = require './mark/text-row-tool'
 TranscribeTool                = require './transcribe/transcribe-tool'
 Classification                = require '../models/classification'
-getUrlParamByName             = require '../lib/getUrlParamByName'
 
-WORKFLOW_ID = '533cd4dd4954738018030000'
+WORKFLOW_ID = '54b82b4745626f20c9020000' # marking workflow
 
 ImageSubjectViewer_mark = React.createClass # rename to Classifier
   displayName: 'ImageSubjectViewer_mark'
@@ -26,38 +25,24 @@ ImageSubjectViewer_mark = React.createClass # rename to Classifier
 
 SubjectViewer = React.createClass
   displayName: 'SubjectViewer'
-
   resizing: false
-
-  usingFakeSubject: ->
-    if getUrlParamByName('use_fake_subject') is "true"
-      console.log 'DEBUG NOTE: USING FAKE SUBJECTS'
-      return true
-    else
-      return false
 
   getInitialState: ->
     subjects: null
     subject: null
     subjectEndpoint: @props.endpoint
-
     marks: []
     tools: []
     loading: false
-
     frame: 0
     imageWidth: 0
     imageHeight: 0
-
     viewX: 0
     viewY: 0
     viewWidth: 0
     viewHeight: 0
-
     classification: null
-
     selectedMark: null # TODO: currently not in use
-
     showTranscribeTool: false
 
   getFakeSubject: (group) ->
@@ -71,19 +56,7 @@ SubjectViewer = React.createClass
   componentDidMount: ->
     console.log 'TASK = ', @props.task
     @setView 0, 0, @state.imageWidth, @state.imageHeight
-
-    if @usingFakeSubject()
-      if @props.task is 'mark'
-        console.log 'using MARKING subjects'
-        subjectEndpoint = "./offline/example_subjects/marking_subjects.json"
-      else
-        console.log 'using TRANSCRIPTION subjects'
-        subjectEndpoint = "./offline/example_subjects/transcription_subjects.json"
-      @setState subjectEndpoint: subjectEndpoint, =>
-        @fetchSubjects(@state.subjectEndpoint)
-    else
-      @fetchSubjects(@state.subjectEndpoint)
-
+    @fetchSubjects(@state.subjectEndpoint)
     window.addEventListener "resize", this.updateDimensions
 
   componentWillMount: ->
@@ -147,7 +120,7 @@ SubjectViewer = React.createClass
         y: mark.y
 
     # DEBUG CODE
-    console.log @state.classification.annotations
+    # console.log @state.classification.annotations
 
   submitMark: (key) ->
     # prepare classification
@@ -162,10 +135,6 @@ SubjectViewer = React.createClass
       y_lower: mark.yLower
       x: mark.x
       y: mark.y
-
-    console.log 'SUBJECT: ', @state.subject
-
-    console.log 'CLASSIFICATION: ', classification
 
     # send classification
     $.post('/classifications', { 
@@ -184,13 +153,12 @@ SubjectViewer = React.createClass
       #   return
 
   nextSubject: () ->
-    console.log 'MARKS: ', @state.marks
 
     @prepareClassification()
     @sendMarkClassification()
 
     # # DEBUG CODE
-    console.log 'CLASSIFICATION: ', @state.classification
+    # console.log 'CLASSIFICATION: ', @state.classification
 
     # console.log JSON.stringify @state.classification # DEBUG CODE
     @state.classification.send()
@@ -204,7 +172,6 @@ SubjectViewer = React.createClass
     else
       @setState subject: @state.subjects[0], =>
         @loadImage ((if @usingFakeSubject() then @state.subject.classification.subject.location else @state.subject.location))
-
 
     @state.classification = new Classification @state.subject
 
@@ -274,7 +241,6 @@ SubjectViewer = React.createClass
     currentMark.yUpper = Math.round currentMark.y - markHeight/2
     currentMark.yLower = Math.round currentMark.y + markHeight/2
 
-
     # prevent dragging mark beyond image bounds
     offset = @state.markOffset.y
     return if ( y + offset - markHeight/2 ) < 0
@@ -322,7 +288,6 @@ SubjectViewer = React.createClass
     y = Math.round y
 
     currentMark = @state.selectedMark
-
 
     # enforce bounds
     if y > @state.imageHeight
