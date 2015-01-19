@@ -3,11 +3,9 @@ FOREGROUND = #333
 MAIN_HIGHLIGHT = #f60
 MEDIUM_GRAY = #555
 
-
 SANS_SERIF = Montserrat, "Gill Sans", Arial, sans-serif
 SERIF = "Playfair Display", Georgia, serif
 COURIER = "Courier New", Courier, monospace
-
 
 html
   background: MEDIUM_GRAY
@@ -79,7 +77,6 @@ a
   [data-location-hash="#/"] &
     margin-top: 45vh
 
-
 background-stripes(color1, color2, size)
   background: linear-gradient(-45deg, color1 25%, color2 25%, color2 50%, color1 50%, color1 75%, color2 75%)
   background-size: size size
@@ -122,7 +119,6 @@ h1
   border-radius 12px
   padding 20px
 
-  
 $button
   border-radius 5px
   padding 12px 20px
@@ -145,6 +141,7 @@ $button
     background-color #693
   &.disabled
     opacity 0.25
+    pointer-events none
     &:hover
       opacity 0.25
       // do nothing

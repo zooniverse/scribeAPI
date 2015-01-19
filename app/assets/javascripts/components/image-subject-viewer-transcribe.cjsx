@@ -18,6 +18,7 @@ ImageSubjectViewer_transcribe = React.createClass # rename to Classifier
 
   render: ->
     endpoint = "/offline/example_subjects/transcription_subjects.json"
+    console.log 'TASKS: ', @props.tasks
     <div className="image-subject-viewer">
       <SubjectViewer
         endpoint=endpoint

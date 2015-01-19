@@ -10,12 +10,19 @@ TranscribeTool = React.createClass
   displayName: 'TranscribeTool'
 
   componentWillReceiveProps: ->
-    console.log 'componentDidReceiveProps() ', @props
+    console.log 'componentWillReceiveProps() ', @props
     for step in [ @props.tasks... ]
       console.log 'STEP: ', step
 
   getInitialState: ->
     console.log 'yLower: ', @props.selectedMark.yLower
+    
+    # convert task object to array (to use .length method)
+    tasksArray = []
+    for key, elem of @props.tasks
+      tasksArray[key] = elem
+
+    tasks: tasksArray
     currentStep: 0
     dx: window.innerWidth/2 - 200
     dy: @props.scale.vertical * @props.selectedMark.yLower + 20
@@ -31,7 +38,7 @@ TranscribeTool = React.createClass
     # record transcription
     transcription = []
     
-    for step, i in @props.tasks
+    for step, i in @state.tasks
       transcription.push { 
         field_name: "#{step.field_name}", 
         value: $(".transcribe-input:eq(#{step.key})").val() 
@@ -51,11 +58,14 @@ TranscribeTool = React.createClass
     @setState currentStep: @state.currentStep - 1
 
   nextStepAvailable: ->
-    if @state.currentStep + 1 > @props.tasks.length - 1
-      # console.log 'THERE IS NO NEXT STEP'
+    console.log 'nextStepAvailable()'
+    console.log 'CURRENT STEP: ', @state.currentStep
+    console.log 'TASKS -=-=-=-=-: ', @state.tasks
+    if @state.currentStep + 1 > @state.tasks.length - 1
+      console.log 'THERE IS NO NEXT STEP.'
       return false
     else
-      # console.log 'NEXT STEP...'
+      console.log 'NEXT STEP AVAILABLE.'
       return true
 
   prevStepAvailable: ->
@@ -112,7 +122,7 @@ TranscribeTool = React.createClass
 
         <div className="transcribe-tool" style={style}>
           <div className="left">
-            { for key, task of @props.tasks # NOTE: remember tasks is Object
+            { for key, task of @state.tasks # NOTE: remember tasks is Object
                 <TranscribeInput task = {task} currentStep = {@state.currentStep} />
             }
           </div>
