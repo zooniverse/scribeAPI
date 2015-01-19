@@ -12,7 +12,6 @@ TextRowTool                   = require './mark/text-row-tool'
 TranscribeTool                = require './transcribe/transcribe-tool'
 RowFocusTool                  = require './row-focus-tool'
 Classification                = require '../models/classification'
-getUrlParamByName             = require '../lib/getUrlParamByName'
 
 ImageSubjectViewer_transcribe = React.createClass # rename to Classifier
   displayName: 'ImageSubjectViewer_transcribe'
@@ -31,34 +30,22 @@ SubjectViewer = React.createClass
   displayName: 'SubjectViewer'
   resizing: false
 
-  usingFakeSubject: ->
-    if getUrlParamByName('use_fake_subject') is "true"
-      console.log 'DEBUG NOTE: USING FAKE SUBJECTS'
-      return true
-    else
-      return false
-
   getInitialState: ->
 
     subjects: null
     subject: null
     subjectEndpoint: @props.endpoint
-
     resizeDisabled: true
-
     marks: []
     tools: []
     loading: false
-
     frame: 0
     imageWidth: 0
     imageHeight: 0
-
     viewX: 0
     viewY: 0
     viewWidth: 0
     viewHeight: 0
-
     classification: null
     selectedMark: null # TODO: currently not in use
 
@@ -68,19 +55,7 @@ SubjectViewer = React.createClass
   componentDidMount: ->
     # console.log 'TASK = ', @props.task
     @setView 0, 0, @state.imageWidth, @state.imageHeight
-
-    if @usingFakeSubject()
-      if @props.task is 'mark'
-        console.log 'using MARKING subjects'
-        subjectEndpoint = "./offline/example_subjects/marking_subjects.json"
-      else
-        console.log 'using TRANSCRIPTION subjects'
-        subjectEndpoint = "./offline/example_subjects/transcription_subjects.json"
-      @setState subjectEndpoint: subjectEndpoint, =>
-        @fetchSubjects(@state.subjectEndpoint)
-    else
-      @fetchSubjects(@state.subjectEndpoint)
-
+    @fetchSubjects(@state.subjectEndpoint)
     window.addEventListener "resize", this.updateDimensions
 
   componentWillMount: ->
@@ -258,7 +233,6 @@ SubjectViewer = React.createClass
 
     @resetTranscriptionFields()
 
-
     # console.log 'KEY : ', key
     # console.log 'LENGTH: ', @state.marks.length - 1
 
@@ -269,7 +243,6 @@ SubjectViewer = React.createClass
 
   render: ->
     # console.log 'render()'
-
     # return null if @state.selectedMark is null
     # don't render if ya ain't got subjects (yet)
     return null if @state.subjects is null or @state.subjects.length is 0

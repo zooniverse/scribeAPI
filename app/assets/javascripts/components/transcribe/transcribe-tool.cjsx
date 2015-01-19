@@ -97,10 +97,7 @@ TranscribeTool = React.createClass
 
   render: ->
     # console.log 'render()'
-
-
     currentStep = @state.currentStep
-
     console.log "[left, top] = [#{@state.dx}, #{@state.dy}]"
     
     style = 
@@ -115,8 +112,7 @@ TranscribeTool = React.createClass
 
         <div className="transcribe-tool" style={style}>
           <div className="left">
-            {
-              for key, task of @props.tasks # NOTE: remember tasks is Object
+            { for key, task of @props.tasks # NOTE: remember tasks is Object
                 <TranscribeInput task = {task} currentStep = {@state.currentStep} />
             }
           </div>
