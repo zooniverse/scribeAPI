@@ -15,32 +15,6 @@ TranscribeTool                = require './transcribe/transcribe-tool'
 Classification                = require '../models/classification'
 getUrlParamByName             = require '../lib/getUrlParamByName'
 
-# temporary
-transcribeSteps = [ 
-  {
-    key: 0,
-    type: 'date', # type of input
-    field_name: 'date',
-    label: 'Date',
-    instruction: 'Please type-in the log date.'
-  },
-  {
-    key: 1,
-    type: 'text',
-    field_name: 'journal_entry',
-    label: 'Journal Entry',
-    instruction: 'Please type-in the journal entry for this day.'
-  },
-  {
-    key: 2,
-    type: 'textarea',
-    field_name: 'other_entry',
-    label: 'Other Entry',
-    instruction: 'Type something, anything.'
-  } 
-]
-
-
 ImageSubjectViewer_mark = React.createClass # rename to Classifier
   displayName: 'ImageSubjectViewer_mark'
 
@@ -52,7 +26,6 @@ ImageSubjectViewer_mark = React.createClass # rename to Classifier
 
   # componentDidMount: ->
   #   console.log 'TASK: ', @props.task
-
 
 SubjectViewer = React.createClass
   displayName: 'SubjectViewer'
