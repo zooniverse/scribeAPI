@@ -183,7 +183,8 @@ SubjectViewer = React.createClass
     # prepare classification
     mark = @state.marks[key]
     classification = new Classification @state.subject
-    classification.workflow_id = "mark"
+    classification.subject_id = @state.subject.id
+    classification.workflow_id = "mark" # TODO: set to real workflow id
     classification.annotate
       timestamp: mark.timestamp
       key: mark.key
@@ -192,8 +193,16 @@ SubjectViewer = React.createClass
       x: mark.x
       y: mark.y
 
+    console.log 'SUBJECT: ', @state.subject
+
+    console.log 'CLASSIFICATION: ', classification
+
     # send classification
-    $.post('/classifications', { annotations: classification.annotations } )
+    $.post('/classifications', { 
+        subject_id:  classification.subject_id,
+        workflow_id: classification.workflow_id, 
+        annotations: classification.annotations 
+      } )
       .done ->
         console.log "Success"
         return
