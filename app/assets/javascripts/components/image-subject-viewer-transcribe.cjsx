@@ -32,7 +32,6 @@ SubjectViewer = React.createClass
   resizing: false
 
   getInitialState: ->
-
     subjects: null
     subject: null
     subjectEndpoint: @props.endpoint
@@ -49,6 +48,7 @@ SubjectViewer = React.createClass
     viewHeight: 0
     classification: null
     selectedMark: null # TODO: currently not in use
+    showTranscribeTool: true
 
   componentWillReceiveProps: ->
     console.log 'TRANSCRIE STEPS: ', @props
@@ -113,6 +113,7 @@ SubjectViewer = React.createClass
   nextSubject: () ->
     console.log 'nextSubject()'
     # TODO: annotate new transcription and submit as new classification!!!
+    @setState showTranscribeTool: true
 
     for mark in [ @state.marks... ]
       if mark.transcription isnt undefined
@@ -221,8 +222,17 @@ SubjectViewer = React.createClass
         $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
 
   nextTextEntry: ->
-    console.log '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
+    console.log '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
     console.log 'nextTextEntry() '
+
+    console.log 'STATE.SELECTEDMARK.KEY: ', @state.selectedMark.key
+    console.log 'STATE.MARKS.LENGTH: ', @state.marks.length
+
+    if @state.selectedMark.key + 1 > @state.marks.length - 1
+      @setState showTranscribeTool: false
+      console.log 'no more monkey business!'
+      return
+
     key = @state.selectedMark.key
 
     # if key > @state.marks.length - 1
@@ -315,14 +325,16 @@ SubjectViewer = React.createClass
 
           </svg>
 
-          <TranscribeTool
-            tasks={@props.tasks}
-            recordTranscription={@recordTranscription}
-            nextTextEntry={@nextTextEntry}
-            nextSubject = {@nextSubject}
-            selectedMark={@state.selectedMark}
-            scale={@getScale()}
-          />
+          { if @state.showTranscribeTool
+              <TranscribeTool
+                tasks={@props.tasks}
+                recordTranscription={@recordTranscription}
+                nextTextEntry={@nextTextEntry}
+                nextSubject = {@nextSubject}
+                selectedMark={@state.selectedMark}
+                scale={@getScale()}
+              />
+          }
 
         </div>
         <p>{@state.subjects.location}</p>
