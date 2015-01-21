@@ -3,11 +3,10 @@ FORMAT: 1A
 # scribeAPI
 Scribe API provides metadata and transcription services for digitized documents.
 
-# Group Notes
-Notes related resources of the **Notes API**
-
 ## The Project Object [/project]
+
 ### Project [GET]
+
 + Response 200 (application/json)
 
         {
@@ -126,31 +125,76 @@ Notes related resources of the **Notes API**
             ]
         }
 
-### Create a Note [POST]
-+ Request (application/json)
-
-        { "title": "Buy cheese and bread for breakfast." }
-
-+ Response 201 (application/json)
-
-        { "id": 3, "title": "Buy cheese and bread for breakfast." }
-
-## Note [/notes/{id}]
-A single Note object with all its details
-
+## Workflows [/workflows/{id},{key}]
 + Parameters
-    + id (required, number, `1`) ... Numeric `id` of the Note to perform action with. Has example value.
+    + key (optional, string, `transcribe`) ... Name of the workflow to retrieve.
+    + id (optional, number, `54b82b4745626f20c9010000`) ... Numeric `id` of the workflow to retrieve.
 
-### Retrieve a Note [GET]
+### Retrieve workflow/s [GET]
+
 + Response 200 (application/json)
 
-    + Header
-
-            X-My-Header: The Value
-
-    + Body
-
-            { "id": 2, "title": "Pick-up posters from post-office" }
-
-### Remove a Note [DELETE]
-+ Response 204
+            [
+                {
+                    id: "54b82b4745626f20c9010000",
+                    label: "Transcribe Contnet",
+                    key: "transcribe",
+                    tasks: {
+                        0: {
+                            key: 0,
+                            type: "date",
+                            field_name: "date",
+                            label: "Date",
+                            instruction: "Please type-in the log date."
+                        },
+                        1: {
+                            key: 1,
+                            type: "text",
+                            field_name: "journal_entry",
+                            label: "Journal Entry",
+                            instruction: "Please type-in the journal entry for this day."
+                        },
+                        2: {
+                            key: 2,
+                            type: "textarea",
+                            field_name: "other_entry",
+                            label: "Other Entry",
+                            instruction: "Type something, anything."
+                        }
+                    },
+                    retire_limit: 10,
+                    first_task: "",
+                    active_subjects: 0
+                },
+                {
+                    id: "54b82b4745626f20c9020000",
+                    label: "Mark Contnet",
+                    key: "mark",
+                    tasks: {
+                        0: {
+                            key: 0,
+                            type: "date",
+                            field_name: "date",
+                            label: "Date",
+                            instruction: "Please type-in the log date."
+                        },
+                        1: {
+                            key: 1,
+                            type: "text",
+                            field_name: "journal_entry",
+                            label: "Journal Entry",
+                            instruction: "Please type-in the journal entry for this day."
+                        },
+                        2: {
+                            key: 2,
+                            type: "textarea",
+                            field_name: "other_entry",
+                            label: "Other Entry",
+                            instruction: "Type something, anything."
+                        }
+                    },
+                    retire_limit: 10,
+                    first_task: "",
+                    active_subjects: 0
+                }
+            ]
