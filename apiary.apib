@@ -198,3 +198,119 @@ Scribe API provides metadata and transcription services for digitized documents.
                     active_subjects: 0
                 }
             ]
+            
+## Primary Classification [/classifications/mark]
+
+### Primary classifications [POST]
+
++ Request
+
+        {
+          "_id": {
+            "$oid": "54c0105b45626f0450330000"
+          },
+          "annotations": {
+            "0": {
+              "timestamp": "Wed, 21 Jan 2015 20:47:18 GMT",
+              "key": "0",
+              "y_upper": "234",
+              "y_lower": "576",
+              "x": "611",
+              "y": "405"
+            }
+          },
+          "subject_id": {
+            "$oid": "53f26a6c45626f6d548f0000"
+          },
+          "user_id": null,
+          "workflow_id": {
+            "$oid": "54b82b4745626f20c9020000"
+          }
+        }
+
++ Response 200 (application/json)
+
+        {
+          "_id": {
+            "$oid": "54c0105b45626f0450330000"
+          },
+          "annotations": {
+            "0": {
+              "timestamp": "Wed, 21 Jan 2015 20:47:18 GMT",
+              "key": "0",
+              "y_upper": "234",
+              "y_lower": "576",
+              "x": "611",
+              "y": "405"
+            }
+          },
+          "subject_id": {
+            "$oid": "53f26a6c45626f6d548f0000"
+          },
+          "user_id": null,
+          "workflow_id": {
+            "$oid": "54b82b4745626f20c9020000"
+          }
+        }
+        
+## Secondary Classification [/classifications/transcribe]
+
+### Secondary Classifications [POST]
+
++ Request
+
+        {
+          "_id": {
+            "$oid": "54c0105b45626f0450330000"
+          },
+          "annotations": {
+            "0": {
+              "timestamp": "Wed, 21 Jan 2015 20:48:00 GMT",
+              "key": "0",
+              "date": "2 Apr 1853",
+            }
+            "1": {
+              "timestamp": "Wed, 21 Jan 2015 20:42:20 GMT",
+              "key": "1",
+              "journal_entry": "Saturday, April 2nd, 1853. Freshly(?) windy(?) from the S.E. steering by the winds painted(?) the bow boat two sails in seglie(?)"
+            }
+          },
+          "subject_id": {
+            "$oid": "53f26a6c45626f6d548f0000"
+          },
+          "user_id": null,
+          "workflow_id": {
+            "$oid": "54b82b4745626f20c9010000"
+          }
+        }
+        
++ Response 200 (application/json)
+
+        {
+          "_id": {
+            "$oid": "54c0105b45626f0450330000"
+          },
+          "annotations": {
+            "0": {
+              "timestamp": "Wed, 21 Jan 2015 20:48:00 GMT",
+              "key": "0",
+              "date": "2 Apr 1853",
+            }
+            "1": {
+              "timestamp": "Wed, 21 Jan 2015 20:42:20 GMT",
+              "key": "1",
+              "journal_entry": "Saturday, April 2nd, 1853. Freshly(?) windy(?) from the S.E. steering by the winds painted(?) the bow boat two sails in seglie(?)"
+            }
+          },
+          "subject_id": {
+            "$oid": "53f26a6c45626f6d548f0000"
+          },
+          "user_id": null,
+          "workflow_id": {
+            "$oid": "54b82b4745626f20c9010000"
+          }
+        }
+
+
+
+
