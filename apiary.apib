@@ -5,6 +5,8 @@ Scribe API provides metadata and transcription services for digitized documents.
 
 ## The Project Object [/project]
 
+This JSON Object defines the entire project from the site content (home page, about us, team, etc.) to the transcription tools and their workflows. Since each field is populated from a database, it will be possible to create an admin page to edit the specific site content, determine how the transcription tools will be composed, and what their respective workflows will look like.
+
 ### Project [GET]
 
 + Response 200 (application/json)
@@ -124,12 +126,20 @@ Scribe API provides metadata and transcription services for digitized documents.
                 }
             ]
         }
+        
 
-## Workflows [/workflows/{id},{key}]
+## Workflows [/workflows/{id}]
+
+Workflows are used to determine properties **Tools** and the order/sequence in which they are used.
+
 + Parameters
-    + key (optional, string, `transcribe`) ... Name of the workflow to retrieve.
-    + id (optional, number, `54b82b4745626f20c9010000`) ... Numeric `id` of the workflow to retrieve.
-
+    + id (optional, String or Hash, `mark`) ...  Name (string) or alphanumeric hash that identifies a specific workflow.
+        + Values
+            + `transcribe` 
+            + `54b82b4745626f20c9010000`
+            + `mark`
+            + `54b82b4745626f20c9020000`
+    
 ### Retrieve workflow/s [GET]
 
 + Response 200 (application/json)
@@ -198,6 +208,60 @@ Scribe API provides metadata and transcription services for digitized documents.
                     active_subjects: 0
                 }
             ]
+            
+## Subjects [/workflows/{workflow_id}/subjects.json{?limit}]
+
+Subjects must be retrieved from an existing workflow.
+
+### Retrieve subjects from Workflow [GET]
++ Parameters
+    + workflow_id (required, Hash, `54b82b4745626f20c9020000`) ...  Alphanumeric hash that identifies a specific workflow.
+    + limit (optional, Integer, `5`) ... Integer value that specifies how many subjects to return.
+    
++ Response 200 (application/json)
+
+        [
+            {
+                id: "53f26a6d45626f6d54090200",
+                name: null,
+                location: "https://zooniverse-static.s3.amazonaws.com/scribe_subjects/logbookofcalifor00unse_0169.jpg",
+                classification_count: 0,
+                child_subjects: [ ],
+                meta_data: null
+            },
+            {
+                id: "53f26a6d45626f6d54140300",
+                name: null,
+                location: "https://zooniverse-static.s3.amazonaws.com/scribe_subjects/logbookofphillip00unse_0171.jpg",
+                classification_count: 0,
+                child_subjects: [ ],
+                meta_data: null
+            },
+            {
+                id: "53f26a6d45626f6d54480200",
+                name: null,
+                location: "https://zooniverse-static.s3.amazonaws.com/scribe_subjects/logbookofcalifor00unse_0232.jpg",
+                classification_count: 0,
+                child_subjects: [ ],
+                meta_data: null
+            },
+            {
+                id: "53f26a6c45626f6d541c0000",
+                name: null,
+                location: "https://zooniverse-static.s3.amazonaws.com/scribe_subjects/logbookofalfredg1851unse_0028.jpg",
+                classification_count: 0,
+                child_subjects: [ ],
+                meta_data: null
+            },
+            {
+                id: "53f26a6c45626f6d547c0000",
+                name: null,
+                location: "https://zooniverse-static.s3.amazonaws.com/scribe_subjects/logbookofalfredg1851unse_0124.jpg",
+                classification_count: 0,
+                child_subjects: [ ],
+                meta_data: null
+            }
+        ]
             
 ## Primary Classification [/classifications/mark]
 
