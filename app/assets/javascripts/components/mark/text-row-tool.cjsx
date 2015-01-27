@@ -86,6 +86,8 @@ TextRowTool = React.createClass
       data-selected = {@props.selected || null}
     >
 
+      <text fontSize="40" fill="blue">{@props.mark.key}</text>
+
       <Draggable
         onStart = {@props.handleMarkClick.bind @props.mark} 
         onDrag = {markDragHandler} >

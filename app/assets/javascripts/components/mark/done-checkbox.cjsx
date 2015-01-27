@@ -8,17 +8,6 @@ module.exports = React.createClass
   getInitialState: ->
     markStatus: @props.markStatus
 
-  # componentWillReceiveProps: ->
-    # @setState
-    #   markComplete: @props.markComplete
-    #   transcribeComplete: @props, =>
-    #     if @props.markComplete and not @props.transcribeComplete 
-    #       @setState 
-    #         # fillColor: 'rgba(100,200,50,1.0)'
-    #         buttonLabel: "TRANSCRIBE"
-    #     if @props.markComplete and @props.transcribeComplete
-    #       @setState fillColor: 'rgba(100,200,50,1.0)'
-            
   render: ->
     fillColor    = 'rgba(100,200,50,0.2)'
     strokeColor  = 'rgb(0,0,0)'

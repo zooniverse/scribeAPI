@@ -190,10 +190,9 @@ SubjectViewer = React.createClass
     marks.push {yUpper, yLower, x, y, key, timestamp}
 
     @setState
-      marks: marks
-      offset: $(e.nativeEvent.target).offset()
-
-    @selectMark @state.marks[@state.marks.length-1]
+      marks:        marks
+      offset:       $(e.nativeEvent.target).offset()
+      selectedMark: @state.marks[@state.marks.length-1]
 
   handleInitDrag: (e) ->
     # console.log 'handleInitDrag()'
@@ -218,6 +217,7 @@ SubjectViewer = React.createClass
     # console.log 'handleToolMouseDown()'
 
   handleMarkClick: (mark, e) ->
+    console.log 'handleMarkClick() ', mark
     {x,y} = @getEventOffset e
 
     # save click offset from mark center
@@ -226,7 +226,8 @@ SubjectViewer = React.createClass
       markOffset: {
         x: mark.x - x,
         y: mark.y - y
-      }
+      }, =>
+        @forceUpdate()
 
   handleDragMark: (e) ->
     # console.log 'handleDragMark()'
@@ -332,18 +333,24 @@ SubjectViewer = React.createClass
     # x: ((e.pageX - pageXOffset - rect.left)) + @state.viewX
     # y: ((e.pageY - pageYOffset - rect.top)) + @state.viewY
 
-  selectMark: (mark) ->
-    return if mark is @state.selectedMark
-    @setState selectedMark: mark
+  # selectMark: (mark) ->
+  #   console.log 'selectMark()'
+  #   return if mark is @state.selectedMark
+  #   @setState selectedMark: mark, =>
+  #     console.log 'SELECTED MARK: ', mark
 
   onClickDelete: (key) ->
+    console.log 'DELETING MARK WITH KEY: ', key
+    console.log 'MARKS: ', @state.marks
     marks = @state.marks
     for mark, i in [ marks... ]
       if mark.key is key
+        console.log '   >>> FOUND MARK TO DELETE: ', mark
         marks.splice(i, 1)
     @setState
       marks: marks
-      selectedMark: null
+      selectedMark: null, =>
+        @forceUpdate()
 
   beginTextEntry: ->
     # console.log 'beginTextEntry()'
@@ -356,7 +363,6 @@ SubjectViewer = React.createClass
         $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
 
   nextTextEntry: ->
-
     key = @state.selectedMark.key
     if key+1 > @state.marks.length-1
       # console.log "That's all the marks for now!"
@@ -373,6 +379,10 @@ SubjectViewer = React.createClass
   # dummy placeholder
   recordTranscription: ->
     console.log 'recordTranscription()'
+
+  foo: ->
+    console.log 'MARKS:::::::::::::::::::::::::::::::::', @state.marks
+
 
   render: ->
     # don't render if ya ain't got subjects (yet)
@@ -407,6 +417,7 @@ SubjectViewer = React.createClass
         <div className="marking-surface">
 
           <svg
+            onClick = {@foo}
             className = "subject-viewer-svg"
             width = {@state.imageWidth}
             height = {@state.imageHeight}
@@ -430,13 +441,12 @@ SubjectViewer = React.createClass
             { 
               @state.marks.map ((mark, i) ->
                 <TextRowTool
-                  key = {mark.key}
+                  key = {i}
                   mark = {mark}
                   disabled = {false}
                   imageWidth = {@state.imageWidth}
                   imageHeight = {@state.imageHeight}
                   getEventOffset = {@getEventOffset}
-                  select = {@selectMark.bind null, mark} 
                   selected = {mark is @state.selectedMark}
                   onClickDelete = {@onClickDelete}
                   onClickTranscribe = {@onClickTranscribe}
