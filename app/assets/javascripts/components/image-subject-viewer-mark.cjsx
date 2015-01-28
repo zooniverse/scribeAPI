@@ -331,12 +331,6 @@ SubjectViewer = React.createClass
     # x: ((e.pageX - pageXOffset - rect.left)) + @state.viewX
     # y: ((e.pageY - pageYOffset - rect.top)) + @state.viewY
 
-  # selectMark: (mark) ->
-  #   console.log 'selectMark()'
-  #   return if mark is @state.selectedMark
-  #   @setState selectedMark: mark, =>
-  #     console.log 'SELECTED MARK: ', mark
-
   onClickDelete: (key) ->
     marks = @state.marks
     marks.splice(key,1) # delete marks[key]
@@ -373,13 +367,9 @@ SubjectViewer = React.createClass
   recordTranscription: ->
     console.log 'recordTranscription()'
 
-  foo: ->
-    console.log 'MARKS:::::::::::::::::::::::::::::::::', @state.marks
-
-
   render: ->
     # don't render if ya ain't got subjects (yet)
-    console.log 'showTranscribeTool is ', @state.showTranscribeTool
+    # console.log 'showTranscribeTool is ', @state.showTranscribeTool
     return null if @state.subjects is null or @state.subjects.length is 0
 
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
@@ -410,7 +400,6 @@ SubjectViewer = React.createClass
         <div className="marking-surface">
 
           <svg
-            onClick = {@foo}
             className = "subject-viewer-svg"
             width = {@state.imageWidth}
             height = {@state.imageHeight}

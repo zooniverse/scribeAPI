@@ -6,6 +6,8 @@ DeleteButton = require './delete-button'
 ResizeButton = require './resize-button'
 DoneCheckbox = require './done-checkbox'
 
+DEBUG = false
+
 TextRowTool = React.createClass
   displayName: 'TextRowTool'
 
@@ -67,15 +69,7 @@ TextRowTool = React.createClass
       else
         console.log 'WARNING: Unknown state in handleToolProgress()'
 
-    # if @state.markStatus is 'mark'
-    #   console.log 'Please mark the area...'
-    # else if @state.markStatus is 'transcribe'
-    #   console.log 'You may now transcribe, if you wish.'
-    # else if @state.markStatus is 'complete'
-    #   console.log 'All done. Nothing left to do here.'
-
   handleMarkDelete: ->
-    console.log 'handleMarkDelete(): key: ', @props.key
     @props.onClickDelete @props.key
 
   render: ->
@@ -92,8 +86,10 @@ TextRowTool = React.createClass
       data-selected = {@props.selected || null}
     >
 
-      <text fontSize="40" fill="blue">{@state.mark.key}</text>
-
+      { if DEBUG
+        <text fontSize="40" fill="blue">{@state.mark.key}</text>
+      }
+      
       <Draggable
         onStart = {@props.handleMarkClick.bind @props.mark} 
         onDrag = {markDragHandler} >
