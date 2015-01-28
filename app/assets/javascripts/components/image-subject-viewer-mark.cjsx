@@ -136,6 +136,8 @@ SubjectViewer = React.createClass
       x: mark.x
       y: mark.y
 
+    @disableMark(key)
+
     # send classification
     $.post('/classifications', { 
         subject_id:  classification.subject_id,
@@ -151,6 +153,18 @@ SubjectViewer = React.createClass
       # .always ->
       #   console.log "Always"
       #   return
+
+  disableMark: (key) ->
+    marks = @state.marks
+    console.log 'DISABLING MARK: ', marks[key]
+    marks[key].disabled = true
+    @forceUpdate()
+
+  enableMark: (key) ->
+    marks = @state.marks
+    console.log 'ENABLING MARK: ', marks[key]
+    marks[key].disabled = false
+    @forceUpdate()
 
   nextSubject: () ->
 
@@ -185,6 +199,7 @@ SubjectViewer = React.createClass
     {x, y} = @getEventOffset e
     yUpper = Math.round( y - 50/2 )
     yLower = Math.round( y + 50/2 )
+    diabled = false
 
     marks = @state.marks
     marks.push {yUpper, yLower, x, y, key, timestamp}

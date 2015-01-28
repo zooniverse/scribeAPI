@@ -34,7 +34,11 @@ TextRowTool = React.createClass
     strokeWidth: 6
 
   componentWillReceiveProps: ->
-    @setState mark: @props.mark
+    if @props.mark.disabled
+      console.log 'MARK IS DISABLED! KEY: ', @props.mark.key
+    @setState mark: @props.mark, =>
+      @forceUpdate()
+
   
   onClickMarkButton: ->
     markStatus = @state.markStatus
