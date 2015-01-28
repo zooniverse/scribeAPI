@@ -406,9 +406,14 @@ SubjectViewer = React.createClass
       {horizontal, vertical} = @getScale()
       $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
 
-  onClickTranscribe: ->
-    console.log 'onClickTranscribe()'
-    @setState showTranscribeTool: true
+  onClickTranscribe: (key) ->
+    console.log 'onClickTranscribe() ', key
+    console.log 'MARK: ', @state.marks[key]
+
+    console.log 'LOCATION: ', location
+    console.log location.host + "/?subject_id=#{@state.marks[key].transcribe_id}#/transcribe"
+    location.replace 'http://' + location.host + "/?subject_id=#{@state.marks[key].transcribe_id}#/transcribe"
+    # @setState showTranscribeTool: true
 
   # dummy placeholder
   recordTranscription: ->

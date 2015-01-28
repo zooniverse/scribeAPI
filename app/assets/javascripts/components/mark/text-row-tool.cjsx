@@ -53,7 +53,7 @@ TextRowTool = React.createClass
         @setState 
           markStatus: 'transcribe'
           locked: true
-        @props.onClickTranscribe()
+        @props.onClickTranscribe(@state.mark.key)
         # @transcribeMark(mark)
 
         console.log 'Going into TRANSCRIBE mode. Stand by.'

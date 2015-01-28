@@ -13,6 +13,9 @@ TranscribeTool                = require './transcribe/transcribe-tool'
 RowFocusTool                  = require './row-focus-tool'
 Classification                = require '../models/classification'
 
+getUrlParamByName             = require '../lib/getUrlParamByName'
+
+
 ImageSubjectViewer_transcribe = React.createClass # rename to Classifier
   displayName: 'ImageSubjectViewer_transcribe'
 
@@ -31,6 +34,9 @@ SubjectViewer = React.createClass
   resizing: false
 
   getInitialState: ->
+
+    console.log getUrlParamByName 'subject_id'
+
     subjects: null
     subject: null
     subjectEndpoint: @props.endpoint
