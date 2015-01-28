@@ -14,6 +14,31 @@ Classification                = require '../models/classification'
 
 WORKFLOW_ID = '54b82b4745626f20c9020000' # marking workflow
 
+# TODO: remove
+transcribeSteps = [    
+    {    
+      key: 0,    
+      type: 'date', # type of input    
+      field_name: 'date',    
+      label: 'Date',   
+      instruction: 'Please type-in the log date.'    
+    },   
+    {    
+      key: 1,    
+      type: 'text',    
+      field_name: 'journal_entry',   
+      label: 'Journal Entry',    
+      instruction: 'Please type-in the journal entry for this day.'    
+    },   
+    {    
+      key: 2,    
+      type: 'textarea',    
+      field_name: 'other_entry',   
+      label: 'Other Entry',    
+      instruction: 'Type something, anything.'   
+    }    
+]
+
 ImageSubjectViewer_mark = React.createClass # rename to Classifier
   displayName: 'ImageSubjectViewer_mark'
 
@@ -143,9 +168,10 @@ SubjectViewer = React.createClass
         subject_id:  classification.subject_id,
         workflow_id: classification.workflow_id, 
         annotations: classification.annotations 
-      } )
-      .done =>
-        console.log "Success"
+      }, )
+      .done (response) =>
+        console.log "Success" #, response._id.$oid
+        @setTranscribeSubject(key, response._id.$oid)
         @enableMarkButton(key)
         return
       .fail =>
@@ -154,6 +180,11 @@ SubjectViewer = React.createClass
       # .always ->
       #   console.log "Always"
       #   return
+
+  setTranscribeSubject: (key, transcribe_id) ->
+    marks = @state.marks
+    marks[key].transcribe_id = transcribe_id
+    @setState marks: marks
 
   disableMarkButton: (key) ->
     marks = @state.marks
