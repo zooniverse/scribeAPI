@@ -115,6 +115,7 @@ project = Project.create(
     <p>Sed gravida dictum urna in fringilla. Praesent ac dolor ipsum. Quisque sodales eu lorem nec gravida. Maecenas vel tortor felis. Curabitur tristique urna ex. Sed semper mattis sem, nec dictum enim lobortis a. Sed non mollis sem, vel accumsan justo. Vivamus consequat nulla non aliquet semper. Vivamus lectus eros, sollicitudin ornare rhoncus quis, vestibulum a quam. Integer mattis nibh ex, vel consequat elit efficitur vel. Duis blandit, nisl ac laoreet viverra, orci magna eleifend elit, eu cursus dui neque non mi. Fusce quis ex nec sapien auctor placerat. Morbi imperdiet a ante et porta. Vivamus sed libero sit amet erat dictum faucibus. Praesent sed aliquet lectus, vitae pretium neque.</p>
   ''',
 
+<<<<<<< Updated upstream
   summary:       'Transcribe ship logs from the New Bedford Whaling Museum',
   organizations: organizations,
   scientists:    scientists, 
@@ -122,6 +123,11 @@ project = Project.create(
   pages:         pages,
   background:    ''
 )
+=======
+# verify_workflow    = Workflow.create({name: "verify", tasks:[]  , project: p })
+transcribe_workflow  = Workflow.create({key: "transcribe", label:"Transcribe Contnet", first_task:"", tasks:{}, enables_workflows: {}, project: p })
+marking_workflow   = Workflow.create({key: "marking", label: "Mark Content",  first_task:"drawSomething", enables_workflows: {transcribe_workflow.id.to_s => {denormalized_fields:[:x,:y]} }, tasks:marking_tasks, project: p })
+>>>>>>> Stashed changes
 
 transcribe_tasks = {
   0 => {
@@ -170,3 +176,9 @@ mark_workflow = Workflow.create(
 )
 
 
+<<<<<<< Updated upstream
+=======
+10.times do |i|
+  Subject.create(name:"subject_#{i}", location: {standard: example_images.sample}, meta_data: { width:504, height:782}, workflows: [marking_workflow])
+end
+>>>>>>> Stashed changes

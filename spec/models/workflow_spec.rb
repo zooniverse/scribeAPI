@@ -1,21 +1,45 @@
 require 'spec_helper'
 
 
-describe Workflow do 
+describe Workflow do
 
-  before(:each) do 
+  before(:each) do
     @wf = Workflow.create()
   end
 
   def triggering_annotations
-    "annotations" =>[{"key" =>"drawSomething","value" =>"point","marks" =>[{"x" =>201.44,"y" =>573.214,"frame" =>0}]},{"started_at" =>"Fri, 04 Apr 2014 15:11:27 GMT","finished_at" => "Fri, 04 Apr 2014 15:11:29 GMT"}{"workflow":"marking"}]}} 
+    {
+      "annotations" =>
+        [
+          {
+          "key" =>"drawSomething",
+          "value" =>"point",
+          "marks" =>[
+            {
+              "x" =>201.44,
+              "y" =>573.214,
+              "frame" =>0
+            }
+            ]
+          },
+          {
+            "started_at" =>"Fri, 04 Apr 2014 15:11:27 GMT",
+            "finished_at" => "Fri, 04 Apr 2014 15:11:29 GMT"
+          },
+          {
+            "workflow" =>"marking"
+          }
+        ]
+      }
+    }
   end
 
   def marking_task
+    {
     "drawSomething" => {
         "type" => "drawing",
         "question" => "Draw something.",
-        "triggers_workflow" => @wf.id.to_s , 
+        "triggers_workflow" => @wf.id.to_s ,
         "choices" => [ {
           "value" => "point",
           "image" => "//placehold.it/30.png",
@@ -50,22 +74,21 @@ describe Workflow do
     }
   end
 
-  it 'Should correctly update its subject counter when a subject changes state' do 
-    s = Subject.create(:workflows =>[@wf])
+  it 'Should correctly update its subject counter when a subject changes state' do
+    s = Subject.create(:workflow =>@wf, :state=>"pending")
     s.activate!
-    @wf.active_subjects.should  == 1 
+    @wf.active_subjects.should  == 1
     s.retire!
-    @wf.active_subjects.should  == 0 
-  end
+    @wf.active_subjects.should  == 0
+  end\
 
-
-  it 'Should trigger a new subject in a subsequent workflow if a task requires it' do 
+  it 'Should trigger a new subject in a subsequent workflow if a task requires it' do
     triggering_workflow  = Workflow.create(:tasks=> marking_task, first_task: "drawSomething")
     s = Subject.create(:workflows =>[triggering_workflow.id])
 
     classification = Classification.create(:subject => s, :workflow => triggering_workflow, annotations: triggering_annotations )
     @wf.active_subjects.should == 1
-    Subject.find(:workflow_ids => @wf.id).count.should  == 1 
-    
+    Subject.find(:workflow_ids => @wf.id).count.should  == 1
+
   end
 end
