@@ -34,12 +34,12 @@ TextRowTool = React.createClass
     strokeWidth: 6
 
   componentWillReceiveProps: ->
-    if @props.mark.disabled
-      console.log 'MARK IS DISABLED! KEY: ', @props.mark.key
-    @setState mark: @props.mark, =>
-      @forceUpdate()
+    # handle disabled marks
+    # if @props.mark.disabled
+    #   # do something
+    
+    @setState mark: @props.mark
 
-  
   onClickMarkButton: ->
     markStatus = @state.markStatus
     console.log 'markStatus is ', markStatus
@@ -62,9 +62,6 @@ TextRowTool = React.createClass
         console.log 'All done. Nothing left to do here.'
       else
         console.log 'WARNING: Unknown state in handleToolProgress()'
-
-  handleMarkDelete: ->
-    @props.onClickDelete @props.key
 
   render: ->
 
@@ -105,7 +102,7 @@ TextRowTool = React.createClass
       { if @state.markStatus is 'mark'
           <g>
             <ResizeButton 
-              viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
+              viewBox = {"0 0 @props.imageWidth @props.imageHeight"}
               className = "upperResize"
               handleResize = {@props.handleUpperResize} 
               transform = {"translate( #{@props.imageWidth/2}, #{ - Math.round @props.scrubberHeight/2 } )"} 
@@ -127,7 +124,7 @@ TextRowTool = React.createClass
 
             <DeleteButton 
               transform = "translate(50, #{Math.round markHeight/2})" 
-              onClick = {@handleMarkDelete}
+              onClick = {@props.onClickDelete.bind null, @props.key}
               workflow = {@props.workflow}
               isSelected = {@props.selected}
             />
