@@ -27,6 +27,7 @@ TextRowTool = React.createClass
     fillColor: @props.fillColor
     strokeColor: @props.strokeColor
     strokeWidth: @props.strokeWidth
+    locked: false
 
   getDefaultProps: ->
     fillColor: 'rgba(0,0,0,0.5)'
@@ -43,38 +44,47 @@ TextRowTool = React.createClass
     console.log 'markStatus is ', markStatus
     switch markStatus
       when 'mark'
-        @setState markStatus: 'mark-finished'
+        @setState 
+          markStatus: 'mark-finished'
+          locked: false
         @props.submitMark(@props.key)
         console.log 'Mark submitted. Click TRANSCRIBE to begin transcribing.'
       when 'mark-finished'
-        @setState markStatus: 'transcribe'
+        @setState 
+          markStatus: 'transcribe'
+          locked: true
         @props.onClickTranscribe()
         # @transcribeMark(mark)
 
         console.log 'Going into TRANSCRIBE mode. Stand by.'
       when 'transcribe'
-        @setState markStatus: 'transcribe-finished'
+        @setState 
+          markStatus: 'transcribe-finished'
+          locked: true
         # @submitTranscription()
         console.log 'Transcription submitted.'
       when 'transcribe-finished'
+        @setState locked: true
         console.log 'All done. Nothing left to do here.'
       else
+        @setState locked: true
         console.log 'WARNING: Unknown state in handleToolProgress()'
 
   render: ->
 
+    classString = 'point drawing-tool'
+
     unless @state.markStatus is 'mark'
       markDragHandler = null
+      classString += ' locked'
     else
       markDragHandler = @props.handleDragMark
 
     markHeight = @state.mark.yLower - @state.mark.yUpper
 
     <g 
-      className = "point drawing-tool" 
+      className = {classString} 
       transform = {"translate(#{Math.ceil @state.strokeWidth}, #{Math.round( @state.mark.y - markHeight/2 ) })"} 
-      data-disabled = {@props.disabled || null} 
-      data-selected = {@props.selected || null}
     >
 
       { if DEBUG

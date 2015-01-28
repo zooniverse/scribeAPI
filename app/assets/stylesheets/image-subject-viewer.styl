@@ -24,6 +24,9 @@
     .drawing-tool
       cursor grab
       cursor -webkit-grab
+      &.locked
+        &:active
+          cursor not-allowed
       &:active
         cursor grabbing
         cursor -webkit-grabbing

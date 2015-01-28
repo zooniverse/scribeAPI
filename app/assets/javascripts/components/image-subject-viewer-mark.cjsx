@@ -440,7 +440,6 @@ SubjectViewer = React.createClass
                 <TextRowTool
                   key = {i}
                   mark = {mark}
-                  disabled = {false}}
                   imageWidth = {@state.imageWidth}
                   imageHeight = {@state.imageHeight}
                   getEventOffset = {@getEventOffset}
