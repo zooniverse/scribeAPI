@@ -157,14 +157,12 @@ SubjectViewer = React.createClass
 
   disableMarkButton: (key) ->
     marks = @state.marks
-    console.log 'DISABLING MARK: ', marks[key]
     marks[key].buttonDisabled = true
     @setState marks: marks
     @forceUpdate()
 
   enableMarkButton: (key) ->
     marks = @state.marks
-    console.log 'DISABLING MARK: ', marks[key]
     marks[key].buttonDisabled = false
     @setState marks: marks
     @forceUpdate()
