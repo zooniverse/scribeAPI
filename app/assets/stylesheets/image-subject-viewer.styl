@@ -37,6 +37,12 @@
         cursor pointer
       .drawing-tool-done-button
         cursor pointer
-        
+        &.disabled
+          cursor wait
+          opacity 0.2
+          &:active
+            cursor wait
+            pointer-events none
+          
   .button
     @extends $button

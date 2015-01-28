@@ -136,7 +136,7 @@ SubjectViewer = React.createClass
       x: mark.x
       y: mark.y
 
-    @disableMark(key)
+    @disableMarkButton(key)
 
     # send classification
     $.post('/classifications', { 
@@ -144,26 +144,29 @@ SubjectViewer = React.createClass
         workflow_id: classification.workflow_id, 
         annotations: classification.annotations 
       } )
-      .done ->
+      .done =>
         console.log "Success"
+        @enableMarkButton(key)
         return
-      .fail ->
+      .fail =>
         console.log "Failure"
         return
       # .always ->
       #   console.log "Always"
       #   return
 
-  disableMark: (key) ->
+  disableMarkButton: (key) ->
     marks = @state.marks
     console.log 'DISABLING MARK: ', marks[key]
-    marks[key].disabled = true
+    marks[key].buttonDisabled = true
+    @setState marks: marks
     @forceUpdate()
 
-  enableMark: (key) ->
+  enableMarkButton: (key) ->
     marks = @state.marks
-    console.log 'ENABLING MARK: ', marks[key]
-    marks[key].disabled = false
+    console.log 'DISABLING MARK: ', marks[key]
+    marks[key].buttonDisabled = false
+    @setState marks: marks
     @forceUpdate()
 
   nextSubject: () ->
@@ -199,10 +202,10 @@ SubjectViewer = React.createClass
     {x, y} = @getEventOffset e
     yUpper = Math.round( y - 50/2 )
     yLower = Math.round( y + 50/2 )
-    diabled = false
+    buttonDisabled = false
 
     marks = @state.marks
-    marks.push {yUpper, yLower, x, y, key, timestamp}
+    marks.push {yUpper, yLower, x, y, key, timestamp, buttonDisabled}
 
     @setState
       marks:        marks
@@ -439,7 +442,7 @@ SubjectViewer = React.createClass
                 <TextRowTool
                   key = {i}
                   mark = {mark}
-                  disabled = {false}
+                  disabled = {false}}
                   imageWidth = {@state.imageWidth}
                   imageHeight = {@state.imageHeight}
                   getEventOffset = {@getEventOffset}

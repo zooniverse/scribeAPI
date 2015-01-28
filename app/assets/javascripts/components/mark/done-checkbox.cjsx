@@ -6,16 +6,23 @@ module.exports = React.createClass
   displayName: 'DoneCheckbox'
 
   getInitialState: ->
-    markStatus: @props.markStatus
+    markStatus: @props.markStatus 
+
+  componentWillReceiveProps: ->
+    @setState buttonDisabled: @props.buttonDisabled
 
   render: ->
+
     fillColor    = 'rgba(100,200,50,0.2)'
     strokeColor  = 'rgb(0,0,0)'
     strokeWidth  = 4
     borderRadius = 10
     width        = 200
-    height       = 40
-    
+    height       = 40   
+
+    classString = 'clickable drawing-tool-done-button'
+    classString += ' disabled' if @props.buttonDisabled
+      
     markStatus = @props.markStatus
     switch markStatus
       when 'mark'
@@ -36,7 +43,7 @@ module.exports = React.createClass
     <g 
       onClick     = {@props.onClickMarkButton}
       transform   = {@props.transform} 
-      className   = "clickable drawing-tool-done-button" 
+      className   = {classString} 
       stroke      = {strokeColor} 
       strokeWidth = {strokeWidth} >
       <rect 

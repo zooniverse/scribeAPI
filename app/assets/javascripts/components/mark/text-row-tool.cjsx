@@ -34,11 +34,9 @@ TextRowTool = React.createClass
     strokeWidth: 6
 
   componentWillReceiveProps: ->
-    # handle disabled marks
-    # if @props.mark.disabled
-    #   # do something
-    
-    @setState mark: @props.mark
+    @setState 
+      mark: @props.mark, =>
+        @forceUpdate()
 
   onClickMarkButton: ->
     markStatus = @state.markStatus
@@ -99,7 +97,9 @@ TextRowTool = React.createClass
         />
       </Draggable>
 
-      { if @state.markStatus is 'mark'
+      { 
+
+        if @state.markStatus is 'mark'
           <g>
             <ResizeButton 
               viewBox = {"0 0 @props.imageWidth @props.imageHeight"}
@@ -127,10 +127,12 @@ TextRowTool = React.createClass
               onClick = {@props.onClickDelete.bind null, @props.key}
               workflow = {@props.workflow}
               isSelected = {@props.selected}
+              buttonDisabled = {@state.mark.buttonDisabled}
             />
           </g>
       }
       <DoneCheckbox
+        buttonDisabled = {@state.mark.buttonDisabled}
         markStatus = {@state.markStatus}
         onClickMarkButton = {@onClickMarkButton}
         transform = {"translate( #{@props.imageWidth-250}, #{ Math.round markHeight/2 -@props.scrubberHeight/2 } )"} 
