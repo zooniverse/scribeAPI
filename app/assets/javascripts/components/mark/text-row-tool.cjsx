@@ -22,30 +22,20 @@ TextRowTool = React.createClass
       {x, y}
 
   getInitialState: ->
-    # # DEBUG CODE
-    # console.log "PROPS [#{@props.mark.yUpper},#{@props.mark.yLower}]"
-    # console.log "INITIAL (STATE.X, STATE.Y): (#{Math.round @props.mark.x},#{Math.round @props.mark.y})"
     mark: @props.mark
-    centerX: @props.mark.x
-    centerY: @props.mark.y
-    markHeight: @props.defaultMarkHeight
+    markStatus: 'mark'
+    fillColor: @props.fillColor
+    strokeColor: @props.strokeColor
+    strokeWidth: @props.strokeWidth
+
+  getDefaultProps: ->
     fillColor: 'rgba(0,0,0,0.5)'
     strokeColor: 'rgba(0,0,0,0.5)'
     strokeWidth: 6
-    yUpper: @props.mark.yUpper
-    yLower: @props.mark.yLower
-    markHeight: @props.mark.yLower - @props.mark.yUpper
-    markStatus: 'mark'
 
   componentWillReceiveProps: ->
-    @setState
-      key: @props.mark.key
-      yUpper: @props.mark.yUpper
-      yLower: @props.mark.yLower
-      centerX: @props.mark.x
-      centerY: @props.mark.y
-      markHeight: @props.mark.yLower - @props.mark.yUpper
-
+    @setState mark: @props.mark
+  
   onClickMarkButton: ->
     markStatus = @state.markStatus
     console.log 'markStatus is ', markStatus
@@ -79,9 +69,11 @@ TextRowTool = React.createClass
     else
       markDragHandler = @props.handleDragMark
 
+    markHeight = @state.mark.yLower - @state.mark.yUpper
+
     <g 
       className = "point drawing-tool" 
-      transform = {"translate(#{Math.ceil @state.strokeWidth}, #{Math.round( @state.centerY - @state.markHeight/2 ) })"} 
+      transform = {"translate(#{Math.ceil @state.strokeWidth}, #{Math.round( @state.mark.y - markHeight/2 ) })"} 
       data-disabled = {@props.disabled || null} 
       data-selected = {@props.selected || null}
     >
@@ -99,7 +91,7 @@ TextRowTool = React.createClass
           y           = 0
           viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
           width       = {Math.ceil( @props.imageWidth - 2*@state.strokeWidth ) }
-          height      = {@state.markHeight}
+          height      = {markHeight}
           fill        = {if @props.selected then "rgba(255,102,0,0.25)" else "rgba(0,0,0,0.5)"}
           stroke      = {@state.strokeColor}
           strokeWidth = {@state.strokeWidth}
@@ -122,7 +114,7 @@ TextRowTool = React.createClass
             <ResizeButton 
               className = "lowerResize"
               handleResize = {@props.handleLowerResize} 
-              transform = {"translate( #{@props.imageWidth/2}, #{ Math.round( @state.markHeight - @props.scrubberHeight/2 ) } )"} 
+              transform = {"translate( #{@props.imageWidth/2}, #{ Math.round( markHeight - @props.scrubberHeight/2 ) } )"} 
               scrubberHeight = {@props.scrubberHeight}
               scrubberWidth = {@props.scrubberWidth}
               workflow = {@props.workflow}
@@ -130,7 +122,7 @@ TextRowTool = React.createClass
             />
 
             <DeleteButton 
-              transform = "translate(50, #{Math.round @state.markHeight/2})" 
+              transform = "translate(50, #{Math.round markHeight/2})" 
               onClick = {@handleMarkDelete}
               workflow = {@props.workflow}
               isSelected = {@props.selected}
@@ -140,7 +132,7 @@ TextRowTool = React.createClass
       <DoneCheckbox
         markStatus = {@state.markStatus}
         onClickMarkButton = {@onClickMarkButton}
-        transform = {"translate( #{@props.imageWidth-250}, #{ Math.round @state.markHeight/2 -@props.scrubberHeight/2 } )"} 
+        transform = {"translate( #{@props.imageWidth-250}, #{ Math.round markHeight/2 -@props.scrubberHeight/2 } )"} 
       />
     </g>
 
