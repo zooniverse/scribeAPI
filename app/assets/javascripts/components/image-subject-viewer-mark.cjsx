@@ -217,10 +217,8 @@ SubjectViewer = React.createClass
     # console.log 'handleToolMouseDown()'
 
   handleMarkClick: (mark, e) ->
-    console.log 'handleMarkClick() ', mark
     {x,y} = @getEventOffset e
 
-    # save click offset from mark center
     @setState
       selectedMark: mark
       markOffset: {
@@ -340,17 +338,12 @@ SubjectViewer = React.createClass
   #     console.log 'SELECTED MARK: ', mark
 
   onClickDelete: (key) ->
-    console.log 'DELETING MARK WITH KEY: ', key
-    console.log 'MARKS: ', @state.marks
     marks = @state.marks
-    for mark, i in [ marks... ]
-      if mark.key is key
-        console.log '   >>> FOUND MARK TO DELETE: ', mark
-        marks.splice(i, 1)
+    marks.splice(key,1) # delete marks[key]
     @setState
       marks: marks
       selectedMark: null, =>
-        @forceUpdate()
+        @forceUpdate() # make sure keys are up-to-date before re-render
 
   beginTextEntry: ->
     # console.log 'beginTextEntry()'
@@ -438,8 +431,7 @@ SubjectViewer = React.createClass
                 width = {@state.imageWidth}
                 height = {@state.imageHeight} />
             </Draggable>
-            { 
-              @state.marks.map ((mark, i) ->
+            { @state.marks.map ((mark, i) ->
                 <TextRowTool
                   key = {i}
                   mark = {mark}

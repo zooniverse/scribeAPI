@@ -23,6 +23,7 @@ TextRowTool = React.createClass
     # # DEBUG CODE
     # console.log "PROPS [#{@props.mark.yUpper},#{@props.mark.yLower}]"
     # console.log "INITIAL (STATE.X, STATE.Y): (#{Math.round @props.mark.x},#{Math.round @props.mark.y})"
+    mark: @props.mark
     centerX: @props.mark.x
     centerY: @props.mark.y
     markHeight: @props.defaultMarkHeight
@@ -36,6 +37,7 @@ TextRowTool = React.createClass
 
   componentWillReceiveProps: ->
     @setState
+      key: @props.mark.key
       yUpper: @props.mark.yUpper
       yLower: @props.mark.yLower
       centerX: @props.mark.x
@@ -72,6 +74,10 @@ TextRowTool = React.createClass
     # else if @state.markStatus is 'complete'
     #   console.log 'All done. Nothing left to do here.'
 
+  handleMarkDelete: ->
+    console.log 'handleMarkDelete(): key: ', @props.key
+    @props.onClickDelete @props.key
+
   render: ->
 
     unless @state.markStatus is 'mark'
@@ -86,7 +92,7 @@ TextRowTool = React.createClass
       data-selected = {@props.selected || null}
     >
 
-      <text fontSize="40" fill="blue">{@props.mark.key}</text>
+      <text fontSize="40" fill="blue">{@state.mark.key}</text>
 
       <Draggable
         onStart = {@props.handleMarkClick.bind @props.mark} 
@@ -129,7 +135,7 @@ TextRowTool = React.createClass
 
             <DeleteButton 
               transform = "translate(50, #{Math.round @state.markHeight/2})" 
-              onClick = {@props.onClickDelete.bind null, @props.key}
+              onClick = {@handleMarkDelete}
               workflow = {@props.workflow}
               isSelected = {@props.selected}
             />
