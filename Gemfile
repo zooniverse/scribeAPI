@@ -30,15 +30,16 @@ group :development, :production do
   gem 'pry'
 end
 
-group :development, :test, :production do
-  gem 'rspec-rails'
-end
+
 
 group :test do
   gem 'capybara'
   gem 'cucumber-rails', :require=>false
   gem 'database_cleaner', '1.0.1'
+  gem 'rspec-rails'
+  gem 'shoulda-matchers'
   gem 'email_spec'
   gem 'launchy'
+  gem 'factory_girl'
   gem 'mongoid-rspec', '>= 1.6.0', :github=>"evansagge/mongoid-rspec"
 end
