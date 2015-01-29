@@ -1,7 +1,7 @@
 class Classification
 
   constructor: (subject) ->
-    @started_at = (new Date).toUTCString()
+    @started_at = (new Date).toJSON()
     @subject = subject
     @subject_id = subject.subject_id
     @user_agent = window.navigator.userAgent
@@ -27,7 +27,7 @@ class Classification
     return output
 
   send: ->
-    @finished_at = (new Date).toUTCString()
+    @finished_at = (new Date).toJSON()
     # TODO: Post request goes here
     
 
