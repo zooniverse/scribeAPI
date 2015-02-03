@@ -18,7 +18,7 @@ RowFocusTool = React.createClass
 
   getInitialState: ->
     # # DEBUG CODE
-    # console.log "PROPS [#{@props.mark.y_upper},#{@props.mark.y_lower}]"
+    # console.log "PROPS [#{@props.mark.yUpper},#{@props.mark.yLower}]"
     # console.log "INITIAL (STATE.X, STATE.Y): (#{Math.round @props.mark.x},#{Math.round @props.mark.y})"
     centerX: @props.mark.x
     centerY: @props.mark.y
@@ -26,20 +26,20 @@ RowFocusTool = React.createClass
     fillColor: 'rgba(0,0,0,0.5)'
     strokeColor: 'rgba(0,0,0,0.5)'
     strokeWidth: 0
-    yUpper: @props.mark.y_upper
-    yLower: @props.mark.y_lower
-    markHeight: @props.mark.y_lower - @props.mark.y_upper
+    yUpper: @props.mark.yUpper
+    yLower: @props.mark.yLower
+    markHeight: @props.mark.yLower - @props.mark.yUpper
 
     markComplete: false
     transcribeComplete: false
 
   componentWillReceiveProps: ->
     @setState
-      yUpper: @props.mark.y_upper
-      yLower: @props.mark.y_lower
+      yUpper: @props.mark.yUpper
+      yLower: @props.mark.yLower
       centerX: @props.mark.x
       centerY: @props.mark.y
-      markHeight: @props.mark.y_lower - @props.mark.y_upper, =>
+      markHeight: @props.mark.yLower - @props.mark.yUpper, =>
         @forceUpdate()
 
   handleToolProgress: ->
@@ -51,9 +51,9 @@ RowFocusTool = React.createClass
       @setState transcribeComplete: true
 
   render: ->
-    # console.log 'props: ', @props
+    console.log 'RowFocusTool::props: ', @props
     # console.log 'mark: ', @props.mark
-    markHeight = @props.mark.y_lower - @props.mark.y_upper
+    markHeight = @props.mark.yLower - @props.mark.yUpper
     <g 
       className = "point drawing-tool" 
       transform = {"translate(#{Math.ceil @state.strokeWidth}, #{Math.round( @props.mark.y - markHeight/2 ) })"} 
@@ -95,7 +95,7 @@ RowFocusTool = React.createClass
             y           = { -@state.yUpper-80 }
             viewBox     = {"0 0 #{@props.imageWidth} #{@props.imageHeight}"}
             width       = {( @props.imageWidth ) }
-            height      = { Math.round(@props.mark.y_upper) }
+            height      = { Math.round(@props.mark.yUpper) }
             fill        = "rgba(0,0,0,0.6)"
           />
           <rect 
@@ -122,7 +122,7 @@ RowFocusTool = React.createClass
             y           = { markHeight+80 }
             viewBox     = {"0 0 #{@props.imageWidth} #{@props.imageHeight}"}
             width       = { @props.imageWidth }
-            height      = { Math.abs( Math.round(@props.imageHeight - @props.mark.y_lower) ) }
+            height      = { Math.abs( Math.round(@props.imageHeight - @props.mark.yLower) ) }
             fill        = "rgba(0,0,0,0.6)"
           />
         </g>

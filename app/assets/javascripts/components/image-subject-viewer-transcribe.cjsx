@@ -274,12 +274,16 @@ SubjectViewer = React.createClass
     console.log 'STATE: ', @state
 
     return null unless @state.selectedMark?
-    return null unless @state.subject isnt null
+    # return null unless @state.subject isnt null
 
     console.log 'LOCATION: ', @state.subject.location
 
     console.log 'IMAGE WIDTH: ', @state.imageWidth
     console.log 'IMAGE HEIGHT: ', @state.imageHeight
+
+    console.log 'yUpper: ', @state.selectedMark.yUpper
+    console.log 'yLower: ', @state.selectedMark.yLower
+
     console.log 'KEY: ', @state.selectedMark.key
     # return null if @state.subjects is null or @state.subjects.length is 0
 
