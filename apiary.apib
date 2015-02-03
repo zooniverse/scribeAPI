@@ -1,0 +1,380 @@
+FORMAT: 1A
+
+# scribeAPI
+Scribe API provides metadata and transcription services for digitized documents.
+
+## The Project Object [/project]
+
+This JSON Object defines the entire project from the site content (home page, about us, team, etc.) to the transcription tools and their workflows. Since each field is populated from a database, it will be possible to create an admin page to edit the specific site content, determine how the transcription tools will be composed, and what their respective workflows will look like.
+
+### Project [GET]
+
++ Response 200 (application/json)
+
+        {
+            id: "54b82b4745626f20c9000000",
+            title: "Whale Tales",
+            summary: "Transcribe ship logs from the New Bedford Whaling Museum",
+            description: " The world's largest whaling library has been digitized. As a citizen scientist, you will dig through the logbooks of ship captains to read and extract weather related data. Weather descriptions contained in the logbooks will help improve weather prediction capabilities while making an important part of Massachussetts history during the mid- to late 1800s widely available for anyone interested. ",
+            home_page_content: " <h1>Whale Tales</h1> <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nulla neque, luctus a malesuada hendrerit, scelerisque tempus lectus. Sed semper tellus ut sapien cursus vehicula. Praesent pellentesque tellus id tortor pharetra, lacinia vehicula eros condimentum. In ultrices ligula ac augue vestibulum, quis accumsan est facilisis. Integer aliquet elementum est quis feugiat. Aliquam erat volutpat. Nunc quis consequat est. Fusce sit amet viverra ex, ac euismod ante. Nam vitae tincidunt velit. Aliquam ultricies neque lacus, at dapibus libero pellentesque ut. Nam vulputate mauris varius porttitor porta. In fermentum turpis nulla, nec vulputate libero malesuada ut. Praesent in libero vestibulum, sodales augue sed, porta metus.</p> <p>In id porttitor tellus, ut malesuada ante. In mollis ante eget erat ornare faucibus ut at tellus. Pellentesque sed nisi in eros auctor ornare nec ac nisi. In semper eu ligula eu interdum. Quisque vitae volutpat leo. Integer euismod risus id fermentum varius. Donec aliquam ipsum risus, vitae scelerisque lorem aliquam a. Cras efficitur pharetra dapibus. Ut fermentum metus erat, nec egestas lectus aliquam quis.</p> <p>Sed gravida dictum urna in fringilla. Praesent ac dolor ipsum. Quisque sodales eu lorem nec gravida. Maecenas vel tortor felis. Curabitur tristique urna ex. Sed semper mattis sem, nec dictum enim lobortis a. Sed non mollis sem, vel accumsan justo. Vivamus consequat nulla non aliquet semper. Vivamus lectus eros, sollicitudin ornare rhoncus quis, vestibulum a quam. Integer mattis nibh ex, vel consequat elit efficitur vel. Duis blandit, nisl ac laoreet viverra, orci magna eleifend elit, eu cursus dui neque non mi. Fusce quis ex nec sapien auctor placerat. Morbi imperdiet a ante et porta. Vivamus sed libero sit amet erat dictum faucibus. Praesent sed aliquet lectus, vitae pretium neque.</p> ",
+            organizations: [
+                {
+                name: "Zooniverse",
+                location: "Chicago IL",
+                description: "World leaders in Citizen Science",
+                url: "https://www.zooniverse.org"
+                },
+                {
+                name: "New Bedford Whaling Museum",
+                location: "New Bedford, MA",
+                description: "",
+                url: "http://www.whalingmuseum.org"
+                }],
+            scientists: [
+                {
+                name: "John Doe",
+                location: "New Bedford, MA",
+                description: "",
+                url: "http://www.whalingmuseum.org"
+                }
+            ],
+            developers: [
+            {
+                name: "Stuart Lynn",
+                location: "Chicago, IL",
+                description: "",
+                url: "https://github.com/stuartlynn"
+            }
+            ],
+            workflows: [
+                {
+                    id: "54b82b4745626f20c9010000",
+                    label: "Transcribe Contnet",
+                    key: "transcribe",
+                    tasks: {
+                        0: {
+                            key: 0,
+                            type: "date",
+                            field_name: "date",
+                            label: "Date",
+                            instruction: "Please type-in the log date."
+                        },
+                        1: {
+                            key: 1,
+                            type: "text",
+                            field_name: "journal_entry",
+                            label: "Journal Entry",
+                            instruction: "Please type-in the journal entry for this day."
+                        },
+                        2: {
+                            key: 2,
+                            type: "textarea",
+                            field_name: "other_entry",
+                            label: "Other Entry",
+                            instruction: "Type something, anything."
+                        }
+                    },
+                    retire_limit: 10,
+                    first_task: "",
+                    active_subjects: 0
+                },
+                {
+                    id: "54b82b4745626f20c9020000",
+                    label: "Mark Contnet",
+                    key: "mark",
+                    tasks: {
+                        0: {
+                            key: 0,
+                            type: "date",
+                            field_name: "date",
+                            label: "Date",
+                            instruction: "Please type-in the log date."
+                        },
+                        1: {
+                            key: 1,
+                            type: "text",
+                            field_name: "journal_entry",
+                            label: "Journal Entry",
+                            instruction: "Please type-in the journal entry for this day."
+                        },
+                        2: {
+                            key: 2,
+                            type: "textarea",
+                            field_name: "other_entry",
+                            label: "Other Entry",
+                            instruction: "Type something, anything."
+                        }
+                    },
+                    retire_limit: 10,
+                    first_task: "",
+                    active_subjects: 0
+                }
+            ],
+            background: "",
+            pages: [
+                {
+                    name: "science",
+                    content: " <div class="page-content"> <h1> Science Page</h1> <p>I am a science!</p> <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tincidunt ante sit amet nibh ultricies imperdiet. Sed eleifend interdum urna ut cursus. In egestas imperdiet molestie. Suspendisse potenti. Donec imperdiet eleifend fermentum. Suspendisse ac eros facilisis, volutpat quam eu, pulvinar nibh. Nulla sed lectus quis mauris ullamcorper mollis nec at neque. Integer scelerisque orci ac velit tincidunt consectetur. Sed venenatis, erat nec sagittis molestie, tellus libero semper nulla, ut tincidunt nisl lorem semper odio. Nam ipsum urna, congue tincidunt eleifend pretium, interdum a felis. Nunc urna massa, condimentum ac nisl a, faucibus faucibus leo. Fusce arcu urna, blandit in lorem id, ornare dapibus nibh. Quisque bibendum odio augue, at faucibus risus sollicitudin ac. Donec eget diam vel massa pharetra iaculis et vel risus.</p> <p>Nullam lectus odio, facilisis ac quam non, viverra condimentum nulla. Sed non ornare tortor. Mauris luctus varius tellus at blandit. Nulla maximus consequat quam, non hendrerit risus facilisis sit amet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Suspendisse viverra in justo sit amet maximus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Integer vulputate nisi ac turpis ultricies, tempor ultrices justo viverra. Praesent molestie ultrices lacus, nec auctor tellus molestie quis. Sed et sem leo. Fusce sed turpis vehicula, suscipit arcu sed, commodo ipsum. Nullam auctor tortor quis lobortis convallis. Aliquam a diam ligula. Nunc id interdum nunc. Maecenas quis tortor metus. Cras eget molestie tellus.</p> </div> "
+                },
+                {
+                    name: "about",
+                    content: " <div class="page-content"> <h1>About Page</h1> <p>This is the about page.</p> <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at felis ultrices, tincidunt est nec, ultrices metus. Vivamus tempor nisi vitae erat pharetra, sit amet efficitur tellus aliquam. Fusce dolor dolor, facilisis et mollis a, egestas sed mauris. Duis sodales enim ac dui sodales sollicitudin. Sed commodo semper scelerisque. Cras elementum pulvinar nulla, et imperdiet orci porta nec. Integer feugiat massa ac libero finibus, non dapibus lectus tincidunt. Nulla sed pulvinar diam. Praesent cursus erat in cursus sagittis. Pellentesque ultricies, mi vel dapibus aliquam, metus massa tempus lectus, ut scelerisque ex urna id massa. Vestibulum eget justo nec dui ultrices tempor. In facilisis risus nibh, ac porttitor enim pulvinar nec.</p> </div> "
+                },
+                {
+                    name: "foo",
+                    content: " <div class="page-content"> <h1>Foo</h1> <p>This is the Foo page.</p> <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam et nunc diam. Praesent turpis justo, ultrices et sollicitudin a, consequat non magna. Suspendisse vehicula cursus mi, a fermentum lorem bibendum sit amet. Pellentesque facilisis, orci non facilisis porta, ipsum tellus posuere ante, eget dignissim tellus tellus id erat. Etiam non lobortis orci, ac laoreet nisl. Vestibulum viverra aliquam viverra. Mauris a purus dictum, auctor est non, bibendum dui. Nullam in euismod dolor.</p> <p>Nam eu augue luctus, porta lorem et, bibendum lacus. Maecenas justo quam, aliquet vitae ligula ut, pretium rhoncus lectus. In posuere, urna molestie tincidunt pulvinar, nisl nulla malesuada erat, eget viverra eros eros non augue. Suspendisse dolor augue, iaculis vitae tristique vitae, dignissim a velit. Curabitur laoreet malesuada lorem a tincidunt. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed cursus purus vitae eros elementum semper. Proin sit amet orci ipsum. Maecenas feugiat libero justo, mollis condimentum diam dictum quis. Pellentesque commodo id sapien sed consectetur. Nullam purus lorem, bibendum condimentum fringilla vitae, tristique ut ligula. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p> <p>Etiam feugiat neque id ante mollis ultricies. Vestibulum vitae congue elit, at placerat dui. Cras tristique posuere nulla non ullamcorper. Sed sed neque id mauris aliquet posuere. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aenean in enim tellus. Quisque nec venenatis massa. Nullam efficitur rutrum imperdiet. Nam facilisis consectetur dignissim. Fusce sed velit ut ligula fringilla lacinia. Nullam lorem est, facilisis nec sagittis sit amet, ultrices quis lorem. Maecenas mattis eleifend semper.</p> <p>In ornare sodales augue id sollicitudin. Pellentesque accumsan lobortis turpis, eu venenatis tortor sodales at. Mauris enim tortor, congue nec auctor et, tincidunt ut neque. Sed fringilla, metus maximus vestibulum pulvinar, nisi arcu feugiat eros, et porttitor dolor elit at libero. Nullam porttitor ante ut diam volutpat luctus. Morbi risus dui, vehicula ut aliquam at, varius id nulla. Nam turpis enim, rutrum id pellentesque eget, posuere id nunc. Nam pretium felis quis libero pulvinar, nec egestas lacus fringilla. Vestibulum aliquet ex id mi auctor feugiat.</p> <p>Nunc euismod convallis orci sit amet lobortis. Nam dictum tempor sapien, blandit imperdiet purus egestas eu. Ut ullamcorper feugiat orci, at scelerisque enim porta ut. Morbi tempus quis ipsum eget congue. Cras ultrices tempor dapibus. Nulla sodales diam congue, euismod libero vitae, molestie urna. Cras a posuere magna, sed imperdiet orci.</p> </div> "
+                }
+            ]
+        }
+        
+
+## Workflows [/workflows/{id}]
+
+Workflows are used to determine properties **Tools** and the order/sequence in which they are used.
+
++ Parameters
+    + id (optional, String or Hash, `mark`) ...  Name (string) or alphanumeric hash that identifies a specific workflow.
+        + Values
+            + `transcribe` 
+            + `54b82b4745626f20c9010000`
+            + `mark`
+            + `54b82b4745626f20c9020000`
+    
+### Retrieve workflow/s [GET]
+
++ Response 200 (application/json)
+
+            [
+                {
+                    id: "54b82b4745626f20c9010000",
+                    label: "Transcribe Contnet",
+                    key: "transcribe",
+                    tasks: {
+                        0: {
+                            key: 0,
+                            type: "date",
+                            field_name: "date",
+                            label: "Date",
+                            instruction: "Please type-in the log date."
+                        },
+                        1: {
+                            key: 1,
+                            type: "text",
+                            field_name: "journal_entry",
+                            label: "Journal Entry",
+                            instruction: "Please type-in the journal entry for this day."
+                        },
+                        2: {
+                            key: 2,
+                            type: "textarea",
+                            field_name: "other_entry",
+                            label: "Other Entry",
+                            instruction: "Type something, anything."
+                        }
+                    },
+                    retire_limit: 10,
+                    first_task: "",
+                    active_subjects: 0
+                },
+                {
+                    id: "54b82b4745626f20c9020000",
+                    label: "Mark Contnet",
+                    key: "mark",
+                    tasks: {
+                        0: {
+                            key: 0,
+                            type: "date",
+                            field_name: "date",
+                            label: "Date",
+                            instruction: "Please type-in the log date."
+                        },
+                        1: {
+                            key: 1,
+                            type: "text",
+                            field_name: "journal_entry",
+                            label: "Journal Entry",
+                            instruction: "Please type-in the journal entry for this day."
+                        },
+                        2: {
+                            key: 2,
+                            type: "textarea",
+                            field_name: "other_entry",
+                            label: "Other Entry",
+                            instruction: "Type something, anything."
+                        }
+                    },
+                    retire_limit: 10,
+                    first_task: "",
+                    active_subjects: 0
+                }
+            ]
+            
+## Subjects [/workflows/{workflow_id}/subjects.json{?limit}]
+
+Subjects must be retrieved from an existing workflow.
+
+### Retrieve subjects from Workflow [GET]
++ Parameters
+    + workflow_id (required, Hash, `54b82b4745626f20c9020000`) ...  Alphanumeric hash that identifies a specific workflow.
+    + limit (optional, Integer, `5`) ... Integer value that specifies how many subjects to return.
+    
++ Response 200 (application/json)
+
+        [
+            {
+                id: "53f26a6d45626f6d54090200",
+                name: null,
+                location: "https://zooniverse-static.s3.amazonaws.com/scribe_subjects/logbookofcalifor00unse_0169.jpg",
+                classification_count: 0,
+                child_subjects: [ ],
+                meta_data: null
+            },
+            {
+                id: "53f26a6d45626f6d54140300",
+                name: null,
+                location: "https://zooniverse-static.s3.amazonaws.com/scribe_subjects/logbookofphillip00unse_0171.jpg",
+                classification_count: 0,
+                child_subjects: [ ],
+                meta_data: null
+            },
+            {
+                id: "53f26a6d45626f6d54480200",
+                name: null,
+                location: "https://zooniverse-static.s3.amazonaws.com/scribe_subjects/logbookofcalifor00unse_0232.jpg",
+                classification_count: 0,
+                child_subjects: [ ],
+                meta_data: null
+            },
+            {
+                id: "53f26a6c45626f6d541c0000",
+                name: null,
+                location: "https://zooniverse-static.s3.amazonaws.com/scribe_subjects/logbookofalfredg1851unse_0028.jpg",
+                classification_count: 0,
+                child_subjects: [ ],
+                meta_data: null
+            },
+            {
+                id: "53f26a6c45626f6d547c0000",
+                name: null,
+                location: "https://zooniverse-static.s3.amazonaws.com/scribe_subjects/logbookofalfredg1851unse_0124.jpg",
+                classification_count: 0,
+                child_subjects: [ ],
+                meta_data: null
+            }
+        ]
+            
+## Primary Classification [/classifications/mark]
+
+### Primary classifications [POST]
+
++ Request
+
+        {
+          "_id": {
+            "$oid": "54c0105b45626f0450330000"
+          },
+          "annotations": {
+            "0": {
+              "timestamp": "Wed, 21 Jan 2015 20:47:18 GMT",
+              "key": "0",
+              "y_upper": "234",
+              "y_lower": "576",
+              "x": "611",
+              "y": "405"
+            }
+          },
+          "subject_id": {
+            "$oid": "53f26a6c45626f6d548f0000"
+          },
+          "user_id": null,
+          "workflow_id": {
+            "$oid": "54b82b4745626f20c9020000"
+          }
+        }
+
++ Response 200 (application/json)
+
+        {
+          "_id": {
+            "$oid": "54c0105b45626f0450330000"
+          },
+          "annotations": {
+            "0": {
+              "timestamp": "Wed, 21 Jan 2015 20:47:18 GMT",
+              "key": "0",
+              "y_upper": "234",
+              "y_lower": "576",
+              "x": "611",
+              "y": "405"
+            }
+          },
+          "subject_id": {
+            "$oid": "53f26a6c45626f6d548f0000"
+          },
+          "user_id": null,
+          "workflow_id": {
+            "$oid": "54b82b4745626f20c9020000"
+          }
+        }
+        
+## Secondary Classification [/classifications/transcribe]
+
+### Secondary Classifications [POST]
+
++ Request
+
+        {
+          "_id": {
+            "$oid": "54c0105b45626f0450330000"
+          },
+          "annotations": {
+            "0": {
+              "timestamp": "Wed, 21 Jan 2015 20:48:00 GMT",
+              "key": "0",
+              "date": "2 Apr 1853",
+            }
+            "1": {
+              "timestamp": "Wed, 21 Jan 2015 20:42:20 GMT",
+              "key": "1",
+              "journal_entry": "Saturday, April 2nd, 1853. Freshly(?) windy(?) from the S.E. steering by the winds painted(?) the bow boat two sails in seglie(?)"
+            }
+          },
+          "subject_id": {
+            "$oid": "53f26a6c45626f6d548f0000"
+          },
+          "user_id": null,
+          "workflow_id": {
+            "$oid": "54b82b4745626f20c9010000"
+          }
+        }
+        
++ Response 200 (application/json)
+
+        {
+          "_id": {
+            "$oid": "54c0105b45626f0450330000"
+          },
+          "annotations": {
+            "0": {
+              "timestamp": "Wed, 21 Jan 2015 20:48:00 GMT",
+              "key": "0",
+              "date": "2 Apr 1853",
+            }
+            "1": {
+              "timestamp": "Wed, 21 Jan 2015 20:42:20 GMT",
+              "key": "1",
+              "journal_entry": "Saturday, April 2nd, 1853. Freshly(?) windy(?) from the S.E. steering by the winds painted(?) the bow boat two sails in seglie(?)"
+            }
+          },
+          "subject_id": {
+            "$oid": "53f26a6c45626f6d548f0000"
+          },
+          "user_id": null,
+          "workflow_id": {
+            "$oid": "54b82b4745626f20c9010000"
+          }
+        }
+
+
+
+
