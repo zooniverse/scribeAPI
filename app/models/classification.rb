@@ -1,7 +1,13 @@
 class Classification 
   include Mongoid::Document
   
+  field :workflow_id
+  field :subject_id
+  field :location
   field :annotations
+  field :started_at
+  field :finished_at
+  field :user_agent
 
   belongs_to :workflow
   belongs_to :user

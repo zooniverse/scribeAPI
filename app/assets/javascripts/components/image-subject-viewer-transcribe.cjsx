@@ -15,12 +15,13 @@ Classification                = require '../models/classification'
 
 getUrlParamByName             = require '../lib/getUrlParamByName'
 
+WORKFLOW_ID = '54b82b4745626f20c9010000'
 
 ImageSubjectViewer_transcribe = React.createClass # rename to Classifier
   displayName: 'ImageSubjectViewer_transcribe'
 
   render: ->
-    endpoint = "/offline/example_subjects/transcription_subjects.json"
+    endpoint = "/subjects/#{getUrlParamByName('subject_id')}"
     <div className="image-subject-viewer">
       <SubjectViewer
         endpoint=endpoint
@@ -80,16 +81,25 @@ SubjectViewer = React.createClass
       dataType: "json"
       success: ((data) ->
         # # DEBUG CODE
-        # console.log 'FETCHED SUBJECTS: ', data[0]
+        # console.log 'FETCHED SUBJECTS: ', data
 
         @setState
-          subjects:     data
-          subject:      data[0].subject
-          marks:        data[0].subject.annotations
-          selectedMark: data[0].subject.annotations[0], =>
-            # console.log 'MARKS: ', @state.marks
+          subject:      data
+          marks:        data.annotations
+          selectedMark: data.annotations[0], =>
+            console.log 'SUBJECT: ', @state.subject
+            console.log 'marks: ', @state.marks
+            console.log 'selectedMark: ', @state.selectedMark
             @state.classification = new Classification @state.subject
             @loadImage @state.subject.location
+
+          # subjects:     data
+          # subject:      data[0].subject
+          # marks:        data[0].subject.annotations
+          # selectedMark: data[0].subject.annotations[0], =>
+          #   # console.log 'MARKS: ', @state.marks
+          #   @state.classification = new Classification @state.subject
+          #   @loadImage @state.subject.location
 
         return
       ).bind(this)
@@ -227,9 +237,8 @@ SubjectViewer = React.createClass
 
   nextTextEntry: ->
     console.log 'nextTextEntry() '
-
-    console.log 'STATE.SELECTEDMARK.KEY: ', @state.selectedMark.key
-    console.log 'STATE.MARKS.LENGTH: ', @state.marks.length
+    # console.log 'STATE.SELECTEDMARK.KEY: ', @state.selectedMark.key
+    # console.log 'STATE.MARKS.LENGTH: ', @state.marks.length
 
     # hide transcribe-tool unless more text entries available
     if @state.selectedMark.key + 1 > @state.marks.length - 1
@@ -255,14 +264,24 @@ SubjectViewer = React.createClass
       return false
     return true
 
+  # DEBUG SUBJECT EXAMPLE "https://zooniverse-static.s3.amazonaws.com/scribe_subjects/logbookofalfredg1851unse_0083.jpg"
+
   render: ->
-    # console.log 'render()'
+    console.log 'render()'
     # return null if @state.selectedMark is null
     # don't render if ya ain't got subjects (yet)
 
+    console.log 'STATE: ', @state
+
+    return null unless @state.selectedMark?
+    return null unless @state.subject isnt null
+
+    console.log 'LOCATION: ', @state.subject.location
+
     console.log 'IMAGE WIDTH: ', @state.imageWidth
     console.log 'IMAGE HEIGHT: ', @state.imageHeight
-    return null if @state.subjects is null or @state.subjects.length is 0
+    console.log 'KEY: ', @state.selectedMark.key
+    # return null if @state.subjects is null or @state.subjects.length is 0
 
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
 
@@ -305,7 +324,7 @@ SubjectViewer = React.createClass
               onDrag  = {@handleInitDrag}
               onEnd   = {@handleInitRelease} >
               <SVGImage
-                src = { "https://zooniverse-static.s3.amazonaws.com/scribe_subjects/logbookofalfredg1851unse_0083.jpg" }
+                src = {@state.subject.location}
                 width = {@state.imageWidth}
                 height = {@state.imageHeight} />
             </Draggable>
@@ -343,7 +362,6 @@ SubjectViewer = React.createClass
           }
 
         </div>
-        <p>{@state.subjects.location}</p>
         <div className="subject-ui">
           {action_button}
         </div>

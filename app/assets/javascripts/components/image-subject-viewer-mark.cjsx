@@ -135,6 +135,7 @@ SubjectViewer = React.createClass
             # console.log "Finished Loading."
 
   prepareClassification: ->
+    console.log 'prepareClassification()'
     for mark in [ @state.marks... ]
       @state.classification.annotate
         timestamp: mark.timestamp
@@ -150,24 +151,29 @@ SubjectViewer = React.createClass
   submitMark: (key) ->
     # prepare classification
     mark = @state.marks[key]
+
     classification = new Classification @state.subject
-    classification.subject_id = @state.subject.id
-    classification.workflow_id = WORKFLOW_ID
-    classification.annotate
-      timestamp: mark.timestamp
-      key: mark.key
-      y_upper: mark.yUpper
-      y_lower: mark.yLower
-      x: mark.x
-      y: mark.y
+    classification.annotate mark
+
+    console.log 'CLASSIFICATION: ', classification.toJSON(WORKFLOW_ID)
 
     @disableMarkButton(key)
 
+    # TODO: replace with this
+    # @state.classification.send()
+
+    console.log 'SUBJECT ID: ', @state.subject
+
     # send classification
     $.post('/classifications', { 
-        subject_id:  classification.subject_id,
-        workflow_id: classification.workflow_id, 
-        annotations: classification.annotations 
+        workflow_id: WORKFLOW_ID
+        subject_id:  @state.subject.id
+        location:    @state.subject.location
+        annotations: classification.annotations
+        started_at:  classification.started_at
+        finished_at: classification.finished_at
+        subject:     classification.subject
+        user_agent:  classification.user_agent
       }, )
       .done (response) =>
         console.log "Success" #, response._id.$oid
@@ -419,6 +425,9 @@ SubjectViewer = React.createClass
   recordTranscription: ->
     console.log 'recordTranscription()'
 
+
+  # "https://zooniverse-static.s3.amazonaws.com/scribe_subjects/logbookofalfredg1851unse_0083.jpg"
+
   render: ->
     # don't render if ya ain't got subjects (yet)
     # console.log 'showTranscribeTool is ', @state.showTranscribeTool
@@ -468,7 +477,7 @@ SubjectViewer = React.createClass
               onDrag  = {@handleInitDrag}
               onEnd   = {@handleInitRelease} >
               <SVGImage
-                src = {"https://zooniverse-static.s3.amazonaws.com/scribe_subjects/logbookofalfredg1851unse_0083.jpg"}
+                src = {@state.subject.location}
                 width = {@state.imageWidth}
                 height = {@state.imageHeight} />
             </Draggable>
