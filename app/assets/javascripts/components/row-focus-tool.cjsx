@@ -51,7 +51,6 @@ RowFocusTool = React.createClass
       @setState transcribeComplete: true
 
   render: ->
-    console.log 'RowFocusTool::props: ', @props
     # console.log 'mark: ', @props.mark
     markHeight = @props.mark.yLower - @props.mark.yUpper
     <g 

@@ -60,13 +60,12 @@ SubjectViewer = React.createClass
 
   componentDidMount: ->
     console.log 'componentDidMount()'
-    
     @setView 0, 0, @state.imageWidth, @state.imageHeight
     @fetchSubjects(@state.subjectEndpoint)
     window.addEventListener "resize", this.updateDimensions
 
-    $('html, body').animate { 'scrollTop': @state.scrollOffset }, 200, 'swing', ->
-      console.log 'SCROLL COMPLETE'
+    # scroll to mark position
+    $('html, body').animate { 'scrollTop': @state.scrollOffset }, 200, 'swing'
 
   componentWillMount: ->
     console.log 'componentWillMount()'
@@ -92,9 +91,10 @@ SubjectViewer = React.createClass
           subject:      data
           marks:        data.annotations
           selectedMark: data.annotations[0], =>
-            console.log 'SUBJECT: ', @state.subject
-            console.log 'marks: ', @state.marks
-            console.log 'selectedMark: ', @state.selectedMark
+            # DEBUG CODE
+            # console.log 'SUBJECT: ', @state.subject
+            # console.log 'marks: ', @state.marks
+            # console.log 'selectedMark: ', @state.selectedMark
             @state.classification = new Classification @state.subject
             @loadImage @state.subject.location
 
@@ -144,7 +144,7 @@ SubjectViewer = React.createClass
           transcription: mark.transcription
 
     # DEBUG CODE
-    console.log 'CLASSIFICATION: ', @state.classification
+    # console.log 'CLASSIFICATION: ', @state.classification
     # console.log JSON.stringify @state.classification # DEBUG CODE
     # @state.classification.send()
 
@@ -277,22 +277,12 @@ SubjectViewer = React.createClass
   # DEBUG SUBJECT EXAMPLE "https://zooniverse-static.s3.amazonaws.com/scribe_subjects/logbookofalfredg1851unse_0083.jpg"
 
   render: ->
-    console.log 'render()'
+    # console.log 'render()'
     # return null if @state.selectedMark is null
     # don't render if ya ain't got subjects (yet)
 
     return null unless @state.selectedMark?
     # return null unless @state.subject isnt null
-
-    console.log 'LOCATION: ', @state.subject.location
-
-    console.log 'IMAGE WIDTH: ', @state.imageWidth
-    console.log 'IMAGE HEIGHT: ', @state.imageHeight
-
-    console.log 'yUpper: ', @state.selectedMark.yUpper
-    console.log 'yLower: ', @state.selectedMark.yLower
-
-    console.log 'KEY: ', @state.selectedMark.key
     # return null if @state.subjects is null or @state.subjects.length is 0
 
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
@@ -369,7 +359,8 @@ SubjectViewer = React.createClass
                 nextTextEntry={@nextTextEntry}
                 nextSubject = {@nextSubject}
                 selectedMark={@state.selectedMark}
-                scale={@getScale()}
+                xScale={@getScale().horizontal}
+                yScale={@getScale().vertical}
               />
           }
 

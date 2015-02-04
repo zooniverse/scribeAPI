@@ -1,7 +1,6 @@
 class Classification
 
   constructor: (subject) ->
-    console.log 'SUBJECT: ', subject
     @started_at = (new Date).toUTCString()
     @subject = subject
     @subject_id = subject.subject_id

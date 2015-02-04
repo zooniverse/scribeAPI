@@ -15,9 +15,7 @@ TranscribeTool = React.createClass
     #   console.log 'STEP: ', step
 
   getInitialState: ->
-    console.log 'REFS: ', @refs
-    console.log 'PROPS: ', @props
-    console.log 'yLower: ', @props.selectedMark.yLower
+    # console.log 'yLower: ', @props.selectedMark.yLower
     
     # convert task object to array (to use .length method)
     tasksArray = []
@@ -30,7 +28,7 @@ TranscribeTool = React.createClass
     dy: @props.yScale * @props.selectedMark.yLower + 20
 
   componentDidMount: ->
-    console.log 'STATE: ', @state
+    # console.log 'STATE: ', @state
 
   nextTextEntry: ->
     @setState
