@@ -429,6 +429,8 @@ SubjectViewer = React.createClass
   # "https://zooniverse-static.s3.amazonaws.com/scribe_subjects/logbookofalfredg1851unse_0083.jpg"
 
   render: ->
+
+    console.log 'SCALE: ', @getScale()
     # don't render if ya ain't got subjects (yet)
     # console.log 'showTranscribeTool is ', @state.showTranscribeTool
     return null if @state.subjects is null or @state.subjects.length is 0
@@ -511,7 +513,8 @@ SubjectViewer = React.createClass
               nextTextEntry={@nextTextEntry}
               nextSubject = {@nextSubject}
               selectedMark={@state.selectedMark}
-              scale={@getScale()}
+              xScale={@getScale().horizontal}
+              yScale={@getScale().vertical}
             />          
           }
 
