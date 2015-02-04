@@ -6,6 +6,8 @@ DeleteButton = require './delete-button'
 ResizeButton = require './resize-button'
 DoneCheckbox = require './done-checkbox'
 
+DEBUG = false
+
 TextRowTool = React.createClass
   displayName: 'TextRowTool'
 
@@ -20,72 +22,75 @@ TextRowTool = React.createClass
       {x, y}
 
   getInitialState: ->
-    # # DEBUG CODE
-    # console.log "PROPS [#{@props.mark.yUpper},#{@props.mark.yLower}]"
-    # console.log "INITIAL (STATE.X, STATE.Y): (#{Math.round @props.mark.x},#{Math.round @props.mark.y})"
-    centerX: @props.mark.x
-    centerY: @props.mark.y
-    markHeight: @props.defaultMarkHeight
+    mark: @props.mark
+    markStatus: 'mark'
+    fillColor: @props.fillColor
+    strokeColor: @props.strokeColor
+    strokeWidth: @props.strokeWidth
+    locked: false
+
+  getDefaultProps: ->
     fillColor: 'rgba(0,0,0,0.5)'
     strokeColor: 'rgba(0,0,0,0.5)'
     strokeWidth: 6
-    yUpper: @props.mark.yUpper
-    yLower: @props.mark.yLower
-    markHeight: @props.mark.yLower - @props.mark.yUpper
-    markStatus: 'mark'
 
   componentWillReceiveProps: ->
-    @setState
-      yUpper: @props.mark.yUpper
-      yLower: @props.mark.yLower
-      centerX: @props.mark.x
-      centerY: @props.mark.y
-      markHeight: @props.mark.yLower - @props.mark.yUpper
+    @setState 
+      mark: @props.mark, =>
+        @forceUpdate()
 
   onClickMarkButton: ->
     markStatus = @state.markStatus
     console.log 'markStatus is ', markStatus
     switch markStatus
       when 'mark'
-        @setState markStatus: 'mark-finished'
+        @setState 
+          markStatus: 'mark-finished'
+          locked: false
         @props.submitMark(@props.key)
         console.log 'Mark submitted. Click TRANSCRIBE to begin transcribing.'
       when 'mark-finished'
-        @setState markStatus: 'transcribe'
-        @props.onClickTranscribe()
+        @setState 
+          markStatus: 'transcribe'
+          locked: true
+        @props.onClickTranscribe(@state.mark.key)
         # @transcribeMark(mark)
 
         console.log 'Going into TRANSCRIBE mode. Stand by.'
       when 'transcribe'
-        @setState markStatus: 'transcribe-finished'
+        @setState 
+          markStatus: 'transcribe-finished'
+          locked: true
         # @submitTranscription()
         console.log 'Transcription submitted.'
       when 'transcribe-finished'
+        @setState locked: true
         console.log 'All done. Nothing left to do here.'
       else
+        @setState locked: true
         console.log 'WARNING: Unknown state in handleToolProgress()'
-
-    # if @state.markStatus is 'mark'
-    #   console.log 'Please mark the area...'
-    # else if @state.markStatus is 'transcribe'
-    #   console.log 'You may now transcribe, if you wish.'
-    # else if @state.markStatus is 'complete'
-    #   console.log 'All done. Nothing left to do here.'
 
   render: ->
 
+    classString = 'point drawing-tool'
+
     unless @state.markStatus is 'mark'
       markDragHandler = null
+      classString += ' locked'
     else
       markDragHandler = @props.handleDragMark
 
+    markHeight = @state.mark.yLower - @state.mark.yUpper
+
     <g 
-      className = "point drawing-tool" 
-      transform = {"translate(#{Math.ceil @state.strokeWidth}, #{Math.round( @state.centerY - @state.markHeight/2 ) })"} 
-      data-disabled = {@props.disabled || null} 
-      data-selected = {@props.selected || null}
+      className = {classString} 
+      transform = {"translate(#{Math.ceil @state.strokeWidth}, #{Math.round( @state.mark.y - markHeight/2 ) })"} 
     >
 
+      { if DEBUG
+        <text fontSize="40" fill="blue">{@state.mark.key}</text>
+      }
+      
       <Draggable
         onStart = {@props.handleMarkClick.bind @props.mark} 
         onDrag = {markDragHandler} >
@@ -95,17 +100,19 @@ TextRowTool = React.createClass
           y           = 0
           viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
           width       = {Math.ceil( @props.imageWidth - 2*@state.strokeWidth ) }
-          height      = {@state.markHeight}
+          height      = {markHeight}
           fill        = {if @props.selected then "rgba(255,102,0,0.25)" else "rgba(0,0,0,0.5)"}
           stroke      = {@state.strokeColor}
           strokeWidth = {@state.strokeWidth}
         />
       </Draggable>
 
-      { if @state.markStatus is 'mark'
+      { 
+
+        if @state.markStatus is 'mark'
           <g>
             <ResizeButton 
-              viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
+              viewBox = {"0 0 @props.imageWidth @props.imageHeight"}
               className = "upperResize"
               handleResize = {@props.handleUpperResize} 
               transform = {"translate( #{@props.imageWidth/2}, #{ - Math.round @props.scrubberHeight/2 } )"} 
@@ -118,7 +125,7 @@ TextRowTool = React.createClass
             <ResizeButton 
               className = "lowerResize"
               handleResize = {@props.handleLowerResize} 
-              transform = {"translate( #{@props.imageWidth/2}, #{ Math.round( @state.markHeight - @props.scrubberHeight/2 ) } )"} 
+              transform = {"translate( #{@props.imageWidth/2}, #{ Math.round( markHeight - @props.scrubberHeight/2 ) } )"} 
               scrubberHeight = {@props.scrubberHeight}
               scrubberWidth = {@props.scrubberWidth}
               workflow = {@props.workflow}
@@ -126,17 +133,19 @@ TextRowTool = React.createClass
             />
 
             <DeleteButton 
-              transform = "translate(50, #{Math.round @state.markHeight/2})" 
+              transform = "translate(50, #{Math.round markHeight/2})" 
               onClick = {@props.onClickDelete.bind null, @props.key}
               workflow = {@props.workflow}
               isSelected = {@props.selected}
+              buttonDisabled = {@state.mark.buttonDisabled}
             />
           </g>
       }
       <DoneCheckbox
+        buttonDisabled = {@state.mark.buttonDisabled}
         markStatus = {@state.markStatus}
         onClickMarkButton = {@onClickMarkButton}
-        transform = {"translate( #{@props.imageWidth-250}, #{ Math.round @state.markHeight/2 -@props.scrubberHeight/2 } )"} 
+        transform = {"translate( #{@props.imageWidth-250}, #{ Math.round markHeight/2 -@props.scrubberHeight/2 } )"} 
       />
     </g>
 

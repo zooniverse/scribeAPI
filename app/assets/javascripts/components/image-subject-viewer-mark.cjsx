@@ -14,6 +14,31 @@ Classification                = require '../models/classification'
 
 WORKFLOW_ID = '54b82b4745626f20c9020000' # marking workflow
 
+# TODO: remove
+transcribeSteps = [    
+    {    
+      key: 0,    
+      type: 'date', # type of input    
+      field_name: 'date',    
+      label: 'Date',   
+      instruction: 'Please type-in the log date.'    
+    },   
+    {    
+      key: 1,    
+      type: 'text',    
+      field_name: 'journal_entry',   
+      label: 'Journal Entry',    
+      instruction: 'Please type-in the journal entry for this day.'    
+    },   
+    {    
+      key: 2,    
+      type: 'textarea',    
+      field_name: 'other_entry',   
+      label: 'Other Entry',    
+      instruction: 'Type something, anything.'   
+    }    
+]
+
 ImageSubjectViewer_mark = React.createClass # rename to Classifier
   displayName: 'ImageSubjectViewer_mark'
 
@@ -110,6 +135,7 @@ SubjectViewer = React.createClass
             # console.log "Finished Loading."
 
   prepareClassification: ->
+    console.log 'prepareClassification()'
     for mark in [ @state.marks... ]
       @state.classification.annotate
         timestamp: mark.timestamp
@@ -125,32 +151,58 @@ SubjectViewer = React.createClass
   submitMark: (key) ->
     # prepare classification
     mark = @state.marks[key]
+
     classification = new Classification @state.subject
-    classification.subject_id = @state.subject.id
-    classification.workflow_id = WORKFLOW_ID
-    classification.annotate
-      timestamp: mark.timestamp
-      key: mark.key
-      y_upper: mark.yUpper
-      y_lower: mark.yLower
-      x: mark.x
-      y: mark.y
+    classification.annotate mark
+
+    console.log 'CLASSIFICATION: ', classification.toJSON(WORKFLOW_ID)
+
+    @disableMarkButton(key)
+
+    # TODO: replace with this
+    # @state.classification.send()
+
+    console.log 'SUBJECT ID: ', @state.subject
 
     # send classification
     $.post('/classifications', { 
-        subject_id:  classification.subject_id,
-        workflow_id: classification.workflow_id, 
-        annotations: classification.annotations 
-      } )
-      .done ->
-        console.log "Success"
+        workflow_id: WORKFLOW_ID
+        subject_id:  @state.subject.id
+        location:    @state.subject.location
+        annotations: classification.annotations
+        started_at:  classification.started_at
+        finished_at: classification.finished_at
+        subject:     classification.subject
+        user_agent:  classification.user_agent
+      }, )
+      .done (response) =>
+        console.log "Success" #, response._id.$oid
+        @setTranscribeSubject(key, response._id.$oid)
+        @enableMarkButton(key)
         return
-      .fail ->
+      .fail =>
         console.log "Failure"
         return
       # .always ->
       #   console.log "Always"
       #   return
+
+  setTranscribeSubject: (key, transcribe_id) ->
+    marks = @state.marks
+    marks[key].transcribe_id = transcribe_id
+    @setState marks: marks
+
+  disableMarkButton: (key) ->
+    marks = @state.marks
+    marks[key].buttonDisabled = true
+    @setState marks: marks
+    @forceUpdate()
+
+  enableMarkButton: (key) ->
+    marks = @state.marks
+    marks[key].buttonDisabled = false
+    @setState marks: marks
+    @forceUpdate()
 
   nextSubject: () ->
 
@@ -185,15 +237,15 @@ SubjectViewer = React.createClass
     {x, y} = @getEventOffset e
     yUpper = Math.round( y - 50/2 )
     yLower = Math.round( y + 50/2 )
+    buttonDisabled = false
 
     marks = @state.marks
-    marks.push {yUpper, yLower, x, y, key, timestamp}
+    marks.push {yUpper, yLower, x, y, key, timestamp, buttonDisabled}
 
     @setState
-      marks: marks
-      offset: $(e.nativeEvent.target).offset()
-
-    @selectMark @state.marks[@state.marks.length-1]
+      marks:        marks
+      offset:       $(e.nativeEvent.target).offset()
+      selectedMark: @state.marks[@state.marks.length-1]
 
   handleInitDrag: (e) ->
     # console.log 'handleInitDrag()'
@@ -220,13 +272,13 @@ SubjectViewer = React.createClass
   handleMarkClick: (mark, e) ->
     {x,y} = @getEventOffset e
 
-    # save click offset from mark center
     @setState
       selectedMark: mark
       markOffset: {
         x: mark.x - x,
         y: mark.y - y
-      }
+      }, =>
+        @forceUpdate()
 
   handleDragMark: (e) ->
     # console.log 'handleDragMark()'
@@ -332,18 +384,13 @@ SubjectViewer = React.createClass
     # x: ((e.pageX - pageXOffset - rect.left)) + @state.viewX
     # y: ((e.pageY - pageYOffset - rect.top)) + @state.viewY
 
-  selectMark: (mark) ->
-    return if mark is @state.selectedMark
-    @setState selectedMark: mark
-
   onClickDelete: (key) ->
     marks = @state.marks
-    for mark, i in [ marks... ]
-      if mark.key is key
-        marks.splice(i, 1)
+    marks.splice(key,1) # delete marks[key]
     @setState
       marks: marks
-      selectedMark: null
+      selectedMark: null, =>
+        @forceUpdate() # make sure keys are up-to-date before re-render
 
   beginTextEntry: ->
     # console.log 'beginTextEntry()'
@@ -356,7 +403,6 @@ SubjectViewer = React.createClass
         $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
 
   nextTextEntry: ->
-
     key = @state.selectedMark.key
     if key+1 > @state.marks.length-1
       # console.log "That's all the marks for now!"
@@ -366,17 +412,27 @@ SubjectViewer = React.createClass
       {horizontal, vertical} = @getScale()
       $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
 
-  onClickTranscribe: ->
-    console.log 'onClickTranscribe()'
-    @setState showTranscribeTool: true
+  onClickTranscribe: (key) ->
+    console.log 'onClickTranscribe() ', key
+    console.log 'MARK: ', @state.marks[key]
+
+    console.log 'LOCATION: ', location
+    console.log location.host + "/?subject_id=#{@state.marks[key].transcribe_id}#/transcribe"
+    location.replace 'http://' + location.host + "/?subject_id=#{@state.marks[key].transcribe_id}&scrollOffset=#{$(window).scrollTop()}#/transcribe"
+    # @setState showTranscribeTool: true
 
   # dummy placeholder
   recordTranscription: ->
     console.log 'recordTranscription()'
 
+
+  # "https://zooniverse-static.s3.amazonaws.com/scribe_subjects/logbookofalfredg1851unse_0083.jpg"
+
   render: ->
+
+    console.log 'SCALE: ', @getScale()
     # don't render if ya ain't got subjects (yet)
-    console.log 'showTranscribeTool is ', @state.showTranscribeTool
+    # console.log 'showTranscribeTool is ', @state.showTranscribeTool
     return null if @state.subjects is null or @state.subjects.length is 0
 
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
@@ -423,20 +479,17 @@ SubjectViewer = React.createClass
               onDrag  = {@handleInitDrag}
               onEnd   = {@handleInitRelease} >
               <SVGImage
-                src = {"https://zooniverse-static.s3.amazonaws.com/scribe_subjects/logbookofalfredg1851unse_0083.jpg"}
+                src = {@state.subject.location}
                 width = {@state.imageWidth}
                 height = {@state.imageHeight} />
             </Draggable>
-            { 
-              @state.marks.map ((mark, i) ->
+            { @state.marks.map ((mark, i) ->
                 <TextRowTool
-                  key = {mark.key}
+                  key = {i}
                   mark = {mark}
-                  disabled = {false}
                   imageWidth = {@state.imageWidth}
                   imageHeight = {@state.imageHeight}
                   getEventOffset = {@getEventOffset}
-                  select = {@selectMark.bind null, mark} 
                   selected = {mark is @state.selectedMark}
                   onClickDelete = {@onClickDelete}
                   onClickTranscribe = {@onClickTranscribe}
@@ -460,7 +513,8 @@ SubjectViewer = React.createClass
               nextTextEntry={@nextTextEntry}
               nextSubject = {@nextSubject}
               selectedMark={@state.selectedMark}
-              scale={@getScale()}
+              xScale={@getScale().horizontal}
+              yScale={@getScale().vertical}
             />          
           }
 

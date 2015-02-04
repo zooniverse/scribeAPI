@@ -10,6 +10,7 @@ API::Application.routes.draw do
   
   get '/workflows/:workflow_id/subjects' => 'subjects#index'
   get '/current_user' => "users#current_user"
+  get '/subjects/:subject_id', to: 'classifications#show', defaults: { format: 'json'}
 
   resources :subjects
   resources :classifications, :defaults => { :format => 'json' }

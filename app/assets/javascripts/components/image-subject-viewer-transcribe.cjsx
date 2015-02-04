@@ -13,11 +13,16 @@ TranscribeTool                = require './transcribe/transcribe-tool'
 RowFocusTool                  = require './row-focus-tool'
 Classification                = require '../models/classification'
 
+getUrlParamByName             = require '../lib/getUrlParamByName'
+
+WORKFLOW_ID = '54b82b4745626f20c9010000'
+
 ImageSubjectViewer_transcribe = React.createClass # rename to Classifier
   displayName: 'ImageSubjectViewer_transcribe'
 
   render: ->
-    endpoint = "/offline/example_subjects/transcription_subjects.json"
+    endpoint = "/subjects/#{getUrlParamByName('subject_id')}"
+    $(window).scrollTop(200)
     <div className="image-subject-viewer">
       <SubjectViewer
         endpoint=endpoint
@@ -31,7 +36,8 @@ SubjectViewer = React.createClass
   resizing: false
 
   getInitialState: ->
-
+    console.log 'getInitialState()'
+    scrollOffset: getUrlParamByName 'scrollOffset'
     subjects: null
     subject: null
     subjectEndpoint: @props.endpoint
@@ -48,19 +54,24 @@ SubjectViewer = React.createClass
     viewHeight: 0
     classification: null
     selectedMark: null # TODO: currently not in use
+    showTranscribeTool: true
 
   componentWillReceiveProps: ->
-    console.log 'TRANSCRIE STEPS: ', @props
 
   componentDidMount: ->
-    # console.log 'TASK = ', @props.task
+    console.log 'componentDidMount()'
+    
     @setView 0, 0, @state.imageWidth, @state.imageHeight
     @fetchSubjects(@state.subjectEndpoint)
     window.addEventListener "resize", this.updateDimensions
 
-  componentWillMount: ->
-    @updateDimensions()
+    $('html, body').animate { 'scrollTop': @state.scrollOffset }, 200, 'swing', ->
+      console.log 'SCROLL COMPLETE'
 
+  componentWillMount: ->
+    console.log 'componentWillMount()'
+    @updateDimensions()
+    
   componentWillUnmount: ->
     window.removeEventListener "resize", this.updateDimensions
 
@@ -75,16 +86,25 @@ SubjectViewer = React.createClass
       dataType: "json"
       success: ((data) ->
         # # DEBUG CODE
-        # console.log 'FETCHED SUBJECTS: ', data[0]
+        # console.log 'FETCHED SUBJECTS: ', data
 
         @setState
-          subjects:     data
-          subject:      data[0].subject
-          marks:        data[0].subject.annotations
-          selectedMark: data[0].subject.annotations[0], =>
-            # console.log 'MARKS: ', @state.marks
+          subject:      data
+          marks:        data.annotations
+          selectedMark: data.annotations[0], =>
+            console.log 'SUBJECT: ', @state.subject
+            console.log 'marks: ', @state.marks
+            console.log 'selectedMark: ', @state.selectedMark
             @state.classification = new Classification @state.subject
             @loadImage @state.subject.location
+
+          # subjects:     data
+          # subject:      data[0].subject
+          # marks:        data[0].subject.annotations
+          # selectedMark: data[0].subject.annotations[0], =>
+          #   # console.log 'MARKS: ', @state.marks
+          #   @state.classification = new Classification @state.subject
+          #   @loadImage @state.subject.location
 
         return
       ).bind(this)
@@ -111,7 +131,11 @@ SubjectViewer = React.createClass
 
   nextSubject: () ->
     console.log 'nextSubject()'
+
+    return # disable for now
+
     # TODO: annotate new transcription and submit as new classification!!!
+    @setState showTranscribeTool: true
 
     for mark in [ @state.marks... ]
       if mark.transcription isnt undefined
@@ -220,8 +244,17 @@ SubjectViewer = React.createClass
         $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
 
   nextTextEntry: ->
-    console.log '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
     console.log 'nextTextEntry() '
+    return # disable for now
+
+    # console.log 'STATE.SELECTEDMARK.KEY: ', @state.selectedMark.key
+    # console.log 'STATE.MARKS.LENGTH: ', @state.marks.length
+
+    # hide transcribe-tool unless more text entries available
+    if @state.selectedMark.key + 1 > @state.marks.length - 1
+      @setState showTranscribeTool: false
+      return
+
     key = @state.selectedMark.key
 
     # if key > @state.marks.length - 1
@@ -241,11 +274,26 @@ SubjectViewer = React.createClass
       return false
     return true
 
+  # DEBUG SUBJECT EXAMPLE "https://zooniverse-static.s3.amazonaws.com/scribe_subjects/logbookofalfredg1851unse_0083.jpg"
+
   render: ->
-    # console.log 'render()'
+    console.log 'render()'
     # return null if @state.selectedMark is null
     # don't render if ya ain't got subjects (yet)
-    return null if @state.subjects is null or @state.subjects.length is 0
+
+    return null unless @state.selectedMark?
+    # return null unless @state.subject isnt null
+
+    console.log 'LOCATION: ', @state.subject.location
+
+    console.log 'IMAGE WIDTH: ', @state.imageWidth
+    console.log 'IMAGE HEIGHT: ', @state.imageHeight
+
+    console.log 'yUpper: ', @state.selectedMark.yUpper
+    console.log 'yLower: ', @state.selectedMark.yLower
+
+    console.log 'KEY: ', @state.selectedMark.key
+    # return null if @state.subjects is null or @state.subjects.length is 0
 
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
 
@@ -288,7 +336,7 @@ SubjectViewer = React.createClass
               onDrag  = {@handleInitDrag}
               onEnd   = {@handleInitRelease} >
               <SVGImage
-                src = { @state.subject.location }
+                src = {@state.subject.location}
                 width = {@state.imageWidth}
                 height = {@state.imageHeight} />
             </Draggable>
@@ -297,8 +345,8 @@ SubjectViewer = React.createClass
               key = {@state.selectedMark.key}
               mark = {@state.selectedMark}
               disabled = {false}
-              imageWidth = {@state.imageWidth}
-              imageHeight = {@state.imageHeight}
+              imageWidth = { @state.imageWidth}
+              imageHeight = { Math.round(@state.imageHeight) }
               getEventOffset = {@getEventOffset}
               select = {@selectMark.bind null, @state.selectedMark}
               selected = {true}
@@ -314,17 +362,18 @@ SubjectViewer = React.createClass
 
           </svg>
 
-          <TranscribeTool
-            tasks={@props.tasks}
-            recordTranscription={@recordTranscription}
-            nextTextEntry={@nextTextEntry}
-            nextSubject = {@nextSubject}
-            selectedMark={@state.selectedMark}
-            scale={@getScale()}
-          />
+          { if @state.showTranscribeTool
+              <TranscribeTool
+                tasks={@props.tasks}
+                recordTranscription={@recordTranscription}
+                nextTextEntry={@nextTextEntry}
+                nextSubject = {@nextSubject}
+                selectedMark={@state.selectedMark}
+                scale={@getScale()}
+              />
+          }
 
         </div>
-        <p>{@state.subjects.location}</p>
         <div className="subject-ui">
           {action_button}
         </div>
