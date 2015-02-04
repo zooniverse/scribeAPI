@@ -22,6 +22,7 @@ ImageSubjectViewer_transcribe = React.createClass # rename to Classifier
 
   render: ->
     endpoint = "/subjects/#{getUrlParamByName('subject_id')}"
+    $(window).scrollTop(200)
     <div className="image-subject-viewer">
       <SubjectViewer
         endpoint=endpoint
@@ -35,9 +36,8 @@ SubjectViewer = React.createClass
   resizing: false
 
   getInitialState: ->
-
-    console.log getUrlParamByName 'subject_id'
-
+    console.log 'getInitialState()'
+    scrollOffset: getUrlParamByName 'scrollOffset'
     subjects: null
     subject: null
     subjectEndpoint: @props.endpoint
@@ -59,14 +59,19 @@ SubjectViewer = React.createClass
   componentWillReceiveProps: ->
 
   componentDidMount: ->
-    # console.log 'TASK = ', @props.task
+    console.log 'componentDidMount()'
+    
     @setView 0, 0, @state.imageWidth, @state.imageHeight
     @fetchSubjects(@state.subjectEndpoint)
     window.addEventListener "resize", this.updateDimensions
 
-  componentWillMount: ->
-    @updateDimensions()
+    $('html, body').animate { 'scrollTop': @state.scrollOffset }, 200, 'swing', ->
+      console.log 'SCROLL COMPLETE'
 
+  componentWillMount: ->
+    console.log 'componentWillMount()'
+    @updateDimensions()
+    
   componentWillUnmount: ->
     window.removeEventListener "resize", this.updateDimensions
 
@@ -126,6 +131,9 @@ SubjectViewer = React.createClass
 
   nextSubject: () ->
     console.log 'nextSubject()'
+
+    return # disable for now
+
     # TODO: annotate new transcription and submit as new classification!!!
     @setState showTranscribeTool: true
 
@@ -237,6 +245,8 @@ SubjectViewer = React.createClass
 
   nextTextEntry: ->
     console.log 'nextTextEntry() '
+    return # disable for now
+
     # console.log 'STATE.SELECTEDMARK.KEY: ', @state.selectedMark.key
     # console.log 'STATE.MARKS.LENGTH: ', @state.marks.length
 
@@ -270,8 +280,6 @@ SubjectViewer = React.createClass
     console.log 'render()'
     # return null if @state.selectedMark is null
     # don't render if ya ain't got subjects (yet)
-
-    console.log 'STATE: ', @state
 
     return null unless @state.selectedMark?
     # return null unless @state.subject isnt null

@@ -418,7 +418,7 @@ SubjectViewer = React.createClass
 
     console.log 'LOCATION: ', location
     console.log location.host + "/?subject_id=#{@state.marks[key].transcribe_id}#/transcribe"
-    location.replace 'http://' + location.host + "/?subject_id=#{@state.marks[key].transcribe_id}#/transcribe"
+    location.replace 'http://' + location.host + "/?subject_id=#{@state.marks[key].transcribe_id}&scrollOffset=#{$(window).scrollTop()}#/transcribe"
     # @setState showTranscribeTool: true
 
   # dummy placeholder
