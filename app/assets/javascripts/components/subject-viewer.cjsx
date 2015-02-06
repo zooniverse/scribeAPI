@@ -2,14 +2,11 @@
 
 React                         = require 'react'
 {Router, Routes, Route, Link} = require 'react-router'
-example_subjects              = require '../lib/example_subject.json'
 SVGImage                      = require './svg-image'
 Draggable                     = require '../lib/draggable'
 LoadingIndicator              = require './loading-indicator'
 SubjectMetadata               = require './subject-metadata'
 ActionButton                  = require './action-button'
-TextRowTool                   = require './mark/text-row-tool'
-TranscribeTool                = require './transcribe/transcribe-tool'
 Classification                = require '../models/classification'
 
 WORKFLOW_ID = '54b82b4745626f20c9020000' # marking workflow
