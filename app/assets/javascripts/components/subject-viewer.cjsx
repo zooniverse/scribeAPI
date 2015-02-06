@@ -426,70 +426,72 @@ SubjectViewer = React.createClass
       else if @state.marks.length > 0
         action_button =  <ActionButton label={"FINISHED MARKING"} onActionSubmit={@beginTextEntry} />
 
-      <div className="subject-container">
-        <div className="marking-surface">
+      <div className="subject-viewer">
+        <div className="subject-container">
+          <div className="marking-surface">
 
-          <svg
-            className = "subject-viewer-svg"
-            width = {@state.imageWidth}
-            height = {@state.imageHeight}
-            viewBox = {viewBox}
-            data-tool = {@props.selectedDrawingTool?.type} >
-
-            <rect
-              ref = "sizeRect"
+            <svg
+              className = "subject-viewer-svg"
               width = {@state.imageWidth}
-              height = {@state.imageHeight} />
+              height = {@state.imageHeight}
+              viewBox = {viewBox}
+              data-tool = {@props.selectedDrawingTool?.type} >
 
-            <Draggable
-              onStart = {@handleInitStart}
-              onDrag  = {@handleInitDrag}
-              onEnd   = {@handleInitRelease} >
-              <SVGImage
-                src = {@state.subject.location}
+              <rect
+                ref = "sizeRect"
                 width = {@state.imageWidth}
                 height = {@state.imageHeight} />
-            </Draggable>
-            
-            { @state.marks.map ((mark, i) ->
-                <TextRowTool
-                  key = {i}
-                  mark = {mark}
-                  imageWidth = {@state.imageWidth}
-                  imageHeight = {@state.imageHeight}
-                  getEventOffset = {@getEventOffset}
-                  selected = {mark is @state.selectedMark}
-                  onClickDelete = {@onClickDelete}
-                  onClickTranscribe = {@onClickTranscribe}
-                  submitMark = {@submitMark}
-                  scrubberWidth = {64}
-                  scrubberHeight = {32}
-                  handleDragMark = {@handleDragMark}
-                  handleUpperResize = {@handleUpperResize}
-                  handleLowerResize = {@handleLowerResize}
-                  handleMarkClick = {@handleMarkClick.bind null, mark}
-                />
-              ), @
+
+              <Draggable
+                onStart = {@handleInitStart}
+                onDrag  = {@handleInitDrag}
+                onEnd   = {@handleInitRelease} >
+                <SVGImage
+                  src = {@state.subject.location}
+                  width = {@state.imageWidth}
+                  height = {@state.imageHeight} />
+              </Draggable>
+              
+              { @state.marks.map ((mark, i) ->
+                  <TextRowTool
+                    key = {i}
+                    mark = {mark}
+                    imageWidth = {@state.imageWidth}
+                    imageHeight = {@state.imageHeight}
+                    getEventOffset = {@getEventOffset}
+                    selected = {mark is @state.selectedMark}
+                    onClickDelete = {@onClickDelete}
+                    onClickTranscribe = {@onClickTranscribe}
+                    submitMark = {@submitMark}
+                    scrubberWidth = {64}
+                    scrubberHeight = {32}
+                    handleDragMark = {@handleDragMark}
+                    handleUpperResize = {@handleUpperResize}
+                    handleLowerResize = {@handleLowerResize}
+                    handleMarkClick = {@handleMarkClick.bind null, mark}
+                  />
+                ), @
+              }
+
+            </svg>
+
+            { if @state.showTranscribeTool
+              <TranscribeTool 
+                transcribeSteps={transcribeSteps} 
+                recordTranscription={@recordTranscription}
+                nextTextEntry={@nextTextEntry}
+                nextSubject = {@nextSubject}
+                selectedMark={@state.selectedMark}
+                xScale={@getScale().horizontal}
+                yScale={@getScale().vertical}
+              />          
             }
 
-          </svg>
-
-          { if @state.showTranscribeTool
-            <TranscribeTool 
-              transcribeSteps={transcribeSteps} 
-              recordTranscription={@recordTranscription}
-              nextTextEntry={@nextTextEntry}
-              nextSubject = {@nextSubject}
-              selectedMark={@state.selectedMark}
-              xScale={@getScale().horizontal}
-              yScale={@getScale().vertical}
-            />          
-          }
-
-        </div>
-        <p>{@state.subject.location}</p>
-        <div className="subject-ui">
-          {action_button}
+          </div>
+          <p>{@state.subject.location}</p>
+          <div className="subject-ui">
+            {action_button}
+          </div>
         </div>
       </div>
 
