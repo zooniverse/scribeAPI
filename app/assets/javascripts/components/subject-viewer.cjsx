@@ -19,6 +19,7 @@ SubjectViewer = React.createClass
   getInitialState: ->
     subjects: null
     subject: null
+    selectedDrawingTool: null
     subjectEndpoint: endpoint
     marks: []
     tools: []
@@ -31,8 +32,6 @@ SubjectViewer = React.createClass
     viewWidth: 0
     viewHeight: 0
     classification: null
-    selectedMark: null # TODO: currently not in use
-    showTranscribeTool: false
 
   componentDidMount: ->
     @setView 0, 0, @state.imageWidth, @state.imageHeight
@@ -112,6 +111,8 @@ SubjectViewer = React.createClass
 
     @state.classification = new Classification @state.subject
 
+  # VARIOUS EVENT HANDLERS
+
   handleInitStart: (e) ->
     console.log 'handleInitStart()'
     
@@ -121,7 +122,7 @@ SubjectViewer = React.createClass
   handleInitRelease: (e) ->
     console.log 'handleInitRelease()'
 
-  handleToolMouseDown: ->
+  handleToolMouseDown: (e) ->
     console.log 'handleToolMouseDown()'
 
   setView: (viewX, viewY, viewWidth, viewHeight) ->
