@@ -73,8 +73,8 @@ SubjectViewer = React.createClass
     @updateDimensions()
 
   componentDidUpdate: ->
-    console.log 'componentWillUpdate(): ', @state
-    console.log 'getScale: ', @getScale()
+    # console.log 'componentWillUpdate(): ', @state
+    # console.log 'getScale: ', @getScale()
     # console.log 'shouldComponentUpdate() = '
 
   componentWillUnmount: ->
@@ -286,8 +286,7 @@ SubjectViewer = React.createClass
   # DEBUG SUBJECT EXAMPLE "https://zooniverse-static.s3.amazonaws.com/scribe_subjects/logbookofalfredg1851unse_0083.jpg"
 
   render: ->
-    console.log 'render()'
-    console.log '  LOADING: ', @state.loading
+    # console.log 'render()'
 
     # return null if @state.selectedMark is null
     # don't render if ya ain't got subjects (yet)
@@ -364,9 +363,7 @@ SubjectViewer = React.createClass
 
           </svg>
 
-          { 
-            # console.log 'yScale: ', @state.yScale
-            if @state.showTranscribeTool and not @state.loading
+          { if @state.showTranscribeTool and not @state.loading
               <TranscribeTool
                 tasks={@props.tasks}
                 recordTranscription={@recordTranscription}

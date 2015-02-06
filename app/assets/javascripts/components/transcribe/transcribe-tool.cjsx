@@ -10,7 +10,7 @@ TranscribeTool = React.createClass
   displayName: 'TranscribeTool'
 
   componentWillReceiveProps: ->
-    console.log 'componentWillReceiveProps() ', @props
+    # console.log 'componentWillReceiveProps() ', @props
     
     @setState
       dx: window.innerWidth/2 - 200
