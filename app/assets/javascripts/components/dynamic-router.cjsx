@@ -19,13 +19,14 @@ DynamicRouter = React.createClass
       @setState home_page_content: @state.project.home_page_content 
       @setState pages:             @state.project.pages
 
-      console.log 'project ', @state.project
+      # DEBUG CODE
+      # console.log 'project ', @state.project
+      
       for workflow in @state.project.workflows
         @setState mark_tasks: workflow.tasks if workflow.key is 'mark'
         @setState transcribe_tasks: workflow.tasks if workflow.key is 'transcribe'
 
   controllerForPage: (page) ->
-    console.log 'controllerForPage()'
     React.createClass
       displayName: "#{page.name}Page"
       render: ->

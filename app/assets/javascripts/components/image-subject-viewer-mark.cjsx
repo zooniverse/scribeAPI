@@ -79,7 +79,6 @@ SubjectViewer = React.createClass
       return markingSubject
 
   componentDidMount: ->
-    console.log 'TASK = ', @props.task
     @setView 0, 0, @state.imageWidth, @state.imageHeight
     @fetchSubjects(@state.subjectEndpoint)
     window.addEventListener "resize", this.updateDimensions
@@ -101,7 +100,7 @@ SubjectViewer = React.createClass
       dataType: "json"
       success: ((data) ->
         # DEBUG CODE
-        console.log 'FETCHED SUBJECTS: ', data
+        # console.log 'FETCHED SUBJECTS: ', data
 
         @setState
           subjects: data
@@ -155,14 +154,10 @@ SubjectViewer = React.createClass
     classification = new Classification @state.subject
     classification.annotate mark
 
-    console.log 'CLASSIFICATION: ', classification.toJSON(WORKFLOW_ID)
-
     @disableMarkButton(key)
 
     # TODO: replace with this
     # @state.classification.send()
-
-    console.log 'SUBJECT ID: ', @state.subject
 
     # send classification
     $.post('/classifications', { 
@@ -413,10 +408,8 @@ SubjectViewer = React.createClass
       $('html, body').animate scrollTop: vertical*@state.selectedMark.y-window.innerHeight/2+80, 500
 
   onClickTranscribe: (key) ->
-    console.log 'onClickTranscribe() ', key
-    console.log 'MARK: ', @state.marks[key]
+    console.log 'onClickTranscribe() '
 
-    console.log 'LOCATION: ', location
     console.log location.host + "/?subject_id=#{@state.marks[key].transcribe_id}#/transcribe"
     location.replace 'http://' + location.host + "/?subject_id=#{@state.marks[key].transcribe_id}&scrollOffset=#{$(window).scrollTop()}#/transcribe"
     # @setState showTranscribeTool: true
@@ -425,12 +418,9 @@ SubjectViewer = React.createClass
   recordTranscription: ->
     console.log 'recordTranscription()'
 
-
   # "https://zooniverse-static.s3.amazonaws.com/scribe_subjects/logbookofalfredg1851unse_0083.jpg"
 
   render: ->
-
-    console.log 'SCALE: ', @getScale()
     # don't render if ya ain't got subjects (yet)
     # console.log 'showTranscribeTool is ', @state.showTranscribeTool
     return null if @state.subjects is null or @state.subjects.length is 0
@@ -483,6 +473,7 @@ SubjectViewer = React.createClass
                 width = {@state.imageWidth}
                 height = {@state.imageHeight} />
             </Draggable>
+            
             { @state.marks.map ((mark, i) ->
                 <TextRowTool
                   key = {i}

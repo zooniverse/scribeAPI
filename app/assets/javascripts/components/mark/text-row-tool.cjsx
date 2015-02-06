@@ -41,7 +41,6 @@ TextRowTool = React.createClass
 
   onClickMarkButton: ->
     markStatus = @state.markStatus
-    console.log 'markStatus is ', markStatus
     switch markStatus
       when 'mark'
         @setState 
