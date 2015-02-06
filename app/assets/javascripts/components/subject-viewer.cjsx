@@ -147,50 +147,43 @@ SubjectViewer = React.createClass
   render: ->
     return null if @state.subjects is null or @state.subjects.length is 0
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
+    
     if @state.loading
-      <div className="subject-viewer">
-        <div className="subject-container">
-          <div className="marking-surface">
-            <LoadingIndicator/>
-          </div>
-          <p>{@state.subjects.location}</p>
-          <div className="subject-ui">
-            <ActionButton loading={@state.loading} />
-          </div>
-        </div>
-      </div>
+      markingSurfaceContent = <LoadingIndicator />
     else
-      action_button =  <ActionButton label={"NEXT PAGE"} onActionSubmit={@nextSubject} />  
-      <div className="subject-viewer">
-        <div className="subject-container">
-          <div className="marking-surface">
-            <svg
-              className = "subject-viewer-svg"
+      markingSurfaceContent =  
+        <svg
+          className = "subject-viewer-svg"
+          width = {@state.imageWidth}
+          height = {@state.imageHeight}
+          viewBox = {viewBox}
+          data-tool = {@props.selectedDrawingTool?.type} >
+          <rect
+            ref = "sizeRect"
+            width = {@state.imageWidth}
+            height = {@state.imageHeight} />
+          <Draggable
+            onStart = {@handleInitStart}
+            onDrag  = {@handleInitDrag}
+            onEnd   = {@handleInitRelease} >
+            <SVGImage
+              src = {@state.subject.location}
               width = {@state.imageWidth}
-              height = {@state.imageHeight}
-              viewBox = {viewBox}
-              data-tool = {@props.selectedDrawingTool?.type} >
-              <rect
-                ref = "sizeRect"
-                width = {@state.imageWidth}
-                height = {@state.imageHeight} />
-              <Draggable
-                onStart = {@handleInitStart}
-                onDrag  = {@handleInitDrag}
-                onEnd   = {@handleInitRelease} >
-                <SVGImage
-                  src = {@state.subject.location}
-                  width = {@state.imageWidth}
-                  height = {@state.imageHeight} />
-              </Draggable>
-            </svg>
-          </div>
-          <p>{@state.subject.location}</p>
-          <div className="subject-ui">
-            {action_button}
-          </div>
+              height = {@state.imageHeight} />
+          </Draggable>
+        </svg>
+
+    <div className="subject-viewer">
+      <div className="subject-container">
+        <div className="marking-surface">
+          {markingSurfaceContent}
+        </div>
+        <p>{@state.subjects.location}</p>
+        <div className="subject-ui">
+          <ActionButton loading={@state.loading} />
         </div>
       </div>
+    </div>
 
 module.exports = SubjectViewer
 window.React = React
