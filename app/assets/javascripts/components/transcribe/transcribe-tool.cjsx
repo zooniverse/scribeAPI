@@ -14,7 +14,7 @@ TranscribeTool = React.createClass
     
     @setState
       dx: window.innerWidth/2 - 200
-      dy: @props.yScale * @props.selectedMark.yLower + 20
+      dy: @props.yScale * @props.selectedMark.yLower + 65 - @props.scrollOffset
 
     # for step in [ @props.tasks... ]
     #   console.log 'STEP: ', step

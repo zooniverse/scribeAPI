@@ -126,16 +126,16 @@ SubjectViewer = React.createClass
       img = new Image()
       img.src = url
       img.onload = =>
-        if @isMounted()
-          @setState
-            url: url
-            imageWidth: img.width
-            imageHeight: img.height
-            loading: false, =>
-              @setState # ugh, this sucks
-                xScale: @getScale().horizontal
-                yScale: @getScale().vertical, =>
-                  @forceUpdate()
+        # if @isMounted()
+        @setState
+          url: url
+          imageWidth: img.width
+          imageHeight: img.height
+          loading: false, =>
+            @setState # ugh, this sucks
+              xScale: @getScale().horizontal
+              yScale: @getScale().vertical, =>
+                @forceUpdate() # kill me now...
 
   nextSubject: () ->
     console.log 'nextSubject()'
@@ -375,6 +375,7 @@ SubjectViewer = React.createClass
                 selectedMark={@state.selectedMark}
                 xScale={@state.xScale}
                 yScale={@state.yScale}
+                scrollOffset={@state.scrollOffset}
               />
           }
 
