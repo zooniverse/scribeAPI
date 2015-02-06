@@ -44,7 +44,7 @@ SubjectViewer = React.createClass
     resizeDisabled: true
     marks: []
     tools: []
-    loading: false
+    loading: true
     frame: 0
     imageWidth: 0
     imageHeight: 0
@@ -55,12 +55,13 @@ SubjectViewer = React.createClass
     classification: null
     selectedMark: null # TODO: currently not in use
     showTranscribeTool: true
-
-  componentWillReceiveProps: ->
+    yScale: null
+    xScale: null
 
   componentDidMount: ->
     console.log 'componentDidMount()'
     @setView 0, 0, @state.imageWidth, @state.imageHeight
+
     @fetchSubjects(@state.subjectEndpoint)
     window.addEventListener "resize", this.updateDimensions
 
@@ -70,7 +71,12 @@ SubjectViewer = React.createClass
   componentWillMount: ->
     console.log 'componentWillMount()'
     @updateDimensions()
-    
+
+  componentDidUpdate: ->
+    console.log 'componentWillUpdate(): ', @state
+    console.log 'getScale: ', @getScale()
+    # console.log 'shouldComponentUpdate() = '
+
   componentWillUnmount: ->
     window.removeEventListener "resize", this.updateDimensions
 
@@ -125,9 +131,11 @@ SubjectViewer = React.createClass
             url: url
             imageWidth: img.width
             imageHeight: img.height
-            loading: false #, =>
-              # console.log @state.loading
-              # console.log "Finished Loading."
+            loading: false, =>
+              @setState # ugh, this sucks
+                xScale: @getScale().horizontal
+                yScale: @getScale().vertical, =>
+                  @forceUpdate()
 
   nextSubject: () ->
     console.log 'nextSubject()'
@@ -245,6 +253,7 @@ SubjectViewer = React.createClass
 
   nextTextEntry: ->
     console.log 'nextTextEntry() '
+    @forceUpdate()
     return # disable for now
 
     # console.log 'STATE.SELECTEDMARK.KEY: ', @state.selectedMark.key
@@ -277,11 +286,14 @@ SubjectViewer = React.createClass
   # DEBUG SUBJECT EXAMPLE "https://zooniverse-static.s3.amazonaws.com/scribe_subjects/logbookofalfredg1851unse_0083.jpg"
 
   render: ->
-    # console.log 'render()'
+    console.log 'render()'
+    console.log '  LOADING: ', @state.loading
+
     # return null if @state.selectedMark is null
     # don't render if ya ain't got subjects (yet)
 
     return null unless @state.selectedMark?
+
     # return null unless @state.subject isnt null
     # return null if @state.subjects is null or @state.subjects.length is 0
 
@@ -352,15 +364,17 @@ SubjectViewer = React.createClass
 
           </svg>
 
-          { if @state.showTranscribeTool
+          { 
+            # console.log 'yScale: ', @state.yScale
+            if @state.showTranscribeTool and not @state.loading
               <TranscribeTool
                 tasks={@props.tasks}
                 recordTranscription={@recordTranscription}
                 nextTextEntry={@nextTextEntry}
                 nextSubject = {@nextSubject}
                 selectedMark={@state.selectedMark}
-                xScale={@getScale().horizontal}
-                yScale={@getScale().vertical}
+                xScale={@state.xScale}
+                yScale={@state.yScale}
               />
           }
 

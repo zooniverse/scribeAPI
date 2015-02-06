@@ -11,6 +11,11 @@ TranscribeTool = React.createClass
 
   componentWillReceiveProps: ->
     console.log 'componentWillReceiveProps() ', @props
+    
+    @setState
+      dx: window.innerWidth/2 - 200
+      dy: @props.yScale * @props.selectedMark.yLower + 20
+
     # for step in [ @props.tasks... ]
     #   console.log 'STEP: ', step
 
@@ -24,8 +29,8 @@ TranscribeTool = React.createClass
 
     tasks: tasksArray
     currentStep: 0
-    dx: window.innerWidth/2 - 200
-    dy: @props.yScale * @props.selectedMark.yLower + 20
+    # dx: window.innerWidth/2 - 200
+    # dy: @props.yScale * @props.selectedMark.yLower + 20
 
   componentDidMount: ->
     # console.log 'STATE: ', @state
@@ -124,7 +129,7 @@ TranscribeTool = React.createClass
         <div className="transcribe-tool" style={style}>
           <div className="left">
             { for key, task of @state.tasks # NOTE: remember tasks is Object
-                <TranscribeInput task = {task} currentStep = {@state.currentStep} />
+                <TranscribeInput key={key} task={task} currentStep={@state.currentStep} />
             }
           </div>
           <div className="right">
