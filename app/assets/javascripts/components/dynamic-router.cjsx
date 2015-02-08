@@ -1,7 +1,7 @@
 React = require("react")
 {Router, Routes, Route, Link} = require 'react-router'
 MainHeader                    = require '../partials/main-header'
-HomePageController            = require './home-page-controller'
+HomePage                      = require './home-page'
 SubjectViewer                 = require './subject-viewer'
 
 DynamicRouter = React.createClass
@@ -37,7 +37,7 @@ DynamicRouter = React.createClass
         <Routes>
           <Route 
             path='/' 
-            handler={HomePageController} 
+            handler={HomePage} 
             name="root" 
             content={@state.home_page_content} />
           <Route 
