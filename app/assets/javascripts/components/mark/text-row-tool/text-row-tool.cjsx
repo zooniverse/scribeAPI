@@ -1,7 +1,7 @@
 # @cjsx React.DOM
 # Model = require '../../data/model'
 React = require 'react'
-Draggable = require '../../lib/draggable'
+Draggable = require '../../../lib/draggable'
 DeleteButton = require './delete-button'
 ResizeButton = require './resize-button'
 DoneCheckbox = require './done-checkbox'

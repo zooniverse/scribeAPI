@@ -1,7 +1,7 @@
 # @cjsx React.DOM
 
 React = require 'react'
-Draggable = require '../../lib/draggable'
+Draggable = require '../../../lib/draggable'
 
 module.exports = React.createClass
   displayName: 'ResizeButton'
