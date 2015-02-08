@@ -3,6 +3,7 @@ React = require("react")
 MainHeader                    = require '../partials/main-header'
 HomePage                      = require './home-page'
 Mark                          = require './mark/mark'
+Transcribe                    = require './transcribe/transcribe'
 
 DynamicRouter = React.createClass
 
@@ -47,7 +48,7 @@ DynamicRouter = React.createClass
             tasks={@state.mark_tasks} />
           <Route 
             path='/transcribe' 
-            handler={Mark} 
+            handler={Transcribe} 
             name='transcribe'
             tasks={@state.transcribe_tasks} />
 
