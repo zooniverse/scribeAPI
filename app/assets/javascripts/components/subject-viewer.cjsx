@@ -18,19 +18,10 @@ SubjectViewer = React.createClass
 
   getInitialState: ->
     subjects: null
-    subject: null
-    selectedDrawingTool: null
     subjectEndpoint: endpoint
-    marks: []
-    tools: []
     loading: false
-    frame: 0
     imageWidth: 0
     imageHeight: 0
-    viewX: 0
-    viewY: 0
-    viewWidth: 0
-    viewHeight: 0
     classification: null
 
   componentDidMount: ->
