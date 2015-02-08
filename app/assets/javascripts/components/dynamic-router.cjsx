@@ -2,8 +2,8 @@ React = require("react")
 {Router, Routes, Route, Link} = require 'react-router'
 MainHeader                    = require '../partials/main-header'
 HomePage                      = require './home-page'
-Mark                          = require './mark/mark'
-Transcribe                    = require './transcribe/transcribe'
+Mark                          = require './mark'
+Transcribe                    = require './transcribe'
 
 DynamicRouter = React.createClass
 
