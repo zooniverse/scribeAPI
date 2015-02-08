@@ -24,6 +24,9 @@ SubjectViewer = React.createClass
     imageHeight: 0
     classification: null
 
+  # componentWillReceiveProps: ->
+  #   workflow: @props.workflow
+
   componentDidMount: ->
     @setView 0, 0, @state.imageWidth, @state.imageHeight
     @fetchSubjects(@state.subjectEndpoint)

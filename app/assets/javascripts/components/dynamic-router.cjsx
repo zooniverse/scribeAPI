@@ -2,7 +2,7 @@ React = require("react")
 {Router, Routes, Route, Link} = require 'react-router'
 MainHeader                    = require '../partials/main-header'
 HomePage                      = require './home-page'
-SubjectViewer                 = require './subject-viewer'
+Mark                          = require './mark/mark'
 
 DynamicRouter = React.createClass
 
@@ -42,12 +42,12 @@ DynamicRouter = React.createClass
             content={@state.home_page_content} />
           <Route 
             path='/mark' 
-            handler={SubjectViewer} 
+            handler={Mark} 
             name='mark'
             tasks={@state.mark_tasks} />
           <Route 
             path='/transcribe' 
-            handler={SubjectViewer} 
+            handler={Mark} 
             name='transcribe'
             tasks={@state.transcribe_tasks} />
 
