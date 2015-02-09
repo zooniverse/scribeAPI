@@ -137,7 +137,6 @@ SubjectViewer = React.createClass
     y: ((e.pageY - pageYOffset - rect.top) / vertical) + @state.viewY
 
   render: ->
-    console.log 'FOO'
     return null if @state.subjects is null or @state.subjects.length is 0
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     

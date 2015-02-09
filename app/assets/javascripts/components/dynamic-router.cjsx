@@ -19,9 +19,10 @@ DynamicRouter = React.createClass
       @setState pages:             @state.project.pages
       
       for workflow in @state.project.workflows
-        @setState markWorkflow:       workflow if workflow.key is 'mark'
-        @setState transcribeWorkflow: workflow if workflow.key is 'transcribe'
-
+        switch workflow.key
+          when 'mark'       then @setState markWorkflow: workflow
+          when 'transcribe' then @setState transcribeWorkflow: workflow
+       
   controllerForPage: (page) ->
     React.createClass
       displayName: "#{page.name}Page"
@@ -29,8 +30,7 @@ DynamicRouter = React.createClass
         <div dangerouslySetInnerHTML={{__html: page.content}} />
 
   render: ->
-    # do nothing until project loads from API
-    return null unless @state.pages?
+    return null unless @state.pages? # do nothing until project loads from API
 
     <div className="panoptes-main">
       <MainHeader pages={@state.pages} />
