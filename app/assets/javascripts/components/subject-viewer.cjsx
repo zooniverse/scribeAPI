@@ -106,8 +106,13 @@ SubjectViewer = React.createClass
   # VARIOUS EVENT HANDLERS
 
   handleInitStart: (e) ->
-    console.log 'handleInitStart()'
-    
+    console.log 'handleInitStart() '
+    clickEvent = 
+      click: @getEventOffset(e)
+      timestamp: (new Date).toJSON()
+
+    @setState clickEvent: clickEvent
+
   handleInitDrag: (e) ->
     console.log 'handleInitDrag()'
 
@@ -129,7 +134,6 @@ SubjectViewer = React.createClass
 
   getEventOffset: (e) ->
     rect = @refs.sizeRect.getDOMNode().getBoundingClientRect()
-
     {horizontal, vertical} = @getScale()
     x: ((e.pageX - pageXOffset - rect.left) / horizontal) + @state.viewX
     y: ((e.pageY - pageYOffset - rect.top) / vertical) + @state.viewY
@@ -164,7 +168,7 @@ SubjectViewer = React.createClass
               height = {@state.imageHeight} />
           </Draggable>
 
-          <ToolComponent
+          <ToolComponent clickEvent={@state.clickEvent} />
 
         </svg>
 

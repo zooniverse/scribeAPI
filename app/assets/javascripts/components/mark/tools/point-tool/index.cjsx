@@ -1,8 +1,8 @@
 # @cjsx React.DOM
 # Model = require '../../data/model'
 React = require 'react'
-Draggable = require '../lib/draggable'
-DeleteButton = require './mark/delete-button'
+Draggable = require '../../../../lib/draggable'
+DeleteButton = require './delete-button'
 
 module.exports = React.createClass
   displayName: 'PointTool'
