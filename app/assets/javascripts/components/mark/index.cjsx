@@ -2,8 +2,6 @@
 React         = require 'react'
 SubjectViewer = require '../subject-viewer'
 
-WORKFLOW_ID = '54b82b4745626f20c9020000' # marking workflow
-
 Mark = React.createClass # rename to Classifier
   displayName: 'Mark'
 
@@ -12,7 +10,6 @@ Mark = React.createClass # rename to Classifier
 
   render: ->
     endpoint = "/workflows/#{@state.workflow[0].id}/subjects.json?limit=5"
-    console.log 'MARKING ENDPOINT: ', endpoint
     <SubjectViewer endpoint=endpoint workflow={@props.workflow} />
 
 module.exports = Mark

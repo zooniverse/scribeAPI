@@ -26,11 +26,6 @@ DynamicRouter = React.createClass
     return null unless @state.pages? # do nothing until project loads from API
     workflows = @state.project.workflows
 
-    console.log 'FOO: ', workflow for workflow in workflows when workflow.key is 'transcribe'
-
-    # for workflow in [workflows...]
-    #   if workflow.key == 'transcribe' then console.log 'BALS: ', workflow else console.log 'BLAH'
-
     <div className="panoptes-main">
       <MainHeader pages={@state.pages} />
       <div className="main-content">
