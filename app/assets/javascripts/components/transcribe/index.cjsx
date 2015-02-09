@@ -7,9 +7,8 @@ WORKFLOW_ID = '54b82b4745626f20c9010000' # transcribe workflow
 Transcribe = React.createClass # rename to Classifier
   displayName: 'Transcribe'
 
-  componentWillReceiveProps: ->
-    console.log ' TRANSCRIBE WORKFLOW: ', @props.workflow
-
+  getInitialState: ->
+    workflow: @props.workflow
 
   render: ->
     endpoint = "/workflows/#{WORKFLOW_ID}/subjects.json?limit=5"

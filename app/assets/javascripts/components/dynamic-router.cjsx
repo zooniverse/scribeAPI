@@ -9,8 +9,6 @@ DynamicRouter = React.createClass
 
   getInitialState: ->
     project: null
-    markWorkflow: null
-    transcribeWorkflow: null
     
   componentDidMount: ->
     $.getJSON '/project', (result) => 
@@ -18,11 +16,6 @@ DynamicRouter = React.createClass
       @setState home_page_content: @state.project.home_page_content 
       @setState pages:             @state.project.pages
       
-      for workflow in @state.project.workflows
-        switch workflow.key
-          when 'mark'       then @setState markWorkflow: workflow
-          when 'transcribe' then @setState transcribeWorkflow: workflow
-       
   controllerForPage: (page) ->
     React.createClass
       displayName: "#{page.name}Page"
@@ -31,6 +24,7 @@ DynamicRouter = React.createClass
 
   render: ->
     return null unless @state.pages? # do nothing until project loads from API
+    workflows = @state.project.workflows   
 
     <div className="panoptes-main">
       <MainHeader pages={@state.pages} />
@@ -45,12 +39,12 @@ DynamicRouter = React.createClass
             path='/mark' 
             handler={Mark} 
             name='mark'
-            workflow={@state.markWorkflow} />
+            workflow={workflow for workflow, key of workflows when key is 'mark'} />
           <Route 
             path='/transcribe' 
             handler={Transcribe} 
             name='transcribe'
-            workflow={@state.transcribeWorkflow} />
+            workflow={workflow for workflow, key of workflows when key is 'transcribe'} />
 
           { @state.pages?.map (page, key) =>
               <Route 
