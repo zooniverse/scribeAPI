@@ -9,23 +9,18 @@ SubjectMetadata               = require './subject-metadata'
 ActionButton                  = require './action-button'
 Classification                = require '../models/classification'
 
-WORKFLOW_ID = '54b82b4745626f20c9020000' # marking workflow
-endpoint = "/workflows/#{WORKFLOW_ID}/subjects.json?limit=5"
-
 SubjectViewer = React.createClass
   displayName: 'SubjectViewer'
   resizing: false
 
   getInitialState: ->
+    console.log 'USING ENDPOINT: ', @props.endpoint
     subjects: null
-    subjectEndpoint: endpoint
+    subjectEndpoint: @props.endpoint
     loading: false
     imageWidth: 0
     imageHeight: 0
     classification: null
-
-  # componentWillReceiveProps: ->
-  #   workflow: @props.workflow
 
   componentDidMount: ->
     @setView 0, 0, @state.imageWidth, @state.imageHeight

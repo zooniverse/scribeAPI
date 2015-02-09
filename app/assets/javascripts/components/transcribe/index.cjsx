@@ -2,6 +2,8 @@
 React         = require 'react'
 SubjectViewer = require '../subject-viewer'
 
+WORKFLOW_ID = '54b82b4745626f20c9010000' # transcribe workflow
+
 Transcribe = React.createClass # rename to Classifier
   displayName: 'Transcribe'
 
