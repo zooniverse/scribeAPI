@@ -14,12 +14,14 @@ SubjectViewer = React.createClass
   resizing: false
 
   getInitialState: ->
-    console.log 'USING ENDPOINT: ', @props.endpoint
-    subjects: null
-    subjectEndpoint: @props.endpoint
-    loading: false
+    # # DEBUG CODE
+    # console.log 'USING ENDPOINT: ', @props.endpoint
     imageWidth: 0
     imageHeight: 0
+    
+    subjectEndpoint: @props.endpoint
+    subjects: null
+    subject: null
     classification: null
 
   componentDidMount: ->

@@ -22,6 +22,7 @@ DynamicRouter = React.createClass
       render: ->
         <div dangerouslySetInnerHTML={{__html: page.content}} />
 
+  # TODO: workflow being passed as an object in an array. why?
   render: ->
     return null unless @state.pages? # do nothing until project loads from API
     workflows = @state.project.workflows
