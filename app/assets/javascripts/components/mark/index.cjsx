@@ -11,7 +11,8 @@ Mark = React.createClass # rename to Classifier
     workflow: @props.workflow
 
   render: ->
-    endpoint = "/workflows/#{WORKFLOW_ID}/subjects.json?limit=5"
+    endpoint = "/workflows/#{@state.workflow[0].id}/subjects.json?limit=5"
+    console.log 'MARKING ENDPOINT: ', endpoint
     <SubjectViewer endpoint=endpoint workflow={@props.workflow} />
 
 module.exports = Mark

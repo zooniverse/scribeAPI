@@ -26,6 +26,8 @@ DynamicRouter = React.createClass
     return null unless @state.pages? # do nothing until project loads from API
     workflows = @state.project.workflows
 
+    console.log 'FOO: ', workflow for workflow in workflows when workflow.key is 'transcribe'
+
     # for workflow in [workflows...]
     #   if workflow.key == 'transcribe' then console.log 'BALS: ', workflow else console.log 'BLAH'
 
@@ -42,12 +44,12 @@ DynamicRouter = React.createClass
             path='/mark' 
             handler={Mark} 
             name='mark'
-            workflow={workflow for workflow in workflows when workflow.key is 'mark'} />
+            workflow={(workflow for workflow in workflows when workflow.key is 'mark')} />
           <Route 
             path='/transcribe' 
             handler={Transcribe} 
             name='transcribe'
-            workflow={workflow for workflow in workflows when workflow.key is 'transcribe'} />
+            workflow={(workflow for workflow in workflows when workflow.key is 'transcribe')} />
 
           { @state.pages?.map (page, key) =>
               <Route 
