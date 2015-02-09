@@ -7,9 +7,13 @@ WORKFLOW_ID = '54b82b4745626f20c9020000' # marking workflow
 Mark = React.createClass # rename to Classifier
   displayName: 'Mark'
 
+  componentWillReceiveProps: ->
+    console.log 'MARK WORKFLOW: ', @props.workflow
+
+
   render: ->
     endpoint = "/workflows/#{WORKFLOW_ID}/subjects.json?limit=5"
-    <SubjectViewer endpoint=endpoint task={@props.task} />
+    <SubjectViewer endpoint=endpoint workflow={@props.workflow} />
 
 module.exports = Mark
 window.React = React

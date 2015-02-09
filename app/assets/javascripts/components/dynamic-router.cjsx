@@ -9,8 +9,8 @@ DynamicRouter = React.createClass
 
   getInitialState: ->
     project: null
-    mark_tasks: null
-    transcribe_tasks: null
+    markWorkflow: null
+    transcribeWorkflow: null
     
   componentDidMount: ->
     $.getJSON '/project', (result) => 
@@ -19,8 +19,8 @@ DynamicRouter = React.createClass
       @setState pages:             @state.project.pages
       
       for workflow in @state.project.workflows
-        @setState mark_tasks: workflow.tasks if workflow.key is 'mark'
-        @setState transcribe_tasks: workflow.tasks if workflow.key is 'transcribe'
+        @setState markWorkflow:       workflow if workflow.key is 'mark'
+        @setState transcribeWorkflow: workflow if workflow.key is 'transcribe'
 
   controllerForPage: (page) ->
     React.createClass
@@ -30,7 +30,7 @@ DynamicRouter = React.createClass
 
   render: ->
     # do nothing until project loads from API
-    return null if @state.project is null or @state.mark_tasks is null or @state.transcribe_tasks is null
+    return null unless @state.pages?
 
     <div className="panoptes-main">
       <MainHeader pages={@state.pages} />
@@ -45,15 +45,18 @@ DynamicRouter = React.createClass
             path='/mark' 
             handler={Mark} 
             name='mark'
-            tasks={@state.mark_tasks} />
+            workflow={@state.markWorkflow} />
           <Route 
             path='/transcribe' 
             handler={Transcribe} 
             name='transcribe'
-            tasks={@state.transcribe_tasks} />
+            workflow={@state.transcribeWorkflow} />
 
-          { @state.pages.map (page, key) =>
-              <Route path={'/'+page.name} handler={@controllerForPage(page)} name={page.name} key={key} />
+          { @state.pages?.map (page, key) =>
+              <Route 
+                path={'/'+page.name} 
+                handler={@controllerForPage(page)} 
+                name={page.name} key={key} />
           }
           
         </Routes>
