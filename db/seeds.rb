@@ -145,6 +145,15 @@ transcribe_tasks = {
   }
 }
 
+mark_tasks = {
+  mark_one: {
+      key:          0,
+      tool:         'textRow',
+      instruction:  'Drag a mark around a block of text.',
+      next_task:    nil
+  }
+}
+
 transcribe_workflow = Workflow.create(
   {
     key:               "transcribe", 
@@ -158,10 +167,10 @@ transcribe_workflow = Workflow.create(
 
 mark_workflow = Workflow.create(
   {
-    key:               "mark", 
-    label:             "Mark Contnet", 
-    first_task:        "", 
-    tasks:             transcribe_tasks, 
+    key:               'mark', 
+    label:             'Mark Contnet', 
+    first_task:        'mark_one', 
+    tasks:             mark_tasks, 
     enables_workflows: {}, 
     project:           project 
   }

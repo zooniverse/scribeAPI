@@ -23,6 +23,7 @@ SubjectViewer = React.createClass
     subjects: null
     subject: null
     classification: null
+    tool: @props.tool
 
   componentDidMount: ->
     @setView 0, 0, @state.imageWidth, @state.imageHeight
@@ -136,6 +137,8 @@ SubjectViewer = React.createClass
   render: ->
     return null if @state.subjects is null or @state.subjects.length is 0
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
+
+    ToolComponent = @state.tool
     
     if @state.loading
       markingSurfaceContent = <LoadingIndicator />
@@ -160,6 +163,9 @@ SubjectViewer = React.createClass
               width = {@state.imageWidth}
               height = {@state.imageHeight} />
           </Draggable>
+
+          <ToolComponent
+
         </svg>
 
     <div className="subject-viewer">
