@@ -122,9 +122,9 @@ SubjectViewer = React.createClass
 
     @setState 
       marks: marks
-      selectedMark: marks[marks.length-1], =>
-        console.log 'MARKS: ', @state.marks
-        console.log 'SELECTED MARK: ', @state.selectedMark
+      selectedMark: marks[marks.length-1] #, =>
+        # console.log 'MARKS: ', @state.marks
+        # console.log 'SELECTED MARK: ', @state.selectedMark
 
   handleInitDrag: (e) ->
     console.log 'handleInitDrag()'
@@ -166,6 +166,7 @@ SubjectViewer = React.createClass
     @setState
       marks: marks
       selectedMark: null, =>
+        console.log 'forcing update'
         @forceUpdate() # make sure keys are up-to-date before re-render
 
   # onClickDelete: (key) ->
@@ -187,6 +188,7 @@ SubjectViewer = React.createClass
       # }, =>
 
   render: ->
+    console.log 'render()'
     return null if @state.subjects is null or @state.subjects.length is 0
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
 
@@ -216,9 +218,11 @@ SubjectViewer = React.createClass
               height = {@state.imageHeight} />
           </Draggable>
 
-          { @state.marks.map ((mark, i) ->
+          { 
+            @state.marks.map ((mark, i) ->
+              console.log 'MARK: ', mark
               <ToolComponent 
-                idx={i} 
+                key={i} 
                 mark={mark} 
                 getEventOffset={@getEventOffset} 
                 isSelected={mark is @state.selectedMark} 

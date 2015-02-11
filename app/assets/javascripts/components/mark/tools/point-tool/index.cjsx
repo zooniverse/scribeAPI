@@ -27,7 +27,7 @@ module.exports = React.createClass
 
   render: ->
     
-    fillColor   = 'rgba(0,0,0,0.5)'
+    fillColor   = 'rgba(0,0,0,0)'
     strokeColor = '#fff'
     radius = 40
 
