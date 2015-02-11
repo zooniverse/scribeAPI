@@ -27,15 +27,6 @@ module.exports = React.createClass
     strokeColor = '#fff'
     radius = 40
 
-    console.log 'PROPS: ', @props
-
-    # radius = if @props.disabled
-    #   4 
-    # else if @props.selected
-    #   12
-    # else
-    #   6
-
     strokeWidth = 3
 
     transform = "
@@ -44,6 +35,7 @@ module.exports = React.createClass
     "
 
     <g className="point drawing-tool" transform={transform}>
+      <text fill='blue' fontSize='30'>{@props.key}</text>
       <Draggable onDrag={@handleDrag} onStart={@props.handleMarkClick.bind null, @props.mark} >
         <g strokeWidth={strokeWidth}>
           <circle r={radius + (strokeWidth / 2)} stroke={strokeColor} fill={fillColor} />
@@ -51,7 +43,7 @@ module.exports = React.createClass
       </Draggable>
       
       { if @props.isSelected
-          <DeleteButton transform="translate(#{radius}, #{-radius})" onClick={@props.onClickDelete} /> }
+          <DeleteButton transform="translate(#{radius}, #{-radius})" onClick={@props.onClickDelete.bind null, @props.key} /> }
 
     </g>
 
