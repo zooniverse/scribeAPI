@@ -18,8 +18,12 @@ module.exports = React.createClass
       {x, y}
 
   getInitialState: ->
-    x: @props.mark.x
-    y: @props.mark.y
+    mark: @props.mark
+  
+  componentWillReceiveProps: ->
+    @setState 
+      mark: @props.mark, =>
+        @forceUpdate()
 
   render: ->
     
@@ -30,12 +34,12 @@ module.exports = React.createClass
     strokeWidth = 3
 
     transform = "
-      translate(#{@state.x}, #{@state.y})
+      translate(#{@state.mark.x}, #{@state.mark.y})
       scale(#{1}, #{1})
     "
 
     <g className="point drawing-tool" transform={transform}>
-      <text fill='blue' fontSize='30'>{@props.key}</text>
+      <text fill='blue' fontSize='30'>{@props.mark.key}</text>
       <Draggable onDrag={@handleDrag} onStart={@props.handleMarkClick.bind null, @props.mark} >
         <g strokeWidth={strokeWidth}>
           <circle r={radius + (strokeWidth / 2)} stroke={strokeColor} fill={fillColor} />
@@ -43,7 +47,10 @@ module.exports = React.createClass
       </Draggable>
       
       { if @props.isSelected
-          <DeleteButton transform="translate(#{radius}, #{-radius})" onClick={@props.onClickDelete.bind null, @props.key} /> }
+          <DeleteButton 
+            transform="translate(#{radius}, #{-radius})" 
+            onClick={@props.onClickDelete.bind null, @props.key} /> 
+      }
 
     </g>
 

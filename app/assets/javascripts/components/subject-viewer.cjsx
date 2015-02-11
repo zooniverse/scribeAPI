@@ -112,6 +112,7 @@ SubjectViewer = React.createClass
     console.log 'handleInitStart() '
     marks = @state.marks
     mark = 
+      key: @state.marks.length
       x: @getEventOffset(e).x
       y: @getEventOffset(e).y
       scale: @getScale()
@@ -150,21 +151,30 @@ SubjectViewer = React.createClass
     x: ((e.pageX - pageXOffset - rect.left) / horizontal) + @state.viewX
     y: ((e.pageY - pageYOffset - rect.top) / vertical) + @state.viewY
 
+  # onClickDelete: (idx) ->
+  #   console.log 'DELETING MARK WITH IDX: ', idx
+  #   marks = @state.marks
+
+  #   for mark, i in [ marks...]
+  #     console.log 'CURRENT MARK INDEX: ', i
+  #     console.log 'CURRENT MARK IDX  : ', mark.idx
+  #     if idx is i
+  #       console.log '================================='
+  #       console.log 'FOUND MARK TO DELETE WITH IDX: ', mark.idx
+  #       marks.splice(i,1) # delete marks[key]    
+
+  #   @setState
+  #     marks: marks
+  #     selectedMark: null, =>
+  #       console.log 'FOOO!'
+  #       @forceUpdate() # make sure keys are up-to-date before re-render
+
   onClickDelete: (key) ->
-    console.log 'onClickDelete() ', key
     marks = @state.marks
-
-    # for mark, i in [ marks...]
-    #   console.log 'CURRENT MARK: ', i
-    #   if i is key
-    #     console.log 'FOUND MARK TO DELET, WITH KEY: ', i
-
-    marks.splice(key,1) # delete marks[key]    
-
+    marks.splice(key,1) # delete marks[key]
     @setState
       marks: marks
       selectedMark: null, =>
-        console.log 'FOOO!'
         @forceUpdate() # make sure keys are up-to-date before re-render
 
   handleMarkClick: (mark, e) ->
@@ -207,13 +217,13 @@ SubjectViewer = React.createClass
               height = {@state.imageHeight} />
           </Draggable>
 
-          { @state.marks.map ((mark, key) ->
+          { @state.marks.map ((mark, i) ->
               <ToolComponent 
-                key={key} 
+                idx={i} 
                 mark={mark} 
                 getEventOffset={@getEventOffset} 
                 isSelected={mark is @state.selectedMark} 
-                handleMarkClick={@handleMarkClick} 
+                handleMarkClick={@handleMarkClick.bind null, mark} 
                 onClickDelete={@onClickDelete}
               />
             ), @
