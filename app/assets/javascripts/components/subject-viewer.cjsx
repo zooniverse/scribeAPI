@@ -25,6 +25,8 @@ SubjectViewer = React.createClass
     classification: null
     tool: @props.tool
 
+    marks: []
+
   componentDidMount: ->
     @setView 0, 0, @state.imageWidth, @state.imageHeight
     @fetchSubjects(@state.subjectEndpoint)
@@ -107,11 +109,17 @@ SubjectViewer = React.createClass
 
   handleInitStart: (e) ->
     console.log 'handleInitStart() '
-    clickEvent = 
-      click: @getEventOffset(e)
+    marks = @state.marks
+    mark = 
+      x: @getEventOffset(e).x
+      y: @getEventOffset(e).y
+      scale: @getScale()
       timestamp: (new Date).toJSON()
 
-    @setState clickEvent: clickEvent
+    marks.push mark
+
+    @setState marks: marks, =>
+      console.log 'MARKS: ', @state.marks
 
   handleInitDrag: (e) ->
     console.log 'handleInitDrag()'
@@ -168,7 +176,10 @@ SubjectViewer = React.createClass
               height = {@state.imageHeight} />
           </Draggable>
 
-          <ToolComponent clickEvent={@state.clickEvent} />
+          { @state.marks.map ((mark, key) ->
+              <ToolComponent key={key} mark={mark} getEventOffset={@getEventOffset} />
+            ), @
+          }
 
         </svg>
 

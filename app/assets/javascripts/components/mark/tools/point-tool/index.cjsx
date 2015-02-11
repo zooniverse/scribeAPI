@@ -18,12 +18,10 @@ module.exports = React.createClass
       {x, y}
 
   getInitialState: ->
+    console.log ' SALKSJLAKSJALSKJ PROPS: ', @props.mark
+    # mark: @props.mark
     x: @props.mark.x
     y: @props.mark.y
-
-  updateMark: ({x,y}) ->
-    # console.log 'updateMark() ', e
-    @setState {x,y}
 
   render: ->
     
@@ -34,7 +32,7 @@ module.exports = React.createClass
     console.log 'PROPS: ', @props
 
     # radius = if @props.disabled
-    #   4
+    #   4 
     # else if @props.selected
     #   12
     # else
@@ -47,19 +45,19 @@ module.exports = React.createClass
       scale(#{1}, #{1})
     "
 
-    # transform = "
-    #   translate(#{@props.mark.x}, #{@props.mark.y})
-    #   scale(#{1 / @props.scale.horizontal}, #{1 / @props.scale.vertical})
-    # "
-
-    <g className="point drawing-tool" transform={transform} data-disabled={@props.disabled || null} data-selected={@props.selected || null}>
-      <Draggable onStart={@props.select} onDrag={@handleDrag}>
+    <g className="point drawing-tool" transform={transform}>
+      <Draggable onDrag={@handleDrag}>
         <g strokeWidth={strokeWidth}>
           <circle r={radius + (strokeWidth / 2)} stroke={strokeColor} fill={fillColor} />
         </g>
       </Draggable>
-      <DeleteButton transform="translate(#{radius}, #{-radius})" onClick={@props.onClickDelete} />
+      <DeleteButton transform="translate(#{radius}, #{-radius})" />
     </g>
 
   handleDrag: (e) ->
+    console.log 'handleDrag():'
     @updateMark @props.getEventOffset(e)
+
+  updateMark: ({x,y}) ->
+    # console.log 'updateMark() ', e
+    @setState {x,y}
