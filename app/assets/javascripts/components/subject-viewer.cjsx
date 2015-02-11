@@ -155,10 +155,9 @@ SubjectViewer = React.createClass
     marks = @state.marks
     marks.splice(key,1) # delete marks[key]
     @setState
-      marks: marks, =>
-        @forceUpdate()
-      # selectedMark: null, =>
-        # @forceUpdate() # make sure keys are up-to-date before re-render
+      marks: marks
+      selectedMark: null, =>
+        @forceUpdate() # make sure keys are up-to-date before re-render
 
   handleMarkClick: (mark, e) ->
     {x,y} = @getEventOffset e
@@ -207,6 +206,7 @@ SubjectViewer = React.createClass
                 getEventOffset={@getEventOffset} 
                 isSelected={mark is @state.selectedMark} 
                 handleMarkClick={@handleMarkClick} 
+                onClickDelete={@onClickDelete}
               />
             ), @
           }
