@@ -40,12 +40,12 @@ DynamicRouter = React.createClass
             path='/mark' 
             handler={Mark} 
             name='mark'
-            workflow={(workflow for workflow in workflows when workflow.key is 'mark')} />
+            workflow={(workflow for workflow in workflows when workflow.key is 'mark')[0]} />
           <Route 
             path='/transcribe' 
             handler={Transcribe} 
             name='transcribe'
-            workflow={(workflow for workflow in workflows when workflow.key is 'transcribe')} />
+            workflow={(workflow for workflow in workflows when workflow.key is 'transcribe')[0]} />
 
           { @state.pages?.map (page, key) =>
               <Route 

@@ -8,26 +8,30 @@ Mark = React.createClass # rename to Classifier
 
   getInitialState: ->
     console.log 'MARK WORKFLOW: ', @props.workflow
-    workflow = @props.workflow[0] # why does this return an array?
+    workflow = @props.workflow
     currentTask = workflow.tasks[ workflow.first_task ]
+    
     workflow: workflow
     firstTask: true
-    currentTool: tools[currentTask.tool]
+    currentTask: currentTask
+    currentTool: currentTask.tool
 
   componentDidMount: ->
     console.log 'componentDidMount()'
 
     if @state.firstTask?
-      console.log 'first task is: ', @state.currentTool
+        console.log 'first task is: ', @state.workflow.tasks[ @state.workflow.first_task ].tool
       # console.log 'TOOLS: ', tools[@state.task.tool]
       # @setState currentTool: tools. 
 
-
   render: ->
-    <SubjectViewer 
-      endpoint={"/workflows/#{@state.workflow.id}/subjects.json?limit=5"} 
-      workflow={@props.workflow} 
-      tool={@state.currentTool} />
+    console.log 'first task is: ', console.log 'first task is: ', @state.workflow.tasks[ @state.workflow.first_task ].tool
+
+    return null
+    # <SubjectViewer
+    #   endpoint={"/workflows/#{@state.workflow.id}/subjects.json?limit=5"} 
+    #   workflow={@props.workflow} 
+    #   tool={@state.currentTool} />
 
 module.exports = Mark
 window.React = React
