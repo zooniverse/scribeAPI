@@ -49,7 +49,7 @@ module.exports = React.createClass
       { if @props.isSelected
           <DeleteButton 
             transform="translate(#{radius}, #{-radius})" 
-            onClick={@props.onClickDelete.bind null, @props.key} /> 
+            onClick={@props.onClickDelete.bind null, @props.mark.key} /> 
       }
 
     </g>

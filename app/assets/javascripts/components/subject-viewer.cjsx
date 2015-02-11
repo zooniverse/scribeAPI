@@ -151,31 +151,30 @@ SubjectViewer = React.createClass
     x: ((e.pageX - pageXOffset - rect.left) / horizontal) + @state.viewX
     y: ((e.pageY - pageYOffset - rect.top) / vertical) + @state.viewY
 
-  # onClickDelete: (idx) ->
-  #   console.log 'DELETING MARK WITH IDX: ', idx
-  #   marks = @state.marks
-
-  #   for mark, i in [ marks...]
-  #     console.log 'CURRENT MARK INDEX: ', i
-  #     console.log 'CURRENT MARK IDX  : ', mark.idx
-  #     if idx is i
-  #       console.log '================================='
-  #       console.log 'FOUND MARK TO DELETE WITH IDX: ', mark.idx
-  #       marks.splice(i,1) # delete marks[key]    
-
-  #   @setState
-  #     marks: marks
-  #     selectedMark: null, =>
-  #       console.log 'FOOO!'
-  #       @forceUpdate() # make sure keys are up-to-date before re-render
-
   onClickDelete: (key) ->
+    # console.log 'DELETING MARK WITH KEY: ', key
     marks = @state.marks
-    marks.splice(key,1) # delete marks[key]
+
+    for mark, i in [ marks...]
+      # console.log 'CURRENT MARK KEY  : ', mark.key
+      # console.log 'CURRENT MARK INDEX: ', i
+      if mark.key is key
+        # console.log '================================='
+        # console.log 'FOUND MARK TO DELETE WITH IDX: ', mark.idx
+        marks.splice(i,1) # delete marks[key]    
+
     @setState
       marks: marks
       selectedMark: null, =>
         @forceUpdate() # make sure keys are up-to-date before re-render
+
+  # onClickDelete: (key) ->
+  #   marks = @state.marks
+  #   marks.splice(key,1) # delete marks[key]
+  #   @setState
+  #     marks: marks
+  #     selectedMark: null, =>
+  #       @forceUpdate() # make sure keys are up-to-date before re-render
 
   handleMarkClick: (mark, e) ->
     {x,y} = @getEventOffset e
