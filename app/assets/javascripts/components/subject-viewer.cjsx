@@ -177,15 +177,10 @@ SubjectViewer = React.createClass
   #     selectedMark: null, =>
   #       @forceUpdate() # make sure keys are up-to-date before re-render
 
-  handleMarkClick: (mark, e) ->
-    {x,y} = @getEventOffset e
-
+  handleMarkClick: (mark) ->
     @setState
-      selectedMark: mark
-      # markOffset: {
-      #   x: mark.x - x,
-      #   y: mark.y - y
-      # }, =>
+      selectedMark: mark, =>
+        @forceUpdate()
 
   render: ->
     console.log 'render()'

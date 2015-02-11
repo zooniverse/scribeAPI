@@ -27,7 +27,7 @@ module.exports = React.createClass
 
   render: ->
     
-    fillColor   = 'rgba(0,0,0,0)'
+    fillColor   = 'rgba(0,0,0,0.30)'
     strokeColor = '#fff'
     radius = 40
 
@@ -42,7 +42,11 @@ module.exports = React.createClass
       <text fill='blue' fontSize='30'>{@props.mark.key}</text>
       <Draggable onDrag={@handleDrag} onStart={@props.handleMarkClick.bind null, @props.mark} >
         <g strokeWidth={strokeWidth}>
-          <circle r={radius + (strokeWidth / 2)} stroke={strokeColor} fill={fillColor} />
+          <circle 
+            r={radius + (strokeWidth / 2)} 
+            stroke={strokeColor} 
+            fill={fillColor} 
+          />
         </g>
       </Draggable>
       
