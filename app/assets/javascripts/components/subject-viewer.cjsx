@@ -26,6 +26,7 @@ SubjectViewer = React.createClass
     tool: @props.tool
 
     marks: []
+    selectedMark: null
 
   componentDidMount: ->
     @setView 0, 0, @state.imageWidth, @state.imageHeight
@@ -118,8 +119,11 @@ SubjectViewer = React.createClass
 
     marks.push mark
 
-    @setState marks: marks, =>
-      console.log 'MARKS: ', @state.marks
+    @setState 
+      marks: marks
+      selectedMark: marks[marks.length-1], =>
+        console.log 'MARKS: ', @state.marks
+        console.log 'SELECTED MARK: ', @state.selectedMark
 
   handleInitDrag: (e) ->
     console.log 'handleInitDrag()'
@@ -145,6 +149,26 @@ SubjectViewer = React.createClass
     {horizontal, vertical} = @getScale()
     x: ((e.pageX - pageXOffset - rect.left) / horizontal) + @state.viewX
     y: ((e.pageY - pageYOffset - rect.top) / vertical) + @state.viewY
+
+  onClickDelete: (key) ->
+    console.log 'onClickDelete()'
+    marks = @state.marks
+    marks.splice(key,1) # delete marks[key]
+    @setState
+      marks: marks, =>
+        @forceUpdate()
+      # selectedMark: null, =>
+        # @forceUpdate() # make sure keys are up-to-date before re-render
+
+  handleMarkClick: (mark, e) ->
+    {x,y} = @getEventOffset e
+
+    @setState
+      selectedMark: mark
+      # markOffset: {
+      #   x: mark.x - x,
+      #   y: mark.y - y
+      # }, =>
 
   render: ->
     return null if @state.subjects is null or @state.subjects.length is 0
@@ -177,7 +201,13 @@ SubjectViewer = React.createClass
           </Draggable>
 
           { @state.marks.map ((mark, key) ->
-              <ToolComponent key={key} mark={mark} getEventOffset={@getEventOffset} />
+              <ToolComponent 
+                key={key} 
+                mark={mark} 
+                getEventOffset={@getEventOffset} 
+                isSelected={mark is @state.selectedMark} 
+                handleMarkClick={@handleMarkClick} 
+              />
             ), @
           }
 
