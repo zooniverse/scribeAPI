@@ -55,9 +55,10 @@ module.exports = React.createClass
     </g>
 
   handleDrag: (e) ->
-    console.log 'handleDrag():'
     @update @props.getEventOffset(e)
 
   update: ({x,y}) ->
-    # console.log 'updateMark() ', e
-    @setState {x,y}
+    mark = @state.mark
+    mark.x = x
+    mark.y = y
+    @setState mark: mark
