@@ -4,6 +4,8 @@ React = require 'react'
 Draggable = require '../../../../lib/draggable'
 DeleteButton = require './delete-button'
 
+DEBUG = false
+
 module.exports = React.createClass
   displayName: 'PointTool'
 
@@ -39,7 +41,13 @@ module.exports = React.createClass
     "
 
     <g className="point drawing-tool" transform={transform}>
-      <text fill='blue' fontSize='30'>{@props.mark.key}</text>
+
+      { if DEBUG
+          <text fill='blue' fontSize='30'>
+            {@props.mark.key}
+          </text>
+      }
+
       <Draggable 
         onStart={@props.handleMarkClick.bind null, @props.mark} 
         onDrag={@handleDrag} >
@@ -51,7 +59,7 @@ module.exports = React.createClass
             fill={fillColor} 
           />
         </g>
-        
+
       </Draggable>
       
       { if @props.isSelected
