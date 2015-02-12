@@ -172,7 +172,7 @@ SubjectViewer = React.createClass
         @forceUpdate()
 
   render: ->
-    console.log 'render()'
+    # console.log 'render()'
     return null if @state.subjects is null or @state.subjects.length is 0
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
 

@@ -1,7 +1,6 @@
 # @cjsx React.DOM
-# Model = require '../../data/model'
 React = require 'react'
-Draggable = require '../../../../lib/draggable'
+Draggable = require 'lib/draggable'
 DeleteButton = require './delete-button'
 
 DEBUG = false
