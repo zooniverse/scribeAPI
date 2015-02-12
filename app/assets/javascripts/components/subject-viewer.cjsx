@@ -27,6 +27,7 @@ SubjectViewer = React.createClass
 
     marks: []
     selectedMark: null
+    lastMarkKey: 0
 
   componentDidMount: ->
     @setView 0, 0, @state.imageWidth, @state.imageHeight
@@ -110,23 +111,25 @@ SubjectViewer = React.createClass
 
   handleInitStart: (e) ->
     console.log 'handleInitStart() '
+    @forceUpdate()
     marks = @state.marks
     mark = 
-      key: @state.marks.length
+      key: @state.lastMarkKey
       x: @getEventOffset(e).x
       y: @getEventOffset(e).y
-      scale: @getScale()
       timestamp: (new Date).toJSON()
 
     marks.push mark
 
     @setState 
       marks: marks
+      lastMarkKey: @state.lastMarkKey + 1
       selectedMark: marks[marks.length-1] #, =>
         # console.log 'MARKS: ', @state.marks
         # console.log 'SELECTED MARK: ', @state.selectedMark
 
   handleInitDrag: (e) ->
+
     console.log 'handleInitDrag()'
 
   handleInitRelease: (e) ->
@@ -152,15 +155,15 @@ SubjectViewer = React.createClass
     y: ((e.pageY - pageYOffset - rect.top) / vertical) + @state.viewY
 
   onClickDelete: (key) ->
-    # console.log 'DELETING MARK WITH KEY: ', key
+    console.log 'DELETING MARK WITH KEY: ', key
     marks = @state.marks
 
     for mark, i in [ marks...]
-      # console.log 'CURRENT MARK KEY  : ', mark.key
-      # console.log 'CURRENT MARK INDEX: ', i
+      console.log 'CURRENT MARK KEY  : ', mark.key
+      console.log 'CURRENT MARK INDEX: ', i
       if mark.key is key
-        # console.log '================================='
-        # console.log 'FOUND MARK TO DELETE WITH IDX: ', mark.idx
+        console.log '================================='
+        console.log 'FOUND MARK TO DELETE WITH KEY: ', mark.key
         marks.splice(i,1) # delete marks[key]    
 
     @setState
@@ -181,6 +184,17 @@ SubjectViewer = React.createClass
     @setState
       selectedMark: mark, =>
         @forceUpdate()
+
+  # handleMarkClick: (mark, e) ->
+  #   {x,y} = @getEventOffset e
+
+  #   @setState
+  #     selectedMark: mark
+  #     markOffset: {
+  #       x: mark.x - x,
+  #       y: mark.y - y
+  #     }, =>
+  #       @forceUpdate()
 
   render: ->
     console.log 'render()'

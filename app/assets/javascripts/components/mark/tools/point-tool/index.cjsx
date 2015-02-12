@@ -40,7 +40,10 @@ module.exports = React.createClass
 
     <g className="point drawing-tool" transform={transform}>
       <text fill='blue' fontSize='30'>{@props.mark.key}</text>
-      <Draggable onDrag={@handleDrag} onStart={@props.handleMarkClick.bind null, @props.mark} >
+      <Draggable 
+        onStart={@props.handleMarkClick.bind null, @props.mark} 
+        onDrag={@handleDrag} >
+
         <g strokeWidth={strokeWidth}>
           <circle 
             r={radius + (strokeWidth / 2)} 
@@ -48,6 +51,7 @@ module.exports = React.createClass
             fill={fillColor} 
           />
         </g>
+        
       </Draggable>
       
       { if @props.isSelected
