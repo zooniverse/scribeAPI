@@ -5,8 +5,6 @@ module.exports = React.createClass
   displayName: 'DeleteButton'
 
   render: ->
-    unless @props.isSelected # hide button
-      return null
     fillColor = 'red'
     strokeColor = '#000'
     strokeWidth = 3

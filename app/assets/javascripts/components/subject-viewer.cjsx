@@ -188,6 +188,7 @@ SubjectViewer = React.createClass
           height = {@state.imageHeight}
           viewBox = {viewBox}
           data-tool = {@props.selectedDrawingTool?.type} >
+
           <rect
             ref = "sizeRect"
             width = {@state.imageWidth}
@@ -202,9 +203,7 @@ SubjectViewer = React.createClass
               height = {@state.imageHeight} />
           </Draggable>
 
-          { 
-            @state.marks.map ((mark, i) ->
-              console.log 'MARK: ', mark
+          { @state.marks.map ((mark, i) ->
               <ToolComponent 
                 key={i} 
                 mark={mark} 

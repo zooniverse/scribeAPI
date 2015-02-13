@@ -32,7 +32,7 @@ Mark = React.createClass # rename to Classifier
     # return null if @state.currentTask is null
     # console.log 'STATE: ', @state
     # console.log 'render(): task is: ', @state.currentTask
-    # console.log 'render(): tool is: ', @state.currentTool
+    console.log 'render(): tool is: ', @state.currentTool
     # console.log 'TOOL OBJECT: ', tools[ @state.currentTool ]
 
     # return null
