@@ -3,7 +3,7 @@ Scribe is a framework for crowdsourcing the transcription of text-based document
 
 
 <h2>Domain Overview</h2>
-There are a number of domain entities in Scribe. Check out the <a href="http://docs.scribeapi1.apiary.io/#reference">docs</a>for examples and explanations. This <a href="https://github.com/zooniverse/ScribeAPI/wiki">wiki</a> is also a good resource.
+There are a number of domain entities in Scribe. Check out the <a href="http://docs.scribeapi1.apiary.io/#reference">docs</a> and this <a href="https://github.com/zooniverse/ScribeAPI/wiki">wiki</a> for further resources.
   <ul>
     <li>Project</li>
     <li>Subject</li>
@@ -29,4 +29,3 @@ Preferences:
 
 ________________________
 
-git p
