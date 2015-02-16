@@ -1,8 +1,9 @@
 <h1> Scribe API </h1>
-Scribe is an framework for generating crowd sources transcriptions of image based documents. 
+Scribe is a framework for crowdsourcing the transcription of text-based documents, particularly documents that are not well suited for Optical Character Recognition. 
+
 
   <h2>Domain Overview</h2>
-  There are a number of domain entities in Scribe:
+  There are a number of domain entities in Scribe. Check out the docs for examples and explanations.
     <ul>
       <li>Project</li>
       <li>Subject</li>
@@ -12,7 +13,7 @@ Scribe is an framework for generating crowd sources transcriptions of image base
       <li>User/Volunteer</li>
     <ul>
 
-  <h3>Background</h3>
+  <h2>Background</h2>
 
   This application was generated with the rails_apps_composer gem:
   https://github.com/RailsApps/rails_apps_composer
