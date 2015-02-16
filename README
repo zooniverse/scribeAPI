@@ -1,8 +1,7 @@
-Scribe API
-========================
+<h1> Scribe API </h1>
 Scribe is an framework for generating crowd sources transcriptions of image based documents. 
 
-## Domain Overview
+<h2>Domain Overview</h2?
 There are a number of domain entities in Scribe:
 
 - Project
@@ -11,7 +10,6 @@ There are a number of domain entities in Scribe:
 - Task
 - Classification
 - User/Volunteer
-
 
 
 
