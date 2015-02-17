@@ -2,6 +2,8 @@
 React = require 'react'
 Draggable = require 'lib/draggable'
 DeleteButton = require './delete-button'
+ResizeButton = require './resize-button'
+DoneCheckbox = require './done-checkbox'
 
 DEBUG = false
 
@@ -13,7 +15,10 @@ module.exports = React.createClass
     mark: React.PropTypes.object.isRequired
 
   getInitialState: ->
-    mark: @props.mark
+    mark = @props.mark
+    mark.yUpper = @props.mark.y - 25
+    mark.yLower = @props.mark.y + 25
+    mark: mark
   
   componentWillReceiveProps: ->
     @setState 
@@ -31,43 +36,73 @@ module.exports = React.createClass
     @setState mark: mark
 
   render: ->
-    
-    fillColor   = 'rgba(0,0,0,0.30)'
-    strokeColor = '#fff'
-    radius = 40
-    strokeWidth = 3
+    classString = 'textRow drawing-tool'
 
-    transform = "
-      translate(#{@state.mark.x}, #{@state.mark.y})
-      scale(#{1}, #{1})
-    "
+    markHeight = @state.mark.yLower - @state.mark.yUpper
 
-    <g className="point drawing-tool" transform={transform}>
+    <g 
+      className = {classString} 
+      transform = {"translate(#{Math.ceil @state.strokeWidth}, #{Math.round( @state.mark.y - markHeight/2 ) })"} 
+    >
 
       { if DEBUG
-          <text fill='blue' fontSize='30'>
-            {@props.mark.key}
-          </text>
+        <text fontSize="40" fill="blue">{@state.mark.key}</text>
       }
-
-      <Draggable 
-        onStart={@props.handleMarkClick.bind null, @props.mark} 
-        onDrag={@handleDrag} >
-
-        <g strokeWidth={strokeWidth}>
-          <circle 
-            r={radius + (strokeWidth / 2)} 
-            stroke={strokeColor} 
-            fill={fillColor} 
-          />
-        </g>
-
-      </Draggable>
       
-      { if @props.isSelected
-          <DeleteButton 
-            transform="translate(#{radius}, #{-radius})" 
-            onClick={@props.onClickDelete.bind null, @props.mark.key} /> 
-      }
+      <Draggable
+        onStart = {@props.handleMarkClick.bind @props.mark} 
+        onDrag = {@handleDrag} >
+        <rect 
+          className   = "mark-rectangle"
+          x           = 0
+          y           = 0
+          viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
+          width       = {Math.ceil( @props.imageWidth - 2*@state.strokeWidth ) }
+          height      = {markHeight}
+          fill        = {if @props.selected then "rgba(255,102,0,0.25)" else "rgba(0,0,0,0.5)"}
+          stroke      = {@state.strokeColor}
+          strokeWidth = {@state.strokeWidth}
+        />
+      </Draggable>
 
+      { 
+
+        if @state.markStatus is 'mark'
+          <g>
+            <ResizeButton 
+              viewBox = {"0 0 @props.imageWidth @props.imageHeight"}
+              className = "upperResize"
+              handleResize = {@props.handleUpperResize} 
+              transform = {"translate( #{@props.imageWidth/2}, #{ - Math.round @props.scrubberHeight/2 } )"} 
+              scrubberHeight = {@props.scrubberHeight}
+              scrubberWidth = {@props.scrubberWidth}
+              workflow = {@props.workflow}
+              isSelected = {@props.selected}
+            />
+
+            <ResizeButton 
+              className = "lowerResize"
+              handleResize = {@props.handleLowerResize} 
+              transform = {"translate( #{@props.imageWidth/2}, #{ Math.round( markHeight - @props.scrubberHeight/2 ) } )"} 
+              scrubberHeight = {@props.scrubberHeight}
+              scrubberWidth = {@props.scrubberWidth}
+              workflow = {@props.workflow}
+              isSelected = {@props.selected}
+            />
+
+            <DeleteButton 
+              transform = "translate(50, #{Math.round markHeight/2})" 
+              onClick = {@props.onClickDelete.bind null, @props.key}
+              workflow = {@props.workflow}
+              isSelected = {@props.selected}
+              buttonDisabled = {@state.mark.buttonDisabled}
+            />
+          </g>
+      }
+      <DoneCheckbox
+        buttonDisabled = {@state.mark.buttonDisabled}
+        markStatus = {@state.markStatus}
+        onClickMarkButton = {@onClickMarkButton}
+        transform = {"translate( #{@props.imageWidth-250}, #{ Math.round markHeight/2 -@props.scrubberHeight/2 } )"} 
+      />
     </g>
