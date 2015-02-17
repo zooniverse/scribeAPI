@@ -29,6 +29,12 @@ module.exports = React.createClass
     console.log 'lkxjdhklsjdh'
     @update @props.getEventOffset(e)
 
+  handleUpperResize: ->
+    console.log 'handleUpperResize()'
+
+  handleLowerResize: ->
+    console.log 'handleLowerResize()'
+
   update: ({x,y}) ->
     mark = @state.mark
     mark.x = x
@@ -37,18 +43,14 @@ module.exports = React.createClass
 
   render: ->
     classString = 'textRow drawing-tool'
-
     markHeight = @state.mark.yLower - @state.mark.yUpper
 
+    strokeWidth = '6'
+    strokeColor = 'rgba(0,0,0,0.5)'
     <g 
       className = {classString} 
-      transform = {"translate(#{Math.ceil @state.strokeWidth}, #{Math.round( @state.mark.y - markHeight/2 ) })"} 
+      transform = {"translate(#{Math.ceil strokeWidth}, #{Math.round( @state.mark.y - markHeight/2 ) })"} 
     >
-
-      { if DEBUG
-        <text fontSize="40" fill="blue">{@state.mark.key}</text>
-      }
-      
       <Draggable
         onStart = {@props.handleMarkClick.bind @props.mark} 
         onDrag = {@handleDrag} >
@@ -57,23 +59,24 @@ module.exports = React.createClass
           x           = 0
           y           = 0
           viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
-          width       = {Math.ceil( @props.imageWidth - 2*@state.strokeWidth ) }
+          width       = {Math.ceil( @props.imageWidth - 2*strokeWidth ) }
           height      = {markHeight}
-          fill        = {if @props.selected then "rgba(255,102,0,0.25)" else "rgba(0,0,0,0.5)"}
-          stroke      = {@state.strokeColor}
-          strokeWidth = {@state.strokeWidth}
+          fill        = {if @props.isSelected then "rgba(255,102,0,0.25)" else strokeColor}
+          stroke      = {strokeColor}
+          strokeWidth = {strokeWidth}
         />
       </Draggable>
 
-      { 
 
-        if @state.markStatus is 'mark'
+      { if @props.isSelected
+          scrubberWidth = 64
+          scrubberHeight = 32
           <g>
             <ResizeButton 
               viewBox = {"0 0 @props.imageWidth @props.imageHeight"}
               className = "upperResize"
               handleResize = {@props.handleUpperResize} 
-              transform = {"translate( #{@props.imageWidth/2}, #{ - Math.round @props.scrubberHeight/2 } )"} 
+              transform = {"translate( #{@props.imageWidth/2}, #{ - Math.round scrubberHeight/2 } )"} 
               scrubberHeight = {@props.scrubberHeight}
               scrubberWidth = {@props.scrubberWidth}
               workflow = {@props.workflow}
@@ -83,26 +86,18 @@ module.exports = React.createClass
             <ResizeButton 
               className = "lowerResize"
               handleResize = {@props.handleLowerResize} 
-              transform = {"translate( #{@props.imageWidth/2}, #{ Math.round( markHeight - @props.scrubberHeight/2 ) } )"} 
-              scrubberHeight = {@props.scrubberHeight}
-              scrubberWidth = {@props.scrubberWidth}
-              workflow = {@props.workflow}
-              isSelected = {@props.selected}
+              transform = {"translate( #{@props.imageWidth/2}, #{ Math.round( markHeight - scrubberHeight/2 ) } )"} 
+              scrubberHeight = {scrubberHeight}
+              scrubberWidth = {scrubberWidth}
             />
 
             <DeleteButton 
               transform = "translate(50, #{Math.round markHeight/2})" 
-              onClick = {@props.onClickDelete.bind null, @props.key}
-              workflow = {@props.workflow}
-              isSelected = {@props.selected}
-              buttonDisabled = {@state.mark.buttonDisabled}
+              onClick = {@props.onClickDelete.bind null, @props.mark.key}
             />
           </g>
-      }
-      <DoneCheckbox
-        buttonDisabled = {@state.mark.buttonDisabled}
-        markStatus = {@state.markStatus}
-        onClickMarkButton = {@onClickMarkButton}
-        transform = {"translate( #{@props.imageWidth-250}, #{ Math.round markHeight/2 -@props.scrubberHeight/2 } )"} 
-      />
+        }
+
+
+
     </g>

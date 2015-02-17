@@ -214,6 +214,9 @@ SubjectViewer = React.createClass
                 isSelected={mark is @state.selectedMark} 
                 handleMarkClick={@handleMarkClick.bind null, mark} 
                 onClickDelete={@onClickDelete}
+
+                imageWidth={@state.imageWidth}
+                imageHeight={@state.imageHeight}
               />
             ), @
           }
