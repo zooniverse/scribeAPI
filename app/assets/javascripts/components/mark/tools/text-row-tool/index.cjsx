@@ -26,13 +26,32 @@ module.exports = React.createClass
         @forceUpdate()
 
   handleDrag: (e) ->
-    console.log 'mark.yUpper/yLower: ', @state.mark.yUpper, ' ', @state.mark.yLower
+    # console.log 'mark.yUpper/yLower: ', @state.mark.yUpper, ' ', @state.mark.yLower
+    # mark = @state.mark
+    offset = @props.getEventOffset e
+    # mark.x = offset.x
+    # mark.y = offset.y
+    # @setState mark: mark, =>
+    #   console.log 'updated mark: ', mark.yUpper, mark.yLower
+
     mark = @state.mark
-    offset = @props.getEventOffset(e)
-    mark.x = offset.x
-    mark.y = offset.y
-    @setState mark: mark, =>
-      console.log 'updated mark: ', mark.yUpper, mark.yLower
+    mark.x = Math.round offset.x #+ @state.markOffset.x
+    mark.y = Math.round offset.y #+ @state.markOffset.y
+    markHeight = mark.yLower - mark.yUpper
+    mark.yUpper = Math.round mark.y - markHeight/2
+    mark.yLower = Math.round mark.y + markHeight/2
+
+    # prevent dragging mark beyond image bounds
+    # offset = @state.markOffset.y
+    # return if ( y + offset - markHeight/2 ) < 0
+    # return if ( y + offset + markHeight/2 ) > @state.imageHeight
+    
+    # prevent dragging mark beyond image bounds
+    return if ( offset.y - markHeight/2 ) < 0
+    return if ( offset.y + markHeight/2 ) > @props.imageHeight
+    
+
+    @setState mark: mark
 
   handleResize: (whichOne, e) ->
     mark = @state.mark
