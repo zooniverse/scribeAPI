@@ -29,11 +29,8 @@ module.exports = React.createClass
     console.log 'lkxjdhklsjdh'
     @update @props.getEventOffset(e)
 
-  handleUpperResize: ->
-    console.log 'handleUpperResize()'
-
-  handleLowerResize: ->
-    console.log 'handleLowerResize()'
+  handleResize: (whichOne, e) ->
+    console.log 'handleUpperResize() ', whichOne
 
   update: ({x,y}) ->
     mark = @state.mark
@@ -75,7 +72,7 @@ module.exports = React.createClass
             <ResizeButton 
               viewBox={"0 0 @props.imageWidth @props.imageHeight"}
               className="upperResize"
-              handleResize={@handleUpperResize} 
+              handleResize={@handleResize.bind null, 'upper'} 
               transform={"translate( #{@props.imageWidth/2}, #{ - Math.round scrubberHeight/2 } )"} 
               scrubberHeight={scrubberHeight}
               scrubberWidth={scrubberWidth}
@@ -84,7 +81,7 @@ module.exports = React.createClass
 
             <ResizeButton 
               className="lowerResize"
-              handleResize={@handleLowerResize} 
+              handleResize={@handleResize.bind null, 'lower'} 
               transform={"translate( #{@props.imageWidth/2}, #{ Math.round( markHeight - scrubberHeight/2 ) } )"} 
               scrubberHeight={scrubberHeight}
               scrubberWidth={scrubberWidth}
