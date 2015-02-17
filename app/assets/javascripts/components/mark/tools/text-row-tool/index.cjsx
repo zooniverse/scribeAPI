@@ -73,22 +73,22 @@ module.exports = React.createClass
           scrubberHeight = 32
           <g>
             <ResizeButton 
-              viewBox = {"0 0 @props.imageWidth @props.imageHeight"}
-              className = "upperResize"
-              handleResize = {@props.handleUpperResize} 
-              transform = {"translate( #{@props.imageWidth/2}, #{ - Math.round scrubberHeight/2 } )"} 
-              scrubberHeight = {@props.scrubberHeight}
-              scrubberWidth = {@props.scrubberWidth}
-              workflow = {@props.workflow}
-              isSelected = {@props.selected}
+              viewBox={"0 0 @props.imageWidth @props.imageHeight"}
+              className="upperResize"
+              handleResize={@handleUpperResize} 
+              transform={"translate( #{@props.imageWidth/2}, #{ - Math.round scrubberHeight/2 } )"} 
+              scrubberHeight={scrubberHeight}
+              scrubberWidth={scrubberWidth}
+              isSelected={@props.isSelected}
             />
 
             <ResizeButton 
-              className = "lowerResize"
-              handleResize = {@props.handleLowerResize} 
-              transform = {"translate( #{@props.imageWidth/2}, #{ Math.round( markHeight - scrubberHeight/2 ) } )"} 
-              scrubberHeight = {scrubberHeight}
-              scrubberWidth = {scrubberWidth}
+              className="lowerResize"
+              handleResize={@handleLowerResize} 
+              transform={"translate( #{@props.imageWidth/2}, #{ Math.round( markHeight - scrubberHeight/2 ) } )"} 
+              scrubberHeight={scrubberHeight}
+              scrubberWidth={scrubberWidth}
+              isSelected={@props.isSelected}
             />
 
             <DeleteButton 
