@@ -39,6 +39,16 @@ module.exports = React.createClass
     offset = @props.getEventOffset e
     switch whichOne
       when 'upper'
+        # enforce bounds
+        if offset.y < 0
+          offset.y = 0
+          return
+
+        if mark.yLower - offset.y < 100
+          mark.yUpper = Math.round( -100 + mark.yLower )
+          # @setState mark: mark
+          return
+
         dy = mark.yUpper - offset.y
         yUpper_p = offset.y
         markHeight_p = mark.yLower - mark.yUpper + dy
@@ -47,6 +57,17 @@ module.exports = React.createClass
         mark.markHeight = markHeight_p
         mark.y = y_p
       when 'lower'
+
+        # enforce bounds
+        if offset.y > @state.imageHeight
+          offset.y = @state.imageHeight
+          return
+
+        if offset.y - mark.yUpper < 100
+          mark.yLower = Math.round( 100 + mark.yUpper )
+          # @setState mark: mark
+          return
+
         dy = offset.y - mark.yLower
         yLower_p = offset.y
         markHeight_p = mark.yLower - mark.yUpper + dy
