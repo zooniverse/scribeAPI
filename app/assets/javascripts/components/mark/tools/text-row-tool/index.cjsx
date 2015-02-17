@@ -12,16 +12,6 @@ module.exports = React.createClass
     key:  React.PropTypes.number.isRequired
     mark: React.PropTypes.object.isRequired
 
-  statics:
-    defaultValues: ->
-      @initStart arguments...
-
-    initStart: ->
-      @initMove arguments...
-
-    initMove: ({x, y}) ->
-      {x, y}
-
   getInitialState: ->
     mark: @props.mark
   
@@ -30,12 +20,21 @@ module.exports = React.createClass
       mark: @props.mark, =>
         @forceUpdate()
 
+  handleDrag: (e) ->
+    console.log 'lkxjdhklsjdh'
+    @update @props.getEventOffset(e)
+
+  update: ({x,y}) ->
+    mark = @state.mark
+    mark.x = x
+    mark.y = y
+    @setState mark: mark
+
   render: ->
     
     fillColor   = 'rgba(0,0,0,0.30)'
     strokeColor = '#fff'
     radius = 40
-
     strokeWidth = 3
 
     transform = "
@@ -72,12 +71,3 @@ module.exports = React.createClass
       }
 
     </g>
-
-  handleDrag: (e) ->
-    @update @props.getEventOffset(e)
-
-  update: ({x,y}) ->
-    mark = @state.mark
-    mark.x = x
-    mark.y = y
-    @setState mark: mark

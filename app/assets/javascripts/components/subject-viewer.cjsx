@@ -131,13 +131,10 @@ SubjectViewer = React.createClass
   handleInitDrag: (e) ->
     mark = @state.selectedMark
     offset = @getEventOffset e
-    
-    # update mark
     mark.x = offset.x
     mark.y = offset.y
     @setState selectedMark: mark
-    return offset
-    
+        
   handleInitRelease: (e) ->
     console.log 'handleInitRelease()'
 
@@ -217,12 +214,6 @@ SubjectViewer = React.createClass
                 isSelected={mark is @state.selectedMark} 
                 handleMarkClick={@handleMarkClick.bind null, mark} 
                 onClickDelete={@onClickDelete}
-                on={
-                  initStart:   @handleInitStart,
-                  initDrag:    @handleInitDrag,
-                  mouseDown:   @handleMouseDown,
-                  initRelease: @handleInitRelease
-                }
               />
             ), @
           }
