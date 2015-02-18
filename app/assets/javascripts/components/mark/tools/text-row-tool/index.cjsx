@@ -25,6 +25,7 @@ module.exports = React.createClass
     # set state
     mark: mark
     buttonDisabled: false
+    lockTool: false
   
   componentWillReceiveProps: ->
     mark = @props.mark
@@ -37,6 +38,7 @@ module.exports = React.createClass
       # , => @forceUpdate() 
 
   handleDrag: (e) ->
+    return if @state.lockTool
     { ex,ey } = @props.getEventOffset e
     mark = @state.mark
     markHeight = mark.yLower - mark.yUpper
@@ -90,6 +92,7 @@ module.exports = React.createClass
     mark = @state.mark
     switch mark.status
       when 'mark'
+        @lockTool()
         @submitMark()
         mark.status = 'mark-finished'
       when 'mark-finished'
@@ -99,6 +102,14 @@ module.exports = React.createClass
       when 'transcribe-complete'
         console.log 'NOTHING LEFT TO DO FOR THIS MARK'
     @setState mark: mark
+
+  lockTool: ->
+    @setState lockTool: true
+      , => @forceUpdate()
+
+  unlockTool: ->
+    @setState lockTool: false
+      , => @forceUpdate()
 
   enableButton: ->
     console.log 'enableButton() '
@@ -143,6 +154,8 @@ module.exports = React.createClass
 
   render: ->
     classString = 'textRow drawing-tool'
+    if @state.lockTool then classString += ' locked'
+
     markHeight = @state.mark.yLower - @state.mark.yUpper
 
     strokeWidth = '6'
@@ -179,7 +192,7 @@ module.exports = React.createClass
       />
 
 
-      { if @props.isSelected
+      { if @state.mark.status is 'mark'
           <g>
             <ResizeButton 
               viewBox={"0 0 @props.imageWidth @props.imageHeight"}
