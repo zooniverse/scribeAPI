@@ -24,6 +24,7 @@ module.exports = React.createClass
     
     # set state
     mark: mark
+    buttonDisabled: false
   
   componentWillReceiveProps: ->
     mark = @props.mark
@@ -90,10 +91,8 @@ module.exports = React.createClass
     switch mark.status
       when 'mark'
         @submitMark()
-        console.log 'MARK SUBMITTED!'
         mark.status = 'mark-finished'
       when 'mark-finished'
-        # PENDING
         mark.status = 'transcribe'
       when 'transcribe'
         mark.status = 'transcribe-finished'
@@ -101,39 +100,46 @@ module.exports = React.createClass
         console.log 'NOTHING LEFT TO DO FOR THIS MARK'
     @setState mark: mark
 
+  enableButton: ->
+    console.log 'enableButton() '
+    @setState buttonDisabled: false
+      , => @forceUpdate()
+  
+  disableButton: ->
+    console.log 'disableButton() '
+    @setState buttonDisabled: true
+     , => @forceUpdate()
+
   submitMark: ->
+    @disableButton()
     mark = @state.mark
     newClassification = new Classification @props.subject
     newClassification.annotate mark
 
     console.log 'CLASSIFICATION: ', newClassification
-    # @disableMarkButton(key)
-
-    # TODO: replace with this
-    # @state.classification.send()
 
     # send classification
-    # $.post('/classifications', { 
-    #     workflow_id: WORKFLOW_ID
-    #     subject_id:  @state.subject.id
-    #     location:    @state.subject.location
-    #     annotations: classification.annotations
-    #     started_at:  classification.started_at
-    #     finished_at: classification.finished_at
-    #     subject:     classification.subject
-    #     user_agent:  classification.user_agent
-    #   }, )
-    #   .done (response) =>
-    #     console.log "Success" #, response._id.$oid
-    #     @setTranscribeSubject(key, response._id.$oid)
-    #     @enableMarkButton(key)
-    #     return
-    #   .fail =>
-    #     console.log "Failure"
-    #     return
-    #   # .always ->
-    #   #   console.log "Always"
-    #   #   return
+    $.post('/classifications', { 
+        workflow_id: @props.workflow.id
+        subject_id:  @props.subject.id
+        location:    @props.subject.location
+        annotations: newClassification.annotations
+        started_at:  newClassification.started_at
+        finished_at: newClassification.finished_at
+        subject:     newClassification.subject
+        user_agent:  newClassification.user_agent
+      }, )
+      .done (response) =>
+        console.log "Success" #, response._id.$oid
+        # @setTranscribeSubject(key, response._id.$oid)
+        @enableButton()
+        return
+      .fail =>
+        console.log "Failure"
+        return
+      # .always ->
+      #   console.log "Always"
+      #   return
 
   render: ->
     classString = 'textRow drawing-tool'
@@ -168,6 +174,7 @@ module.exports = React.createClass
       <ProgressButton 
         markStatus={@state.mark.status}
         onClickButton={@onClickButton}
+        buttonDisabled={@state.buttonDisabled}
         transform = {"translate( #{@props.imageWidth-250}, #{ Math.round markHeight/2 -scrubberHeight/2 } )"}
       />
 

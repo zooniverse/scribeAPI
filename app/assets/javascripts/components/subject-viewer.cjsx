@@ -30,6 +30,7 @@ module.exports = React.createClass
     lastMarkKey: 0
 
   componentDidMount: ->
+    console.log 'WORKFLOW: ', @props.workflow
     @setView 0, 0, @state.imageWidth, @state.imageHeight
     @fetchSubjects(@state.subjectEndpoint)
     window.addEventListener "resize", this.updateDimensions
@@ -216,6 +217,7 @@ module.exports = React.createClass
                 key={i} 
                 mark={mark} 
                 subject={@state.subject}
+                workflow={@props.workflow}
                 getEventOffset={@getEventOffset} 
                 isSelected={mark is @state.selectedMark} 
                 handleMarkClick={@handleMarkClick.bind null, mark} 

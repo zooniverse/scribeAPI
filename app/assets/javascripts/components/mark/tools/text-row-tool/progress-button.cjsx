@@ -8,7 +8,7 @@ module.exports = React.createClass
     markStatus: @props.markStatus 
 
   componentWillReceiveProps: ->
-    @setState buttonDisabled: @props.buttonDisabled
+    @setState buttonDisabled: @props.buttonDisabled, => console.log 'buttonDisabled: ', @state.buttonDisabled
 
   render: ->
 
