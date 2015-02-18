@@ -9,22 +9,28 @@ ImageSubjectViewer_transcribe = require('./image-subject-viewer-transcribe')
 DynamicRouter = React.createClass
 
   getInitialState: ->
+    console.log 'GETTING STATE'
     project: null
     mark_tasks: null
     transcribe_tasks: null
     
   componentDidMount: ->
     $.getJSON '/project', (result) => 
-      @setState project:           result
-      @setState home_page_content: @state.project.home_page_content 
-      @setState pages:             @state.project.pages
+      console.log 'result of ajax', result
 
-      # DEBUG CODE
-      # console.log 'project ', @state.project
+      @setState project:           result.project
+      @setState home_page_content: result.project.home_page_content 
+      @setState pages:             result.project.pages
       
       for workflow in @state.project.workflows
+        console.log 'inside the for loop'
+        console.log 'workflow', workflow
         @setState mark_tasks: workflow.tasks if workflow.key is 'mark'
         @setState transcribe_tasks: workflow.tasks if workflow.key is 'transcribe'
+
+      @setState mark_tasks: workflow.tasks, => console.log "MARK FOWKFLOW: ", workflow if workflow.key is 'mark'
+
+      console.log 'At the end of the mount lifecycle'
 
   controllerForPage: (page) ->
     React.createClass
@@ -32,11 +38,13 @@ DynamicRouter = React.createClass
       render: ->
         <div dangerouslySetInnerHTML={{__html: page.content}} />
 
+  
+
   render: ->
     # do nothing until project loads from API
     # return null # just for now
     return null if @state.project is null or @state.mark_tasks is null or @state.transcribe_tasks is null
-
+    
     <div className="panoptes-main">
       <MainHeader pages={@state.pages} />
       <div className="main-content">

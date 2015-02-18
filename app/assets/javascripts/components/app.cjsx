@@ -10,11 +10,14 @@ window.React = React
 App = React.createClass
   displayname: 'app'
 
+
   render: ->
+    console.log 'IN THE APP'
     <div>
       <div className="readymade-site-background">
         <div className="readymade-site-background-effect"></div>
       </div>
       <DynamicRouter />
     </div>
+
 module.exports = App
