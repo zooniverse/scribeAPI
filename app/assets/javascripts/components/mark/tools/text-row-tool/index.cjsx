@@ -4,6 +4,7 @@ Draggable      = require 'lib/draggable'
 DeleteButton   = require './delete-button'
 ResizeButton   = require './resize-button'
 ProgressButton = require './progress-button'
+Classification = require 'models/classification'
 
 DEBUG = false
 
@@ -86,10 +87,9 @@ module.exports = React.createClass
   onClickButton: ->
     console.log 'FOO!'
     mark = @state.mark
-    
     switch mark.status
       when 'mark'
-        # SUBMIT MARK
+        @submitMark()
         console.log 'MARK SUBMITTED!'
         mark.status = 'mark-finished'
       when 'mark-finished'
@@ -99,8 +99,41 @@ module.exports = React.createClass
         mark.status = 'transcribe-finished'
       when 'transcribe-complete'
         console.log 'NOTHING LEFT TO DO FOR THIS MARK'
-
     @setState mark: mark
+
+  submitMark: ->
+    mark = @state.mark
+    newClassification = new Classification @props.subject
+    newClassification.annotate mark
+
+    console.log 'CLASSIFICATION: ', newClassification
+    # @disableMarkButton(key)
+
+    # TODO: replace with this
+    # @state.classification.send()
+
+    # send classification
+    # $.post('/classifications', { 
+    #     workflow_id: WORKFLOW_ID
+    #     subject_id:  @state.subject.id
+    #     location:    @state.subject.location
+    #     annotations: classification.annotations
+    #     started_at:  classification.started_at
+    #     finished_at: classification.finished_at
+    #     subject:     classification.subject
+    #     user_agent:  classification.user_agent
+    #   }, )
+    #   .done (response) =>
+    #     console.log "Success" #, response._id.$oid
+    #     @setTranscribeSubject(key, response._id.$oid)
+    #     @enableMarkButton(key)
+    #     return
+    #   .fail =>
+    #     console.log "Failure"
+    #     return
+    #   # .always ->
+    #   #   console.log "Always"
+    #   #   return
 
   render: ->
     classString = 'textRow drawing-tool'

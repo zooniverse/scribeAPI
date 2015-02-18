@@ -85,7 +85,6 @@ module.exports = React.createClass
             # console.log "Finished Loading."
 
   nextSubject: () ->
-
     @prepareClassification()
     @sendMarkClassification()
 
@@ -113,12 +112,12 @@ module.exports = React.createClass
     console.log 'handleInitStart() '
     { ex, ey } = @getEventOffset e
     marks = @state.marks
-    mark = 
+    newMark = 
       key: @state.lastMarkKey
       x: ex
       y: ey
       timestamp: (new Date).toJSON()
-    marks.push mark
+    marks.push newMark
     @setState 
       marks: marks
       lastMarkKey: @state.lastMarkKey + 1
@@ -144,11 +143,9 @@ module.exports = React.createClass
     @setState selectedMark: mark
       # , => @forceUpdate()
         
-  handleInitRelease: (e) ->
-    console.log 'handleInitRelease()'
-
-  handleToolMouseDown: (e) ->
-    console.log 'handleToolMouseDown()'
+  # AVAILABLE, BUT UNUSED, METHODS
+  # handleInitRelease: (e) ->
+  # handleToolMouseDown: (e) ->
 
   setView: (viewX, viewY, viewWidth, viewHeight) ->
     @setState {viewX, viewY, viewWidth, viewHeight}
@@ -218,6 +215,7 @@ module.exports = React.createClass
               <ToolComponent 
                 key={i} 
                 mark={mark} 
+                subject={@state.subject}
                 getEventOffset={@getEventOffset} 
                 isSelected={mark is @state.selectedMark} 
                 handleMarkClick={@handleMarkClick.bind null, mark} 
