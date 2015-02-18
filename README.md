@@ -1,19 +1,8 @@
 <h1> Scribe API </h1>
 Scribe is a framework for crowdsourcing the transcription of text-based documents, particularly documents that are not well suited for Optical Character Recognition. 
 
+Check out the <a href="http://docs.scribeapi1.apiary.io/#reference">documentation</a> and the <a href="https://github.com/zooniverse/ScribeAPI/wiki">wiki</a> for further resources.
 
-<h2>Domain Overview</h2>
-There are a number of domain entities in Scribe. Check out the <a href="http://docs.scribeapi1.apiary.io/#reference">docs</a> and this <a href="https://github.com/zooniverse/ScribeAPI/wiki">wiki</a> for further resources.
-  <ul>
-    <li>Project</li>
-    <li>Subject</li>
-    <li>Workflow</li>
-    <li>Task</li>
-    <li>Classification</li>
-    <li>User/Volunteer</li>
-  <ul>
-
-<h2>Background</h2>
 
 This application was generated with the rails_apps_composer gem:
 https://github.com/RailsApps/rails_apps_composer
