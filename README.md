@@ -4,6 +4,8 @@ Scribe is a framework for crowdsourcing the transcription of text-based document
 Check out the <a href="http://docs.scribeapi1.apiary.io/#reference">documentation</a> and the <a href="https://github.com/zooniverse/ScribeAPI/wiki">wiki</a> for further resources.
 
 
+<h1>Background</h1>
+
 This application was generated with the rails_apps_composer gem:
 https://github.com/RailsApps/rails_apps_composer
 provided by the RailsApps Project:
