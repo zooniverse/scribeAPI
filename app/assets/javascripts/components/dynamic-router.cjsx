@@ -27,10 +27,7 @@ DynamicRouter = React.createClass
         console.log 'workflow', workflow
         @setState mark_tasks: workflow.tasks if workflow.key is 'mark'
         @setState transcribe_tasks: workflow.tasks if workflow.key is 'transcribe'
-
-      @setState mark_tasks: workflow.tasks, => console.log "MARK FOWKFLOW: ", workflow if workflow.key is 'mark'
-
-      console.log 'At the end of the mount lifecycle'
+    
 
   controllerForPage: (page) ->
     React.createClass
