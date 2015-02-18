@@ -1,14 +1,14 @@
+# NOTE: vertical-mark-tool is basically same as tetx-row-tool without progress-button
 # @cjsx React.DOM
 React          = require 'react'
 Draggable      = require 'lib/draggable'
 DeleteButton   = require './delete-button'
 ResizeButton   = require './resize-button'
-ProgressButton = require './progress-button'
 
 DEBUG = false
 
 module.exports = React.createClass
-  displayName: 'TextRowTool'
+  displayName: 'VerticalMarkTool'
 
   propTypes:
     key:  React.PropTypes.number.isRequired
@@ -80,19 +80,12 @@ module.exports = React.createClass
     @setState mark: mark
       # , => @forceUpdate()
 
-  onClickButton: ->
-    console.log 'FOO!'
-
   render: ->
-    classString = 'textRow drawing-tool'
+    classString = 'verticalMark drawing-tool'
     markHeight = @state.mark.yLower - @state.mark.yUpper
 
     strokeWidth = '6'
     strokeColor = 'rgba(0,0,0,0.5)'
-
-    scrubberWidth = 64
-    scrubberHeight = 32
-
     <g 
       className = {classString} 
       transform = {"translate(0, #{Math.round( @state.mark.y - markHeight/2 ) })"} 
@@ -113,14 +106,9 @@ module.exports = React.createClass
         />
       </Draggable>
 
-      <ProgressButton 
-        markStatus={'mark'}
-        onClickButton={@onClickButton}
-        transform = {"translate( #{@props.imageWidth-250}, #{ Math.round markHeight/2 -scrubberHeight/2 } )"}
-      />
-
-
       { if @props.isSelected
+          scrubberWidth = 64
+          scrubberHeight = 32
           <g>
             <ResizeButton 
               viewBox={"0 0 @props.imageWidth @props.imageHeight"}

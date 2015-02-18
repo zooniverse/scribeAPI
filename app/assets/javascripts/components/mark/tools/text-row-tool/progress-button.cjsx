@@ -40,7 +40,7 @@ module.exports = React.createClass
         console.log 'WARNING: Unknown state in DoneCheckbox.render()'
 
     <g 
-      onClick     = {@props.onClickMarkButton}
+      onClick     = {@props.onClickButton}
       transform   = {@props.transform} 
       className   = {classString} 
       stroke      = {strokeColor} 
