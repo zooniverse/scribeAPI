@@ -18,53 +18,59 @@ module.exports = React.createClass
     mark = @props.mark
     mark.yUpper = @props.mark.y - 50
     mark.yLower = @props.mark.y + 50
+    
+    # set state
     mark: mark
   
   componentWillReceiveProps: ->
-    @setState 
-      mark: @props.mark, =>
-        @forceUpdate()
-
-  handleDrag: (e) ->
-    offset = @props.getEventOffset e
-    mark = @state.mark
-    mark.x = offset.x + @props.clickOffset.x
-    mark.y = offset.y + @props.clickOffset.y
+    mark = @props.mark
     markHeight = mark.yLower - mark.yUpper
     mark.yUpper = mark.y - markHeight/2
     mark.yLower = mark.y + markHeight/2
 
-    # prevent dragging mark beyond image bounds
-    return if ( offset.y - markHeight/2 ) < 0
-    return if ( offset.y + markHeight/2 ) > @props.imageHeight
-    
-
     @setState mark: mark
+      # , => @forceUpdate() 
+
+  handleDrag: (e) ->
+    { ex,ey } = @props.getEventOffset e
+    mark = @state.mark
+    markHeight = mark.yLower - mark.yUpper
+    mark.x = ex + @props.clickOffset.x # add initial click offset
+    mark.y = ey + @props.clickOffset.y
+    mark.yUpper = mark.y - markHeight/2
+    mark.yLower = mark.y + markHeight/2
+
+    # prevent dragging mark beyond image bounds
+    return if ( ey - markHeight/2 ) < 0
+    return if ( ey + markHeight/2 ) > @props.imageHeight
+    
+    @setState mark: mark
+      # , => @forceUpdate()
 
   handleResize: (whichOne, e) ->
     mark = @state.mark
-    offset = @props.getEventOffset e
+    { ex, ey } = @props.getEventOffset e
 
     switch whichOne
       when 'upper'
-        if mark.yLower - offset.y < 100 # enforce minimum height
+        if mark.yLower - ey < 100 # enforce minimum height
           mark.yUpper = mark.yLower - 100
           return
         else
-          dy = mark.yUpper - offset.y
-          yUpper_p = offset.y
+          dy = mark.yUpper - ey
+          yUpper_p = ey
           markHeight_p = mark.yLower - mark.yUpper + dy
           y_p = yUpper_p + markHeight_p/2
           mark.yUpper = yUpper_p
           mark.markHeight = markHeight_p
           mark.y = y_p
       when 'lower'
-        if offset.y - mark.yUpper < 100 # enforce minimum height
+        if ey - mark.yUpper < 100 # enforce minimum height
           mark.yLower = mark.yUpper + 100
           return
         else
-          dy = offset.y - mark.yLower
-          yLower_p = offset.y
+          dy = ey - mark.yLower
+          yLower_p = ey
           markHeight_p = mark.yLower - mark.yUpper + dy
           y_p = yLower_p - markHeight_p/2
           mark.yLower = yLower_p
@@ -72,6 +78,7 @@ module.exports = React.createClass
           mark.y = y_p
     
     @setState mark: mark
+      # , => @forceUpdate()
 
   render: ->
     classString = 'textRow drawing-tool'

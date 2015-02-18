@@ -111,29 +111,26 @@ SubjectViewer = React.createClass
 
   handleInitStart: (e) ->
     console.log 'handleInitStart() '
-    @forceUpdate()
+    { ex, ey } = @getEventOffset e
     marks = @state.marks
     mark = 
       key: @state.lastMarkKey
-      x: @getEventOffset(e).x
-      y: @getEventOffset(e).y
+      x: ex
+      y: ey
       timestamp: (new Date).toJSON()
-
     marks.push mark
-
     @setState 
       marks: marks
       lastMarkKey: @state.lastMarkKey + 1
-      selectedMark: marks[marks.length-1] #, =>
-        # console.log 'MARKS: ', @state.marks
-        # console.log 'SELECTED MARK: ', @state.selectedMark
+      selectedMark: marks[marks.length-1]
 
   handleInitDrag: (e) ->
     mark = @state.selectedMark
-    offset = @getEventOffset e
-    mark.x = offset.x
-    mark.y = offset.y
+    { ex, ey } = @getEventOffset e
+    mark.x = ex
+    mark.y = ey
     @setState selectedMark: mark
+      # , => @forceUpdate()
         
   handleInitRelease: (e) ->
     console.log 'handleInitRelease()'
@@ -147,46 +144,39 @@ SubjectViewer = React.createClass
   getScale: ->
     rect = @refs.sizeRect?.getDOMNode().getBoundingClientRect()
     rect ?= width: 0, height: 0
-
     horizontal: rect.width / @state.imageWidth
     vertical: rect.height / @state.imageHeight
 
   getEventOffset: (e) ->
     rect = @refs.sizeRect.getDOMNode().getBoundingClientRect()
-    {horizontal, vertical} = @getScale()
-    x: ((e.pageX - pageXOffset - rect.left) / horizontal) + @state.viewX
-    y: ((e.pageY - pageYOffset - rect.top) / vertical) + @state.viewY
+    { horizontal, vertical } = @getScale()
+    ex: ((e.pageX - pageXOffset - rect.left) / horizontal) + @state.viewX
+    ey: ((e.pageY - pageYOffset - rect.top) / vertical) + @state.viewY
 
   onClickDelete: (key) ->
     marks = @state.marks
-
     for mark, i in [ marks...]
       if mark.key is key
         marks.splice(i,1) # delete marks[key]    
-
     @setState
       marks: marks
       selectedMark: null, =>
         @forceUpdate() # make sure keys are up-to-date
 
   handleMarkClick: (mark, e) ->
-    offset = @getEventOffset e
+    { ex, ey } = @getEventOffset e
     @setState
       selectedMark: mark
-      clickOffset: {
-        x: mark.x - offset.x,
-        y: mark.y - offset.y
-      }, =>
-        console.log 'MARK: ', mark
-        @forceUpdate()
+      clickOffset:
+        x: mark.x - ex
+        y: mark.y - ey
+      # , => @forceUpdate() 
 
   render: ->
     # console.log 'render()'
     return null if @state.subjects is null or @state.subjects.length is 0
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
-
     ToolComponent = @state.tool
-    
     if @state.loading
       markingSurfaceContent = <LoadingIndicator />
     else
@@ -226,7 +216,6 @@ SubjectViewer = React.createClass
               />
             ), @
           }
-
         </svg>
 
     <div className="subject-viewer">
