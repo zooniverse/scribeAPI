@@ -169,9 +169,15 @@ SubjectViewer = React.createClass
       selectedMark: null, =>
         @forceUpdate() # make sure keys are up-to-date
 
-  handleMarkClick: (mark) ->
+  handleMarkClick: (mark, e) ->
+    offset = @getEventOffset e
     @setState
-      selectedMark: mark, =>
+      selectedMark: mark
+      clickOffset: {
+        x: mark.x - offset.x,
+        y: mark.y - offset.y
+      }, =>
+        console.log 'MARK: ', mark
         @forceUpdate()
 
   render: ->
@@ -214,7 +220,7 @@ SubjectViewer = React.createClass
                 isSelected={mark is @state.selectedMark} 
                 handleMarkClick={@handleMarkClick.bind null, mark} 
                 onClickDelete={@onClickDelete}
-
+                clickOffset={@state.clickOffset}
                 imageWidth={@state.imageWidth}
                 imageHeight={@state.imageHeight}
               />

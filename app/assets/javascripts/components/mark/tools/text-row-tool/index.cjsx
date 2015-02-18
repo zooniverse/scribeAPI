@@ -26,26 +26,14 @@ module.exports = React.createClass
         @forceUpdate()
 
   handleDrag: (e) ->
-    # console.log 'mark.yUpper/yLower: ', @state.mark.yUpper, ' ', @state.mark.yLower
-    # mark = @state.mark
     offset = @props.getEventOffset e
-    # mark.x = offset.x
-    # mark.y = offset.y
-    # @setState mark: mark, =>
-    #   console.log 'updated mark: ', mark.yUpper, mark.yLower
-
     mark = @state.mark
-    mark.x = Math.round offset.x #+ @state.markOffset.x
-    mark.y = Math.round offset.y #+ @state.markOffset.y
+    mark.x = offset.x + @props.clickOffset.x
+    mark.y = offset.y + @props.clickOffset.y
     markHeight = mark.yLower - mark.yUpper
-    mark.yUpper = Math.round mark.y - markHeight/2
-    mark.yLower = Math.round mark.y + markHeight/2
+    mark.yUpper = mark.y - markHeight/2
+    mark.yLower = mark.y + markHeight/2
 
-    # prevent dragging mark beyond image bounds
-    # offset = @state.markOffset.y
-    # return if ( y + offset - markHeight/2 ) < 0
-    # return if ( y + offset + markHeight/2 ) > @state.imageHeight
-    
     # prevent dragging mark beyond image bounds
     return if ( offset.y - markHeight/2 ) < 0
     return if ( offset.y + markHeight/2 ) > @props.imageHeight
@@ -56,46 +44,33 @@ module.exports = React.createClass
   handleResize: (whichOne, e) ->
     mark = @state.mark
     offset = @props.getEventOffset e
+
     switch whichOne
       when 'upper'
-        # enforce bounds
-        if offset.y < 0
-          offset.y = 0
+        if mark.yLower - offset.y < 100 # enforce minimum height
+          mark.yUpper = mark.yLower - 100
           return
-
-        if mark.yLower - offset.y < 100
-          mark.yUpper = Math.round( -100 + mark.yLower )
-          # @setState mark: mark
-          return
-
-        dy = mark.yUpper - offset.y
-        yUpper_p = offset.y
-        markHeight_p = mark.yLower - mark.yUpper + dy
-        y_p = yUpper_p + markHeight_p/2
-        mark.yUpper = yUpper_p
-        mark.markHeight = markHeight_p
-        mark.y = y_p
+        else
+          dy = mark.yUpper - offset.y
+          yUpper_p = offset.y
+          markHeight_p = mark.yLower - mark.yUpper + dy
+          y_p = yUpper_p + markHeight_p/2
+          mark.yUpper = yUpper_p
+          mark.markHeight = markHeight_p
+          mark.y = y_p
       when 'lower'
-
-        # enforce bounds
-        if offset.y > @state.imageHeight
-          offset.y = @state.imageHeight
+        if offset.y - mark.yUpper < 100 # enforce minimum height
+          mark.yLower = mark.yUpper + 100
           return
-
-        if offset.y - mark.yUpper < 100
-          mark.yLower = Math.round( 100 + mark.yUpper )
-          # @setState mark: mark
-          return
-
-        dy = offset.y - mark.yLower
-        yLower_p = offset.y
-        markHeight_p = mark.yLower - mark.yUpper + dy
-        y_p = yLower_p - markHeight_p/2
-        mark.yLower = yLower_p
-        mark.markHeight = markHeight_p
-        mark.y = y_p
-      # else console.log 'ERROR' # TODO: probably should handle errors at some point!
-
+        else
+          dy = offset.y - mark.yLower
+          yLower_p = offset.y
+          markHeight_p = mark.yLower - mark.yUpper + dy
+          y_p = yLower_p - markHeight_p/2
+          mark.yLower = yLower_p
+          mark.markHeight = markHeight_p
+          mark.y = y_p
+    
     @setState mark: mark
 
   render: ->
