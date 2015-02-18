@@ -10,6 +10,7 @@ window.React = React
 App = React.createClass
   displayname: 'app'
 
+
   render: ->
     <div>
       <div className="readymade-site-background">
@@ -17,4 +18,5 @@ App = React.createClass
       </div>
       <DynamicRouter />
     </div>
+
 module.exports = App

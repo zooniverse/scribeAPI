@@ -15,16 +15,15 @@ DynamicRouter = React.createClass
     
   componentDidMount: ->
     $.getJSON '/project', (result) => 
-      @setState project:           result
-      @setState home_page_content: @state.project.home_page_content 
-      @setState pages:             @state.project.pages
 
-      # DEBUG CODE
-      # console.log 'project ', @state.project
+      @setState project:           result.project
+      @setState home_page_content: result.project.home_page_content 
+      @setState pages:             result.project.pages
       
       for workflow in @state.project.workflows
         @setState mark_tasks: workflow.tasks if workflow.key is 'mark'
         @setState transcribe_tasks: workflow.tasks if workflow.key is 'transcribe'
+    
 
   controllerForPage: (page) ->
     React.createClass
@@ -32,11 +31,13 @@ DynamicRouter = React.createClass
       render: ->
         <div dangerouslySetInnerHTML={{__html: page.content}} />
 
+  
+
   render: ->
     # do nothing until project loads from API
     # return null # just for now
     return null if @state.project is null or @state.mark_tasks is null or @state.transcribe_tasks is null
-
+    
     <div className="panoptes-main">
       <MainHeader pages={@state.pages} />
       <div className="main-content">
