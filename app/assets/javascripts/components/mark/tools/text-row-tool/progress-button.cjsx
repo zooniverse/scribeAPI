@@ -1,9 +1,8 @@
 # @cjsx React.DOM
-
 React = require 'react'
 
 module.exports = React.createClass
-  displayName: 'DoneCheckbox'
+  displayName: 'ProgressButton'
 
   getInitialState: ->
     markStatus: @props.markStatus 

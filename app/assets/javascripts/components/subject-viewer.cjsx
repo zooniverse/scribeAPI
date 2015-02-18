@@ -9,7 +9,7 @@ SubjectMetadata               = require './subject-metadata'
 ActionButton                  = require './action-button'
 Classification                = require '../models/classification'
 
-SubjectViewer = React.createClass
+module.exports = React.createClass
   displayName: 'SubjectViewer'
   resizing: false
 
@@ -129,6 +129,18 @@ SubjectViewer = React.createClass
     { ex, ey } = @getEventOffset e
     mark.x = ex
     mark.y = ey
+
+    # keep marks within frame
+    if ex > @state.imageWidth
+      mark.x = @state.imageWidth
+    else if ex < 0
+      mark.x = 0
+
+    if ey > @state.imageHeight
+      mark.y = @state.imageHeight
+    else if ey < 0
+      mark.y = 0
+    
     @setState selectedMark: mark
       # , => @forceUpdate()
         
@@ -230,5 +242,4 @@ SubjectViewer = React.createClass
       </div>
     </div>
 
-module.exports = SubjectViewer
 window.React = React

@@ -1,9 +1,9 @@
 # @cjsx React.DOM
-React = require 'react'
-Draggable = require 'lib/draggable'
-DeleteButton = require './delete-button'
-ResizeButton = require './resize-button'
-DoneCheckbox = require './done-checkbox'
+React          = require 'react'
+Draggable      = require 'lib/draggable'
+DeleteButton   = require './delete-button'
+ResizeButton   = require './resize-button'
+ProgressButton = require './progress-button'
 
 DEBUG = false
 
@@ -135,7 +135,4 @@ module.exports = React.createClass
             />
           </g>
         }
-
-
-
     </g>
