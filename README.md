@@ -18,5 +18,5 @@ Recipes:
 Preferences:
 {:git=>true, :apps4=>"none", :dev_webserver=>"webrick", :prod_webserver=>"same", :database=>"mongodb", :orm=>"mongoid", :templates=>"erb", :unit_test=>"rspec", :integration=>"cucumber", :continuous_testing=>"none", :fixtures=>"none", :frontend=>"none", :email=>"gmail", :authentication=>"devise", :devise_modules=>"default", :authorization=>"none", :form_builder=>"none", :starter_app=>"users_app", :rvmrc=>false, :quiet_assets=>true, :better_errors=>true}
 
-________________________
+
 
