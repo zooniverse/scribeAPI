@@ -22,7 +22,6 @@ module.exports = React.createClass
     mark.yUpper = @props.mark.y - 50
     mark.yLower = @props.mark.y + 50
     
-    # set state
     mark: mark
     buttonDisabled: false
     lockTool: false
@@ -87,29 +86,28 @@ module.exports = React.createClass
     @setState mark: mark
       # , => @forceUpdate()
 
+  launchTranscribe: ->
+    console.log location.host + "/?subject_id=#{@state.transcribe_id}#/transcribe"
+    location.replace 'http://' + location.host + "/?subject_id=#{@state.transcribe_id}&scrollOffset=#{$(window).scrollTop()}#/transcribe"
+    # @setState showTranscribeTool: true
+
+
   onClickButton: ->
     console.log 'FOO!'
     mark = @state.mark
     switch mark.status
       when 'mark'
-        @lockTool()
+        @setState lockTool: true
         @submitMark()
         mark.status = 'mark-finished'
       when 'mark-finished'
+        @launchTranscribe()
         mark.status = 'transcribe'
       when 'transcribe'
         mark.status = 'transcribe-finished'
       when 'transcribe-complete'
         console.log 'NOTHING LEFT TO DO FOR THIS MARK'
     @setState mark: mark
-
-  lockTool: ->
-    @setState lockTool: true
-      , => @forceUpdate()
-
-  unlockTool: ->
-    @setState lockTool: false
-      , => @forceUpdate()
 
   enableButton: ->
     console.log 'enableButton() '
@@ -120,16 +118,12 @@ module.exports = React.createClass
     console.log 'disableButton() '
     @setState buttonDisabled: true
      , => @forceUpdate()
-
+    
   submitMark: ->
     @disableButton()
     mark = @state.mark
     newClassification = new Classification @props.subject
     newClassification.annotate mark
-
-    console.log 'CLASSIFICATION: ', newClassification
-
-    # send classification
     $.post('/classifications', { 
         workflow_id: @props.workflow.id
         subject_id:  @props.subject.id
@@ -142,7 +136,7 @@ module.exports = React.createClass
       }, )
       .done (response) =>
         console.log "Success" #, response._id.$oid
-        # @setTranscribeSubject(key, response._id.$oid)
+        @setState transcribe_id: response._id.$oid
         @enableButton()
         return
       .fail =>
@@ -155,12 +149,9 @@ module.exports = React.createClass
   render: ->
     classString = 'textRow drawing-tool'
     if @state.lockTool then classString += ' locked'
-
     markHeight = @state.mark.yLower - @state.mark.yUpper
-
     strokeWidth = '6'
     strokeColor = 'rgba(0,0,0,0.5)'
-
     scrubberWidth = 64
     scrubberHeight = 32
 
@@ -190,7 +181,6 @@ module.exports = React.createClass
         buttonDisabled={@state.buttonDisabled}
         transform = {"translate( #{@props.imageWidth-250}, #{ Math.round markHeight/2 -scrubberHeight/2 } )"}
       />
-
 
       { if @state.mark.status is 'mark'
           <g>

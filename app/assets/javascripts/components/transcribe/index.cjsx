@@ -9,11 +9,15 @@ Transcribe = React.createClass # rename to Classifier
 
   getInitialState: ->
     # TODO: why is workflow an array!?!?
+    console.log 'WORKFLOW: ', @props.workflow
     workflow: @props.workflow
 
   render: ->
-    endpoint = "/workflows/#{@state.workflow[0].id}/subjects.json?limit=5"
-    <SubjectViewer endpoint=endpoint workflow={@props.workflow} />
+    <SubjectViewer 
+      endpoint=endpoint={"/workflows/#{@state.workflow.id}/subjects.json?limit=5"}  
+      workflow={@props.workflow} 
+      tool={null}
+    />
 
 module.exports = Transcribe
 window.React = React
