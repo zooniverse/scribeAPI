@@ -3,7 +3,7 @@ React         = require 'react'
 SubjectViewer = require '../subject-viewer'
 tools         = require './tools'
 
-Mark = React.createClass # rename to Classifier
+module.exports = React.createClass # rename to Classifier
   displayName: 'Mark'
 
   propTypes:
@@ -41,5 +41,4 @@ Mark = React.createClass # rename to Classifier
       workflow={@props.workflow} 
       tool={tools[@state.currentTool]} />
 
-module.exports = Mark
 window.React = React
