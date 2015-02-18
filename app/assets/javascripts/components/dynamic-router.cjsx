@@ -16,9 +16,9 @@ DynamicRouter = React.createClass
   componentDidMount: ->
     $.getJSON '/project', (result) => 
 
-      @setState project:           result.project
-      @setState home_page_content: result.project.home_page_content 
-      @setState pages:             result.project.pages
+      @setState project:           result
+      @setState home_page_content: result.home_page_content 
+      @setState pages:             result.pages
       
       for workflow in @state.project.workflows
         @setState mark_tasks: workflow.tasks if workflow.key is 'mark'
