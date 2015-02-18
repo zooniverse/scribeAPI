@@ -9,22 +9,18 @@ ImageSubjectViewer_transcribe = require('./image-subject-viewer-transcribe')
 DynamicRouter = React.createClass
 
   getInitialState: ->
-    console.log 'GETTING STATE'
     project: null
     mark_tasks: null
     transcribe_tasks: null
     
   componentDidMount: ->
     $.getJSON '/project', (result) => 
-      console.log 'result of ajax', result
 
       @setState project:           result.project
       @setState home_page_content: result.project.home_page_content 
       @setState pages:             result.project.pages
       
       for workflow in @state.project.workflows
-        console.log 'inside the for loop'
-        console.log 'workflow', workflow
         @setState mark_tasks: workflow.tasks if workflow.key is 'mark'
         @setState transcribe_tasks: workflow.tasks if workflow.key is 'transcribe'
     
