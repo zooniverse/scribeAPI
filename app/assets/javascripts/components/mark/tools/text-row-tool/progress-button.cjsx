@@ -22,8 +22,7 @@ module.exports = React.createClass
     classString = 'clickable drawing-tool-done-button'
     classString += ' disabled' if @props.buttonDisabled
       
-    markStatus = @props.markStatus
-    switch markStatus
+    switch @props.markStatus
       when 'mark'
         fillColor = 'rgba(100,200,50,0.2)'
         buttonLabel = 'DONE.'

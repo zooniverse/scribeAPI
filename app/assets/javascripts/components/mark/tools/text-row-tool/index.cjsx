@@ -16,6 +16,8 @@ module.exports = React.createClass
 
   getInitialState: ->
     mark = @props.mark
+    unless mark.status?
+      mark.status = 'mark'
     mark.yUpper = @props.mark.y - 50
     mark.yLower = @props.mark.y + 50
     
@@ -29,6 +31,7 @@ module.exports = React.createClass
     mark.yLower = mark.y + markHeight/2
 
     @setState mark: mark
+      , => console.log 'MARK: ', mark
       # , => @forceUpdate() 
 
   handleDrag: (e) ->
@@ -82,6 +85,22 @@ module.exports = React.createClass
 
   onClickButton: ->
     console.log 'FOO!'
+    mark = @state.mark
+    
+    switch mark.status
+      when 'mark'
+        # SUBMIT MARK
+        console.log 'MARK SUBMITTED!'
+        mark.status = 'mark-finished'
+      when 'mark-finished'
+        # PENDING
+        mark.status = 'transcribe'
+      when 'transcribe'
+        mark.status = 'transcribe-finished'
+      when 'transcribe-complete'
+        console.log 'NOTHING LEFT TO DO FOR THIS MARK'
+
+    @setState mark: mark
 
   render: ->
     classString = 'textRow drawing-tool'
@@ -114,7 +133,7 @@ module.exports = React.createClass
       </Draggable>
 
       <ProgressButton 
-        markStatus={'mark'}
+        markStatus={@state.mark.status}
         onClickButton={@onClickButton}
         transform = {"translate( #{@props.imageWidth-250}, #{ Math.round markHeight/2 -scrubberHeight/2 } )"}
       />
