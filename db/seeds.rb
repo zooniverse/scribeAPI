@@ -121,8 +121,7 @@ project = Project.create(
 )
 
 # verify_workflow    = Workflow.create({name: "verify", tasks:[]  , project: p })
-transcribe_workflow  = Workflow.create({key: "transcribe", label:"Transcribe Contnet", first_task:"", tasks:{}, enables_workflows: {}, project: p })
-marking_workflow   = Workflow.create({key: "marking", label: "Mark Content",  first_task:"drawSomething", enables_workflows: {transcribe_workflow.id.to_s => {denormalized_fields:[:x,:y]} }, tasks:marking_tasks, project: p })
+
 
 
 transcribe_tasks = {
@@ -180,7 +179,16 @@ mark_workflow = Workflow.create(
   }
 )
 
+# transcribe_workflow  = Workflow.create({key: "transcribe", label:"Transcribe Contnet", first_task:"", tasks:{}, enables_workflows: {}, project: p })
+# marking_workflow   = Workflow.create({key: "marking", label: "Mark Content",  first_task:"drawSomething", enables_workflows: {transcribe_workflow.id.to_s => {denormalized_fields:[:x,:y]} }, tasks:marking_tasks, project: p })
+
+example_images= [
+  "offline/example_subjects/logbookofalfredg1851unse_0083.jpg",
+  "offline/example_subjects/logbookofalfredg1851unse_0083.jpg",
+  "offline/example_subjects/logbookofalfredg1851unse_0083.jpg",
+  "offline/example_subjects/logbookofalfredg1851unse_0083.jpg"
+  ]
 
 10.times do |i|
-  Subject.create(name:"subject_#{i}", location: {standard: example_images.sample}, meta_data: { width:504, height:782}, workflows: [marking_workflow])
+  Subject.create(name:"subject_#{i}", location: {standard: example_images.sample}, meta_data: { width:504, height:782}, workflow: mark_workflow)
 end

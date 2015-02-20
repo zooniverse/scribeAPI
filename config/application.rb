@@ -35,7 +35,7 @@ module API
       end)
     end
 
-    config.browserify_rails.commandline_options = "-t coffee-reactify  --extension=\".cjsx\""
+    config.browserify_rails.commandline_options = "-t  coffee-reactify --extension=\".cjsx\" "
 
     config.middleware.use Rack::Cors do
       allow do

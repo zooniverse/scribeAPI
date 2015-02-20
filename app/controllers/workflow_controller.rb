@@ -1,5 +1,5 @@
 class WorkflowController < ApplicationController
-  respond_to :json 
+  respond_to :json
 
   def index
   	respond_with  Workflow.all
@@ -7,7 +7,7 @@ class WorkflowController < ApplicationController
 
   def show
     workflow  = Workflow.find_by(key: params[:id]) || Workflow.find_by(id: params[:id])
-    respond_with workflow 
+    respond_with workflow
   end
 
 end
