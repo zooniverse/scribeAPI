@@ -21,7 +21,7 @@ Classification.destroy_all
 pages = [
   {
     name: 'science',
-    content: 
+    content:
       """
       <div class=\"page-content\">
         <h1> Science Page</h1>
@@ -34,7 +34,7 @@ pages = [
   },
   {
     name: 'about',
-    content:    
+    content:
       """
       <div class=\"page-content\">
         <h1>About Page</h1>
@@ -49,7 +49,7 @@ pages = [
       """
       <div class=\"page-content\">
         <h1>Foo</h1>
-        
+
         <p>This is the Foo page.</p>
 
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam et nunc diam. Praesent turpis justo, ultrices et sollicitudin a, consequat non magna. Suspendisse vehicula cursus mi, a fermentum lorem bibendum sit amet. Pellentesque facilisis, orci non facilisis porta, ipsum tellus posuere ante, eget dignissim tellus tellus id erat. Etiam non lobortis orci, ac laoreet nisl. Vestibulum viverra aliquam viverra. Mauris a purus dictum, auctor est non, bibendum dui. Nullam in euismod dolor.</p>
@@ -66,35 +66,35 @@ pages = [
   }
 ]
 
-organizations =[ 
+organizations =[
   {
-    name:        "Zooniverse", 
-    location:    "Chicago IL", 
-    description: "World leaders in Citizen Science", 
+    name:        "Zooniverse",
+    location:    "Chicago IL",
+    description: "World leaders in Citizen Science",
     url:         "https://www.zooniverse.org"
   },
   {
-    name:        "New Bedford Whaling Museum", 
-    location:    "New Bedford, MA", 
-    description: "", 
+    name:        "New Bedford Whaling Museum",
+    location:    "New Bedford, MA",
+    description: "",
     url:         "http://www.whalingmuseum.org"
   }
 ]
 
 scientists = [
   {
-    name:        "John Doe", 
-    location:    "New Bedford, MA", 
-    description: "", 
+    name:        "John Doe",
+    location:    "New Bedford, MA",
+    description: "",
     url:         "http://www.whalingmuseum.org"
   }
 ]
 
 developers = [
   {
-    name:        "Stuart Lynn", 
-    location:    "Chicago, IL", 
-    description: "", 
+    name:        "Stuart Lynn",
+    location:    "Chicago, IL",
+    description: "",
     url:         "https://github.com/stuartlynn"
   }
 ]
@@ -112,14 +112,17 @@ project = Project.create(
     <p>In id porttitor tellus, ut malesuada ante. In mollis ante eget erat ornare faucibus ut at tellus. Pellentesque sed nisi in eros auctor ornare nec ac nisi. In semper eu ligula eu interdum. Quisque vitae volutpat leo. Integer euismod risus id fermentum varius. Donec aliquam ipsum risus, vitae scelerisque lorem aliquam a. Cras efficitur pharetra dapibus. Ut fermentum metus erat, nec egestas lectus aliquam quis.</p>
     <p>Sed gravida dictum urna in fringilla. Praesent ac dolor ipsum. Quisque sodales eu lorem nec gravida. Maecenas vel tortor felis. Curabitur tristique urna ex. Sed semper mattis sem, nec dictum enim lobortis a. Sed non mollis sem, vel accumsan justo. Vivamus consequat nulla non aliquet semper. Vivamus lectus eros, sollicitudin ornare rhoncus quis, vestibulum a quam. Integer mattis nibh ex, vel consequat elit efficitur vel. Duis blandit, nisl ac laoreet viverra, orci magna eleifend elit, eu cursus dui neque non mi. Fusce quis ex nec sapien auctor placerat. Morbi imperdiet a ante et porta. Vivamus sed libero sit amet erat dictum faucibus. Praesent sed aliquet lectus, vitae pretium neque.</p>
   ''',
-
   summary:       'Transcribe ship logs from the New Bedford Whaling Museum',
   organizations: organizations,
-  scientists:    scientists, 
+  scientists:    scientists,
   developers:    developers,
   pages:         pages,
   background:    ''
 )
+
+# verify_workflow    = Workflow.create({name: "verify", tasks:[]  , project: p })
+
+
 
 transcribe_tasks = {
   0 => {
@@ -156,24 +159,36 @@ mark_tasks = {
 
 transcribe_workflow = Workflow.create(
   {
-    key:               "transcribe", 
-    label:             "Transcribe Contnet", 
-    first_task:        "", 
-    tasks:             transcribe_tasks, 
-    enables_workflows: {}, 
-    project:           project 
+    key:               "transcribe",
+    label:             "Transcribe Contnet",
+    first_task:        "",
+    tasks:             transcribe_tasks,
+    enables_workflows: {},
+    project:           project
   }
 )
 
 mark_workflow = Workflow.create(
   {
-    key:               'mark', 
-    label:             'Mark Contnet', 
-    first_task:        'mark_one', 
-    tasks:             mark_tasks, 
-    enables_workflows: {}, 
-    project:           project 
+    key:               'mark',
+    label:             'Mark Contnet',
+    first_task:        'mark_one',
+    tasks:             mark_tasks,
+    enables_workflows: {},
+    project:           project
   }
 )
 
+# transcribe_workflow  = Workflow.create({key: "transcribe", label:"Transcribe Contnet", first_task:"", tasks:{}, enables_workflows: {}, project: p })
+# marking_workflow   = Workflow.create({key: "marking", label: "Mark Content",  first_task:"drawSomething", enables_workflows: {transcribe_workflow.id.to_s => {denormalized_fields:[:x,:y]} }, tasks:marking_tasks, project: p })
 
+example_images= [
+  "offline/example_subjects/logbookofalfredg1851unse_0083.jpg",
+  "offline/example_subjects/logbookofalfredg1851unse_0083.jpg",
+  "offline/example_subjects/logbookofalfredg1851unse_0083.jpg",
+  "offline/example_subjects/logbookofalfredg1851unse_0083.jpg"
+  ]
+
+10.times do |i|
+  Subject.create(name:"subject_#{i}", location: {standard: example_images.sample}, meta_data: { width:504, height:782}, workflows: [mark_workflow])
+end
