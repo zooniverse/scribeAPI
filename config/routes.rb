@@ -4,7 +4,7 @@ API::Application.routes.draw do
 
   devise_for :users, :controllers => {:registrations => "registrations"}
 
-  get '/project',        to: 'projects#index', defaults: { format: 'json' }
+  get '/projects',        to: 'projects#index', defaults: { format: 'json' }
   get '/workflows',      to: 'workflow#index', defaults: { format: 'json' }  
   get '/workflows/:id',  to: 'workflow#show',  defaults: { format: 'json' }  
   
