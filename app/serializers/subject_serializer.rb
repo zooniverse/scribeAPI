@@ -1,4 +1,4 @@
-class SubjectSerializer < ActiveModel::Serializer
+class SubjectSerializer < ActiveModel::MongoidSerializer
   attributes :id, :name, :location, :classification_count, :child_subjects, :meta_data
 
   def id
