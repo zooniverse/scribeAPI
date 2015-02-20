@@ -11,24 +11,22 @@ DynamicRouter = React.createClass
     project: null
     
   componentDidMount: ->
-    $.getJSON '/project', (result) => 
-      @setState project:           result
-      @setState home_page_content: result.home_page_content 
-      @setState pages:             result.pages
+    $.getJSON '/projects', (result) => 
+      @setState project:           result.project
+      @setState home_page_content: result.project.home_page_content 
+      @setState pages:             result.project.pages
       
-      for workflow in @state.project.workflows
-        @setState mark_tasks: workflow.tasks if workflow.key is 'mark'
-        @setState transcribe_tasks: workflow.tasks if workflow.key is 'transcribe'
   controllerForPage: (page) ->
     React.createClass
       displayName: "#{page.name}Page"
       render: ->
         <div dangerouslySetInnerHTML={{__html: page.content}} />
 
+  # TODO: workflow being passed as an object in an array. why?
   render: ->
-    # do nothing until project loads from API
-    # return null # just for now
-    return null if @state.project is null or @state.mark_tasks is null or @state.transcribe_tasks is null
+    return null unless @state.pages? # do nothing until project loads from API
+    workflows = @state.project.workflows
+
     <div className="panoptes-main">
       <MainHeader pages={@state.pages} />
       <div className="main-content">
