@@ -207,7 +207,7 @@ module.exports = React.createClass
             onDrag  = {@handleInitDrag}
             onEnd   = {@handleInitRelease} >
             <SVGImage
-              src = {@state.subject.location}
+              src = {@state.subject.location.standard}
               width = {@state.imageWidth}
               height = {@state.imageHeight} />
           </Draggable>
@@ -235,7 +235,6 @@ module.exports = React.createClass
         <div className="marking-surface">
           {markingSurfaceContent}
         </div>
-        <p>{@state.subjects.location}</p>
         <div className="subject-ui">
           <ActionButton loading={@state.loading} />
         </div>
