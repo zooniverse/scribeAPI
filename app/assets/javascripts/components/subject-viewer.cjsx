@@ -18,7 +18,7 @@ module.exports = React.createClass
     # console.log 'USING ENDPOINT: ', @props.endpoint
     imageWidth: 0
     imageHeight: 0
-    
+
     subjectEndpoint: @props.endpoint
     subjects: null
     subject: null
@@ -47,18 +47,18 @@ module.exports = React.createClass
       windowInnerHeight: window.innerHeight
 
   fetchSubjects: ->
+
     $.ajax
       url: @state.subjectEndpoint
       dataType: "json"
       success: ((data) ->
         # DEBUG CODE
         # console.log 'FETCHED SUBJECTS: ', data
-
         @setState
           subjects: data
           subject: data[0], =>
             @state.classification = new Classification @state.subject
-            @loadImage @state.subject.location
+            @loadImage @state.subject.location.standard
 
         # console.log 'Fetched Images.' # DEBUG CODE
 
@@ -103,7 +103,7 @@ module.exports = React.createClass
       return
     else
       @setState subject: @state.subjects[0], =>
-        @loadImage ((if @usingFakeSubject() then @state.subject.classification.subject.location else @state.subject.location))
+        @loadImage ((if @usingFakeSubject() then @state.subject.classification.subject.location.standard else @state.subject.location.standard))
 
     @state.classification = new Classification @state.subject
 
@@ -113,13 +113,13 @@ module.exports = React.createClass
     console.log 'handleInitStart() '
     { ex, ey } = @getEventOffset e
     marks = @state.marks
-    newMark = 
+    newMark =
       key: @state.lastMarkKey
       x: ex
       y: ey
       timestamp: (new Date).toJSON()
     marks.push newMark
-    @setState 
+    @setState
       marks: marks
       lastMarkKey: @state.lastMarkKey + 1
       selectedMark: marks[marks.length-1]
@@ -140,10 +140,10 @@ module.exports = React.createClass
       mark.y = @state.imageHeight
     else if ey < 0
       mark.y = 0
-    
+
     @setState selectedMark: mark
       # , => @forceUpdate()
-        
+
   # AVAILABLE, BUT UNUSED, METHODS
   # handleInitRelease: (e) ->
   # handleToolMouseDown: (e) ->
@@ -167,7 +167,7 @@ module.exports = React.createClass
     marks = @state.marks
     for mark, i in [ marks...]
       if mark.key is key
-        marks.splice(i,1) # delete marks[key]    
+        marks.splice(i,1) # delete marks[key]
     @setState
       marks: marks
       selectedMark: null, =>
@@ -180,7 +180,7 @@ module.exports = React.createClass
       clickOffset:
         x: mark.x - ex
         y: mark.y - ey
-      # , => @forceUpdate() 
+      # , => @forceUpdate()
 
   render: ->
     # console.log 'render()'
@@ -190,7 +190,7 @@ module.exports = React.createClass
     if @state.loading
       markingSurfaceContent = <LoadingIndicator />
     else
-      markingSurfaceContent =  
+      markingSurfaceContent =
         <svg
           className = "subject-viewer-svg"
           width = {@state.imageWidth}
@@ -213,14 +213,14 @@ module.exports = React.createClass
           </Draggable>
 
           { @state.marks.map ((mark, i) ->
-              <ToolComponent 
-                key={i} 
-                mark={mark} 
+              <ToolComponent
+                key={i}
+                mark={mark}
                 subject={@state.subject}
                 workflow={@props.workflow}
-                getEventOffset={@getEventOffset} 
-                isSelected={mark is @state.selectedMark} 
-                handleMarkClick={@handleMarkClick.bind null, mark} 
+                getEventOffset={@getEventOffset}
+                isSelected={mark is @state.selectedMark}
+                handleMarkClick={@handleMarkClick.bind null, mark}
                 onClickDelete={@onClickDelete}
                 clickOffset={@state.clickOffset}
                 imageWidth={@state.imageWidth}
