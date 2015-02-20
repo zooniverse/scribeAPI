@@ -2,12 +2,21 @@ class Classification
   include Mongoid::Document
 <<<<<<< Updated upstream
   
+  field :workflow_id
+  field :subject_id
+  field :location
   field :annotations
+<<<<<<< HEAD
 =======
 
   field :annotations, type: Array
   field :triggered_followup_subject_ids, type: Array
 >>>>>>> Stashed changes
+=======
+  field :started_at
+  field :finished_at
+  field :user_agent
+>>>>>>> master
 
   belongs_to :workflow
   belongs_to :user

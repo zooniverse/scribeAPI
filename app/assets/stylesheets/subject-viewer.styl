@@ -1,4 +1,4 @@
-.image-subject-viewer
+.subject-viewer
   // position absolute
   margin-top 40px
   // width 100%
@@ -24,6 +24,9 @@
     .drawing-tool
       cursor grab
       cursor -webkit-grab
+      &.locked
+        &:active
+          cursor not-allowed
       &:active
         cursor grabbing
         cursor -webkit-grabbing
@@ -37,6 +40,12 @@
         cursor pointer
       .drawing-tool-done-button
         cursor pointer
-        
+        &.disabled
+          cursor wait
+          opacity 0.2
+          &:active
+            cursor wait
+            pointer-events none
+          
   .button
     @extends $button

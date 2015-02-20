@@ -32,7 +32,7 @@ module.exports = React.createClass
         <a href="/#/transcribe" className="main-header-item">Transcribe</a>
 
         { @props.pages.map (page, key) =>
-            <a href={'/#/'+page.name} className="main-header-item">{page.name}</a>
+            <a href={'/#/'+page.name} className="main-header-item" key={key}>{page.name}</a>
         }
 
       </nav>
