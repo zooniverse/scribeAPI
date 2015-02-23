@@ -146,7 +146,7 @@ transcribe_tasks = {
       type:         'textBlock',
       field_name:   'other_entry',
       label:        'Other Entry',
-      instruction:  'Type something, anything.'
+      instruction:  'Type something, anything.',
       next_task:     ''
   }
 }
