@@ -6,7 +6,6 @@ project = {
      role: "Cat lover",
      image: "http://stuart.com/stuart.jpg",
      organization: "zooniverse",
-
      },
 
     {name: "Sascha Ishikawa",
@@ -20,7 +19,7 @@ project = {
       image: "http://Andrea.com/Andrea.jpg",
       organization: "UofM",
     }
-  ]
+  ],
   organizations:[
     {
      title: "Zooniverse",

@@ -1,6 +1,7 @@
-class Classification 
+class Classification
   include Mongoid::Document
-  
+  include Mongoid::Timestamps
+
   field :workflow_id
   field :subject_id
   field :location
@@ -13,10 +14,10 @@ class Classification
   belongs_to :user
   belongs_to :subject
 
-  after_save :generate_new_subjects 
+  after_save :generate_new_subjects
 
   def generate_new_subjects
-    
+
   end
-  
+
 end
