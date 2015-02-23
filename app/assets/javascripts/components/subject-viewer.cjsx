@@ -75,6 +75,7 @@ module.exports = React.createClass
     @setState loading: true, =>
       img = new Image()
       img.src = url
+      # console.log 'URL: ', url
       img.onload = =>
         if @isMounted()
           @setState
@@ -82,6 +83,7 @@ module.exports = React.createClass
             imageWidth: img.width
             imageHeight: img.height
             loading: false #, =>
+              , => console.log 'url: ', url
             # console.log @state.loading
             # console.log "Finished Loading."
 
@@ -207,7 +209,7 @@ module.exports = React.createClass
             onDrag  = {@handleInitDrag}
             onEnd   = {@handleInitRelease} >
             <SVGImage
-              src = {@state.subject.location}
+              src = {@state.subject.location.standard}
               width = {@state.imageWidth}
               height = {@state.imageHeight} />
           </Draggable>

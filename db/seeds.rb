@@ -125,26 +125,29 @@ project = Project.create(
 
 
 transcribe_tasks = {
-  0 => {
+  journal_date: {
       key:          0,
-      type:         'date',
+      tool:         'singleDate',
       field_name:   'date',
       label:        'Date',
-      instruction:  'Please type-in the log date.'
+      instruction:  'Please type-in the log date.',
+      next_task:     'journal_entry'
   },
-  1 =>{
+  journal_entry: {
       key:          1,
-      type:        'text',
+      tool:        'textBlock',
       field_name:  'journal_entry',
       label:       'Journal Entry',
-      instruction: 'Please type-in the journal entry for this day.'
+      instruction: 'Please type-in the journal entry for this day.',
+      next_task:   'additional_comment'
   },
-  2 => {
+  additional_comment: {
       key:          2,
-      type:         'textarea',
+      type:         'textBlock',
       field_name:   'other_entry',
       label:        'Other Entry',
       instruction:  'Type something, anything.'
+      next_task:     ''
   }
 }
 
@@ -153,7 +156,7 @@ mark_tasks = {
       key:          0,
       tool:         'textRow',
       instruction:  'Drag a mark around a block of text.',
-      next_task:    nil
+      next_task:    ''
   }
 }
 
