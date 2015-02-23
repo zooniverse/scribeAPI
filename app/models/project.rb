@@ -2,9 +2,9 @@ class Project
 	include Mongoid::Document
 	include Mongoid::Timestamps
 
-	field  :producer , 		 			type: String
-	field  :title , 		   			type: String
-	field  :summary , 		 			type: String
+	field  :producer, 		 			type: String
+	field  :title, 		   				type: String
+	field  :summary, 		 				type: String
 	field  :description, 				type: String
 	field  :organizations, 			type: Array
 	field  :scientists, 	 			type: Array
