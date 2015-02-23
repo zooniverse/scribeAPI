@@ -162,9 +162,9 @@ mark_tasks = {
 
 transcribe_workflow = Workflow.create(
   {
-    key:               "transcribe",
-    label:             "Transcribe Contnet",
-    first_task:        "",
+    key:               'transcribe',
+    label:             'Transcribe Contnet',
+    first_task:        'journal_entry',
     tasks:             transcribe_tasks,
     enables_workflows: {},
     project:           project
