@@ -20,7 +20,7 @@ project = {
       image: "http://Andrea.com/Andrea.jpg",
       organization: "UofM",
     }
-  ]
+  ],
   organizations:[
     {
      title: "Zooniverse",
