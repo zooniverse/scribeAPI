@@ -25,7 +25,7 @@ require 'csv'
     #TODO FIX!!!!!!!!!!!
     project = Project.first
 
-    CSV.foreach(group_file, headers: true) do |row|
+    CSV.foreach(group_file, :headers=>true, :header_converters=> lambda {|f| f.strip}, :converters=> lambda {|f| f ? f.strip : nil}) do |row|
 
       puts 'group_file: ', group_file
       puts 'row', 
@@ -39,8 +39,8 @@ require 'csv'
       meta_data        = data.delete([:name, :description, :cover_image_url, :external_url])
 
 
-      binding.pry
-      
+      # binding.pry
+
       group = project.groups.create({name: name,
                             description: description,
                             cover_image_url: cover_image_url,
