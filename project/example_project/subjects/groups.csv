@@ -1,3 +1,3 @@
-name, description, cover_image_url, external_url, meta_data_1, meta_data_2
-Cats, This is the cats group,http://lorempixel.com/1000/900/cats/,http://en.wikipedia.org/wiki/Cat, meow, Bengal
-Animals, This is the animal group,http://lorempixel.com/1000/900/animals/,http://en.wikipedia.org/wiki/animals, other noises
+name,description,cover_image_url,external_url,meta_data_1,meta_data_2
+Cats,Thisisthecatsgroup,http://lorempixel.com/1000/900/cats/,http://en.wikipedia.org/wiki/Cat,meow,Bengal
+Animals,Thisistheanimalgroup,http://lorempixel.com/1000/900/animals/,http://en.wikipedia.org/wiki/animals,othernoises

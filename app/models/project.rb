@@ -13,6 +13,7 @@ class Project
 	field  :pages,         			type: Array
 	field  :background,    			type: String
 
+	has_many :groups
 	has_many :workflows
 	has_many :subjects
 
