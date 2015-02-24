@@ -28,18 +28,22 @@ require 'csv'
     CSV.foreach(group_file, :headers=>true, :header_converters=> lambda {|f| f.strip}, :converters=> lambda {|f| f ? f.strip : nil}) do |row|
 
       puts 'group_file: ', group_file
-      puts 'row', 
 
       data = row.to_hash
-      
-      name             = data[:name]
-      description      = data[:description]
-      cover_image_url  = data[:cover_image_url]
-      external_url     = data[:external_url]
+            
+      name             = data['name']
+      description      = data['description']
+      cover_image_url  = data['cover_image_url']
+      external_url     = data['external_url']
       meta_data        = data.delete([:name, :description, :cover_image_url, :external_url])
 
-
       # binding.pry
+
+      # puts 'group hash: ', {name: name,
+      # description: description,
+      # cover_image_url: cover_image_url,
+      # external_url: external_url,
+      # meta_data: meta_data}
 
       group = project.groups.create({name: name,
                             description: description,
