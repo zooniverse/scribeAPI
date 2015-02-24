@@ -154,7 +154,7 @@ transcribe_tasks = {
 mark_tasks = {
   mark_one: {
       key:          0,
-      tool:         'point',
+      tool:         'textRow',
       instruction:  'Drag a mark around a block of text.',
       next_task:    ''
   }
