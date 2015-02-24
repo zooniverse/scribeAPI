@@ -36,12 +36,11 @@ require 'csv'
       cover_image_url  = data['cover_image_url']
       external_url     = data['external_url']
       meta_data        = data.delete([:name, :description, :cover_image_url, :external_url])
-      binding.pry
-      group = project.groups.create({name: name,
-                            description: description,
-                            cover_image_url: cover_image_url,
-                            external_url: external_url,
-                            meta_data: meta_data})
+      # group = project.groups.create({name: name,
+      #                       description: description,
+      #                       cover_image_url: cover_image_url,
+      #                       external_url: external_url,
+      #                       meta_data: meta_data})
 
 
       Rake::Task['load_group_subjects'].invoke("example_project","cats", group["_id"])
@@ -61,9 +60,13 @@ require 'csv'
         data = row.to_hash
         p data
         group_id = args['group_id']
-        name = data['name']
         file_path = data['file_path']
+        thumbnail = data['thumbnail']
+        width = data["width"]
+        height = data["height"]
+        capture_location = data['capture_location']
         random_no = data['random_no']
+        date = data[:date]
         classification_count = data['classification_count']
         retire_count = data['retire_count']
         state = data['state']
