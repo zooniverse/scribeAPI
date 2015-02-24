@@ -20,6 +20,7 @@ class Subject
 
   has_and_belongs_to_many :workflows, inverse_of: nil
   has_one :parent_subject, :class_name => "Subject"
+  belongs_to :group
 
   def increment_retire_count_by(no)
     retire_count += no

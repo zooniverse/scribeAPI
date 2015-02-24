@@ -36,11 +36,11 @@ require 'csv'
       cover_image_url  = data['cover_image_url']
       external_url     = data['external_url']
       meta_data        = data.delete([:name, :description, :cover_image_url, :external_url])
-      # group = project.groups.create({name: name,
-      #                       description: description,
-      #                       cover_image_url: cover_image_url,
-      #                       external_url: external_url,
-      #                       meta_data: meta_data})
+      group = project.groups.create({name: name,
+                            description: description,
+                            cover_image_url: cover_image_url,
+                            external_url: external_url,
+                            meta_data: meta_data})
 
 
       Rake::Task['load_group_subjects'].invoke("example_project","cats", group["_id"])
@@ -66,7 +66,7 @@ require 'csv'
         height = data["height"]
         capture_location = data['capture_location']
         random_no = data['random_no']
-        date = data[:date]
+        date = data['date']
         classification_count = data['classification_count']
         retire_count = data['retire_count']
         state = data['state']
@@ -74,20 +74,14 @@ require 'csv'
 
         meta_data = data.delete([:location, :name, :random_no, :classification_count, :retire_count, :state, :type])
 
-        binding.pry
-        # subject.create({
-        #   group_id: group_id,
-        #   name: name,
-        #   location: location,
-        #   random_no: random_no,
-        #   classification_count: classification_count,
-        #   retire_count: retire_count,
-        #   state: state,
-        #   type: type,
-        #   meta_data: meta_data,
-        #   })
-          # p "SUBJECT"
-          # p subject
+        # binding.pry
+        Subject.create({
+          group_id: group_id,
+          state: state,
+          type: type,
+          })
+
+
       end
 
 
