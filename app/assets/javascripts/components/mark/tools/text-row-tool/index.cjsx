@@ -147,7 +147,7 @@ module.exports = React.createClass
       #   return
 
   render: ->
-    classString = 'textRow drawing-tool'
+    classString = 'text-row-tool tool'
     if @state.lockTool then classString += ' locked'
     markHeight = @state.mark.yLower - @state.mark.yUpper
     strokeWidth = '6'

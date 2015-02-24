@@ -21,10 +21,10 @@ module.exports = React.createClass
         @forceUpdate()
 
   handleDrag: (e) ->
-    console.log 'lkxjdhklsjdh'
     @update @props.getEventOffset(e)
 
   update: ({x,y}) ->
+    console.log "(x,y) = (#{x},#{y})"
     mark = @state.mark
     mark.x = x
     mark.y = y
@@ -42,7 +42,7 @@ module.exports = React.createClass
       scale(#{1}, #{1})
     "
 
-    <g className="point drawing-tool" transform={transform}>
+    <g className="point-tool tool" transform={transform}>
 
       { if DEBUG
           <text fill='blue' fontSize='30'>

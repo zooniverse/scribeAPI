@@ -53,16 +53,12 @@ require 'csv'
 
 
       puts "group is #{group}"
-      # load_group_subjects group
+      Rake::Task['load_group_subjects'].invoke('foo','bar')
     end
   end
 
   desc "loads subjects for a group"
-    task :load_group_subjects, [:group_name] => :environment do |task|
-      puts "load_group_subjects"
+    task :load_group_subjects, [:project_name, :group_name] => :environment do |task, args|
+      puts "ARGS: #{args}"
 
-  end
-
-  desc "loads ungrouped subjects"
-    task :load_group_subjects, [:group_name] => :environment do |task, args|
   end
