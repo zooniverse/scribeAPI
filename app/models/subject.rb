@@ -4,6 +4,12 @@ class Subject
   include Randomizer
 
   field :name,                 type: String
+  field :thumbnail,             type: String
+  field :file_path
+  field :order
+  field :width
+  field :height
+  field :state
   field :location,             type: Hash
   field :random_no ,           type: Float
   field :classification_count, type: Integer, default: 0

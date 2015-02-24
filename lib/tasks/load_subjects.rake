@@ -43,11 +43,7 @@ require 'csv'
                             external_url: external_url,
                             meta_data: meta_data})
 
-
-      puts "group is #{group}"
-      # load_group_subjects group
-      binding.pry
-      Rake::Task['load_group_subjects'].invoke("example project","cats")
+      Rake::Task['load_group_subjects'].invoke("example_project","cats", group["_id"])
     end
   end
 
@@ -55,20 +51,38 @@ require 'csv'
 
     task :load_group_subjects, [:project_name, :group_name, :group_id] => :environment do |task, args|
       # this isn't going to work multi-word groups
+      puts "LOADING THE SUBJECTS"
       group_file_name = "group_" + args[:group_name]
       group_file_path = Rails.root.join('project', args[:project_name], 'subjects' + "/#{group_file_name}.csv")
 
       CSV.foreach(group_file_path, {:headers=>true}) do |row|
         p "in the parser"
         data = row.to_hash
-        data[:name]
-        data[:location]
-        data[:random_no]
-        data[:classification_count]
-        data[:retire_count]
-        data[:state]
-        data[:type]
-        data[:meta_data]
+        p data
+        group_id = args['group_id']
+        name = data['name']
+        file_path = data['file_path']
+        random_no = data['random_no']
+        classification_count = data['classification_count']
+        retire_count = data['retire_count']
+        state = data['state']
+        type = data['type']
+        meta_data = data.delete([:location, :name, :random_no, :classification_count, :retire_count, :state, :type])
+
+        binding.pry
+        # subject.create({
+        #   group_id: group_id,
+        #   name: name,
+        #   location: location,
+        #   random_no: random_no,
+        #   classification_count: classification_count,
+        #   retire_count: retire_count,
+        #   state: state,
+        #   type: type,
+        #   meta_data: meta_data,
+        #   })
+          # p "SUBJECT"
+          # p subject
       end
 
 

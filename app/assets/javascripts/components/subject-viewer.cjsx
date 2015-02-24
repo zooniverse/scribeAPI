@@ -14,8 +14,6 @@ module.exports = React.createClass
   resizing: false
 
   getInitialState: ->
-    # # DEBUG CODE
-    console.log 'USING ENDPOINT: ', @props.endpoint
     imageWidth: 0
     imageHeight: 0
 
@@ -58,10 +56,9 @@ module.exports = React.createClass
           subjects: data
           subject: data[0], =>
             @state.classification = new Classification @state.subject
-            console.log 'url before sent', @state.subject.location.standard
             @loadImage @state.subject.location.standard
 
-        console.log 'Fetched Images.' # DEBUG CODE
+        # console.log 'Fetched Images.' # DEBUG CODE
 
         return
       ).bind(this)
@@ -72,8 +69,6 @@ module.exports = React.createClass
     return
 
   loadImage: (url) ->
-    console.log 'Loading image...' # DEBUG CODE
-    console.log 'imgURL', url
     @setState loading: true, =>
       img = new Image()
       img.src = url
@@ -187,7 +182,6 @@ module.exports = React.createClass
       # , => @forceUpdate()
 
   render: ->
-    console.log 'render()'
     return null if @state.subjects is null or @state.subjects.length is 0
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     ToolComponent = @state.tool

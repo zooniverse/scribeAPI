@@ -2,8 +2,8 @@ class Classification
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  field :workflow_id,   type: ObjectId
-  field :subject_id,    type: ObjectId
+  field :workflow_id#,   type: ObjectId
+  field :subject_id#,    type: ObjectId
   field :location,      type: String
   field :annotations,   type: Object
   field :started_at,    type: Date
