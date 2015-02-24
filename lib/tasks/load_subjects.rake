@@ -26,12 +26,16 @@ require 'csv'
     project = Project.first
 
     CSV.foreach(group_file, headers: true) do |row|
-      data = row.to_hash 
-      puts 'data: ', data
-      # name             = data['name']
-      # description      = data[:description]
-      # cover_image_url  = data[:cover_image_url]
-      # external_url     = data[:external_url]
+
+      puts 'group_file: ', group_file
+      puts 'row', 
+
+      data = row.to_hash
+      
+      name             = data[:name]
+      description      = data[:description]
+      cover_image_url  = data[:cover_image_url]
+      external_url     = data[:external_url]
 
       # meta_data        = data.delete([:name, :description, :cover_image_url, :external_url])
       # group = project.groups.create({name: name,
@@ -39,8 +43,6 @@ require 'csv'
       #                       cover_image_url: cover_image_url,
       #                       external_url: external_url,
       #                       meta_data: meta_data})
-
-
       # puts "group is #{group}"
       # load_group_subjects group
     end
