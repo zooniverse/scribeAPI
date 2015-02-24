@@ -75,6 +75,7 @@ module.exports = React.createClass
     @setState loading: true, =>
       img = new Image()
       img.src = url
+      # console.log 'URL: ', url
       img.onload = =>
         if @isMounted()
           @setState
@@ -82,6 +83,7 @@ module.exports = React.createClass
             imageWidth: img.width
             imageHeight: img.height
             loading: false #, =>
+              , => console.log 'url: ', url
             # console.log @state.loading
             # console.log "Finished Loading."
 

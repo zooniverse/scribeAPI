@@ -7,5 +7,4 @@ class ProjectSerializer < ActiveModel::MongoidSerializer
   end
 
 
-
 end

@@ -24,7 +24,7 @@ module.exports = React.createClass
     >
       <g 
         transform   = {@props.transform} 
-        className   = "clickable drawing-tool-resize-button" 
+        className   = "resize-button" 
         stroke      = {@state.strokeColor} 
         strokeWidth = {@state.strokeWidth} >
           <rect

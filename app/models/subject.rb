@@ -1,5 +1,6 @@
 class Subject
   include Mongoid::Document
+  include Mongoid::Timestamps
   include Randomizer
 
   field :name,                 type: String

@@ -19,7 +19,7 @@ module.exports = React.createClass
     width        = 200
     height       = 40   
 
-    classString = 'clickable drawing-tool-done-button'
+    classString = 'main-button'
     classString += ' disabled' if @props.buttonDisabled
       
     switch @props.markStatus

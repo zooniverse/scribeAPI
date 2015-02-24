@@ -1,0 +1,17 @@
+.text-row-tool
+  .resize-button
+    cursor row-resize
+    cursor -webkit-row-resize
+    &:active
+      cursor grabbing
+      cursor -webkit-grabbing
+  .delete-button
+    cursor pointer
+  .main-button
+    cursor pointer
+    &.disabled
+      cursor wait
+      opacity 0.2
+      &:active
+        cursor wait
+        pointer-events none
