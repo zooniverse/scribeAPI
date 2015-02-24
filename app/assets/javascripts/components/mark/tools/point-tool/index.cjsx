@@ -21,13 +21,14 @@ module.exports = React.createClass
         @forceUpdate()
 
   handleDrag: (e) ->
+    console.log 'E: ', e
     @update @props.getEventOffset(e)
 
-  update: ({x,y}) ->
-    console.log "(x,y) = (#{x},#{y})"
+  update: ({ex,ey}) ->
+    console.log "(x,y) = (#{ex},#{ey})"
     mark = @state.mark
-    mark.x = x
-    mark.y = y
+    mark.x = ex
+    mark.y = ey
     @setState mark: mark
 
   render: ->
