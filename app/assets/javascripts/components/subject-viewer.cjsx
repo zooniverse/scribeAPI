@@ -14,8 +14,6 @@ module.exports = React.createClass
   resizing: false
 
   getInitialState: ->
-    # # DEBUG CODE
-    # console.log 'USING ENDPOINT: ', @props.endpoint
     imageWidth: 0
     imageHeight: 0
 
@@ -53,7 +51,7 @@ module.exports = React.createClass
       dataType: "json"
       success: ((data) ->
         # DEBUG CODE
-        # console.log 'FETCHED SUBJECTS: ', data
+        console.log 'FETCHED SUBJECTS: ', data
         @setState
           subjects: data
           subject: data[0], =>
@@ -71,7 +69,6 @@ module.exports = React.createClass
     return
 
   loadImage: (url) ->
-    # console.log 'Loading image...' # DEBUG CODE
     @setState loading: true, =>
       img = new Image()
       img.src = url
@@ -185,7 +182,6 @@ module.exports = React.createClass
       # , => @forceUpdate()
 
   render: ->
-    # console.log 'render()'
     return null if @state.subjects is null or @state.subjects.length is 0
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     ToolComponent = @state.tool

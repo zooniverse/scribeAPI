@@ -10,9 +10,6 @@ module.exports = React.createClass # rename to Classifier
     workflow: React.PropTypes.object.isRequired
 
   getInitialState: ->
-    # DEBUG CODE
-    console.log 'MARK WORKFLOW: ', @props.workflow
-   
     workflow: @props.workflow
     firstTask: true
     currentTask: null
@@ -27,12 +24,12 @@ module.exports = React.createClass # rename to Classifier
         currentTask: currentTask
         currentTool: currentTask.tool , =>
           console.log 'first tool is: ', @state.currentTool
-      
+
   render: ->
     <SubjectViewer
-      endpoint={"/workflows/#{@state.workflow.id}/subjects.json?limit=5"} 
-      workflow={@props.workflow} 
-      tool={tools[@state.currentTool]} 
+      endpoint={"/workflows/#{@state.workflow.id}/subjects.json?limit=5"}
+      workflow={@props.workflow}
+      tool={tools[@state.currentTool]}
     />
 
 window.React = React

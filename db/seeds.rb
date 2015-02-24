@@ -10,7 +10,7 @@
 # puts 'user: ' << user.name
 
 Project.destroy_all
-# Subject.destroy_all # keep all subjects for now
+Subject.destroy_all # keep all subjects for now
 Workflow.destroy_all
 Classification.destroy_all
 
