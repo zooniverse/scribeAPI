@@ -1,5 +1,5 @@
 require 'csv'
-  
+
 
   desc 'imports the subjects'
   task :load_subjects, [:project_name] => :environment do |task, args|
@@ -30,20 +30,12 @@ require 'csv'
       puts 'group_file: ', group_file
 
       data = row.to_hash
-            
+
       name             = data['name']
       description      = data['description']
       cover_image_url  = data['cover_image_url']
       external_url     = data['external_url']
       meta_data        = data.delete([:name, :description, :cover_image_url, :external_url])
-
-      # binding.pry
-
-      # puts 'group hash: ', {name: name,
-      # description: description,
-      # cover_image_url: cover_image_url,
-      # external_url: external_url,
-      # meta_data: meta_data}
 
       group = project.groups.create({name: name,
                             description: description,
@@ -54,15 +46,32 @@ require 'csv'
 
       puts "group is #{group}"
       # load_group_subjects group
+      binding.pry
+      Rake::Task['load_group_subjects'].invoke("example project","cats")
     end
   end
 
   desc "loads subjects for a group"
-    task :load_group_subjects, [:group_name] => :environment do |task|
-      puts "load_group_subjects"
 
-  end
+    task :load_group_subjects, [:project_name, :group_name, :group_id] => :environment do |task, args|
+      # this isn't going to work multi-word groups
+      group_file_name = "group_" + args[:group_name]
+      group_file_path = Rails.root.join('project', args[:project_name], 'subjects' + "/#{group_file_name}.csv")
 
-  desc "loads ungrouped subjects"
-    task :load_group_subjects, [:group_name] => :environment do |task, args|
+      CSV.foreach(group_file_path, {:headers=>true}) do |row|
+        p "in the parser"
+        data = row.to_hash
+        data[:name]
+        data[:location]
+        data[:random_no]
+        data[:classification_count]
+        data[:retire_count]
+        data[:state]
+        data[:type]
+        data[:meta_data]
+      end
+
+
+
+
   end
