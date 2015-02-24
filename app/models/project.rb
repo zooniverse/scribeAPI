@@ -4,6 +4,7 @@ class Project
 
 	field  :producer, 		 			type: String
 	field  :title, 		   				type: String
+	field  :home_page_content,		type: String
 	field  :summary, 		 				type: String
 	field  :description, 				type: String
 	field  :organizations, 			type: Array
