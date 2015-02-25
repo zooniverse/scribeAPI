@@ -1,6 +1,5 @@
 require 'csv'
 
-
   desc 'links a chain of rake tasks to setup a project, groups, and subjects'
     task :project_setup, [:project_name] => :environment do |task, args|
       project_name = args[:project_name]
@@ -16,11 +15,6 @@ require 'csv'
     task :load_group, [:group_file, :project_name] => :environment do |task, args|
       project_name = args[:project_name]
       group_file = args[:group_file]
-
-
-
-      #TODO FIX!!!!!!!!!!!
-      project = Project.first
 
       CSV.foreach(group_file, :headers=>true, :header_converters=> lambda {|f| f.strip}, :converters=> lambda {|f| f ? f.strip : nil}) do |row|
 
@@ -40,9 +34,6 @@ require 'csv'
                               cover_image_url: cover_image_url,
                               external_url: external_url,
                               meta_data: meta_data})
-        binding.pry
-
-
 
         Rake::Task['load_subjects'].invoke(project_name, name, group["_id"])
       end
