@@ -34,7 +34,6 @@ require 'active_support'
         retire_count     = data['retire_count']
 
         meta_data        = data.except('name', 'description', 'cover_image_url', 'external_url', 'retire_count')
-        binding.pry
 
         group = project.groups.create({
                               name: name,
@@ -42,7 +41,6 @@ require 'active_support'
                               cover_image_url: cover_image_url,
                               external_url: external_url,
                               meta_data: meta_data})
-        binding.pry
 
         Rake::Task['load_subjects'].invoke(project_name, name, group["_id"], retire_count)
       end
