@@ -8,7 +8,7 @@ require 'csv'
     group_list = Dir.glob(subjects_dir + "./groups*.csv")
 
     if group_list.empty?
-      #load_subjects
+      # load_subjects
     else
       group_list.each do |group_file|
         Rake::Task['load_group'].invoke(group_file)
@@ -35,13 +35,12 @@ require 'csv'
       description      = data['description']
       cover_image_url  = data['cover_image_url']
       external_url     = data['external_url']
-      meta_data        = data.delete([:name, :description, :cover_image_url, :external_url])
+      meta_data        = data.except(:name, :description, :cover_image_url, :external_url)
       group = project.groups.create({name: name,
                             description: description,
                             cover_image_url: cover_image_url,
                             external_url: external_url,
                             meta_data: meta_data})
-
 
       Rake::Task['load_group_subjects'].invoke("example_project","cats", group["_id"])
     end
@@ -49,7 +48,7 @@ require 'csv'
 
   desc "loads subjects for a group"
 
-    task :load_group_subjects, [:project_name, :group_name, :group_id] => :environment do |task, args|
+    task :load_group_subjects, [:project_name, :group_name, :group_id, :retire_count] => :environment do |task, args|
       # this isn't going to work multi-word groups
       puts "LOADING THE SUBJECTS"
       group_file_name = "group_" + args[:group_name]
@@ -64,17 +63,12 @@ require 'csv'
         thumbnail = data['thumbnail']
         width = data["width"]
         height = data["height"]
-        capture_location = data['capture_location']
-        random_no = data['random_no']
-        date = data['date']
-        classification_count = data['classification_count']
-        retire_count = data['retire_count']
+        retire_count = args['retire_count']
         state = data['state']
         type = data['type']
+        meta_data = data.except([:group_id, :file_path, :retire_count, :state, :type])
 
-        meta_data = data.delete([:location, :name, :random_no, :classification_count, :retire_count, :state, :type])
 
-        # binding.pry
         Subject.create({
           group_id: group_id,
           state: state,
