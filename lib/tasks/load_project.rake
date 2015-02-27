@@ -4,8 +4,6 @@ desc 'creates a poject object from the project directory'
   task :project_load, [:project_name] => :environment do |task, args|
     project_file_path = Rails.root.join('project', args[:project_name], 'project.rb')
     load project_file_path
-
-    binding.pry
     project = Project.create({
         title: Specific_project[:title],
         summary: Specific_project[:summary],

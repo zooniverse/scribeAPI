@@ -5,7 +5,7 @@ class Workflow
   # field    :key, 				        type: String
   field    :label,              type: String
   field    :first_task,         type: String
-  field    :tasks, 			      	type: Hash
+  field    :tasks, 			      	type: Array
   # field    :retire_limit, 		  type: Integer, default: 10
   first
   # field    :enables_workflows,  type: Hash
