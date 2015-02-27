@@ -1,4 +1,3 @@
-require Rails.root.join('project', 'example_project', 'project.rb')
 
 desc 'creates a workflow'
 
@@ -12,7 +11,5 @@ desc 'creates a workflow'
         first_task: Mark_workflow[:first_task],
         tasks: Mark_workflow[:tasks]
         })
-
-      binding.pry
 
     end
