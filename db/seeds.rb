@@ -81,16 +81,13 @@ organizations =[
   }
 ]
 
-scientists = [
+team = [
   {
     name:        "John Doe",
     location:    "New Bedford, MA",
     description: "",
     url:         "http://www.whalingmuseum.org"
-  }
-]
-
-developers = [
+  },
   {
     name:        "Stuart Lynn",
     location:    "Chicago, IL",
@@ -114,8 +111,7 @@ project = Project.create(
   ''',
   summary:       'Transcribe ship logs from the New Bedford Whaling Museum',
   organizations: organizations,
-  scientists:    scientists,
-  developers:    developers,
+  team: team,
   pages:         pages,
   background:    ''
 )
@@ -193,5 +189,14 @@ example_images= [
   ]
 
 10.times do |i|
-  Subject.create(name:"subject_#{i}", location: {standard: example_images.sample}, meta_data: { width:504, height:782}, workflows: [mark_workflow])
+  Subject.create(
+    name:"subject_#{i}", 
+    location: {
+      standard: example_images.sample
+    }, 
+    meta_data: { 
+      width:504, height:782
+    }, 
+    workflows: [mark_workflow]
+  )
 end

@@ -3,6 +3,8 @@ class Project
 	include Mongoid::Timestamps
 
 	field  :title, 		   					type: String
+	field  :producer,             type: String
+	field  :description,          type: String
 	field  :summary, 		 					type: String
 	field  :home_page_content,		type: String
 	field  :organizations, 				type: Array

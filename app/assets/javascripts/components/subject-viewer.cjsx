@@ -45,7 +45,6 @@ module.exports = React.createClass
       windowInnerHeight: window.innerHeight
 
   fetchSubjects: ->
-
     $.ajax
       url: @state.subjectEndpoint
       dataType: "json"
