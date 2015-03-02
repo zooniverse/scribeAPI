@@ -167,14 +167,75 @@ transcribe_workflow = Workflow.create(
   }
 )
 
+# mark_workflow = Workflow.create(
+#   {
+#     key:               'mark',
+#     label:             'Mark Contnet',
+#     first_task:        'mark_one',
+#     tasks:             mark_tasks,
+#     enables_workflows: {},
+#     project:           project
+#   }
+# )
+
 mark_workflow = Workflow.create(
   {
-    key:               'mark',
-    label:             'Mark Contnet',
-    first_task:        'mark_one',
-    tasks:             mark_tasks,
-    enables_workflows: {},
-    project:           project
+    name: "mark",
+    label: "",
+    first_task: "pick_page_type",
+    tasks: {
+      pick_page_type: {
+        order: 0,
+        tool: "pick_one",
+        instruction: "Select the type of page.",
+        options: {
+          history_sheet: {
+            label: 'History Sheet',
+            image: 'images/history_sheet_thumbnail.jpg',
+            next_task: "history_sheet_task"
+          },
+          casualty_form: {
+            label: 'Casualty Form',
+            image: 'images/casualty_form_thumbnail.jpg',
+            next_task: "casualty_form_task"
+          },
+          attestation: {
+            label: 'Attestation',
+            image: 'images/attestation_thumbnail.jpg',
+            next_task: "attestation_task"
+          }
+        },
+        next_task: ""
+      },
+      attestation_task: {
+        order: 1,
+        tool: "pick_one_mark_one",
+        options: {
+          header: {
+            tool: "rectangle_tool",
+            instruction: "Draw a rectangle around the 'Header' region."
+          },
+          oath: {
+            tool: "rectangle_tool",
+            instruction: "Draw a rectangle around the 'Oath' region."
+          },
+          attesting_officer: {
+            tool: "rectangle_tool",
+            instruction: "Draw a rectangle around the 'Attesting Officer' region."
+          },
+          question: {
+            tool: "rectangle_tool",
+            instruction: "Draw a rectangle around the 'Question' region."
+          }
+        }
+      },
+      history_sheet_task: {
+        order: 2,
+        tool: {},
+        options: {}
+      },
+      casualty_form_task: {}
+    }
   }
 )
 

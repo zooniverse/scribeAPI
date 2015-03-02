@@ -3,6 +3,7 @@ class Workflow
   include Mongoid::Timestamps
 
   field    :key, 				        type: String
+  field    :name,               type: String
   field    :label,              type: String
   field    :tasks, 			      	type: Hash
   field    :first_task,         type: String
