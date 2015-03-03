@@ -1,0 +1,31 @@
+.workflow-task
+  .answer
+    align-items: center
+    display: flex
+    margin: 0.5em 0
+    text-align: left
+
+    > input,
+    > .drawing-tool-icon
+      flex-shrink: 0
+      line-height: 1
+      margin-right: 0.5em
+
+    > .markdown > p:first-child:last-child
+      margin: 0
+
+    > .tool-count
+      margin-left: 0.5em
+      opacity: 0.7
+
+  .drawing-tool-icon > svg
+    fill-opacity: 0.1
+    height: 1.5em
+    stroke: currentColor
+    stroke-width: 5
+
+  .drawing-tool-input
+    display: none
+
+  & + .workflow-task
+    margin-top: 2em
