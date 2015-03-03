@@ -2,7 +2,7 @@ class Workflow
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  field    :key, 				        type: String
+  # field    :key, 				        type: String
   field    :name,               type: String
   field    :label,              type: String
   field    :tasks, 			      	type: Hash

@@ -147,19 +147,19 @@ transcribe_tasks = {
   }
 }
 
-mark_tasks = {
-  mark_one: {
-      key:          0,
-      tool:         'textRow',
-      instruction:  'Drag a mark around a block of text.',
-      next_task:    ''
-  }
-}
+# mark_tasks = {
+#   mark_one: {
+#       key:          0,
+#       tool:         'textRow',
+#       instruction:  'Drag a mark around a block of text.',
+#       next_task:    ''
+#   }
+# }
 
 transcribe_workflow = Workflow.create(
   {
-    key:               'transcribe',
-    label:             'Transcribe Contnet',
+    name:              'transcribe',
+    label:             'Transcribe Workflow',
     first_task:        'journal_entry',
     tasks:             transcribe_tasks,
     enables_workflows: {},
@@ -181,7 +181,9 @@ transcribe_workflow = Workflow.create(
 mark_workflow = Workflow.create(
   {
     name: "mark",
-    label: "",
+    label: "Mark Workflow",
+    project: project,
+    enables_workflows: {},
     first_task: "pick_page_type",
     tasks: {
       pick_page_type: {
