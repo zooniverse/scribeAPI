@@ -60,14 +60,15 @@ module.exports = React.createClass
     onChange: NOOP
 
   render: ->
-    answers = for answer, i in @props.task.answers
+    answers = for i, answer of @props.task.options
+      console.log 'ANSWER IS: ', i
       answer._key ?= Math.random()
-      <label key={answer._key} className="minor-button #{if i is @props.annotation.value then 'active' else ''}">
-        <input type="radio" checked={i is @props.annotation.value} onChange={@handleChange.bind this, i} />
+      <label key={answer._key} className="minor-button">
+        <input type="radio" checked={false} onChange={@handleChange.bind this, i} />
         <span>{answer.label}</span>
       </label>
 
-    <GenericTask question={@props.task.question} help={@props.task.help} answers={answers} />
+    <GenericTask question={@props.task.instruction} help={@props.task.help} answers={answers} />
 
   handleChange: (index, e) ->
     if e.target.checked
