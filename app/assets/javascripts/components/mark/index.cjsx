@@ -1,7 +1,11 @@
 # @cjsx React.DOM
-React         = require 'react'
-SubjectViewer = require '../subject-viewer'
-tasks         = require '../tasks'
+React          = require 'react'
+SubjectViewer  = require '../subject-viewer'
+tasks          = require '../tasks'
+Classification = require 'models/classification'
+
+
+# NOTES: "mark" subjects should be fetched somewhere in here
 
 module.exports = React.createClass # rename to Classifier
   displayName: 'Mark'
@@ -13,12 +17,13 @@ module.exports = React.createClass # rename to Classifier
     workflow: @props.workflow
     firstTask: true
     currentTask: null
+    # classification: new Classification subject
+
     # currentTool: null
 
   componentWillMount: ->
     workflow = @state.workflow
     @setState currentTask:  @state.workflow.tasks[workflow.first_task]
-
 
   componentDidMount: ->
     console.log 'CURRENT TASK: ', @state.currentTask.tool
