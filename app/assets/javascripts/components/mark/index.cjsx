@@ -3,7 +3,7 @@ React          = require 'react'
 SubjectViewer  = require '../subject-viewer'
 tasks          = require '../tasks'
 Classification = require 'models/classification'
-{fetchSubjects}  = require '../../lib/fetchSubjects'
+{fetchSubjects}  = require 'lib/fetchSubjects'
 
 
 # NOTES: "mark" subjects should be fetched somewhere in here
@@ -19,16 +19,11 @@ module.exports = React.createClass # rename to Classifier
     currentTask: @props.workflow.tasks[@props.workflow.first_task]
     # classification: new Classification subject
 
-
   componentDidMount: ->
-    @setState
-      subjects:     fetchSubjects "/workflows/#{@state.workflow.id}/subjects.json?limit=5"
-      # DEBUG CODE
-        # , => console.log 'SUBJECTS: ', @state.subjects
-
-    
-  # componentDidMount: ->
-  #   console.log 'CURRENT TASK: ', @state.currentTask.tool
+    subjects = fetchSubjects "/workflows/#{@state.workflow.id}/subjects.json?limit=5"
+    @setState 
+      subjects:       subjects
+      currentSubject: subjects[0] 
     
   render: ->
     console.log 'taskType: ', @state.taskType
