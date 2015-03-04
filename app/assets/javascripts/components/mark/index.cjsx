@@ -27,13 +27,25 @@ module.exports = React.createClass # rename to Classifier
     console.log 'taskType: ', @state.taskType
     TaskComponent = tasks[@state.currentTask.tool]
     
-    <div>
-      <SubjectViewer
-        endpoint={"/workflows/#{@state.workflow.id}/subjects.json?limit=5"}
-        workflow={@props.workflow}
-      />
+    <div className="classifier">
+      <div className="subject-area">
+        <SubjectViewer
+          endpoint={"/workflows/#{@state.workflow.id}/subjects.json?limit=5"}
+          workflow={@props.workflow}
+        />
+      </div>
       <div className="task-area">
-        <TaskComponent task={@state.currentTask} annotation={null} onChange={null} />
+        <div className="task-container">
+          <TaskComponent task={@state.currentTask} annotation={null} onChange={null} />
+          <hr/>
+          <nav className="task-nav">
+            <button type="button" className="back minor-button" disabled={false}>Back</button>
+            {if nextTaskKey?
+              <button type="button" className="continue major-button" disabled={false} onClick={null}>Next</button>
+            else
+              <button type="button" className="continue major-button" disabled={false} onClick={null}>Done</button>}
+          </nav>
+        </div>
       </div>
     </div>
 
