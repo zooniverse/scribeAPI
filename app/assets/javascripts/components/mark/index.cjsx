@@ -32,7 +32,9 @@ module.exports = React.createClass # rename to Classifier
         endpoint={"/workflows/#{@state.workflow.id}/subjects.json?limit=5"}
         workflow={@props.workflow}
       />
-      <TaskComponent task={@state.currentTask} annotation={null} onChange={null} />
+      <div className="task-area">
+        <TaskComponent task={@state.currentTask} annotation={null} onChange={null} />
+      </div>
     </div>
 
 window.React = React

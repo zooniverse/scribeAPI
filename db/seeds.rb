@@ -189,7 +189,7 @@ mark_workflow = Workflow.create(
       pick_page_type: {
         order: 0,
         tool: "pick_one",
-        instruction: "Select the type of page.",
+        instruction: "What kind of page is this?",
         options: {
           history_sheet: {
             label: 'History Sheet',
