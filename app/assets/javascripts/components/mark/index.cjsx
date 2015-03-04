@@ -40,10 +40,11 @@ module.exports = React.createClass # rename to Classifier
           <hr/>
           <nav className="task-nav">
             <button type="button" className="back minor-button" disabled={false}>Back</button>
-            {if nextTaskKey?
-              <button type="button" className="continue major-button" disabled={false} onClick={null}>Next</button>
-            else
-              <button type="button" className="continue major-button" disabled={false} onClick={null}>Done</button>}
+            { if nextTaskKey?
+                <button type="button" className="continue major-button" disabled={false} onClick={null}>Next</button>
+              else
+                <button type="button" className="continue major-button" disabled={false} onClick={null}>Done</button>
+            }
           </nav>
         </div>
       </div>
