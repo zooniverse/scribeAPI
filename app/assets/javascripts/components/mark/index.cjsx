@@ -3,6 +3,7 @@ React          = require 'react'
 SubjectViewer  = require '../subject-viewer'
 tasks          = require '../tasks'
 Classification = require 'models/classification'
+{fetchSubjects}  = require '../../lib/fetchSubjects'
 
 
 # NOTES: "mark" subjects should be fetched somewhere in here
@@ -14,19 +15,20 @@ module.exports = React.createClass # rename to Classifier
     workflow: React.PropTypes.object.isRequired
 
   getInitialState: ->
-    workflow: @props.workflow
-    firstTask: true
-    currentTask: null
+    workflow:    @props.workflow
+    currentTask: @props.workflow.tasks[@props.workflow.first_task]
     # classification: new Classification subject
 
-    # currentTool: null
-
-  componentWillMount: ->
-    workflow = @state.workflow
-    @setState currentTask:  @state.workflow.tasks[workflow.first_task]
 
   componentDidMount: ->
-    console.log 'CURRENT TASK: ', @state.currentTask.tool
+    @setState
+      subjects:     fetchSubjects "/workflows/#{@state.workflow.id}/subjects.json?limit=5"
+      # DEBUG CODE
+        # , => console.log 'SUBJECTS: ', @state.subjects
+
+    
+  # componentDidMount: ->
+  #   console.log 'CURRENT TASK: ', @state.currentTask.tool
     
   render: ->
     console.log 'taskType: ', @state.taskType
@@ -34,10 +36,6 @@ module.exports = React.createClass # rename to Classifier
     
     <div className="classifier">
       <div className="subject-area">
-        <SubjectViewer
-          endpoint={"/workflows/#{@state.workflow.id}/subjects.json?limit=5"}
-          workflow={@props.workflow}
-        />
       </div>
       <div className="task-area">
         <div className="task-container">
