@@ -1,6 +1,8 @@
-React          = require 'react'
+React = require 'react'
 cloneWithProps = require 'react/lib/cloneWithProps'
-
+# alert = require '../../lib/alert'
+# Markdown = require '../../components/markdown'
+# Tooltip = require '../../components/tooltip'
 
 module.exports = React.createClass
   displayName: 'GenericTask'
@@ -15,13 +17,17 @@ module.exports = React.createClass
 
   render: ->
     <div className="workflow-task">
-      <div className="question">
-        {@props.question}
-      </div>
+      <span>{@props.question}</span>
       <div className="answers">
         {React.Children.map @props.answers, (answer) ->
           cloneWithProps answer,  className: 'answer'}
       </div>
+      {if @props.help
+        <p className="help">
+          <button type="button" className="pill-button" onClick={@toggleHelp}>
+            Need some help?
+          </button>
+        </p>}
     </div>
 
   toggleHelp: ->
