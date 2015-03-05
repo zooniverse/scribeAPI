@@ -1,11 +1,11 @@
+Classification = require 'models/classification'
 
 module.exports =
-  
+
   FetchSubjectsMixin = 
 
     componentDidMount: ->
-      return unless @isMounted
-      @fetchSubjects @props.workflow.id, 
+      @fetchSubjects @props.workflow.id, @props.workflow.subject_fetch_limnit
 
     fetchSubjects: (workflow_id, limit) ->
       $.ajax
@@ -14,7 +14,10 @@ module.exports =
         success: ((subjects) ->
           # DEBUG CODE
           console.log 'FETCHED SUBJECTS: ', subjects
-          @setState subjects: subjects
+          @setState 
+            subjects: subjects
+            currentSubject: subjects[0]
+            classification: new Classification subjects[0]
         ).bind(this)
         error: ((xhr, status, err) ->
           console.error "Error loading subjects: ", url, status, err.toString()

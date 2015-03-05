@@ -1,8 +1,6 @@
-# @cjsx React.DOM
 React              = require 'react'
 SubjectViewer      = require '../subject-viewer'
 tasks              = require '../tasks'
-Classification     = require 'models/classification'
 FetchSubjectsMixin = require 'lib/fetch-subjects-mixin'
 
 module.exports = React.createClass # rename to Classifier
@@ -11,25 +9,20 @@ module.exports = React.createClass # rename to Classifier
   propTypes:
     workflow: React.PropTypes.object.isRequired
   
-  mixins: [FetchSubjectsMixin]
+  mixins: [FetchSubjectsMixin] # sets state variables: subjects, currentSubject, classification
 
   getInitialState: ->
     subjects:       null
     currentSubject: null
+    classification: null
     workflow:       @props.workflow
     currentTask:    @props.workflow.tasks[@props.workflow.first_task]
-    # classification: new Classification subject
 
-
-  componentDidMount: ->
-    if @state.subjects?
-      @setState
-        currentSubject:  @state.subjects[0]
-        # classificatioin: new Classification @state.subjects[0]
-    
   render: ->
     return null unless @state.currentSubject?
     TaskComponent = tasks[@state.currentTask.tool]
+
+    console.log 'classification: ', @state.classification
     
     <div className="classifier">
       <div className="subject-area">
