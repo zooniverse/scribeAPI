@@ -2,24 +2,22 @@ module.exports =
   
   FetchSubjectsMixin = 
 
-    getJSON: (url, callback) ->
+    getJSON: (url) ->
       $.ajax
         url: url
         dataType: "json"
         success: ((data) ->
           # DEBUG CODE
           # console.log 'FETCHED SUBJECTS: ', data
-          callback(data)
+          @setState
+            subjects:       data
+            currentSubject: data[0]
+            # classification: new Classification subjects[0]
         ).bind(this)
         error: ((xhr, status, err) ->
           console.error "Error loading subjects: ", url, status, err.toString()
         ).bind(this)
 
-    loadSubjects: (subjects) ->
-      @setState
-        subjects: subjects
-        currentSubject: subjects[0]
-
     componentDidMount: ->
       return unless @isMounted
-      @getJSON "/workflows/#{@props.workflow.id}/subjects.json?limit=5", @loadSubjects
+      @getJSON "/workflows/#{@props.workflow.id}/subjects.json?limit=5"

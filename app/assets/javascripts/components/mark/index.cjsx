@@ -14,7 +14,7 @@ module.exports = React.createClass # rename to Classifier
   mixins: [FetchSubjectsMixin]
 
   getInitialState: ->
-    subjects: null
+    subjects:       null
     currentSubject: null
     workflow:       @props.workflow
     currentTask:    @props.workflow.tasks[@props.workflow.first_task]
