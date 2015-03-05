@@ -1,36 +1,30 @@
 # @cjsx React.DOM
-React          = require 'react'
-SubjectViewer  = require '../subject-viewer'
-tasks          = require '../tasks'
-Classification = require 'models/classification'
-{fetchSubjects}  = require 'lib/fetchSubjects'
-
-
-# NOTES: "mark" subjects should be fetched somewhere in here
+React              = require 'react'
+SubjectViewer      = require '../subject-viewer'
+tasks              = require '../tasks'
+Classification     = require 'models/classification'
+FetchSubjectsMixin = require 'lib/fetch-subjects-mixin'
 
 module.exports = React.createClass # rename to Classifier
   displayName: 'Mark'
-
+  
   propTypes:
     workflow: React.PropTypes.object.isRequired
+  
+  mixins: [FetchSubjectsMixin]
 
   getInitialState: ->
-    workflow:    @props.workflow
-    currentTask: @props.workflow.tasks[@props.workflow.first_task]
+    workflow:       @props.workflow
+    currentTask:    @props.workflow.tasks[@props.workflow.first_task]
     # classification: new Classification subject
-
-  componentDidMount: ->
-    subjects = fetchSubjects "/workflows/#{@state.workflow.id}/subjects.json?limit=5"
-    @setState 
-      subjects:       subjects
-      currentSubject: subjects[0] 
     
   render: ->
-    console.log 'taskType: ', @state.taskType
+    return null unless @state.currentSubject?
     TaskComponent = tasks[@state.currentTask.tool]
     
     <div className="classifier">
       <div className="subject-area">
+        <SubjectViewer subject={@state.currentSubject} />
       </div>
       <div className="task-area">
         <div className="task-container">

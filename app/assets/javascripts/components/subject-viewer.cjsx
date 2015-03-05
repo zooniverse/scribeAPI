@@ -17,20 +17,19 @@ module.exports = React.createClass
     imageWidth: 0
     imageHeight: 0
 
-    subjectEndpoint: @props.endpoint
-    subjects: null
-    subject: null
+    subject: @props.subject
     classification: null
+    
     tool: @props.tool
-
     marks: []
     selectedMark: null
     lastMarkKey: 0
 
   componentDidMount: ->
     console.log 'WORKFLOW: ', @props.workflow
+    console.log 'SUBJECT: ', @state.subject
     @setView 0, 0, @state.imageWidth, @state.imageHeight
-    @fetchSubjects(@state.subjectEndpoint)
+    @loadImage @state.subject.location.standard
     window.addEventListener "resize", this.updateDimensions
 
   componentWillMount: ->
@@ -45,6 +44,7 @@ module.exports = React.createClass
       windowInnerHeight: window.innerHeight
 
   loadImage: (url) ->
+    console.log 'URL: ', url
     @setState loading: true, =>
       img = new Image()
       img.src = url
@@ -60,27 +60,27 @@ module.exports = React.createClass
             # console.log @state.loading
             # console.log "Finished Loading."
 
-  nextSubject: () ->
-    @prepareClassification()
-    @sendMarkClassification()
+  # nextSubject: () ->
+  #   @prepareClassification()
+  #   @sendMarkClassification()
 
-    # # DEBUG CODE
-    # console.log 'CLASSIFICATION: ', @state.classification
+  #   # # DEBUG CODE
+  #   # console.log 'CLASSIFICATION: ', @state.classification
 
-    # console.log JSON.stringify @state.classification # DEBUG CODE
-    @state.classification.send()
-    @setState
-      marks: [] # clear marks for next subject
+  #   # console.log JSON.stringify @state.classification # DEBUG CODE
+  #   @state.classification.send()
+  #   @setState
+  #     marks: [] # clear marks for next subject
 
-    # prepare new classification
-    if @state.subjects.shift() is undefined or @state.subjects.length <= 0
-      @fetchSubjects(@state.subjectEndpoint)
-      return
-    else
-      @setState subject: @state.subjects[0], =>
-        @loadImage ((if @usingFakeSubject() then @state.subject.classification.subject.location.standard else @state.subject.location.standard))
+  #   # prepare new classification
+  #   if @state.subjects.shift() is undefined or @state.subjects.length <= 0
+  #     @fetchSubjects(@state.subjectEndpoint)
+  #     return
+  #   else
+  #     @setState subject: @state.subjects[0], =>
+  #       @loadImage ((if @usingFakeSubject() then @state.subject.classification.subject.location.standard else @state.subject.location.standard))
 
-    @state.classification = new Classification @state.subject
+  #   @state.classification = new Classification @state.subject
 
   # VARIOUS EVENT HANDLERS
 
@@ -158,7 +158,9 @@ module.exports = React.createClass
       # , => @forceUpdate()
 
   render: ->
-    return null if @state.subjects is null or @state.subjects.length is 0
+    # return null if @state.subjects is null or @state.subjects.length is 0
+    # return null unless @state.subject?
+    console.log 'SUBJECT: ', @state.subject
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     ToolComponent = @state.tool
     if @state.loading
