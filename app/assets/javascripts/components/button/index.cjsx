@@ -12,10 +12,6 @@ module.export = React.createClass
     name: React.PropTypes.string
     type: React.PropTypes.string
     url: React.PropTypes.string
-    className
-
-  # getDefaultProps: ->
-
 
   handleClick: (event) ->
     event.preventDefault()
@@ -29,10 +25,10 @@ module.export = React.createClass
           console.log "Success, here is data: #{data}" 
         error: (jqXHR, textStatus, errorThrown) ->
           console.log "Error in button action:", xhr, textStatus, errorThrown
-          
+
 
   render: ->
-    <a className={this.props.name} type={this.props.type} url={this.props.url} onClick={@handleClick} > </a>
+    <a type={this.props.type} url={this.props.url} onClick={@handleClick} > </a>
 
 
 
