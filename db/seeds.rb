@@ -132,7 +132,7 @@ transcribe_tasks = {
       field_name:   'other_entry',
       label:        'Other Entry',
       instruction:  'Type something, anything.',
-      next_task:     ''
+      next_task:     nil
   }
 }
 
@@ -177,7 +177,7 @@ mark_workflow = Workflow.create(
             next_task: 'attestation_task'
           }
         },
-        next_task: ''
+        next_task: nil
       },
       attestation_task: {
         order: 1,

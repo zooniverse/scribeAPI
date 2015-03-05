@@ -22,7 +22,7 @@ module.exports = React.createClass # rename to Classifier
     return null unless @state.currentSubject?
     TaskComponent = tasks[@state.currentTask.tool]
 
-    console.log 'classification: ', @state.classification
+    console.log '@state.currentTask: ', @state.currentTask
     
     <div className="classifier">
       <div className="subject-area">
@@ -34,7 +34,7 @@ module.exports = React.createClass # rename to Classifier
           <hr/>
           <nav className="task-nav">
             <button type="button" className="back minor-button" disabled={false}>Back</button>
-            { if nextTaskKey?
+            { if @state.currentTask.next_task?
                 <button type="button" className="continue major-button" disabled={false} onClick={null}>Next</button>
               else
                 <button type="button" className="continue major-button" disabled={false} onClick={null}>Done</button>

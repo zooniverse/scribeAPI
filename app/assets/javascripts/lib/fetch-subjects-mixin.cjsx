@@ -13,7 +13,7 @@ module.exports =
         dataType: "json"
         success: ((subjects) ->
           # DEBUG CODE
-          console.log 'FETCHED SUBJECTS: ', subjects
+          # console.log 'FETCHED SUBJECTS: ', subjects
           @setState 
             subjects: subjects
             currentSubject: subjects[0]
