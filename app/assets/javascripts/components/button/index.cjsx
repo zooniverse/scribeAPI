@@ -1,5 +1,7 @@
 # @cjsx React.DOM
 
+ResizeButton   = require './resize-button'
+
 React = require 'react'
 
 module.export = React.createClass
@@ -25,7 +27,10 @@ module.export = React.createClass
 
 
   render: ->
-    <a type={this.props.type} url={this.props.url} onClick={@handleClick} > </a>
+    if @props.type == "delete"
+      <a type={this.props.type} url={this.props.url} onClick={@handleClick} > </a>
+    else @props.type == "resize"
+      <ResizeButton></ResizeButton>
 
 
 
