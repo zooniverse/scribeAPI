@@ -19,6 +19,13 @@ module.exports = React.createClass # rename to Classifier
     workflow:       @props.workflow
     currentTask:    @props.workflow.tasks[@props.workflow.first_task]
     # classification: new Classification subject
+
+
+  componentDidMount: ->
+    if @state.subjects?
+      @setState
+        currentSubject:  @state.subjects[0]
+        # classificatioin: new Classification @state.subjects[0]
     
   render: ->
     return null unless @state.currentSubject?

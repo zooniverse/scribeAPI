@@ -3,14 +3,14 @@ class Workflow
   include Mongoid::Timestamps
 
   # field    :key, 				        type: String
-  field    :name,               type: String
-  field    :label,              type: String
-  field    :tasks, 			      	type: Hash
-  field    :first_task,         type: String
-  field    :retire_limit, 		  type: Integer, default: 10
-  field    :enables_workflows,  type: Hash
-  field    :active_subjects,    type: Integer, default: 0
-
+  field  :name,                type: String
+  field  :label,               type: String
+  field  :tasks, 			      	 type: Hash
+  field  :first_task,          type: String
+  field  :retire_limit, 		   type: Integer, default: 10
+  field  :subject_fetch_limit, type: Integer, default: 5
+  field  :enables_workflows,   type: Hash
+  field  :active_subjects,     type: Integer, default: 0
 
   has_many :classifications
   belongs_to :project
