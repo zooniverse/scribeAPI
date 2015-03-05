@@ -177,6 +177,24 @@ mark_workflow = Workflow.create(
             next_task: 'attestation_task'
           }
         },
+        next_task: 'fake_task'
+      },
+      fake_task: {
+        order: 3,
+        tool: 'pick_one',
+        instruction: 'Is this cool?',
+        options: {
+          yes: {
+            label: 'Yes',
+            image: '',
+            next_task: nil
+          },
+          no: {
+            label: 'No',
+            image: '',
+            next_task: nil
+          },
+        },
         next_task: nil
       },
       attestation_task: {
@@ -206,7 +224,8 @@ mark_workflow = Workflow.create(
         tool: {},
         options: {}
       },
-      casualty_form_task: {}
+      casualty_form_task: {
+      }
     }
   }
 )
