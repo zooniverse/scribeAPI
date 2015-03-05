@@ -19,13 +19,9 @@ module.exports = React.createClass # rename to Classifier
     currentTask:    @props.workflow.tasks[@props.workflow.first_task]
 
   render: ->
-    console.log 'render()'
-    console.log 'currentTask: ', @state.currentTask
     return null unless @state.currentSubject? and @state.currentTask?
     TaskComponent = tasks[@state.currentTask.tool]
 
-    console.log '@state.currentTask: ', @state.currentTask
-    
     <div className="classifier">
       <div className="subject-area">
         <SubjectViewer subject={@state.currentSubject} />
@@ -47,11 +43,8 @@ module.exports = React.createClass # rename to Classifier
     </div>
 
   nextTask: ->
-    console.log 'nextTask()'
-    next_task = @state.currentTask.next_task
-    console.log 'next_task: ', @state.workflow.tasks[next_task]
-    return unless next_task?
-    @setState currentTask: @state.workflow.tasks[next_task]
+    return unless @state.currentTask.next_task?
+    @setState currentTask: @state.workflow.tasks[ @state.currentTask.next_task ]
 
   prevTask: ->
     console.log 'prevTask()'
