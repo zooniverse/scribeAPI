@@ -61,7 +61,6 @@ module.exports = React.createClass
 
   render: ->
     answers = for i, answer of @props.task.options
-      console.log 'ANSWER IS: ', i
       answer._key ?= Math.random()
       <label key={answer._key} className="minor-button">
         <input type="radio" checked={false} onChange={@handleChange.bind this, i} />

@@ -16,7 +16,7 @@ DynamicRouter = React.createClass
       @setState home_page_content: result.project.home_page_content 
       @setState pages:             result.project.pages
         # DEBUG CODE
-        , => console.log 'PROJECT: ', @state.project
+        # , => console.log 'PROJECT: ', @state.project
       
   controllerForPage: (page) ->
     React.createClass

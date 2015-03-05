@@ -26,8 +26,6 @@ module.exports = React.createClass
     lastMarkKey: 0
 
   componentDidMount: ->
-    console.log 'WORKFLOW: ', @props.workflow
-    console.log 'SUBJECT: ', @state.subject
     @setView 0, 0, @state.imageWidth, @state.imageHeight
     @loadImage @state.subject.location.standard
     window.addEventListener "resize", this.updateDimensions
@@ -44,7 +42,6 @@ module.exports = React.createClass
       windowInnerHeight: window.innerHeight
 
   loadImage: (url) ->
-    console.log 'URL: ', url
     @setState loading: true, =>
       img = new Image()
       img.src = url
@@ -55,8 +52,8 @@ module.exports = React.createClass
             url: url
             imageWidth: img.width
             imageHeight: img.height
-            loading: false #, =>
-              , => console.log 'url: ', url
+            loading: false 
+              #, => console.log 'url: ', url
             # console.log @state.loading
             # console.log "Finished Loading."
 
@@ -160,7 +157,7 @@ module.exports = React.createClass
   render: ->
     # return null if @state.subjects is null or @state.subjects.length is 0
     # return null unless @state.subject?
-    console.log 'SUBJECT: ', @state.subject
+    # console.log 'SUBJECT: ', @state.subject
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     ToolComponent = @state.tool
     if @state.loading
