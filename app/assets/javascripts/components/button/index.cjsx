@@ -1,8 +1,5 @@
 # @cjsx React.DOM
 
-# creating a button component that could set defaults depending on props.
-# currently modeled on action button.
-
 React = require 'react'
 
 module.export = React.createClass
