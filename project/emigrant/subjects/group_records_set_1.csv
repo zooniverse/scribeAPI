@@ -1,0 +1,4 @@
+order,file_path,thumbnail,width,height,capture_location,date
+1,https://s3.amazonaws.com/scribe.nypl.org/emigrant-records/originals/037.jpg,https://s3.amazonaws.com/scribe.nypl.org/emigrant-records/originals/037.jpg,2097,3150,Img 1,2013_04_20
+2,https://s3.amazonaws.com/scribe.nypl.org/emigrant-records/originals/038.jpg,https://s3.amazonaws.com/scribe.nypl.org/emigrant-records/originals/038.jpg,2097,3150,Img 2,2013_04_20
+3,https://s3.amazonaws.com/scribe.nypl.org/emigrant-records/originals/039.jpg,https://s3.amazonaws.com/scribe.nypl.org/emigrant-records/originals/039.jpg,2097,3150,Img 3,2013_04_20

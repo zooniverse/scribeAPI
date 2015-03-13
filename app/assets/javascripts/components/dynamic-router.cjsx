@@ -14,7 +14,7 @@ DynamicRouter = React.createClass
     $.getJSON '/projects', (result) => 
       @setState project:           result.project
       @setState home_page_content: result.project.home_page_content 
-      @setState pages:             result.project.pages
+      @setState pages:             result.project.pages ? []
         # DEBUG CODE
         # , => console.log 'PROJECT: ', @state.project
       

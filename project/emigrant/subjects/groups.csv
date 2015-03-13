@@ -1,0 +1,3 @@
+name,description,cover_image_url,external_url,meta_data_1,retire_count
+records_set_1,First set of records spanning 1871-1891,http://lorempixel.com/1000/900/cats/,http://en.wikipedia.org/wiki/Cat,metadata val 1,2
+records_set_2,Second set of records spanning 1892-1921,http://lorempixel.com/1000/900/animals/,http://en.wikipedia.org/wiki/animals,metadata val 2,3
