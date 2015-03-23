@@ -9,7 +9,7 @@ module.exports = React.createClass # rename to Classifier
   propTypes:
     workflow: React.PropTypes.object.isRequired
   
-  mixins: [FetchSubjectsMixin] # sets state variables: subjects, currentSubject, classification
+  mixins: [FetchSubjectsMixin] # load subjects and set state variables: subjects, currentSubject, classification
 
   getInitialState: ->
     subjects:       null
@@ -18,9 +18,14 @@ module.exports = React.createClass # rename to Classifier
     workflow:       @props.workflow
     currentTask:    @props.workflow.tasks[@props.workflow.first_task]
 
+  componentDidMount: ->
+    console.log 'This is the componentDidMount method()'
+
   render: ->
     return null unless @state.currentSubject? and @state.currentTask?
     TaskComponent = tasks[@state.currentTask.tool]
+
+    annotation = ''
 
     <div className="classifier">
       <div className="subject-area">
@@ -28,7 +33,7 @@ module.exports = React.createClass # rename to Classifier
       </div>
       <div className="task-area">
         <div className="task-container">
-          <TaskComponent task={@state.currentTask} annotation={null} onChange={null} />
+          <TaskComponent task={@state.currentTask} annotation={annotation} onChange={null} />
           <hr/>
           <nav className="task-nav">
             <button type="button" className="back minor-button" disabled={false} onClick={@prevTask}>Back</button>

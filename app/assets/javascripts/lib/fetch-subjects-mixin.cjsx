@@ -8,7 +8,6 @@ module.exports =
       @fetchSubjects @props.workflow.id, @props.workflow.subject_fetch_limit
 
     fetchSubjects: (workflow_id, limit) ->
-      console.log "ENDPOINT: /workflows/#{workflow_id}/subjects.json?limit=#{limit}"
       $.ajax
         url: "/workflows/#{workflow_id}/subjects.json?limit=#{limit}"
         dataType: "json"
