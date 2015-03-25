@@ -24,8 +24,13 @@ module.exports = React.createClass # rename to Classifier
   render: ->
     return null unless @state.currentSubject? and @state.currentTask?
     TaskComponent = tasks[@state.currentTask.tool]
+    onFirstAnnotation = @state.classification.annotations.length is 0
 
-    annotation = ''
+    annotations = @state.classification.annotations
+    currentAnnotation = annotations[annotations.length-1]
+
+    waitingForAnswer = false # for now 
+
 
     <div className="classifier">
       <div className="subject-area">
@@ -33,14 +38,14 @@ module.exports = React.createClass # rename to Classifier
       </div>
       <div className="task-area">
         <div className="task-container">
-          <TaskComponent task={@state.currentTask} annotation={annotation} onChange={null} />
+          <TaskComponent task={@state.currentTask} annotation={currentAnnotation} onChange={null} />
           <hr/>
           <nav className="task-nav">
-            <button type="button" className="back minor-button" disabled={false} onClick={@prevTask}>Back</button>
+            <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@prevTask}>Back</button>
             { if @state.currentTask.next_task?
-                <button type="button" className="continue major-button" disabled={false} onClick={@nextTask}>Next</button>
+                <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@makeAnnotation}>Next</button>
               else
-                <button type="button" className="continue major-button" disabled={false} onClick={@makeAnnotation}>Done</button>
+                <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@finishClassification}>Done</button>
             }
           </nav>
         </div>
@@ -56,5 +61,23 @@ module.exports = React.createClass # rename to Classifier
 
   makeAnnotation: ->
     console.log 'makeAnnotation()'
+    console.log 'currentTask = ', tasks[@state.currentTask.tool].getDefaultAnnotation()
+    annotation      = tasks[@state.currentTask.tool].getDefaultAnnotation()
+    console.log 'foo'
+    annotation.tool = @state.currentTask.tool
+    classification  = @state.classification 
+    classification.annotations.push annotation
+
+    @setState classification: classification, =>
+      console.log 'CLASSIFICATION UPDATED: ', @state.classification
+
+    @nextTask()
+
+  finishClassification: ->
+    @makeAnnotation()
+    console.log 'CLASSIFICATION DONE!'
+    
+
+
 
 window.React = React
