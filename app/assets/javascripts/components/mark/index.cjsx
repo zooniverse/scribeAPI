@@ -18,19 +18,26 @@ module.exports = React.createClass # rename to Classifier
     workflow:       @props.workflow
     currentTask:    @props.workflow.tasks[@props.workflow.first_task]
 
+    # # @state.classification.annotations ?= []
+    # if @state.classification.annotations.length is 0
+    #   console.log 'making first annotation'
+    #   @makeAnnotation @state.workflow.first_task
+
   componentDidMount: ->
     console.log 'This is the componentDidMount method()'
 
   render: ->
+    console.log 'BLAH: ', @state.classification
     return null unless @state.currentSubject? and @state.currentTask?
     TaskComponent = tasks[@state.currentTask.tool]
     onFirstAnnotation = @state.classification.annotations.length is 0
 
     annotations = @state.classification.annotations
-    currentAnnotation = annotations[annotations.length-1]
+    currentAnnotation = if annotations.length is 0 then {} else annotations[annotations.length-1]
+
+    console.log 'currentAnnotation? : ', currentAnnotation
 
     waitingForAnswer = false # for now 
-
 
     <div className="classifier">
       <div className="subject-area">
@@ -38,7 +45,7 @@ module.exports = React.createClass # rename to Classifier
       </div>
       <div className="task-area">
         <div className="task-container">
-          <TaskComponent task={@state.currentTask} annotation={currentAnnotation} onChange={null} />
+          <TaskComponent task={@state.currentTask} annotation={currentAnnotation} onChange={@onTaskComponentChange} />
           <hr/>
           <nav className="task-nav">
             <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@prevTask}>Back</button>
@@ -54,28 +61,50 @@ module.exports = React.createClass # rename to Classifier
 
   nextTask: ->
     return unless @state.currentTask.next_task?
-    @setState currentTask: @state.workflow.tasks[ @state.currentTask.next_task ]
+    @setState 
+      currentTask: @state.workflow.tasks[ @state.currentTask.next_task ]
 
   prevTask: ->
     console.log 'prevTask()'
 
-  makeAnnotation: ->
+  makeAnnotation: (taskKey) ->
     console.log 'makeAnnotation()'
-    console.log 'currentTask = ', tasks[@state.currentTask.tool].getDefaultAnnotation()
-    annotation      = tasks[@state.currentTask.tool].getDefaultAnnotation()
-    console.log 'foo'
+    # taskDescription = @state.workflow.tasks[taskKey]
+    annotation = tasks[@state.currentTask.tool].getDefaultAnnotation()
     annotation.tool = @state.currentTask.tool
+
+    console.log 'ADDING ANNOTATION: ', annotation
+
     classification  = @state.classification 
     classification.annotations.push annotation
 
     @setState classification: classification, =>
       console.log 'CLASSIFICATION UPDATED: ', @state.classification
-
     @nextTask()
 
   finishClassification: ->
     @makeAnnotation()
     console.log 'CLASSIFICATION DONE!'
+
+  # this is called when user clicks on radio button
+  onTaskComponentChange: (value) ->
+    # console.log 'onTaskComponentChange() ', value
+
+    classification = @state.classification
+    annotations = classification.annotations
+    currentAnnotation = if annotations.length is 0 then {} else annotations[annotations.length-1]
+
+    currentAnnotation.value = value
+
+    console.log 'currentAnnotation ********: ', currentAnnotation
+    # @makeAnnotation()
+
+    # annotations = @state.classification.annotations
+    # console.log 'CUCLKJDHKSLDJ: ', @state
+    # annotations[annotations.length-1].value = value
+
+    # @setState classification: classification, => console.log 'UPDATED CLASSIFICATOIN ', @state.classification
+
     
 
 

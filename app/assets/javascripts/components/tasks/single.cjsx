@@ -60,11 +60,8 @@ module.exports = React.createClass
     onChange: NOOP
 
   render: ->
-    console.log 'SingleChoiceSummary::render()'
-    console.log '@props.task.options: ', @props.task.options
-    console.log '@props.annotation: ', @props.annotation
+    console.log 'CURRENT ANNOTATION: ', @props.annotation
     answers = for i, answer of @props.task.options
-      console.log 'i: ', i, ', answer: ', answer
       answer._key ?= Math.random()
       <label key={answer._key} className="minor-button">
         <input type="radio" checked={i is @props.annotation?.value} onChange={@handleChange.bind this, i} />
@@ -74,10 +71,10 @@ module.exports = React.createClass
     <GenericTask question={@props.task.instruction} help={@props.task.help} answers={answers} />
 
   handleChange: (index, e) ->
-    console.log 'handleChange()'
-    console.log 'TASK: ', @props.task
-    console.log 'ANNOTATION: ', @props.annotation
+    console.log 'handleChange(): ANNOTATION: ', @props.annotation
+    console.log 'index: ', index
     if e.target.checked
       @props.annotation.value = index
-      @props.onChange? e
+      @props.onChange index
+      @forceUpdate() # update the radiobuttons after selection
 
