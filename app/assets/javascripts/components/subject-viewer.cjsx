@@ -160,6 +160,13 @@ module.exports = React.createClass
     # console.log 'SUBJECT: ', @state.subject
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     ToolComponent = @state.tool
+
+    actionButton = 
+      if @state.loading
+        <ActionButton onAction={@nextSubject} classes="disabled" text="Loading..." />
+      else
+        <ActionButton onClick={@nextSubject} text="Next Page" />
+
     if @state.loading
       markingSurfaceContent = <LoadingIndicator />
     else
@@ -209,7 +216,7 @@ module.exports = React.createClass
           {markingSurfaceContent}
         </div>
         <div className="subject-ui">
-          <ActionButton loading={@state.loading} />
+          {actionButton}
         </div>
       </div>
     </div>
