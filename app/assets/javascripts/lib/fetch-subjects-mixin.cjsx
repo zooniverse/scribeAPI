@@ -17,7 +17,7 @@ module.exports =
           @setState 
             subjects: subjects
             currentSubject: subjects[0]
-            classification: new Classification subjects[0]
+            # classification: new Classification subjects[0]
         ).bind(this)
         error: ((xhr, status, err) ->
           console.error "Error loading subjects: ", url, status, err.toString()
