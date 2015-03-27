@@ -35,8 +35,6 @@ module.exports = React.createClass # rename to Classifier
     currentAnnotation = if annotations.length is 0 then {} else annotations[annotations.length-1]
     currentTask = @props.workflow.tasks[currentAnnotation?.task]
 
-    console.log 'CURRENT TASK IS: ', currentTask
-
     TaskComponent = tasks[@state.currentTask.tool]
 
     onFirstAnnotation = @props.classification.annotations.length is 0
@@ -54,7 +52,7 @@ module.exports = React.createClass # rename to Classifier
           <TaskComponent task={currentTask} annotation={currentAnnotation} onChange={=> @props.classification.update 'annotation'} />
           <hr/>
           <nav className="task-nav">
-            <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@prevTask}>Back</button>
+            <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
             { if currentTask.next_task?
                 <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@addAnnotationForTask.bind this, @state.currentTask.next_task}>Next</button>
               else
@@ -65,27 +63,20 @@ module.exports = React.createClass # rename to Classifier
       </div>
     </div>
 
-  prevTask: ->
-    console.log 'prevTask()'
-    @destroyCurrentAnnotation()
-
   destroyCurrentAnnotation: ->
     @props.classification.annotations.pop()
     @props.classification.update 'annotations'
     @forceUpdate()
 
   addAnnotationForTask: (taskKey) ->
-    console.log "*** ADDING ANNOTATION (key: #{taskKey}) ***"
     taskDescription = @props.workflow.tasks[taskKey]
     annotation = tasks[taskDescription.tool].getDefaultAnnotation() # sets {value: null}
     annotation.task = taskKey # e.g. {task: "cool"}
     @props.classification.annotations.push annotation
     @props.classification.update 'annotations'
-    console.log 'ALL ANNOTATIONS: ', @props.classification.annotations
     @forceUpdate()
 
   completeClassification: ->
-    console.log 'completeClassification()'
     @props.classification.update
       completed: true
       'metadata.finished_at': (new Date).toISOString()

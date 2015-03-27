@@ -60,7 +60,6 @@ module.exports = React.createClass
     onChange: NOOP
 
   render: ->
-    console.log 'CURRENT ANNOTATION: ', @props.annotation
     answers = for i, answer of @props.task.options
       answer._key ?= Math.random()
       <label key={answer._key} className="minor-button">
