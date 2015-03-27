@@ -36,12 +36,12 @@ module.exports = React.createClass # rename to Classifier
     currentTask = @props.workflow.tasks[currentAnnotation?.task]
 
     TaskComponent = tasks[@state.currentTask.tool]
+    
+    onFirstAnnotation = currentAnnotation?.task is @props.workflow.first_task
 
-    onFirstAnnotation = @props.classification.annotations.length is 0
     if currentTask.type is 'single'
       currentAnswer = currentTask.options?[currentAnnotation.value]
       waitingForAnswer = not currentAnswer
-    # waitingForAnswer = false
 
     <div className="classifier">
       <div className="subject-area">
