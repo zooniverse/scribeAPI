@@ -29,14 +29,21 @@ module.exports = React.createClass # rename to Classifier
     @addAnnotationForTask @props.workflow.first_task
 
   render: ->
-    return null unless @state.currentSubject? and @state.currentTask?
-    TaskComponent = tasks[@state.currentTask.tool]
-    onFirstAnnotation = @props.classification.annotations.length is 0
+    return null unless @state.currentSubject?
 
     annotations = @props.classification.annotations
     currentAnnotation = if annotations.length is 0 then {} else annotations[annotations.length-1]
+    currentTask = @props.workflow.tasks[currentAnnotation?.task]
 
-    waitingForAnswer = false # for now 
+    console.log 'CURRENT TASK IS: ', currentTask
+
+    TaskComponent = tasks[@state.currentTask.tool]
+
+    onFirstAnnotation = @props.classification.annotations.length is 0
+    if currentTask.type is 'single'
+      currentAnswer = currentTask.options?[currentAnnotation.value]
+      waitingForAnswer = not currentAnswer
+    # waitingForAnswer = false
 
     <div className="classifier">
       <div className="subject-area">
@@ -44,11 +51,11 @@ module.exports = React.createClass # rename to Classifier
       </div>
       <div className="task-area">
         <div className="task-container">
-          <TaskComponent task={@state.currentTask} annotation={currentAnnotation} onChange={=> @props.classification.update 'annotation'} />
+          <TaskComponent task={currentTask} annotation={currentAnnotation} onChange={=> @props.classification.update 'annotation'} />
           <hr/>
           <nav className="task-nav">
             <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@prevTask}>Back</button>
-            { if @state.currentTask.next_task?
+            { if currentTask.next_task?
                 <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@addAnnotationForTask.bind this, @state.currentTask.next_task}>Next</button>
               else
                 <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeClassification}>Done</button>
@@ -58,29 +65,31 @@ module.exports = React.createClass # rename to Classifier
       </div>
     </div>
 
-  nextTask: ->
-    return unless @state.currentTask.next_task?
-    @setState 
-      currentTask: @state.workflow.tasks[ @state.currentTask.next_task ]
-
   prevTask: ->
     console.log 'prevTask()'
+    @destroyCurrentAnnotation()
 
   destroyCurrentAnnotation: ->
     @props.classification.annotations.pop()
     @props.classification.update 'annotations'
+    @forceUpdate()
 
   addAnnotationForTask: (taskKey) ->
+    console.log "*** ADDING ANNOTATION (key: #{taskKey}) ***"
     taskDescription = @props.workflow.tasks[taskKey]
     annotation = tasks[taskDescription.tool].getDefaultAnnotation() # sets {value: null}
     annotation.task = taskKey # e.g. {task: "cool"}
     @props.classification.annotations.push annotation
     @props.classification.update 'annotations'
+    console.log 'ALL ANNOTATIONS: ', @props.classification.annotations
+    @forceUpdate()
 
   completeClassification: ->
+    console.log 'completeClassification()'
     @props.classification.update
       completed: true
-      # 'metadata.finished_at': (new Date).toISOString()
-    # @props.onComplete?()
+      'metadata.finished_at': (new Date).toISOString()
+    @props.onComplete?()
+    console.log 'CLASSIFICATION: ', @props.classification
 
 window.React = React

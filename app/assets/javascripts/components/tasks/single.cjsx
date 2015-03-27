@@ -71,8 +71,6 @@ module.exports = React.createClass
     <GenericTask question={@props.task.instruction} help={@props.task.help} answers={answers} />
 
   handleChange: (index, e) ->
-    console.log 'handleChange(): ANNOTATION: ', @props.annotation
-    console.log 'index: ', index
     if e.target.checked
       @props.annotation.value = index
       @props.onChange index
