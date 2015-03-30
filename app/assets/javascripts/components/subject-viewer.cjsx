@@ -14,6 +14,7 @@ module.exports = React.createClass
   resizing: false
 
   getInitialState: ->
+    console.log 'props.tool: ', @props.tool
     imageWidth: 0
     imageHeight: 0
 
@@ -91,6 +92,9 @@ module.exports = React.createClass
       y: ey
       timestamp: (new Date).toJSON()
     marks.push newMark
+
+    console.log 'MARKS: ', marks[marks.length-1]
+
     @setState
       marks: marks
       lastMarkKey: @state.lastMarkKey + 1
@@ -154,12 +158,33 @@ module.exports = React.createClass
         y: mark.y - ey
       # , => @forceUpdate()
 
+
+          # SCRATCH CODE TAKEN FROM WITHIN SVG TAG
+          #       { @state.marks.map ((mark, i) ->
+          #     <ToolComponent
+          #       key={i}
+          #       mark={mark}
+          #       subject={@state.subject}
+          #       workflow={@props.workflow}
+          #       getEventOffset={@getEventOffset}
+          #       isSelected={mark is @state.selectedMark}
+          #       handleMarkClick={@handleMarkClick.bind null, mark}
+          #       onClickDelete={@onClickDelete}
+          #       clickOffset={@state.clickOffset}
+          #       imageWidth={@state.imageWidth}
+          #       imageHeight={@state.imageHeight}
+          #     />
+          #   ), @
+          # }
+
   render: ->
     # return null if @state.subjects is null or @state.subjects.length is 0
     # return null unless @state.subject?
     # console.log 'SUBJECT: ', @state.subject
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     ToolComponent = @state.tool
+
+    console.log 'ToolCOmponent: ', @state.tool
 
     actionButton = 
       if @state.loading
@@ -192,22 +217,28 @@ module.exports = React.createClass
               height = {@state.imageHeight} />
           </Draggable>
 
-          { @state.marks.map ((mark, i) ->
-              <ToolComponent
-                key={i}
-                mark={mark}
-                subject={@state.subject}
-                workflow={@props.workflow}
-                getEventOffset={@getEventOffset}
-                isSelected={mark is @state.selectedMark}
-                handleMarkClick={@handleMarkClick.bind null, mark}
-                onClickDelete={@onClickDelete}
-                clickOffset={@state.clickOffset}
-                imageWidth={@state.imageWidth}
-                imageHeight={@state.imageHeight}
-              />
-            ), @
+          { for annotation in @props.classification.annotations
+              console.log 'annotation: ', annotation
+              annotation._key ?= Math.random()
+              isPriorAnnotation = annotation isnt @props.annotation
+              taskDescription = @props.workflow.tasks[annotation.task]
+
+              <g key={annotation._key} className="marks-for-annotation" data-disabled={isPriorAnnotation or null} >
+                { if @state.selectedMark?
+                    <text
+                      x={@state.selectedMark.x}
+                      y={@state.selectedMark.y}
+                      fontFamily="Verdana"
+                      fontSize="55"
+                    >
+                      BLAH
+                    </text>
+                }
+              </g>
+
+
           }
+
         </svg>
 
     <div className="subject-viewer">
