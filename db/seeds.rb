@@ -184,23 +184,22 @@ mark_workflow = Workflow.create(
       fake_task: {
         order: 3,
         tool: 'pick_one',
-        instruction: 'Is this cool?',
+        instruction: 'Is there anything left to mark here?',
         options: {
           yes: {
             label: 'Yes',
-            image: '',
-            next_task: 'mark_fields'
+            image: ''
           },
           no: {
             label: 'No',
-            image: '',
-            next_task: nil
-          },
-        }
+            image: ''
+          }
+        },
+        next_task: 'mark_fields'
       },
 
       mark_fields: {
-        type: 'drawing',
+        tool: 'drawing',
         instruction: 'Pick a field and mark it with the corresponding marking tool.',
         tools: [
           {type: 'line', label: 'Line', color: 'yellow'},
