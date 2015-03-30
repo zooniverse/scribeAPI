@@ -49,7 +49,7 @@ module.exports = React.createClass # rename to Classifier
 
     <div className="classifier">
       <div className="subject-area">
-        <SubjectViewer subject={@state.currentSubject} />
+        <SubjectViewer subject={@state.currentSubject} workflow={@props.workflow} classification={@props.classification} />
       </div>
       <div className="task-area">
         <div className="task-container">
