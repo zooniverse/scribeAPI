@@ -1,6 +1,6 @@
 React = require 'react'
 GenericTask = require './generic'
-Markdown = require '../../components/markdown'
+# Markdown = require '../../components/markdown'
 
 NOOP = Function.prototype
 
@@ -98,7 +98,7 @@ module.exports = React.createClass
       <label key={tool._key} className="minor-button #{if i is (@props.annotation._toolIndex ? 0) then 'active' else ''}">
         <span className="drawing-tool-icon" style={color: tool.color}>{icons[tool.type]}</span>{' '}
         <input type="radio" className="drawing-tool-input" checked={i is (@props.annotation._toolIndex ? 0)} onChange={@handleChange.bind this, i} />
-        <Markdown>{tool.label}</Markdown>
+        <span>{tool.label}</span>
         {unless count is 0
           <span className="tool-count">({count})</span>}
       </label>

@@ -36,6 +36,9 @@ module.exports = React.createClass # rename to Classifier
     currentAnnotation = if annotations.length is 0 then {} else annotations[annotations.length-1]
     currentTask = @props.workflow.tasks[currentAnnotation?.task]
 
+    console.log 'CURRENT TASK: ', currentTask
+    console.log 'NEXT TASK: ', currentTask.next_task
+
     TaskComponent = tasks[@state.currentTask.tool]
 
     onFirstAnnotation = currentAnnotation?.task is @props.workflow.first_task
@@ -55,7 +58,7 @@ module.exports = React.createClass # rename to Classifier
           <nav className="task-nav">
             <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
             { if currentTask.next_task?
-                <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@addAnnotationForTask.bind this, @state.currentTask.next_task}>Next</button>
+                <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@addAnnotationForTask.bind this, currentTask.next_task}>Next</button>
               else
                 <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeClassification}>Done</button>
             }
@@ -70,6 +73,7 @@ module.exports = React.createClass # rename to Classifier
     @forceUpdate()
 
   addAnnotationForTask: (taskKey) ->
+    console.log 'taskKey: ', taskKey
     taskDescription = @props.workflow.tasks[taskKey]
     annotation = tasks[taskDescription.tool].getDefaultAnnotation() # sets {value: null}
     annotation.task = taskKey # e.g. {task: "cool"}
