@@ -14,7 +14,6 @@ module.exports = React.createClass
   resizing: false
 
   getInitialState: ->
-    console.log 'props.tool: ', @props.tool
     imageWidth: 0
     imageHeight: 0
 
@@ -91,14 +90,17 @@ module.exports = React.createClass
       x: ex
       y: ey
       timestamp: (new Date).toJSON()
-    marks.push newMark
+    # marks.push newMark
 
-    console.log 'MARKS: ', marks[marks.length-1]
-
+    @props.annotation.value.push newMark
+    
     @setState
-      marks: marks
+    #   marks: marks
       lastMarkKey: @state.lastMarkKey + 1
       selectedMark: marks[marks.length-1]
+
+    setTimeout =>
+      @updateAnnotations()
 
   handleInitDrag: (e) ->
     mark = @state.selectedMark
@@ -157,6 +159,10 @@ module.exports = React.createClass
         x: mark.x - ex
         y: mark.y - ey
       # , => @forceUpdate()
+
+  updateAnnotations: ->
+    @props.classification.update
+      annotations: @props.classification.annotations
 
 
           # SCRATCH CODE TAKEN FROM WITHIN SVG TAG
@@ -230,6 +236,7 @@ module.exports = React.createClass
                       y={@state.selectedMark.y}
                       fontFamily="Verdana"
                       fontSize="55"
+                      fill="red"
                     >
                       BLAH
                     </text>
