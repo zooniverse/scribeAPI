@@ -1,5 +1,4 @@
 # @cjsx React.DOM
-
 React = require 'react'
 
 ActionButton = React.createClass
@@ -10,6 +9,7 @@ ActionButton = React.createClass
     @props.onClick()
 
   render: ->
+    console.log 'classigficat: ', @props.classification
     classes = "action-button button white " 
     if @props.classes? then classes = classes + @props.classes # TODO: check to see if this does what it should!!!
     <a onClick={@handleClick} className={classes}>

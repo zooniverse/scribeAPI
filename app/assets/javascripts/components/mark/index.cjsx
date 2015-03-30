@@ -21,7 +21,8 @@ module.exports = React.createClass # rename to Classifier
     currentTask:    @props.workflow.tasks[@props.workflow.first_task]
 
   getDefaultProps: ->
-    classification: resource.type('classifications').create
+    classification: resource.type('classifications').create 
+      name: 'Classification'
       annotations: []
       metadata: {}
 
@@ -36,7 +37,7 @@ module.exports = React.createClass # rename to Classifier
     currentTask = @props.workflow.tasks[currentAnnotation?.task]
 
     TaskComponent = tasks[@state.currentTask.tool]
-    
+
     onFirstAnnotation = currentAnnotation?.task is @props.workflow.first_task
 
     if currentTask.type is 'single'
