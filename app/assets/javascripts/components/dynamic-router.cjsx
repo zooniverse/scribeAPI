@@ -12,13 +12,11 @@ DynamicRouter = React.createClass
 
   componentDidMount: ->
     $.getJSON '/projects', (result) =>
-      @setState project:           result
-      @setState home_page_content: result.home_page_content
-      @setState pages:             result.pages
-
-      for workflow in @state.project.workflows
-        @setState mark_tasks: workflow.tasks if workflow.key is 'mark'
-        @setState transcribe_tasks: workflow.tasks if workflow.key is 'transcribe'
+      @setState project:           result.project
+      @setState home_page_content: result.project.home_page_content
+      @setState pages:             result.project.pages
+        # DEBUG CODE
+        # , => console.log 'PROJECT: ', @state.project
 
   controllerForPage: (page) ->
     React.createClass
@@ -44,12 +42,12 @@ DynamicRouter = React.createClass
             path='/mark'
             handler={Mark}
             name='mark'
-            workflow={(workflow for workflow in workflows when workflow.key is 'mark')[0]} />
+            workflow={(workflow for workflow in workflows when workflow.name is 'mark')[0]} />
           <Route
             path='/transcribe'
             handler={Transcribe}
             name='transcribe'
-            workflow={(workflow for workflow in workflows when workflow.key is 'transcribe')[0]} />
+            workflow={(workflow for workflow in workflows when workflow.name is 'transcribe')[0]} />
 
           { @state.pages?.map (page, key) =>
               <Route

@@ -14,25 +14,20 @@ module.exports = React.createClass
   resizing: false
 
   getInitialState: ->
-    # # DEBUG CODE
-    # console.log 'USING ENDPOINT: ', @props.endpoint
     imageWidth: 0
     imageHeight: 0
-    
-    subjectEndpoint: @props.endpoint
-    subjects: null
-    subject: null
-    classification: null
-    tool: @props.tool
 
+    subject: @props.subject
+    classification: null
+    
+    tool: @props.tool
     marks: []
     selectedMark: null
     lastMarkKey: 0
 
   componentDidMount: ->
-    console.log 'WORKFLOW: ', @props.workflow
     @setView 0, 0, @state.imageWidth, @state.imageHeight
-    @fetchSubjects(@state.subjectEndpoint)
+    @loadImage @state.subject.location.standard
     window.addEventListener "resize", this.updateDimensions
 
   componentWillMount: ->
@@ -46,66 +41,43 @@ module.exports = React.createClass
       windowInnerWidth: window.innerWidth
       windowInnerHeight: window.innerHeight
 
-  fetchSubjects: ->
-    $.ajax
-      url: @state.subjectEndpoint
-      dataType: "json"
-      success: ((data) ->
-        # DEBUG CODE
-        # console.log 'FETCHED SUBJECTS: ', data
-
-        @setState
-          subjects: data
-          subject: data[0], =>
-            @state.classification = new Classification @state.subject
-            @loadImage @state.subject.location
-
-        # console.log 'Fetched Images.' # DEBUG CODE
-
-        return
-      ).bind(this)
-      error: ((xhr, status, err) ->
-        console.error "Error loading subjects: ", @state.subjectEndpoint, status, err.toString()
-        return
-      ).bind(this)
-    return
-
   loadImage: (url) ->
-    # console.log 'Loading image...' # DEBUG CODE
     @setState loading: true, =>
       img = new Image()
       img.src = url
+      # console.log 'URL: ', url
       img.onload = =>
         if @isMounted()
           @setState
             url: url
             imageWidth: img.width
             imageHeight: img.height
-            loading: false #, =>
+            loading: false 
+              #, => console.log 'url: ', url
             # console.log @state.loading
             # console.log "Finished Loading."
 
-  nextSubject: () ->
-    @prepareClassification()
-    @sendMarkClassification()
+  # nextSubject: () ->
+  #   @prepareClassification()
+  #   @sendMarkClassification()
 
-    # # DEBUG CODE
-    # console.log 'CLASSIFICATION: ', @state.classification
+  #   # # DEBUG CODE
+  #   # console.log 'CLASSIFICATION: ', @state.classification
 
-    # console.log JSON.stringify @state.classification # DEBUG CODE
-    @state.classification.send()
-    @setState
-      marks: [] # clear marks for next subject
+  #   # console.log JSON.stringify @state.classification # DEBUG CODE
+  #   @state.classification.send()
+  #   @setState
+  #     marks: [] # clear marks for next subject
 
-    # prepare new classification
-    if @state.subjects.shift() is undefined or @state.subjects.length <= 0
-      @fetchSubjects(@state.subjectEndpoint)
-      return
-    else
-      @setState subject: @state.subjects[0], =>
-        @loadImage ((if @usingFakeSubject() then @state.subject.classification.subject.location else @state.subject.location))
+  #   # prepare new classification
+  #   if @state.subjects.shift() is undefined or @state.subjects.length <= 0
+  #     @fetchSubjects(@state.subjectEndpoint)
+  #     return
+  #   else
+  #     @setState subject: @state.subjects[0], =>
+  #       @loadImage ((if @usingFakeSubject() then @state.subject.classification.subject.location.standard else @state.subject.location.standard))
 
-    @state.classification = new Classification @state.subject
+  #   @state.classification = new Classification @state.subject
 
   # VARIOUS EVENT HANDLERS
 
@@ -113,13 +85,13 @@ module.exports = React.createClass
     console.log 'handleInitStart() '
     { ex, ey } = @getEventOffset e
     marks = @state.marks
-    newMark = 
+    newMark =
       key: @state.lastMarkKey
       x: ex
       y: ey
       timestamp: (new Date).toJSON()
     marks.push newMark
-    @setState 
+    @setState
       marks: marks
       lastMarkKey: @state.lastMarkKey + 1
       selectedMark: marks[marks.length-1]
@@ -140,10 +112,10 @@ module.exports = React.createClass
       mark.y = @state.imageHeight
     else if ey < 0
       mark.y = 0
-    
+
     @setState selectedMark: mark
       # , => @forceUpdate()
-        
+
   # AVAILABLE, BUT UNUSED, METHODS
   # handleInitRelease: (e) ->
   # handleToolMouseDown: (e) ->
@@ -167,7 +139,7 @@ module.exports = React.createClass
     marks = @state.marks
     for mark, i in [ marks...]
       if mark.key is key
-        marks.splice(i,1) # delete marks[key]    
+        marks.splice(i,1) # delete marks[key]
     @setState
       marks: marks
       selectedMark: null, =>
@@ -180,17 +152,25 @@ module.exports = React.createClass
       clickOffset:
         x: mark.x - ex
         y: mark.y - ey
-      # , => @forceUpdate() 
+      # , => @forceUpdate()
 
   render: ->
-    # console.log 'render()'
-    return null if @state.subjects is null or @state.subjects.length is 0
+    # return null if @state.subjects is null or @state.subjects.length is 0
+    # return null unless @state.subject?
+    # console.log 'SUBJECT: ', @state.subject
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     ToolComponent = @state.tool
+
+    actionButton = 
+      if @state.loading
+        <ActionButton onAction={@nextSubject} classes="disabled" text="Loading..." />
+      else
+        <ActionButton onClick={@nextSubject} text="Next Page" />
+
     if @state.loading
       markingSurfaceContent = <LoadingIndicator />
     else
-      markingSurfaceContent =  
+      markingSurfaceContent =
         <svg
           className = "subject-viewer-svg"
           width = {@state.imageWidth}
@@ -207,20 +187,20 @@ module.exports = React.createClass
             onDrag  = {@handleInitDrag}
             onEnd   = {@handleInitRelease} >
             <SVGImage
-              src = {@state.subject.location}
+              src = {@state.subject.location.standard}
               width = {@state.imageWidth}
               height = {@state.imageHeight} />
           </Draggable>
 
           { @state.marks.map ((mark, i) ->
-              <ToolComponent 
-                key={i} 
-                mark={mark} 
+              <ToolComponent
+                key={i}
+                mark={mark}
                 subject={@state.subject}
                 workflow={@props.workflow}
-                getEventOffset={@getEventOffset} 
-                isSelected={mark is @state.selectedMark} 
-                handleMarkClick={@handleMarkClick.bind null, mark} 
+                getEventOffset={@getEventOffset}
+                isSelected={mark is @state.selectedMark}
+                handleMarkClick={@handleMarkClick.bind null, mark}
                 onClickDelete={@onClickDelete}
                 clickOffset={@state.clickOffset}
                 imageWidth={@state.imageWidth}
@@ -235,9 +215,8 @@ module.exports = React.createClass
         <div className="marking-surface">
           {markingSurfaceContent}
         </div>
-        <p>{@state.subjects.location}</p>
         <div className="subject-ui">
-          <ActionButton loading={@state.loading} />
+          {actionButton}
         </div>
       </div>
     </div>
