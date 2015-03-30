@@ -75,6 +75,8 @@ module.exports = React.createClass # rename to Classifier
   addAnnotationForTask: (taskKey) ->
     console.log 'taskKey: ', taskKey
     taskDescription = @props.workflow.tasks[taskKey]
+    console.log 'taskDescription: ', taskDescription
+
     annotation = tasks[taskDescription.tool].getDefaultAnnotation() # sets {value: null}
     annotation.task = taskKey # e.g. {task: "cool"}
     @props.classification.annotations.push annotation
