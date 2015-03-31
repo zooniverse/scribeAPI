@@ -37,10 +37,7 @@ module.exports = React.createClass
     else
       RADIUS / averageScale
 
-    console.log "MOVING: (#{@props.mark.x},#{@props.mark.y})}"
-
     scale = (@props.xScale + @props.yScale) / 2
-
 
     <g 
       tool={this} 
