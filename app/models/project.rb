@@ -1,8 +1,10 @@
 class Project
 	include Mongoid::Document
+	include Mongoid::Timestamps
 
 	field  :producer , 		 type: String, default: "Adler"
 	field  :title , 		   type: String, default: "ZooZoo"
+	field	 :team,					 type: Array
 	field  :summary , 		 type: String, default: "Classify pictures of zoo's"
 	field  :description, 	 type: String, default: "We need your help to understand zoo's better"
 	field  :home_page_content, type: String, default: "<p>Page content goes here</p>"
@@ -10,8 +12,19 @@ class Project
 	field  :scientists, 	 type: Array,  default: [{name: "Stuart Lynn", location: "Chicago, IL", description: "me", url:["https://github.com/brian-c"]}]
 	field  :developers, 	 type: Array,  default: [{name: "Stuart Lynn", location: "Chicago, IL", description: "me", url:["https://github.com/brian-c"]}]
 	field  :pages,         type: Array,  default: []
-	field  :background,    type: String 
+	field  :background,    type: String
 
+	include CachedStats
+
+	update_interval 10
+
+	has_many :groups
 	has_many :workflows
 	has_many :subjects
+
+
+	def calc_stats
+		{now: Time.new}
+	end
+
 end

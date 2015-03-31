@@ -6,7 +6,7 @@ class WorkflowController < ApplicationController
   end
 
   def show
-    workflow  = Workflow.find_by(key: params[:id]) || Workflow.find_by(id: params[:id])
+    workflow  = Workflow.find_by(name: params[:id]) || Workflow.find_by(id: params[:id])
     respond_with workflow 
   end
 
