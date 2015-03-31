@@ -2,7 +2,12 @@ API::Application.routes.draw do
 
   root :to => "home#index"
 
-  devise_for :users, :controllers => {:registrations => "registrations"}
+  devise_for :users, :controllers => {:registrations => "registrations",
+                                      :omniauth_callbacks => "omniauth_callbacks",
+                                      :sessions => "sessions"}
+
+
+
 
 
   get '/projects',        to: 'projects#index', defaults: { format: 'json' }
@@ -17,6 +22,7 @@ API::Application.routes.draw do
 
   resources :subjects
   resources :classifications, :defaults => { :format => 'json' }
-get  '/current_user' => "users#loged_in_user"
+
+  get  '/current_user' => "users#loged_in_user"
   resources :favourites, only: [:index, :create, :destroy]
 end
