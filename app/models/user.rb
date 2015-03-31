@@ -29,6 +29,9 @@ class User
   field :current_sign_in_ip, :type => String
   field :last_sign_in_ip,    :type => String
 
+  field :uid,                :type => String
+  field :provider,           :type => String
+
   has_many :favourites
   has_many :classifications
 
@@ -55,4 +58,55 @@ class User
     recents(limit).where(workflow_id: workflow.id)
   end
 
+
+  def self.find_for_oauth(access_token, signed_in_resource=nil)
+
+    if user = self.find_by({provider: access_token[:provider], uid: access_token[:uid]})
+      user
+    else # Create a user with a stub password.
+      details = details_from_oauth access_token[:provider], access_token
+      binding.pry
+      tmp_pass = Devise.friendly_token[0,20]
+      self.create details.merge(password: tmp_pass, password_confirmation: tmp_pass)
+    end
+  end
+
+  def self.details_from_oauth(provider,access_token)
+      case provider
+      when "facebook"
+        details_from_fb(access_token)
+      when "google"
+        details_from_google(access_token)
+      when "zooniverse"
+        details_from_zooniverse(access_token)
+      end
+  end
+
+  def self.details_from_fb(access_token)
+    extra = access_token[:extra][:raw_info]
+    {
+      name: "#{extra[:first_name]} #{extra[:last_name]}",
+      email: extra[:email],
+      uid: access_token[:uid],
+      provider: access_token[:provider]
+    }
+  end
+
+  def self.details_from_google(access_token)
+    {
+      name: "#{extra[:first_name]} #{extra[:last_name]}",
+      email: extra[:email],
+      uid: access_token[:uid],
+      provider: access_token[:provider]
+    }
+  end
+
+  def self.details_from_zooniverse(access_token)
+    {
+      name: "#{extra[:first_name]} #{extra[:last_name]}",
+      email: extra[:email],
+      uid: access_token[:uid],
+      provider: access_token[:provider]
+    }
+  end
 end
