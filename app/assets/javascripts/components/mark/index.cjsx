@@ -2,6 +2,9 @@ React              = require 'react'
 SubjectViewer      = require '../subject-viewer'
 tasks              = require '../tasks'
 FetchSubjectsMixin = require 'lib/fetch-subjects-mixin'
+JSONAPIClient      = require 'json-api-client' # use to manage data?
+
+resource = new JSONAPIClient
 
 module.exports = React.createClass # rename to Classifier
   displayName: 'Mark'
@@ -9,47 +12,79 @@ module.exports = React.createClass # rename to Classifier
   propTypes:
     workflow: React.PropTypes.object.isRequired
   
-  mixins: [FetchSubjectsMixin] # sets state variables: subjects, currentSubject, classification
+  mixins: [FetchSubjectsMixin] # load subjects and set state variables: subjects, currentSubject, classification
 
   getInitialState: ->
     subjects:       null
     currentSubject: null
-    classification: null
     workflow:       @props.workflow
     currentTask:    @props.workflow.tasks[@props.workflow.first_task]
 
+  getDefaultProps: ->
+    classification: resource.type('classifications').create 
+      name: 'Classification'
+      annotations: []
+      metadata: {}
+
+  componentWillMount: ->
+    @addAnnotationForTask @props.workflow.first_task
+
   render: ->
-    return null unless @state.currentSubject? and @state.currentTask?
-    TaskComponent = tasks[@state.currentTask.tool]
+    return null unless @state.currentSubject?
+
+    annotations = @props.classification.annotations
+    currentAnnotation = if annotations.length is 0 then {} else annotations[annotations.length-1]
+    currentTask = @props.workflow.tasks[currentAnnotation?.task]
+    TaskComponent = tasks[currentTask.tool]
+    onFirstAnnotation = currentAnnotation?.task is @props.workflow.first_task
+
+    console.log 'CURRENT TOOL: ', currentTask.tool
+
+    if currentTask.type is 'single'
+      currentAnswer = currentTask.options?[currentAnnotation.value]
+      waitingForAnswer = not currentAnswer
 
     <div className="classifier">
       <div className="subject-area">
-        <SubjectViewer subject={@state.currentSubject} />
+        <SubjectViewer subject={@state.currentSubject} workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation} />
       </div>
       <div className="task-area">
         <div className="task-container">
-          <TaskComponent task={@state.currentTask} annotation={null} onChange={null} />
+          <TaskComponent task={currentTask} annotation={currentAnnotation} onChange={@handleTaskComponentChange} />
           <hr/>
           <nav className="task-nav">
-            <button type="button" className="back minor-button" disabled={false} onClick={@prevTask}>Back</button>
-            { if @state.currentTask.next_task?
-                <button type="button" className="continue major-button" disabled={false} onClick={@nextTask}>Next</button>
+            <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
+            { if currentTask.next_task?
+                <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@addAnnotationForTask.bind this, currentTask.next_task}>Next</button>
               else
-                <button type="button" className="continue major-button" disabled={false} onClick={@makeAnnotation}>Done</button>
+                <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeClassification}>Done</button>
             }
           </nav>
         </div>
       </div>
     </div>
 
-  nextTask: ->
-    return unless @state.currentTask.next_task?
-    @setState currentTask: @state.workflow.tasks[ @state.currentTask.next_task ]
+  handleTaskComponentChange: ->
+    @props.classification.update 'annotation'
 
-  prevTask: ->
-    console.log 'prevTask()'
+  destroyCurrentAnnotation: ->
+    @props.classification.annotations.pop()
+    @props.classification.update 'annotations'
+    @forceUpdate()
 
-  makeAnnotation: ->
-    console.log 'makeAnnotation()'
+  addAnnotationForTask: (taskKey) ->
+    taskDescription = @props.workflow.tasks[taskKey]
+    annotation = tasks[taskDescription.tool].getDefaultAnnotation() # sets {value: null}
+    annotation.task = taskKey # e.g. {task: "cool"}
+    @props.classification.annotations.push annotation
+    @props.classification.update 'annotations'
+    @forceUpdate()
+
+  completeClassification: ->
+    @props.classification.update
+      completed: true
+      'metadata.finished_at': (new Date).toISOString()
+    @props.onComplete?()
+    console.log 'CLASSIFICATION: ', @props.classification
 
 window.React = React

@@ -7,7 +7,9 @@ Draggable                     = require '../lib/draggable'
 LoadingIndicator              = require './loading-indicator'
 SubjectMetadata               = require './subject-metadata'
 ActionButton                  = require './action-button'
-Classification                = require '../models/classification'
+markingTools                  = require './mark/tools'
+# Classification                = require '../models/classification'
+
 
 module.exports = React.createClass
   displayName: 'SubjectViewer'
@@ -89,12 +91,20 @@ module.exports = React.createClass
       key: @state.lastMarkKey
       x: ex
       y: ey
+      tool: @props.annotation._toolIndex
       timestamp: (new Date).toJSON()
-    marks.push newMark
+
+    console.log 'markingTools: ', markingTools
+
+    @props.annotation.value.push newMark
+    
     @setState
-      marks: marks
+    #   marks: marks
       lastMarkKey: @state.lastMarkKey + 1
       selectedMark: marks[marks.length-1]
+
+    setTimeout =>
+      @updateAnnotations()
 
   handleInitDrag: (e) ->
     mark = @state.selectedMark
@@ -126,14 +136,16 @@ module.exports = React.createClass
   getScale: ->
     rect = @refs.sizeRect?.getDOMNode().getBoundingClientRect()
     rect ?= width: 0, height: 0
-    horizontal: rect.width / @state.imageWidth
-    vertical: rect.height / @state.imageHeight
+    horizontal = rect.width / @state.imageWidth
+    vertical = rect.height / @state.imageHeight
+    return {horizontal, vertical}
 
   getEventOffset: (e) ->
     rect = @refs.sizeRect.getDOMNode().getBoundingClientRect()
-    { horizontal, vertical } = @getScale()
-    ex: ((e.pageX - pageXOffset - rect.left) / horizontal) + @state.viewX
-    ey: ((e.pageY - pageYOffset - rect.top) / vertical) + @state.viewY
+    scale = @getScale()
+    ex = ((e.pageX - pageXOffset - rect.left) / scale.horizontal) + @state.viewX
+    ey = ((e.pageY - pageYOffset - rect.top) / scale.vertical) + @state.viewY
+    return {ex, ey}
 
   onClickDelete: (key) ->
     marks = @state.marks
@@ -154,12 +166,44 @@ module.exports = React.createClass
         y: mark.y - ey
       # , => @forceUpdate()
 
+  updateAnnotations: ->
+    @props.classification.update
+      annotations: @props.classification.annotations
+
+
+          # SCRATCH CODE TAKEN FROM WITHIN SVG TAG
+          #       { @state.marks.map ((mark, i) ->
+          #     <ToolComponent
+          #       key={i}
+          #       mark={mark}
+          #       subject={@state.subject}
+          #       workflow={@props.workflow}
+          #       getEventOffset={@getEventOffset}
+          #       isSelected={mark is @state.selectedMark}
+          #       handleMarkClick={@handleMarkClick.bind null, mark}
+          #       onClickDelete={@onClickDelete}
+          #       clickOffset={@state.clickOffset}
+          #       imageWidth={@state.imageWidth}
+          #       imageHeight={@state.imageHeight}
+          #     />
+          #   ), @
+          # }
+
   render: ->
     # return null if @state.subjects is null or @state.subjects.length is 0
     # return null unless @state.subject?
     # console.log 'SUBJECT: ', @state.subject
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     ToolComponent = @state.tool
+
+    scale = @getScale()
+
+    actionButton = 
+      if @state.loading
+        <ActionButton onAction={@nextSubject} classes="disabled" text="Loading..." />
+      else
+        <ActionButton onClick={@nextSubject} text="Next Page" />
+
     if @state.loading
       markingSurfaceContent = <LoadingIndicator />
     else
@@ -185,31 +229,58 @@ module.exports = React.createClass
               height = {@state.imageHeight} />
           </Draggable>
 
-          { @state.marks.map ((mark, i) ->
-              <ToolComponent
-                key={i}
-                mark={mark}
-                subject={@state.subject}
-                workflow={@props.workflow}
-                getEventOffset={@getEventOffset}
-                isSelected={mark is @state.selectedMark}
-                handleMarkClick={@handleMarkClick.bind null, mark}
-                onClickDelete={@onClickDelete}
-                clickOffset={@state.clickOffset}
-                imageWidth={@state.imageWidth}
-                imageHeight={@state.imageHeight}
-              />
-            ), @
-          }
+          { for annotation in @props.classification.annotations
+              console.log 'ANNOTATION: ', annotation
+              annotation._key ?= Math.random()
+              isPriorAnnotation = annotation isnt @props.annotation
+              taskDescription = @props.workflow.tasks[annotation.task]
+
+              if taskDescription.tool is 'drawing'
+                <g key={annotation._key} className="marks-for-annotation" data-disabled={isPriorAnnotation or null}>
+                  {for mark, m in annotation.value
+                    mark._key ?= Math.random()
+                    console.log 'mark.tool: ', mark.tool
+                    toolDescription = taskDescription.tools[mark.tool]
+
+                    console.log 'TOOL DESCRIPTION: ', toolDescription
+
+                    toolEnv =
+                      scale: @getScale()
+                      disabled: isPriorAnnotation
+                      selected: mark is @state.selectedMark
+                      getEventOffset: @getEventOffset
+                      # ref: 'selectedTool' if mark is @state.selectedMark
+
+                    toolProps =
+                      mark: mark
+                      color: toolDescription.color
+
+                    toolMethods =
+                      onChange: @updateAnnotations
+                      # onSelect: @selectMark.bind this, annotation, mark
+                      # onDestroy: @destroyMark.bind this, annotation, mark
+
+                    ToolComponent = markingTools[toolDescription.type]
+                    console.log 'TOOL DESCRIPTION TYPE: ', toolDescription.type
+                    <ToolComponent 
+                      key={mark._key} 
+                      mark={mark}
+                      xScale={scale.horizontal}
+                      yScale={scale.vertical}
+                      disabled={isPriorAnnotation}
+                      selected={mark is @state.selectedMark}
+                      getEventOffset={@getEventOffset}
+                      onChange={@updateAnnotations} 
+                    />
+                  }  
+                </g>
+            }
         </svg>
 
     <div className="subject-viewer">
       <div className="subject-container">
         <div className="marking-surface">
           {markingSurfaceContent}
-        </div>
-        <div className="subject-ui">
-          <ActionButton loading={@state.loading} />
         </div>
       </div>
     </div>
