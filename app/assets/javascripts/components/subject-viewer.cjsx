@@ -107,43 +107,32 @@ module.exports = React.createClass
     setTimeout =>
       @updateAnnotations()
 
-  # handleInitDrag: (e) ->
-  #   mark = @state.selectedMark
-  #   { ex, ey } = @getEventOffset e
-  #   mark.x = ex
-  #   mark.y = ey
-
-  #   # keep marks within frame
-  #   if ex > @state.imageWidth
-  #     mark.x = @state.imageWidth
-  #   else if ex < 0
-  #     mark.x = 0
-
-  #   if ey > @state.imageHeight
-  #     mark.y = @state.imageHeight
-  #   else if ey < 0
-  #     mark.y = 0
-
-  #   @setState selectedMark: mark
-  #     # , => @forceUpdate()
-
   handleInitDrag: (e) ->
     console.log 'handleInitDrag()'
     task = @props.workflow.tasks[@props.annotation.task]
     mark = @state.selectedMark
-
     MarkComponent = markingTools[task.tools[mark.tool].type]
     if MarkComponent.initMove?
       mouseCoords = @getEventOffset e
       initMoveValues = MarkComponent.initMove mouseCoords, mark, e
       for key, value of initMoveValues
         mark[key] = value
-        console.log 'MARK: ', mark
     @updateAnnotations()
+    @forceUpdate()
 
-  # AVAILABLE, BUT UNUSED, METHODS
-  # handleInitRelease: (e) ->
-  # handleToolMouseDown: (e) ->
+  handleInitRelease: (e) ->
+    console.log 'handleInitRelease()'
+    task = @props.workflow.tasks[@props.annotation.task]
+    mark = @state.selectedMark
+    MarkComponent = markingTools[task.tools[mark.tool].type]
+    if MarkComponent.initRelease?
+      mouseCoords = @getEventOffset e
+      initReleaseValues = MarkComponent.initRelease mouseCoords, mark, e
+      for key, value of initReleaseValues
+        mark[key] = value
+    @updateAnnotations()
+    if MarkComponent.initValid? and not MarkComponent.initValid mark
+      @destroyMark @props.annotation, mark
 
   setView: (viewX, viewY, viewWidth, viewHeight) ->
     @setState {viewX, viewY, viewWidth, viewHeight}
@@ -184,6 +173,7 @@ module.exports = React.createClass
   updateAnnotations: ->
     @props.classification.update
       annotations: @props.classification.annotations
+    @forceUpdate()
 
 
           # SCRATCH CODE TAKEN FROM WITHIN SVG TAG
