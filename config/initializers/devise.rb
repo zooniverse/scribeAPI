@@ -257,8 +257,6 @@ Devise.setup do |config|
 
   providers = YAML.load_file(Rails.root.join('config', 'login_providers.yml'))["providers"]
 
-  binding.pry
-
   config.omniauth :google_oauth2, providers["google"]["id"], providers["google"]["secret"] if providers["google"]
   config.omniauth :facebook, providers["facebook"]["id"], providers["facebook"]["secret"]  if providers["facebook"]
 
