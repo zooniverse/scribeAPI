@@ -4,6 +4,7 @@ class Project
 
 	field  :producer , 		 type: String, default: "Adler"
 	field  :title , 		   type: String, default: "ZooZoo"
+	field	 :team,					 type: Array
 	field  :summary , 		 type: String, default: "Classify pictures of zoo's"
 	field  :description, 	 type: String, default: "We need your help to understand zoo's better"
 	field  :home_page_content, type: String, default: "<p>Page content goes here</p>"
