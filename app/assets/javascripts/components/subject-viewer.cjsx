@@ -91,6 +91,7 @@ module.exports = React.createClass
       key: @state.lastMarkKey
       x: ex
       y: ey
+      tool: @props.annotation._toolIndex
       timestamp: (new Date).toJSON()
 
     console.log 'markingTools: ', markingTools
@@ -225,26 +226,41 @@ module.exports = React.createClass
           </Draggable>
 
           { for annotation in @props.classification.annotations
+              console.log 'ANNOTATION: ', annotation
               annotation._key ?= Math.random()
               isPriorAnnotation = annotation isnt @props.annotation
               taskDescription = @props.workflow.tasks[annotation.task]
+              
 
-              <g key={annotation._key} className="marks-for-annotation" data-disabled={isPriorAnnotation or null} >
-                { if @state.selectedMark?
-                    <text
-                      x={@state.selectedMark.x}
-                      y={@state.selectedMark.y}
-                      fontFamily="Verdana"
-                      fontSize="55"
-                      fill="red"
-                    >
-                      BLAH
-                    </text>
-                }
-              </g>
+              if taskDescription.tool is 'drawing'
+                <g key={annotation._key} className="marks-for-annotation" data-disabled={isPriorAnnotation or null}>
+                  {for mark, m in annotation.value
+                    mark._key ?= Math.random()
+                    console.log 'mark.tool: ', mark.tool
+                    toolDescription = taskDescription.tools[mark.tool]
 
+                    console.log 'TOOL DESCRIPTION: ', toolDescription
 
-          }
+                    toolEnv =
+                      scale: @getScale()
+                      disabled: isPriorAnnotation
+                      selected: mark is @state.selectedMark
+                      getEventOffset: @getEventOffset
+                      ref: 'selectedTool' if mark is @state.selectedMark
+
+                    toolProps =
+                      mark: mark
+                      color: toolDescription.color
+
+                    toolMethods =
+                      onChange: @updateAnnotations
+                      onSelect: @selectMark.bind this, annotation, mark
+                      onDestroy: @destroyMark.bind this, annotation, mark
+
+                    ToolComponent = drawingTools[toolDescription.type]
+                    <ToolComponent key={mark._key} {...toolProps} {...toolEnv} {...toolMethods} />}
+                </g>
+            }
 
         </svg>
 

@@ -35,10 +35,10 @@ module.exports = React.createClass # rename to Classifier
     annotations = @props.classification.annotations
     currentAnnotation = if annotations.length is 0 then {} else annotations[annotations.length-1]
     currentTask = @props.workflow.tasks[currentAnnotation?.task]
-
     TaskComponent = tasks[currentTask.tool]
-
     onFirstAnnotation = currentAnnotation?.task is @props.workflow.first_task
+
+    console.log 'CURRENT TOOL: ', currentTask.tool
 
     if currentTask.type is 'single'
       currentAnswer = currentTask.options?[currentAnnotation.value]
