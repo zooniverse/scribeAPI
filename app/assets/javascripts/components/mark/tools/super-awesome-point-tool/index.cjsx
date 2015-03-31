@@ -25,37 +25,35 @@ module.exports = React.createClass
     y: -1 * (SELECTED_RADIUS / @props.yScale) * Math.sin theta
 
   render: ->
-    # averageScale = (@props.xScale + @props.yScale) / 2
+    averageScale = (@props.xScale + @props.yScale) / 2
+    crosshairSpace = CROSSHAIR_SPACE / averageScale
+    crosshairWidth = CROSSHAIR_WIDTH / averageScale
+    selectedRadius = SELECTED_RADIUS / averageScale
+    radius = if @props.selected
+      SELECTED_RADIUS / averageScale
+    else
+      RADIUS / averageScale
 
-    # crosshairSpace = CROSSHAIR_SPACE / averageScale
-    # crosshairWidth = CROSSHAIR_WIDTH / averageScale
-    # selectedRadius = SELECTED_RADIUS / averageScale
+    console.log "MOVING: (#{@props.mark.x},#{@props.mark.y})}"
 
-    # radius = if @props.selected
-    #   SELECTED_RADIUS / averageScale
-    # else
-    #   RADIUS / averageScale
+    <g tool={this} transform="translate(#{@props.mark.x}, #{@props.mark.y})" onMouseDown={@handleMouseDown}>
+      <line x1="0" y1={-1 * crosshairSpace * selectedRadius} x2="0" y2={-1 * selectedRadius} strokeWidth={crosshairWidth} />
+      <line x1={-1 * crosshairSpace * selectedRadius} y1="0" x2={-1 * selectedRadius} y2="0" strokeWidth={crosshairWidth} />
+      <line x1="0" y1={crosshairSpace * selectedRadius} x2="0" y2={selectedRadius} strokeWidth={crosshairWidth} />
+      <line x1={crosshairSpace * selectedRadius} y1="0" x2={selectedRadius} y2="0" strokeWidth={crosshairWidth} />
+      <Draggable onDrag={@handleDrag}>
+        <circle r={radius} />
+      </Draggable>
+    </g>
 
-    # <DrawingToolRoot tool={this} transform="translate(#{@props.mark.x}, #{@props.mark.y})">
-    #   <line x1="0" y1={-1 * crosshairSpace * selectedRadius} x2="0" y2={-1 * selectedRadius} strokeWidth={crosshairWidth} />
-    #   <line x1={-1 * crosshairSpace * selectedRadius} y1="0" x2={-1 * selectedRadius} y2="0" strokeWidth={crosshairWidth} />
-    #   <line x1="0" y1={crosshairSpace * selectedRadius} x2="0" y2={selectedRadius} strokeWidth={crosshairWidth} />
-    #   <line x1={crosshairSpace * selectedRadius} y1="0" x2={selectedRadius} y2="0" strokeWidth={crosshairWidth} />
-    #   <Draggable onDrag={@handleDrag} disabled={@props.disabled}>
-    #     <circle r={radius} />
-    #   </Draggable>
-    # </DrawingToolRoot>
-
-    <text 
-      x={@props.mark.x} 
-      y={@props.mark.y} 
-      fill="red" 
-      fontSize="55">
-      SuperAwesomePoint
-    </text>
+    # <text x={@props.mark.x} y={@props.mark.y} fill="red" fontSize="55">SuperAwesomePoint!</text>
 
   handleDrag: (e, d) ->
     console.log 'handleDrag()'
-    @props.mark.x += d.x / @props.xScale
-    @props.mark.y += d.y / @props.yScale
+    @props.mark.x = e.x / @props.xScale
+    @props.mark.y = e.y / @props.yScale
     @props.onChange e
+
+  handleMouseDown: ->
+    console.log 'handleMouseDown()'
+    @props.onSelect @props.mark # unless @props.disabled

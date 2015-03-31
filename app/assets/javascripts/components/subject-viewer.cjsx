@@ -164,6 +164,15 @@ module.exports = React.createClass
         y: mark.y - y
       # , => @forceUpdate()
 
+  selectMark: (annotation, mark) ->
+    if annotation? and mark?
+      index = annotation.value.indexOf mark
+      annotation.value.splice index, 1
+      annotation.value.push mark
+    @setState selectedMark: mark, =>
+      if mark?.details?
+        @forceUpdate() # Re-render to reposition the details tooltip.
+
   updateAnnotations: ->
     @props.classification.update
       annotations: @props.classification.annotations
@@ -248,6 +257,7 @@ module.exports = React.createClass
                       selected={mark is @state.selectedMark}
                       getEventOffset={@getEventOffset}
                       onChange={@updateAnnotations} 
+                      onSelect={@selectMark.bind this, annotation, mark}
                     />
                   }  
                 </g>
