@@ -86,7 +86,7 @@ module.exports = React.createClass
   handleInitStart: (e) ->
     console.log 'handleInitStart() '
     { ex, ey } = @getEventOffset e
-    marks = @state.marks
+    marks = @props.annotation.value
     newMark =
       key: @state.lastMarkKey
       x: ex
@@ -96,35 +96,49 @@ module.exports = React.createClass
 
     console.log 'markingTools: ', markingTools
 
-    @props.annotation.value.push newMark
+    marks.push newMark
     
     @setState
-    #   marks: marks
       lastMarkKey: @state.lastMarkKey + 1
       selectedMark: marks[marks.length-1]
 
     setTimeout =>
       @updateAnnotations()
 
+  # handleInitDrag: (e) ->
+  #   mark = @state.selectedMark
+  #   { ex, ey } = @getEventOffset e
+  #   mark.x = ex
+  #   mark.y = ey
+
+  #   # keep marks within frame
+  #   if ex > @state.imageWidth
+  #     mark.x = @state.imageWidth
+  #   else if ex < 0
+  #     mark.x = 0
+
+  #   if ey > @state.imageHeight
+  #     mark.y = @state.imageHeight
+  #   else if ey < 0
+  #     mark.y = 0
+
+  #   @setState selectedMark: mark
+  #     # , => @forceUpdate()
+
   handleInitDrag: (e) ->
+    console.log 'handleInitDrag()'
+    task = @props.workflow.tasks[@props.annotation.task]
     mark = @state.selectedMark
-    { ex, ey } = @getEventOffset e
-    mark.x = ex
-    mark.y = ey
+    console.log 'FOO'
+    console.log 'SELECTED MARK: ', @state.selectedMark
 
-    # keep marks within frame
-    if ex > @state.imageWidth
-      mark.x = @state.imageWidth
-    else if ex < 0
-      mark.x = 0
-
-    if ey > @state.imageHeight
-      mark.y = @state.imageHeight
-    else if ey < 0
-      mark.y = 0
-
-    @setState selectedMark: mark
-      # , => @forceUpdate()
+    MarkComponent = markingTools[task.tools[mark.tool].type]
+    if MarkComponent.initMove?
+      mouseCoords = @getEventOffset e
+      initMoveValues = MarkComponent.initMove mouseCoords, mark, e
+      for key, value of initMoveValues
+        mark[key] = value
+    @updateAnnotations()
 
   # AVAILABLE, BUT UNUSED, METHODS
   # handleInitRelease: (e) ->
@@ -238,30 +252,31 @@ module.exports = React.createClass
               if taskDescription.tool is 'drawing'
                 <g key={annotation._key} className="marks-for-annotation" data-disabled={isPriorAnnotation or null}>
                   {for mark, m in annotation.value
+
                     mark._key ?= Math.random()
-                    console.log 'mark.tool: ', mark.tool
                     toolDescription = taskDescription.tools[mark.tool]
 
-                    console.log 'TOOL DESCRIPTION: ', toolDescription
+                    # toolEnv =
+                    #   scale: @getScale()
+                    #   disabled: isPriorAnnotation
+                    #   selected: mark is @state.selectedMark
+                    #   getEventOffset: @getEventOffset
+                    #   # ref: 'selectedTool' if mark is @state.selectedMark
 
-                    toolEnv =
-                      scale: @getScale()
-                      disabled: isPriorAnnotation
-                      selected: mark is @state.selectedMark
-                      getEventOffset: @getEventOffset
-                      # ref: 'selectedTool' if mark is @state.selectedMark
+                    # toolProps =
+                    #   mark: mark
+                    #   color: toolDescription.color
 
-                    toolProps =
-                      mark: mark
-                      color: toolDescription.color
+                    # toolMethods =
+                    #   onChange: @updateAnnotations
+                    #   # onSelect: @selectMark.bind this, annotation, mark
+                    #   # onDestroy: @destroyMark.bind this, annotation, mark
 
-                    toolMethods =
-                      onChange: @updateAnnotations
-                      # onSelect: @selectMark.bind this, annotation, mark
-                      # onDestroy: @destroyMark.bind this, annotation, mark
+                    console.log 'TOOL DESCRIPTION TYPE: ', toolDescription.type
+                    console.log 'CLASSIFICATION: ', @props.classification
 
                     ToolComponent = markingTools[toolDescription.type]
-                    console.log 'TOOL DESCRIPTION TYPE: ', toolDescription.type
+                    
                     <ToolComponent 
                       key={mark._key} 
                       mark={mark}
