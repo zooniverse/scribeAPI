@@ -156,6 +156,7 @@ mark_workflow = Workflow.create(
     enables_workflows: {},
     first_task: 'pick_page_type',
     tasks: {
+
       pick_page_type: {
         order: 0,
         tool: 'pick_one',
@@ -179,24 +180,38 @@ mark_workflow = Workflow.create(
         },
         next_task: 'fake_task'
       },
+
       fake_task: {
         order: 3,
-        tool: 'pick_one',
-        instruction: 'Is this cool?',
+        tool: 'single',
+        instruction: 'Is there anything left to mark here?',
         options: {
           yes: {
             label: 'Yes',
-            image: '',
-            next_task: nil
+            image: ''
           },
           no: {
             label: 'No',
-            image: '',
-            next_task: nil
-          },
+            image: ''
+          }
         },
+        next_task: 'mark_fields'
+      },
+
+      mark_fields: {
+        tool: 'drawing',
+        instruction: 'Pick a field and mark it with the corresponding marking tool.',
+        tools: [
+          {type: 'superAwesomePointTool', label: 'SuperAwesomePointTool', color: 'red'},
+          {type: 'line', label: 'Line', color: 'yellow'},
+          {type: 'rectangle', label: 'Rectangle', color: 'lime'},
+          {type: 'polygon', label: 'Polygon', color: 'cyan'},
+          {type: 'circle', label: 'Circle', color: 'blue'},
+          {type: 'ellipse', label: 'Ellipse', color: 'magenta'}
+        ],
         next_task: nil
       },
+
       attestation_task: {
         order: 1,
         tool: 'pick_one_mark_one',
