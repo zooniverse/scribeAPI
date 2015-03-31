@@ -113,7 +113,6 @@ module.exports = React.createClass
       for key, value of initMoveValues
         mark[key] = value
     @updateAnnotations()
-    @forceUpdate()
 
   handleInitRelease: (e) ->
     task = @props.workflow.tasks[@props.annotation.task]

@@ -9,6 +9,9 @@ CROSSHAIR_SPACE = 0.2
 CROSSHAIR_WIDTH = 1
 DELETE_BUTTON_ANGLE = 45
 
+STROKE_WIDTH = 1.5
+SELECTED_STROKE_WIDTH = 2.5
+
 module.exports = React.createClass
   displayName: 'SuperAwesomePointTool'
 
@@ -36,24 +39,42 @@ module.exports = React.createClass
 
     console.log "MOVING: (#{@props.mark.x},#{@props.mark.y})}"
 
-    <g tool={this} transform="translate(#{@props.mark.x}, #{@props.mark.y})" onMouseDown={@handleMouseDown}>
-      <line x1="0" y1={-1 * crosshairSpace * selectedRadius} x2="0" y2={-1 * selectedRadius} strokeWidth={crosshairWidth} />
-      <line x1={-1 * crosshairSpace * selectedRadius} y1="0" x2={-1 * selectedRadius} y2="0" strokeWidth={crosshairWidth} />
-      <line x1="0" y1={crosshairSpace * selectedRadius} x2="0" y2={selectedRadius} strokeWidth={crosshairWidth} />
-      <line x1={crosshairSpace * selectedRadius} y1="0" x2={selectedRadius} y2="0" strokeWidth={crosshairWidth} />
-      <Draggable onDrag={@handleDrag}>
-        <circle r={radius} />
-      </Draggable>
+    scale = (@props.xScale + @props.yScale) / 2
+
+
+    <g 
+      tool={this} 
+      transform="translate(#{@props.mark.x}, #{@props.mark.y})" 
+      onMouseDown={@handleMouseDown}
+    >
+      <g
+        className="drawing-tool-main"
+        fill='transparent'
+        stroke='#f60'
+        strokeWidth={SELECTED_STROKE_WIDTH/scale}
+        onMouseDown={@props.onSelect unless @props.disabled}
+      >
+
+        <line x1="0" y1={-1 * crosshairSpace * selectedRadius} x2="0" y2={-1 * selectedRadius} strokeWidth={crosshairWidth} />
+        <line x1={-1 * crosshairSpace * selectedRadius} y1="0" x2={-1 * selectedRadius} y2="0" strokeWidth={crosshairWidth} />
+        <line x1="0" y1={crosshairSpace * selectedRadius} x2="0" y2={selectedRadius} strokeWidth={crosshairWidth} />
+        <line x1={crosshairSpace * selectedRadius} y1="0" x2={selectedRadius} y2="0" strokeWidth={crosshairWidth} />
+        <Draggable onDrag={@handleDrag}>
+          <circle r={radius} />
+        </Draggable>
+
+      </g>
     </g>
 
     # <text x={@props.mark.x} y={@props.mark.y} fill="red" fontSize="55">SuperAwesomePoint!</text>
 
   handleDrag: (e, d) ->
     console.log 'handleDrag()'
-    @props.mark.x = e.x / @props.xScale
-    @props.mark.y = e.y / @props.yScale
-    @props.onChange e
-
+    offset = @props.getEventOffset e
+    @props.mark.x = offset.x
+    @props.mark.y = offset.y
+    @props.onChange()
+    
   handleMouseDown: ->
     console.log 'handleMouseDown()'
     @props.onSelect @props.mark # unless @props.disabled
