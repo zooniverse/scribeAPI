@@ -1,8 +1,15 @@
 class Subject
   include Mongoid::Document
+  include Mongoid::Timestamps
   include Randomizer
 
   field :name,                 type: String
+  field :thumbnail,             type: String
+  field :file_path
+  field :order
+  field :width
+  field :height
+  field :state
   field :location,             type: Hash
   field :random_no ,           type: Float
   field :classification_count, type: Integer, default: 0
@@ -13,6 +20,7 @@ class Subject
 
   has_and_belongs_to_many :workflows, inverse_of: nil
   has_one :parent_subject, :class_name => "Subject"
+  belongs_to :group
 
   def increment_retire_count_by(no)
     retire_count += no

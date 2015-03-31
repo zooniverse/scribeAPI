@@ -2,20 +2,27 @@
 React         = require 'react'
 SubjectViewer = require '../subject-viewer'
 
-WORKFLOW_ID = '54b82b4745626f20c9010000' # transcribe workflow
-
-Transcribe = React.createClass # rename to Classifier
+module.exports = React.createClass
   displayName: 'Transcribe'
 
   getInitialState: ->
     # TODO: why is workflow an array!?!?
     workflow: @props.workflow
 
+
+  componentWillMount: ->
+    workflow = @state.workflow
+    currentTask = workflow.tasks[ workflow.first_task ]
+
+    if @state.firstTask?
+      @setState
+        currentTask: currentTask
+        currentTool: currentTask.tool , =>
+          console.log 'first tool is: ', @state.currentTool
+      
   render: ->
-    endpoint = "/workflows/#{@state.workflow[0].id}/subjects.json?limit=5"
     <SubjectViewer endpoint=endpoint workflow={@props.workflow} />
 
-module.exports = Transcribe
 window.React = React
 
 # SubjectViewer = React.createClass

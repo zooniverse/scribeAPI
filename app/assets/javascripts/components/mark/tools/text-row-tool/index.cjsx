@@ -93,7 +93,6 @@ module.exports = React.createClass
 
 
   onClickButton: ->
-    console.log 'FOO!'
     mark = @state.mark
     switch mark.status
       when 'mark'
@@ -147,6 +146,7 @@ module.exports = React.createClass
       #   return
 
   render: ->
+
     classString = 'textRow drawing-tool'
     if @state.lockTool then classString += ' locked'
     markHeight = @state.mark.yLower - @state.mark.yUpper

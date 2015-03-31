@@ -1,8 +1,10 @@
 class Classification
 
   constructor: (subject) ->
+    console.log 'Classification.constructor()'
     @started_at = (new Date).toUTCString()
     @subject = subject
+    console.log 'subject: ', subject
     @subject_id = subject.subject_id
     @user_agent = window.navigator.userAgent
     @annotations ?= []

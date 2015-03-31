@@ -1,0 +1,108 @@
+.classifier
+  display: flex
+  flex-wrap: wrap
+  justify-content: center
+  .subject-area
+    align-items: center
+    justify-content: center
+    display: flex
+    margin: 0 1.5vw 1em 0
+
+  .subject-container
+    color: gray
+
+  .subject
+    border-radius: 5px
+    box-shadow: 0 0 0 1px gray
+    max-height: 90vh
+    max-width: 100%
+
+  .marking-initializer
+    cursor: crosshair
+
+  .loading-cover
+    align-items: center
+    background: rgba(gray, 0.5)
+    color: white
+    display: flex
+    font-size: 2em
+    height: 100%
+    justify-content: center
+    left: 0
+    min-height: 4em
+    position: absolute
+    top: 0
+    width: 100%
+
+  .subject-tools
+    display: flex
+    justify-content: space-between
+
+  .subject-frame-pip
+    @extends $reset-button
+    background: transparent
+    border: 2px solid
+    border-radius: 50%
+    height: 0.7em
+    margin: 0 0.3em
+    overflow: hidden
+    text-indent: 1em
+    vertical-align: middle
+    width: 0.7em
+
+    &.active
+      background: #f60
+
+  .task-area
+    flex: 1 0 15em
+    margin-bottom: 1em
+    max-width: 35em
+
+  .task-nav
+    display: flex
+    margin-top: 1em
+
+    .back
+      flex: 1 0
+
+    .talk
+      flex: 2 0
+
+    .continue
+      flex: 3 0
+
+    :not(:first-child)
+      margin-left: 0.5em
+
+.workflow-task
+  margin-top 100px
+  .answer
+    align-items: center
+    display: flex
+    margin: 0.5em 0
+    text-align: left
+
+    input,
+    .drawing-tool-icon
+      flex-shrink: 0
+      line-height: 1
+      margin-right: 0.5em
+
+    .markdown > p:first-child:last-child
+      margin: 0
+
+    .tool-count
+      margin-left: 0.5em
+      opacity: 0.7
+
+  .drawing-tool-icon > svg
+    fill-opacity: 0.1
+    height: 1.5em
+    stroke: currentColor
+    stroke-width: 5
+
+  .drawing-tool-input
+    display: none
+
+  & + .workflow-task
+    margin-top: 2em

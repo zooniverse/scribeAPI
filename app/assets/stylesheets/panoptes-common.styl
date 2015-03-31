@@ -1,0 +1,23 @@
+FOREGROUND = #404040
+BACKGROUND = white
+MAIN_HIGHLIGHT = #43bbfd
+SECOND_HIGHLIGHT = #38b978
+
+background-stripes(color1, color2, size)
+  background-image: repeating-linear-gradient(-45deg, color1, color1 size / 2, color2 size / 2, color2 size)
+
+$reset-button
+  background: transparent
+  border: 0
+  color: inherit
+  cursor: pointer
+  display: inline-block
+  font: inherit
+  line-height: inherit
+  margin: 0
+  padding: 0
+  text-decoration: none
+
+  &:disabled
+    cursor: inherit
+    opacity: 0.5
