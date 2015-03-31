@@ -3,6 +3,18 @@ Scribe is a framework for crowdsourcing the transcription of text-based document
 
 Check out the <a href="http://docs.scribeapi1.apiary.io/#reference">documentation</a> and the <a href="https://github.com/zooniverse/ScribeAPI/wiki">wiki</a> for further resources.
 
+<h1>Quick Start</h1>
+Copy example project folder:
+``cp -R project/example_project project/%PROJECT_KEY%``
+
+Edit your project files - in particular:
+ * Project properties (project.rb)
+ * Workflows (workflows/*.json )
+ * Groups and subjects (subjects/groups.csv, each 'name' of which refers to subjects/group_%NAME%.csv)
+ * Pages (content/*.html.erb)
+
+Build project:
+``rake project_load[%PROJECT_KEY%]``
 
 <h1>Background</h1>
 

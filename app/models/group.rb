@@ -2,6 +2,7 @@ class Group
   include Mongoid::Document
   include Mongoid::Timestamps
 
+  field :key,             type: String
   field :name,            type: String
   field :description,     type: String
   field :cover_image_url, type: String
@@ -10,8 +11,7 @@ class Group
   field :stats,           type: Hash
 
   belongs_to :project
-  has_many :subjects
-  
+  has_many :subject_sets
 
   def update_stats
 

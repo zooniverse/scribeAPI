@@ -1,8 +1,10 @@
 
+
 desc 'creates a poject object from the project directory'
 
   task :project_load, [:project_name] => :environment do |task, args|
     project_file_path = Rails.root.join('project', args[:project_name], 'project.rb')
+
     load project_file_path
     project = Project.create({
         title: Specific_project[:title],
@@ -12,5 +14,8 @@ desc 'creates a poject object from the project directory'
         team: Specific_project[:team],
         # pages: Specific_project[:pages],
       })
+    puts "Project: Created '#{project.title}'"
 
+    Rake::Task['project_setup'].invoke(args[:project_name])
+    # binding.pry
   end
