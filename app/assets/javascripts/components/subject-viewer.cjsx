@@ -94,10 +94,6 @@ module.exports = React.createClass
       tool: @props.annotation._toolIndex
       timestamp: (new Date).toJSON()
 
-    console.log 'newMark: ', newMark
-
-    console.log 'markingTools: ', markingTools
-
     marks.push newMark
     
     @setState
@@ -108,7 +104,6 @@ module.exports = React.createClass
       @updateAnnotations()
 
   handleInitDrag: (e) ->
-    console.log 'handleInitDrag()'
     task = @props.workflow.tasks[@props.annotation.task]
     mark = @state.selectedMark
     MarkComponent = markingTools[task.tools[mark.tool].type]
@@ -121,7 +116,6 @@ module.exports = React.createClass
     @forceUpdate()
 
   handleInitRelease: (e) ->
-    console.log 'handleInitRelease()'
     task = @props.workflow.tasks[@props.annotation.task]
     mark = @state.selectedMark
     MarkComponent = markingTools[task.tools[mark.tool].type]
@@ -175,25 +169,6 @@ module.exports = React.createClass
       annotations: @props.classification.annotations
     @forceUpdate()
 
-
-          # SCRATCH CODE TAKEN FROM WITHIN SVG TAG
-          #       { @state.marks.map ((mark, i) ->
-          #     <ToolComponent
-          #       key={i}
-          #       mark={mark}
-          #       subject={@state.subject}
-          #       workflow={@props.workflow}
-          #       getEventOffset={@getEventOffset}
-          #       isSelected={mark is @state.selectedMark}
-          #       handleMarkClick={@handleMarkClick.bind null, mark}
-          #       onClickDelete={@onClickDelete}
-          #       clickOffset={@state.clickOffset}
-          #       imageWidth={@state.imageWidth}
-          #       imageHeight={@state.imageHeight}
-          #     />
-          #   ), @
-          # }
-
   render: ->
     # return null if @state.subjects is null or @state.subjects.length is 0
     # return null unless @state.subject?
@@ -235,7 +210,6 @@ module.exports = React.createClass
           </Draggable>
 
           { for annotation in @props.classification.annotations
-              console.log 'ANNOTATION: ', annotation
               annotation._key ?= Math.random()
               isPriorAnnotation = annotation isnt @props.annotation
               taskDescription = @props.workflow.tasks[annotation.task]
@@ -262,9 +236,6 @@ module.exports = React.createClass
                     #   onChange: @updateAnnotations
                     #   # onSelect: @selectMark.bind this, annotation, mark
                     #   # onDestroy: @destroyMark.bind this, annotation, mark
-
-                    console.log 'TOOL DESCRIPTION TYPE: ', toolDescription.type
-                    console.log 'CLASSIFICATION: ', @props.classification
 
                     ToolComponent = markingTools[toolDescription.type]
                     

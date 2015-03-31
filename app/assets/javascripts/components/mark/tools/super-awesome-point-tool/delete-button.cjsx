@@ -35,6 +35,5 @@ module.exports = React.createClass
     </g>
 
   destroyTool: ->
-    console.log 'destroyTool()'
-    # @props.tool.setState destroying: true, =>
-    #   setTimeout @props.tool.props.onDestroy, DESTROY_TRANSITION_DURATION
+    @props.tool.setState destroying: true, =>
+      setTimeout @props.tool.props.onDestroy, DESTROY_TRANSITION_DURATION

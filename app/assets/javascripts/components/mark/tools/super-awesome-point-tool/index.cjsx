@@ -17,7 +17,6 @@ module.exports = React.createClass
       {x, y}
 
     initMove: ({x, y}) ->
-      console.log 'initMove(): ', x, y
       {x, y}
 
   getDeleteButtonPosition: ->
@@ -52,7 +51,7 @@ module.exports = React.createClass
       y={@props.mark.y} 
       fill="red" 
       fontSize="55">
-      BLAH
+      SuperAwesomePoint
     </text>
 
   handleDrag: (e, d) ->
