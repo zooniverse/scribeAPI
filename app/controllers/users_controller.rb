@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_filter :authenticate_user!
-  respond_to :json 
+  respond_to :json
 
 
   def index
@@ -13,9 +13,10 @@ class UsersController < ApplicationController
     respond_with @user
   end
 
-  def current_user 
-    binding.pry
+  def logged_in_user
     respond_with current_user
   end
+
+
 
 end
