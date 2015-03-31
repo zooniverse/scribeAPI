@@ -10,8 +10,18 @@ class Project
 	field  :scientists, 	 type: Array,  default: [{name: "Stuart Lynn", location: "Chicago, IL", description: "me", url:["https://github.com/brian-c"]}]
 	field  :developers, 	 type: Array,  default: [{name: "Stuart Lynn", location: "Chicago, IL", description: "me", url:["https://github.com/brian-c"]}]
 	field  :pages,         type: Array,  default: []
-	field  :background,    type: String 
+	field  :background,    type: String
 
+	include CachedStats
+
+	update_interval 10
+
+	has_many :groups
 	has_many :workflows
 	has_many :subjects
+
+	def calc_stats
+		{now: Time.new}
+	end
+
 end
