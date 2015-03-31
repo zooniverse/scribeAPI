@@ -30,16 +30,23 @@ module.exports = React.createClass # rename to Classifier
     @addAnnotationForTask @props.workflow.first_task
 
   render: ->
-    return null unless @state.currentSubject?
+    unless @state.currentSubject?
+      return null 
+    else
+      # console.log '*** NO CURRENT SUBJECT SELECTED ***'
 
     annotations = @props.classification.annotations
     currentAnnotation = if annotations.length is 0 then {} else annotations[annotations.length-1]
     currentTask = @props.workflow.tasks[currentAnnotation?.task]
 
+    console.log 'CURRENT ANNOTATION: ', currentAnnotation
     console.log 'CURRENT TASK: ', currentTask
     console.log 'NEXT TASK: ', currentTask.next_task
 
-    TaskComponent = tasks[@state.currentTask.tool]
+    console.log '************* CURRENT TASK TOOL: ', currentTask.tool
+
+
+    TaskComponent = tasks[currentTask.tool]
 
     onFirstAnnotation = currentAnnotation?.task is @props.workflow.first_task
 
@@ -53,7 +60,9 @@ module.exports = React.createClass # rename to Classifier
       </div>
       <div className="task-area">
         <div className="task-container">
-          <TaskComponent task={currentTask} annotation={currentAnnotation} onChange={=> @props.classification.update 'annotation'} />
+          {console.log "BLAH"}
+          <TaskComponent task={currentTask} annotation={currentAnnotation} onChange={@handleTaskComponentChange} />
+          {console.log "BLAH2"}
           <hr/>
           <nav className="task-nav">
             <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
@@ -66,6 +75,10 @@ module.exports = React.createClass # rename to Classifier
         </div>
       </div>
     </div>
+
+  handleTaskComponentChange: ->
+    console.log 'handleTaskComponentChange()'
+    @props.classification.update 'annotation'
 
   destroyCurrentAnnotation: ->
     @props.classification.annotations.pop()

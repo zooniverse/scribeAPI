@@ -92,7 +92,10 @@ module.exports = React.createClass
     onChange: NOOP
 
   render: ->
+    console.log 'FOOOOOOOOOOOOOOOOO!!!!!!!!!!!!!!!!!!!!!!!'
+    <div className="foo">BAR</div>
     tools = for tool, i in @props.task.tools
+      console.log 'tool: ', tool, ', i: ', i 
       tool._key ?= Math.random()
       count = (true for mark in @props.annotation.value when mark.tool is i).length
       <label key={tool._key} className="minor-button #{if i is (@props.annotation._toolIndex ? 0) then 'active' else ''}">
@@ -109,3 +112,4 @@ module.exports = React.createClass
     if e.target.checked
       @props.annotation._toolIndex = index
       @props.onChange? e
+      @forceUpdate()

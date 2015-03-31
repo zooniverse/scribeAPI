@@ -7,7 +7,9 @@ Draggable                     = require '../lib/draggable'
 LoadingIndicator              = require './loading-indicator'
 SubjectMetadata               = require './subject-metadata'
 ActionButton                  = require './action-button'
-Classification                = require '../models/classification'
+markingTools                  = require './mark/tools'
+# Classification                = require '../models/classification'
+
 
 module.exports = React.createClass
   displayName: 'SubjectViewer'
@@ -90,7 +92,8 @@ module.exports = React.createClass
       x: ex
       y: ey
       timestamp: (new Date).toJSON()
-    # marks.push newMark
+
+    console.log 'markingTools: ', markingTools
 
     @props.annotation.value.push newMark
     
@@ -189,8 +192,6 @@ module.exports = React.createClass
     # console.log 'SUBJECT: ', @state.subject
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     ToolComponent = @state.tool
-
-    console.log 'ToolCOmponent: ', @state.tool
 
     actionButton = 
       if @state.loading

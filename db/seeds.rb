@@ -183,7 +183,7 @@ mark_workflow = Workflow.create(
 
       fake_task: {
         order: 3,
-        tool: 'pick_one',
+        tool: 'single',
         instruction: 'Is there anything left to mark here?',
         options: {
           yes: {
@@ -202,6 +202,7 @@ mark_workflow = Workflow.create(
         tool: 'drawing',
         instruction: 'Pick a field and mark it with the corresponding marking tool.',
         tools: [
+          {type: 'textRow', label: 'TextRow', color: 'red'},
           {type: 'line', label: 'Line', color: 'yellow'},
           {type: 'rectangle', label: 'Rectangle', color: 'lime'},
           {type: 'polygon', label: 'Polygon', color: 'cyan'},
