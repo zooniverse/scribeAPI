@@ -1,5 +1,5 @@
 module.exports =
-  point:        require './point-tool'
+  superAwesomePointTool: require './super-awesome-point-tool'
   verticalMark: require './vertical-mark-tool'
   textRow:      require './text-row-tool'
 

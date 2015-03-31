@@ -154,7 +154,7 @@ mark_workflow = Workflow.create(
     project: project,
     subject_fetch_limit: '10',
     enables_workflows: {},
-    first_task: 'pick_page_type',
+    first_task: 'mark_fields',
     tasks: {
 
       pick_page_type: {
@@ -202,7 +202,7 @@ mark_workflow = Workflow.create(
         tool: 'drawing',
         instruction: 'Pick a field and mark it with the corresponding marking tool.',
         tools: [
-          {type: 'textRow', label: 'TextRow', color: 'red'},
+          {type: 'superAwesomePointTool', label: 'SuperAwesomePointTool', color: 'red'},
           {type: 'line', label: 'Line', color: 'yellow'},
           {type: 'rectangle', label: 'Rectangle', color: 'lime'},
           {type: 'polygon', label: 'Polygon', color: 'cyan'},

@@ -136,14 +136,16 @@ module.exports = React.createClass
   getScale: ->
     rect = @refs.sizeRect?.getDOMNode().getBoundingClientRect()
     rect ?= width: 0, height: 0
-    horizontal: rect.width / @state.imageWidth
-    vertical: rect.height / @state.imageHeight
+    horizontal = rect.width / @state.imageWidth
+    vertical = rect.height / @state.imageHeight
+    return {horizontal, vertical}
 
   getEventOffset: (e) ->
     rect = @refs.sizeRect.getDOMNode().getBoundingClientRect()
-    { horizontal, vertical } = @getScale()
-    ex: ((e.pageX - pageXOffset - rect.left) / horizontal) + @state.viewX
-    ey: ((e.pageY - pageYOffset - rect.top) / vertical) + @state.viewY
+    scale = @getScale()
+    ex = ((e.pageX - pageXOffset - rect.left) / scale.horizontal) + @state.viewX
+    ey = ((e.pageY - pageYOffset - rect.top) / scale.vertical) + @state.viewY
+    return {ex, ey}
 
   onClickDelete: (key) ->
     marks = @state.marks
@@ -194,6 +196,8 @@ module.exports = React.createClass
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     ToolComponent = @state.tool
 
+    scale = @getScale()
+
     actionButton = 
       if @state.loading
         <ActionButton onAction={@nextSubject} classes="disabled" text="Loading..." />
@@ -230,7 +234,6 @@ module.exports = React.createClass
               annotation._key ?= Math.random()
               isPriorAnnotation = annotation isnt @props.annotation
               taskDescription = @props.workflow.tasks[annotation.task]
-              
 
               if taskDescription.tool is 'drawing'
                 <g key={annotation._key} className="marks-for-annotation" data-disabled={isPriorAnnotation or null}>
@@ -246,7 +249,7 @@ module.exports = React.createClass
                       disabled: isPriorAnnotation
                       selected: mark is @state.selectedMark
                       getEventOffset: @getEventOffset
-                      ref: 'selectedTool' if mark is @state.selectedMark
+                      # ref: 'selectedTool' if mark is @state.selectedMark
 
                     toolProps =
                       mark: mark
@@ -254,23 +257,30 @@ module.exports = React.createClass
 
                     toolMethods =
                       onChange: @updateAnnotations
-                      onSelect: @selectMark.bind this, annotation, mark
-                      onDestroy: @destroyMark.bind this, annotation, mark
+                      # onSelect: @selectMark.bind this, annotation, mark
+                      # onDestroy: @destroyMark.bind this, annotation, mark
 
-                    ToolComponent = drawingTools[toolDescription.type]
-                    <ToolComponent key={mark._key} {...toolProps} {...toolEnv} {...toolMethods} />}
+                    ToolComponent = markingTools[toolDescription.type]
+                    console.log 'TOOL DESCRIPTION TYPE: ', toolDescription.type
+                    <ToolComponent 
+                      key={mark._key} 
+                      mark={mark}
+                      xScale={scale.horizontal}
+                      yScale={scale.vertical}
+                      disabled={isPriorAnnotation}
+                      selected={mark is @state.selectedMark}
+                      getEventOffset={@getEventOffset}
+                      onChange={@updateAnnotations} 
+                    />
+                  }  
                 </g>
             }
-
         </svg>
 
     <div className="subject-viewer">
       <div className="subject-container">
         <div className="marking-surface">
           {markingSurfaceContent}
-        </div>
-        <div className="subject-ui">
-          {actionButton}
         </div>
       </div>
     </div>
