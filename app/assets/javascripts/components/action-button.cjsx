@@ -1,5 +1,4 @@
 # @cjsx React.DOM
-
 React = require 'react'
 
 ActionButton = React.createClass

@@ -26,7 +26,7 @@ class User
   field :last_sign_in_ip,    :type => String
 
   has_many :favourites
-
+  has_many :classifications
 
   ## Confirmable
   # field :confirmation_token,   :type => String
@@ -41,6 +41,14 @@ class User
 
   def has_favourite?(subject)
     favourites.where( subject_id: subject.id ).exists?
+  end
+
+  def recents(limit=10)
+    classifications.order_by(created_at: 1).limit(limit)
+  end
+
+  def recents_for_workflow(workflow, limit=10)
+    recents(limit).where(workflow_id: workflow.id)
   end
 
 end
