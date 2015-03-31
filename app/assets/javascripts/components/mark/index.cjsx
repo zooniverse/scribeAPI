@@ -30,21 +30,11 @@ module.exports = React.createClass # rename to Classifier
     @addAnnotationForTask @props.workflow.first_task
 
   render: ->
-    unless @state.currentSubject?
-      return null 
-    else
-      # console.log '*** NO CURRENT SUBJECT SELECTED ***'
+    return null unless @state.currentSubject?
 
     annotations = @props.classification.annotations
     currentAnnotation = if annotations.length is 0 then {} else annotations[annotations.length-1]
     currentTask = @props.workflow.tasks[currentAnnotation?.task]
-
-    console.log 'CURRENT ANNOTATION: ', currentAnnotation
-    console.log 'CURRENT TASK: ', currentTask
-    console.log 'NEXT TASK: ', currentTask.next_task
-
-    console.log '************* CURRENT TASK TOOL: ', currentTask.tool
-
 
     TaskComponent = tasks[currentTask.tool]
 
@@ -60,9 +50,7 @@ module.exports = React.createClass # rename to Classifier
       </div>
       <div className="task-area">
         <div className="task-container">
-          {console.log "BLAH"}
           <TaskComponent task={currentTask} annotation={currentAnnotation} onChange={@handleTaskComponentChange} />
-          {console.log "BLAH2"}
           <hr/>
           <nav className="task-nav">
             <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
@@ -77,7 +65,6 @@ module.exports = React.createClass # rename to Classifier
     </div>
 
   handleTaskComponentChange: ->
-    console.log 'handleTaskComponentChange()'
     @props.classification.update 'annotation'
 
   destroyCurrentAnnotation: ->
@@ -86,10 +73,7 @@ module.exports = React.createClass # rename to Classifier
     @forceUpdate()
 
   addAnnotationForTask: (taskKey) ->
-    console.log 'taskKey: ', taskKey
     taskDescription = @props.workflow.tasks[taskKey]
-    console.log 'taskDescription: ', taskDescription
-
     annotation = tasks[taskDescription.tool].getDefaultAnnotation() # sets {value: null}
     annotation.task = taskKey # e.g. {task: "cool"}
     @props.classification.annotations.push annotation

@@ -225,7 +225,6 @@ module.exports = React.createClass
           </Draggable>
 
           { for annotation in @props.classification.annotations
-              console.log 'annotation: ', annotation
               annotation._key ?= Math.random()
               isPriorAnnotation = annotation isnt @props.annotation
               taskDescription = @props.workflow.tasks[annotation.task]
