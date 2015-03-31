@@ -11,8 +11,9 @@ class Group
 
   belongs_to :project
   has_many :subjects
+  
 
   def update_stats
-    
+
   end
 end

@@ -1,5 +1,4 @@
 # @cjsx React.DOM
-
 React = require 'react'
 
 ActionButton = React.createClass
@@ -7,13 +6,13 @@ ActionButton = React.createClass
 
   handleClick: (e) ->
     e.preventDefault() # prevent browser's default submit action
-    @props.onActionSubmit()
+    @props.onClick()
 
   render: ->
-    if @props.loading
-      <a onClick={@handleClick} className="action-button button white disabled">LOADING...</a>
-    else
-      <a onClick={@handleClick} className="action-button button white ">{@props.label}</a>
-
+    classes = "action-button button white " 
+    if @props.classes? then classes = classes + @props.classes # TODO: check to see if this does what it should!!!
+    <a onClick={@handleClick} className={classes}>
+      {@props.text}
+    </a>
 
 module.exports = ActionButton

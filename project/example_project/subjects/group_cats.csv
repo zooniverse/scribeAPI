@@ -1,0 +1,4 @@
+order,file_path,thumbnail,width,height,capture_location,date
+1,http://www.project.com/subjects/cats1.jpg,http://www.project.com/thumbnails/cats1.jpg,200,700,Scotland,2013_04_20
+2,http://www.project.com/subjects/cats2.jpg,http://www.project.com/thumbnails/cats2.jpg,200,700,America,2013_02_20
+3,http://www.project.com/subjects/cats3.jpg,http://www.project.com/thumbnails/cats3.jpg,200,700,Wales,2000_04_20

@@ -1,23 +1,22 @@
-stores = []
+  fetchSubjects: ->
+    $.ajax
+      url: @state.subjectEndpoint
+      dataType: "json"
+      success: ((data) ->
+        # DEBUG CODE
+        console.log 'FETCHED SUBJECTS: ', data
+        @setState
+          subjects: data
+          subject: data[0], =>
+            @state.classification = new Classification @state.subject
+            @loadImage @state.subject.location.standard
 
-register = (store) ->
-  stores.push store
+        # console.log 'Fetched Images.' # DEBUG CODE
 
-dispatch = (action, payload...) ->
-  unless process.env.NODE_ENV is 'production'
-    console?.info 'Dispatching', action, 'with', payload...
-
-    unless action.indexOf(':') > -1
-      console?.warn "Dispatched actions (`#{action}`) should have a colon in them to disambiguate them from regular store methods."
-
-  for store in stores when store[action]?
-    anyHandlerMatched = true
-    # NOTE: If the handler returns a promise, this will wait to emit until it resolves, otheriwse it emits immediately.
-    handledValue = store[action] payload...
-    Promise.all([handledValue]).then store.emitChange.bind store
-
-  unless process.env.NODE_ENV is 'production'
-    unless anyHandlerMatched
-      console?.warn "No stores respond to the action `#{action}`."
-
-module.exports = {register, dispatch}
+        return
+      ).bind(this)
+      error: ((xhr, status, err) ->
+        console.error "Error loading subjects: ", @state.subjectEndpoint, status, err.toString()
+        return
+      ).bind(this)
+    return

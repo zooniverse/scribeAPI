@@ -1,6 +1,8 @@
 class Project
 	include Mongoid::Document
+	include Mongoid::Timestamps
 
+<<<<<<< HEAD
 	field  :producer , 		 type: String, default: "Adler"
 	field  :title , 		   type: String, default: "ZooZoo"
 	field  :summary , 		 type: String, default: "Classify pictures of zoo's"
@@ -16,12 +18,14 @@ class Project
 
 	update_interval 10
 
+>>>>>>> 659fbb00a5853c72d101761ed52b1388483972c8
 	has_many :groups
 	has_many :workflows
 	has_many :subjects
 
+<<<<<<< HEAD
 	def calc_stats
 		{now: Time.new}
 	end
-
+>>>>>>>
 end
