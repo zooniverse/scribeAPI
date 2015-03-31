@@ -17,6 +17,7 @@ module.exports = React.createClass
       {x, y}
 
     initMove: ({x, y}) ->
+      console.log 'initMove(): ', x, y
       {x, y}
 
   getDeleteButtonPosition: ->
@@ -25,16 +26,16 @@ module.exports = React.createClass
     y: -1 * (SELECTED_RADIUS / @props.yScale) * Math.sin theta
 
   render: ->
-    averageScale = (@props.xScale + @props.yScale) / 2
+    # averageScale = (@props.xScale + @props.yScale) / 2
 
-    crosshairSpace = CROSSHAIR_SPACE / averageScale
-    crosshairWidth = CROSSHAIR_WIDTH / averageScale
-    selectedRadius = SELECTED_RADIUS / averageScale
+    # crosshairSpace = CROSSHAIR_SPACE / averageScale
+    # crosshairWidth = CROSSHAIR_WIDTH / averageScale
+    # selectedRadius = SELECTED_RADIUS / averageScale
 
-    radius = if @props.selected
-      SELECTED_RADIUS / averageScale
-    else
-      RADIUS / averageScale
+    # radius = if @props.selected
+    #   SELECTED_RADIUS / averageScale
+    # else
+    #   RADIUS / averageScale
 
     # <DrawingToolRoot tool={this} transform="translate(#{@props.mark.x}, #{@props.mark.y})">
     #   <line x1="0" y1={-1 * crosshairSpace * selectedRadius} x2="0" y2={-1 * selectedRadius} strokeWidth={crosshairWidth} />

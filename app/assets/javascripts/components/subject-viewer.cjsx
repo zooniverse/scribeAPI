@@ -85,14 +85,16 @@ module.exports = React.createClass
 
   handleInitStart: (e) ->
     console.log 'handleInitStart() '
-    { ex, ey } = @getEventOffset e
+    { x, y } = @getEventOffset e
     marks = @props.annotation.value
     newMark =
       key: @state.lastMarkKey
-      x: ex
-      y: ey
+      x: x
+      y: y
       tool: @props.annotation._toolIndex
       timestamp: (new Date).toJSON()
+
+    console.log 'newMark: ', newMark
 
     console.log 'markingTools: ', markingTools
 
@@ -129,8 +131,6 @@ module.exports = React.createClass
     console.log 'handleInitDrag()'
     task = @props.workflow.tasks[@props.annotation.task]
     mark = @state.selectedMark
-    console.log 'FOO'
-    console.log 'SELECTED MARK: ', @state.selectedMark
 
     MarkComponent = markingTools[task.tools[mark.tool].type]
     if MarkComponent.initMove?
@@ -138,6 +138,7 @@ module.exports = React.createClass
       initMoveValues = MarkComponent.initMove mouseCoords, mark, e
       for key, value of initMoveValues
         mark[key] = value
+        console.log 'MARK: ', mark
     @updateAnnotations()
 
   # AVAILABLE, BUT UNUSED, METHODS
@@ -157,9 +158,9 @@ module.exports = React.createClass
   getEventOffset: (e) ->
     rect = @refs.sizeRect.getDOMNode().getBoundingClientRect()
     scale = @getScale()
-    ex = ((e.pageX - pageXOffset - rect.left) / scale.horizontal) + @state.viewX
-    ey = ((e.pageY - pageYOffset - rect.top) / scale.vertical) + @state.viewY
-    return {ex, ey}
+    x = ((e.pageX - pageXOffset - rect.left) / scale.horizontal) + @state.viewX
+    y = ((e.pageY - pageYOffset - rect.top) / scale.vertical) + @state.viewY
+    return {x, y}
 
   onClickDelete: (key) ->
     marks = @state.marks
@@ -172,12 +173,12 @@ module.exports = React.createClass
         @forceUpdate() # make sure keys are up-to-date
 
   handleMarkClick: (mark, e) ->
-    { ex, ey } = @getEventOffset e
+    { x, y } = @getEventOffset e
     @setState
       selectedMark: mark
       clickOffset:
-        x: mark.x - ex
-        y: mark.y - ey
+        x: mark.x - x
+        y: mark.y - y
       # , => @forceUpdate()
 
   updateAnnotations: ->
