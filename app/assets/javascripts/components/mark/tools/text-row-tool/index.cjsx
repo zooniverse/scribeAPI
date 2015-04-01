@@ -62,7 +62,7 @@ module.exports = React.createClass
         </Draggable>
 
         { if @props.selected
-          <DeleteButton tool={this} />
+          <DeleteButton tool={this} x={100} y={DEFAULT_HEIGHT / 2 } />
         }
 
       </g>
