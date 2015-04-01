@@ -25,10 +25,7 @@ module.exports = React.createClass
     "
 
     <g 
-      transform = "
-        translate(#{0}, #{@props.y})
-        rotate(#{@props.rotate})
-      "
+      transform = "translate(#{0}, #{@props.y}) rotate(#{@props.rotate})"
       className="clickable drawing-tool-delete-button" 
       stroke={strokeColor} 
       strokeWidth={strokeWidth} 

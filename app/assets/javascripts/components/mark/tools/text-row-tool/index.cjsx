@@ -57,12 +57,17 @@ module.exports = React.createClass
         strokeWidth={SELECTED_STROKE_WIDTH/scale}
         onMouseDown={@props.onSelect unless @props.disabled}
       >
+
         <Draggable onDrag={@handleDrag}>
           <rect x={0-@props.mark.x} y={0} width='100%' height='100' />
         </Draggable>
 
         { if @props.selected
-          <DeleteButton tool={this} x={100} y={DEFAULT_HEIGHT / 2 } />
+          <g transform="translate(#{-@props.mark.x},#{0})">
+            <ResizeButton className="upperResize" y={0} />
+            <ResizeButton className="lowerResize" y={DEFAULT_HEIGHT} />        
+            <DeleteButton tool={this} y={DEFAULT_HEIGHT / 2 } />
+          </g>
         }
 
       </g>
