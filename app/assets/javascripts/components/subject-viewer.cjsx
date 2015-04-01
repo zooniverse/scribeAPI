@@ -236,6 +236,8 @@ module.exports = React.createClass
                     mark._key ?= Math.random()
                     toolDescription = taskDescription.tools[mark.tool]
 
+                    console.log 'MARK TOOL: ', mark.tool
+
                     # toolEnv =
                     #   scale: @getScale()
                     #   disabled: isPriorAnnotation

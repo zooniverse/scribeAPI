@@ -1,212 +1,85 @@
-# @cjsx React.DOM
-React          = require 'react'
-Draggable      = require 'lib/draggable'
-DeleteButton   = require './delete-button'
-ResizeButton   = require './resize-button'
-ProgressButton = require './progress-button'
-Classification = require 'models/classification'
+React = require 'react'
+Draggable = require 'lib/draggable'
+DeleteButton = require './delete-button'
 
-DEBUG = false
+RADIUS = 10
+SELECTED_RADIUS = 20
+CROSSHAIR_SPACE = 0.2
+CROSSHAIR_WIDTH = 1
+DELETE_BUTTON_ANGLE = 45
+
+STROKE_WIDTH = 1.5
+SELECTED_STROKE_WIDTH = 2.5
 
 module.exports = React.createClass
-  displayName: 'TextRowTool'
+  displayName: 'TextRow'
 
-  propTypes:
-    key:  React.PropTypes.number.isRequired
-    mark: React.PropTypes.object.isRequired
+  statics:
+    defaultValues: ({x, y}) ->
+      {x, y}
 
-  getInitialState: ->
-    mark = @props.mark
-    unless mark.status?
-      mark.status = 'mark'
-    mark.yUpper = @props.mark.y - 50
-    mark.yLower = @props.mark.y + 50
-    
-    mark: mark
-    buttonDisabled: false
-    lockTool: false
-  
-  componentWillReceiveProps: ->
-    mark = @props.mark
-    markHeight = mark.yLower - mark.yUpper
-    mark.yUpper = mark.y - markHeight/2
-    mark.yLower = mark.y + markHeight/2
+    initMove: ({x, y}) ->
+      {x, y}
 
-    @setState mark: mark
-      , => console.log 'MARK: ', mark
-      # , => @forceUpdate() 
-
-  handleDrag: (e) ->
-    return if @state.lockTool
-    { ex,ey } = @props.getEventOffset e
-    mark = @state.mark
-    markHeight = mark.yLower - mark.yUpper
-    mark.x = ex + @props.clickOffset.x # add initial click offset
-    mark.y = ey + @props.clickOffset.y
-    mark.yUpper = mark.y - markHeight/2
-    mark.yLower = mark.y + markHeight/2
-
-    # prevent dragging mark beyond image bounds
-    return if ( ey - markHeight/2 ) < 0
-    return if ( ey + markHeight/2 ) > @props.imageHeight
-    
-    @setState mark: mark
-      # , => @forceUpdate()
-
-  handleResize: (whichOne, e) ->
-    mark = @state.mark
-    { ex, ey } = @props.getEventOffset e
-
-    switch whichOne
-      when 'upper'
-        if mark.yLower - ey < 100 # enforce minimum height
-          mark.yUpper = mark.yLower - 100
-          return
-        else
-          dy = mark.yUpper - ey
-          yUpper_p = ey
-          markHeight_p = mark.yLower - mark.yUpper + dy
-          y_p = yUpper_p + markHeight_p/2
-          mark.yUpper = yUpper_p
-          mark.markHeight = markHeight_p
-          mark.y = y_p
-      when 'lower'
-        if ey - mark.yUpper < 100 # enforce minimum height
-          mark.yLower = mark.yUpper + 100
-          return
-        else
-          dy = ey - mark.yLower
-          yLower_p = ey
-          markHeight_p = mark.yLower - mark.yUpper + dy
-          y_p = yLower_p - markHeight_p/2
-          mark.yLower = yLower_p
-          mark.markHeight = markHeight_p
-          mark.y = y_p
-    
-    @setState mark: mark
-      # , => @forceUpdate()
-
-  launchTranscribe: ->
-    console.log location.host + "/?subject_id=#{@state.transcribe_id}#/transcribe"
-    location.replace 'http://' + location.host + "/?subject_id=#{@state.transcribe_id}&scrollOffset=#{$(window).scrollTop()}#/transcribe"
-    # @setState showTranscribeTool: true
-
-
-  onClickButton: ->
-    mark = @state.mark
-    switch mark.status
-      when 'mark'
-        @setState lockTool: true
-        @submitMark()
-        mark.status = 'mark-finished'
-      when 'mark-finished'
-        @launchTranscribe()
-        mark.status = 'transcribe'
-      when 'transcribe'
-        mark.status = 'transcribe-finished'
-      when 'transcribe-complete'
-        console.log 'NOTHING LEFT TO DO FOR THIS MARK'
-    @setState mark: mark
-
-  enableButton: ->
-    console.log 'enableButton() '
-    @setState buttonDisabled: false
-      , => @forceUpdate()
-  
-  disableButton: ->
-    console.log 'disableButton() '
-    @setState buttonDisabled: true
-     , => @forceUpdate()
-    
-  submitMark: ->
-    @disableButton()
-    mark = @state.mark
-    newClassification = new Classification @props.subject
-    newClassification.annotate mark
-    $.post('/classifications', { 
-        workflow_id: @props.workflow.id
-        subject_id:  @props.subject.id
-        location:    @props.subject.location
-        annotations: newClassification.annotations
-        started_at:  newClassification.started_at
-        finished_at: newClassification.finished_at
-        subject:     newClassification.subject
-        user_agent:  newClassification.user_agent
-      }, )
-      .done (response) =>
-        console.log "Success" #, response._id.$oid
-        @setState transcribe_id: response._id.$oid
-        @enableButton()
-        return
-      .fail =>
-        console.log "Failure"
-        return
-      # .always ->
-      #   console.log "Always"
-      #   return
+  getDeleteButtonPosition: ->
+    theta = (DELETE_BUTTON_ANGLE) * (Math.PI / 180)
+    x: (SELECTED_RADIUS / @props.xScale) * Math.cos theta
+    y: -1 * (SELECTED_RADIUS / @props.yScale) * Math.sin theta
 
   render: ->
+    averageScale = (@props.xScale + @props.yScale) / 2
+    crosshairSpace = CROSSHAIR_SPACE / averageScale
+    crosshairWidth = CROSSHAIR_WIDTH / averageScale
+    selectedRadius = SELECTED_RADIUS / averageScale
+    radius = if @props.selected
+      SELECTED_RADIUS / averageScale
+    else
+      RADIUS / averageScale
 
-    classString = 'textRow drawing-tool'
-    if @state.lockTool then classString += ' locked'
-    markHeight = @state.mark.yLower - @state.mark.yUpper
-    strokeWidth = '6'
-    strokeColor = 'rgba(0,0,0,0.5)'
-    scrubberWidth = 64
-    scrubberHeight = 32
+    scale = (@props.xScale + @props.yScale) / 2
 
     <g 
-      className = {classString} 
-      transform = {"translate(0, #{Math.round( @state.mark.y - markHeight/2 ) })"} 
+      tool={this} 
+      transform="translate(#{@props.mark.x}, #{@props.mark.y})" 
+      onMouseDown={@handleMouseDown}
     >
-      <Draggable
-        onStart = {@props.handleMarkClick.bind @props.mark} 
-        onDrag = {@handleDrag} >
-        <rect 
-          className   = "mark-rectangle"
-          x           = 0
-          y           = 0
-          viewBox     = {"0 0 @props.imageWidth @props.imageHeight"}
-          width       = {Math.ceil( @props.imageWidth )}
-          height      = {markHeight}
-          fill        = {if @props.isSelected then "rgba(255,102,0,0.25)" else strokeColor}
-          stroke      = {strokeColor}
-          strokeWidth = {strokeWidth}
-        />
-      </Draggable>
+      <g
+        className="drawing-tool-main"
+        fill='transparent'
+        stroke='#f60'
+        strokeWidth={SELECTED_STROKE_WIDTH/scale}
+        onMouseDown={@props.onSelect unless @props.disabled}
+      >
 
-      <ProgressButton 
-        markStatus={@state.mark.status}
-        onClickButton={@onClickButton}
-        buttonDisabled={@state.buttonDisabled}
-        transform = {"translate( #{@props.imageWidth-250}, #{ Math.round markHeight/2 -scrubberHeight/2 } )"}
-      />
+        <line x1="0" y1={-1 * crosshairSpace * selectedRadius} x2="0" y2={-1 * selectedRadius} strokeWidth={crosshairWidth} />
+        <line x1={-1 * crosshairSpace * selectedRadius} y1="0" x2={-1 * selectedRadius} y2="0" strokeWidth={crosshairWidth} />
+        <line x1="0" y1={crosshairSpace * selectedRadius} x2="0" y2={selectedRadius} strokeWidth={crosshairWidth} />
+        <line x1={crosshairSpace * selectedRadius} y1="0" x2={selectedRadius} y2="0" strokeWidth={crosshairWidth} />
+        <Draggable onDrag={@handleDrag}>
+          <circle r={radius} />
+        </Draggable>
 
-      { if @state.mark.status is 'mark'
-          <g>
-            <ResizeButton 
-              viewBox={"0 0 @props.imageWidth @props.imageHeight"}
-              className="upperResize"
-              handleResize={@handleResize.bind null, 'upper'} 
-              transform={"translate( #{@props.imageWidth/2}, #{ - Math.round scrubberHeight/2 } )"} 
-              scrubberHeight={scrubberHeight}
-              scrubberWidth={scrubberWidth}
-              isSelected={@props.isSelected}
-            />
-
-            <ResizeButton 
-              className="lowerResize"
-              handleResize={@handleResize.bind null, 'lower'} 
-              transform={"translate( #{@props.imageWidth/2}, #{ Math.round( markHeight - scrubberHeight/2 ) } )"} 
-              scrubberHeight={scrubberHeight}
-              scrubberWidth={scrubberWidth}
-              isSelected={@props.isSelected}
-            />
-
-            <DeleteButton 
-              transform = "translate(50, #{Math.round markHeight/2})" 
-              onClick = {@props.onClickDelete.bind null, @props.mark.key}
-            />
-          </g>
+        { if @props.selected
+          <DeleteButton tool={this} getDeleteButtonPosition={@getDeleteButtonPosition} />
         }
+
+      </g>
     </g>
+
+    # <text x={@props.mark.x} y={@props.mark.y} fill="red" fontSize="55">SuperAwesomePoint!</text>
+
+  handleDrag: (e, d) ->
+    @props.mark.x += d.x / @props.xScale
+    @props.mark.y += d.y / @props.yScale
+    @props.onChange e
+
+  # handleDrag: (e, d) ->
+  #   console.log 'handleDrag()'
+  #   offset = @props.getEventOffset e
+  #   @props.mark.x = offset.x
+  #   @props.mark.y = offset.y
+  #   @props.onChange()
+    
+  handleMouseDown: ->
+    console.log 'handleMouseDown()'
+    @props.onSelect @props.mark # unless @props.disabled
