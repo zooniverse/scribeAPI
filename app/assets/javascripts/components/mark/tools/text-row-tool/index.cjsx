@@ -11,12 +11,18 @@ DELETE_BUTTON_ANGLE = 45
 STROKE_WIDTH = 1.5
 SELECTED_STROKE_WIDTH = 2.5
 
+# rowTool-specific parameters
+DEFAULT_HEIGHT = 100
+
 module.exports = React.createClass
   displayName: 'TextRow'
 
   statics:
     defaultValues: ({x, y}) ->
-      {x, y}
+      x: x
+      y: y
+      yLower: y + DEFAULT_HEIGHT/2
+      yUpper: y - DEFAULT_HEIGHT/2
 
     initMove: ({x, y}) ->
       {x, y}
