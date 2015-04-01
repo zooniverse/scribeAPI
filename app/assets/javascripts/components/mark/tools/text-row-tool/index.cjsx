@@ -63,10 +63,12 @@ module.exports = React.createClass
         </Draggable>
 
         { if @props.selected
-          <g transform="translate(#{-@props.mark.x},#{0})">
-            <ResizeButton className="upperResize" y={0} />
-            <ResizeButton className="lowerResize" y={DEFAULT_HEIGHT} />        
-            <DeleteButton tool={this} y={DEFAULT_HEIGHT / 2 } />
+          <g>
+            <g transform="translate(#{Math.round(@props.ref.props.width*@props.yScale)-@props.mark.x},#{0})">
+              <ResizeButton className="upperResize" y={0} />
+              <ResizeButton className="lowerResize" y={DEFAULT_HEIGHT} />        
+            </g>
+            <DeleteButton tool={this} x={100-@props.mark.x} y={DEFAULT_HEIGHT / 2 } />
           </g>
         }
 
@@ -76,6 +78,8 @@ module.exports = React.createClass
     # <text x={@props.mark.x} y={@props.mark.y} fill="red" fontSize="55">SuperAwesomePoint!</text>
 
   handleDrag: (e, d) ->
+    console.log 'PROPS: ', @props
+    console.log 'WIDTH: ', @props.ref.props.width * @props.yScale
     @props.mark.x += d.x / @props.xScale
     @props.mark.y += d.y / @props.yScale
     @props.onChange e

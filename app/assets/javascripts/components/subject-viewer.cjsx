@@ -290,6 +290,8 @@ module.exports = React.createClass
                       disabled={isPriorAnnotation}
                       selected={mark is @state.selectedMark}
                       getEventOffset={@getEventOffset}
+                      ref={@refs.sizeRect}
+
                       onChange={@updateAnnotations} 
                       onSelect={@selectMark.bind this, annotation, mark}
                       onDestroy={@destroyMark.bind this, annotation}
