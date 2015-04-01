@@ -60,17 +60,26 @@ module.exports = React.createClass
           <circle r={radius} />
         </Draggable>
 
+        { if @props.selected
+          <DeleteButton tool={this} getDeleteButtonPosition={@getDeleteButtonPosition} />
+        }
+
       </g>
     </g>
 
     # <text x={@props.mark.x} y={@props.mark.y} fill="red" fontSize="55">SuperAwesomePoint!</text>
 
   handleDrag: (e, d) ->
-    console.log 'handleDrag()'
-    offset = @props.getEventOffset e
-    @props.mark.x = offset.x
-    @props.mark.y = offset.y
-    @props.onChange()
+    @props.mark.x += d.x / @props.xScale
+    @props.mark.y += d.y / @props.yScale
+    @props.onChange e
+
+  # handleDrag: (e, d) ->
+  #   console.log 'handleDrag()'
+  #   offset = @props.getEventOffset e
+  #   @props.mark.x = offset.x
+  #   @props.mark.y = offset.y
+  #   @props.onChange()
     
   handleMouseDown: ->
     console.log 'handleMouseDown()'

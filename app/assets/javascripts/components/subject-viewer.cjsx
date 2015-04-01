@@ -172,6 +172,13 @@ module.exports = React.createClass
       if mark?.details?
         @forceUpdate() # Re-render to reposition the details tooltip.
 
+  destroyMark: (annotation, mark) ->
+    if mark is @state.selectedMark
+      @setState selectedMark: null
+    markIndex = annotation.value.indexOf mark
+    annotation.value.splice markIndex, 1
+    @updateAnnotations()
+
   updateAnnotations: ->
     @props.classification.update
       annotations: @props.classification.annotations
@@ -257,6 +264,7 @@ module.exports = React.createClass
                       getEventOffset={@getEventOffset}
                       onChange={@updateAnnotations} 
                       onSelect={@selectMark.bind this, annotation, mark}
+                      onDestroy={@destroyMark.bind this, annotation}
                     />
                   }  
                 </g>
