@@ -1,6 +1,7 @@
-React = require 'react'
-Draggable = require 'lib/draggable'
+React        = require 'react'
+Draggable    = require 'lib/draggable'
 DeleteButton = require './delete-button'
+ResizeButton = require './resize-button'
 
 RADIUS = 10
 SELECTED_RADIUS = 20
@@ -57,12 +58,8 @@ module.exports = React.createClass
         onMouseDown={@props.onSelect unless @props.disabled}
       >
 
-        <line x1="0" y1={-1 * crosshairSpace * selectedRadius} x2="0" y2={-1 * selectedRadius} strokeWidth={crosshairWidth} />
-        <line x1={-1 * crosshairSpace * selectedRadius} y1="0" x2={-1 * selectedRadius} y2="0" strokeWidth={crosshairWidth} />
-        <line x1="0" y1={crosshairSpace * selectedRadius} x2="0" y2={selectedRadius} strokeWidth={crosshairWidth} />
-        <line x1={crosshairSpace * selectedRadius} y1="0" x2={selectedRadius} y2="0" strokeWidth={crosshairWidth} />
         <Draggable onDrag={@handleDrag}>
-          <circle r={radius} />
+          <rect x='100' y='100' width='400' />
         </Draggable>
 
         { if @props.selected
