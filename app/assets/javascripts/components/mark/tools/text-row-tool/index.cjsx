@@ -57,9 +57,8 @@ module.exports = React.createClass
         strokeWidth={SELECTED_STROKE_WIDTH/scale}
         onMouseDown={@props.onSelect unless @props.disabled}
       >
-
         <Draggable onDrag={@handleDrag}>
-          <rect x='100' y='100' width='400' />
+          <rect x={0-@props.mark.x} y={0} width='100%' height='100' />
         </Draggable>
 
         { if @props.selected
