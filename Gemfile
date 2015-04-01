@@ -12,6 +12,7 @@ gem 'jbuilder', '~> 1.2'
 gem 'devise'
 gem 'omniauth-facebook'
 gem "omniauth-google-oauth2"
+gem "omniauth-zooniverse"
 
 gem 'mongoid', :github=>"mongoid/mongoid"
 gem 'active_model_serializers'
