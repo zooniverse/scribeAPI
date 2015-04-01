@@ -7,7 +7,7 @@ class User
          :recoverable, :rememberable, :trackable, :validatable
 
 
-  devise :omniauthable, :omniauth_providers => [:facebook,:google]
+  devise :omniauthable, :omniauth_providers => [:facebook,:google,:zooniverse]
 
 
   ## Database authenticatable
