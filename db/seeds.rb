@@ -154,7 +154,7 @@ mark_workflow = Workflow.create(
     project: project,
     subject_fetch_limit: '10',
     enables_workflows: {},
-    first_task: 'pick_page_type',
+    first_task: 'mark_fields',
     tasks: {
 
       pick_page_type: {
