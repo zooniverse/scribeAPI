@@ -60,6 +60,10 @@ module.exports = React.createClass
           <circle r={radius} />
         </Draggable>
 
+        { if @props.selected
+          <DeleteButton tool={this} getDeleteButtonPosition={@getDeleteButtonPosition} />
+        }
+
       </g>
     </g>
 
