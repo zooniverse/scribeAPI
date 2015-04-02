@@ -110,6 +110,9 @@ GEM
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
+    dotenv (2.0.0)
+    dotenv-rails (2.0.0)
+      dotenv (= 2.0.0)
     email_spec (1.6.0)
       launchy (~> 2.1)
       mail (~> 2.2)
@@ -281,6 +284,7 @@ DEPENDENCIES
   cucumber-rails
   database_cleaner (= 1.0.1)
   devise
+  dotenv-rails
   email_spec
   jbuilder (~> 1.2)
   jquery-rails

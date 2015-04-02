@@ -26,6 +26,10 @@ gem 'browserify-rails', '~> 0.4.1'
 gem 'react-rails', '~> 1.0.0.pre', github: 'reactjs/react-rails'
 # gem 'rails_12factor'
 
+group :development do
+  gem 'dotenv-rails'
+end
+
 group :development, :production do
   gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_19, :mri_20, :rbx]
