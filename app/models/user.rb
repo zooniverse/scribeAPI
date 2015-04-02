@@ -65,14 +65,13 @@ class User
       user
     else # Create a user with a stub password.
       details = details_from_oauth access_token[:provider], access_token
-      binding.pry
       tmp_pass = Devise.friendly_token[0,20]
       self.create details.merge(password: tmp_pass, password_confirmation: tmp_pass)
     end
   end
 
   def self.details_from_oauth(provider,access_token)
-      case provider
+      case provider.to_s
       when "facebook"
         details_from_fb(access_token)
       when "google"
@@ -102,11 +101,13 @@ class User
   end
 
   def self.details_from_zooniverse(access_token)
+    info = access_token["info"]
+    binding.pry
     {
-      name: "#{extra[:first_name]} #{extra[:last_name]}",
-      email: extra[:email],
-      uid: access_token[:uid],
-      provider: access_token[:provider]
+      name: info["name"],
+      email: info["email"],
+      uid: access_token["uid"],
+      provider: access_token["provider"]
     }
   end
 end
