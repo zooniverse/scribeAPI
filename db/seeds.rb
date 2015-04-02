@@ -154,7 +154,7 @@ mark_workflow = Workflow.create(
     project: project,
     subject_fetch_limit: '10',
     enables_workflows: {},
-    first_task: 'mark_fields',
+    first_task: 'pick_page_type',
     tasks: {
 
       pick_page_type: {
@@ -179,6 +179,25 @@ mark_workflow = Workflow.create(
           }
         },
         next_task: 'fake_task'
+      },
+
+      history_sheet_task: {
+        order: 3,
+        tool: 'pick_one',
+        instruction: 'Anything interesting in this History Sheet?',
+        options: {
+          yes: {
+            label: 'Yes',
+            image: '',
+            next_task: 'mark_fields'
+          },
+          no: {
+            label: 'No',
+            image: '',
+            next_task: nil
+          }
+        },
+        next_task: 'mark_fields'
       },
 
       fake_task: {
@@ -211,36 +230,6 @@ mark_workflow = Workflow.create(
           {type: 'ellipse', label: 'Ellipse', color: 'magenta'}
         ],
         next_task: nil
-      },
-
-      attestation_task: {
-        order: 1,
-        tool: 'pick_one_mark_one',
-        options: {
-          header: {
-            tool: 'rectangle_tool',
-            instruction: 'Draw a rectangle around the \'Header\' region.'
-          },
-          oath: {
-            tool: 'rectangle_tool',
-            instruction: 'Draw a rectangle around the \'Oath\' region.'
-          },
-          attesting_officer: {
-            tool: 'rectangle_tool',
-            instruction: 'Draw a rectangle around the \'Attesting Officer\' region.'
-          },
-          question: {
-            tool: 'rectangle_tool',
-            instruction: 'Draw a rectangle around the \'Question\' region.'
-          }
-        }
-      },
-      history_sheet_task: {
-        order: 2,
-        tool: {},
-        options: {}
-      },
-      casualty_form_task: {
       }
     }
   }

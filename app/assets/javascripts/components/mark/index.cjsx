@@ -39,8 +39,17 @@ module.exports = React.createClass # rename to Classifier
     onFirstAnnotation = currentAnnotation?.task is @props.workflow.first_task
 
     console.log 'CURRENT TOOL: ', currentTask.tool
+    console.log 'CURRENT TASK OPTIONS: ', currentTask.options
+    console.log 'CURRENT ANNOTATION: ', currentAnnotation
 
-    if currentTask.type is 'single'
+    if currentTask.options?[currentAnnotation.value]?
+      nextTask = currentTask.options?[currentAnnotation.value].next_task
+    else
+      nextTask = currentTask.next_task
+
+
+    if currentTask.type is 'pick_one'
+      console.log 'PICK ONE'
       currentAnswer = currentTask.options?[currentAnnotation.value]
       waitingForAnswer = not currentAnswer
 
@@ -54,8 +63,8 @@ module.exports = React.createClass # rename to Classifier
           <hr/>
           <nav className="task-nav">
             <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
-            { if currentTask.next_task?
-                <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@addAnnotationForTask.bind this, currentTask.next_task}>Next</button>
+            { if nextTask?
+                <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@loadNextTask nextTask}>Next</button>
               else
                 <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeClassification}>Done</button>
             }
@@ -65,7 +74,12 @@ module.exports = React.createClass # rename to Classifier
     </div>
 
   handleTaskComponentChange: ->
-    @props.classification.update 'annotation'
+    @updateAnnotations()
+
+  updateAnnotations: ->
+    @props.classification.update
+      annotations: @props.classification.annotations
+    @forceUpdate()
 
   destroyCurrentAnnotation: ->
     @props.classification.annotations.pop()
@@ -74,11 +88,19 @@ module.exports = React.createClass # rename to Classifier
 
   addAnnotationForTask: (taskKey) ->
     taskDescription = @props.workflow.tasks[taskKey]
+    console.log 'taskDescription: ', taskDescription
     annotation = tasks[taskDescription.tool].getDefaultAnnotation() # sets {value: null}
     annotation.task = taskKey # e.g. {task: "cool"}
     @props.classification.annotations.push annotation
     @props.classification.update 'annotations'
     @forceUpdate()
+
+  loadNextTask: (nextTask) ->
+    if nextTask is null
+      console.log 'NOTING LEFT TO DO'
+      return
+    console.log 'LOADING NEXT TASK: ', nextTask
+    @addAnnotationForTask.bind this, nextTask
 
   completeClassification: ->
     @props.classification.update
