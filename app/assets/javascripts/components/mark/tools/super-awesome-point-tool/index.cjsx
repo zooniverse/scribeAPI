@@ -1,7 +1,7 @@
-React = require 'react'
+React           = require 'react'
 DrawingToolRoot = require './root'
-Draggable = require 'lib/draggable'
-DeleteButton = require './delete-button'
+Draggable       = require 'lib/draggable'
+DeleteButton    = require './delete-button'
 
 RADIUS = 10
 SELECTED_RADIUS = 20
