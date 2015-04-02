@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  respond_to :json, :html
+
   def new
   end
 
@@ -6,12 +8,20 @@ class SessionsController < ApplicationController
     user = User.from_omniauth(env["omniauth.auth"])
 
     session[:user_id] = user.id
-    redirect_to root_url, :notice => "Signed in!"
+    respond_to do |format|
+      format.json{render json: current_user}
+      format.html{redirect_to root_url, :notice => "Signed in!"}
+    end
   end
 
   def destroy
     session[:user_id] = nil
-    redirect_to root_url, :notice => "Signed out!"
+    sign_out(current_user)
+
+    respond_to do |format|
+      format.json {render json: {notice: "Signed out!"}, status: 200}
+      format.html {redirect_to root_url, :notice => "Signed out!"}
+    end
   end
 
 protected
