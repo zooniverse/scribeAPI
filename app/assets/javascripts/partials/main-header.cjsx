@@ -1,6 +1,7 @@
 # @cjsx React.DOM
 
 React = require 'react'
+Login = require '../components/login'
 # LoadingIndicator = require '../components/loading-indicator'
 # MainNav = require './main-nav'
 # AccountBar = require './account-bar'
@@ -25,7 +26,7 @@ module.exports = React.createClass
 
   render: ->
     <header classNameim="main-header">
-      
+
       <nav className="main-nav main-header-group">
         <a href="/" root={true} className="main-header-item logo">&nbsp; Scribe 2.0</a>
         <a href="/#/mark" className="main-header-item">Mark</a>
@@ -34,7 +35,7 @@ module.exports = React.createClass
         { @props.pages.map (page, key) =>
             <a href={'/#/'+page.name} className="main-header-item" key={key}>{page.name}</a>
         }
-
+        <Login></Login>
       </nav>
 
       <div className="main-header-group"></div>
