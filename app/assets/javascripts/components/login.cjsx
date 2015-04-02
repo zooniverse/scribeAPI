@@ -46,7 +46,6 @@ Login = React.createClass
     </div>
 
   signOut:(e)->
-    alert("ere")
     e.preventDefault()
 
     request = $.ajax
