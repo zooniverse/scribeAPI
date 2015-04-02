@@ -30,6 +30,7 @@ module.exports = React.createClass # rename to Classifier
     @addAnnotationForTask @props.workflow.first_task
 
   render: ->
+    console.log 'render()'
     return null unless @state.currentSubject?
 
     annotations = @props.classification.annotations
@@ -43,12 +44,10 @@ module.exports = React.createClass # rename to Classifier
     else
       currentTask.next_task
 
-    # if currentTask.type is 'pick_one'
-    currentAnswer = currentTask.options?[currentAnnotation.value]
-    waitingForAnswer = not currentAnswer
+    if currentTask.tool is 'pick_one'
+      currentAnswer = currentTask.options?[currentAnnotation.value]
+      waitingForAnswer = not currentAnswer
 
-    console.log 'CURRENT ANSWER: ', currentAnswer
-    
     <div className="classifier">
       <div className="subject-area">
         <SubjectViewer subject={@state.currentSubject} workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation} />

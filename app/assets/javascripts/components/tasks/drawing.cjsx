@@ -109,4 +109,4 @@ module.exports = React.createClass
     if e.target.checked
       @props.annotation._toolIndex = index
       @props.onChange? e
-    @forceUpdate()
+      @forceUpdate()
