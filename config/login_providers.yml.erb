@@ -1,12 +1,12 @@
 providers:
   facebook:
-    id: <$=RAILS_ENV["facebook_key"]%>
-    secret: <$=RAILS_ENV["facebook_secret"]%>
+    id: <%=ENV["FACEBOOK_ID"]%>
+    secret: <%=ENV["FACEBOOK_SECRET"]%>
 
   google:
-    id: <$=RAILS_ENV["google_key"]%>
-    secret: <$=RAILS_ENV["google_secret"]%>
+    id: <%=ENV["GOOGLE_ID"]%>
+    secret: <%=ENV["GOOGLE_SECRET"]%>
 
   zooniverse:
-    id: <$=RAILS_ENV["zooniverse_key"]%>
-    secret: <$=RAILS_ENV["zooniverse_secret"]%>
+    id: <%=ENV["ZOONIVERSE_ID"]%>
+    secret: <%=ENV["ZOONIVERSE_SECRET"]%>
