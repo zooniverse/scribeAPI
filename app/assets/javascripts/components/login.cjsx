@@ -13,19 +13,6 @@ Login = React.createClass
     loading: false
     error: null
 
-  signOut:(e)->
-    e.preventDefault()
-
-    request = $.ajax({url: '/users/sign_out', method: 'delete'})
-
-    request.done =>
-      @setState
-        user:null
-
-    request.error =>
-      @setState
-        error : "Could not log out"
-
   fetchUser:->
     @setState
       loading: true
@@ -33,9 +20,13 @@ Login = React.createClass
     request = $.getJSON "/current_user"
 
     request.done (result)=>
-      @setState
-        user: result.user
-        loading: false
+      if result
+        @setState
+          user: result.user
+          loading: false
+      else
+        @setState
+          loading: false
 
 
     request.fail (error)=>
@@ -44,7 +35,7 @@ Login = React.createClass
         error: "Having trouble logging you in"
 
   render:->
-    <div className='login'>
+    <div class='login'>
       {@renderError() if @state.error}
 
       {@renderLoggedIn() if @state.user}
@@ -54,8 +45,26 @@ Login = React.createClass
       }
     </div>
 
+  signOut:(e)->
+    alert("ere")
+    e.preventDefault()
+
+    request = $.ajax
+      url: '/users/sign_out'
+      method: 'delete'
+      dataType: "json"
+
+    request.done =>
+      @setState
+        user: null
+
+    request.error (request,error)=>
+      @setState
+        error : "Could not log out"
+
+
   renderLoggedIn:->
-    <p>Hello {@state.user.name} <a href='#' onClick={this.signOut} >Logout</a></p>
+    <p>Hello {@state.user.name} <a  onClick={@signOut} >Logout</a></p>
 
 
   renderLoggedOut:->
