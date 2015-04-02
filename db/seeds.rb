@@ -257,12 +257,7 @@ mark_workflow = Workflow.create(
         instruction: 'Pick a field and mark it with the corresponding marking tool.',
         tools: [
           {type: 'superAwesomePointTool', label: 'SuperAwesomePointTool', color: 'red'},
-          {type: 'textRow', label: 'Text Row', color: 'green'},
-          {type: 'line', label: 'Line', color: 'yellow'},
-          {type: 'rectangle', label: 'Rectangle', color: 'lime'},
-          {type: 'polygon', label: 'Polygon', color: 'cyan'},
-          {type: 'circle', label: 'Circle', color: 'blue'},
-          {type: 'ellipse', label: 'Ellipse', color: 'magenta'}
+          {type: 'textRow', label: 'Text Row', color: 'green'}
         ],
         next_task: nil
       }
