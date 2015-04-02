@@ -1,0 +1,8 @@
+providers:
+  facebook:
+    id: ""
+    secret: ""
+
+  google:
+    id: ""
+    secret: ""
