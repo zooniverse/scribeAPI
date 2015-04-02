@@ -38,21 +38,17 @@ module.exports = React.createClass # rename to Classifier
     TaskComponent = tasks[currentTask.tool]
     onFirstAnnotation = currentAnnotation?.task is @props.workflow.first_task
 
-    console.log 'CURRENT TOOL: ', currentTask.tool
-    console.log 'CURRENT TASK OPTIONS: ', currentTask.options
-    console.log 'CURRENT ANNOTATION: ', currentAnnotation
-
-    if currentTask.options?[currentAnnotation.value]?
-      nextTask = currentTask.options?[currentAnnotation.value].next_task
+    nextTask = if currentTask.options?[currentAnnotation.value]?
+      currentTask.options?[currentAnnotation.value].next_task
     else
-      nextTask = currentTask.next_task
+      currentTask.next_task
 
+    # if currentTask.type is 'pick_one'
+    currentAnswer = currentTask.options?[currentAnnotation.value]
+    waitingForAnswer = not currentAnswer
 
-    if currentTask.type is 'pick_one'
-      console.log 'PICK ONE'
-      currentAnswer = currentTask.options?[currentAnnotation.value]
-      waitingForAnswer = not currentAnswer
-
+    console.log 'CURRENT ANSWER: ', currentAnswer
+    
     <div className="classifier">
       <div className="subject-area">
         <SubjectViewer subject={@state.currentSubject} workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation} />
@@ -77,14 +73,13 @@ module.exports = React.createClass # rename to Classifier
     @updateAnnotations()
 
   updateAnnotations: ->
-    @props.classification.update
-      annotations: @props.classification.annotations
+    @props.classification.update 'annotations'
+      # annotations: @props.classification.annotations
     @forceUpdate()
 
   destroyCurrentAnnotation: ->
     @props.classification.annotations.pop()
-    @props.classification.update 'annotations'
-    @forceUpdate()
+    @updateAnnotations()
 
   addAnnotationForTask: (taskKey) ->
     taskDescription = @props.workflow.tasks[taskKey]
@@ -92,8 +87,7 @@ module.exports = React.createClass # rename to Classifier
     annotation = tasks[taskDescription.tool].getDefaultAnnotation() # sets {value: null}
     annotation.task = taskKey # e.g. {task: "cool"}
     @props.classification.annotations.push annotation
-    @props.classification.update 'annotations'
-    @forceUpdate()
+    @updateAnnotations()
 
   loadNextTask: (nextTask) ->
     if nextTask is null

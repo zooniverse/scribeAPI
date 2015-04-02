@@ -177,12 +177,11 @@ mark_workflow = Workflow.create(
             image: 'images/attestation_thumbnail.jpg',
             next_task: 'attestation_task'
           }
-        },
-        next_task: 'fake_task'
+        }
       },
 
       history_sheet_task: {
-        order: 3,
+        order: 1,
         tool: 'pick_one',
         instruction: 'Anything interesting in this History Sheet?',
         options: {
@@ -196,25 +195,61 @@ mark_workflow = Workflow.create(
             image: '',
             next_task: nil
           }
-        },
-        next_task: 'mark_fields'
+        }
+      },
+
+      casualty_form_task: {
+        order: 2,
+        tool: 'pick_one',
+        instruction: 'Anything interesting in this Casualty Form?',
+        options: {
+          yes: {
+            label: 'Yes',
+            image: '',
+            next_task: 'mark_fields'
+          },
+          no: {
+            label: 'No',
+            image: '',
+            next_task: nil
+          }
+        }
+      },
+
+      attestation_task: {
+        order: 3,
+        tool: 'pick_one',
+        instruction: 'Anything interesting in this Attestation?',
+        options: {
+          yes: {
+            label: 'Yes',
+            image: '',
+            next_task: 'mark_fields'
+          },
+          no: {
+            label: 'No',
+            image: '',
+            next_task: nil
+          }
+        }
       },
 
       fake_task: {
         order: 3,
-        tool: 'single',
+        tool: 'pick_one',
         instruction: 'Is there anything left to mark here?',
         options: {
           yes: {
             label: 'Yes',
-            image: ''
+            image: '',
+            next_task: 'mark_fields'
           },
           no: {
             label: 'No',
-            image: ''
+            image: '',
+            next_task: nil
           }
-        },
-        next_task: 'mark_fields'
+        }
       },
 
       mark_fields: {

@@ -206,8 +206,8 @@ module.exports = React.createClass
     @updateAnnotations()
 
   updateAnnotations: ->
-    @props.classification.update
-      annotations: @props.classification.annotations
+    console.log 'updateAnnotations()'
+    @props.classification.update 'annotations'
     @forceUpdate()
 
   render: ->
