@@ -1,5 +1,5 @@
 React              = require 'react'
-SubjectViewer      = require '../subject-viewer'
+SubjectSetViewer   = require '../subject-set-viewer'
 tasks              = require '../tasks'
 FetchSubjectsMixin = require 'lib/fetch-subjects-mixin'
 JSONAPIClient      = require 'json-api-client' # use to manage data?
@@ -16,7 +16,7 @@ module.exports = React.createClass # rename to Classifier
 
   getInitialState: ->
     subjects:       null
-    currentSubject: null
+    currentSubjectSet: null
     workflow:       @props.workflow
     currentTask:    @props.workflow.tasks[@props.workflow.first_task]
 
@@ -30,7 +30,9 @@ module.exports = React.createClass # rename to Classifier
     @addAnnotationForTask @props.workflow.first_task
 
   render: ->
-    return null unless @state.currentSubject?
+    console.log "here: ", @state.currentSubjectSet
+
+    return null unless @state.currentSubjectSet?
 
     annotations = @props.classification.annotations
     currentAnnotation = if annotations.length is 0 then {} else annotations[annotations.length-1]
@@ -46,7 +48,7 @@ module.exports = React.createClass # rename to Classifier
 
     <div className="classifier">
       <div className="subject-area">
-        <SubjectViewer subject={@state.currentSubject} workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation} />
+        <SubjectSetViewer subject_set={@state.currentSubjectSet} workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation} />
       </div>
       <div className="task-area">
         <div className="task-container">

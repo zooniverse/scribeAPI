@@ -11,7 +11,7 @@ class SubjectSet
 
   has_and_belongs_to_many :workflows, inverse_of: nil
   belongs_to :group
-  has_many :subjects
+  has_many :subjects, dependent: :destroy
 
   def activate!
     state = "active"

@@ -10,6 +10,6 @@ class Group
   field :meta_data
 
   belongs_to :project
-  has_many :subject_sets
+  has_many :subject_sets, dependent: :destroy
 
 end

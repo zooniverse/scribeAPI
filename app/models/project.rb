@@ -13,7 +13,7 @@ class Project
 	field  :background,    				type: String
 
 	has_many :groups
-	has_many :workflows
+	has_many :workflows, dependent: :destroy
 	has_many :subjects
 
 end

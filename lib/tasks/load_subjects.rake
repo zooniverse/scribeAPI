@@ -33,7 +33,7 @@ require 'active_support'
       project = project_for_key project_name
       
       project.groups.destroy_all
-
+      
       num_groups = File.foreach(groups_file).count - 1
       puts "Groups: Creating #{num_groups} groups from groups.csv"
       CSV.foreach(groups_file, :headers=>true, :header_converters=> lambda {|f| f.strip}, :converters=> lambda {|f| f ? f.strip : nil}) do |row|
@@ -85,8 +85,6 @@ require 'active_support'
         subjects_by_set[key] << data
       end
       
-      group.subject_sets.destroy_all
-
       subjects_by_set.each do |(set_key, subjects)|
       
         data = subjects.first
@@ -94,13 +92,14 @@ require 'active_support'
         name            = data['name']
         meta_data       = data.except('group_id', 'file_path', 'retire_count', 'thumbnail')
 
-        group.subject_sets.destroy_all
         puts "    Adding subject set: #{set_key}"
         subject_set = group.subject_sets.create({
           name: name,
           thumbnail: thumbnail,
+          workflows: [mark_workflow],
           meta_data: meta_data
         })
+        puts "      - saved subject set #{subject_set.thumbnail}"
 
         subjects.each do |subj|
           data = subj
@@ -109,16 +108,17 @@ require 'active_support'
           meta_data = subj.except('file_path', 'retire_count', 'thumbnail')
 
           puts "      Adding subject: #{subj['file_path']}"
-          subject_set.subjects.create({
+          s = subject_set.subjects.create({
             file_path: subj['file_path'],
             location: {
               standard: subj['file_path'],
               thumbnail: subj['thumbnail']
             },
-            workflow_ids: [mark_workflow.id],
+            workflows: [mark_workflow],
             retire_count: subj['retire_count'],
             meta_data: meta_data
           })
+          puts "        - saved subject: #{s.file_path}"
         end
 
       end

@@ -28,6 +28,7 @@ DynamicRouter = React.createClass
   render: ->
     return null unless @state.pages? # do nothing until project loads from API
     workflows = @state.project.workflows
+    console.log "home: ", @state.home_page_content
 
     <div className="panoptes-main">
       <MainHeader pages={@state.pages} />
