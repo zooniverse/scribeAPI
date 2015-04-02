@@ -102,7 +102,6 @@ class User
 
   def self.details_from_zooniverse(access_token)
     info = access_token["info"]
-    binding.pry
     {
       name: info["name"],
       email: info["email"],
