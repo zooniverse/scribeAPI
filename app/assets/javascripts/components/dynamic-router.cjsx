@@ -1,5 +1,5 @@
 React = require("react")
-{Router, Routes, Route, Link} = require 'react-router'
+{Router,Redirect, Routes, Route, Link} = require 'react-router'
 MainHeader                    = require '../partials/main-header'
 HomePage                      = require './home-page'
 Mark                          = require './mark'
@@ -9,15 +9,15 @@ DynamicRouter = React.createClass
 
   getInitialState: ->
     project: null
-    
+
   componentDidMount: ->
-    $.getJSON '/projects', (result) => 
+    $.getJSON '/projects', (result) =>
       @setState project:           result.project
-      @setState home_page_content: result.project.home_page_content 
+      @setState home_page_content: result.project.home_page_content
       @setState pages:             result.project.pages ? []
         # DEBUG CODE
         # , => console.log 'PROJECT: ', @state.project
-      
+
   controllerForPage: (page) ->
     React.createClass
       displayName: "#{page.name}Page"
@@ -33,29 +33,30 @@ DynamicRouter = React.createClass
       <MainHeader pages={@state.pages} />
       <div className="main-content">
         <Routes>
-          <Route 
-            path='/' 
-            handler={HomePage} 
-            name="root" 
+          <Redirect from="_=_" to="/" />
+          <Route
+            path='/'
+            handler={HomePage}
+            name="root"
             content={@state.home_page_content} />
-          <Route 
-            path='/mark' 
-            handler={Mark} 
+          <Route
+            path='/mark'
+            handler={Mark}
             name='mark'
             workflow={(workflow for workflow in workflows when workflow.name is 'mark')[0]} />
-          <Route 
-            path='/transcribe' 
-            handler={Transcribe} 
+          <Route
+            path='/transcribe'
+            handler={Transcribe}
             name='transcribe'
             workflow={(workflow for workflow in workflows when workflow.name is 'transcribe')[0]} />
 
           { @state.pages?.map (page, key) =>
-              <Route 
-                path={'/'+page.name} 
-                handler={@controllerForPage(page)} 
+              <Route
+                path={'/'+page.name}
+                handler={@controllerForPage(page)}
                 name={page.name} key={key} />
           }
-          
+
         </Routes>
       </div>
     </div>
