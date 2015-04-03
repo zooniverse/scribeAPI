@@ -3,7 +3,11 @@ React          = require 'react'
 Draggable      = require 'lib/draggable'
 Classification = require 'models/classification'
 DragHandle     = require './drag-handle'
+DeleteButton    = require './delete-button'
 
+SELECTED_RADIUS = 20
+DELETE_BUTTON_ANGLE = 45
+DELETE_BUTTON_DISTANCE = 9 / 10
 DEBUG = false
 
 
@@ -47,6 +51,8 @@ module.exports = React.createClass
     @setState width: @props.width
     @setState height: @props.height
 
+  
+
   handleMainDrag: (e) ->
     console.log "handleDrag (HD)"
     return if @state.lockTool
@@ -86,7 +92,10 @@ module.exports = React.createClass
     @setState width: @props.width
     @setState height: @props.height
 
-
+  getDeleteButtonPosition: ->
+    theta = (DELETE_BUTTON_ANGLE) * (Math.PI / 180)
+    x: (SELECTED_RADIUS / @props.xScale) * Math.cos theta
+    y: -1 * (SELECTED_RADIUS / @props.yScale) * Math.sin theta
 
   render: ->
     console.log "Render: Rectangle STATE @ Render", @state
@@ -120,6 +129,9 @@ module.exports = React.createClass
       </Draggable>
 
       <g>
+        { if @props.selected
+          <DeleteButton tool={this} x={@state.x + (width * DELETE_BUTTON_DISTANCE)} y={@state.y} />
+        }
         <DragHandle x={@props.mark.x} y={@props.mark.y}
         onDrag={@handleTopLeftDrag}
         />
