@@ -1,0 +1,315 @@
+#= require jquery
+#= require dashboard/d3.min
+
+class Dashboard
+
+	constructor: () ->
+		@getStats()
+
+	addAreaChart: (item) ->
+		data = item.data
+		refRow = data[0]
+		id = item.id
+		$target = $('.'+id+' .chart').first()
+		w = $target.closest('.category').width()
+		h = 0.8 * $target.closest('.category').height()
+		
+		# layout
+		margin = {top: 30, right: 10, bottom: 100, left: 40}
+		margin2 = {top: h-70, right: 10, bottom: 20, left: 40}
+		width = w - margin.left - margin.right
+		height = h - margin.top - margin.bottom
+		height2 = h - margin2.top - margin2.bottom
+		
+		# time scales
+		formatDate = d3.time.format("%b %e, %Y %I:%M%p")	
+		x = d3.time.scale().range([0, width])
+		x2 = d3.time.scale().range([0, width])
+		y = d3.scale.linear().range([height, 0])
+		y2 = d3.scale.linear().range([height2, 0])
+		
+		# brush
+		drawCircles = () ->
+			
+		onbrush = () ->
+			x.domain(if brush.empty() then x2.domain() else brush.extent())
+			focus.selectAll(".area").attr("d", area)
+			focus.selectAll(".line").attr("d", line)
+			focus.select(".x.axis").call(xAxis)
+		brush = d3.svg.brush()
+			.x(x2)
+			.on("brush", onbrush)
+		
+		# axis
+		xAxis = d3.svg.axis().scale(x).orient("bottom")
+		xAxis2 = d3.svg.axis().scale(x2).orient("bottom")
+		yAxis = d3.svg.axis().scale(y).orient("left")		
+		
+		# draw base chart		
+		area = d3.svg.area()
+			.interpolate("linear")
+			.x((d) -> return x(d.date))
+			.y0(height)
+			.y1((d) -> return y(d.value))
+			
+		line = d3.svg.line()
+			.interpolate("linear")
+			.x((d) -> return x(d.date))
+			.y((d) -> return y(d.value))
+		
+		area2 = d3.svg.area()
+			.interpolate("linear")
+			.x((d) -> return x2(d.date))
+			.y0(height2)
+			.y1((d) -> return y2(d.value))
+		
+		svg = d3.select($target[0]).append("svg")
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.bottom)
+		
+		svg.append("defs").append("clipPath")
+				.attr("id", "clip")
+			.append("rect")
+				.attr("width", width)
+				.attr("height", height);
+		
+		focus = svg.append("g")
+			.attr("class", "focus")
+			.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+		
+		context = svg.append("g")
+			.attr("class", "context")
+			.attr("transform", "translate(" + margin2.left + "," + margin2.top + ")")
+		
+		# add data
+		x.domain(d3.extent(refRow.map((d) -> return d.date)))
+		y.domain([0, d3.max(refRow.map((d) -> return d.value))])
+		x2.domain(x.domain())
+		y2.domain(y.domain())
+		
+		$.each data, (i, row) ->		
+			focus.append("path")
+				.datum(row)
+				.attr("class", "area")
+				.attr("d", area)
+				
+			focus.append("path")
+				.datum(row)
+				.attr("class", "line")
+				.attr("d", line)
+				
+			context.append("path")
+				.datum(row)
+				.attr("class", "area")
+				.attr("d", area2)	
+		
+		focus.append("g")
+			.attr("class", "x axis")
+			.attr("transform", "translate(0," + height + ")")
+			.call(xAxis)
+		
+		focus.append("g")
+			.attr("class", "y axis")
+			.call(yAxis)	
+		
+		context.append("g")
+			.attr("class", "x axis")
+			.attr("transform", "translate(0," + height2 + ")")
+			.call(xAxis2)
+		
+		context.append("g")
+				.attr("class", "x brush")
+				.call(brush)
+			.selectAll("rect")
+				.attr("y", -6)
+				.attr("height", height2 + 7)
+		
+		# helpers
+		focus.append("line")
+			.attr("class", "helper x-line")
+			.attr("y1", 0)
+			.attr("y2", height)
+			.style("opacity", 0)
+		
+		focus.append("text")
+				.attr("class", "date helper")
+				.attr("dx", "-5em")
+				.attr("dy", "-1.2em")
+				.style("opacity", 0)
+		
+		$.each data, (i, row) ->
+			focus.append("circle")
+				.attr("class", "helper row-"+i)
+				.attr("r", 6)
+				.style("opacity", 0)
+				
+			focus.append("text")
+				.attr("class", "value helper row-"+i)
+				.attr("dx", "-0.5em")
+				.attr("dy", "1.2em")
+				.style("opacity", 0)
+		
+		bisectDate = d3.bisector((d) -> return d.date).left
+		
+		onMousemove = () ->
+			x0 = x.invert(d3.mouse(this)[0])
+			x0 = x0 - margin.left
+			$.each data, (i, row) ->
+				j = bisectDate(row, x0, 1)
+				d0 = row[j - 1]
+				d1 = row[j]
+				d = if x0 - d0.date > d1.date - x0 then d1 else d0
+				date_text = d.value + "(" + formatDate(d.date) + ")"
+				if i <= 0
+					focus.select(".x-line")
+						.transition()
+						.duration(50)
+						.attr("transform", "translate("+x(d.date)+","+y(d.value)+")")
+						.attr("y2", height - y(d.value))
+					focus.select("text.date")
+						.transition()
+						.duration(50)
+						.attr("transform", "translate("+x(d.date)+","+y(d.value)+")")
+						.text(formatDate(d.date))
+				focus.select("circle.helper.row-"+i)
+					.transition()
+					.duration(50)
+					.attr("transform", "translate("+x(d.date)+","+y(d.value)+")")
+				focus.select("text.value.row-"+i)
+					.transition()
+					.duration(50)
+					.attr("transform", "translate("+x(d.date)+","+y(d.value)+")")
+					.text(d.value)			
+		
+		focus.on("mousemove", onMousemove)
+		focus.on("mouseover", () -> focus.selectAll(".helper").style("opacity", 1))
+		focus.on("mouseout", () -> focus.selectAll(".helper").style("opacity", 0))
+		
+		# init state
+		start = refRow[refRow.length-Math.round(refRow.length * 0.05)].date
+		end = refRow[refRow.length-1].date
+		brush.extent([start, end])
+		onbrush()
+		brush(svg.select(".brush").transition())
+		brush.event(svg.select(".brush").transition().delay(1000))
+
+	addPieChart: (item) ->
+		data = item.data
+		id = item.id
+		$target = $('.'+id+' .chart').first()
+		w = 0.8 * $target.closest('.category').width()
+		h = 0.8 * $target.closest('.category').height()
+		radius = Math.floor( Math.min(w, h) / 2 )
+		color = d3.scale.category20c()
+		total = 0
+		
+		$.each data, (i, obj) ->
+			total += obj.value
+		
+		# create pies and arcs
+		pie = d3.layout.pie()
+			.sort(null)
+			.value((d) -> return d.value)
+
+		arc = d3.svg.arc()
+			.outerRadius(radius * 0.8)
+			.innerRadius(radius * 0.4)
+		
+		# create svg
+		svg = d3.select($target[0]).append("svg")
+				.attr("width", w)
+				.attr("height", h)
+			.append("g")
+				.attr("transform", "translate(" + radius+ "," + radius + ")")
+		
+		# draw slices
+		g = svg.selectAll(".arc")
+				.data(pie(data))
+			.enter().append("g")
+				.attr("class", "arc")
+		
+		onMouseenter = (d) ->
+			svg.select(".arc-center")
+				.text(Math.round(d.value/total*100)+'%')
+					
+		g.append("path")
+			.attr("d", arc)
+			.style("fill", (d) -> return color(d.data.label))
+			.on("mouseenter", onMouseenter)
+			
+		# center text
+		svg.append("text")
+			.attr("class", "arc-center")
+			.style("text-anchor", "middle")
+			.attr("dy", ".35em")
+		
+		# arc text
+		g.append("text")
+			.attr("transform", (d) -> return "translate(" + arc.centroid(d) + ")")
+			.attr("dy", ".35em")
+			.style("text-anchor", "middle")
+			.text((d) -> return d.data.label)
+
+	getStats: () ->
+		$.getJSON "/projects", (data) =>
+			data = @parseData(data)
+			@updateUI(data)
+
+	getFakeData: (amount, min, max) ->
+		fake_data = []
+		date = new Date(2015, 1, 1)
+		for i in [0..amount] by 1
+			value = Math.floor(Math.random() * max) + min
+			fake_data.push {
+				'date': date,
+				'value': value
+			}
+			date = new Date(date.getTime() + 3600000)
+		return fake_data
+
+	parseData: (data) ->
+		return [
+			{
+				'id': 'classifications',
+				'count': 123456,
+				'type': 'area',
+				'data': [@getFakeData(720, 10, 20)]
+			},{
+				'id': 'users',
+				'count': 32376,
+				'type': 'area',
+				'data': [@getFakeData(720, 10, 20)]
+			},{
+				'id': 'analytics',
+				'count': 563456,
+				'type': 'area',
+				'data': [@getFakeData(720, 10, 20), @getFakeData(720, 0, 10)]
+			},{
+				'id': 'subjects',
+				'count': 12766,
+				'type': 'pie',
+				'data': [
+					{'label': 'Active', 'value': 2345},
+					{'label': 'Complete', 'value': 5678}
+				]
+			}
+		]
+
+	updateUI: (data) ->
+		# go through each item in data
+		$.each data, (i, item) =>
+			
+			# update counts
+			$('.'+item.id+' .count').text @_formatNumber(item.count)
+			
+			# create graph
+			if item.type == 'area'
+				@addAreaChart(item)
+			else if item.type == 'pie'
+				@addPieChart(item)
+	
+	_formatNumber: (n) ->
+		return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+
+$ ->
+	new Dashboard()

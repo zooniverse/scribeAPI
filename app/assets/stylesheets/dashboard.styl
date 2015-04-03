@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu:400,700')
+
+@import './common.styl'
+
+html, body
+  background #fff
+  color #222
+
+.row
+  overflow auto
+  margin 1em 1em 0
+
+.category
+  float left
+  width 50%
+  height 500px
+  
+  .title
+    margin 0
+    padding-left 3px
+  
+  .count
+    font-size 3em
+    line-height 1
+    
+  .chart
+  
+    text
+      fill #111
+    
+    .area 
+      fill steelblue
+      clip-path url(#clip)
+      fill-opacity .5
+      
+    .line
+      stroke steelblue
+      stroke-width 1
+      fill none
+      clip-path url(#clip)
+    
+    .axis path,
+    .axis line
+      fill none
+      stroke #222
+      shape-rendering crispEdges
+    
+    .brush .extent
+      stroke #fff
+      fill-opacity .125
+      shape-rendering crispEdges
+    
+    .x-line
+      stroke #29567a
+      stroke-dasharray 3,3
+    
+    circle.helper
+      fill steelblue
+      stroke #29567a
+      stroke-width 3
+      
+    text.value
+      font-size 2em
+      font-weight bold
+      
+    .arc text
+      fill #fff
+      
+    .arc-center
+      font-size 3em
+      font-weight bold
+      
+  @media screen and (max-width: 800px)
+    width 100%
+    float none
