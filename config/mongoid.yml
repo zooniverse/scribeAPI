@@ -2,50 +2,52 @@
 #
 # As discussed in: http://blog.mongolab.com/2014/02/mongodb-driver-tips-tricks-mongoid-3
 #
-production: 
+production:
   sessions:
     default:
 
-      # The standard MongoDB connection URI allows for easy replica set 
-      # connection setup. 
-      # Use environment variables or a config file to keep your 
+      # The standard MongoDB connection URI allows for easy replica set
+      # connection setup.
+      # Use environment variables or a config file to keep your
       # credentials safe.
       uri: 'mongodb://scribedb:scribepass@ds029811.mongolab.com:29811/heroku_app32546073'
- 
-      options: 
-        # The default consistency is :eventual, which reads from 
-        # secondaries when possible. 
-        # Strong forces reads to primary. 
+
+      options:
+        # The default consistency is :eventual, which reads from
+        # secondaries when possible.
+        # Strong forces reads to primary.
         # We recommend using strong consistency.
         # consistency: :strong
- 
-        # max_retries specifies the number of times to attempt an 
+
+        # max_retries specifies the number of times to attempt an
         # operation before giving up. Default 30 seconds
         max_retries: 30
- 
-        # retry_interval specifies the number of seconds to wait before 
+
+        # retry_interval specifies the number of seconds to wait before
         # retrying a single operation. Default 1 second.
         retry_interval: 1
- 
-        # The default timeout is 5, which is the time in seconds for an 
+
+        # The default timeout is 5, which is the time in seconds for an
         # operation to time out.
-        # We recommend 15 because it allows for plenty of time in most 
+        # We recommend 15 because it allows for plenty of time in most
         # operating environments.
-        # Mongoid doubles the configured value (known issue) so 15 
+        # Mongoid doubles the configured value (known issue) so 15
         # results in a timeout of 30s.
-        # Note that if you have a long-running query (over 30 seconds), 
+        # Note that if you have a long-running query (over 30 seconds),
         # it will time out.
-        # See our example for long-running queries in the blog post 
+        # See our example for long-running queries in the blog post
         # referenced above.
         timeout: 15
-        
+
         # Set this to ensure that your writes are a round-trip operation
         # and are confirmed by the system. Default (false).
         # safe: true
-        
+
         # refresh_interval specifies the number of seconds to cache information
         # about a node. Default is 300 seconds (5 minutes).
         refresh_interval: 10
+
+        raise_not_found_error: false
 
 development:
   # Configure available database sessions. (required)
@@ -107,7 +109,7 @@ development:
 
     # Ensure all times are UTC in the app side. (default: false)
     # use_utc: false
-    
+
 test:
   sessions:
     default:
