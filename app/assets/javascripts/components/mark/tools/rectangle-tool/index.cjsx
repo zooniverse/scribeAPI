@@ -14,6 +14,13 @@ module.exports = React.createClass
     key:  React.PropTypes.number.isRequired
     mark: React.PropTypes.object.isRequired
 
+  statics:
+    defaultValues: ({x, y}) ->
+      {x, y}
+
+    initMove: ({x, y}) ->
+      {x, y}
+
   getDefaultProps: ->
     width: 400
     height: 100
@@ -60,14 +67,20 @@ module.exports = React.createClass
     @setState mark: mark
       # , => @forceUpdate()
 
+  handleMainDrag: (e, d) ->
+    @props.mark.x += d.x / @props.scale.horizontal
+    @props.mark.y += d.y / @props.scale.vertical
+    @props.onChange e
+
   handleTopLeftDrag: (e, d) ->
     console.log "HTLD", e, d
     console.log "HTLD @props", @props
-    @props.mark.x += d.x / @props.horizontal
-    @props.mark.y += d.y / @props.vertical
-    @props.width -= d.x / @props.horizontal
+    @props.mark.x += d.x / @props.xScale
+    @props.mark.y += d.y / @props.yScale
+    @props.width -= d.x / @props.xScale
     console.log "new width", @props.mark.width
-    @props.height -= d.y / @props.vertical
+    @props.height -= d.y / @props.yScale
+    @props.onChange e
     @setState x: @props.mark.x
     @setState y: @props.mark.y
     @setState width: @props.width
@@ -95,12 +108,13 @@ module.exports = React.createClass
     ].join '\n'
 
     console.log "render props.clickOffset", @props.clickOffset
+    console.log "render props", @props
 
     <g className = {classString} >
 
 
       <Draggable 
-        onStart = {@props.handleMarkClick.bind @props.mark} 
+        onStart = {@props.handleMarkClick} 
         onDrag = {@handleMainDrag} >
         <polyline points={points} strokeWidth="5" stroke="orange" fill="none"/>
       </Draggable>

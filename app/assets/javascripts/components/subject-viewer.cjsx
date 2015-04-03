@@ -85,6 +85,7 @@ module.exports = React.createClass
 
   handleInitStart: (e) ->
     console.log 'handleInitStart() '
+    console.log "@props.workflow", @props.workflow
 
     taskDescription = @props.workflow.tasks[@props.annotation.task]
     mark = @state.selectedMark
@@ -107,6 +108,7 @@ module.exports = React.createClass
         tool: @props.annotation._toolIndex
       if toolDescription.details?
         mark.details = for detailTaskDescription in toolDescription.details
+          console.log "!taskTacking", tasks[detailTaskDescription.type]
           tasks[detailTaskDescription.type].getDefaultAnnotation()
 
     @props.annotation.value.push mark
@@ -263,6 +265,7 @@ module.exports = React.createClass
                     toolDescription = taskDescription.tools[mark.tool]
 
                     console.log 'MARK TOOL: ', mark.tool
+                    console.log "MARK MARK", mark
 
                     # toolEnv =
                     #   scale: @getScale()
@@ -281,7 +284,7 @@ module.exports = React.createClass
                     #   # onDestroy: @destroyMark.bind this, annotation, mark
 
                     ToolComponent = markingTools[toolDescription.type]
-                    
+                    console.log "IS THIS THE MARK STUFF?", @state.selectedMark
                     <ToolComponent 
                       key={mark._key} 
                       mark={mark}
@@ -291,7 +294,7 @@ module.exports = React.createClass
                       selected={mark is @state.selectedMark}
                       getEventOffset={@getEventOffset}
                       ref={@refs.sizeRect}
-
+                      handleMarkClick={@handleMarkClick}
                       onChange={@updateAnnotations} 
                       onSelect={@selectMark.bind this, annotation, mark}
                       onDestroy={@destroyMark.bind this, annotation}
