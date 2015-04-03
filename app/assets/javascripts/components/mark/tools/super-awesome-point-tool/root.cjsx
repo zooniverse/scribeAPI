@@ -29,14 +29,26 @@ module.exports = React.createClass
 
     mainStyle =
       fill: 'transparent'
-      stroke: 'currentColor'
+      stroke: 'red'
       strokeWidth: if toolProps.selected
         SELECTED_STROKE_WIDTH / scale
       else
         STROKE_WIDTH / scale
 
-    <g className="drawing-tool" {...rootProps} {...@props}>
-      <g className="drawing-tool-main" {...mainStyle} onMouseDown={toolProps.onSelect unless toolProps.disabled}>
+    <g 
+      className="drawing-tool"
+      data-disabled={toolProps.disabled or null}
+      data-selected= {toolProps.selected or null}
+      data-destroying={@props.tool.state?.destroying or null}
+      color="red"
+    >
+      <g 
+        className="drawing-tool-main"
+        fill='transparent'
+        stroke='#f60'
+        strokeWidth={SELECTED_STROKE_WIDTH/scale}
+        onMouseDown={toolProps.onSelect unless toolProps.disabled}
+      >
         {@props.children}
       </g>
     </g>

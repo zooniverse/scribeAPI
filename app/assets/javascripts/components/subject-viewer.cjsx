@@ -89,50 +89,73 @@ module.exports = React.createClass
 
   handleInitStart: (e) ->
     console.log 'handleInitStart() '
-    { ex, ey } = @getEventOffset e
-    marks = @state.marks
-    newMark =
-      key: @state.lastMarkKey
-      x: ex
-      y: ey
-      tool: @props.annotation._toolIndex
-      timestamp: (new Date).toJSON()
 
-    console.log 'markingTools: ', markingTools
+    taskDescription = @props.workflow.tasks[@props.annotation.task]
+    mark = @state.selectedMark
 
-    @props.annotation.value.push newMark
-    
-    @setState
-    #   marks: marks
-      lastMarkKey: @state.lastMarkKey + 1
-      selectedMark: marks[marks.length-1]
+    markIsComplete = true
+    if mark?
+      toolDescription = taskDescription.tools[mark.tool]
+      MarkComponent = markingTools[toolDescription.type]
+      if MarkComponent.isComplete?
+        markIsComplete = MarkComponent.isComplete mark
+
+    mouseCoords = @getEventOffset e
+
+    console.log 'PROPS.ANNOTATION: ', @props.annotation
+
+    if markIsComplete
+      toolDescription = taskDescription.tools[@props.annotation._toolIndex]
+      mark =
+        key: @state.lastMarkKey
+        tool: @props.annotation._toolIndex
+      if toolDescription.details?
+        mark.details = for detailTaskDescription in toolDescription.details
+          tasks[detailTaskDescription.type].getDefaultAnnotation()
+
+    @props.annotation.value.push mark
+    @selectMark @props.annotation, mark
+
+    MarkComponent = markingTools[toolDescription.type]
+
+    if MarkComponent.defaultValues?
+      defaultValues = MarkComponent.defaultValues mouseCoords
+      for key, value of defaultValues
+        mark[key] = value
+
+    if MarkComponent.initStart?
+      initValues = MarkComponent.initStart mouseCoords, mark, e
+      for key, value of initValues
+        mark[key] = value
+
+    @setState lastMarkKey: @state.lastMarkKey + 1
 
     setTimeout =>
       @updateAnnotations()
 
   handleInitDrag: (e) ->
+    task = @props.workflow.tasks[@props.annotation.task]
     mark = @state.selectedMark
-    { ex, ey } = @getEventOffset e
-    mark.x = ex
-    mark.y = ey
+    MarkComponent = markingTools[task.tools[mark.tool].type]
+    if MarkComponent.initMove?
+      mouseCoords = @getEventOffset e
+      initMoveValues = MarkComponent.initMove mouseCoords, mark, e
+      for key, value of initMoveValues
+        mark[key] = value
+    @updateAnnotations()
 
-    # keep marks within frame
-    if ex > @state.imageWidth
-      mark.x = @state.imageWidth
-    else if ex < 0
-      mark.x = 0
-
-    if ey > @state.imageHeight
-      mark.y = @state.imageHeight
-    else if ey < 0
-      mark.y = 0
-
-    @setState selectedMark: mark
-      # , => @forceUpdate()
-
-  # AVAILABLE, BUT UNUSED, METHODS
-  # handleInitRelease: (e) ->
-  # handleToolMouseDown: (e) ->
+  handleInitRelease: (e) ->
+    task = @props.workflow.tasks[@props.annotation.task]
+    mark = @state.selectedMark
+    MarkComponent = markingTools[task.tools[mark.tool].type]
+    if MarkComponent.initRelease?
+      mouseCoords = @getEventOffset e
+      initReleaseValues = MarkComponent.initRelease mouseCoords, mark, e
+      for key, value of initReleaseValues
+        mark[key] = value
+    @updateAnnotations()
+    if MarkComponent.initValid? and not MarkComponent.initValid mark
+      @destroyMark @props.annotation, mark
 
   setView: (viewX, viewY, viewWidth, viewHeight) ->
     @setState {viewX, viewY, viewWidth, viewHeight}
@@ -147,9 +170,9 @@ module.exports = React.createClass
   getEventOffset: (e) ->
     rect = @refs.sizeRect.getDOMNode().getBoundingClientRect()
     scale = @getScale()
-    ex = ((e.pageX - pageXOffset - rect.left) / scale.horizontal) + @state.viewX
-    ey = ((e.pageY - pageYOffset - rect.top) / scale.vertical) + @state.viewY
-    return {ex, ey}
+    x = ((e.pageX - pageXOffset - rect.left) / scale.horizontal) + @state.viewX
+    y = ((e.pageY - pageYOffset - rect.top) / scale.vertical) + @state.viewY
+    return {x, y}
 
   onClickDelete: (key) ->
     marks = @state.marks
@@ -162,36 +185,34 @@ module.exports = React.createClass
         @forceUpdate() # make sure keys are up-to-date
 
   handleMarkClick: (mark, e) ->
-    { ex, ey } = @getEventOffset e
+    { x, y } = @getEventOffset e
     @setState
       selectedMark: mark
       clickOffset:
-        x: mark.x - ex
-        y: mark.y - ey
+        x: mark.x - x
+        y: mark.y - y
       # , => @forceUpdate()
 
+  selectMark: (annotation, mark) ->
+    if annotation? and mark?
+      index = annotation.value.indexOf mark
+      annotation.value.splice index, 1
+      annotation.value.push mark
+    @setState selectedMark: mark, =>
+      if mark?.details?
+        @forceUpdate() # Re-render to reposition the details tooltip.
+
+  destroyMark: (annotation, mark) ->
+    if mark is @state.selectedMark
+      @setState selectedMark: null
+    markIndex = annotation.value.indexOf mark
+    annotation.value.splice markIndex, 1
+    @updateAnnotations()
+
   updateAnnotations: ->
-    @props.classification.update
-      annotations: @props.classification.annotations
-
-
-          # SCRATCH CODE TAKEN FROM WITHIN SVG TAG
-          #       { @state.marks.map ((mark, i) ->
-          #     <ToolComponent
-          #       key={i}
-          #       mark={mark}
-          #       subject={@state.subject}
-          #       workflow={@props.workflow}
-          #       getEventOffset={@getEventOffset}
-          #       isSelected={mark is @state.selectedMark}
-          #       handleMarkClick={@handleMarkClick.bind null, mark}
-          #       onClickDelete={@onClickDelete}
-          #       clickOffset={@state.clickOffset}
-          #       imageWidth={@state.imageWidth}
-          #       imageHeight={@state.imageHeight}
-          #     />
-          #   ), @
-          # }
+    console.log 'updateAnnotations()'
+    @props.classification.update 'annotations'
+    @forceUpdate()
 
   render: ->
     # return null if @state.subjects is null or @state.subjects.length is 0
@@ -235,7 +256,6 @@ module.exports = React.createClass
           </Draggable>
 
           { for annotation in @props.classification.annotations
-              console.log 'ANNOTATION: ', annotation
               annotation._key ?= Math.random()
               isPriorAnnotation = annotation isnt @props.annotation
               taskDescription = @props.workflow.tasks[annotation.task]
@@ -243,30 +263,30 @@ module.exports = React.createClass
               if taskDescription.tool is 'drawing'
                 <g key={annotation._key} className="marks-for-annotation" data-disabled={isPriorAnnotation or null}>
                   {for mark, m in annotation.value
+
                     mark._key ?= Math.random()
-                    console.log 'mark.tool: ', mark.tool
                     toolDescription = taskDescription.tools[mark.tool]
 
-                    console.log 'TOOL DESCRIPTION: ', toolDescription
+                    console.log 'MARK TOOL: ', mark.tool
 
-                    toolEnv =
-                      scale: @getScale()
-                      disabled: isPriorAnnotation
-                      selected: mark is @state.selectedMark
-                      getEventOffset: @getEventOffset
-                      # ref: 'selectedTool' if mark is @state.selectedMark
+                    # toolEnv =
+                    #   scale: @getScale()
+                    #   disabled: isPriorAnnotation
+                    #   selected: mark is @state.selectedMark
+                    #   getEventOffset: @getEventOffset
+                    #   # ref: 'selectedTool' if mark is @state.selectedMark
 
-                    toolProps =
-                      mark: mark
-                      color: toolDescription.color
+                    # toolProps =
+                    #   mark: mark
+                    #   color: toolDescription.color
 
-                    toolMethods =
-                      onChange: @updateAnnotations
-                      # onSelect: @selectMark.bind this, annotation, mark
-                      # onDestroy: @destroyMark.bind this, annotation, mark
+                    # toolMethods =
+                    #   onChange: @updateAnnotations
+                    #   # onSelect: @selectMark.bind this, annotation, mark
+                    #   # onDestroy: @destroyMark.bind this, annotation, mark
 
                     ToolComponent = markingTools[toolDescription.type]
-                    console.log 'TOOL DESCRIPTION TYPE: ', toolDescription.type
+                    
                     <ToolComponent 
                       key={mark._key} 
                       mark={mark}
@@ -275,7 +295,11 @@ module.exports = React.createClass
                       disabled={isPriorAnnotation}
                       selected={mark is @state.selectedMark}
                       getEventOffset={@getEventOffset}
+                      ref={@refs.sizeRect}
+
                       onChange={@updateAnnotations} 
+                      onSelect={@selectMark.bind this, annotation, mark}
+                      onDestroy={@destroyMark.bind this, annotation}
                     />
                   }  
                 </g>
