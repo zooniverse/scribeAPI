@@ -27,6 +27,7 @@ module.exports = React.createClass
         onMouseDown: @handleStart
 
   _rememberCoords: (e) ->
+    console.log "remCoord event", e
     @_previousEventCoords =
       x: e.pageX
       y: e.pageY
@@ -48,6 +49,7 @@ module.exports = React.createClass
       startHandler e
 
   handleDrag: (e) ->
+    console.log "handleDrag event", e
     d =
       x: e.pageX - @_previousEventCoords.x
       y: e.pageY - @_previousEventCoords.y

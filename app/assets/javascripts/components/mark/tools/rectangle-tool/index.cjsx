@@ -74,8 +74,8 @@ module.exports = React.createClass
       # , => @forceUpdate()
 
   handleMainDrag: (e, d) ->
-    @props.mark.x += d.x / @props.scale.horizontal
-    @props.mark.y += d.y / @props.scale.vertical
+    @props.mark.x += d.x / @props.xScale
+    @props.mark.y += d.y / @props.yScale
     @props.onChange e
 
   handleTopLeftDrag: (e, d) ->
@@ -99,8 +99,7 @@ module.exports = React.createClass
 
   render: ->
     console.log "Render: Rectangle STATE @ Render", @state
-    classString = 'rectangle drawing-tool'
-
+    classString = "rectangleTool"
     x1 = @state.x
     width = @state.width
     x2 = x1 + width
@@ -119,7 +118,7 @@ module.exports = React.createClass
     console.log "render props.clickOffset", @props.clickOffset
     console.log "render props", @props
 
-    <g className = {classString} >
+    <g className = {classString} onMouseDown={@props.onSelect unless @props.disabled}>
 
 
       <Draggable 
@@ -128,18 +127,18 @@ module.exports = React.createClass
         <polyline points={points} strokeWidth="5" stroke="orange" fill="none"/>
       </Draggable>
 
-      <g>
-        { if @props.selected
+      { if @props.selected
+        <g>
           <DeleteButton tool={this} x={@state.x + (width * DELETE_BUTTON_DISTANCE)} y={@state.y} />
-        }
-        <DragHandle x={@props.mark.x} y={@props.mark.y}
-        onDrag={@handleTopLeftDrag}
-        />
-      </g>
+          <DragHandle x={@props.mark.x} y={@props.mark.y}
+          onDrag={@handleTopLeftDrag}
+          />
+        </g>
+      }
 
 
     </g>
-    
+
 
 
 

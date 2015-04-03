@@ -192,6 +192,8 @@ module.exports = React.createClass
       # , => @forceUpdate()
 
   selectMark: (annotation, mark) ->
+    console.log "FIND FIND FIND FIND FIND FIND FIND FIND"
+    console.log "in the selectMark()"
     if annotation? and mark?
       index = annotation.value.indexOf mark
       annotation.value.splice index, 1
@@ -265,7 +267,6 @@ module.exports = React.createClass
                     toolDescription = taskDescription.tools[mark.tool]
 
                     console.log 'MARK TOOL: ', mark.tool
-                    console.log "MARK MARK", mark
 
                     # toolEnv =
                     #   scale: @getScale()
