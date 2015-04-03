@@ -9,14 +9,14 @@ module.exports =
 
     fetchSubjects: (workflow_id, limit) ->
       $.ajax
-        url: "/workflows/#{workflow_id}/subjects.json?limit=#{limit}"
+        url: "/workflows/#{workflow_id}/subject_sets.json?limit=#{limit}"
         dataType: "json"
-        success: ((subjects) =>
+        success: ((subject_sets) =>
           # DEBUG CODE
-          console.log 'FETCHED SUBJECTS: ', subjects
+          console.log 'FETCHED SUBJECTS: ', subject_sets
           @setState 
-            subjects: subjects
-            currentSubject: subjects[0]
+            subject_sets: subject_sets
+            currentSubjectSet: subject_sets[0]
             # classification: new Classification subjects[0]
         ).bind(this)
         error: ((xhr, status, err) ->

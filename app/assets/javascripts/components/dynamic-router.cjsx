@@ -14,7 +14,7 @@ DynamicRouter = React.createClass
     $.getJSON '/projects', (result) =>
       @setState project:           result.project
       @setState home_page_content: result.project.home_page_content
-      @setState pages:             result.project.pages
+      @setState pages:             result.project.pages ? []
         # DEBUG CODE
         # , => console.log 'PROJECT: ', @state.project
 
@@ -28,6 +28,7 @@ DynamicRouter = React.createClass
   render: ->
     return null unless @state.pages? # do nothing until project loads from API
     workflows = @state.project.workflows
+    console.log "home: ", @state.home_page_content
 
     <div className="panoptes-main">
       <MainHeader pages={@state.pages} />

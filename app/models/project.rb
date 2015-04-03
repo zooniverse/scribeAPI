@@ -19,7 +19,7 @@ class Project
 	update_interval 10
 
 	has_many :groups
-	has_many :workflows
+	has_many :workflows, dependent: :destroy
 	has_many :subjects
 
 

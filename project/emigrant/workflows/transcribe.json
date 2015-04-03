@@ -1,0 +1,34 @@
+{
+  "name": "transcribe",
+  "label": "Transcribe Workflow",
+  "first_task": "journal_entry",
+  "tasks": {
+    "journal_date": {
+      "key": 0,
+      "tool": "singleDate",
+      "field_name": "date",
+      "label": "Date",
+      "instruction": "Please type-in the log date.",
+      "next_task": "journal_entry"
+    },
+    "journal_entry": {
+      "key": 1,
+      "tool": "textBlock",
+      "field_name": "journal_entry",
+      "label": "Journal Entry",
+      "instruction": "Please type-in the journal entry for this day.",
+      "next_task": "additional_comment"
+    },
+    "additional_comment": {
+      "key": 2,
+      "type": "textBlock",
+      "field_name": "other_entry",
+      "label": "Other Entry",
+      "instruction": "Type something, anything.",
+      "next_task": "nil"
+    }
+  },
+  "enables_workflows": {
+    
+  }
+}
