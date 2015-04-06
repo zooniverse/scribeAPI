@@ -7,7 +7,7 @@ html, body
   color #222
 
 .row
-  overflow auto
+  overflow visible
   margin 1em 1em 0
 
 .category
@@ -18,12 +18,33 @@ html, body
   .title
     margin 0
     padding-left 3px
+    
+  .units
+    float right
+    margin-right 30px
+    
+    button
+      display inline-block
+      border none
+      border-radius 0
+      padding 0.3em 0.6em
+      margin-left -2px
+      cursor pointer
+      
+      &.active, &:hover
+        background #666
+        color #fff
   
   .count
     font-size 3em
     line-height 1
     
   .chart
+  
+    svg
+      -ms-transform-origin 0 0
+      -webkit-transform-origin 0 0
+      transform-origin 0 0
   
     text
       fill #111
@@ -56,11 +77,12 @@ html, body
     
     circle.helper
       fill steelblue
-      stroke #29567a
-      stroke-width 3
+      stroke #666
+      stroke-width 2
+      fill-opacity .5
       
     text.value
-      font-size 2em
+      font-size 1.4em
       font-weight bold
       
     .arc text

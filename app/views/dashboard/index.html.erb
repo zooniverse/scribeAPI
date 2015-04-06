@@ -4,6 +4,13 @@
     
     <div class="classifications category">
       <h3 class="title">Classifications</h3>
+      
+      <div class="units">
+        <button class="active" data-group-by="%Y-%m-%d %H">Hourly</button>
+        <button data-group-by="%Y-%m-%d">Daily</button>
+        <button data-group-by="%Y-%U">Weekly</button>
+      </div>
+      
       <div class="total">
         <span class="count">0</span>
         <span class="label">Total</span>
@@ -14,10 +21,17 @@
     
     <div class="users category">
       <h3 class="title">Users</h3>
+      
+      <div class="units">
+        <button class="active" data-group-by="%Y-%m-%d %H">Hourly</button>
+        <button data-group-by="%Y-%m-%d">Daily</button>
+        <button data-group-by="%Y-%U">Weekly</button>
+      </div>
+      
       <div class="total">
         <span class="count">0</span>
         <span class="label">Total</span>
-      </div>
+      </div>     
       
       <div class="chart"></div>
     </div>
@@ -26,9 +40,15 @@
   
   <div class="row">
     
-    <div class="analytics category">
+    <div class="analytics category">      
+      <h3 class="title">Site Traffic</h3>
       
-      <h3 class="title">Site Traffic</h3>      
+      <div class="units">
+        <button class="active" data-group-by="%Y-%m-%d %H">Hourly</button>
+        <button data-group-by="%Y-%m-%d">Daily</button>
+        <button data-group-by="%Y-%U">Weekly</button>
+      </div>
+          
       <div class="total">
         <span class="count">0</span>
         <span class="label">Total pageviews in the last 30 days</span>

@@ -8,15 +8,16 @@ class Dashboard
 
 	addAreaChart: (item) ->
 		data = item.data
-		refRow = data[0]
+		refRow = data[0].values
 		id = item.id
 		$target = $('.'+id+' .chart').first()
 		w = $target.closest('.category').width()
 		h = 0.8 * $target.closest('.category').height()
+		colors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#e377c2"]
 		
 		# layout
-		margin = {top: 30, right: 10, bottom: 100, left: 40}
-		margin2 = {top: h-70, right: 10, bottom: 20, left: 40}
+		margin = {top: 30, right: 30, bottom: 100, left: 40}
+		margin2 = {top: h-70, right: 30, bottom: 20, left: 40}
 		width = w - margin.left - margin.right
 		height = h - margin.top - margin.bottom
 		height2 = h - margin2.top - margin2.bottom
@@ -71,7 +72,8 @@ class Dashboard
 				.attr("id", "clip")
 			.append("rect")
 				.attr("width", width)
-				.attr("height", height);
+				.attr("height", height)
+				.attr("class", "clip-rect")
 		
 		focus = svg.append("g")
 			.attr("class", "focus")
@@ -87,21 +89,25 @@ class Dashboard
 		x2.domain(x.domain())
 		y2.domain(y.domain())
 		
+		# build chart
 		$.each data, (i, row) ->		
 			focus.append("path")
-				.datum(row)
+				.datum(row.values)
 				.attr("class", "area")
 				.attr("d", area)
+				.style("fill", colors[i%colors.length])
 				
 			focus.append("path")
-				.datum(row)
+				.datum(row.values)
 				.attr("class", "line")
 				.attr("d", line)
+				.style("stroke", colors[i%colors.length])
 				
 			context.append("path")
-				.datum(row)
+				.datum(row.values)
 				.attr("class", "area")
-				.attr("d", area2)	
+				.attr("d", area2)
+				.style("fill", colors[i%colors.length])
 		
 		focus.append("g")
 			.attr("class", "x axis")
@@ -142,11 +148,12 @@ class Dashboard
 				.attr("class", "helper row-"+i)
 				.attr("r", 6)
 				.style("opacity", 0)
+				.style("fill", colors[i%colors.length])
 				
 			focus.append("text")
 				.attr("class", "value helper row-"+i)
 				.attr("dx", "-0.5em")
-				.attr("dy", "1.2em")
+				.attr("dy", "1.4em")
 				.style("opacity", 0)
 		
 		bisectDate = d3.bisector((d) -> return d.date).left
@@ -155,9 +162,9 @@ class Dashboard
 			x0 = x.invert(d3.mouse(this)[0])
 			x0 = x0 - margin.left
 			$.each data, (i, row) ->
-				j = bisectDate(row, x0, 1)
-				d0 = row[j - 1]
-				d1 = row[j]
+				j = bisectDate(row.values, x0, 1)
+				d0 = row.values[j - 1]
+				d1 = row.values[j]
 				d = if x0 - d0.date > d1.date - x0 then d1 else d0
 				date_text = d.value + "(" + formatDate(d.date) + ")"
 				if i <= 0
@@ -185,6 +192,30 @@ class Dashboard
 		focus.on("mouseover", () -> focus.selectAll(".helper").style("opacity", 1))
 		focus.on("mouseout", () -> focus.selectAll(".helper").style("opacity", 0))
 		
+		# legend
+		legendW = 100
+		legendRowH = 20
+		legendSymbolW = 10
+		legendTop = 20
+		legendRight = 30
+		legend = svg.append("g")
+			.attr("class", "legend")
+			.attr("x", w - legendW- legendRight)
+			.attr("y", legendTop)
+			.attr("height", legendRowH*data.length)
+			.attr("width", legendW)
+		$.each data, (i, row) ->
+			legend.append("rect")
+				.attr("x", w - legendW- legendRight)
+				.attr("y", legendTop + legendRowH * i - legendSymbolW)
+				.attr("width", legendSymbolW)
+				.attr("height", legendSymbolW)
+				.style("fill", colors[i%colors.length])
+			legend.append("text")
+				.attr("x", w - legendW- legendRight + legendSymbolW*2)
+				.attr("y", legendTop + legendRowH * i)
+				.text(row.label)
+		
 		# init state
 		start = refRow[refRow.length-Math.round(refRow.length * 0.05)].date
 		end = refRow[refRow.length-1].date
@@ -193,6 +224,27 @@ class Dashboard
 		brush(svg.select(".brush").transition())
 		brush.event(svg.select(".brush").transition().delay(1000))
 
+	addChartListeners: () ->
+		
+		# scale charts on resize
+		$(window).on "resize", () ->
+			$('.chart').each () ->
+				newWidth = $(this).width()
+				$svg = $(this).find('svg')
+				$parent = $svg.closest('.category')
+				svg = $svg[0]
+				originalWidth = parseInt($svg.attr('width'))
+				originalHeight = parseInt($svg.attr('height'))
+				ratio = parseFloat(newWidth / originalWidth)
+				transformString = "scale("+ratio+")"
+				svg.style.webkitTransform = transformString
+				svg.style.MozTransform = transformString
+				svg.style.msTransform = transformString
+				svg.style.OTransform = transformString
+				svg.style.transform = transformString
+				$parent.height(originalHeight*ratio*1.5)
+				
+	
 	addPieChart: (item) ->
 		data = item.data
 		id = item.id
@@ -242,6 +294,7 @@ class Dashboard
 			.attr("class", "arc-center")
 			.style("text-anchor", "middle")
 			.attr("dy", ".35em")
+			.text(Math.round(data[0].value/total*100)+'%')
 		
 		# arc text
 		g.append("text")
@@ -254,6 +307,7 @@ class Dashboard
 		$.getJSON "/projects", (data) =>
 			data = @parseData(data)
 			@updateUI(data)
+			@addChartListeners()
 
 	getFakeData: (amount, min, max) ->
 		fake_data = []
@@ -273,24 +327,36 @@ class Dashboard
 				'id': 'classifications',
 				'count': 123456,
 				'type': 'area',
-				'data': [@getFakeData(720, 10, 20)]
+				'data': [{
+						'label': 'Classifications',
+						'values': @getFakeData(720, 10, 20)
+					}]
 			},{
 				'id': 'users',
 				'count': 32376,
 				'type': 'area',
-				'data': [@getFakeData(720, 10, 20)]
+				'data': [{
+						'label': 'Users',
+						'values': @getFakeData(720, 10, 20)
+					}]
 			},{
 				'id': 'analytics',
 				'count': 563456,
 				'type': 'area',
-				'data': [@getFakeData(720, 10, 20), @getFakeData(720, 0, 10)]
+				'data': [{
+						'label': 'New',
+						'values': @getFakeData(720, 10, 20)
+					},{
+						'label': 'Returning',
+						'values': @getFakeData(720, 0, 10)
+					}]
 			},{
 				'id': 'subjects',
 				'count': 12766,
 				'type': 'pie',
 				'data': [
-					{'label': 'Active', 'value': 2345},
-					{'label': 'Complete', 'value': 5678}
+					{'label': 'Complete', 'value': 5678},
+					{'label': 'Active', 'value': 2345}					
 				]
 			}
 		]
