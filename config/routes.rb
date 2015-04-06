@@ -10,13 +10,16 @@ API::Application.routes.draw do
   get '/workflows',      to: 'workflow#index', defaults: { format: 'json' }
   get '/workflows/:id',  to: 'workflow#show',  defaults: { format: 'json' }
 
+
   get '/workflows/:workflow_id/subjects' => 'subjects#index'
   get '/subjects/:subject_id', to: 'classifications#show', defaults: { format: 'json'}
+
+  resources :favourites, defaults: {format: 'json'}
 
   post   '/subjects/:id/favourite', to: 'favourites#create', defaults: { format: 'json'}
   post   '/subjects/:id/unfavourite', to: 'favourites#destroy', defaults: {format:'json'}
 
-  resources :subjects
+  resources :subjects,        :defaults => { :format => 'json' }
   resources :classifications, :defaults => { :format => 'json' }
 
   get  '/current_user' => "users#loged_in_user"
