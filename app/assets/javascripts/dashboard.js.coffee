@@ -8,6 +8,7 @@ class Dashboard
 
 	addAreaChart: (item) ->
 		data = item.data
+		unit = item.unit
 		refRow = data[0].values
 		id = item.id
 		$target = $('.'+id+' .chart').first()
@@ -15,9 +16,12 @@ class Dashboard
 		h = 0.8 * $target.closest('.category').height()
 		colors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#e377c2"]
 		
+		# reset
+		$target.empty()
+		
 		# layout
-		margin = {top: 30, right: 30, bottom: 100, left: 40}
-		margin2 = {top: h-70, right: 30, bottom: 20, left: 40}
+		margin = {top: 30, right: 30, bottom: 100, left: 60}
+		margin2 = {top: h-70, right: 30, bottom: 20, left: 60}
 		width = w - margin.left - margin.right
 		height = h - margin.top - margin.bottom
 		height2 = h - margin2.top - margin2.bottom
@@ -217,7 +221,16 @@ class Dashboard
 				.text(row.label)
 		
 		# init state
-		start = refRow[refRow.length-Math.round(refRow.length * 0.05)].date
+		duration = refRow[refRow.length-1].date - refRow[0].date
+		if unit == 'week'
+			range = 60 * 60 * 24 * 50 * 1000 # 50 days
+		else if unit == 'day'
+			range = 60 * 60 * 24 * 25 * 1000 # 25 days
+		else
+			range = 60 * 60 * 24 * 1000 # 24 hours
+		if range > duration
+			range = duration
+		start = new Date(refRow[refRow.length-1].date - range)
 		end = refRow[refRow.length-1].date
 		brush.extent([start, end])
 		onbrush()
@@ -243,8 +256,16 @@ class Dashboard
 				svg.style.OTransform = transformString
 				svg.style.transform = transformString
 				$parent.height(originalHeight*ratio*1.5)
-				
-	
+		
+		$('.units button').on "click", (e) =>
+			e.preventDefault()
+			$button = $(e.currentTarget)
+			$button.siblings('button').removeClass('active')
+			$button.addClass('active')
+			item = @_findWhere(@data, 'id', $button.attr('data-category'))
+			if item
+				@addAreaChart(@groupData(item, $button.attr('data-group-by')))
+			
 	addPieChart: (item) ->
 		data = item.data
 		id = item.id
@@ -305,8 +326,8 @@ class Dashboard
 
 	getStats: () ->
 		$.getJSON "/projects", (data) =>
-			data = @parseData(data)
-			@updateUI(data)
+			@data = @parseData(data)
+			@updateUI()
 			@addChartListeners()
 
 	getFakeData: (amount, min, max) ->
@@ -320,35 +341,84 @@ class Dashboard
 			}
 			date = new Date(date.getTime() + 3600000)
 		return fake_data
-
+	
+	groupData: (item, group_by) ->	
+		newItem = $.extend(true, {}, item)
+		newData = []
+		
+		if group_by == "hour"
+			newItem.unit = "hour"
+			return newItem
+		
+		$.each newItem.data.slice(0), (i, v) =>
+			# copy values and reset
+			values = v.values.slice(0)
+			newValues = []
+			currentValues = []	
+			currentGroup = ''
+			$.each values, (j, w) =>
+				date = w.date
+				# determine how to group
+				if group_by == "week"
+					group = @_getWeek(date)
+				else				
+					group = @_getDay(date)
+				# group has changed, add to new values
+				if group != currentGroup or j >= values.length-1
+					# end is reached
+					if j >= values.length-1
+						currentValues.push w
+					# group is not empty
+					if currentValues.length > 0
+						newValue = {'date': currentValues[0].date}
+						sum = 0
+						$.each currentValues, (k, x) ->
+							sum += x.value	
+						newValue.value = sum
+						newValues.push newValue
+					currentValues = []
+					currentGroup = group
+				# otherwise, add to group
+				else
+					currentValues.push w
+			v.values = newValues
+			newData.push v
+		
+		newItem.data = newData
+		newItem.unit = group_by
+		return newItem
+	
 	parseData: (data) ->
 		return [
 			{
 				'id': 'classifications',
 				'count': 123456,
 				'type': 'area',
+				'unit': 'hour',
 				'data': [{
 						'label': 'Classifications',
-						'values': @getFakeData(720, 10, 20)
+						'values': @getFakeData(1440, 10, 20)
 					}]
 			},{
 				'id': 'users',
 				'count': 32376,
 				'type': 'area',
+				'unit': 'hour',
 				'data': [{
 						'label': 'Users',
-						'values': @getFakeData(720, 10, 20)
+						'values': @getFakeData(1440, 10, 20)
 					}]
 			},{
 				'id': 'analytics',
 				'count': 563456,
 				'type': 'area',
+				'unit': 'hour',
 				'data': [{
 						'label': 'New',
-						'values': @getFakeData(720, 10, 20)
+						'values': @getFakeData(1440, 10, 20)
 					},{
 						'label': 'Returning',
-						'values': @getFakeData(720, 0, 10)
+						'values': @getFakeData(1440, 0, 10)
 					}]
 			},{
 				'id': 'subjects',
@@ -361,7 +431,8 @@ class Dashboard
 			}
 		]
 
-	updateUI: (data) ->
+	updateUI: () ->
+		data = @data
 		# go through each item in data
 		$.each data, (i, item) =>
 			
@@ -374,8 +445,24 @@ class Dashboard
 			else if item.type == 'pie'
 				@addPieChart(item)
 	
+	_findWhere: (arr, k, v) ->
+		found = false
+		$.each arr, (i, item) ->
+			if item[k] == v
+				found = $.extend(true, {}, item)
+		return found
+	
 	_formatNumber: (n) ->
 		return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+
+	_getDay: (d) ->
+		return d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate()
+
+	_getWeek: (_d) ->
+		d = new Date(_d.getTime())
+		d.setHours(0,0,0)
+		d.setDate(d.getDate()+4-(d.getDay()||7))
+		return d.getFullYear() + '-' + Math.ceil((((d-new Date(d.getFullYear(),0,1))/8.64e7)+1)/7)
 
 $ ->
 	new Dashboard()
