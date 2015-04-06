@@ -1,24 +1,20 @@
 Classification = require 'models/classification'
+API            = require './api'
 
 module.exports =
+  componentDidMount: ->
+    @fetchSubjects @props.workflow.id, @props.workflow.subject_fetch_limit
 
-  FetchSubjectsMixin = 
+  fetchSubjects: (workflow_id, limit) ->
+    request = API.type('subjects').get
+      workflow_id: workflow_id
+      limit: limit
 
-    componentDidMount: ->
-      @fetchSubjects @props.workflow.id, @props.workflow.subject_fetch_limit
+    request.then (subjects)=>    # DEBUG CODE
+      console.log 'FETCHED SUBJECTS: ', subjects
+      @setState
+        subjects: subjects
+        currentSubject: subjects[0]
 
-    fetchSubjects: (workflow_id, limit) ->
-      $.ajax
-        url: "/workflows/#{workflow_id}/subjects.json?limit=#{limit}"
-        dataType: "json"
-        success: ((subjects) =>
-          # DEBUG CODE
-          console.log 'FETCHED SUBJECTS: ', subjects
-          @setState 
-            subjects: subjects
-            currentSubject: subjects[0]
-            # classification: new Classification subjects[0]
-        ).bind(this)
-        error: ((xhr, status, err) ->
-          console.error "Error loading subjects: ", url, status, err.toString()
-        ).bind(this)
+    request.error (xhr, status, err) =>
+      console.error "Error loading subjects: ", url, status, err.toString()
