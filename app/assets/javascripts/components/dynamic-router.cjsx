@@ -4,17 +4,23 @@ MainHeader                    = require '../partials/main-header'
 HomePage                      = require './home-page'
 Mark                          = require './mark'
 Transcribe                    = require './transcribe'
+API                           = require '../lib/api'
 
+window.API = API
 DynamicRouter = React.createClass
 
   getInitialState: ->
     project: null
 
   componentDidMount: ->
-    $.getJSON '/projects', (result) =>
-      @setState project:           result.project
-      @setState home_page_content: result.project.home_page_content
-      @setState pages:             result.project.pages
+
+    API.type('projects').get().then (result)=>
+
+      project = result[0]
+
+      @setState project:           project
+      @setState home_page_content: project.home_page_content
+      @setState pages:             project.pages
         # DEBUG CODE
         # , => console.log 'PROJECT: ', @state.project
 
