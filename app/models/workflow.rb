@@ -1,6 +1,7 @@
 class Workflow
   include Mongoid::Document
 
+  field    :name,                                            type: String
   field    :key, 				                                     type: String
   field    :label,                                           type: String
   field    :tasks, 			      	                             type: Hash
@@ -10,6 +11,8 @@ class Workflow
   field    :active_subjects,                                 type: Integer, default: 0
   field    :generates_new_subjects,                          type: Boolean, default: false
   field    :generate_new_subjects_at_classification_count,   type: Integer, default: 1
+  field    :subject_fetch_limit,                             type: Integer, default: 10
+
 
   has_many     :subjects
   has_many     :classifications
