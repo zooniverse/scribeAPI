@@ -100,24 +100,15 @@ module.exports = React.createClass
     @props.mark.y += d.y / @props.yScale
     @props.onChange e
 
-  handleTopLeftDrag: (e, d) ->
+  handleIndividualPointDrag: (e, d) ->
     console.log "HTLD", e, d
     console.log "HTLD @props", @props
     @props.mark.x += d.x / @props.xScale
     @props.mark.y += d.y / @props.yScale
-    @props.width -= d.x / @props.xScale
-    @props.height -= d.y / @props.yScale
-    @props.onChange e
-
-  handleLowerLeftDrag: (e, d) ->
-    @props.mark.x += d.x / @props.xScale
-    @props.mark.y += d.y / @props.yScale
-    @props.width -= d.x / @props.xScale
-    @props.height -= d.y / @props.yScale
+    @props.mark.width -= d.x / @props.xScale
+    @props.mark.height -= d.y / @props.yScale
     @props.onChange e
     
-
-
   getDeleteButtonPosition: ->
     theta = (DELETE_BUTTON_ANGLE) * (Math.PI / 180)
     x: (SELECTED_RADIUS / @props.xScale) * Math.cos theta
@@ -165,10 +156,10 @@ module.exports = React.createClass
         { if @props.selected
           <g>
             <DeleteButton tool={this} x={@state.x + (width * DELETE_BUTTON_DISTANCE)} y={@state.y} />
-            <DragHandle x={@props.mark.x} y={@props.mark.y} onDrag={@handleTopLeftDrag} />
-            <DragHandle x={x2} y={y1} onDrag={@handleUpperRightDrag} />
-            <DragHandle x={x2} y={y2} onDrag={@handleLowerRightDrag} />
-            <DragHandle x={x1} y={y2} onDrag={@handleLowerLeftDrag} />
+            <DragHandle x={@props.mark.x} y={@props.mark.y} onDrag={@handleIndividualPointDrag} />
+            <DragHandle x={x2} y={y1} onDrag={@handleIndividualPointDrag} />
+            <DragHandle x={x2} y={y2} onDrag={@handleIndividualPointDrag} />
+            <DragHandle x={x1} y={y2} onDrag={@handleIndividualPointDrag} />
           </g>
         }
       </g>
