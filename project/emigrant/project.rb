@@ -21,5 +21,10 @@ Specific_project = {
       url:"http://nypl.org",
       logo: "http://cdn-prod.www.aws.nypl.org/sites/all/themes/nypl_new/images/main-logo.png"
     }
-  ]
+  ],
+
+  forum: {
+    type: 'discourse',
+    base_url: 'http://scribe-forum.nypl-labs.biz'
+  }
 }

@@ -1,5 +1,5 @@
 class SubjectSetSerializer < ActiveModel::MongoidSerializer
-  attributes :id, :name, :thumbnail, :meta_data
+  attributes :id, :name, :thumbnail, :meta_data, :group_id
 
   has_many :subjects
 
