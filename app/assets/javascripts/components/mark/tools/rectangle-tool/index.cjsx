@@ -18,16 +18,38 @@ module.exports = React.createClass
     key:  React.PropTypes.number.isRequired
     mark: React.PropTypes.object.isRequired
 
+  initCoords: null
+
   statics:
     defaultValues: ({x, y}) ->
-      {x, y}
+      x: x
+      y: y
+      width: 0
+      height: 0
 
-    initMove: ({x, y}) ->
-      {x, y}
+    initStart: ({x,y}, mark) ->
+      @initCoords = {x,y}
+      {x,y}
 
-  getDefaultProps: ->
-    width: 400
-    height: 100
+    initMove: (cursor, mark) ->
+      if cursor.x > @initCoords.x
+        width = cursor.x - mark.x
+        x = marks.x
+      else 
+        width = @initCoords.x - cursor.x
+        x = cursor.x
+
+      if cursor.y > @initCoords.y
+        height = cursor.y - mark.y
+        y = mark.y
+      else
+        height = @initCoords.y - cursor.y
+        y = cursor.y
+
+      {x, y, width, height}
+
+  initCoords: null
+
 
   getInitialState: ->
     console.log 'Rectangle GET STATE'
@@ -84,13 +106,17 @@ module.exports = React.createClass
     @props.mark.x += d.x / @props.xScale
     @props.mark.y += d.y / @props.yScale
     @props.width -= d.x / @props.xScale
-    console.log "new width", @props.mark.width
     @props.height -= d.y / @props.yScale
     @props.onChange e
-    @setState x: @props.mark.x
-    @setState y: @props.mark.y
-    @setState width: @props.width
-    @setState height: @props.height
+
+  handleLowerLeftDrag: (e, d) ->
+    @props.mark.x += d.x / @props.xScale
+    @props.mark.y += d.y / @props.yScale
+    @props.width -= d.x / @props.xScale
+    @props.height -= d.y / @props.yScale
+    @props.onChange e
+    
+
 
   getDeleteButtonPosition: ->
     theta = (DELETE_BUTTON_ANGLE) * (Math.PI / 180)
@@ -104,11 +130,11 @@ module.exports = React.createClass
   render: ->
     console.log "Render: Rectangle STATE @ Render", @state
     classString = "rectangleTool"
-    x1 = @state.x
-    width = @state.width
+    x1 = @props.mark.x
+    width = @props.mark.width
     x2 = x1 + width
-    y1 = @state.y
-    height = @state.height
+    y1 = @props.mark.y
+    height = @props.mark.height
     y2 = y1 + height
 
     points = [
@@ -125,8 +151,10 @@ module.exports = React.createClass
       tool={this} 
       onMouseDown={@handleMouseDown}
     >
-      <g className = {classString} 
-      onMouseDown={@props.onSelect unless @props.disabled}>
+      <g 
+        className = {classString} 
+        onMouseDown={@props.onSelect unless @props.disabled}
+      >
 
         <Draggable 
           onStart = {@props.handleMarkClick} 
@@ -137,9 +165,10 @@ module.exports = React.createClass
         { if @props.selected
           <g>
             <DeleteButton tool={this} x={@state.x + (width * DELETE_BUTTON_DISTANCE)} y={@state.y} />
-            <DragHandle x={@props.mark.x} y={@props.mark.y}
-            onDrag={@handleTopLeftDrag}
-            />
+            <DragHandle x={@props.mark.x} y={@props.mark.y} onDrag={@handleTopLeftDrag} />
+            <DragHandle x={x2} y={y1} onDrag={@handleUpperRightDrag} />
+            <DragHandle x={x2} y={y2} onDrag={@handleLowerRightDrag} />
+            <DragHandle x={x1} y={y2} onDrag={@handleLowerLeftDrag} />
           </g>
         }
       </g>
