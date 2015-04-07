@@ -34,7 +34,7 @@ module.exports = React.createClass
     initMove: (cursor, mark) ->
       if cursor.x > @initCoords.x
         width = cursor.x - mark.x
-        x = marks.x
+        x = mark.x
       else 
         width = @initCoords.x - cursor.x
         x = cursor.x
