@@ -14,19 +14,22 @@ module.exports = React.createClass
   getInitialState: ->
 
     subject_set: @props.subject_set
-    project: @props.project
     posts: {}
     
   componentDidMount: ->
-    @connector = null
-    if @state.project.forum?.type == 'discourse'
-      @connector = new DiscourseConnector @state.project.forum
 
-    if @connector?
-      @setState
-        create_url: @connector.create_url()
-      @fetchPosts 'subject_set', @state.subject_set.id
-      # TODO: fetch posts for group id too?
+    API.type('projects').get().then (result)=>
+      project = result[0]
+
+      @connector = null
+      if project.forum?.type == 'discourse'
+        @connector = new DiscourseConnector project.forum
+
+      if @connector?
+        @setState
+          create_url: @connector.create_url()
+        @fetchPosts 'subject_set', @state.subject_set.id
+        # TODO: fetch posts for group id too?
 
   fetchPosts: (type, id) ->
     @connector.fetchPosts type, id, (posts) =>

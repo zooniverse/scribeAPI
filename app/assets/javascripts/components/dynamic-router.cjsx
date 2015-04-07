@@ -44,7 +44,6 @@ DynamicRouter = React.createClass
             path='/mark'
             handler={Mark}
             name='mark'
-            project=@state.project
             workflow={(workflow for workflow in workflows when workflow.name is 'mark')[0]} />
           <Route
             path='/transcribe'
