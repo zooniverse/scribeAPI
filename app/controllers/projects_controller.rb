@@ -5,4 +5,7 @@ class ProjectsController < ApplicationController
     respond_with Project.current
   end
 
+  def project_css
+    render text: Project.current.styles
+  end
 end

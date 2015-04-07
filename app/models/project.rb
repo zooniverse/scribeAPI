@@ -14,12 +14,14 @@ class Project
 	field  :pages,         type: Array,  default: []
 	field  :background,    type: String
 	field  :forum,         type: Hash
+	field  :styles,        type: String
 
 	include CachedStats
 
 	update_interval 10
 
 	has_many :groups
+	has_many :subject_sets
 	has_many :workflows, dependent: :destroy
 	has_many :subjects
 

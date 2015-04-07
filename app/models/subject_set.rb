@@ -11,6 +11,7 @@ class SubjectSet
   field :counts,                 type: Hash
 
   belongs_to :group
+  belongs_to :project
   has_many :subjects, dependent: :destroy
 
   def activate!

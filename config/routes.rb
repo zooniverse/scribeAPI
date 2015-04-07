@@ -10,10 +10,11 @@ API::Application.routes.draw do
 
 
 
-  get '/projects',        to: 'projects#index', defaults: { format: 'json' }
+  get '/projects',            to: 'projects#index', defaults: { format: 'json' }
+  get '/project/style.css',   to: 'projects#project_css', defaults: { format: 'css' }
 
-  get '/workflows',      to: 'workflow#index', defaults: { format: 'json' }
-  get '/workflows/:id',  to: 'workflow#show',  defaults: { format: 'json' }
+  get '/workflows',           to: 'workflow#index', defaults: { format: 'json' }
+  get '/workflows/:id',       to: 'workflow#show',  defaults: { format: 'json' }
 
 
   get '/workflows/:workflow_id/subjects' => 'subjects#index'

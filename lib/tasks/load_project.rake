@@ -19,6 +19,7 @@ desc 'creates a poject object from the project directory'
 
     # Load pages from content/*:
     content_path = Rails.root.join('project', args[:project_name], 'content')
+    puts "Loading pages from #{content_path}:"
     Dir.foreach(content_path).each do |file|
       path = Rails.root.join content_path, file
       next if File.directory? path
@@ -41,8 +42,17 @@ desc 'creates a poject object from the project directory'
       end
     end
 
+    styles_path = Rails.root.join('project', args[:project_name], 'styles.css')
+    if File.exist? styles_path
+      styles = File.read styles_path
+      puts "Loading #{styles.size}b of custom CSS"
+      project.styles = styles
+    end
+
     project.save
 
     Rake::Task['project_setup'].invoke(args[:project_name])
+
+    puts "Done loading \"#{project.title}\" with #{project.workflows.count} workflow(s), #{project.subject_sets.count} subject sets."
     # binding.pry
   end

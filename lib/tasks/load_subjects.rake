@@ -95,6 +95,7 @@ require 'active_support'
         puts "    Adding subject set: #{set_key}"
         subject_set = group.subject_sets.create({
           name: name,
+          project: project,
           thumbnail: thumbnail,
           meta_data: meta_data
         })
