@@ -3,7 +3,6 @@ API            = require './api'
 
 module.exports =
   componentDidMount: ->
-    alert("here")
 
     if @props.params.subject_set_id
       @fetchSubject @props.params.subject_set_id,@props.workflow.id
