@@ -16,11 +16,19 @@ class Subject
   field :state ,               type: String, default: "active"
   field :type,                 type: String, default: "root"
   field :meta_data,            type: Hash
+  field :retire_count,         type: Integer
 
-  has_and_belongs_to_many :workflows, inverse_of: nil
+  after_create :update_subject_set_stats
+
+  belongs_to :workflow
   has_many :favourites
   has_one :parent_subject, :class_name => "Subject"
   belongs_to :subject_set
+
+
+  def update_subject_set_stats
+    subject_set.inc_subject_count_for_workflow(workflow)
+  end
 
   def increment_classification_count_by(no)
     self.classification_count += no
@@ -30,13 +38,13 @@ class Subject
 
   def retire!
     self.state = "done"
-    workflow.inc(:active_subjects => -1 )
+    subject_set.subject_completed_on_workflow(workflow)
     save
   end
 
   def activate!
     self.state = "active"
-    workflow.inc(:active_subjects => 1 )
+    subject_set.subject_activated_on_workflow(workflow)
     save
   end
 end

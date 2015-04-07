@@ -5,6 +5,7 @@ HomePage                      = require './home-page'
 Mark                          = require './mark'
 Transcribe                    = require './transcribe'
 API                           = require '../lib/api'
+GroupPage                     = require './group-page'
 
 window.API = API
 DynamicRouter = React.createClass
@@ -52,10 +53,25 @@ DynamicRouter = React.createClass
             name='mark'
             workflow={(workflow for workflow in workflows when workflow.name is 'mark')[0]} />
           <Route
+            path='/mark/:subject_set_id'
+            handler={Mark}
+            name='mark_specific'
+            workflow={(workflow for workflow in workflows when workflow.name is 'mark')[0]} />
+          <Route
             path='/transcribe'
+            handler={Transcribe}
+            name='transcribe_specific'
+            workflow={(workflow for workflow in workflows when workflow.name is 'transcribe')[0]} />
+          <Route
+            path='/transcribe/:subject_set_id'
             handler={Transcribe}
             name='transcribe'
             workflow={(workflow for workflow in workflows when workflow.name is 'transcribe')[0]} />
+          <Route
+            path='/groups/:group_id'
+            handler={GroupPage}
+            name="group"
+          />
 
           { @state.pages?.map (page, key) =>
               <Route

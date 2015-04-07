@@ -25,9 +25,10 @@ API::Application.routes.draw do
   post   '/subjects/:id/favourite', to: 'favourites#create', defaults: { format: 'json'}
   post   '/subjects/:id/unfavourite', to: 'favourites#destroy', defaults: {format:'json'}
 
-  resources :subjects
-  resources :subject_sets
+  resources :subjects, :defaults => { :format => 'json' }
+  resources :subject_sets, :defaults => { :format => 'json' }
   resources :classifications, :defaults => { :format => 'json' }
+  resources :groups, :defaults => { :format => 'json' }
 
   get  '/current_user' => "users#logged_in_user"
   resources :favourites, only: [:index, :create, :destroy]
