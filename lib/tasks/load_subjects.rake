@@ -20,7 +20,7 @@ require 'active_support'
 
       project = project_for_key project_name
       Rake::Task['load_workflows'].invoke(project_name, project.id)
-        
+
       Rake::Task['load_groups'].invoke(project_name)
     end
 
@@ -31,9 +31,9 @@ require 'active_support'
       groups_file = Rails.root.join(subjects_dir, 'groups.csv')
 
       project = project_for_key project_name
-      
+
       project.groups.destroy_all
-      
+
       num_groups = File.foreach(groups_file).count - 1
       puts "Groups: Creating #{num_groups} groups from groups.csv"
       CSV.foreach(groups_file, :headers=>true, :header_converters=> lambda {|f| f.strip}, :converters=> lambda {|f| f ? f.strip : nil}) do |row|
@@ -84,9 +84,9 @@ require 'active_support'
         subjects_by_set[key] ||= []
         subjects_by_set[key] << data
       end
-      
+
       subjects_by_set.each do |(set_key, subjects)|
-      
+
         data = subjects.first
         thumbnail       = data['thumbnail']
         name            = data['name']
@@ -96,7 +96,6 @@ require 'active_support'
         subject_set = group.subject_sets.create({
           name: name,
           thumbnail: thumbnail,
-          workflows: [mark_workflow],
           meta_data: meta_data
         })
         puts "      - saved subject set #{subject_set.thumbnail}"
@@ -114,16 +113,17 @@ require 'active_support'
               standard: subj['file_path'],
               thumbnail: subj['thumbnail']
             },
-            workflows: [mark_workflow],
+            workflow: mark_workflow,
             retire_count: subj['retire_count'],
             meta_data: meta_data
           })
+          s.activate!
           puts "        - saved subject: #{s.file_path}"
         end
 
       end
     end
-    
+
   desc "loads workflow jsons from workflows/*.json"
   task :load_workflows, [:project_name, :project_id] => :environment do |task, args|
     project_id = args[:project_id]
@@ -148,4 +148,3 @@ require 'active_support'
 
     puts "  WARN: No mark workflow found" if project.workflows.find_by(name: 'mark').nil?
   end
-
