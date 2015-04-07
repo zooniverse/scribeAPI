@@ -16,6 +16,8 @@ module.exports = React.createClass
   resizing: false
 
   getInitialState: ->
+    console.log "setting initial state: #{@props.active}"
+
     imageWidth: 0
     imageHeight: 0
 
@@ -26,6 +28,8 @@ module.exports = React.createClass
     marks: []
     selectedMark: null
     lastMarkKey: 0
+
+    active: @props.active
 
   componentDidMount: ->
     @setView 0, 0, @state.imageWidth, @state.imageHeight
@@ -85,20 +89,46 @@ module.exports = React.createClass
 
   handleInitStart: (e) ->
     console.log 'handleInitStart() '
-    { x, y } = @getEventOffset e
-    marks = @props.annotation.value
-    newMark =
-      key: @state.lastMarkKey
-      x: x
-      y: y
-      tool: @props.annotation._toolIndex
-      timestamp: (new Date).toJSON()
 
-    marks.push newMark
-    
-    @setState
-      lastMarkKey: @state.lastMarkKey + 1
-      selectedMark: marks[marks.length-1]
+    taskDescription = @props.workflow.tasks[@props.annotation.task]
+    mark = @state.selectedMark
+
+    markIsComplete = true
+    if mark?
+      toolDescription = taskDescription.tools[mark.tool]
+      MarkComponent = markingTools[toolDescription.type]
+      if MarkComponent.isComplete?
+        markIsComplete = MarkComponent.isComplete mark
+
+    mouseCoords = @getEventOffset e
+
+    console.log 'PROPS.ANNOTATION: ', @props.annotation
+
+    if markIsComplete
+      toolDescription = taskDescription.tools[@props.annotation._toolIndex]
+      mark =
+        key: @state.lastMarkKey
+        tool: @props.annotation._toolIndex
+      if toolDescription.details?
+        mark.details = for detailTaskDescription in toolDescription.details
+          tasks[detailTaskDescription.type].getDefaultAnnotation()
+
+    @props.annotation.value.push mark
+    @selectMark @props.annotation, mark
+
+    MarkComponent = markingTools[toolDescription.type]
+
+    if MarkComponent.defaultValues?
+      defaultValues = MarkComponent.defaultValues mouseCoords
+      for key, value of defaultValues
+        mark[key] = value
+
+    if MarkComponent.initStart?
+      initValues = MarkComponent.initStart mouseCoords, mark, e
+      for key, value of initValues
+        mark[key] = value
+
+    @setState lastMarkKey: @state.lastMarkKey + 1
 
     setTimeout =>
       @updateAnnotations()
@@ -172,9 +202,16 @@ module.exports = React.createClass
       if mark?.details?
         @forceUpdate() # Re-render to reposition the details tooltip.
 
+  destroyMark: (annotation, mark) ->
+    if mark is @state.selectedMark
+      @setState selectedMark: null
+    markIndex = annotation.value.indexOf mark
+    annotation.value.splice markIndex, 1
+    @updateAnnotations()
+
   updateAnnotations: ->
-    @props.classification.update
-      annotations: @props.classification.annotations
+    console.log 'updateAnnotations()'
+    @props.classification.update 'annotations'
     @forceUpdate()
 
   render: ->
@@ -183,6 +220,7 @@ module.exports = React.createClass
     # console.log 'SUBJECT: ', @state.subject
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     ToolComponent = @state.tool
+    console.log "Rendering #{if @props.active then 'active' else 'inactive'} subj viewer"
 
     scale = @getScale()
 
@@ -229,6 +267,8 @@ module.exports = React.createClass
                     mark._key ?= Math.random()
                     toolDescription = taskDescription.tools[mark.tool]
 
+                    console.log 'MARK TOOL: ', mark.tool
+
                     # toolEnv =
                     #   scale: @getScale()
                     #   disabled: isPriorAnnotation
@@ -255,15 +295,18 @@ module.exports = React.createClass
                       disabled={isPriorAnnotation}
                       selected={mark is @state.selectedMark}
                       getEventOffset={@getEventOffset}
+                      ref={@refs.sizeRect}
+
                       onChange={@updateAnnotations} 
                       onSelect={@selectMark.bind this, annotation, mark}
+                      onDestroy={@destroyMark.bind this, annotation}
                     />
                   }  
                 </g>
             }
         </svg>
 
-    <div className="subject-viewer">
+    <div className="subject-viewer#{if @props.active then ' active' else ''}">
       <div className="subject-container">
         <div className="marking-surface">
           {markingSurfaceContent}

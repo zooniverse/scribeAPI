@@ -1,8 +1,15 @@
 # @cjsx React.DOM
 React = require 'react'
 
+DESTROY_TRANSITION_DURATION = 0
+
 module.exports = React.createClass
   displayName: 'DeleteButton'
+
+  getDefaultProps: ->
+    x: 0
+    y: 0
+    rotate: 0
 
   render: ->
     fillColor = 'red'
@@ -17,7 +24,21 @@ module.exports = React.createClass
       L 0 #{radius * 0.6 }
     "
 
-    @transferPropsTo <g className="clickable drawing-tool-delete-button" stroke={strokeColor} strokeWidth={strokeWidth} onClick={@props.onClick}>
+    <g 
+      transform = "translate(#{@props.x}, #{@props.y}) rotate(#{@props.rotate})"
+      className="clickable drawing-tool-delete-button" 
+      stroke={strokeColor} 
+      strokeWidth={strokeWidth} 
+      onClick={@destroyTool} 
+    >
       <circle r={radius} fill={fillColor} />
       <path d={cross} transform="rotate(45)" />
     </g>
+
+  destroyTool: ->
+    console.log 'DESTROY TOOL'
+    @props.tool.setState destroying: true, =>
+      setTimeout @props.tool.props.onDestroy, DESTROY_TRANSITION_DURATION
+
+
+

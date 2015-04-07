@@ -177,8 +177,61 @@ mark_workflow = Workflow.create(
             image: 'images/attestation_thumbnail.jpg',
             next_task: 'attestation_task'
           }
-        },
-        next_task: 'fake_task'
+        }
+      },
+
+      history_sheet_task: {
+        order: 1,
+        tool: 'pick_one',
+        instruction: 'Anything interesting in this History Sheet?',
+        options: {
+          yes: {
+            label: 'Yes',
+            image: '',
+            next_task: 'mark_fields'
+          },
+          no: {
+            label: 'No',
+            image: '',
+            next_task: nil
+          }
+        }
+      },
+
+      casualty_form_task: {
+        order: 2,
+        tool: 'pick_one',
+        instruction: 'Anything interesting in this Casualty Form?',
+        options: {
+          yes: {
+            label: 'Yes',
+            image: '',
+            next_task: 'mark_fields'
+          },
+          no: {
+            label: 'No',
+            image: '',
+            next_task: nil
+          }
+        }
+      },
+
+      attestation_task: {
+        order: 3,
+        tool: 'pick_one',
+        instruction: 'Anything interesting in this Attestation?',
+        options: {
+          yes: {
+            label: 'Yes',
+            image: '',
+            next_task: 'mark_fields'
+          },
+          no: {
+            label: 'No',
+            image: '',
+            next_task: nil
+          }
+        }
       },
 
       fake_task: {
@@ -188,57 +241,25 @@ mark_workflow = Workflow.create(
         options: {
           yes: {
             label: 'Yes',
-            image: ''
+            image: '',
+            next_task: 'mark_fields'
           },
           no: {
             label: 'No',
-            image: ''
+            image: '',
+            next_task: nil
           }
-        },
-        next_task: 'mark_fields'
+        }
       },
 
       mark_fields: {
         tool: 'drawing',
         instruction: 'Pick a field and mark it with the corresponding marking tool.',
         tools: [
-          {type: 'line', label: 'Line', color: 'yellow'},
-          {type: 'rectangle', label: 'Rectangle', color: 'lime'},
-          {type: 'polygon', label: 'Polygon', color: 'cyan'},
-          {type: 'circle', label: 'Circle', color: 'blue'},
-          {type: 'ellipse', label: 'Ellipse', color: 'magenta'}
+          {type: 'superAwesomePointTool', label: 'SuperAwesomePointTool', color: 'red'},
+          {type: 'textRow', label: 'Text Row', color: 'green'}
         ],
         next_task: nil
-      },
-
-      attestation_task: {
-        order: 1,
-        tool: 'pick_one_mark_one',
-        options: {
-          header: {
-            tool: 'rectangle_tool',
-            instruction: 'Draw a rectangle around the \'Header\' region.'
-          },
-          oath: {
-            tool: 'rectangle_tool',
-            instruction: 'Draw a rectangle around the \'Oath\' region.'
-          },
-          attesting_officer: {
-            tool: 'rectangle_tool',
-            instruction: 'Draw a rectangle around the \'Attesting Officer\' region.'
-          },
-          question: {
-            tool: 'rectangle_tool',
-            instruction: 'Draw a rectangle around the \'Question\' region.'
-          }
-        }
-      },
-      history_sheet_task: {
-        order: 2,
-        tool: {},
-        options: {}
-      },
-      casualty_form_task: {
       }
     }
   }

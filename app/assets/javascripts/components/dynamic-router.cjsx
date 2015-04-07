@@ -1,5 +1,5 @@
 React = require("react")
-{Router, Routes, Route, Link} = require 'react-router'
+{Router,Redirect, Routes, Route, Link} = require 'react-router'
 MainHeader                    = require '../partials/main-header'
 HomePage                      = require './home-page'
 Mark                          = require './mark'
@@ -34,11 +34,13 @@ DynamicRouter = React.createClass
   render: ->
     return null unless @state.pages? # do nothing until project loads from API
     workflows = @state.project.workflows
+    console.log "home: ", @state.home_page_content
 
     <div className="panoptes-main">
       <MainHeader pages={@state.pages} />
       <div className="main-content">
         <Routes>
+          <Redirect from="_=_" to="/" />
           <Route
             path='/'
             handler={HomePage}
