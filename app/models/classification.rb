@@ -1,23 +1,27 @@
 class Classification
   include Mongoid::Document
-  include Mongoid::Timestamps
 
-  field :workflow_id#,   type: ObjectId
-  field :subject_id#,    type: ObjectId
-  field :location,      type: String
-  field :annotations,   type: Object
-  field :started_at,    type: Date
-  field :finished_at,   type: Date
-  field :user_agent,    type: String
+  field :workflow_id
+  field :subject_id
+  field :location
+  field :annotations, type: Array
+  field :triggered_followup_subject_ids, type: Array
+
+  field :started_at
+  field :finished_at
+  field :user_agent
 
   belongs_to :workflow
   belongs_to :user
   belongs_to :subject
+  has_many   :triggered_followup_subjects, as: :subject
 
-  after_save :generate_new_subjects
+  before_create :generate_new_subjects
 
   def generate_new_subjects
-
+    if workflow.generates_new_subjects
+      triggered_followup_subject_ids = workflow.create_follow_up_subjects(self)
+    end
   end
 
 end

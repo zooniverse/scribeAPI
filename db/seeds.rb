@@ -274,13 +274,13 @@ example_images= [
 
 10.times do |i|
   Subject.create(
-    name:"subject_#{i}", 
+    name:"subject_#{i}",
     location: {
       standard: example_images.sample
-    }, 
-    meta_data: { 
+    },
+    meta_data: {
       width:504, height:782
-    }, 
+    },
     workflows: [mark_workflow]
   )
 end
