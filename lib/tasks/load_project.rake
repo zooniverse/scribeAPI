@@ -11,6 +11,7 @@ desc 'creates a poject object from the project directory'
       summary: Specific_project[:summary],
       organizations: Specific_project[:organizations] ,
       team: Specific_project[:team],
+      forum: Specific_project[:forum],
       pages: []
     })
 

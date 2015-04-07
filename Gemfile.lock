@@ -19,9 +19,9 @@ GIT
 
 GIT
   remote: git://github.com/reactjs/react-rails.git
-  revision: a8f8d83a7106fcbe27ba4a7acfc982c3712920a3
+  revision: ff564e82f6df668d3979b6ba7747a199f6f01a45
   specs:
-    react-rails (1.0.0.pre)
+    react-rails (1.0.0)
       coffee-script-source (~> 1.8)
       connection_pool
       execjs
@@ -189,6 +189,9 @@ GEM
       railties (>= 3.1, < 5.0)
     rack (1.5.2)
     rack-cors (0.3.1)
+    rack-streaming-proxy (2.0.1)
+      rack (>= 1.4)
+      servolux (~> 0.10)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.0.2)
@@ -213,9 +216,9 @@ GEM
       rspec-core (~> 3.2.0)
       rspec-expectations (~> 3.2.0)
       rspec-mocks (~> 3.2.0)
-    rspec-core (3.2.2)
+    rspec-core (3.2.3)
       rspec-support (~> 3.2.0)
-    rspec-expectations (3.2.0)
+    rspec-expectations (3.2.1)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.2.0)
     rspec-mocks (3.2.1)
@@ -236,6 +239,7 @@ GEM
       sass (~> 3.2.2)
       sprockets (~> 2.8, < 3.0)
       sprockets-rails (~> 2.0)
+    servolux (0.10.0)
     shoulda-matchers (2.8.0)
       activesupport (>= 3.0.0)
     slop (3.6.0)
@@ -304,6 +308,7 @@ DEPENDENCIES
   pry
   quiet_assets
   rack-cors
+  rack-streaming-proxy (~> 2.0.1)
   rails (= 4.0.2)
   rails_layout
   react-rails (~> 1.0.0.pre)!
