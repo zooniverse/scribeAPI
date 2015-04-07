@@ -131,9 +131,25 @@ transcribe_tasks = {
       type:         'textBlock',
       field_name:   'other_entry',
       label:        'Other Entry',
-      instruction:  'Type something, anything.',
-      next_task:     nil
+      instruction:  'Type something, anything.'
   }
+}
+
+mark_tasks = {
+  mark_one: {
+      key:          0,
+      # tool:         'textRow',
+      tool:         'point',
+      instruction:  'make a point.',
+      next_task:    'mark_two'
+  },
+  mark_two: {
+      key:          1,
+      # tool:         'textRow',
+      tool:         'textRow',
+      instruction:  'Drag a mark around a block of text.',
+      next_task:    nil
+  },
 }
 
 transcribe_workflow = Workflow.create(
@@ -272,6 +288,7 @@ example_images= [
   'offline/example_subjects/logbookofalfredg1851unse_0083.jpg'
   ]
 
+Subject.destroy_all
 10.times do |i|
   Subject.create(
     name:"subject_#{i}",

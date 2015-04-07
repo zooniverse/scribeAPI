@@ -3,6 +3,7 @@ SubjectSetViewer   = require '../subject-set-viewer'
 tasks              = require '../tasks'
 FetchSubjectsMixin = require 'lib/fetch-subjects-mixin'
 JSONAPIClient      = require 'json-api-client' # use to manage data?
+ForumSubjectWidget = require '../forum-subject-widget'
 
 resource = new JSONAPIClient
 
@@ -18,6 +19,7 @@ module.exports = React.createClass # rename to Classifier
     subjects:       null
     currentSubjectSet: null
     workflow:       @props.workflow
+    project:        @props.project
     currentTask:    @props.workflow.tasks[@props.workflow.first_task]
 
   getDefaultProps: ->
@@ -64,8 +66,14 @@ module.exports = React.createClass # rename to Classifier
             }
           </nav>
         </div>
+
+        <div class="forum-holder">
+          <ForumSubjectWidget subject_set=@state.currentSubjectSet project=@state.project />
+        </div>
+
       </div>
     </div>
+
 
   handleTaskComponentChange: ->
     @updateAnnotations()
