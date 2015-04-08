@@ -78,8 +78,8 @@ module.exports = React.createClass
     # <text x={@props.mark.x} y={@props.mark.y} fill="red" fontSize="55">SuperAwesomePoint!</text>
 
   handleDrag: (e, d) ->
-    console.log 'PROPS: ', @props
-    console.log 'WIDTH: ', @props.ref.props.width * @props.yScale
+    # console.log 'PROPS: ', @props
+    # console.log 'WIDTH: ', @props.ref.props.width * @props.yScale
     @props.mark.x += d.x / @props.xScale
     @props.mark.y += d.y / @props.yScale
     @props.onChange e
