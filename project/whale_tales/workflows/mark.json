@@ -1,0 +1,36 @@
+{
+  "name":"mark",
+  "label":"Mark Workflow",
+  "subject_fetch_limit":"10",
+  "enables_workflows":{
+
+  },
+  "first_task":"identify_records",
+  "tasks":{
+    "determine_has_records":{
+      "order":0,
+      "tool":"pick_one",
+      "instruction":"Does this page have records?",
+      "options":{
+        "yes":{
+          "label":"Yes",
+          "next_task":"identify_records"
+        },
+        "no":{
+          "label":"Nope",
+          "next_task":"null_task"
+        }
+      }
+    },
+    "identify_records":{
+      "tool": "drawing",
+      "instruction": "Pick a field and mark it with the corresponding marking tool.",
+      "tools": [
+        {"type": "superAwesomePointTool", "label": "Records (point)", "color": "red"},
+        {"type": "rectangleTool", "label": "Records (rectangle)", "color": "green"},
+        {"type": "rowTool", "label": "Records (row)", "color": "blue"}
+      ],
+      "next_task": null
+    }
+  }
+}
