@@ -6,6 +6,7 @@ DragHandle     = require './drag-handle'
 DeleteButton    = require './delete-button'
 
 SELECTED_RADIUS = 20
+MINIMUM_SIZE = 5
 DELETE_BUTTON_ANGLE = 45
 DELETE_BUTTON_DISTANCE = 9 / 10
 DEBUG = false
@@ -48,12 +49,12 @@ module.exports = React.createClass
 
       {x, y, width, height}
 
+    initValid: (mark) ->
+      mark.width > MINIMUM_SIZE and mark.height > MINIMUM_SIZE
+
   initCoords: null
 
-
   getInitialState: ->
-    console.log 'Rectangle GET STATE'
-    console.log "PROPS", @props
     mark = @props.mark
     unless mark.status?
       mark.status = 'mark'
@@ -66,38 +67,11 @@ module.exports = React.createClass
 
     buttonDisabled: false
     lockTool: false
-  
-  componentWillReceiveProps: ->
-    @setState x: @props.mark.x
-    @setState y: @props.mark.y
-    @setState width: @props.width
-    @setState height: @props.height
 
-  
-  handleMainDrag: (e) ->
-    # console.log "handleDrag (HD)"
-    return if @state.lockTool
-    { x,y } = @props.getEventOffset e
-    mark = @state.mark
-    markHeight = mark.yLower - mark.yUpper
-    # why? in handleMarkClick clickOffset.x is mark.x - ex. Is not the same event?
-    # does @props.clickOffset.x represent the mark station before the current drag event?
-    mark.x = x + @props.clickOffset.x # add initial click offset
-    mark.y = y + @props.clickOffset.y
-    
-    # prevent dragging mark beyond image bounds
-    return if ( y - markHeight/2 ) < 0
-    return if ( y + markHeight/2 ) > @props.imageHeight
-    
-    @setState x: mark.x
-    @setState y: mark.y
-    @setState mark: mark
-      # , => @forceUpdate()
-
-  # handleMainDrag: (e, d) ->
-  #   @props.mark.x += d.x / @props.xScale
-  #   @props.mark.y += d.y / @props.yScale
-  #   @props.onChange e
+  handleMainDrag: (e, d) ->
+     @props.mark.x += d.x / @props.xScale
+     @props.mark.y += d.y / @props.yScale
+     @props.onChange e
 
   handleX1Y1Drag: (e, d) ->
     @props.mark.x += d.x / @props.xScale
@@ -129,11 +103,9 @@ module.exports = React.createClass
     y: -1 * (SELECTED_RADIUS / @props.yScale) * Math.sin theta
 
   handleMouseDown: ->
-    console.log 'handleMouseDown()'
     @props.onSelect @props.mark
 
   render: ->
-    # console.log "Render: Rectangle STATE @ Render", @state
     classString = "rectangleTool"
     x1 = @props.mark.x
     width = @props.mark.width
@@ -150,30 +122,31 @@ module.exports = React.createClass
       [x1, y1].join ','
     ].join '\n'
 
-    # console.log "render props.clickOffset", @props.clickOffset
-    # console.log "render props", @props
-
     <g 
       className = {classString} 
       tool={this}
       onMouseDown={@props.onSelect unless @props.disabled}
     >
+      <g 
+        className = {classString} 
+        onMouseDown={@props.onSelect unless @props.disabled}
+      >
 
-      <Draggable 
-        onStart = {@props.handleMarkClick.bind null, @props.mark} 
-        onDrag = {@handleMainDrag} >
-        <polyline points={points} strokeWidth="5" stroke="orange" fill="none"/>
-      </Draggable>
+        <Draggable onDrag = {@handleMainDrag} >
+          <polyline points={points} strokeWidth="5" stroke="orange" fill="none"/>
+        </Draggable>
 
-      { if @props.selected
-        <g>
-          <DeleteButton tool={this} x={@state.x + (width * DELETE_BUTTON_DISTANCE)} y={@state.y} />
-          <DragHandle x={@props.mark.x} y={@props.mark.y} onDrag={@handleX1Y1Drag} />
-          <DragHandle x={x2} y={y1} onDrag={@handleX2Y1Drag} />
-          <DragHandle x={x2} y={y2} onDrag={@handleX2Y2Drag} />
-          <DragHandle x={x1} y={y2} onDrag={@handleX1Y2Drag} />
-        </g>
-      }
+        { if @props.selected
+          <g>
+            <DeleteButton tool={this} x={@props.x + (width * DELETE_BUTTON_DISTANCE)} y={@state.y} />
+            <DragHandle x={x1} y={y1} onDrag={@handleX1Y1Drag} />
+            <DragHandle x={x2} y={y1} onDrag={@handleX2Y1Drag} />
+            <DragHandle x={x2} y={y2} onDrag={@handleX2Y2Drag} />
+            <DragHandle x={x1} y={y2} onDrag={@handleX1Y2Drag} />
+          </g>
+        }
+      </g>
+
     </g>
 
 
