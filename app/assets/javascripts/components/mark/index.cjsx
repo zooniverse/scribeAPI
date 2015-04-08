@@ -68,7 +68,7 @@ module.exports = React.createClass # rename to Classifier
           </nav>
         </div>
 
-        <div class="forum-holder">
+        <div className="forum-holder">
           <ForumSubjectWidget subject_set=@state.currentSubjectSet />
         </div>
 

@@ -37,9 +37,9 @@ FavouriteButton = React.createClass
     if this.state.loading
       <a className='favourite_button'>Loading</a>
     else if this.state.favourite
-      <a herf='#' onClick={@remove_favourite} class='favourite_button'>Unfavourite</a>
+      <a herf='#' onClick={@remove_favourite} className='favourite_button'>Unfavourite</a>
     else
-      <a href='#' onClick={@add_favourite} class='favourite_button'>Favourite</a>
+      <a href='#' onClick={@add_favourite} className='favourite_button'>Favourite</a>
 
 
 module.exports = FavouriteButton

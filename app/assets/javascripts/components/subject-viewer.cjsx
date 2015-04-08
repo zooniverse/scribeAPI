@@ -231,7 +231,7 @@ module.exports = React.createClass
 
     actionButton = 
       if @state.loading
-        <ActionButton onAction={@nextSubject} classes="disabled" text="Loading..." />
+        <ActionButton onAction={@nextSubject} className="disabled" text="Loading..." />
       else
         <ActionButton onClick={@nextSubject} text="Next Page" />
 
