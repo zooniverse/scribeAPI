@@ -33,6 +33,22 @@ GroupPage = React.createClass
           <h1>{@state.group.name}</h1>
           <p>{@state.group.description}</p>
 
+          <dl className="metadata-list">
+            { for k,v of @state.group.meta_data when ['key','description','cover_image_url','external_url','retire_count'].indexOf(k) < 0
+                # Is there another way to return both dt and dd elements without wrapping?
+                <span>
+                  <dt>{k.replace(/_/g, ' ')}</dt>
+                  <dd>{v}</dd>
+                </span>
+            }
+            { if @state.group.meta_data.external_url?
+              <span>
+                <dt>External Resource</dt>
+                <dd><a href={@state.group.meta_data.external_url} target="_blank">{@state.group.meta_data.external_url}</a></dd>
+              </span>
+            }
+          </dl>
+
           <img src={@state.group.cover_image_url}></img>
 
           {@state.group.image}
@@ -41,7 +57,6 @@ GroupPage = React.createClass
             {@renderSubjectSets()}
           </div>
 
-          <ActionButton text="Random"></ActionButton>
         </div>
       </div>
     else
@@ -53,10 +68,11 @@ GroupPage = React.createClass
   renderSubjectSet:(set)->
     <div className="subject_set">
 
-      <img src={set.thumbnail}></img>
-      <p>{set.state}</p>
-      <a href={"#/mark/#{set.id}"}>Mark</a>
-      <a href={"#/transcribe/#{set.id}"}>Transcribe</a>
+      <img src={set.thumbnail} />
+      <div className="mark-transcribe-buttons">
+        <ActionButton text="Mark" href={"#/mark/#{set.id}"} />
+        <ActionButton text="Transcribe" href={"#/transcribe/#{set.id}"} />
+      </div>
     </div>
 
 

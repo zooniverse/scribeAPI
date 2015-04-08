@@ -1,5 +1,6 @@
 Specific_project = {
   title: "Emigrant Savings Bank",
+  short_title: "Emigrant",
   summary: "Emmmmigrannnnnt Savinnnnnnnngs Baaaaannk",
   team: [
     {

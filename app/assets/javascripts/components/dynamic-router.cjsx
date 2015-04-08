@@ -29,16 +29,18 @@ DynamicRouter = React.createClass
     React.createClass
       displayName: "#{page.name}Page"
       render: ->
-        <div dangerouslySetInnerHTML={{__html: page.content}} />
+        <div className="page-content">
+          <h1>{page.name}</h1>
+          <div dangerouslySetInnerHTML={{__html: page.content}} />
+        </div>
 
   # TODO: workflow being passed as an object in an array. why?
   render: ->
     return null unless @state.pages? # do nothing until project loads from API
     workflows = @state.project.workflows
-    console.log "home: ", @state.home_page_content
 
     <div className="panoptes-main">
-      <MainHeader pages={@state.pages} />
+      <MainHeader pages={@state.pages} short_title={@state.project.short_title} />
       <div className="main-content">
         <Routes>
           <Redirect from="_=_" to="/" />
@@ -46,7 +48,8 @@ DynamicRouter = React.createClass
             path='/'
             handler={HomePage}
             name="root"
-            content={@state.home_page_content} />
+            content={@state.home_page_content}
+            title={@state.project.title} />
           <Route
             path='/mark'
             handler={Mark}
