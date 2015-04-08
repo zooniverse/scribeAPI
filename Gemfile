@@ -26,6 +26,8 @@ gem 'browserify-rails', '~> 0.4.1'
 gem 'react-rails', '~> 1.0.0.pre', github: 'reactjs/react-rails'
 # gem 'rails_12factor'
 
+gem 'rack-streaming-proxy', '~> 2.0.1'
+
 group :development do
   gem 'dotenv-rails'
 end
@@ -38,15 +40,16 @@ group :development, :production do
   gem 'pry'
 end
 
-group :development, :test, :production do
-  gem 'rspec-rails'
-end
+
 
 group :test do
   gem 'capybara'
   gem 'cucumber-rails', :require=>false
   gem 'database_cleaner', '1.0.1'
+  gem 'rspec-rails'
+  gem 'shoulda-matchers'
   gem 'email_spec'
   gem 'launchy'
+  gem 'factory_girl'
   gem 'mongoid-rspec', '>= 1.6.0', :github=>"evansagge/mongoid-rspec"
 end

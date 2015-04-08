@@ -16,6 +16,8 @@ module.exports = React.createClass
   resizing: false
 
   getInitialState: ->
+    console.log "setting initial state: #{@props.active}"
+
     imageWidth: 0
     imageHeight: 0
 
@@ -26,6 +28,8 @@ module.exports = React.createClass
     marks: []
     selectedMark: null
     lastMarkKey: 0
+
+    active: @props.active
 
   componentDidMount: ->
     @setView 0, 0, @state.imageWidth, @state.imageHeight
@@ -218,6 +222,7 @@ module.exports = React.createClass
     # console.log 'SUBJECT: ', @state.subject
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     ToolComponent = @state.tool
+    console.log "Rendering #{if @props.active then 'active' else 'inactive'} subj viewer"
 
     scale = @getScale()
 
@@ -302,7 +307,7 @@ module.exports = React.createClass
             }
         </svg>
 
-    <div className="subject-viewer">
+    <div className="subject-viewer#{if @props.active then ' active' else ''}">
       <div className="subject-container">
         <div className="marking-surface">
           {markingSurfaceContent}
