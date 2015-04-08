@@ -35,7 +35,7 @@ FavouriteButton = React.createClass
 
   render: ->
     if this.state.loading
-      <a class='favourite_button'>Loading</a>
+      <a className='favourite_button'>Loading</a>
     else if this.state.favourite
       <a herf='#' onClick={@remove_favourite} class='favourite_button'>Unfavourite</a>
     else
