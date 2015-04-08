@@ -77,28 +77,30 @@ module.exports = React.createClass
 
   handleMainDrag: (e) ->
     console.log "handleDrag (HD)"
-    return if @state.lockTool
-    { ex,ey } = @props.getEventOffset e
+    # return if @state.lockTool
+    console.log 'FOO'
+    { x,y } = @props.getEventOffset e
+    console.log 'BAR'
     mark = @state.mark
     markHeight = mark.yLower - mark.yUpper
     # why? in handleMarkClick clickOffset.x is mark.x - ex. Is not the same event?
     # does @props.clickOffset.x represent the mark station before the current drag event?
-    mark.x = ex + @props.clickOffset.x # add initial click offset
-    mark.y = ey + @props.clickOffset.y
+    mark.x = x + @props.clickOffset.x # add initial click offset
+    mark.y = y + @props.clickOffset.y
     
     # prevent dragging mark beyond image bounds
-    return if ( ey - markHeight/2 ) < 0
-    return if ( ey + markHeight/2 ) > @props.imageHeight
+    return if ( y - markHeight/2 ) < 0
+    return if ( y + markHeight/2 ) > @props.imageHeight
     
     @setState x: mark.x
     @setState y: mark.y
     @setState mark: mark
       # , => @forceUpdate()
 
-  handleMainDrag: (e, d) ->
-    @props.mark.x += d.x / @props.xScale
-    @props.mark.y += d.y / @props.yScale
-    @props.onChange e
+  # handleMainDrag: (e, d) ->
+  #   @props.mark.x += d.x / @props.xScale
+  #   @props.mark.y += d.y / @props.yScale
+  #   @props.onChange e
 
   handleX1Y1Drag: (e, d) ->
     @props.mark.x += d.x / @props.xScale
@@ -153,31 +155,28 @@ module.exports = React.createClass
 
     console.log "render props.clickOffset", @props.clickOffset
     console.log "render props", @props
+
     <g 
-      tool={this} 
-      onMouseDown={@handleMouseDown}
+      className = {classString} 
+      tool={this}
+      onMouseDown={@props.onSelect unless @props.disabled}
     >
-      <g 
-        className = {classString} 
-        onMouseDown={@props.onSelect unless @props.disabled}
-      >
 
-        <Draggable 
-          onStart = {@props.handleMarkClick} 
-          onDrag = {@handleMainDrag} >
-          <polyline points={points} strokeWidth="5" stroke="orange" fill="none"/>
-        </Draggable>
+      <Draggable 
+        onStart = {@props.handleMarkClick} 
+        onDrag = {@handleMainDrag} >
+        <polyline points={points} strokeWidth="5" stroke="orange" fill="none"/>
+      </Draggable>
 
-        { if @props.selected
-          <g>
-            <DeleteButton tool={this} x={@state.x + (width * DELETE_BUTTON_DISTANCE)} y={@state.y} />
-            <DragHandle x={@props.mark.x} y={@props.mark.y} onDrag={@handleX1Y1Drag} />
-            <DragHandle x={x2} y={y1} onDrag={@handleX2Y1Drag} />
-            <DragHandle x={x2} y={y2} onDrag={@handleX2Y2Drag} />
-            <DragHandle x={x1} y={y2} onDrag={@handleX1Y2Drag} />
-          </g>
-        }
-      </g>
+      { if @props.selected
+        <g>
+          <DeleteButton tool={this} x={@state.x + (width * DELETE_BUTTON_DISTANCE)} y={@state.y} />
+          <DragHandle x={@props.mark.x} y={@props.mark.y} onDrag={@handleX1Y1Drag} />
+          <DragHandle x={x2} y={y1} onDrag={@handleX2Y1Drag} />
+          <DragHandle x={x2} y={y2} onDrag={@handleX2Y2Drag} />
+          <DragHandle x={x1} y={y2} onDrag={@handleX1Y2Drag} />
+        </g>
+      }
     </g>
 
 
