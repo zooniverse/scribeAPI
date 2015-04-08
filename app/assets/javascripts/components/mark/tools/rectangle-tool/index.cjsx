@@ -74,13 +74,10 @@ module.exports = React.createClass
     @setState height: @props.height
 
   
-
   handleMainDrag: (e) ->
-    console.log "handleDrag (HD)"
-    # return if @state.lockTool
-    console.log 'FOO'
+    # console.log "handleDrag (HD)"
+    return if @state.lockTool
     { x,y } = @props.getEventOffset e
-    console.log 'BAR'
     mark = @state.mark
     markHeight = mark.yLower - mark.yUpper
     # why? in handleMarkClick clickOffset.x is mark.x - ex. Is not the same event?
@@ -136,7 +133,7 @@ module.exports = React.createClass
     @props.onSelect @props.mark
 
   render: ->
-    console.log "Render: Rectangle STATE @ Render", @state
+    # console.log "Render: Rectangle STATE @ Render", @state
     classString = "rectangleTool"
     x1 = @props.mark.x
     width = @props.mark.width
@@ -153,8 +150,8 @@ module.exports = React.createClass
       [x1, y1].join ','
     ].join '\n'
 
-    console.log "render props.clickOffset", @props.clickOffset
-    console.log "render props", @props
+    # console.log "render props.clickOffset", @props.clickOffset
+    # console.log "render props", @props
 
     <g 
       className = {classString} 
@@ -163,7 +160,7 @@ module.exports = React.createClass
     >
 
       <Draggable 
-        onStart = {@props.handleMarkClick} 
+        onStart = {@props.handleMarkClick.bind null, @props.mark}} 
         onDrag = {@handleMainDrag} >
         <polyline points={points} strokeWidth="5" stroke="orange" fill="none"/>
       </Draggable>
