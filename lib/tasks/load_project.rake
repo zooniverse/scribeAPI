@@ -8,6 +8,7 @@ desc 'creates a poject object from the project directory'
     load project_file_path
     project = Project.find_or_create_by title: Specific_project[:title]
     project.update({
+      short_title: Specific_project[:short_title],
       summary: Specific_project[:summary],
       organizations: Specific_project[:organizations] ,
       team: Specific_project[:team],

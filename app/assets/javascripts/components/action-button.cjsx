@@ -9,7 +9,7 @@ ActionButton = React.createClass
     @props.onClick()
 
   render: ->
-    classes = "action-button button white " 
+    classes = "action-button standard-button white " 
     if @props.classes? then classes = classes + @props.classes # TODO: check to see if this does what it should!!!
     <a onClick={@handleClick} className={classes} disabled={@props.disabled}>
       {@props.text}

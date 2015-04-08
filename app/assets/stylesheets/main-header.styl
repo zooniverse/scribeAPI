@@ -33,7 +33,6 @@
   @extends $reset-button
   align-items: center
   background: rgba(MAIN_HIGHLIGHT, 0)
-  cursor: auto
   color: MAIN_HIGHLIGHT
   cursor: normal
   display: flex
@@ -70,3 +69,30 @@ a.main-header-item
   margin: -1.5rem 0 -1.5rem 1vw
   position: relative
   width: 3rem
+
+.login
+  padding: 0.5rem 1.5vw 0.2em
+  color rgba(255, 255, 255, 0.4)
+
+  &:hover
+    color #fff
+
+  .options
+    width 100px
+    display inline-block
+    padding-left 6px
+
+    a
+      margin-right 5px
+      display inline-block
+      width 18px
+      height 18px
+      line-height 18px
+      font-size 12px
+      text-align center
+      color #000
+      background none repeat scroll 0 0 rgba(255, 255, 255, 0.4)
+      border-radius 50%
+
+      &:hover
+        color #fff
