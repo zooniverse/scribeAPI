@@ -203,6 +203,7 @@ module.exports = React.createClass
     @setState selectedMark: mark, =>
       if mark?.details?
         @forceUpdate() # Re-render to reposition the details tooltip.
+    console.log 'leaving selectMark()...'
 
   destroyMark: (annotation, mark) ->
     if mark is @state.selectedMark
@@ -269,7 +270,7 @@ module.exports = React.createClass
                     mark._key ?= Math.random()
                     toolDescription = taskDescription.tools[mark.tool]
 
-                    console.log 'MARK TOOL: ', mark.tool
+                    # console.log 'MARK TOOL: ', mark.tool
 
                     # toolEnv =
                     #   scale: @getScale()
@@ -288,6 +289,7 @@ module.exports = React.createClass
                     #   # onDestroy: @destroyMark.bind this, annotation, mark
 
                     ToolComponent = markingTools[toolDescription.type]
+
                     <ToolComponent 
                       key={mark._key} 
                       mark={mark}

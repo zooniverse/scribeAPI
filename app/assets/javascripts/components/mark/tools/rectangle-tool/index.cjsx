@@ -55,8 +55,6 @@ module.exports = React.createClass
   initCoords: null
 
   getInitialState: ->
-    console.log 'Rectangle GET STATE'
-    console.log "PROPS", @props
     mark = @props.mark
     unless mark.status?
       mark.status = 'mark'
@@ -71,9 +69,9 @@ module.exports = React.createClass
     lockTool: false
 
   handleMainDrag: (e, d) ->
-    @props.mark.x += d.x / @props.xScale
-    @props.mark.y += d.y / @props.yScale
-    @props.onChange e
+     @props.mark.x += d.x / @props.xScale
+     @props.mark.y += d.y / @props.yScale
+     @props.onChange e
 
   handleX1Y1Drag: (e, d) ->
     @props.mark.x += d.x / @props.xScale
@@ -108,7 +106,6 @@ module.exports = React.createClass
     @props.onSelect @props.mark
 
   render: ->
-    console.log "Render: Rectangle STATE @ Render", @state
     classString = "rectangleTool"
     x1 = @props.mark.x
     width = @props.mark.width
@@ -125,11 +122,10 @@ module.exports = React.createClass
       [x1, y1].join ','
     ].join '\n'
 
-    console.log "render props.clickOffset", @props.clickOffset
-    console.log "render props", @props
     <g 
-      tool={this} 
-      onMouseDown={@handleMouseDown}
+      className = {classString} 
+      tool={this}
+      onMouseDown={@props.onSelect unless @props.disabled}
     >
       <g 
         className = {classString} 
@@ -150,6 +146,7 @@ module.exports = React.createClass
           </g>
         }
       </g>
+
     </g>
 
 
