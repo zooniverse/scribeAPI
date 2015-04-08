@@ -1,27 +1,29 @@
 React              = require 'react'
-SubjectViewer      = require '../subject-viewer'
+SubjectSetViewer   = require '../subject-set-viewer'
 tasks              = require '../tasks'
 FetchSubjectsMixin = require 'lib/fetch-subjects-mixin'
 JSONAPIClient      = require 'json-api-client' # use to manage data?
+ForumSubjectWidget = require '../forum-subject-widget'
 
 resource = new JSONAPIClient
 
 module.exports = React.createClass # rename to Classifier
   displayName: 'Mark'
-  
+
   propTypes:
     workflow: React.PropTypes.object.isRequired
-  
+
   mixins: [FetchSubjectsMixin] # load subjects and set state variables: subjects, currentSubject, classification
 
   getInitialState: ->
     subjects:       null
-    currentSubject: null
+    currentSubjectSet: null
     workflow:       @props.workflow
+    project:        @props.project
     currentTask:    @props.workflow.tasks[@props.workflow.first_task]
 
   getDefaultProps: ->
-    classification: resource.type('classifications').create 
+    classification: resource.type('classifications').create
       name: 'Classification'
       annotations: []
       metadata: {}
@@ -30,8 +32,7 @@ module.exports = React.createClass # rename to Classifier
     @addAnnotationForTask @props.workflow.first_task
 
   render: ->
-    console.log 'render()'
-    return null unless @state.currentSubject?
+    return null unless @state.currentSubjectSet?
 
     annotations = @props.classification.annotations
     currentAnnotation = if annotations.length is 0 then {} else annotations[annotations.length-1]
@@ -50,7 +51,7 @@ module.exports = React.createClass # rename to Classifier
 
     <div className="classifier">
       <div className="subject-area">
-        <SubjectViewer subject={@state.currentSubject} workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation} />
+        <SubjectSetViewer subject_set={@state.currentSubjectSet} workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation} />
       </div>
       <div className="task-area">
         <div className="task-container">
@@ -65,8 +66,14 @@ module.exports = React.createClass # rename to Classifier
             }
           </nav>
         </div>
+
+        <div class="forum-holder">
+          <ForumSubjectWidget subject_set=@state.currentSubjectSet />
+        </div>
+
       </div>
     </div>
+
 
   handleTaskComponentChange: ->
     @updateAnnotations()
