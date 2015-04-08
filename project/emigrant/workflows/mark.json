@@ -5,7 +5,7 @@
   "enables_workflows":{
 
   },
-  "first_task":"determine_has_records",
+  "first_task":"identify_records",
   "tasks":{
     "determine_has_records":{
       "order":0,
@@ -18,15 +18,19 @@
         },
         "no":{
           "label":"Nope",
-          "next_task":"null_taskl"
+          "next_task":"null_task"
         }
       }
     },
     "identify_records":{
-      "order":1,
-      "tool":"mark_multiple",
-      "instruction":"Draw a rectangle around each record."
+      "tool": "drawing",
+      "instruction": "Pick a field and mark it with the corresponding marking tool.",
+      "tools": [
+        {"type": "superAwesomePointTool", "label": "Records (point)", "color": "red"},
+        {"type": "rectangleTool", "label": "Records (rectangle)", "color": "green"},
+        {"type": "rowTool", "label": "Records (row)", "color": "blue"}
+      ],
+      "next_task": null
     }
   }
 }
-

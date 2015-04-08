@@ -89,7 +89,7 @@ module.exports = React.createClass
 
   handleInitStart: (e) ->
     console.log 'handleInitStart() '
-    console.log "@props.workflow", @props.workflow
+    console.log "@props.workflow", @props
 
     taskDescription = @props.workflow.tasks[@props.annotation.task]
     mark = @state.selectedMark
