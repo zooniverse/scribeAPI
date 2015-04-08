@@ -89,7 +89,7 @@ module.exports = React.createClass
 
   handleInitStart: (e) ->
     console.log 'handleInitStart() '
-    console.log "@props.workflow", @props.workflow
+    console.log "@props.workflow", @props
 
     taskDescription = @props.workflow.tasks[@props.annotation.task]
     mark = @state.selectedMark
@@ -196,8 +196,6 @@ module.exports = React.createClass
       # , => @forceUpdate()
 
   selectMark: (annotation, mark) ->
-    console.log "FIND FIND FIND FIND FIND FIND FIND FIND"
-    console.log "in the selectMark()"
     if annotation? and mark?
       index = annotation.value.indexOf mark
       annotation.value.splice index, 1
@@ -231,7 +229,7 @@ module.exports = React.createClass
 
     actionButton = 
       if @state.loading
-        <ActionButton onAction={@nextSubject} classes="disabled" text="Loading..." />
+        <ActionButton onAction={@nextSubject} className="disabled" text="Loading..." />
       else
         <ActionButton onClick={@nextSubject} text="Next Page" />
 
@@ -291,7 +289,7 @@ module.exports = React.createClass
                     #   # onDestroy: @destroyMark.bind this, annotation, mark
 
                     ToolComponent = markingTools[toolDescription.type]
-                    # console.log "IS THIS THE MARK STUFF?", @state.selectedMark
+
                     <ToolComponent 
                       key={mark._key} 
                       mark={mark}
@@ -301,7 +299,7 @@ module.exports = React.createClass
                       selected={mark is @state.selectedMark}
                       getEventOffset={@getEventOffset}
                       ref={@refs.sizeRect}
-                      handleMarkClick={@handleMarkClick}
+                      
                       onChange={@updateAnnotations} 
                       onSelect={@selectMark.bind this, annotation, mark}
                       onDestroy={@destroyMark.bind this, annotation}

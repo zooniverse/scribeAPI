@@ -36,11 +36,11 @@ module.exports = React.createClass
   render: ->
     <div className="subject-set-viewer">
       { for subject, index in @props.subject_set.subjects
-        <SubjectViewer subject={subject} workflow={@props.workflow} classification={@props.classification} annotation={@props.annotaion} active={index == @state.subject_set_index}/>
+        <SubjectViewer key={index} subject={subject} workflow={@props.workflow} classification={@props.classification} annotation={@props.annotaion} active={index == @state.subject_set_index}/>
       }
       <div className="subject-set-nav">
-        <ActionButton text="Previous" onClick={@advancePrevious} classes={if @state.subject_set_index == 0 then 'disabled' else ''}/>
-        <ActionButton text="Next" onClick={@advanceNext} classes={if @state.subject_set_index == @props.subject_set.subjects.length-1 then 'disabled' else ''} />
+        <ActionButton text="Previous" onClick={@advancePrevious} className={if @state.subject_set_index == 0 then 'disabled' else ''}/>
+        <ActionButton text="Next" onClick={@advanceNext} className={if @state.subject_set_index == @props.subject_set.subjects.length-1 then 'disabled' else ''} />
       </div>
     </div>
 

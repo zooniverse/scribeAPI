@@ -35,7 +35,7 @@ Login = React.createClass
         error: "Having trouble logging you in"
 
   render:->
-    <div class='login'>
+    <div className='login'>
       {@renderError() if @state.error}
 
       {@renderLoggedIn() if @state.user}

@@ -23,6 +23,7 @@ module.exports =
         currentSubjectSet: subject_set
 
   fetchSubjects: (workflow_id, limit) ->
+    console.log 'FETCHING SUBJECTS'
     request = API.type('subject_sets').get
       workflow_id: workflow_id
       limit: limit
@@ -33,5 +34,7 @@ module.exports =
         subjectSets: subject_sets
         currentSubjectSet: subject_sets[0]
 
-    request.error (xhr, status, err) =>
-      console.error "Error loading subjects: ", url, status, err.toString()
+    # WHY DOES THIS BREAK?
+    # request.error (xhr, status, err) =>
+    #   console.error "Error loading subjects: ", url, status, err.toString()
+

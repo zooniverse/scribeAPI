@@ -3,6 +3,7 @@
   "label":"Mark Workflow",
   "subject_fetch_limit":"10",
   "enables_workflows":{
+
   },
   "first_task":"identify_records",
   "tasks":{

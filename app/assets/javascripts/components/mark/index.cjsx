@@ -55,6 +55,7 @@ module.exports = React.createClass # rename to Classifier
       </div>
       <div className="task-area">
         <div className="task-container">
+          {console.log 'CURRENT ANNOTATION: ', currentAnnotation }
           <TaskComponent task={currentTask} annotation={currentAnnotation} onChange={@handleTaskComponentChange} />
           <hr/>
           <nav className="task-nav">
@@ -67,7 +68,7 @@ module.exports = React.createClass # rename to Classifier
           </nav>
         </div>
 
-        <div class="forum-holder">
+        <div className="forum-holder">
           <ForumSubjectWidget subject_set=@state.currentSubjectSet />
         </div>
 
@@ -88,8 +89,12 @@ module.exports = React.createClass # rename to Classifier
     @updateAnnotations()
 
   addAnnotationForTask: (taskKey) ->
+    console.log 'taskKey: ', taskKey
+    console.log 'TASKS: ', @props.workflow.tasks
     taskDescription = @props.workflow.tasks[taskKey]
-    console.log 'taskDescription: ', taskDescription
+    console.log 'taskDescription: ', taskDescription.tool
+    console.log 'BLASHSHSHS: ', tasks
+
     annotation = tasks[taskDescription.tool].getDefaultAnnotation() # sets {value: null}
     annotation.task = taskKey # e.g. {task: "cool"}
     @props.classification.annotations.push annotation
