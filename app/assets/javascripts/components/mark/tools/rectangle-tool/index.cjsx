@@ -160,7 +160,7 @@ module.exports = React.createClass
     >
 
       <Draggable 
-        onStart = {@props.handleMarkClick.bind null, @props.mark}} 
+        onStart = {@props.handleMarkClick.bind null, @props.mark} 
         onDrag = {@handleMainDrag} >
         <polyline points={points} strokeWidth="5" stroke="orange" fill="none"/>
       </Draggable>
