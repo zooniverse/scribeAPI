@@ -1,7 +1,6 @@
 # @cjsx React.DOM
 React          = require 'react'
 Draggable      = require 'lib/draggable'
-Classification = require 'models/classification'
 DragHandle     = require './drag-handle'
 DeleteButton    = require './delete-button'
 

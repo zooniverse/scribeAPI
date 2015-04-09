@@ -1,4 +1,3 @@
-Classification = require 'models/classification'
 API            = require './api'
 
 module.exports =
