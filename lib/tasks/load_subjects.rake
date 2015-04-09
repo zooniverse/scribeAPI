@@ -40,7 +40,7 @@ require 'active_support'
         data = row.to_hash
 
         group_key        = data['key'].downcase
-        name             = data['name'].downcase
+        name             = data['name']
         description      = data['description']
         cover_image_url  = data['cover_image_url']
         external_url     = data['external_url']
