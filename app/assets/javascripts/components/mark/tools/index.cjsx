@@ -1,7 +1,6 @@
 module.exports =
   superAwesomePointTool: require './super-awesome-point-tool'
-  verticalMark: require './vertical-mark-tool'
-  textRow:      require './text-row-tool'
-  rectangleTool:  require './rectangle-tool'
+  textRowTool:           require './text-row-tool'
+  rectangleTool:         require './rectangle-tool'
 
   

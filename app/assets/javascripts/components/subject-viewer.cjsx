@@ -118,10 +118,14 @@ module.exports = React.createClass
 
     MarkComponent = markingTools[toolDescription.type]
 
+    console.log 'FOO ', markingTools
+
     if MarkComponent.defaultValues?
       defaultValues = MarkComponent.defaultValues mouseCoords
       for key, value of defaultValues
         mark[key] = value
+
+    console.log 'BAR'
 
     if MarkComponent.initStart?
       initValues = MarkComponent.initStart mouseCoords, mark, e
