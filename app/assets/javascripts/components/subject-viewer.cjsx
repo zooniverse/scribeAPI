@@ -8,8 +8,6 @@ LoadingIndicator              = require './loading-indicator'
 SubjectMetadata               = require './subject-metadata'
 ActionButton                  = require './action-button'
 markingTools                  = require './mark/tools'
-# Classification                = require '../models/classification'
-
 
 module.exports = React.createClass
   displayName: 'SubjectViewer'
