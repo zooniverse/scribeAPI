@@ -4,7 +4,7 @@
   "subject_fetch_limit":"10",
   "enables_workflows":{
   },
-  "first_task":"identify_records",
+  "first_task":"determine_has_records",
   "tasks":{
     "determine_has_records":{
       "order":0,
@@ -27,7 +27,7 @@
       "tools": [
         {"type": "superAwesomePointTool", "label": "Records (point)", "color": "red"},
         {"type": "rectangleTool", "label": "Records (rectangle)", "color": "green"},
-        {"type": "rowTool", "label": "Records (row)", "color": "blue"}
+        {"type": "textRowTool", "label": "Records (row)", "color": "blue"}
       ],
       "next_task": null
     }

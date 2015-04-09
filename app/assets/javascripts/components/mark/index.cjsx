@@ -110,6 +110,7 @@ module.exports = React.createClass # rename to Classifier
   completeClassification: ->
     @props.classification.update
       completed: true
+      subject_set: @state.currentSubjectSet
       'metadata.finished_at': (new Date).toISOString()
     @props.onComplete?()
     console.log 'CLASSIFICATION: ', @props.classification
