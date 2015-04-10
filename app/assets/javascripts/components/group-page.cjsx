@@ -1,7 +1,7 @@
 React         = require("react")
 GroupBrowser  = require('./group-browser')
 ActionButton  = require('./action-button')
-API           = require('../lib/API')
+API           = require('../lib/api')
 
 GroupPage = React.createClass
   displayName: "GroupPage"
