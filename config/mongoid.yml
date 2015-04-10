@@ -10,7 +10,7 @@ production:
       # connection setup.
       # Use environment variables or a config file to keep your
       # credentials safe.
-      uri: 'mongodb://scribedb:scribepass@ds029811.mongolab.com:29811/heroku_app32546073'
+      uri: <%= ENV['MONGOLAB_URI'] %>
 
       options:
         # The default consistency is :eventual, which reads from
