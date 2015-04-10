@@ -1,7 +1,6 @@
 # @cjsx React.DOM
 React          = require 'react'
 Draggable      = require 'lib/draggable'
-Classification = require 'models/classification'
 DragHandle     = require './drag-handle'
 DeleteButton    = require './delete-button'
 
@@ -138,7 +137,7 @@ module.exports = React.createClass
 
         { if @props.selected
           <g>
-            <DeleteButton tool={this} x={@props.x + (width * DELETE_BUTTON_DISTANCE)} y={@state.y} />
+            <DeleteButton tool={this} x={x1 + (width * DELETE_BUTTON_DISTANCE)} y={y1} />
             <DragHandle x={x1} y={y1} onDrag={@handleX1Y1Drag} />
             <DragHandle x={x2} y={y1} onDrag={@handleX2Y1Drag} />
             <DragHandle x={x2} y={y2} onDrag={@handleX2Y2Drag} />
