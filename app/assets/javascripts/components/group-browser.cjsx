@@ -1,7 +1,7 @@
 # @cjsx React.DOM
 
 React = require 'react'
-API   = require '../lib/API'
+API   = require '../lib/api'
 
 GroupBrowser = React.createClass
   displayName: 'GroupBrowser'
