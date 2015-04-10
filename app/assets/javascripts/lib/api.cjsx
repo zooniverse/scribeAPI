@@ -1,6 +1,6 @@
 JSONAPIClient = require 'json-api-client'
 
-PATH_TO_API_ROOT = 'http://localhost:3000/'
+PATH_TO_API_ROOT = "#{window.location.protocol}//#{window.location.host}/" # 'http://localhost:3000/'
 
 DEFAULT_HEADERS =
   'Content-Type': 'application/json'
