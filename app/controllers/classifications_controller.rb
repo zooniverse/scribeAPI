@@ -12,16 +12,27 @@ class ClassificationsController < ApplicationController
     subject_set_id  = BSON::ObjectId.from_string params["classifications"]["subject_set"]["id"]
     workflow_id = BSON::ObjectId.from_string params["classifications"]["workflow_id"]
 
-    location         = params["location"]
-    annotations      = params["annotations"]
-    started_at       = params["started_at"]
-    finished_at      = params["finished_at"]
-    user_agent       = params["user_agent"]
+    #location         = params["location"] 
+    annotations      = params["classifications"]["annotations"]
+    #started_at       = params["started_at"]
+    #finished_at      = params["finished_at"]
+    #user_agent       = params["user_agent"]
     # user_id     = BSON::ObjectId.from_string params["user_id"]
-    binding.pry
 
     annotations.each do |annotation|
-      puts annotation
+      # for each annotation we want to create a classfication
+      # in addition, for each flagged annoation, we want to create subject
+
+      # sample annotation 
+      # {"value"=>
+      #   [{
+      #    "key"=>0, "tool"=>1, "x"=>511.8947037631256, "y"=>353.5964912280702, "width"=>414.5613766314635, "height"=>243.85964912280696, "status"=>"mark"}],
+      #    "task"=>"identify_records",
+      #    "subject_id"=>"5527d5bb412d4d46f5030000",
+      #    "workflow_id"=>"5527d5bb412d4d46f5000000"
+      #   }]
+
+      annotation
     end 
     # TODO: still need to add user_id
 
