@@ -7,9 +7,6 @@ API::Application.routes.draw do
                                       :sessions => "sessions"}
 
 
-
-
-
   get '/projects',        to: 'projects#index', defaults: { format: 'json' }
 
   get '/workflows',      to: 'workflow#index', defaults: { format: 'json' }

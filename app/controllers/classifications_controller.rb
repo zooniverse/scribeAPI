@@ -8,10 +8,9 @@ class ClassificationsController < ApplicationController
   end
 
   def create
-    binding.pry
     annotations = params["annotations"]
     subject_set_id  = BSON::ObjectId.from_string params["classifications"]["subject_set"]["id"]
-    workflow_id = BSON::ObjectId.from_string params["workflow_id"]
+    workflow_id = BSON::ObjectId.from_string params["classifications"]["workflow_id"]
 
     location         = params["location"]
     annotations      = params["annotations"]
@@ -19,7 +18,11 @@ class ClassificationsController < ApplicationController
     finished_at      = params["finished_at"]
     user_agent       = params["user_agent"]
     # user_id     = BSON::ObjectId.from_string params["user_id"]
+    binding.pry
 
+    annotations.each do |annotation|
+      puts annotation
+    end 
     # TODO: still need to add user_id
 
     @result = Classification.create( workflow_id: workflow_id, subject_id: subject_id, location: location, annotations: annotations, started_at: started_at, finished_at: finished_at, user_agent: user_agent )

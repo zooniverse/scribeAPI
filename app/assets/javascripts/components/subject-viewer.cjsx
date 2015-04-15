@@ -86,8 +86,9 @@ module.exports = React.createClass
   # VARIOUS EVENT HANDLERS
 
   handleInitStart: (e) ->
-    
+    console.log "sv PROPS", @props
     @props.annotation["subject_id"] = @props.subject.id
+    @props.annotation["workflow_id"] = @props.workflow.id
 
     taskDescription = @props.workflow.tasks[@props.annotation.task]
     mark = @state.selectedMark

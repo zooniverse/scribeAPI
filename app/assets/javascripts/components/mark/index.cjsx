@@ -103,7 +103,7 @@ module.exports = React.createClass # rename to Classifier
 
   loadNextTask: (nextTask) ->
     if nextTask is null
-      console.log 'NOTING LEFT TO DO'
+      console.log 'NOTHING LEFT TO DO'
       return
     console.log 'LOADING NEXT TASK: ', nextTask
     @addAnnotationForTask.bind this, nextTask
@@ -112,6 +112,7 @@ module.exports = React.createClass # rename to Classifier
     @props.classification.update
       completed: true
       subject_set: @state.currentSubjectSet
+      workflow_id: @state.workflow.id
       'metadata.finished_at': (new Date).toISOString()
     @props.classification.save()  
     @props.onComplete?()
