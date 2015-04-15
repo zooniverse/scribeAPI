@@ -5,7 +5,7 @@ FetchSubjectsMixin = require 'lib/fetch-subjects-mixin'
 JSONAPIClient      = require 'json-api-client' # use to manage data?
 ForumSubjectWidget = require '../forum-subject-widget'
 
-resource = new JSONAPIClient
+API                = require '../../lib/api'
 
 module.exports = React.createClass # rename to Classifier
   displayName: 'Mark'
@@ -23,7 +23,7 @@ module.exports = React.createClass # rename to Classifier
     currentTask:    @props.workflow.tasks[@props.workflow.first_task]
 
   getDefaultProps: ->
-    classification: resource.type('classifications').create
+    classification: API.type('classifications').create
       name: 'Classification'
       annotations: []
       metadata: {}
@@ -92,6 +92,7 @@ module.exports = React.createClass # rename to Classifier
     console.log 'taskKey: ', taskKey
     console.log 'TASKS: ', @props.workflow.tasks
     taskDescription = @props.workflow.tasks[taskKey]
+    console.log 'Task decription', taskDescription
     console.log 'taskDescription: ', taskDescription.tool
     console.log 'BLASHSHSHS: ', tasks
 
@@ -112,6 +113,7 @@ module.exports = React.createClass # rename to Classifier
       completed: true
       subject_set: @state.currentSubjectSet
       'metadata.finished_at': (new Date).toISOString()
+    @props.classification.save()  
     @props.onComplete?()
     console.log 'CLASSIFICATION: ', @props.classification
 

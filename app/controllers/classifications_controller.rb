@@ -9,7 +9,7 @@ class ClassificationsController < ApplicationController
 
   def create
     annotations = params["annotations"]
-    subject_id  = BSON::ObjectId.from_string params["subject_id"]
+    subject_id  = BSON::ObjectId.from_string params["subject_set"]["id"]
     workflow_id = BSON::ObjectId.from_string params["workflow_id"]
 
     location         = params["location"]
