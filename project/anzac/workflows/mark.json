@@ -33,6 +33,24 @@
         "type":"rectangleTool","label": "Rectangle Tool", "color": "yellow"
       },
       "next_task":"nil"
+    },    
+    "history_sheet":{
+      "order":1,
+      "tool":"drawing",
+      "instruction":"Draw a rectangle around each record.",
+      "tools":{
+        "type":"rectangleTool","label": "Rectangle Tool", "color": "yellow"
+      },
+      "next_task":"nil"
+    },    
+    "casualty_form":{
+      "order":1,
+      "tool":"drawing",
+      "instruction":"Draw a rectangle around each record.",
+      "tools":{
+        "type":"rectangleTool","label": "Rectangle Tool", "color": "yellow"
+      },
+      "next_task":"nil"
     }
   }
 }
