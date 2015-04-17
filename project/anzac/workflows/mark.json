@@ -13,7 +13,7 @@
       "options":{
         "history_sheet":{
           "label":"history_sheet",
-          "next_task":"history_sheet_task"
+          "next_task":"history_form_task"
         },
         "casualty_form":{
           "label":"casualty_form",
@@ -25,32 +25,35 @@
         }
       }
     },
-    "attestation_task":{
-      "order":1,
+    "attestation_form_task":{
       "tool":"drawing",
       "instruction":"Draw a rectangle around each record.",
-      "tools":{
-        "type":"rectangleTool","label": "Rectangle Tool", "color": "yellow"
-      },
-      "next_task":"nil"
+      "tools": [
+        {"type": "superAwesomePointTool", "label": "Records (point)", "color": "red"},
+        {"type": "rectangleTool", "label": "Records (rectangle)", "color": "green"},
+        {"type": "textRowTool", "label": "Records (row)", "color": "blue"}
+      ],
+      "next_task": null
     },    
-    "history_sheet":{
-      "order":1,
+    "history_form_task":{
       "tool":"drawing",
       "instruction":"Draw a rectangle around each record.",
-      "tools":{
-        "type":"rectangleTool","label": "Rectangle Tool", "color": "yellow"
-      },
-      "next_task":"nil"
+      "tools": [
+        {"type": "superAwesomePointTool", "label": "Records (point)", "color": "red"},
+        {"type": "rectangleTool", "label": "Records (rectangle)", "color": "green"},
+        {"type": "textRowTool", "label": "Records (row)", "color": "blue"}
+      ],
+      "next_task": null
     },    
-    "casualty_form":{
-      "order":1,
+    "casualty_form_task":{
       "tool":"drawing",
       "instruction":"Draw a rectangle around each record.",
-      "tools":{
-        "type":"rectangleTool","label": "Rectangle Tool", "color": "yellow"
-      },
-      "next_task":"nil"
+      "tools": [
+        {"type": "superAwesomePointTool", "label": "Records (point)", "color": "red"},
+        {"type": "rectangleTool", "label": "Records (rectangle)", "color": "green"},
+        {"type": "textRowTool", "label": "Records (row)", "color": "blue"}
+      ],
+      "next_task": null
     }
   }
 }

@@ -1,5 +1,6 @@
 Specific_project = {
   title: "Measuring the ANZACs",
+  short_title: "The ANZACs",
   summary: "Transcription of New Zealand World War I Personnel Files",
   team: [
 
