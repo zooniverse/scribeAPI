@@ -21,7 +21,14 @@ class ClassificationsController < ApplicationController
 
     # TODO: still need to add user_id
 
-    @result = Classification.create( workflow_id: workflow_id, subject_id: subject_id, location: location, annotations: annotations, started_at: started_at, finished_at: finished_at, user_agent: user_agent )
+    @result = Classification.create( 
+      workflow_id: workflow_id, 
+      subject_id: subject_id, 
+      location: location, 
+      annotations: annotations, 
+      started_at: started_at, 
+      finished_at: finished_at, 
+      user_agent: user_agent )
     respond_with @result
   end
 end

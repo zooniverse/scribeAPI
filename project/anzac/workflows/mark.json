@@ -39,9 +39,10 @@
       "tool":"drawing",
       "instruction":"Draw a rectangle around each record.",
       "tools": [
-        {"type": "superAwesomePointTool", "label": "Records (point)", "color": "red"},
-        {"type": "rectangleTool", "label": "Records (rectangle)", "color": "green"},
-        {"type": "textRowTool", "label": "Records (row)", "color": "blue"}
+        {"type": "rectangleTool", "label": "Occupation", "color": "green"},
+        {"type": "rectangleTool", "label": "Surname", "color": "green"},
+        {"type": "rectangleTool", "label": "Christian name", "color": "green"},
+        {"type": "rectangleTool", "label": "Wounds", "color": "green"}
       ],
       "next_task": null
     },    
