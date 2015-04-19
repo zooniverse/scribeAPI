@@ -4,7 +4,7 @@ class Subject
   include Randomizer
 
   field :name,                 type: String
-  field :thumbnail,             type: String
+  field :thumbnail,            type: String
   field :file_path
   field :order
   field :width
@@ -13,8 +13,8 @@ class Subject
   field :location,             type: Hash
   field :random_no ,           type: Float
   field :classification_count, type: Integer, default: 0
-  field :state ,               type: String, default: "active"
-  field :type,                 type: String, default: "root"
+  field :state ,               type: String,  default: "active"
+  field :type,                 type: String,  default: "root"
   field :meta_data,            type: Hash
   field :retire_count,         type: Integer
 

@@ -3,6 +3,7 @@ class Classification
 
   field :workflow_id
   field :subject_id
+  field :subject_set_id
   field :location
   field :annotations, type: Array
   field :triggered_followup_subject_ids, type: Array
