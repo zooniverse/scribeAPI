@@ -97,6 +97,7 @@ module.exports = React.createClass
   handleUpperResize: (e, d) ->
     console.log 'HANDLE UPPER RESIZE'
     @props.mark.yUpper += d.y / @props.yScale
+    @props.mark.y += d.y / @props.yScale
     @props.onChange e
 
   handleLowerResize: (e, d) ->
