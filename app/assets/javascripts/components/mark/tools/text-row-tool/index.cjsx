@@ -38,6 +38,14 @@ module.exports = React.createClass
     x: 100-@props.mark.x
     y: DEFAULT_HEIGHT/2
 
+  getUpperHandlePosition: ->
+    x: 100-@props.mark.x
+    y: -DEFAULT_HEIGHT
+
+  getLowerHandlePosition: ->
+    x: 100-@props.mark.x
+    y: 0
+
   render: ->
     averageScale = (@props.xScale + @props.yScale) / 2
     crosshairSpace = CROSSHAIR_SPACE / averageScale
@@ -49,14 +57,6 @@ module.exports = React.createClass
       RADIUS / averageScale
 
     scale = (@props.xScale + @props.yScale) / 2
-
-    upperHandlePosition =
-      x: 100-@props.mark.x
-      y: -DEFAULT_HEIGHT
-
-    lowerHandlePosition =
-      x: 100-@props.mark.x
-      y: 0
 
     <g
       tool={this}
@@ -76,8 +76,8 @@ module.exports = React.createClass
 
         { if @props.selected
           <g>
-            <DragHandle tool={this} position={upperHandlePosition} />
-            <DragHandle tool={this} position={lowerHandlePosition} />
+            <DragHandle tool={this} position={@getUpperHandlePosition()} />
+            <DragHandle tool={this} position={@getLowerHandlePosition()} />
             <DeleteButton tool={this} position={@getDeleteButtonPosition()} />
           </g>
         }
