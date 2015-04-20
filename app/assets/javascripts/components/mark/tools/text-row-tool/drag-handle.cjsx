@@ -1,4 +1,5 @@
-React = require 'react'
+React     = require 'react'
+Draggable = require 'lib/draggable'
 
 RADIUS = 8
 STROKE_COLOR = 'white'
@@ -15,16 +16,23 @@ module.exports = React.createClass
     y: 0
     rotate: 0
 
-  dragHandle: ->
-    console.log 'DRAG HANDLE...'
-    
   render: ->
-    console.log 'POSITION: ', @props.position
+    console.log 'POSITION: ', @props
     transform = "
       translate(#{@props.position.x+200}, #{@props.position.y+100})
       rotate(#{@props.rotate})
       scale(#{1 / @props.tool.props.xScale}, #{1 / @props.tool.props.yScale})
     "
-    <g className="clickable drawing-tool-delete-button" transform={transform} stroke={STROKE_COLOR} strokeWidth={STROKE_WIDTH} onClick={@dragHandle}>
-      <circle r={RADIUS} fill={FILL_COLOR} />
-    </g>
+
+    <Draggable
+      onStart = {@handleDrag}
+      onDrag  = {@handleDrag}
+    >
+      <g className="clickable drawing-tool-delete-button" transform={transform} stroke={STROKE_COLOR} strokeWidth={STROKE_WIDTH} >
+        <circle r={RADIUS} fill={FILL_COLOR} />
+      </g>
+    </Draggable>
+
+  handleDrag: (e) ->
+    console.log 'DRAG HANDLE...', e
+    # @props.

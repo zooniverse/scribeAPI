@@ -28,7 +28,7 @@ module.exports = React.createClass
     initMove: ({x, y}) ->
       x: x
       y: y - DEFAULT_HEIGHT/2
-      yUpper: y - DEFAULT_HEIGHT/2 # not sure if these are
+      yUpper: y - DEFAULT_HEIGHT/2 # not sure if these are needed
       yLower: y + DEFAULT_HEIGHT/2
 
   getDeleteButtonPosition: ->
