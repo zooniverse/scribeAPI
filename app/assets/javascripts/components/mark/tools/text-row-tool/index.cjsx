@@ -12,15 +12,21 @@ DELETE_BUTTON_ANGLE = 45
 STROKE_WIDTH = 1.5
 SELECTED_STROKE_WIDTH = 2.5
 
+DEFAULT_HEIGHT = 100
+
 module.exports = React.createClass
   displayName: 'TextRowTool'
 
   statics:
     defaultValues: ({x, y}) ->
-      {x, y}
+      {x, y} # this will be the initial click position (not super useful as of yet)
+      yUpper: y - DEFAULT_HEIGHT/2
+      yLower: y + DEFAULT_HEIGHT/2
 
     initMove: ({x, y}) ->
       {x, y}
+      yUpper: y - DEFAULT_HEIGHT/2 # not sure if these are needed here
+      yLower: y + DEFAULT_HEIGHT/2
 
   getDeleteButtonPosition: ->
     theta = (DELETE_BUTTON_ANGLE) * (Math.PI / 180)
