@@ -2,6 +2,7 @@ React           = require 'react'
 DrawingToolRoot = require './root'
 Draggable       = require 'lib/draggable'
 DeleteButton    = require './delete-button'
+DragHandle      = require './drag-handle'
 
 RADIUS = 10
 SELECTED_RADIUS = 20
@@ -49,6 +50,14 @@ module.exports = React.createClass
 
     scale = (@props.xScale + @props.yScale) / 2
 
+    upperHandlePosition =
+      x: 100-@props.mark.x
+      y: -DEFAULT_HEIGHT
+
+    lowerHandlePosition =
+      x: 100-@props.mark.x
+      y: 0
+
     <g
       tool={this}
       transform="translate(#{@props.mark.x}, #{@props.mark.y})"
@@ -64,6 +73,11 @@ module.exports = React.createClass
         <Draggable onDrag={@handleDrag}>
           <rect x={0-@props.mark.x} y={0} width="100%" height={DEFAULT_HEIGHT} />
         </Draggable>
+
+        <DragHandle tool={this} position={upperHandlePosition} />
+        <DragHandle tool={this} position={lowerHandlePosition} />
+
+
 
         { if @props.selected
           <DeleteButton tool={this} position={@getDeleteButtonPosition()} />

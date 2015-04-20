@@ -23,7 +23,7 @@ module.exports = React.createClass
     rotate: 0
 
   render: ->
-    console.log 'POSITION: ', @props.position
+    console.log 'DELETE BUTTON POSITION: ', @props.position
     transform = "
       translate(#{@props.position.x}, #{@props.position.y})
       rotate(#{@props.rotate})
