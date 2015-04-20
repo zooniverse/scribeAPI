@@ -31,9 +31,11 @@ module.exports = React.createClass
       yLower: y + DEFAULT_HEIGHT/2
 
   getDeleteButtonPosition: ->
-    theta = (DELETE_BUTTON_ANGLE) * (Math.PI / 180)
-    x: (SELECTED_RADIUS / @props.xScale) * Math.cos theta
-    y: -1 * (SELECTED_RADIUS / @props.yScale) * Math.sin theta
+    # theta = (DELETE_BUTTON_ANGLE) * (Math.PI / 180)
+    # x: (SELECTED_RADIUS / @props.xScale) * Math.cos theta
+    # y: -1 * (SELECTED_RADIUS / @props.yScale) * Math.sin theta
+    x: 100-@props.mark.x
+    y: DEFAULT_HEIGHT/2
 
   render: ->
     averageScale = (@props.xScale + @props.yScale) / 2
@@ -47,9 +49,9 @@ module.exports = React.createClass
 
     scale = (@props.xScale + @props.yScale) / 2
 
-    <g 
-      tool={this} 
-      transform="translate(#{@props.mark.x}, #{@props.mark.y})" 
+    <g
+      tool={this}
+      transform="translate(#{@props.mark.x}, #{@props.mark.y})"
       onMouseDown={@handleMouseDown}
     >
       <g
@@ -64,7 +66,7 @@ module.exports = React.createClass
         </Draggable>
 
         { if @props.selected
-          <DeleteButton tool={this} getDeleteButtonPosition={@getDeleteButtonPosition} />
+          <DeleteButton tool={this} position={@getDeleteButtonPosition()} />
         }
 
       </g>
@@ -83,7 +85,7 @@ module.exports = React.createClass
   #   @props.mark.x = offset.x
   #   @props.mark.y = offset.y
   #   @props.onChange()
-    
+
   handleMouseDown: ->
     console.log 'handleMouseDown()'
     @props.onSelect @props.mark # unless @props.disabled
