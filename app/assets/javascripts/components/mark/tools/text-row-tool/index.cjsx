@@ -90,6 +90,8 @@ module.exports = React.createClass
   handleDrag: (e, d) ->
     @props.mark.x += d.x / @props.xScale
     @props.mark.y += d.y / @props.yScale
+    @props.mark.yUpper += d.y / @props.yScale
+    @props.mark.yLower += d.y / @props.yScale
     @props.onChange e
 
   handleUpperResize: (e, d) ->
