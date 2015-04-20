@@ -40,11 +40,11 @@ module.exports = React.createClass
 
   getUpperHandlePosition: ->
     x: @props.ref.props.width/2 - @props.mark.x
-    y: 0
+    y: @props.mark.yUpper - @props.mark.y
 
   getLowerHandlePosition: ->
     x: @props.ref.props.width/2 - @props.mark.x
-    y: DEFAULT_HEIGHT
+    y: @props.mark.yLower - @props.mark.y
 
   render: ->
     averageScale = (@props.xScale + @props.yScale) / 2
@@ -99,6 +99,8 @@ module.exports = React.createClass
 
   handleLowerResize: (e, d) ->
     console.log 'HANDLE LOWER RESIZE'
+    @props.mark.yLower += d.y / @props.yScale
+    @props.onChange e
 
 
   # handleDrag: (e, d) ->
