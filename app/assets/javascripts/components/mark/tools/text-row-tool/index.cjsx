@@ -71,7 +71,7 @@ module.exports = React.createClass
         onMouseDown={@props.onSelect unless @props.disabled}
       >
         <Draggable onDrag={@handleDrag}>
-          <rect x={0-@props.mark.x} y={0} width="100%" height={DEFAULT_HEIGHT} />
+          <rect x={0-@props.mark.x} y={0} width="100%" height={@props.mark.yLower-@props.mark.yUpper} />
         </Draggable>
 
         { if @props.selected
