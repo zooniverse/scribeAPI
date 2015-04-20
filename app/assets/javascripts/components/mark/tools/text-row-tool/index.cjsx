@@ -39,11 +39,11 @@ module.exports = React.createClass
     y: DEFAULT_HEIGHT/2
 
   getUpperHandlePosition: ->
-    x: 100-@props.mark.x
+    x: @props.ref.props.width * @props.xScale - @props.mark.x
     y: -DEFAULT_HEIGHT
 
   getLowerHandlePosition: ->
-    x: 100-@props.mark.x
+    x: @props.ref.props.width * @props.xScale - @props.mark.x
     y: 0
 
   render: ->
