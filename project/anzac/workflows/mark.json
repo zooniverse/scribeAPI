@@ -2,6 +2,7 @@
   "name":"mark",
   "label":"Mark Workflow",
   "subject_fetch_limit":"10",
+  "generates_new_subjects": true,
   "enables_workflows":{
   },
   "first_task":"pick_page_type",
