@@ -24,15 +24,8 @@ module.exports = React.createClass
       scale(#{1 / @props.tool.props.xScale}, #{1 / @props.tool.props.yScale})
     "
 
-    <Draggable
-      onStart = {@handleDrag}
-      onDrag  = {@handleDrag}
-    >
+    <Draggable onDrag = {@props.onDrag}>
       <g className="clickable drawing-tool-delete-button" transform={transform} stroke={STROKE_COLOR} strokeWidth={STROKE_WIDTH} >
         <circle r={RADIUS} fill={FILL_COLOR} />
       </g>
     </Draggable>
-
-  handleDrag: (e) ->
-    console.log 'DRAG HANDLE...', e
-    # @props.

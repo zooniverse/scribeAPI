@@ -76,8 +76,8 @@ module.exports = React.createClass
 
         { if @props.selected
           <g>
-            <DragHandle tool={this} position={@getUpperHandlePosition()} />
-            <DragHandle tool={this} position={@getLowerHandlePosition()} />
+            <DragHandle tool={this} onDrag={@handleUpperResize} position={@getUpperHandlePosition()} />
+            <DragHandle tool={this} onDrag={@handleLowerResize} position={@getLowerHandlePosition()} />
             <DeleteButton tool={this} position={@getDeleteButtonPosition()} />
           </g>
         }
@@ -91,6 +91,15 @@ module.exports = React.createClass
     @props.mark.x += d.x / @props.xScale
     @props.mark.y += d.y / @props.yScale
     @props.onChange e
+
+  handleUpperResize: (e, d) ->
+    console.log 'HANDLE UPPER RESIZE'
+    @props.mark.yUpper += d.y / @props.yScale
+    @props.onChange e
+
+  handleLowerResize: (e, d) ->
+    console.log 'HANDLE LOWER RESIZE'
+
 
   # handleDrag: (e, d) ->
   #   console.log 'handleDrag()'
