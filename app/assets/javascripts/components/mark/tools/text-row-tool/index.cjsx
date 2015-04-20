@@ -36,7 +36,7 @@ module.exports = React.createClass
     # x: (SELECTED_RADIUS / @props.xScale) * Math.cos theta
     # y: -1 * (SELECTED_RADIUS / @props.yScale) * Math.sin theta
     x: 100-@props.mark.x
-    y: DEFAULT_HEIGHT/2
+    y: (@props.mark.yLower-@props.mark.yUpper)/2
 
   getUpperHandlePosition: ->
     x: @props.ref.props.width/2 - @props.mark.x
