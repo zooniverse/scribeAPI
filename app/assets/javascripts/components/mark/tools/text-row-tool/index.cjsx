@@ -74,13 +74,12 @@ module.exports = React.createClass
           <rect x={0-@props.mark.x} y={0} width="100%" height={DEFAULT_HEIGHT} />
         </Draggable>
 
-        <DragHandle tool={this} position={upperHandlePosition} />
-        <DragHandle tool={this} position={lowerHandlePosition} />
-
-
-
         { if @props.selected
-          <DeleteButton tool={this} position={@getDeleteButtonPosition()} />
+          <g>
+            <DragHandle tool={this} position={upperHandlePosition} />
+            <DragHandle tool={this} position={lowerHandlePosition} />
+            <DeleteButton tool={this} position={@getDeleteButtonPosition()} />
+          </g>
         }
 
       </g>
