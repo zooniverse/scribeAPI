@@ -65,7 +65,7 @@ module.exports = React.createClass
         <line x1="0" y1={crosshairSpace * selectedRadius} x2="0" y2={selectedRadius} strokeWidth={crosshairWidth} />
         <line x1={crosshairSpace * selectedRadius} y1="0" x2={selectedRadius} y2="0" strokeWidth={crosshairWidth} />
         <Draggable onDrag={@handleDrag}>
-          <circle r={radius} />
+          <rect width="100%" height={DEFAULT_HEIGHT} />
         </Draggable>
 
         { if @props.selected
