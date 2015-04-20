@@ -39,12 +39,12 @@ module.exports = React.createClass
     y: DEFAULT_HEIGHT/2
 
   getUpperHandlePosition: ->
-    x: @props.ref.props.width * @props.xScale - @props.mark.x
-    y: -DEFAULT_HEIGHT
+    x: @props.ref.props.width/2 - @props.mark.x
+    y: 0
 
   getLowerHandlePosition: ->
-    x: @props.ref.props.width * @props.xScale - @props.mark.x
-    y: 0
+    x: @props.ref.props.width/2 - @props.mark.x
+    y: DEFAULT_HEIGHT
 
   render: ->
     averageScale = (@props.xScale + @props.yScale) / 2

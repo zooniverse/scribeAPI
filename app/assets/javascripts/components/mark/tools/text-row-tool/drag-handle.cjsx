@@ -19,7 +19,7 @@ module.exports = React.createClass
   render: ->
     console.log 'POSITION: ', @props
     transform = "
-      translate(#{@props.position.x+200}, #{@props.position.y+100})
+      translate(#{@props.position.x}, #{@props.position.y})
       rotate(#{@props.rotate})
       scale(#{1 / @props.tool.props.xScale}, #{1 / @props.tool.props.yScale})
     "
