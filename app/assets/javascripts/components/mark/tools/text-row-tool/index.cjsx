@@ -13,7 +13,7 @@ STROKE_WIDTH = 1.5
 SELECTED_STROKE_WIDTH = 2.5
 
 module.exports = React.createClass
-  displayName: 'SuperAwesomePointTool'
+  displayName: 'TextRowTool'
 
   statics:
     defaultValues: ({x, y}) ->
