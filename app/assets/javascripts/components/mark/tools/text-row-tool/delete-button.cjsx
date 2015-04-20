@@ -1,5 +1,16 @@
-# @cjsx React.DOM
 React = require 'react'
+
+RADIUS = 8
+STROKE_COLOR = 'white'
+FILL_COLOR = 'black'
+STROKE_WIDTH = 1.5
+
+CROSS_PATH = "
+  M #{-1 * RADIUS * 0.7 } 0
+  L #{RADIUS * 0.7 } 0
+  M 0 #{-1 * RADIUS * 0.7 }
+  L 0 #{RADIUS * 0.7 }
+"
 
 DESTROY_TRANSITION_DURATION = 0
 
@@ -12,33 +23,17 @@ module.exports = React.createClass
     rotate: 0
 
   render: ->
-    fillColor = 'red'
-    strokeColor = '#000'
-    strokeWidth = 3
-    radius = 20
-
-    cross = "
-      M #{-radius * 0.6 } 0
-      L #{ radius * 0.6 } 0
-      M 0 #{-radius * 0.6 }
-      L 0 #{radius * 0.6 }
+    transform = "
+      translate(#{@props.position.x}, #{@props.position.y})
+      rotate(#{@props.rotate})
+      scale(#{1 / @props.tool.props.xScale}, #{1 / @props.tool.props.yScale})
     "
 
-    <g 
-      transform = "translate(#{@props.x}, #{@props.y}) rotate(#{@props.rotate})"
-      className="clickable drawing-tool-delete-button" 
-      stroke={strokeColor} 
-      strokeWidth={strokeWidth} 
-      onClick={@destroyTool} 
-    >
-      <circle r={radius} fill={fillColor} />
-      <path d={cross} transform="rotate(45)" />
+    <g className="clickable drawing-tool-delete-button" transform={transform} stroke={STROKE_COLOR} strokeWidth={STROKE_WIDTH} onClick={@destroyTool}>
+      <circle r={RADIUS} fill={FILL_COLOR} />
+      <path d={CROSS_PATH} transform="rotate(45)" />
     </g>
 
   destroyTool: ->
-    console.log 'DESTROY TOOL'
     @props.tool.setState destroying: true, =>
       setTimeout @props.tool.props.onDestroy, DESTROY_TRANSITION_DURATION
-
-
-
