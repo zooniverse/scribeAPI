@@ -1,7 +1,7 @@
-React        = require 'react'
-Draggable    = require 'lib/draggable'
-DeleteButton = require './delete-button'
-ResizeButton = require './resize-button'
+React           = require 'react'
+DrawingToolRoot = require './root'
+Draggable       = require 'lib/draggable'
+DeleteButton    = require './delete-button'
 
 RADIUS = 10
 SELECTED_RADIUS = 20
@@ -12,18 +12,12 @@ DELETE_BUTTON_ANGLE = 45
 STROKE_WIDTH = 1.5
 SELECTED_STROKE_WIDTH = 2.5
 
-# rowTool-specific parameters
-DEFAULT_HEIGHT = 100
-
 module.exports = React.createClass
-  displayName: 'TextRow'
+  displayName: 'SuperAwesomePointTool'
 
   statics:
     defaultValues: ({x, y}) ->
-      x: x
-      y: y
-      yLower: y + DEFAULT_HEIGHT/2
-      yUpper: y - DEFAULT_HEIGHT/2
+      {x, y}
 
     initMove: ({x, y}) ->
       {x, y}
@@ -58,18 +52,16 @@ module.exports = React.createClass
         onMouseDown={@props.onSelect unless @props.disabled}
       >
 
+        <line x1="0" y1={-1 * crosshairSpace * selectedRadius} x2="0" y2={-1 * selectedRadius} strokeWidth={crosshairWidth} />
+        <line x1={-1 * crosshairSpace * selectedRadius} y1="0" x2={-1 * selectedRadius} y2="0" strokeWidth={crosshairWidth} />
+        <line x1="0" y1={crosshairSpace * selectedRadius} x2="0" y2={selectedRadius} strokeWidth={crosshairWidth} />
+        <line x1={crosshairSpace * selectedRadius} y1="0" x2={selectedRadius} y2="0" strokeWidth={crosshairWidth} />
         <Draggable onDrag={@handleDrag}>
-          <rect x={0-@props.mark.x} y={0} width='100%' height='100' />
+          <circle r={radius} />
         </Draggable>
 
         { if @props.selected
-          <g>
-            <g transform="translate(#{Math.round(@props.ref.props.width*@props.yScale)-@props.mark.x},#{0})">
-              <ResizeButton className="upperResize" y={0} />
-              <ResizeButton className="lowerResize" y={DEFAULT_HEIGHT} />        
-            </g>
-            <DeleteButton tool={this} x={100-@props.mark.x} y={DEFAULT_HEIGHT / 2 } />
-          </g>
+          <DeleteButton tool={this} getDeleteButtonPosition={@getDeleteButtonPosition} />
         }
 
       </g>
@@ -78,8 +70,6 @@ module.exports = React.createClass
     # <text x={@props.mark.x} y={@props.mark.y} fill="red" fontSize="55">SuperAwesomePoint!</text>
 
   handleDrag: (e, d) ->
-    # console.log 'PROPS: ', @props
-    # console.log 'WIDTH: ', @props.ref.props.width * @props.yScale
     @props.mark.x += d.x / @props.xScale
     @props.mark.y += d.y / @props.yScale
     @props.onChange e
