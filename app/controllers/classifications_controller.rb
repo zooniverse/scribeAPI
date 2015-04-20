@@ -10,17 +10,18 @@ class ClassificationsController < ApplicationController
   def create
     puts params
     puts session
+    binding.pry
     annotations = params["annotations"]
     subject_set_id  = BSON::ObjectId.from_string params["classifications"]["subject_set"]["id"]
     workflow_id = BSON::ObjectId.from_string params["classifications"]["workflow_id"]
 
     # location         = params["location"] 
     annotations      = params["classifications"]["annotations"]
-    # started_at       = params["started_at"]
-    # finished_at      = params["finished_at"]
-    # user_agent       = params["user_agent"]
-    # user_id     = BSON::ObjectId.from_string params["user_id"]
-    subject_id = ''
+    started_at       = params["classifications"]["metadata"]["started_at"]
+    finished_at      = params["classifications"]["metadata"]["finished_at"]
+    user_agent       = request.headers["HTTP_USER_AGENT"]
+    #user_id     = BSON::ObjectId.from_string params["user_id"]
+    subject_id = session.id #this should change
     annotations.each do |annotation|
       # for each flagged annoation, we want to create subject
 
@@ -35,6 +36,7 @@ class ClassificationsController < ApplicationController
       subject_id = annotation["subject_id"]
       annotation
     end 
+    
     # TODO, still need to: 
     # add user_id
     # started_at: started_at, finished_at: finished_at, user_agent: user_agent

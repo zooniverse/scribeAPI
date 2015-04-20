@@ -27,6 +27,8 @@ module.exports = React.createClass # rename to Classifier
       name: 'Classification'
       annotations: []
       metadata: {}
+      'metadata.started_at': (new Date).toISOString()
+
 
   componentWillMount: ->
     @addAnnotationForTask @props.workflow.first_task
