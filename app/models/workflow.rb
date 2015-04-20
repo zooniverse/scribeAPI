@@ -20,25 +20,31 @@ class Workflow
 
   def trigger_follow_up_workflows(subject)
     follow_up_subjects = []
+
   	enables_workflows.each_pair do |workflow_id, denormed_fields|
       follow_up_subjects << Workflow.find(workflow_id).create_follow_up_subject(subject, denormed_fields)
   	end
+
     follow_up_subjects
   end
 
   def subject_has_enough_classifications(subject)
     puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-    puts "subject.classification_count" 
-    puts subject.classification_count 
-    puts "generate_new_subject_at_classification_count" 
-    puts generate_new_subjects_at_classification_count 
-    # subject doesn't reflect the classifcation count change at this point which is weird
-    subject.classification_count >= generate_new_subjects_at_classification_count
+    subject.classifications.length >= generate_new_subjects_at_classification_count
+  end
+
+  def create_secondary_subjects(classification)
+    classification.annotations.each do |annotation|
+      #if flagged as mark that generates a subject
+      binding.pry
+
+    end
   end
 
   def create_follow_up_subjects(classification)
     return unless generates_new_subjects
     return unless subject_has_enough_classifications(classification.subject)
-    trigger_follow_up_workflows(classification.subject)
+    create_secondary_subjects(classification)
+    #trigger_follow_up_workflows(classification.subject)
   end
 end

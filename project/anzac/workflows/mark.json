@@ -28,6 +28,7 @@
       }
     },
     "attestation_form_task":{
+      "generate_subjects": true,
       "tool":"drawing",
       "instruction":"Draw a rectangle around each record.",
       "tools": [
@@ -38,6 +39,7 @@
       "next_task": null
     },    
     "history_form_task":{
+      "generate_subjects": true,
       "tool":"drawing",
       "instruction":"Draw a rectangle around each record.",
       "tools": [
@@ -49,6 +51,7 @@
       "next_task": null
     },    
     "casualty_form_task":{
+      "generate_subjects": true,
       "tool":"drawing",
       "instruction":"Draw a rectangle around each record.",
       "tools": [
