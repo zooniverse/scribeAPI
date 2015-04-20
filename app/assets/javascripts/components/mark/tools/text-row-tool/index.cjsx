@@ -59,13 +59,8 @@ module.exports = React.createClass
         strokeWidth={SELECTED_STROKE_WIDTH/scale}
         onMouseDown={@props.onSelect unless @props.disabled}
       >
-
-        <line x1="0" y1={-1 * crosshairSpace * selectedRadius} x2="0" y2={-1 * selectedRadius} strokeWidth={crosshairWidth} />
-        <line x1={-1 * crosshairSpace * selectedRadius} y1="0" x2={-1 * selectedRadius} y2="0" strokeWidth={crosshairWidth} />
-        <line x1="0" y1={crosshairSpace * selectedRadius} x2="0" y2={selectedRadius} strokeWidth={crosshairWidth} />
-        <line x1={crosshairSpace * selectedRadius} y1="0" x2={selectedRadius} y2="0" strokeWidth={crosshairWidth} />
         <Draggable onDrag={@handleDrag}>
-          <rect width="100%" height={DEFAULT_HEIGHT} />
+          <rect x={0-@props.mark.x} y={0} width="100%" height={DEFAULT_HEIGHT} />
         </Draggable>
 
         { if @props.selected
