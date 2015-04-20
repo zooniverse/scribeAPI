@@ -14,6 +14,7 @@ STROKE_WIDTH = 1.5
 SELECTED_STROKE_WIDTH = 2.5
 
 DEFAULT_HEIGHT = 100
+MINIMUM_HEIGHT = 25
 
 module.exports = React.createClass
   displayName: 'TextRowTool'
@@ -32,9 +33,6 @@ module.exports = React.createClass
       yLower: y + DEFAULT_HEIGHT/2
 
   getDeleteButtonPosition: ->
-    # theta = (DELETE_BUTTON_ANGLE) * (Math.PI / 180)
-    # x: (SELECTED_RADIUS / @props.xScale) * Math.cos theta
-    # y: -1 * (SELECTED_RADIUS / @props.yScale) * Math.sin theta
     x: 100-@props.mark.x
     y: (@props.mark.yLower-@props.mark.yUpper)/2
 
@@ -85,8 +83,6 @@ module.exports = React.createClass
       </g>
     </g>
 
-    # <text x={@props.mark.x} y={@props.mark.y} fill="red" fontSize="55">SuperAwesomePoint!</text>
-
   handleDrag: (e, d) ->
     @props.mark.x += d.x / @props.xScale
     @props.mark.y += d.y / @props.yScale
@@ -95,23 +91,13 @@ module.exports = React.createClass
     @props.onChange e
 
   handleUpperResize: (e, d) ->
-    console.log 'HANDLE UPPER RESIZE'
     @props.mark.yUpper += d.y / @props.yScale
-    @props.mark.y += d.y / @props.yScale
+    @props.mark.y += d.y / @props.yScale # fix weird resizing problem
     @props.onChange e
 
   handleLowerResize: (e, d) ->
-    console.log 'HANDLE LOWER RESIZE'
     @props.mark.yLower += d.y / @props.yScale
     @props.onChange e
-
-
-  # handleDrag: (e, d) ->
-  #   console.log 'handleDrag()'
-  #   offset = @props.getEventOffset e
-  #   @props.mark.x = offset.x
-  #   @props.mark.y = offset.y
-  #   @props.onChange()
 
   handleMouseDown: ->
     console.log 'handleMouseDown()'
