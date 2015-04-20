@@ -19,13 +19,15 @@ module.exports = React.createClass
 
   statics:
     defaultValues: ({x, y}) ->
-      {x, y} # this will be the initial click position (not super useful as of yet)
+      x: x
+      y: y # x and y will be the initial click position (not super useful as of yet)
       yUpper: y - DEFAULT_HEIGHT/2
       yLower: y + DEFAULT_HEIGHT/2
 
     initMove: ({x, y}) ->
-      {x, y}
-      yUpper: y - DEFAULT_HEIGHT/2 # not sure if these are needed here
+      x: x
+      y: y
+      yUpper: y - DEFAULT_HEIGHT/2 # not sure if these are
       yLower: y + DEFAULT_HEIGHT/2
 
   getDeleteButtonPosition: ->
