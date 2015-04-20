@@ -27,12 +27,18 @@ class Workflow
   end
 
   def subject_has_enough_classifications(subject)
-    subject.classification_count >= generate_new_subject_at_classification_count
+    puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    puts "subject.classification_count" 
+    puts subject.classification_count 
+    puts "generate_new_subject_at_classification_count" 
+    puts generate_new_subjects_at_classification_count 
+    # subject doesn't reflect the classifcation count change at this point which is weird
+    subject.classification_count >= generate_new_subjects_at_classification_count
   end
 
   def create_follow_up_subjects(classification)
-    return unless generate_new_subject
-    return unless subject_has_enough_classifications
+    return unless generates_new_subjects
+    return unless subject_has_enough_classifications(classification.subject)
     trigger_follow_up_workflows(classification.subject)
   end
 end

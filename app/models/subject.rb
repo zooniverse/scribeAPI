@@ -21,6 +21,7 @@ class Subject
   after_create :update_subject_set_stats
 
   belongs_to :workflow
+  has_many :classifications
   has_many :favourites
   has_one :parent_subject, :class_name => "Subject"
   belongs_to :subject_set

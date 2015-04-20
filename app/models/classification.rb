@@ -20,7 +20,6 @@ class Classification
   before_create :generate_new_subjects
 
   def generate_new_subjects
-    binding.pry
     if workflow.generates_new_subjects
       triggered_followup_subject_ids = workflow.create_follow_up_subjects(self)
     end

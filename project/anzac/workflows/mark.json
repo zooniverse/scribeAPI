@@ -3,6 +3,7 @@
   "label":"Mark Workflow",
   "subject_fetch_limit":"10",
   "generates_new_subjects": true,
+  "generate_new_subjects_at_classification_count": 1,
   "enables_workflows":{
   },
   "first_task":"pick_page_type",
