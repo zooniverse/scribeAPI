@@ -15,6 +15,9 @@ module.exports = React.createClass
     y: 0
     rotate: 0
 
+  dragHandle: ->
+    console.log 'DRAG HANDLE...'
+    
   render: ->
     console.log 'POSITION: ', @props.position
     transform = "
@@ -22,6 +25,6 @@ module.exports = React.createClass
       rotate(#{@props.rotate})
       scale(#{1 / @props.tool.props.xScale}, #{1 / @props.tool.props.yScale})
     "
-    <g className="clickable drawing-tool-delete-button" transform={transform} stroke={STROKE_COLOR} strokeWidth={STROKE_WIDTH} onClick={@destroyTool}>
+    <g className="clickable drawing-tool-delete-button" transform={transform} stroke={STROKE_COLOR} strokeWidth={STROKE_WIDTH} onClick={@dragHandle}>
       <circle r={RADIUS} fill={FILL_COLOR} />
     </g>
