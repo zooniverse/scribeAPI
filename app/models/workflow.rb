@@ -33,10 +33,27 @@ class Workflow
     subject.classifications.length >= generate_new_subjects_at_classification_count
   end
 
+
   def create_secondary_subjects(classification)
+    # for each value in annotation
+    primary_subject_id = classification.subject.id
+    subject_set_id = classification.subject.subject_set.id
+    binding.pry
+    workflow_id = Workflow.find_by(name: "transcribe").id
+
     classification.annotations.each do |annotation|
-      #if flagged as mark that generates a subject
-      binding.pry
+      if annotation["generate_subjects"]
+        annotation["value"].each do |value|
+          Subject.create(
+            workflow_id: workflow_id ,
+            subject_set_id: subject_set_id,
+            retire_count: 3,
+            width: value["width"],
+            height: value["height"],
+            meta_data: {primary_subject_id: primary_subject_id, x: value["x"], y: value["y"], }
+            )
+        end
+      end
 
     end
   end

@@ -91,6 +91,11 @@ module.exports = React.createClass
     @props.annotation["workflow_id"] = @props.workflow.id
 
     taskDescription = @props.workflow.tasks[@props.annotation.task]
+
+    # setting flag for generation of new subjects
+    if @props.workflow.tasks[@props.annotation.task].generate_subjects
+      @props.annotation["generate_subjects"] = @props.workflow.tasks[@props.annotation.task].generate_subjects
+    
     mark = @state.selectedMark
 
 
