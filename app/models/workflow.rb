@@ -49,7 +49,7 @@ class Workflow
             retire_count: 3,
             width: value["width"],
             height: value["height"],
-            meta_data: {primary_subject_id: primary_subject_id, x: value["x"], y: value["y"], }
+            meta_data: { primary_subject_id: primary_subject_id, x: value["x"], y: value["y"] }
             )
         end
       end

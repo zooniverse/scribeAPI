@@ -17,6 +17,7 @@ class Subject
   field :type,                 type: String,  default: "root"
   field :meta_data,            type: Hash
   field :retire_count,         type: Integer
+  field :child_subjects,       type: Hash
 
   after_create :update_subject_set_stats
 
