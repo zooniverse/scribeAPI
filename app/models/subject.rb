@@ -18,6 +18,7 @@ class Subject
   field :meta_data,            type: Hash
   field :retire_count,         type: Integer
   field :child_subjects,       type: Hash
+  field :child_subjects,       type: Hash
 
   after_create :update_subject_set_stats
 
