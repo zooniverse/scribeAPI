@@ -19,6 +19,7 @@ class ClassificationsController < ApplicationController
     user_agent       = request.headers["HTTP_USER_AGENT"]
     #TODO
     #user_id     = BSON::ObjectId.from_string params["user_id"]
+    #use subject_id params
     subject_id = session.id #this should change, auth currently not working
     annotations.each do |annotation|
       subject_id = annotation["subject_id"]

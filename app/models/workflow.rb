@@ -28,6 +28,7 @@ class Workflow
     follow_up_subjects
   end
 
+  # discuss this later
   def subject_has_enough_classifications(subject)
     subject.classifications.length >= generate_new_subjects_at_classification_count
   end
@@ -37,7 +38,6 @@ class Workflow
     # for each value in annotation
     primary_subject_id = classification.subject.id
     subject_set_id = classification.subject.subject_set.id
-    binding.pry
     workflow_id = Workflow.find_by(name: "transcribe").id
 
     classification.annotations.each do |annotation|
