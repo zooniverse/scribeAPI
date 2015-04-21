@@ -29,7 +29,6 @@ class Workflow
   end
 
   def subject_has_enough_classifications(subject)
-    puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
     subject.classifications.length >= generate_new_subjects_at_classification_count
   end
 
