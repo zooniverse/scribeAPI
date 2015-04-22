@@ -1,33 +1,36 @@
 {
   "name": "transcribe",
   "label": "Transcribe Workflow",
-  "first_task": "journal_entry",
+  "first_task": "em_switch_on_type",
+
   "tasks": {
-    "journal_date": {
-      "key": 0,
-      "tool": "singleDate",
-      "field_name": "date",
-      "label": "Date",
-      "instruction": "Please type-in the log date.",
-      "next_task": "journal_entry"
+
+    "em_switch_on_type": {
+      "tool": "switch_on_value",
+      "tool_options": {  
+        "field": "type",
+        "options": {
+          "em_mark_building_address": {
+            "task": "em_transcribe_building_address"
+          },
+          "em_mark_building_description": {
+            "task": "em_transcribe_building_description"
+          }
+        }
+      }
     },
-    "journal_entry": {
-      "key": 1,
-      "tool": "textBlock",
-      "field_name": "journal_entry",
-      "label": "Journal Entry",
-      "instruction": "Please type-in the journal entry for this day.",
-      "next_task": "additional_comment"
+
+    "em_transcribe_building_address": {
+      "tool": "text_tool",
+      "tool_options": {}
     },
-    "additional_comment": {
-      "key": 2,
-      "type": "textBlock",
-      "field_name": "other_entry",
-      "label": "Other Entry",
-      "instruction": "Type something, anything.",
-      "next_task": "nil"
+
+    "em_transcribe_building_description": {
+      "tool": "text_tool",
+      "tool_options": {}
     }
   },
+
   "enables_workflows": {
     
   }

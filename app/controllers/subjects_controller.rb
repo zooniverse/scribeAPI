@@ -3,8 +3,19 @@ class SubjectsController < ApplicationController
 
   def index
   	workflow_id  = params["workflow_id"]
-    # Randomizer#random seems to want query criteria passed in under :selector key:
-  	respond_with  Subject.random(:selector => {:workflow_ids => BSON::ObjectId.from_string(workflow_id)}, limit: (params[:limit].to_i || 5) )
+    random = params["random"] || false
+    limit  = params["limit"].to_i  || 10
+
+    query = {}
+
+    if params["random"]
+      sets = Subject.random(selector: query, limit: limit)
+    else
+      sets = Subject.where(query)
+    end
+
+    respond_with sets, each_serializer: SubjectSerializer, workflow_id: workflow_id
+
   end
 
 end

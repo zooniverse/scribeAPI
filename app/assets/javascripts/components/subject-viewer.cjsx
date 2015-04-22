@@ -14,7 +14,7 @@ module.exports = React.createClass
   resizing: false
 
   getInitialState: ->
-    console.log "setting initial state: #{@props.active}"
+    # console.log "setting initial state: #{@props.active}"
 
     imageWidth: 0
     imageHeight: 0
@@ -86,8 +86,8 @@ module.exports = React.createClass
   # VARIOUS EVENT HANDLERS
 
   handleInitStart: (e) ->
-    console.log 'handleInitStart() '
-    console.log "@props.workflow", @props
+    console.log "SubjectViewer#handleInitStart: @props.workflow", @props
+    return null if ! @props.annotation? || ! @props.annotation.task?
 
     taskDescription = @props.workflow.tasks[@props.annotation.task]
     mark = @state.selectedMark
@@ -149,6 +149,7 @@ module.exports = React.createClass
     @updateAnnotations()
 
   handleInitRelease: (e) ->
+    return null if ! @props.annotation? || ! @props.annotation.task?
     task = @props.workflow.tasks[@props.annotation.task]
     mark = @state.selectedMark
     MarkComponent = markingTools[task.tools[mark.tool].type]
@@ -225,7 +226,9 @@ module.exports = React.createClass
     # console.log 'SUBJECT: ', @state.subject
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     ToolComponent = @state.tool
-    console.log "Rendering #{if @props.active then 'active' else 'inactive'} subj viewer"
+    console.log "SubjectViewer#render tool=", @state.tool
+    # console.log "subjviewer rendering with classification: ", @props.classification
+    # console.log "Rendering #{if @props.active then 'active' else 'inactive'} subj viewer"
 
     scale = @getScale()
 
@@ -234,6 +237,8 @@ module.exports = React.createClass
         <ActionButton onAction={@nextSubject} className="disabled" text="Loading..." />
       else
         <ActionButton onClick={@nextSubject} text="Next Page" />
+
+    # console.log "SubjectViewer#render: render subject with mark? ", @state.subject
 
     if @state.loading
       markingSurfaceContent = <LoadingIndicator />
@@ -259,7 +264,32 @@ module.exports = React.createClass
               width = {@state.imageWidth}
               height = {@state.imageHeight} />
           </Draggable>
+          
+          { if @props.subject.location.x?
+            isPriorAnnotation = true # ? 
+            <g key={@props.subject.id} className="marks-for-annotation" data-disabled={isPriorAnnotation}>
+              {
+                # taskDescription = @props.workflow.tasks[@props.subject.task_key]
+                # toolDescription = taskDescription.tools[mark.tool]
+                # ToolComponent = markingTools[toolDescription.type]
+                ToolComponent = markingTools['rectangleTool']
+                mark = {x: @props.subject.location.x, y: @props.subject.location.y, width: @props.subject.location.w, height: @props.subject.location.h}
 
+                <ToolComponent
+                  key={@props.subject.id}
+                  mark={mark}
+                  xScale={scale.horizontal}
+                  yScale={scale.vertical}
+                  disabled={isPriorAnnotation}
+                  selected={mark is @state.selectedMark}
+                  getEventOffset={@getEventOffset}
+                  ref={@refs.sizeRect}
+                  
+                  onSelect={@selectMark.bind this, @props.subject, mark}
+                />
+              }
+            </g>
+          }
           { for annotation in @props.classification.annotations
               annotation._key ?= Math.random()
               isPriorAnnotation = annotation isnt @props.annotation

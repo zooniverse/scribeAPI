@@ -1,2 +1,3 @@
 module.exports =
-  transcribeTool: './transcribe-row-tool'
+  # transcribeTool:   require './transcribe-row-tool'
+  text_tool:        require './text-tool'
