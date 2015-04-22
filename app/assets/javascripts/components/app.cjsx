@@ -36,8 +36,6 @@ DynamicRouter = React.createClass
 
   # TODO: workflow being passed as an object in an array. why?
   render: ->
-
-    # console.log 'BACKGROUND: ', @state.project
     return null unless @state.pages? # do nothing until project loads from API
     workflows = @state.project.workflows
 
