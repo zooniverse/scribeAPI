@@ -86,11 +86,18 @@ module.exports = React.createClass
   # VARIOUS EVENT HANDLERS
 
   handleInitStart: (e) ->
-    console.log 'handleInitStart() '
-    console.log "@props.workflow", @props
+    console.log "sv PROPS", @props
+    @props.annotation["subject_id"] = @props.subject.id
+    @props.annotation["workflow_id"] = @props.workflow.id
 
     taskDescription = @props.workflow.tasks[@props.annotation.task]
+
+    # setting flag for generation of new subjects
+    if @props.workflow.tasks[@props.annotation.task].generate_subjects
+      @props.annotation["generate_subjects"] = @props.workflow.tasks[@props.annotation.task].generate_subjects
+    
     mark = @state.selectedMark
+
 
     markIsComplete = true
     if mark?

@@ -1,7 +1,7 @@
 React = require 'react'
 Draggable = require 'lib/draggable'
 
-RADIUS = 10
+RADIUS = 5
 OVERSHOOT = 4
 
 module.exports = React.createClass

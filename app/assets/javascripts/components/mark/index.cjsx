@@ -5,7 +5,7 @@ FetchSubjectsMixin = require 'lib/fetch-subjects-mixin'
 JSONAPIClient      = require 'json-api-client' # use to manage data?
 ForumSubjectWidget = require '../forum-subject-widget'
 
-resource = new JSONAPIClient
+API                = require '../../lib/api'
 
 module.exports = React.createClass # rename to Classifier
   displayName: 'Mark'
@@ -23,10 +23,12 @@ module.exports = React.createClass # rename to Classifier
     currentTask:    @props.workflow.tasks[@props.workflow.first_task]
 
   getDefaultProps: ->
-    classification: resource.type('classifications').create
+    classification: API.type('classifications').create
       name: 'Classification'
       annotations: []
       metadata: {}
+      'metadata.started_at': (new Date).toISOString()
+
 
   componentWillMount: ->
     @addAnnotationForTask @props.workflow.first_task
@@ -90,10 +92,11 @@ module.exports = React.createClass # rename to Classifier
 
   addAnnotationForTask: (taskKey) ->
     console.log 'taskKey: ', taskKey
+    console.log "~~~~~~~~~~~~~~~~~~"
     console.log 'TASKS: ', @props.workflow.tasks
     taskDescription = @props.workflow.tasks[taskKey]
-    console.log 'taskDescription: ', taskDescription.tool
-    console.log 'BLASHSHSHS: ', tasks
+    console.log "task descrip", taskDescription
+    console.log 'taskDescription.tool: ', taskDescription.tool
 
     annotation = tasks[taskDescription.tool].getDefaultAnnotation() # sets {value: null}
     annotation.task = taskKey # e.g. {task: "cool"}
@@ -102,7 +105,7 @@ module.exports = React.createClass # rename to Classifier
 
   loadNextTask: (nextTask) ->
     if nextTask is null
-      console.log 'NOTING LEFT TO DO'
+      console.log 'NOTHING LEFT TO DO'
       return
     console.log 'LOADING NEXT TASK: ', nextTask
     @addAnnotationForTask.bind this, nextTask
@@ -111,7 +114,9 @@ module.exports = React.createClass # rename to Classifier
     @props.classification.update
       completed: true
       subject_set: @state.currentSubjectSet
+      workflow_id: @state.workflow.id
       'metadata.finished_at': (new Date).toISOString()
+    @props.classification.save()  
     @props.onComplete?()
     console.log 'CLASSIFICATION: ', @props.classification
 

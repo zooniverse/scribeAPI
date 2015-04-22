@@ -9,19 +9,31 @@ class ClassificationsController < ApplicationController
 
   def create
     annotations = params["annotations"]
-    subject_id  = BSON::ObjectId.from_string params["subject_id"]
-    workflow_id = BSON::ObjectId.from_string params["workflow_id"]
+    subject_set_id  = BSON::ObjectId.from_string params["classifications"]["subject_set"]["id"]
+    workflow_id = BSON::ObjectId.from_string params["classifications"]["workflow_id"]
 
-    location         = params["location"]
-    annotations      = params["annotations"]
-    started_at       = params["started_at"]
-    finished_at      = params["finished_at"]
-    user_agent       = params["user_agent"]
-    # user_id     = BSON::ObjectId.from_string params["user_id"]
+    # location         = params["location"] 
+    annotations      = params["classifications"]["annotations"]
+    started_at       = params["classifications"]["metadata"]["started_at"]
+    finished_at      = params["classifications"]["metadata"]["finished_at"]
+    user_agent       = request.headers["HTTP_USER_AGENT"]
+    #TODO
+    #user_id     = BSON::ObjectId.from_string params["user_id"]
+    #use subject_id params
+    subject_id = session.id #this should change, auth currently not working
+    annotations.each do |annotation|
+      subject_id = annotation["subject_id"]
+      annotation
+    end 
 
-    # TODO: still need to add user_id
-
-    @result = Classification.create( workflow_id: workflow_id, subject_id: subject_id, location: location, annotations: annotations, started_at: started_at, finished_at: finished_at, user_agent: user_agent )
+    @result = Classification.create( 
+      workflow_id: workflow_id, 
+      subject_id: subject_id, 
+      location: location, 
+      annotations: annotations, 
+      started_at: started_at, 
+      finished_at: finished_at, 
+      user_agent: user_agent )
     respond_with @result
   end
 end
