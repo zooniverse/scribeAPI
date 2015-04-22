@@ -17,14 +17,16 @@ class Subject
   field :type,                 type: String,  default: "root"
   field :meta_data,            type: Hash
   field :retire_count,         type: Integer
-  field :child_subjects,       type: Hash
 
   after_create :update_subject_set_stats
 
   belongs_to :workflow
   has_many :classifications
   has_many :favourites
-  has_one :parent_subject, :class_name => "Subject"
+
+  belongs_to :parent_subject, :class_name => "Subject", :foreign_key => "parent_subject_id"  
+  has_many :child_subjects, :class_name => "Subject"
+  
   belongs_to :subject_set
 
 
