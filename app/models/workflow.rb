@@ -35,6 +35,7 @@ class Workflow
 
 
   def create_secondary_subjects(classification)
+    binding.pry
     # for each value in annotation
     primary_subject_id = classification.subject.id
     subject_set_id = classification.subject.subject_set.id
@@ -47,10 +48,15 @@ class Workflow
             workflow_id: workflow_id ,
             subject_set_id: subject_set_id,
             retire_count: 3,
-            width: value["width"],
-            height: value["height"],
-            meta_data: { primary_subject_id: primary_subject_id, x: value["x"], y: value["y"] }
-            )
+            location: { 
+              uri: classification.subject.file_path,
+              primary_subject_id: primary_subject_id, 
+              x: value["x"], 
+              y: value["y"],
+              width: value["width"],
+              height: value["height"]
+            }
+          )
         end
       end
 
