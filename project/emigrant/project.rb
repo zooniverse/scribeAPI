@@ -2,6 +2,7 @@ Specific_project = {
   title: "Emigrant Savings Bank",
   short_title: "Emigrant",
   summary: "Emmmmigrannnnnt Savinnnnnnnngs Baaaaannk",
+  background: "background.jpg",
   team: [
     {
       name: "Brian Foo",
