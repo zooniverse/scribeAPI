@@ -3,19 +3,27 @@
 desc 'creates a poject object from the project directory'
 
   task :project_load, [:project_name] => :environment do |task, args|
-    project_file_path = Rails.root.join('project', args[:project_name], 'project.rb')
+    project_dir = Rails.root.join('project', args[:project_name])
+    project_file_path = "#{project_dir}/project.rb"
 
     load project_file_path
     project = Project.find_or_create_by title: Specific_project[:title]
     project.update({
       short_title: Specific_project[:short_title],
       summary: Specific_project[:summary],
-      organizations: Specific_project[:organizations] ,
+      organizations: Specific_project[:organizations],
+      background: Specific_project[:background],
       team: Specific_project[:team],
       forum: Specific_project[:forum],
       pages: []
     })
 
+    puts "Setting background image..."
+    cp("#{project_dir}/background.jpg", Rails.root.join("app", "assets", "images"))
+
+
+    # copy(project.background, "../app/assets/images/#{project.background}")
+    # puts "GLOB: ", Dir.glob("#{project_dir}/background.jpg")
     puts "Project: Created '#{project.title}'"
 
     # Load pages from content/*:

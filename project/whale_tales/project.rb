@@ -1,6 +1,7 @@
 Specific_project = {
   title: "Animals vs Cats",
   summary: "We want to see if (yes obviously) cats are better than animals",
+  background: "background.jpg",
   team: [
     {name: "Stuart Lynn",
      role: "Cat lover",
