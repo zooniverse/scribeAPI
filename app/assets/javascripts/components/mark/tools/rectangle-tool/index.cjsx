@@ -132,7 +132,7 @@ module.exports = React.createClass
       >
 
         <Draggable onDrag = {@handleMainDrag} >
-          <polyline points={points} strokeWidth="5" stroke="orange" fill="none"/>
+          <polyline points={points} strokeWidth="2" stroke="orange" fill="none"/>
         </Draggable>
 
         { if @props.selected

@@ -4,7 +4,7 @@ class Subject
   include Randomizer
 
   field :name,                 type: String
-  field :thumbnail,             type: String
+  field :thumbnail,            type: String
   field :file_path
   field :order
   field :width
@@ -13,16 +13,20 @@ class Subject
   field :location,             type: Hash
   field :random_no ,           type: Float
   field :classification_count, type: Integer, default: 0
-  field :state ,               type: String, default: "active"
-  field :type,                 type: String, default: "root"
+  field :state ,               type: String,  default: "active"
+  field :type,                 type: String,  default: "root"
   field :meta_data,            type: Hash
   field :retire_count,         type: Integer
 
   after_create :update_subject_set_stats
 
   belongs_to :workflow
+  has_many :classifications
   has_many :favourites
-  has_one :parent_subject, :class_name => "Subject"
+
+  belongs_to :parent_subject, :class_name => "Subject", :foreign_key => "parent_subject_id"  
+  has_many :child_subjects, :class_name => "Subject"
+  
   belongs_to :subject_set
 
 

@@ -24,6 +24,7 @@
     "identify_records":{
       "tool": "drawing",
       "instruction": "Pick a field and mark it with the corresponding marking tool.",
+      "generated_for_workflow" : "",
       "tools": [
         {"type": "superAwesomePointTool", "label": "Records (point)", "color": "red"},
         {"type": "rectangleTool", "label": "Records (rectangle)", "color": "green"},

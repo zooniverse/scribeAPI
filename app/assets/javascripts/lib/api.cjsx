@@ -8,4 +8,4 @@ DEFAULT_HEADERS =
 
 client = new JSONAPIClient PATH_TO_API_ROOT, DEFAULT_HEADERS
 
-module.exports =client
+module.exports = client
