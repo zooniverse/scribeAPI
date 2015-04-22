@@ -12,6 +12,7 @@ App = React.createClass
 
 
   render: ->
+    console.log 'PROPS: ', @props
     <div>
       <div className="readymade-site-background">
         <div className="readymade-site-background-effect"></div>

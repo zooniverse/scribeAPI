@@ -1,20 +1,21 @@
 Specific_project = {
-  title: "Animals vs Cats",
+  title: "Sample Scribe Project",
   summary: "We want to see if (yes obviously) cats are better than animals",
+  background: "example_background.jpg",
   team: [
     {name: "Stuart Lynn",
      role: "Cat lover",
      image: "http://stuart.com/stuart.jpg",
      organization: "zooniverse",
      },
-
-    {name: "Sascha Ishikawa",
+    {
+      name: "Sascha Ishikawa",
       role: "Cat",
       image: "http://sascha.com/cat.jpg",
       organization: "zooniverse",
     },
-
-    {name: "Andrea Simenstad",
+    {
+      name: "Andrea Simenstad",
       role: "Not a cat(probably)",
       image: "http://Andrea.com/Andrea.jpg",
       organization: "UofM",

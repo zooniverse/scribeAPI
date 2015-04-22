@@ -39,6 +39,10 @@ DynamicRouter = React.createClass
     return null unless @state.pages? # do nothing until project loads from API
     workflows = @state.project.workflows
 
+    <div className="readymade-site-background">
+      <div className="readymade-site-background-effect"></div>
+    </div>
+
     <div className="panoptes-main">
       <MainHeader pages={@state.pages} short_title={@state.project.short_title} />
       <div className="main-content">
