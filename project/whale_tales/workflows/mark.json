@@ -24,6 +24,7 @@
     },
     "identify_records":{
       "tool": "drawing",
+      "generates_subjects": true,
       "instruction": "Pick a field and mark it with the corresponding marking tool.",
       "tools": [
         {"type": "superAwesomePointTool", "label": "Records (point)", "color": "red"},

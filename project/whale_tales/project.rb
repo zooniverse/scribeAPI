@@ -1,5 +1,5 @@
 Specific_project = {
-  title: "The Whaling Logs",
+  title: "The New Bedford Whaling Logs",
   short_title: "Whale Tales",
   summary: "We want to see if (yes obviously) cats are better than animals",
   background: "background.jpg",
