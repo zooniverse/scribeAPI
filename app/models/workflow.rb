@@ -50,7 +50,7 @@ class Workflow
             parent_subject_id: parent_subject_id, 
             location: { 
               uri: classification.subject.file_path,
-              spec: value
+              spec: value.except(:key)
             }
           )
         parent_subject = classification.subject
