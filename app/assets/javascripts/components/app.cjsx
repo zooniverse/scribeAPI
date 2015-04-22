@@ -8,7 +8,7 @@ API                           = require '../lib/api'
 GroupPage                     = require './group-page'
 
 window.API = API
-DynamicRouter = React.createClass
+App = React.createClass
 
   getInitialState: ->
     project: null
@@ -94,5 +94,4 @@ DynamicRouter = React.createClass
         </div>
       </div>
     </div>
-
-module.exports = DynamicRouter
+module.exports = App
