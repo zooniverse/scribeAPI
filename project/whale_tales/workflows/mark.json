@@ -5,7 +5,7 @@
   "enables_workflows":{
 
   },
-  "first_task":"identify_records",
+  "first_task":"determine_has_records",
   "tasks":{
     "determine_has_records":{
       "order":0,
