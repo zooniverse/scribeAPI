@@ -18,6 +18,7 @@ class SubjectSetsController < ApplicationController
       sets = SubjectSet.where(query)
     end
 
+
     # Randomizer#random seems to want query criteria passed in under :selector key:
   	respond_with sets, each_serializer: SubjectSetSerializer, workflow_id: workflow_id
   end
