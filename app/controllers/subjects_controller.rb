@@ -4,7 +4,7 @@ class SubjectsController < ApplicationController
   def index
   	workflow_id  = params["workflow_id"]
     # Randomizer#random seems to want query criteria passed in under :selector key:
-  	respond_with  Subject.where(workflow_id: workflow_id)
+  	respond_with  Subject.where(workflow_id: workflow_id).random()
   end
 
 end
