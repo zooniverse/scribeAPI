@@ -2,30 +2,58 @@
   "name":"mark",
   "label":"Mark Workflow",
   "subject_fetch_limit":"10",
+  "generates_new_subjects": true,
+  "generate_new_subjects_at_classification_count": 1,
   "enables_workflows":{
-
   },
-  "first_task":"determine_has_records",
+  "first_task":"pick_page_type",
   "tasks":{
-    "determine_has_records":{
+    "pick_page_type":{
       "order":0,
       "tool":"pick_one",
-      "instruction":"Does this page have records?",
+      "instruction":"What kind of page is this?",
       "options":{
-        "yes":{
-          "label":"Yes",
-          "next_task":"identify_records"
+        "history_sheet":{
+          "label":"history_sheet",
+          "next_task":"history_form_task"
         },
-        "no":{
-          "label":"Nope",
-          "next_task":"null_task"
+        "casualty_form":{
+          "label":"casualty_form",
+          "next_task":"casualty_form_task"
+        },
+        "attestation_form":{
+          "label":"attestation_form",
+          "next_task":"attestation_form_task"
         }
       }
     },
-    "identify_records":{
-      "tool": "drawing",
-      "generates_subjects": true,
-      "instruction": "Pick a field and mark it with the corresponding marking tool.",
+    "attestation_form_task":{
+      "generate_subjects": true,
+      "tool":"drawing",
+      "instruction":"Draw a rectangle around each record.",
+      "tools": [
+        {"type": "superAwesomePointTool", "label": "Records (point)", "color": "red"},
+        {"type": "rectangleTool", "label": "Records (rectangle)", "color": "green"},
+        {"type": "textRowTool", "label": "Records (row)", "color": "blue"}
+      ],
+      "next_task": null
+    },
+    "history_form_task":{
+      "generate_subjects": true,
+      "tool":"drawing",
+      "instruction":"Draw a rectangle around each record.",
+      "tools": [
+        {"type": "rectangleTool", "label": "Occupation", "color": "green"},
+        {"type": "rectangleTool", "label": "Surname", "color": "green"},
+        {"type": "rectangleTool", "label": "Christian name", "color": "green"},
+        {"type": "rectangleTool", "label": "Wounds", "color": "green"}
+      ],
+      "next_task": null
+    },
+    "casualty_form_task":{
+      "generate_subjects": true,
+      "tool":"drawing",
+      "instruction":"Draw a rectangle around each record.",
       "tools": [
         {"type": "superAwesomePointTool", "label": "Records (point)", "color": "red"},
         {"type": "rectangleTool", "label": "Records (rectangle)", "color": "green"},
