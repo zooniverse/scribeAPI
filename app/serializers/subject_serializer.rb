@@ -1,5 +1,5 @@
 class SubjectSerializer < ActiveModel::MongoidSerializer
-  attributes :id, :workflow_id, :name, :location, :classification_count, :child_subjects, :meta_data, :user_favourite
+  attributes :id, :parent_subject_id, :workflow_id, :name, :location, :classification_count, :child_subjects, :meta_data, :user_favourite
   delegate :current_user, to: :scope
 
   def id
