@@ -12,10 +12,10 @@ class SubjectSetsController < ApplicationController
       query = {}
     end
 
-    if params["random"]
+    if random
       sets = SubjectSet.random(selector: query, limit: limit)
     else
-      sets = SubjectSet.where(query)
+      sets = SubjectSet.limit(limit)
     end
 
 
