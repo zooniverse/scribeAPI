@@ -8,9 +8,9 @@ class SubjectsController < ApplicationController
 
     # Randomizer#random seems to want query criteria passed in under :selector key:
   	if random
-      respond_with Subject.random(limit: limit)
+      respond_with Subject.where(workflow_id: workflow_id).random(limit: limit)
     else
-      respond_with Subject.limit(limit)
+      respond_with Subject.where(workflow_id: workflow_id).limit(limit)
     end
   end
 

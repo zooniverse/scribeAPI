@@ -19,5 +19,4 @@ class SubjectSetSerializer < ActiveModel::MongoidSerializer
     end
   end
 
-
 end
