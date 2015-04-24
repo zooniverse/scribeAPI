@@ -10,6 +10,9 @@
 # http://github.com/RailsApps/rails-composer/issues
 #----------------------------------------------------------------------------
 
+# background image which changes based on which project is loaded
+public/background.jpg
+
 # bundler state
 /.bundle
 /vendor/bundle/
