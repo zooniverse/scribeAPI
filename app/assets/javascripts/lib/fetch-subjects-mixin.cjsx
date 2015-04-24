@@ -32,8 +32,7 @@ module.exports =
       @setState
         subjectSets: subject_sets
         currentSubjectSet: subject_sets[0]
-
+        
     # WHY DOES THIS BREAK?
     # request.error (xhr, status, err) =>
     #   console.error "Error loading subjects: ", url, status, err.toString()
-

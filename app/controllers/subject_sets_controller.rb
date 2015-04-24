@@ -19,14 +19,15 @@ class SubjectSetsController < ApplicationController
     end
 
     # Randomizer#random seems to want query criteria passed in under :selector key:
-  	respond_with sets, each_serializer: SubjectSetSerializer, workflow_id: workflow_id
+  	respond_with sets, each_serializer: SubjectSetSerializer, workflow_id: workflow_id, limit: limit, random: random
   end
 
-  def show
-    set = SubjectSet.find(params[:id])
-    workflow_id  = params["workflow_id"]
-
-    respond_with set, serializer: SubjectSetSerializer, workflow_id: workflow_id
-  end
+  # DOES NOT APPEAR TO BE IN USE -STI
+  # def show
+  #   set = SubjectSet.find(params[:id])
+  #   workflow_id  = params["workflow_id"]
+  #
+  #   respond_with set, serializer: SubjectSetSerializer, workflow_id: workflow_id
+  # end
 
 end

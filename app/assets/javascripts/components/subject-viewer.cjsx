@@ -89,6 +89,8 @@ module.exports = React.createClass
     console.log "sv PROPS", @props
     @props.annotation["subject_id"] = @props.subject.id
     @props.annotation["workflow_id"] = @props.workflow.id
+    
+    
 
     taskDescription = @props.workflow.tasks[@props.annotation.task]
 
@@ -278,25 +280,11 @@ module.exports = React.createClass
 
                     mark._key ?= Math.random()
                     toolDescription = taskDescription.tools[mark.tool]
-
-                    # console.log 'MARK TOOL: ', mark.tool
-
-                    # toolEnv =
-                    #   scale: @getScale()
-                    #   disabled: isPriorAnnotation
-                    #   selected: mark is @state.selectedMark
-                    #   getEventOffset: @getEventOffset
-                    #   # ref: 'selectedTool' if mark is @state.selectedMark
-
-                    # toolProps =
-                    #   mark: mark
-                    #   color: toolDescription.color
-
-                    # toolMethods =
-                    #   onChange: @updateAnnotations
-                    #   # onSelect: @selectMark.bind this, annotation, mark
-                    #   # onDestroy: @destroyMark.bind this, annotation, mark
-
+                    console.log "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+                    console.log "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+                    console.log "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+                    console.log "toolDescription", @props.workflow.tasks[annotation.task].tools[mark.tool]
+                    @props.annotation["tool_task_description"] = @props.workflow.tasks[annotation.task].tools[mark.tool]
                     ToolComponent = markingTools[toolDescription.type]
 
                     <ToolComponent 
