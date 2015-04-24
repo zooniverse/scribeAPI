@@ -36,6 +36,7 @@ class Workflow
 
   def create_secondary_subjects(classification)
     # for each value in annotation
+    binding.pry
     parent_subject_id = classification.subject.id
     subject_set_id = classification.subject.subject_set.id
     workflow_id = Workflow.find_by(name: "transcribe").id
