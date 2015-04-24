@@ -67,5 +67,4 @@ desc 'creates a poject object from the project directory'
     Rake::Task['project_setup'].invoke(args[:project_name])
 
     puts "Done loading \"#{project.title}\" with #{project.workflows.count} workflow(s), #{project.subject_sets.count} subject sets."
-    # binding.pry
   end
