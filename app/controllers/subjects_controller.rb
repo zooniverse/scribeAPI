@@ -14,4 +14,9 @@ class SubjectsController < ApplicationController
     end
   end
 
+  def show
+    subject_id  = params["subject_id"]
+    respond_with  Subject.find_by( _id: params[:subject_id] )
+  end
+
 end

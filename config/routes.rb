@@ -17,7 +17,7 @@ API::Application.routes.draw do
 
   get '/workflows/:workflow_id/subjects' => 'subjects#index'
   get '/workflows/:workflow_id/subject_sets' => 'subject_sets#index'
-  get '/subjects/:subject_id', to: 'classifications#show', defaults: { format: 'json'}
+  get '/subjects/:subject_id', to: 'subjects#show', defaults: { format: 'json'}
 
   resources :favourites, defaults: {format: 'json'}
 
