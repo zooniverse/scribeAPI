@@ -34,6 +34,7 @@ module.exports = React.createClass
       y: e.pageY
 
   handleStart: (e) ->
+    return if e.target.nodeName is "INPUT" or e.target.nodeName is "TEXTAREA"
     e.preventDefault()
 
     @_rememberCoords e

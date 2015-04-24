@@ -2,6 +2,7 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
   attributes :id, :name, :location, :classification_count, :child_subjects, :meta_data, :user_favourite
   delegate :current_user, to: :scope
 
+
   def id
     object._id.to_s
   end

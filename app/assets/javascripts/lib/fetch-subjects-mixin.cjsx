@@ -31,6 +31,7 @@ module.exports =
           subjects: subjects
           currentSubject: subjects[0]
 
+        console.log 'considering calling callback: ', @
         # Does including instance have a defined callback to call when new subjects received?
         if @fetchSubjectsCallback?
           @fetchSubjectsCallback()

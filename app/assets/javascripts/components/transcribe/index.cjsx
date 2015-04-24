@@ -59,6 +59,7 @@ module.exports = React.createClass
     
     key = @translateLogicTaskKey key
     task = @state.workflow.tasks[ key ]
+    task.key = key
     
     tool = core_tools[task?.tool] ? transcribe_tools[task?.tool]
     if ! task?
@@ -93,9 +94,16 @@ module.exports = React.createClass
       return matched_option.task
 
 
+  viewerResize: (size) ->
+    if (tool = @refs.taskComponent)?
+      tool.onViewerResize size
+      console.log "viewer resize: ", size, tool
+
   render: ->
     return null unless @state.currentSubject?
 
+    # TODO: HACK HACK HACK
+    return null if @state.currentTask.tool == 'switch_on_value'
 
     console.log "Transcribe#render: subject=", @state.currentSubject
 
@@ -118,11 +126,11 @@ module.exports = React.createClass
 
     <div className="classifier">
       <div className="subject-area">
-        <SubjectViewer subject={@state.currentSubject} active=true workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation} />
+        <SubjectViewer onResize={@viewerResize} subject={@state.currentSubject} active=true workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation} />
       </div>
       <div className="task-area">
         <div className="task-container">
-          <TaskComponent task={@state.currentTask} annotation={currentAnnotation} onChange={@handleTaskComponentChange} workflow={@props.workflow}/>
+          <TaskComponent ref="taskComponent" task={@state.currentTask} annotation={currentAnnotation} subject={@state.currentSubject} onChange={@handleTaskComponentChange} workflow={@props.workflow}/>
           <hr/>
           <nav className="task-nav">
             <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>

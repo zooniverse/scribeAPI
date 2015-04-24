@@ -29,6 +29,11 @@ module.exports = React.createClass
 
     active: @props.active
 
+
+  getDefaultProps: ->
+    tool: null # Optional tool to place alongside subject (e.g. transcription tool placed alongside mark)
+    onResize: null
+
   componentDidMount: ->
     @setView 0, 0, @state.imageWidth, @state.imageHeight
     @loadImage @state.subject.location.standard
@@ -45,6 +50,14 @@ module.exports = React.createClass
       windowInnerWidth: window.innerWidth
       windowInnerHeight: window.innerHeight
 
+    # console.log "resize...", @refs.sizeRect
+    # console.log "if ! ", @state.loading, @getScale(), @props.onResize
+    if ! @state.loading && @getScale()? && @props.onResize?
+      scale = @getScale()
+      # console.log "scale: ", scale, @state.imageWidth, @state.imageHeight
+      translated = {w: scale.horizontal * @state.imageWidth, h: scale.vertical * @state.imageHeight, scale: scale}
+      @props.onResize translated
+
   loadImage: (url) ->
     @setState loading: true, =>
       img = new Image()
@@ -52,11 +65,14 @@ module.exports = React.createClass
       # console.log 'URL: ', url
       img.onload = =>
         if @isMounted()
+
           @setState
             url: url
             imageWidth: img.width
             imageHeight: img.height
-            loading: false 
+            loading: false
+
+          @updateDimensions()
               #, => console.log 'url: ', url
             # console.log @state.loading
             # console.log "Finished Loading."
@@ -165,11 +181,13 @@ module.exports = React.createClass
   setView: (viewX, viewY, viewWidth, viewHeight) ->
     @setState {viewX, viewY, viewWidth, viewHeight}
 
+  # PB This is not returning anything but 0, 0 for me; Seems like @refs.sizeRect is empty when evaluated (though nonempty later)
   getScale: ->
     rect = @refs.sizeRect?.getDOMNode().getBoundingClientRect()
     rect ?= width: 0, height: 0
     horizontal = rect.width / @state.imageWidth
     vertical = rect.height / @state.imageHeight
+    # TODO hack fallback:
     return {horizontal, vertical}
 
   getEventOffset: (e) ->
@@ -289,6 +307,10 @@ module.exports = React.createClass
                 />
               }
             </g>
+          }
+          { if @props.tool?
+            console.log "SubjectViewer#render: ", @props.annotation, @props.subject, scale.vertical, scale.horizontal
+            <@props.tool annotation={@props.annotation} subject={@props.subject} yScale={scale.vertical} xScale={scale.horizontal} workflow={@props.workflow}/>
           }
           { for annotation in @props.classification.annotations
               annotation._key ?= Math.random()

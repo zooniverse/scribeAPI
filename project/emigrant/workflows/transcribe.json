@@ -22,12 +22,14 @@
 
     "em_transcribe_building_address": {
       "tool": "text_tool",
-      "tool_options": {}
+      "tool_options": {},
+      "instruction": "Enter the building address"
     },
 
     "em_transcribe_building_description": {
       "tool": "text_tool",
-      "tool_options": {}
+      "tool_options": {},
+      "instruction": "Enter the building description"
     }
   },
 
