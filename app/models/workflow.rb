@@ -44,11 +44,13 @@ class Workflow
     classification.annotations.each do |annotation|
       if annotation["generate_subjects"]
         annotation["value"].each do |value|
+          binding.pry
           child_subject = Subject.create(
             workflow_id: workflow_id ,
             subject_set_id: subject_set_id,
             retire_count: 3,
-            parent_subject_id: parent_subject_id, 
+            parent_subject_id: parent_subject_id,
+            tool_task_description: annotation["tool_task_description"], 
             location: { 
               uri: classification.subject.file_path,
               spec: value.except(:key)

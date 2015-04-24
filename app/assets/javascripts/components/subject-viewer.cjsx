@@ -280,6 +280,10 @@ module.exports = React.createClass
 
                     mark._key ?= Math.random()
                     toolDescription = taskDescription.tools[mark.tool]
+                    console.log "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+                    console.log "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+                    console.log "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+                    console.log "toolDescription", @props.workflow.tasks[annotation.task].tools[mark.tool]
                     @props.annotation["tool_task_description"] = @props.workflow.tasks[annotation.task].tools[mark.tool]
                     ToolComponent = markingTools[toolDescription.type]
 
