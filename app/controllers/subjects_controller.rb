@@ -10,7 +10,7 @@ class SubjectsController < ApplicationController
   	if random
       respond_with Subject.random(limit: limit)
     else
-      respond_with  Subject.limit(limit)
+      respond_with Subject.limit(limit)
     end
   end
 

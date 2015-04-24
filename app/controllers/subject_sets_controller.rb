@@ -12,15 +12,14 @@ class SubjectSetsController < ApplicationController
       query = {}
     end
 
-    if random
+    if params["random"]
       sets = SubjectSet.random(selector: query, limit: limit)
     else
-      sets = SubjectSet.limit(limit)
+      sets = SubjectSet.where(query)
     end
 
-
     # Randomizer#random seems to want query criteria passed in under :selector key:
-  	respond_with sets, each_serializer: SubjectSetSerializer, workflow_id: workflow_id
+  	respond_with sets, each_serializer: SubjectSetSerializer, workflow_id: workflow_id, limit: limit, random: random
   end
 
   def show
