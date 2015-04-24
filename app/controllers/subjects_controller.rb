@@ -3,14 +3,19 @@ class SubjectsController < ApplicationController
 
   def index
   	workflow_id  = params["workflow_id"]
+    parent_subject_id = params["parent_subject_id"]
     random = params["random"] || false
     limit = params["limit"].to_i || 10
 
-    # Randomizer#random seems to want query criteria passed in under :selector key:
-  	if random
-      respond_with Subject.where(workflow_id: workflow_id).random(limit: limit)
+    if parent_subject_id
+      respond_with Subject.where(workflow_id: workflow_id, parent_subject_id: parent_subject_id)
     else
-      respond_with Subject.where(workflow_id: workflow_id).limit(limit)
+      # Randomizer#random seems to want query criteria passed in under :selector key:
+    	if random
+        respond_with Subject.where(workflow_id: workflow_id1).random(limit: limit)
+      else
+        respond_with Subject.where(workflow_id: workflow_id).limit(limit)
+      end
     end
   end
 

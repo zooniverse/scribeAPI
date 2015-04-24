@@ -9,6 +9,7 @@ module.exports =
       @fetchSubjects @props.workflow.id, @props.workflow.subject_fetch_limit
 
   fetchSubject: (subject_set_id, workflow_id)->
+    console.log 'BLAH'
     request = API.type("subject_sets").get(subject_set_id, workflow_id: workflow_id)
 
     @setState
@@ -36,4 +37,3 @@ module.exports =
     # WHY DOES THIS BREAK?
     # request.error (xhr, status, err) =>
     #   console.error "Error loading subjects: ", url, status, err.toString()
-
