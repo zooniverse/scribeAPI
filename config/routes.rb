@@ -15,6 +15,10 @@ API::Application.routes.draw do
   get '/projects/stats', to: 'projects#stats'
 
 
+
+  get '/project/style.css',   to: 'projects#project_css', defaults: { format: 'css' }
+
+
   get '/workflows/:workflow_id/subjects' => 'subjects#index'
   get '/workflows/:workflow_id/subject_sets' => 'subject_sets#index'
   get '/subjects/:subject_id', to: 'classifications#show', defaults: { format: 'json'}

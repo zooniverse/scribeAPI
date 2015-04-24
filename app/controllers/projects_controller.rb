@@ -10,4 +10,7 @@ class ProjectsController < ApplicationController
     render :json => {:project => project, :stats => project.stats}
   end
 
+  def project_css
+    render text: Project.current.styles
+  end
 end
