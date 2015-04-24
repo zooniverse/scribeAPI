@@ -36,6 +36,7 @@ class Workflow
 
   def create_secondary_subjects(classification)
     # for each value in annotation
+    binding.pry
     parent_subject_id = classification.subject.id
     subject_set_id = classification.subject.subject_set.id
     workflow_id = Workflow.find_by(name: "transcribe").id
@@ -43,14 +44,16 @@ class Workflow
     classification.annotations.each do |annotation|
       if annotation["generate_subjects"]
         annotation["value"].each do |value|
+          binding.pry
           child_subject = Subject.create(
             workflow_id: workflow_id ,
             subject_set_id: subject_set_id,
             retire_count: 3,
-            parent_subject_id: parent_subject_id, 
+            parent_subject_id: parent_subject_id,
+            tool_task_description: annotation["tool_task_description"], 
             location: { 
               uri: classification.subject.file_path,
-              spec: value
+              spec: value.except(:key)
             }
           )
         parent_subject = classification.subject

@@ -39,8 +39,8 @@ App = React.createClass
     return null unless @state.pages? # do nothing until project loads from API
     workflows = @state.project.workflows
 
-    style =
-      backgroundImage: "url(#{@state.project.background})"
+    style = {}
+    style.backgroundImage = "url(#{@state.project.background})" if @state.project.background?
 
     <div>
       <div className="readymade-site-background" style={style}>
