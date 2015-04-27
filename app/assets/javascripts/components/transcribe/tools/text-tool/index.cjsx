@@ -1,5 +1,5 @@
 # @cjsx React.DOM
-React = require 'react'
+React           = require 'react'
 Draggable       = require '../../../../lib/draggable'
 DoneButton      = require './done-button'
 
@@ -16,12 +16,12 @@ TextTool = React.createClass
       xClick: e.pageX - $('.transcribe-tool').offset().left
       yClick: e.pageY - $('.transcribe-tool').offset().top
 
-  handleInitDrag: (e) ->
+  handleInitDrag: (e, delta) ->
 
     return if @state.preventDrag # not too happy about this one
 
     dx = e.pageX - @state.xClick - window.scrollX
-    dy = e.pageY - @state.yClick - window.scrollY
+    dy = e.pageY - @state.yClick # + window.scrollY
 
     @setState
       dx: dx
@@ -37,7 +37,7 @@ TextTool = React.createClass
     subject: null
    
   componentWillReceiveProps: ->
-    @setState
+    # ...
 
 
   onViewerResize: (size) ->
@@ -52,48 +52,46 @@ TextTool = React.createClass
       viewerScale: scale # cause horiz should = vert...
       dx: dx
       dy: dy
-      # viewerWidth: size.w
-      # viewerHeight: size.h
-      
 
-  handleInputChange: (e) ->
-    console.log "handle input change: ", e
-
-  handleClick: (e) ->
-    console.log "click: ", e
-
-  handleFocus: (e) ->
-    console.log "focus: ", e
+  commitAnnotation: ->
+    annotation = @props.annotation
+    annotation = @refs.input0.state.value
+    @props.onComplete annotation
 
   render: ->
-    return null if ! @state.viewerScale?
+    return null unless @props.viewerSize? && @props.subject?
 
-    # console.log 'render()'
-    # console.log "[left, top] = [#{@state.dx}, #{@state.dy}]"
-    console.log "TextTool#render: ", @state, @props.task.instruction
-    
-    style =
-      left: @state.dx
-      top: @state.dy
+    # console.log "TextTool#render: ", @props, @state
 
-    <div className="transcribe-tool-container">
-      <Draggable
-        onStart = {@handleInitStart}
-        onDrag  = {@handleInitDrag}
-        onEnd   = {@handleInitRelease}>
+    # If user has set a custom position, position based on that:
+    if @state.dragged
+      style =
+        left: @state.dx
+        top: @state.dy
 
-        <div className="transcribe-tool" style={style}>
-          <div className="left">
-            <div className="input-field active">
-              <label>{@props.task.instruction}</label>
-              <input type="text" onFocus={@handleFocus} onClick={@handleClick} onChange={@handleInputChange}/>
-            </div>
-          </div>
-          <div className="right">
-            <DoneButton />
+    # Otherwise compute position based on location of secondary subject:
+    else
+      style =
+        left: "#{@props.subject.location.x / @props.viewerSize.w * 100}%"
+        top: "#{@props.subject.location.y / @props.viewerSize.h * 100}%"
+
+    <Draggable
+      onStart = {@handleInitStart}
+      onDrag  = {@handleInitDrag}
+      onEnd   = {@handleInitRelease}
+      ref     = "inputWrapper0">
+
+      <div className="transcribe-tool" style={style}>
+        <div className="left">
+          <div className="input-field active">
+            <label>{@props.task.instruction}</label>
+            <input ref="input0" type="text"/>
           </div>
         </div>
-      </Draggable>
-    </div>
+        <div className="right">
+          <DoneButton onClick={@commitAnnotation} />
+        </div>
+      </div>
+    </Draggable>
 
 module.exports = TextTool

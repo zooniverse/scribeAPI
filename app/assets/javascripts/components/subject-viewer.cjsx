@@ -32,7 +32,7 @@ module.exports = React.createClass
 
   getDefaultProps: ->
     tool: null # Optional tool to place alongside subject (e.g. transcription tool placed alongside mark)
-    onResize: null
+    onLoad: null
 
   componentDidMount: ->
     @setView 0, 0, @state.imageWidth, @state.imageHeight
@@ -40,7 +40,7 @@ module.exports = React.createClass
     window.addEventListener "resize", this.updateDimensions
 
   componentWillMount: ->
-    @updateDimensions()
+    # @updateDimensions()
 
   componentWillUnmount: ->
     window.removeEventListener "resize", this.updateDimensions
@@ -52,11 +52,14 @@ module.exports = React.createClass
 
     # console.log "resize...", @refs.sizeRect
     # console.log "if ! ", @state.loading, @getScale(), @props.onResize
-    if ! @state.loading && @getScale()? && @props.onResize?
+    if ! @state.loading && @getScale()? && @props.onLoad?
       scale = @getScale()
       # console.log "scale: ", scale, @state.imageWidth, @state.imageHeight
       translated = {w: scale.horizontal * @state.imageWidth, h: scale.vertical * @state.imageHeight, scale: scale}
-      @props.onResize translated
+      @props.onLoad translated
+
+      # console.log "refs: ", @refs
+      @refs.markingCanvas.getDOMNode().getBoundingClientRect() if @refs.markingCanvas?
 
   loadImage: (url) ->
     @setState loading: true, =>
@@ -117,7 +120,7 @@ module.exports = React.createClass
 
     mouseCoords = @getEventOffset e
 
-    console.log 'PROPS.ANNOTATION: ', @props.annotation
+    # console.log 'PROPS.ANNOTATION: ', @props.annotation
 
     if markIsComplete
       toolDescription = taskDescription.tools[@props.annotation._toolIndex]
@@ -134,14 +137,14 @@ module.exports = React.createClass
 
     MarkComponent = markingTools[toolDescription.type]
 
-    console.log 'FOO ', markingTools
+    # console.log 'FOO ', markingTools
 
     if MarkComponent.defaultValues?
       defaultValues = MarkComponent.defaultValues mouseCoords
       for key, value of defaultValues
         mark[key] = value
 
-    console.log 'BAR'
+    # console.log 'BAR'
 
     if MarkComponent.initStart?
       initValues = MarkComponent.initStart mouseCoords, mark, e
@@ -244,11 +247,15 @@ module.exports = React.createClass
     # console.log 'SUBJECT: ', @state.subject
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     ToolComponent = @state.tool
-    console.log "SubjectViewer#render tool=", @state.tool
+    # console.log "SubjectViewer#render tool=", @state.tool
     # console.log "subjviewer rendering with classification: ", @props.classification
     # console.log "Rendering #{if @props.active then 'active' else 'inactive'} subj viewer"
 
     scale = @getScale()
+    renderSize = {w: scale.horizontal * @state.imageWidth, h: scale.vertical * @state.imageHeight}
+    holderStyle =
+      width: "#{renderSize.w}px"
+      height: "#{renderSize.h}px"
 
     actionButton = 
       if @state.loading
@@ -287,10 +294,10 @@ module.exports = React.createClass
             isPriorAnnotation = true # ? 
             <g key={@props.subject.id} className="marks-for-annotation" data-disabled={isPriorAnnotation}>
               {
-                # taskDescription = @props.workflow.tasks[@props.subject.task_key]
-                # toolDescription = taskDescription.tools[mark.tool]
-                # ToolComponent = markingTools[toolDescription.type]
+                # Represent the secondary subject as a rectangle mark
+                # TODO Should really check the drawing tool used (encoded somehow in the 2ndary subject) and display a read-only instance of that tool. For now just defaulting to rect:
                 ToolComponent = markingTools['rectangleTool']
+                # TODO: Note that x, y, w h aren't scaled properly:
                 mark = {x: @props.subject.location.x, y: @props.subject.location.y, width: @props.subject.location.w, height: @props.subject.location.h}
 
                 <ToolComponent
@@ -307,10 +314,6 @@ module.exports = React.createClass
                 />
               }
             </g>
-          }
-          { if @props.tool?
-            console.log "SubjectViewer#render: ", @props.annotation, @props.subject, scale.vertical, scale.horizontal
-            <@props.tool annotation={@props.annotation} subject={@props.subject} yScale={scale.vertical} xScale={scale.horizontal} workflow={@props.workflow}/>
           }
           { for annotation in @props.classification.annotations
               annotation._key ?= Math.random()
@@ -363,10 +366,13 @@ module.exports = React.createClass
             }
         </svg>
 
+    #  Render any tools passed directly in in same parent div so that we can efficiently position them with respect to marks" 
+
     <div className="subject-viewer#{if @props.active then ' active' else ''}">
       <div className="subject-container">
         <div className="marking-surface">
           {markingSurfaceContent}
+          {@props.children}
         </div>
       </div>
     </div>

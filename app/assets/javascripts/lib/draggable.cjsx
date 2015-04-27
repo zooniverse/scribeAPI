@@ -52,7 +52,7 @@ module.exports = React.createClass
       startHandler e
 
   handleDrag: (e) ->
-    # console.log "handleDrag event", e
+    console.log "handleDrag event", e
     d =
       x: e.pageX - @_previousEventCoords.x
       y: e.pageY - @_previousEventCoords.y
