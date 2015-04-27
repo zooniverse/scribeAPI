@@ -1,34 +1,65 @@
 {
-  "name": "transcribe",
-  "label": "Transcribe Workflow",
-  "first_task": "journal_entry",
-  "tasks": {
-    "journal_date": {
-      "key": 0,
-      "tool": "singleDate",
-      "field_name": "date",
-      "label": "Date",
-      "instruction": "Please type-in the log date.",
-      "next_task": "journal_entry"
-    },
-    "journal_entry": {
-      "key": 1,
-      "tool": "textBlock",
-      "field_name": "journal_entry",
-      "label": "Journal Entry",
-      "instruction": "Please type-in the journal entry for this day.",
-      "next_task": "additional_comment"
-    },
-    "additional_comment": {
-      "key": 2,
-      "type": "textBlock",
-      "field_name": "other_entry",
-      "label": "Other Entry",
-      "instruction": "Type something, anything.",
-      "next_task": "nil"
-    }
+  "name":"transcribe",
+  "label":"Transcribe Workflow",
+  "subject_fetch_limit":"10",
+  "generates_new_subjects": true,
+  "generate_new_subjects_at_classification_count": 1,
+  "enables_workflows":{
   },
-  "enables_workflows": {
-
+  "first_task":"pick_page_type",
+  "tasks":{
+    "pick_page_type":{
+      "order":0,
+      "tool":"pick_one",
+      "instruction":"What kind of page is this?",
+      "options":{
+        "history_sheet":{
+          "label":"history_sheet",
+          "next_task":"history_form_task"
+        },
+        "casualty_form":{
+          "label":"casualty_form",
+          "next_task":"casualty_form_task"
+        },
+        "attestation_form":{
+          "label":"attestation_form",
+          "next_task":"attestation_form_task"
+        }
+      }
+    },
+    "attestation_form_task":{
+      "generate_subjects": true,
+      "tool":"drawing",
+      "instruction":"Draw a rectangle around each record.",
+      "tools": [
+        {"type": "superAwesomePointTool", "label": "Records (point)", "color": "red"},
+        {"type": "rectangleTool", "label": "Records (rectangle)", "color": "green"},
+        {"type": "textRowTool", "label": "Records (row)", "color": "blue"}
+      ],
+      "next_task": null
+    },
+    "history_form_task":{
+      "generate_subjects": true,
+      "tool":"drawing",
+      "instruction":"Draw a rectangle around each record.",
+      "tools": [
+        {"type": "rectangleTool", "label": "Occupation", "color": "green"},
+        {"type": "rectangleTool", "label": "Surname", "color": "green"},
+        {"type": "rectangleTool", "label": "Christian name", "color": "green"},
+        {"type": "rectangleTool", "label": "Wounds", "color": "green"}
+      ],
+      "next_task": null
+    },
+    "casualty_form_task":{
+      "generate_subjects": true,
+      "tool":"drawing",
+      "instruction":"Draw a rectangle around each record.",
+      "tools": [
+        {"type": "superAwesomePointTool", "label": "Records (point)", "color": "red"},
+        {"type": "rectangleTool", "label": "Records (rectangle)", "color": "green"},
+        {"type": "textRowTool", "label": "Records (row)", "color": "blue"}
+      ],
+      "next_task": null
+    }
   }
 }
