@@ -11,7 +11,7 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
   end
 
   def child_subjects
-    Subject.where(:parent_id => object.id)
+    object.child_subjects
   end
 
 end
