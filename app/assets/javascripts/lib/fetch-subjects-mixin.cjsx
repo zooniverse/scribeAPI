@@ -11,10 +11,10 @@ module.exports =
     if @props.workflow.name is "mark"
       @fetchSubjectSets @props.workflow.id, @props.workflow.subject_fetch_limit
     else
-      @fetchSubjects @props.params.subject_set_id,@props.workflow.id
+      @fetchSubjects @props.workflow.id, @props.workflow.subject_fetch_limit
 
-  fetchSubjects: (workflow_id, limit)->
-    request = API.type("subjects").get()
+  fetchSubjects: (workflow_id, limit) ->
+    request = API.type("subjects").get
       workflow_id: workflow_id
       limit: limit
       random: true
@@ -25,7 +25,6 @@ module.exports =
         currentSubject: subjects[0]
 
   fetchSubjectSets: (workflow_id, limit) ->
-    console.log 'FETCHING SUBJECT SETS'
     request = API.type('subject_sets').get
       workflow_id: workflow_id
       limit: limit

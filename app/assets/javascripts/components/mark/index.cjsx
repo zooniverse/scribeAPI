@@ -29,7 +29,6 @@ module.exports = React.createClass # rename to Classifier
       metadata: {}
       'metadata.started_at': (new Date).toISOString()
 
-
   componentWillMount: ->
     @addAnnotationForTask @props.workflow.first_task
 
@@ -116,7 +115,7 @@ module.exports = React.createClass # rename to Classifier
       subject_set: @state.currentSubjectSet
       workflow_id: @state.workflow.id
       'metadata.finished_at': (new Date).toISOString()
-    @props.classification.save()  
+    @props.classification.save()
     @props.onComplete?()
     console.log 'CLASSIFICATION: ', @props.classification
 
