@@ -12,8 +12,6 @@ class SubjectSetSerializer < ActiveModel::MongoidSerializer
     limit = serialization_options[:limit].to_i
     random = serialization_options[:random]
 
-
-
     if random
       object.subjects.where(workflow_id: workflow_id).random(limit: limit)
     else

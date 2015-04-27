@@ -17,10 +17,10 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
 
       rebuild_info = {
         id: child.id,
-        uri: child.location["uri"],
+        location_standard: child.location["standard"],
         relationship_to_parent: child.location["spec"],
         tool_type: child.tool_task_description["type"],
-        mark_label: child.tool_task_description["label"]
+        label: child.tool_task_description["label"]
       }
 
       child_subject_info << rebuild_info

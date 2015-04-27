@@ -49,8 +49,8 @@ class Workflow
             parent_subject_id: parent_subject_id,
             tool_task_description: annotation["tool_task_description"], 
             location: { 
-              uri: classification.subject.file_path,
-              spec: value.except(:key)
+              standard: classification.subject.file_path,
+              spec: value.except(:key, :tool)
             }
           )
         parent_subject = classification.subject

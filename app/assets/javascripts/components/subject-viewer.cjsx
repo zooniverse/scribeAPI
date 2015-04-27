@@ -269,6 +269,8 @@ module.exports = React.createClass
               height = {@state.imageHeight} />
           </Draggable>
 
+
+
           { for annotation in @props.classification.annotations
               annotation._key ?= Math.random()
               isPriorAnnotation = annotation isnt @props.annotation
