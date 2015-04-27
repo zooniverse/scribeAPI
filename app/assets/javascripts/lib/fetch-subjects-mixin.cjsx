@@ -9,6 +9,7 @@ module.exports =
       @fetchSubjects @props.workflow.id, @props.workflow.subject_fetch_limit
 
   fetchSubject: (subject_set_id, workflow_id)->
+    console.log "SUBJECT FETCH"
     request = API.type("subject_sets").get(subject_set_id, workflow_id: workflow_id)
 
     @setState

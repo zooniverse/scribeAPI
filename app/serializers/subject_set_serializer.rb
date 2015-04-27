@@ -17,6 +17,8 @@ class SubjectSetSerializer < ActiveModel::MongoidSerializer
     else
       object.subjects.where(workflow_id: workflow_id).limit(limit)
     end
+
+    
   end
 
 end
