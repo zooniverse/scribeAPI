@@ -21,7 +21,7 @@ module.exports = React.createClass
 
     subject: @props.subject
     classification: null
-    
+
     tool: @props.tool
     marks: []
     selectedMark: null
@@ -31,7 +31,7 @@ module.exports = React.createClass
 
   componentDidMount: ->
     @setView 0, 0, @state.imageWidth, @state.imageHeight
-    @loadImage @state.subject.location.standard
+    @loadImage @state.subject.location.uri
     window.addEventListener "resize", this.updateDimensions
 
   componentWillMount: ->
@@ -46,6 +46,7 @@ module.exports = React.createClass
       windowInnerHeight: window.innerHeight
 
   loadImage: (url) ->
+    console.log 'LOADING IMAGE: ', url
     @setState loading: true, =>
       img = new Image()
       img.src = url
@@ -56,7 +57,7 @@ module.exports = React.createClass
             url: url
             imageWidth: img.width
             imageHeight: img.height
-            loading: false 
+            loading: false, => console.log 'URL: ', url
               #, => console.log 'url: ', url
             # console.log @state.loading
             # console.log "Finished Loading."
@@ -89,15 +90,15 @@ module.exports = React.createClass
     console.log "sv PROPS", @props
     @props.annotation["subject_id"] = @props.subject.id
     @props.annotation["workflow_id"] = @props.workflow.id
-    
-    
+
+
 
     taskDescription = @props.workflow.tasks[@props.annotation.task]
 
     # setting flag for generation of new subjects
     if @props.workflow.tasks[@props.annotation.task].generate_subjects
       @props.annotation["generate_subjects"] = @props.workflow.tasks[@props.annotation.task].generate_subjects
-    
+
     mark = @state.selectedMark
 
 
@@ -238,7 +239,7 @@ module.exports = React.createClass
 
     scale = @getScale()
 
-    actionButton = 
+    actionButton =
       if @state.loading
         <ActionButton onAction={@nextSubject} className="disabled" text="Loading..." />
       else
@@ -287,8 +288,8 @@ module.exports = React.createClass
                     @props.annotation["tool_task_description"] = @props.workflow.tasks[annotation.task].tools[mark.tool]
                     ToolComponent = markingTools[toolDescription.type]
 
-                    <ToolComponent 
-                      key={mark._key} 
+                    <ToolComponent
+                      key={mark._key}
                       mark={mark}
                       xScale={scale.horizontal}
                       yScale={scale.vertical}
@@ -296,12 +297,12 @@ module.exports = React.createClass
                       selected={mark is @state.selectedMark}
                       getEventOffset={@getEventOffset}
                       ref={@refs.sizeRect}
-                      
-                      onChange={@updateAnnotations} 
+
+                      onChange={@updateAnnotations}
                       onSelect={@selectMark.bind this, annotation, mark}
                       onDestroy={@destroyMark.bind this, annotation}
                     />
-                  }  
+                  }
                 </g>
             }
         </svg>

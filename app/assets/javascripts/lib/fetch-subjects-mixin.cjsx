@@ -14,6 +14,7 @@ module.exports =
       @fetchSubjects @props.workflow.id, @props.workflow.subject_fetch_limit
 
   fetchSubjects: (workflow_id, limit) ->
+    console.log 'FETCHING SUBJECTS'
     request = API.type("subjects").get
       workflow_id: workflow_id
       limit: limit
@@ -22,9 +23,10 @@ module.exports =
     request.then (subjects)=>
       @setState
         subjects: subjects
-        currentSubject: subjects[0]
+        currentSubject: subjects[0], => console.log 'STATE: ', @state
 
   fetchSubjectSets: (workflow_id, limit) ->
+    console.log 'FETCHIN SUBJECT SETS'
     request = API.type('subject_sets').get
       workflow_id: workflow_id
       limit: limit
