@@ -207,6 +207,10 @@ module.exports = React.createClass
     # return null if @state.subjects is null or @state.subjects.length is 0
     # return null unless @state.subject?
     # console.log 'SUBJECT: ', @state.subject
+
+
+    console.log 'SUBJECT HAS MARKS: ', @state.subject.location.spec?
+
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     ToolComponent = @state.tool
 
@@ -231,7 +235,6 @@ module.exports = React.createClass
           height = {@state.imageHeight}
           viewBox = {viewBox}
           data-tool = {@props.selectedDrawingTool?.type} >
-
           <rect
             ref = "sizeRect"
             width = {@state.imageWidth}
@@ -279,7 +282,32 @@ module.exports = React.createClass
                   }
                 </g>
             }
-        </svg>
+
+            { if @state.subject.location.spec.tool is 2
+                markHeight = @state.subject.location.spec.yLower - @state.subject.location.spec.yUpper
+                <g>
+
+                  <rect
+                    className   = "mark-rectangle"
+                    x           = 0
+                    y           = { 0 }
+                    width       = { @state.imageWidth }
+                    height      = { @state.subject.location.spec.yUpper }
+                    fill        = "rgba(0,0,0,0.6)"
+                  />
+
+                  <rect
+                    className   = "mark-rectangle"
+                    x           = 0
+                    y           = { @state.subject.location.spec.yLower }
+                    width       = { @state.imageWidth }
+                    height      = { @state.imageHeight - @state.subject.location.spec.yLower }
+                    fill        = "rgba(0,0,0,0.6)"
+                  />
+                </g>
+            }
+
+          </svg>
 
     <div className="subject-viewer#{if @props.active then ' active' else ''}">
       <div className="subject-container">
