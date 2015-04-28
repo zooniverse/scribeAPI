@@ -33,8 +33,8 @@ module.exports = React.createClass # rename to Classifier
     @addAnnotationForTask @props.workflow.first_task
 
   render: ->
-    return null unless @state.currentSubject?
-    console.log 'NUMBER OF SUBJECTS: ', @state.subjects.length()
+    # return null unless @state.currentSubject?
+    # console.log 'NUMBER OF SUBJECTS: ', @state.subjects.length()
 
     annotations = @props.classification.annotations
     currentAnnotation = if annotations.length is 0 then {} else annotations[annotations.length-1]
@@ -52,29 +52,41 @@ module.exports = React.createClass # rename to Classifier
       waitingForAnswer = not currentAnswer
 
     <div className="classifier">
+
       <div className="subject-area">
-        <SubjectViewer key={0} subject={@state.currentSubject} workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation} active={true}/>
+        { if @state.noMoreSubjects
+            console.log 'NO MORE SUBJECTS'
+            style =
+              marginTop: "50px"
+            <p style={style}>There are currently no transcription subjects</p>
+          else if @state.currentSubject?
+            <SubjectViewer key={0} subject={@state.currentSubject} workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation} active={true}/>
+        }
       </div>
-      <div className="task-area">
-        <div className="task-container">
-          {console.log 'CURRENT ANNOTATION: ', currentAnnotation }
-          <TaskComponent task={currentTask} annotation={currentAnnotation} onChange={@handleTaskComponentChange} />
-          <hr/>
-          <nav className="task-nav">
-            <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
-            { if nextTask?
-                <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@loadNextTask nextTask}>Next</button>
-              else
-                <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeClassification}>Done</button>
-            }
-          </nav>
-        </div>
 
-        <div className="forum-holder">
-          <ForumSubjectWidget subject_set=@state.currentSubject />
-        </div>
+      { unless @state.noMoreSubjects
+        <div className="task-area">
 
-      </div>
+          <div className="task-container">
+            {console.log 'CURRENT ANNOTATION: ', currentAnnotation }
+            <TaskComponent task={currentTask} annotation={currentAnnotation} onChange={@handleTaskComponentChange} />
+            <hr/>
+            <nav className="task-nav">
+              <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
+              { if nextTask?
+                  <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@loadNextTask nextTask}>Next</button>
+                else
+                  <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeClassification}>Done</button>
+              }
+            </nav>
+          </div>
+
+          <div className="forum-holder">
+            <ForumSubjectWidget subject_set=@state.currentSubject />
+          </div>
+
+        </div>
+      }
     </div>
 
 
