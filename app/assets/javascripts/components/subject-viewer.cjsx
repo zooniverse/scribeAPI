@@ -270,6 +270,8 @@ module.exports = React.createClass
               height = {@state.imageHeight} />
           </Draggable>
 
+
+
           { for annotation in @props.classification.annotations
               annotation._key ?= Math.random()
               isPriorAnnotation = annotation isnt @props.annotation
@@ -281,10 +283,8 @@ module.exports = React.createClass
 
                     mark._key ?= Math.random()
                     toolDescription = taskDescription.tools[mark.tool]
-                    console.log "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-                    console.log "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-                    console.log "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-                    console.log "toolDescription", @props.workflow.tasks[annotation.task].tools[mark.tool]
+
+                    #adds task and description to each annotation
                     @props.annotation["tool_task_description"] = @props.workflow.tasks[annotation.task].tools[mark.tool]
                     ToolComponent = markingTools[toolDescription.type]
 

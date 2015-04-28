@@ -32,9 +32,41 @@
       "tool":"drawing",
       "instruction":"Draw a rectangle around each record.",
       "tools": [
-        {"type": "superAwesomePointTool", "label": "Records (point)", "color": "red"},
-        {"type": "rectangleTool", "label": "Records (rectangle)", "color": "green"},
-        {"type": "textRowTool", "label": "Records (row)", "color": "blue"}
+        {"type": "rectangleTool", "label": "Number", "color": "green"},
+        {"type": "rectangleTool", "label": "Name", "color": "green"},
+        {"type": "rectangleTool", "label": "Regiment", "color": "green"},
+        {"type": "rectangleTool", "label": "Birth Place", "color": "green"},
+        {"type": "rectangleTool", "label": "British Subject", "color": "green"},
+        {"type": "rectangleTool", "label": "Birth date", "color": "green"},
+        {"type": "rectangleTool", "label": "Occupation", "color": "green"},
+        {"type": "rectangleTool", "label": "Parents' Names", "color": "green"},
+        {"type": "rectangleTool", "label": "Parents' Birthplace", "color": "green"},
+        {"type": "rectangleTool", "label": "Parents' Naturalization", "color": "green"},
+        {"type": "rectangleTool", "label": "Duration of Residence", "color": "green"},
+        {"type": "rectangleTool", "label": "Parents' Residence", "color": "green"},
+        {"type": "rectangleTool", "label": "Emergency Address", "color": "green"},
+        {"type": "rectangleTool", "label": "Apprenticeship", "color": "green"},
+        {"type": "rectangleTool", "label": "Education level", "color": "green"},
+        {"type": "rectangleTool", "label": "Employer", "color": "green"},
+        {"type": "rectangleTool", "label": "Marrital Status", "color": "green"},
+        {"type": "rectangleTool", "label": "Children", "color": "green"},
+        {"type": "rectangleTool", "label": "Wife's Nationality", "color": "green"},
+        {"type": "rectangleTool", "label": "Imprisonment", "color": "green"},
+        {"type": "rectangleTool", "label": "Current Military Servicel", "color": "green"},
+        {"type": "rectangleTool", "label": "Previous Military Service", "color": "green"},
+        {"type": "rectangleTool", "label": "Verifcation of truth", "color": "green"},
+        {"type": "rectangleTool", "label": "Compulsory Registration", "color": "green"},
+        {"type": "rectangleTool", "label": "Fitness for Duty", "color": "green"},
+        {"type": "rectangleTool", "label": "Willingness to Serve", "color": "green"},
+        {"type": "rectangleTool", "label": "Vaccinated", "color": "green"},
+        {"type": "rectangleTool", "label": "Reinforcement Draft", "color": "green"},
+        {"type": "rectangleTool", "label": "Previous Illness", "color": "green"},
+        {"type": "rectangleTool", "label": "Previous Fit", "color": "green"},
+        {"type": "rectangleTool", "label": "Religon", "color": "green"},
+        {"type": "rectangleTool", "label": "Location of Oath", "color": "green"},
+        {"type": "rectangleTool", "label": "Oath day", "color": "green"},
+        {"type": "rectangleTool", "label": "Oath month", "color": "green"},
+        {"type": "rectangleTool", "label": "Oath year", "color": "green"}
       ],
       "next_task": null
     },    
@@ -55,9 +87,10 @@
       "tool":"drawing",
       "instruction":"Draw a rectangle around each record.",
       "tools": [
-        {"type": "superAwesomePointTool", "label": "Records (point)", "color": "red"},
-        {"type": "rectangleTool", "label": "Records (rectangle)", "color": "green"},
-        {"type": "textRowTool", "label": "Records (row)", "color": "blue"}
+        {"type": "rectangleTool", "label": "Occupation", "color": "green"},
+        {"type": "rectangleTool", "label": "Surname", "color": "green"},
+        {"type": "rectangleTool", "label": "Christian name", "color": "green"},
+        {"type": "rectangleTool", "label": "Wounds", "color": "green"}
       ],
       "next_task": null
     }
