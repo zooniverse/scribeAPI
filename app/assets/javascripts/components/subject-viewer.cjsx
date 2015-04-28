@@ -283,7 +283,8 @@ module.exports = React.createClass
                 </g>
             }
 
-            { if @state.subject.location.spec.tool is 2
+            { # ROW FOCUS TOOL -------------------------------------------
+              if @props.workflow.name is "transcribe" and @state.subject.location.spec.tool is 2
                 markHeight = @state.subject.location.spec.yLower - @state.subject.location.spec.yUpper
                 <g>
 
@@ -293,6 +294,32 @@ module.exports = React.createClass
                     y           = { 0 }
                     width       = { @state.imageWidth }
                     height      = { @state.subject.location.spec.yUpper }
+                    fill        = "rgba(0,0,0,0.6)"
+                  />
+
+                  <rect
+                    className   = "mark-rectangle"
+                    x           = 0
+                    y           = { @state.subject.location.spec.yLower }
+                    width       = { @state.imageWidth }
+                    height      = { @state.imageHeight - @state.subject.location.spec.yLower }
+                    fill        = "rgba(0,0,0,0.6)"
+                  />
+                </g>
+            }
+
+
+            { # RECTANGLE FOCUS TOOL ------------------------------------------
+              if @props.workflow.name is "transcribe" and @state.subject.location.spec.tool is 1
+                markHeight = @state.subject.location.spec.yLower - @state.subject.location.spec.yUpper
+                <g>
+
+                  <rect
+                    className   = "mark-rectangle"
+                    x           = 0
+                    y           = { @state.subject.location.spec.y }
+                    width       = { @state.imageWidth }
+                    height      = { @state.subject.location.spec.y }
                     fill        = "rgba(0,0,0,0.6)"
                   />
 
