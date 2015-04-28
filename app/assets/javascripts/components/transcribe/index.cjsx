@@ -55,10 +55,8 @@ module.exports = React.createClass # rename to Classifier
 
       <div className="subject-area">
         { if @state.noMoreSubjects
-            console.log 'NO MORE SUBJECTS'
-            style =
-              marginTop: "50px"
-            <p style={style}>There are currently no transcription subjects</p>
+            style = marginTop: "50px"
+            <p style={style}>There are currently no transcription subjects. Try <a href="/#/mark">marking</a> instead!</p>
           else if @state.currentSubject?
             <SubjectViewer key={0} subject={@state.currentSubject} workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation} active={true}/>
         }

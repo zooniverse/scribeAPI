@@ -53,7 +53,12 @@ module.exports = React.createClass # rename to Classifier
 
     <div className="classifier">
       <div className="subject-area">
-        <SubjectSetViewer subject_set={@state.currentSubjectSet} workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation} />
+        { if @state.noMoreSubjectSets
+            style = marginTop: "50px"
+            <p style={style}>There is nothing left to do. Thanks for your work and please check back soon!</p>
+          else if @state.currentSubjectSet?
+            <SubjectSetViewer subject_set={@state.currentSubjectSet} workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation} />
+        }
       </div>
       <div className="task-area">
         <div className="task-container">
