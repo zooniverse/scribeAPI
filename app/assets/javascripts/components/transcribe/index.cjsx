@@ -5,6 +5,8 @@ FetchSubjectsMixin = require 'lib/fetch-subjects-mixin'
 JSONAPIClient      = require 'json-api-client' # use to manage data?
 ForumSubjectWidget = require '../forum-subject-widget'
 
+RowFocusTool       = require '../row-focus-tool'
+
 API                = require '../../lib/api'
 
 module.exports = React.createClass # rename to Classifier

@@ -9,6 +9,9 @@ SubjectMetadata               = require './subject-metadata'
 ActionButton                  = require './action-button'
 markingTools                  = require './mark/tools'
 
+RowFocusTool                  = require 'components/row-focus-tool'
+
+
 module.exports = React.createClass
   displayName: 'SubjectViewer'
   resizing: false
@@ -91,8 +94,6 @@ module.exports = React.createClass
     @props.annotation["subject_id"] = @props.subject.id
     @props.annotation["workflow_id"] = @props.workflow.id
 
-
-
     taskDescription = @props.workflow.tasks[@props.annotation.task]
 
     # setting flag for generation of new subjects
@@ -100,7 +101,6 @@ module.exports = React.createClass
       @props.annotation["generate_subjects"] = @props.workflow.tasks[@props.annotation.task].generate_subjects
 
     mark = @state.selectedMark
-
 
     markIsComplete = true
     if mark?
@@ -269,8 +269,6 @@ module.exports = React.createClass
               width = {@state.imageWidth}
               height = {@state.imageHeight} />
           </Draggable>
-
-
 
           { for annotation in @props.classification.annotations
               annotation._key ?= Math.random()

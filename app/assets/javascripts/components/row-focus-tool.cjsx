@@ -1,7 +1,7 @@
 # @cjsx React.DOM
 React = require 'react'
 Draggable = require '../lib/draggable'
-ResizeButton = require './mark/resize-button'
+# ResizeButton = require './mark/resize-button'
 
 RowFocusTool = React.createClass
   displayName: 'RowFocusTool'
@@ -53,42 +53,42 @@ RowFocusTool = React.createClass
   render: ->
     # console.log 'mark: ', @props.mark
     markHeight = @props.mark.yLower - @props.mark.yUpper
-    <g 
-      className = "point drawing-tool" 
-      transform = {"translate(#{Math.ceil @state.strokeWidth}, #{Math.round( @props.mark.y - markHeight/2 ) })"} 
-      data-disabled = {@props.disabled || null} 
+    <g
+      className = "point drawing-tool"
+      transform = {"translate(#{Math.ceil @state.strokeWidth}, #{Math.round( @props.mark.y - markHeight/2 ) })"}
+      data-disabled = {@props.disabled || null}
       data-selected = {@props.selected || null}
     >
 
       <Draggable
-        onStart = {@props.handleMarkClick.bind @props.mark} 
+        onStart = {@props.handleMarkClick.bind @props.mark}
         onDrag = {@props.handleDragMark} >
         <g>
           <defs>
-            <linearGradient 
+            <linearGradient
               id="upperGradient"
-              x1="0" 
+              x1="0"
               y1="0"
-              x2="0" 
+              x2="0"
               y2="1"
               spreadMethod="reflect" >
               <stop stopColor="#000" offset="0.5" stopOpacity="0.6"/>
               <stop stopColor="#000" offset="1"    stopOpacity="0"/>
             </linearGradient>
 
-            <linearGradient  
-              id="lowerGradient" 
-              x1="1" 
-              y1="0"  
-              x2="1" 
-              y2="1" 
+            <linearGradient
+              id="lowerGradient"
+              x1="1"
+              y1="0"
+              x2="1"
+              y2="1"
               spreadMethod="reflect" >
               <stop stopColor="#000" offset="0"   stopOpacity="0"/>
               <stop stopColor="#000" offset="0.5" stopOpacity="0.6"/>
             </linearGradient>
-            
+
           </defs>
-          <rect 
+          <rect
             className   = "mark-rectangle"
             x           = 0
             y           = { -@state.yUpper-80 }
@@ -97,7 +97,7 @@ RowFocusTool = React.createClass
             height      = { Math.round(@props.mark.yUpper) }
             fill        = "rgba(0,0,0,0.6)"
           />
-          <rect 
+          <rect
             className   = "mark-rectangle"
             x           = 0
             y           = { -80 }
@@ -106,7 +106,7 @@ RowFocusTool = React.createClass
             height      = {80}
             fill        = "url(#upperGradient)"
           />
-          <rect 
+          <rect
             className   = "mark-rectangle"
             x           = 0
             y           = { Math.round(markHeight) }
@@ -115,7 +115,7 @@ RowFocusTool = React.createClass
             height      = {80}
             fill        = "url(#lowerGradient)"
           />
-          <rect 
+          <rect
             className   = "mark-rectangle"
             x           = 0
             y           = { markHeight+80 }
@@ -127,29 +127,6 @@ RowFocusTool = React.createClass
         </g>
       </Draggable>
 
-      {
-        if not @props.resizeDisabled
-          <ResizeButton 
-            viewBox = {"0 0 @props.imageWidth @props.imageHeight"}
-            className = "upperResize"
-            handleResize = {@props.handleUpperResize} 
-            transform = {"translate( #{@props.imageWidth/2}, #{ - Math.round @props.scrubberHeight/2 } )"} 
-            scrubberHeight = {@props.scrubberHeight}
-            scrubberWidth = {@props.scrubberWidth}
-            isSelected = "true"
-          />
-
-          <ResizeButton 
-            className = "lowerResize"
-            handleResize = {@props.handleLowerResize} 
-            transform = {"translate( #{@props.imageWidth/2}, #{ Math.round( markHeight - @props.scrubberHeight/2 ) } )"} 
-            scrubberHeight = {@props.scrubberHeight}
-            scrubberWidth = {@props.scrubberWidth}
-            isSelected = "true"
-          />
-      }
-
     </g>
 
 module.exports = RowFocusTool
-  
