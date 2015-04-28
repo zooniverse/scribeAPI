@@ -284,7 +284,10 @@ module.exports = React.createClass
             }
 
             { # ROW FOCUS TOOL -------------------------------------------
-              if @props.workflow.name is "transcribe" and @state.subject.location.spec.tool is 2
+              console.log 'WORKFLOW: ', @props.workflow.name
+              console.log 'TASK: ', @state.subject.tool_task_description.task
+              if @props.workflow.name is "transcribe" and @state.subject.tool_task_description.type is "textRowTool"
+                console.log 'BLAH'
                 markHeight = @state.subject.location.spec.yLower - @state.subject.location.spec.yUpper
                 <g>
 
@@ -332,6 +335,9 @@ module.exports = React.createClass
                     fill        = "rgba(0,0,0,0.6)"
                   />
                 </g>
+              else
+                console.log 'NO BLAH'
+                <g></g>
             }
 
           </svg>
