@@ -1,5 +1,5 @@
 class SubjectSerializer < ActiveModel::MongoidSerializer
-  attributes :id, :parent_subject_id, :workflow_id, :name, :location, :classification_count, :child_subjects_info, :meta_data, :user_favourite
+  attributes :id, :parent_subject_id, :workflow_id, :name, :location, :tool_task_description, :classification_count, :child_subjects_info, :meta_data, :user_favourite
   delegate :current_user, to: :scope
 
   def id
@@ -24,7 +24,7 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
       }
 
       child_subject_info << rebuild_info
-      
+
     end
     child_subject_info
   end
