@@ -34,6 +34,7 @@ module.exports = React.createClass # rename to Classifier
 
   render: ->
     return null unless @state.currentSubjectSet?
+    console.log 'NUMBER OF SUBJECT SETS: ', @state.subjectSets.length
 
     annotations = @props.classification.annotations
     currentAnnotation = if annotations.length is 0 then {} else annotations[annotations.length-1]

@@ -33,9 +33,9 @@ module.exports = React.createClass # rename to Classifier
     @addAnnotationForTask @props.workflow.first_task
 
   render: ->
-    console.log 'FOO'
     return null unless @state.currentSubject?
-    console.log 'BAR'
+    console.log 'NUMBER OF SUBJECTS: ', @state.subjects.length()
+
     annotations = @props.classification.annotations
     currentAnnotation = if annotations.length is 0 then {} else annotations[annotations.length-1]
     currentTask = @props.workflow.tasks[currentAnnotation?.task]

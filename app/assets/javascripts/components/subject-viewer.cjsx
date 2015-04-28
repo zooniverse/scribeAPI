@@ -31,7 +31,7 @@ module.exports = React.createClass
 
   componentDidMount: ->
     @setView 0, 0, @state.imageWidth, @state.imageHeight
-    @loadImage @state.subject.location.uri
+    @loadImage @state.subject.location.standard
     window.addEventListener "resize", this.updateDimensions
 
   componentWillMount: ->

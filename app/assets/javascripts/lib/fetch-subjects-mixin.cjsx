@@ -20,23 +20,24 @@ module.exports =
       limit: limit
       random: true
 
-    request.then (subjects)=>
-      @setState
-        subjects: subjects
-        currentSubject: subjects[0], => console.log 'STATE: ', @state
+    request.then (subjects) =>
+      if subjects.length is 0
+        @setState noMoreSubjects: true
+      else
+        @setState
+          subjects: subjects
+          currentSubject: subjects[0], => console.log 'STATE: ', @state
 
   fetchSubjectSets: (workflow_id, limit) ->
-    console.log 'FETCHIN SUBJECT SETS'
     request = API.type('subject_sets').get
       workflow_id: workflow_id
       limit: limit
       random: true
 
-    request.then (subject_sets)=>    # DEBUG CODE
-      @setState
-        subjectSets: subject_sets
-        currentSubjectSet: subject_sets[0]
-
-    # WHY DOES THIS BREAK?
-    # request.error (xhr, status, err) =>
-    #   console.error "Error loading subjects: ", url, status, err.toString()
+    request.then (subject_sets) =>
+      if subject_sets.length is 0
+        @setState noMoreSubjectSets: true
+      else
+        @setState
+          subjectSets: subject_sets
+          currentSubjectSet: subject_sets[0]
