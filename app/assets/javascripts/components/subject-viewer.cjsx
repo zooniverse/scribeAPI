@@ -49,7 +49,6 @@ module.exports = React.createClass
       windowInnerHeight: window.innerHeight
 
   loadImage: (url) ->
-    console.log 'LOADING IMAGE: ', url
     @setState loading: true, =>
       img = new Image()
       img.src = url
@@ -65,32 +64,9 @@ module.exports = React.createClass
             # console.log @state.loading
             # console.log "Finished Loading."
 
-  # nextSubject: () ->
-  #   @prepareClassification()
-  #   @sendMarkClassification()
-
-  #   # # DEBUG CODE
-  #   # console.log 'CLASSIFICATION: ', @state.classification
-
-  #   # console.log JSON.stringify @state.classification # DEBUG CODE
-  #   @state.classification.send()
-  #   @setState
-  #     marks: [] # clear marks for next subject
-
-  #   # prepare new classification
-  #   if @state.subjects.shift() is undefined or @state.subjects.length <= 0
-  #     @fetchSubjects(@state.subjectEndpoint)
-  #     return
-  #   else
-  #     @setState subject: @state.subjects[0], =>
-  #       @loadImage ((if @usingFakeSubject() then @state.subject.classification.subject.location.standard else @state.subject.location.standard))
-
-  #   @state.classification = new Classification @state.subject
-
   # VARIOUS EVENT HANDLERS
 
   handleInitStart: (e) ->
-    console.log "sv PROPS", @props
     @props.annotation["subject_id"] = @props.subject.id
     @props.annotation["workflow_id"] = @props.workflow.id
 
@@ -111,7 +87,8 @@ module.exports = React.createClass
 
     mouseCoords = @getEventOffset e
 
-    console.log 'PROPS.ANNOTATION: ', @props.annotation
+    # DEBUG CODE
+    # console.log 'PROPS.ANNOTATION: ', @props.annotation
 
     if markIsComplete
       toolDescription = taskDescription.tools[@props.annotation._toolIndex]
@@ -120,7 +97,8 @@ module.exports = React.createClass
         tool: @props.annotation._toolIndex
       if toolDescription.details?
         mark.details = for detailTaskDescription in toolDescription.details
-          console.log "!taskTacking", tasks[detailTaskDescription.type]
+          # DEBUG CODE
+          #console.log "!taskTacking", tasks[detailTaskDescription.type]
           tasks[detailTaskDescription.type].getDefaultAnnotation()
 
     @props.annotation.value.push mark
@@ -128,14 +106,10 @@ module.exports = React.createClass
 
     MarkComponent = markingTools[toolDescription.type]
 
-    console.log 'FOO ', markingTools
-
     if MarkComponent.defaultValues?
       defaultValues = MarkComponent.defaultValues mouseCoords
       for key, value of defaultValues
         mark[key] = value
-
-    console.log 'BAR'
 
     if MarkComponent.initStart?
       initValues = MarkComponent.initStart mouseCoords, mark, e
@@ -235,7 +209,9 @@ module.exports = React.createClass
     # console.log 'SUBJECT: ', @state.subject
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     ToolComponent = @state.tool
-    console.log "Rendering #{if @props.active then 'active' else 'inactive'} subj viewer"
+
+    # DEBUG CODE
+    # console.log "Rendering #{if @props.active then 'active' else 'inactive'} subj viewer"
 
     scale = @getScale()
 
