@@ -85,7 +85,7 @@ module.exports = React.createClass
             <DragHandle tool={this} onDrag={@handleUpperResize} position={@getUpperHandlePosition()} />
             <DragHandle tool={this} onDrag={@handleLowerResize} position={@getLowerHandlePosition()} />
             <DeleteButton tool={this} position={@getDeleteButtonPosition()} />
-            <TranscribeButton tool={this} position={@getTranscribeButtonPosition()} />
+            <TranscribeButton tool={this} onDrag={@handleTranscribeClick} position={@getTranscribeButtonPosition()} />
           </g>
         }
 
@@ -111,3 +111,6 @@ module.exports = React.createClass
   handleMouseDown: ->
     console.log 'handleMouseDown()'
     @props.onSelect @props.mark # unless @props.disabled
+
+  handleTranscribeClick: ->
+    console.log 'TRANSCRIBE CLICK!'
