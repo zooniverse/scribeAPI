@@ -23,7 +23,14 @@
     "em_transcribe_building_address": {
       "tool": "text_tool",
       "tool_options": {},
-      "instruction": "Enter the building address"
+      "instruction": "Enter the building address",
+      "next_task": "em_transcribe_building_address2"
+    },
+
+    "em_transcribe_building_address2": {
+      "tool": "text_tool",
+      "tool_options": {},
+      "instruction": "Say something else about the building address"
     },
 
     "em_transcribe_building_description": {

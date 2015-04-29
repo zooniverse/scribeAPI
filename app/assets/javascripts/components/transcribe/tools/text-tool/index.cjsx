@@ -39,6 +39,8 @@ TextTool = React.createClass
   componentWillReceiveProps: ->
     # ...
 
+  componentDidMount: ->
+    @refs.input0.value = ''
 
   onViewerResize: (size) ->
     return null if @state.dragged
@@ -75,6 +77,9 @@ TextTool = React.createClass
         left: "#{@props.subject.location.x / @props.viewerSize.w * 100}%"
         top: "#{@props.subject.location.y / @props.viewerSize.h * 100}%"
 
+    val = @props.annotation.value
+    console.log "TextTool#render val:", val, @props.task.key
+
     <Draggable
       onStart = {@handleInitStart}
       onDrag  = {@handleInitDrag}
@@ -85,7 +90,7 @@ TextTool = React.createClass
         <div className="left">
           <div className="input-field active">
             <label>{@props.task.instruction}</label>
-            <input ref="input0" type="text"/>
+            <input ref="input0" type="text" data-task_key={@props.task.key} value={val}/>
           </div>
         </div>
         <div className="right">

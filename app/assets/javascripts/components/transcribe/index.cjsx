@@ -31,7 +31,8 @@ module.exports = React.createClass
 
   fetchSubjectsCallback: ->
     # console.log "fetch subjects callback: ", @
-    new_key = @translateLogicTaskKey(@state.workflow.first_task)
+    # new_key = @translateLogicTaskKey(@state.workflow.first_task)
+    new_key = @state.workflow.first_task
     console.log "change to task key: #{new_key} from #{@state.currentTaskKey}"
     @advanceToTask new_key
 
@@ -79,7 +80,7 @@ module.exports = React.createClass
         currentTool: tool
 
   translateLogicTaskKey: (key) ->
-    console.log "Transcribe#translateLogicTaskKey: #{key}"
+    # console.log "Transcribe#translateLogicTaskKey: #{key}"
     return key if ! @state.currentSubject?
     # console.log "Transcribe#translateLogicTaskKey: #{key} .. proceeding"
     task = @state.workflow.tasks[ key ]
@@ -94,6 +95,7 @@ module.exports = React.createClass
       return null
 
     else
+      console.log "INFO: SwitchOnValue: because #{field}=\"#{field_value}\" routing to #{matched_option.task}"
       return matched_option.task
 
   handleTaskComplete: (ann) ->
@@ -102,7 +104,7 @@ module.exports = React.createClass
 
     if @state.currentTask['next_task']?
       console.log "advance to next task...", @state.currentTask['next_task']
-      @advanceToTask @state.currentTask['next_task']?
+      @advanceToTask @state.currentTask['next_task']
 
     else
       @advanceToNextSubject()
@@ -115,7 +117,8 @@ module.exports = React.createClass
       nextSubject = @state.subjects[currentIndex + 1]
       @setState currentSubject: nextSubject, () =>
         console.log "current subject now (1): ", @state.currentSubject, nextSubject
-        key = @translateLogicTaskKey @state.workflow.first_task
+        # key = @translateLogicTaskKey @state.workflow.first_task
+        key = @state.workflow.first_task
         @advanceToTask key
     else
       console.log "WARN: End of subjects"
@@ -129,6 +132,7 @@ module.exports = React.createClass
       tool.onViewerResize size
       # console.log "viewer resize: ", size, tool
 
+  # makeBackHandler
   render: ->
     return null unless @state.currentSubject? && @state.currentTask?
 
@@ -138,7 +142,9 @@ module.exports = React.createClass
     console.log "Transcribe#render: subject=", @state.currentSubject
 
     annotations = @props.annotations
-    currentAnnotation = if annotations.length is 0 then {} else annotations[annotations.length-1]
+    currentAnnotation = (@props.classification.annotations[@state.currentTaskKey] ||= {})
+    console.log "current ann: ", currentAnnotation
+    # .length == 0 then {} else @if annotations.length is 0 then {} else annotations[annotations.length-1]
     """
     currentTask = @props.workflow.tasks[currentAnnotation?.task ? @props.workflow.first_task]
     console.log "current: ", @props.workflow.tasks, currentAnnotation?.task, currentTask
@@ -158,7 +164,7 @@ module.exports = React.createClass
     <div className="classifier">
       <div className="subject-area">
         <SubjectViewer onLoad={@handleViewerLoad} viewerSize={@state.viewerSize} subject={@state.currentSubject} active=true workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation}>
-          <TaskComponent ref="taskComponent" task={@state.currentTask} annotation={currentAnnotation} subject={@state.currentSubject} onChange={@handleTaskComponentChange} onComplete={@handleTaskComplete} workflow={@props.workflow} viewerSize={@state.viewerSize} />
+          <TaskComponent ref="taskComponent" task={@state.currentTask} annotation={currentAnnotation} subject={@state.currentSubject} onChange={@handleTaskComponentChange} onComplete={@handleTaskComplete} onBack={@makeBackHandler()} workflow={@props.workflow} viewerSize={@state.viewerSize} />
         </SubjectViewer>
       </div>
       <div className="task-area">
@@ -166,7 +172,7 @@ module.exports = React.createClass
           <nav className="task-nav">
             <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
             { if nextTask?
-                <button type="button" className="continue major-button" onClick={@loadNextTask nextTask}>Next</button>
+                <button type="button" className="continue major-button" onClick={@advanceToTask.bind(@, nextTask)}>Next</button>
               else
                 <button type="button" className="continue major-button" onClick={@completeClassification}>Done</button>
             }
