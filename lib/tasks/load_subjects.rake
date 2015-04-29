@@ -135,15 +135,15 @@ require 'active_support'
     puts "Workflows: Loading workflows from #{workflows_path}"
 
     Dir.glob(workflows_path).each do |workflow_hash_path|
-      content = File.read(workflow_hash_path).gsub(/\n/, '')
+      content = File.read(workflow_hash_path) # .gsub(/\n/, '')
       begin
         workflow_hash = JSON.parse content
         workflow_hash.deep_symbolize_keys!
         workflow_hash[:project] = project
         workflow = Workflow.create workflow_hash
         puts "  Loaded '#{workflow.name}' workflow with #{workflow.tasks.count} tasks"
-      rescue
-        puts "  WARN: Couldn't parse workflow from #{workflow_hash_path}"
+      rescue => e
+        puts "  WARN: Couldn't parse workflow from #{workflow_hash_path}: #{e}"
       end
     end
 

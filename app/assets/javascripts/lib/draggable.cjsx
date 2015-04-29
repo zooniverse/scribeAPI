@@ -34,6 +34,7 @@ module.exports = React.createClass
       y: e.pageY
 
   handleStart: (e) ->
+    return if e.target.nodeName is "INPUT" or e.target.nodeName is "TEXTAREA"
     e.preventDefault()
 
     @_rememberCoords e
@@ -51,7 +52,7 @@ module.exports = React.createClass
       startHandler e
 
   handleDrag: (e) ->
-    # console.log "handleDrag event", e
+    console.log "handleDrag event", e
     d =
       x: e.pageX - @_previousEventCoords.x
       y: e.pageY - @_previousEventCoords.y
