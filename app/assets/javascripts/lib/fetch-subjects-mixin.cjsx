@@ -30,10 +30,10 @@ module.exports =
         @setState
           subjects: subjects
           currentSubject: subjects[0]
-
         # Does including instance have a defined callback to call when new subjects received?
         if @fetchSubjectsCallback?
           @fetchSubjectsCallback()
+
     else
       request = API.type('subjects').get
         workflow_id: workflow_id
@@ -42,6 +42,10 @@ module.exports =
 
       request.then (subjects)=>    # DEBUG CODE
         @setState
-          subject: subjects
+          subjects: subjects
           currentSubject: subjects[0]
+
+        # Does including instance have a defined callback to call when new subjects received?
+        if @fetchSubjectsCallback?
+          @fetchSubjectsCallback()
 

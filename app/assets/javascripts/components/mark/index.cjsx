@@ -1,11 +1,11 @@
-React              = require 'react'
-SubjectSetViewer   = require '../subject-set-viewer'
-tasks              = require '../tasks'
-FetchSubjectSetsMixin = require 'lib/fetch-subjects-mixin'
-JSONAPIClient      = require 'json-api-client' # use to manage data?
-ForumSubjectWidget = require '../forum-subject-widget'
+React                   = require 'react'
+SubjectSetViewer        = require '../subject-set-viewer'
+tasks                   = require '../tasks'
+FetchSubjectSetsMixin   = require 'lib/fetch-subject-sets-mixin'
+JSONAPIClient           = require 'json-api-client' # use to manage data?
+ForumSubjectWidget      = require '../forum-subject-widget'
 
-API                = require '../../lib/api'
+API                     = require '../../lib/api'
 
 module.exports = React.createClass # rename to Classifier
   displayName: 'Mark'

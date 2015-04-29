@@ -17,7 +17,6 @@ module.exports =
       currentSubjectSet: null
 
     request.then (subject_set)=>
-      console.log("retrived subejct set", subject_set)
       @setState
         subjectSets: [subject_set]
         currentSubjectSet: subject_set

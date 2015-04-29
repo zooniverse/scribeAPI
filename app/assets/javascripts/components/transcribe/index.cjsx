@@ -27,7 +27,7 @@ module.exports = React.createClass
       annotations: []
       metadata: {}
     annotations: []
-    overrideFetchSubjectsUrl: '/fake-transcription-subjects.json'
+    # overrideFetchSubjectsUrl: '/fake-transcription-subjects.json'
 
   fetchSubjectsCallback: ->
     new_key = @state.workflow.first_task
@@ -71,7 +71,7 @@ module.exports = React.createClass
     field_value = @state.currentSubject[field]
     matched_option = task.tool_options.options[field_value]
     if ! matched_option?
-      console.log "WARN: SwitchOnValueTask can't find matching task \"#{field_value}\" in", @props.task.tool_options.options
+      console.log "WARN: SwitchOnValueTask can't find matching task \"#{field_value}\" in", task.tool_options.options
       return null
 
     else
@@ -115,6 +115,7 @@ module.exports = React.createClass
       console.log "go back"
 
   render: ->
+    console.log "Transcribe#render: ", @state
     return null unless @state.currentSubject? && @state.currentTask?
 
     # TODO: HACK HACK HACK
@@ -125,7 +126,7 @@ module.exports = React.createClass
     TaskComponent = @state.currentTool
     onFirstAnnotation = currentAnnotation?.task is @props.workflow.first_task
 
-    # console.log "Transcribe#render: tool=#{@state.currentTask.tool} TaskComponent=", TaskComponent
+    console.log "Transcribe#render: tool=#{@state.currentTask.tool} TaskComponent=", TaskComponent
 
     nextTask = if @state.currentTask.options?[currentAnnotation.value]?
       @state.currentTask.options?[currentAnnotation.value].next_task
