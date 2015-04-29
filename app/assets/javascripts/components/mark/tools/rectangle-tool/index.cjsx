@@ -15,7 +15,7 @@ module.exports = React.createClass
   displayName: 'RectangleTool'
 
   propTypes:
-    key:  React.PropTypes.number.isRequired
+    # key:  React.PropTypes.number.isRequired
     mark: React.PropTypes.object.isRequired
 
   initCoords: null

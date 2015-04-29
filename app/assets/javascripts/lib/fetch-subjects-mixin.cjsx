@@ -31,7 +31,6 @@ module.exports =
           subjects: subjects
           currentSubject: subjects[0]
 
-        console.log 'considering calling callback: ', @
         # Does including instance have a defined callback to call when new subjects received?
         if @fetchSubjectsCallback?
           @fetchSubjectsCallback()
@@ -45,8 +44,4 @@ module.exports =
         @setState
           subject: subjects
           currentSubject: subjects[0]
-
-    # WHY DOES THIS BREAK?
-    # request.error (xhr, status, err) =>
-    #   console.error "Error loading subjects: ", url, status, err.toString()
 

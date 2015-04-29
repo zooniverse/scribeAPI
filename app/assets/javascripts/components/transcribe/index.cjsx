@@ -30,29 +30,9 @@ module.exports = React.createClass
     overrideFetchSubjectsUrl: '/fake-transcription-subjects.json'
 
   fetchSubjectsCallback: ->
-    # console.log "fetch subjects callback: ", @
-    # new_key = @translateLogicTaskKey(@state.workflow.first_task)
     new_key = @state.workflow.first_task
-    console.log "change to task key: #{new_key} from #{@state.currentTaskKey}"
     @advanceToTask new_key
 
-  componentWillMount: ->
-    """
-    console.log "Transcribe#componentWillMount"
-    workflow = @state.workflow
-    key = @translateLogicTaskKey workflow.first_task
-    @advanceToTask key
-    """
-    """
-    currentTask = workflow.tasks[ workflow.first_task ]
-
-    # if @state.firstTask?
-    @setState
-      currentTask: currentTask
-      currentTool: currentTask.tool , =>
-        console.log 'first tool is: ', @state.currentTool
-    """
-      
   handleTaskComponentChange: (val) ->
     taskOption = @state.currentTask.options[val]
     if taskOption.next_task?
@@ -100,10 +80,10 @@ module.exports = React.createClass
 
   handleTaskComplete: (ann) ->
     @props.classification.annotations[@state.currentTaskKey] = ann
-    console.log "task complete: ", @props.classification.annotations
+    console.log "INFO Text complete: ", @props.classification.annotations
 
     if @state.currentTask['next_task']?
-      console.log "advance to next task...", @state.currentTask['next_task']
+      # console.log "advance to next task...", @state.currentTask['next_task']
       @advanceToTask @state.currentTask['next_task']
 
     else
@@ -116,8 +96,6 @@ module.exports = React.createClass
     if currentIndex + 1 < @state.subjects.length
       nextSubject = @state.subjects[currentIndex + 1]
       @setState currentSubject: nextSubject, () =>
-        console.log "current subject now (1): ", @state.currentSubject, nextSubject
-        # key = @translateLogicTaskKey @state.workflow.first_task
         key = @state.workflow.first_task
         @advanceToTask key
     else
@@ -132,25 +110,19 @@ module.exports = React.createClass
       tool.onViewerResize size
       # console.log "viewer resize: ", size, tool
 
-  # makeBackHandler
+  makeBackHandler: ->
+    () =>
+      console.log "go back"
+
   render: ->
     return null unless @state.currentSubject? && @state.currentTask?
 
     # TODO: HACK HACK HACK
     return null if @state.currentTask.tool == 'switch_on_value'
 
-    console.log "Transcribe#render: subject=", @state.currentSubject
-
     annotations = @props.annotations
     currentAnnotation = (@props.classification.annotations[@state.currentTaskKey] ||= {})
-    console.log "current ann: ", currentAnnotation
-    # .length == 0 then {} else @if annotations.length is 0 then {} else annotations[annotations.length-1]
-    """
-    currentTask = @props.workflow.tasks[currentAnnotation?.task ? @props.workflow.first_task]
-    console.log "current: ", @props.workflow.tasks, currentAnnotation?.task, currentTask
-    """
     TaskComponent = @state.currentTool
-    # core_tools[@state.currentTask.tool] ? transcribe_tools[@state.currentTask.tool]
     onFirstAnnotation = currentAnnotation?.task is @props.workflow.first_task
 
     # console.log "Transcribe#render: tool=#{@state.currentTask.tool} TaskComponent=", TaskComponent
@@ -164,7 +136,7 @@ module.exports = React.createClass
     <div className="classifier">
       <div className="subject-area">
         <SubjectViewer onLoad={@handleViewerLoad} viewerSize={@state.viewerSize} subject={@state.currentSubject} active=true workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation}>
-          <TaskComponent ref="taskComponent" task={@state.currentTask} annotation={currentAnnotation} subject={@state.currentSubject} onChange={@handleTaskComponentChange} onComplete={@handleTaskComplete} onBack={@makeBackHandler()} workflow={@props.workflow} viewerSize={@state.viewerSize} />
+          <TaskComponent ref="taskComponent" key={@state.currentTaskKey} task={@state.currentTask} annotation={currentAnnotation} subject={@state.currentSubject} onChange={@handleTaskComponentChange} onComplete={@handleTaskComplete} onBack={@makeBackHandler()} workflow={@props.workflow} viewerSize={@state.viewerSize} />
         </SubjectViewer>
       </div>
       <div className="task-area">

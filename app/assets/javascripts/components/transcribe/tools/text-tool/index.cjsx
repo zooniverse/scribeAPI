@@ -30,6 +30,8 @@ TextTool = React.createClass
 
   getInitialState: ->
     viewerScale: null
+    annotation:
+      value: ''
 
   getDefaultProps: ->
     annotation: {}
@@ -37,10 +39,15 @@ TextTool = React.createClass
     subject: null
    
   componentWillReceiveProps: ->
-    # ...
+    @setState
+      annotation: @props.annotation
+    # console.log "TextTool:componentWillReceiveProps", @props#.input0.value = ''
 
   componentDidMount: ->
-    @refs.input0.value = ''
+    # console.log "TextTool:componentDidMount refs.input0?", @refs.input0?
+    if @refs.input0?
+      @refs.input0.value = 'changed..'
+      # console.log "TextTool:componentDidMount refs.input0 = ..", @refs.input0
 
   onViewerResize: (size) ->
     return null if @state.dragged
@@ -56,14 +63,15 @@ TextTool = React.createClass
       dy: dy
 
   commitAnnotation: ->
-    annotation = @props.annotation
-    annotation = @refs.input0.state.value
-    @props.onComplete annotation
+    @props.onComplete @state.annotation
+
+  handleChange: (e) ->
+    @state.annotation.value = e.target.value
+    # console.log "setting ann val: ", @state.annotation
+    @forceUpdate()
 
   render: ->
     return null unless @props.viewerSize? && @props.subject?
-
-    # console.log "TextTool#render: ", @props, @state
 
     # If user has set a custom position, position based on that:
     if @state.dragged
@@ -77,8 +85,8 @@ TextTool = React.createClass
         left: "#{@props.subject.location.x / @props.viewerSize.w * 100}%"
         top: "#{@props.subject.location.y / @props.viewerSize.h * 100}%"
 
-    val = @props.annotation.value
-    console.log "TextTool#render val:", val, @props.task.key
+    val = @state.annotation?.value ? ''
+    # console.log "TextTool#render val:", val, @state.annotation?.value
 
     <Draggable
       onStart = {@handleInitStart}
@@ -90,7 +98,7 @@ TextTool = React.createClass
         <div className="left">
           <div className="input-field active">
             <label>{@props.task.instruction}</label>
-            <input ref="input0" type="text" data-task_key={@props.task.key} value={val}/>
+            <input ref="input0" type="text" data-task_key={@props.task.key} onChange={@handleChange} value={val} />
           </div>
         </div>
         <div className="right">
