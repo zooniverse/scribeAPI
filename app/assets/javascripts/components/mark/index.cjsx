@@ -34,9 +34,6 @@ module.exports = React.createClass # rename to Classifier
 
   render: ->
     return null unless @state.currentSubjectSet?
-    console.log 'NUMBER OF SUBJECT SETS: ', @state.subjectSets.length
-
-    console.log "SUBJECT SET", @state.currentSubjectSet
 
     annotations = @props.classification.annotations
     currentAnnotation = if annotations.length is 0 then {} else annotations[annotations.length-1]
@@ -64,8 +61,7 @@ module.exports = React.createClass # rename to Classifier
       </div>
       <div className="task-area">
         <div className="task-container">
-          {console.log 'CURRENT ANNOTATION: ', currentAnnotation}
-          {console.log 'CURRENT TASK: ', currentTask}
+          {console.log 'TASK COMPONENT, current  task is ', currentTask}
           <TaskComponent task={currentTask} annotation={currentAnnotation} onChange={@handleTaskComponentChange} />
           <hr/>
           <nav className="task-nav">
@@ -90,6 +86,7 @@ module.exports = React.createClass # rename to Classifier
     @updateAnnotations()
 
   updateAnnotations: ->
+    console.log 'UPDATE ANNOTATIONS'
     @props.classification.update 'annotations'
       # annotations: @props.classification.annotations
     @forceUpdate()

@@ -59,7 +59,7 @@ module.exports = React.createClass
             url: url
             imageWidth: img.width
             imageHeight: img.height
-            loading: false, => console.log 'URL: ', url
+            loading: false,
               #, => console.log 'url: ', url
             # console.log @state.loading
             # console.log "Finished Loading."
@@ -191,7 +191,6 @@ module.exports = React.createClass
     @setState selectedMark: mark, =>
       if mark?.details?
         @forceUpdate() # Re-render to reposition the details tooltip.
-    console.log 'leaving selectMark()...'
 
   destroyMark: (annotation, mark) ->
     if mark is @state.selectedMark
@@ -256,14 +255,11 @@ module.exports = React.createClass
                 <g key={annotation._key} className="marks-for-annotation" data-disabled={isPriorAnnotation or null}>
                   {for mark, m in annotation.value
 
-                    console.log 'ANNOTATION VALUE: ', annotation.value
-
                     mark._key ?= Math.random()
                     toolDescription = taskDescription.tools[mark.tool]
 
                     #adds task and description to each annotation
                     @props.annotation["tool_task_description"] = @props.workflow.tasks[annotation.task].tools[mark.tool]
-                    console.log 'TOOL TASK DESCRIPTION: ', @props.annotation["tool_task_description"]
                     ToolComponent = markingTools[toolDescription.type]
 
                     <ToolComponent
