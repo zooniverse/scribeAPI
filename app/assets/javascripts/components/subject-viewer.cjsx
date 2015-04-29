@@ -318,7 +318,7 @@ module.exports = React.createClass
                 <g>
 
                   <rect
-                    className   = "mark-rectangle"
+                    className   = "mark-rectangle top"
                     x           = 0
                     y           = 0
                     width       = { @state.imageWidth }
@@ -327,13 +327,32 @@ module.exports = React.createClass
                   />
 
                   <rect
-                    className   = "mark-rectangle"
+                    className   = "mark-rectangle bottom"
                     x           = 0
                     y           = { @state.subject.location.spec.y + @state.subject.location.spec.height }
                     width       = { @state.imageWidth }
                     height      = { @state.imageHeight - @state.subject.location.spec.y + @state.subject.location.spec.height }
                     fill        = "rgba(0,0,0,0.6)"
                   />
+
+                  <rect
+                    className   = "mark-rectangle left"
+                    x           = 0
+                    y           = { @state.subject.location.spec.y }
+                    width       = { @state.subject.location.spec.x }
+                    height      = { @state.subject.location.spec.height }
+                    fill        = "rgba(0,0,0,0.6)"
+                  />
+
+                  <rect
+                    className   = "mark-rectangle right"
+                    x           = { @state.subject.location.spec.x + @state.subject.location.spec.width}
+                    y           = { @state.subject.location.spec.y }
+                    width       = { @state.imageWidth - @state.subject.location.spec.width - @state.subject.location.spec.x }
+                    height      = { @state.subject.location.spec.height }
+                    fill        = "rgba(0,0,0,0.6)"
+                  />
+
                 </g>
             }
 
