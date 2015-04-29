@@ -64,7 +64,8 @@ module.exports = React.createClass # rename to Classifier
       </div>
       <div className="task-area">
         <div className="task-container">
-          {console.log 'CURRENT ANNOTATION: ', currentAnnotation }
+          {console.log 'CURRENT ANNOTATION: ', currentAnnotation}
+          {console.log 'CURRENT TASK: ', currentTask}
           <TaskComponent task={currentTask} annotation={currentAnnotation} onChange={@handleTaskComponentChange} />
           <hr/>
           <nav className="task-nav">

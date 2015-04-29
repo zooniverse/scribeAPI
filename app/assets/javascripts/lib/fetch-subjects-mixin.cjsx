@@ -13,7 +13,7 @@ module.exports =
     else
       @fetchSubjects @props.workflow.id, @props.workflow.subject_fetch_limit
 
-  # NO LONGER BEING USER? -STI
+  # NO LONGER BEING USED? -STI
   # fetchSubject: (subject_set_id, workflow_id)->
   #   console.log "SUBJECT FETCH"
   #   request = API.type("subject_sets").get(subject_set_id, workflow_id: workflow_id)

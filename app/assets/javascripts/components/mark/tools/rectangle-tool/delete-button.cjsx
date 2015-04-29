@@ -23,8 +23,6 @@ module.exports = React.createClass
     rotate: 0
 
   render: ->
-
-    console.log "delete props", @props
     transform = "
       translate(#{@props.x+40}, #{@props.y-40})
       rotate(#{@props.rotate})

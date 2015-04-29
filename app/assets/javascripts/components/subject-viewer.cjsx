@@ -199,7 +199,6 @@ module.exports = React.createClass
     @updateAnnotations()
 
   updateAnnotations: ->
-    console.log 'updateAnnotations()'
     @props.classification.update 'annotations'
     @forceUpdate()
 
@@ -207,9 +206,6 @@ module.exports = React.createClass
     # return null if @state.subjects is null or @state.subjects.length is 0
     # return null unless @state.subject?
     # console.log 'SUBJECT: ', @state.subject
-
-
-    console.log 'SUBJECT HAS MARKS: ', @state.subject.location.spec?
 
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     ToolComponent = @state.tool
@@ -284,10 +280,7 @@ module.exports = React.createClass
             }
 
             { # ROW FOCUS TOOL -------------------------------------------
-              console.log 'WORKFLOW: ', @props.workflow.name
-              console.log 'TASK: ', @state.subject.tool_task_description.task
               if @props.workflow.name is "transcribe" and @state.subject.tool_task_description.type is "textRowTool"
-                console.log 'BLAH'
                 markHeight = @state.subject.location.spec.yLower - @state.subject.location.spec.yUpper
                 <g>
 
@@ -313,14 +306,14 @@ module.exports = React.createClass
 
 
             { # RECTANGLE FOCUS TOOL ------------------------------------------
-              if @props.workflow.name is "transcribe" and @state.subject.location.spec.tool is 1
+              if @props.workflow.name is "transcribe" and @state.subject.tool_task_description.type is "rectangleTool"
                 markHeight = @state.subject.location.spec.yLower - @state.subject.location.spec.yUpper
                 <g>
 
                   <rect
                     className   = "mark-rectangle"
                     x           = 0
-                    y           = { @state.subject.location.spec.y }
+                    y           = 0
                     width       = { @state.imageWidth }
                     height      = { @state.subject.location.spec.y }
                     fill        = "rgba(0,0,0,0.6)"
@@ -329,15 +322,12 @@ module.exports = React.createClass
                   <rect
                     className   = "mark-rectangle"
                     x           = 0
-                    y           = { @state.subject.location.spec.yLower }
+                    y           = { @state.subject.location.spec.y + @state.subject.location.spec.height }
                     width       = { @state.imageWidth }
-                    height      = { @state.imageHeight - @state.subject.location.spec.yLower }
+                    height      = { @state.imageHeight - @state.subject.location.spec.y + @state.subject.location.spec.height }
                     fill        = "rgba(0,0,0,0.6)"
                   />
                 </g>
-              else
-                console.log 'NO BLAH'
-                <g></g>
             }
 
           </svg>
