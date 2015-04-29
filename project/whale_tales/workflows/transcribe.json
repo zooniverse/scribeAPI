@@ -29,7 +29,7 @@
     },
     "attestation_form_task":{
       "generate_subjects": true,
-      "tool":"drawing",
+      "tool":"transcribe",
       "instruction":"Draw a rectangle around each record.",
       "tools": [
         {"type": "superAwesomePointTool", "label": "Records (point)", "color": "red"},
@@ -40,7 +40,7 @@
     },
     "history_form_task":{
       "generate_subjects": true,
-      "tool":"drawing",
+      "tool":"transcribe",
       "instruction":"Draw a rectangle around each record.",
       "tools": [
         {"type": "rectangleTool", "label": "Occupation", "color": "green"},
@@ -52,7 +52,7 @@
     },
     "casualty_form_task":{
       "generate_subjects": true,
-      "tool":"drawing",
+      "tool":"transcribe",
       "instruction":"Draw a rectangle around each record.",
       "tools": [
         {"type": "superAwesomePointTool", "label": "Records (point)", "color": "red"},

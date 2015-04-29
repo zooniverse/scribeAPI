@@ -251,7 +251,7 @@ module.exports = React.createClass
               isPriorAnnotation = annotation isnt @props.annotation
               taskDescription = @props.workflow.tasks[annotation.task]
 
-              if taskDescription.tool is 'drawing'
+              if taskDescription.tool is 'mark' or taskDescription.tool is 'transcribe'
                 <g key={annotation._key} className="marks-for-annotation" data-disabled={isPriorAnnotation or null}>
                   {for mark, m in annotation.value
 
