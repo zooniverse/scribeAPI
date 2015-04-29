@@ -95,6 +95,8 @@ module.exports = React.createClass
       mark =
         key: @state.lastMarkKey
         tool: @props.annotation._toolIndex
+        toolName: taskDescription.tools[@props.annotation._toolIndex].type
+
       if toolDescription.details?
         mark.details = for detailTaskDescription in toolDescription.details
           # DEBUG CODE
@@ -254,11 +256,14 @@ module.exports = React.createClass
                 <g key={annotation._key} className="marks-for-annotation" data-disabled={isPriorAnnotation or null}>
                   {for mark, m in annotation.value
 
+                    console.log 'ANNOTATION VALUE: ', annotation.value
+
                     mark._key ?= Math.random()
                     toolDescription = taskDescription.tools[mark.tool]
 
                     #adds task and description to each annotation
                     @props.annotation["tool_task_description"] = @props.workflow.tasks[annotation.task].tools[mark.tool]
+                    console.log 'TOOL TASK DESCRIPTION: ', @props.annotation["tool_task_description"]
                     ToolComponent = markingTools[toolDescription.type]
 
                     <ToolComponent
