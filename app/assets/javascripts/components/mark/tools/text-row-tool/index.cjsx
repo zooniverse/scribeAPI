@@ -52,7 +52,6 @@ module.exports = React.createClass
     x: @props.ref.props.width - 100
     y: (@props.mark.yLower-@props.mark.yUpper)/2
 
-
   render: ->
     averageScale = (@props.xScale + @props.yScale) / 2
     crosshairSpace = CROSSHAIR_SPACE / averageScale

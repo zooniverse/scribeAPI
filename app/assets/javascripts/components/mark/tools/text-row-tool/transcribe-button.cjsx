@@ -1,7 +1,7 @@
 React     = require 'react'
 Draggable = require 'lib/draggable'
 
-RADIUS = 8
+RADIUS = 12
 STROKE_COLOR = 'white'
 FILL_COLOR = '#f60'
 STROKE_WIDTH = 1.5
@@ -24,6 +24,8 @@ module.exports = React.createClass
       scale(#{RADIUS*@props.tool.props.xScale}, #{RADIUS*@props.tool.props.yScale})
     "
 
-    <g className="clickable drawing-tool-transcribe-button">
-      <path transform={transform} stroke="none" fill={FILL_COLOR} d="M0 0v2h.5c0-.55.45-1 1-1h1.5v5.5c0 .28-.22.5-.5.5h-.5v1h4v-1h-.5c-.28 0-.5-.22-.5-.5v-5.5h1.5c.55 0 1 .45 1 1h.5v-2h-8z" />
+    <g transform={transform} className="clickable drawing-tool-transcribe-button">
+      <path stroke="none" fill={FILL_COLOR} d="M0 0v2h.5c0-.55.45-1 1-1h1.5v5.5c0 .28-.22.5-.5.5h-.5v1h4v-1h-.5c-.28 0-.5-.22-.5-.5v-5.5h1.5c.55 0 1 .45 1 1h.5v-2h-8z" />
+      <path transform="translate(-9,0)" stroke="none" fill={FILL_COLOR} d="M0 0v1h8v-1h-8zm0 2v1h6v-1h-6zm0 2v1h8v-1h-8zm0 2v1h6v-1h-6z" />
+
     </g>
