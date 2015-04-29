@@ -285,7 +285,8 @@ module.exports = React.createClass
             }
 
             { # ROW FOCUS TOOL -------------------------------------------
-              if @props.workflow.name is "transcribe" and @state.subject.tool_task_description.type is "textRowTool"
+              if @props.workflow.name is "transcribe" and @state.subject.location.spec.toolName is "textRowTool"
+                console.log 'ROW TOOL!'
                 markHeight = @state.subject.location.spec.yLower - @state.subject.location.spec.yUpper
                 <g>
 
@@ -311,7 +312,8 @@ module.exports = React.createClass
 
 
             { # RECTANGLE FOCUS TOOL ------------------------------------------
-              if @props.workflow.name is "transcribe" and @state.subject.tool_task_description.type is "rectangleTool"
+              if @props.workflow.name is "transcribe" and @state.subject.location.spec.toolName is "rectangleTool"
+                console.log 'RECTANGLE TOOL!'
                 markHeight = @state.subject.location.spec.yLower - @state.subject.location.spec.yUpper
                 <g>
 
