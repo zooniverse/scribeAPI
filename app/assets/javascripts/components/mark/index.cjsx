@@ -1,11 +1,11 @@
-React              = require 'react'
-SubjectSetViewer   = require '../subject-set-viewer'
-tasks              = require '../tasks'
-FetchSubjectsMixin = require 'lib/fetch-subjects-mixin'
-JSONAPIClient      = require 'json-api-client' # use to manage data?
-ForumSubjectWidget = require '../forum-subject-widget'
+React                   = require 'react'
+SubjectSetViewer        = require '../subject-set-viewer'
+tasks                   = require '../tasks'
+FetchSubjectSetsMixin   = require 'lib/fetch-subject-sets-mixin'
+JSONAPIClient           = require 'json-api-client' # use to manage data?
+ForumSubjectWidget      = require '../forum-subject-widget'
 
-API                = require '../../lib/api'
+API                     = require '../../lib/api'
 
 module.exports = React.createClass # rename to Classifier
   displayName: 'Mark'
@@ -13,7 +13,7 @@ module.exports = React.createClass # rename to Classifier
   propTypes:
     workflow: React.PropTypes.object.isRequired
 
-  mixins: [FetchSubjectsMixin] # load subjects and set state variables: subjects, currentSubject, classification
+  mixins: [FetchSubjectSetsMixin] # load subjects and set state variables: subjects, currentSubject, classification
 
   getInitialState: ->
     subjects:       null
@@ -41,6 +41,7 @@ module.exports = React.createClass # rename to Classifier
     annotations = @props.classification.annotations
     currentAnnotation = if annotations.length is 0 then {} else annotations[annotations.length-1]
     currentTask = @props.workflow.tasks[currentAnnotation?.task]
+    console.log "wtf: ", currentAnnotation?.task, currentTask
     TaskComponent = tasks[currentTask.tool]
     onFirstAnnotation = currentAnnotation?.task is @props.workflow.first_task
 

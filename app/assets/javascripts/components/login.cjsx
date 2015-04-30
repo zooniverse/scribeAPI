@@ -8,7 +8,6 @@ Login = React.createClass
     @fetchUser()
 
   getInitialState:->
-    console.log("inital state")
     user: null
     loading: false
     error: null
