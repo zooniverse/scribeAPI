@@ -31,7 +31,7 @@ module.exports = React.createClass
       scale(#{1 / @props.tool.props.xScale}, #{1 / @props.tool.props.yScale})
     "
 
-    <g className="clickable drawing-tool-delete-button" transform={transform} stroke={STROKE_COLOR} strokeWidth={STROKE_WIDTH} onClick={@destroyTool}>
+    <g className="mark-tool delete-button" transform={transform} stroke={STROKE_COLOR} strokeWidth={STROKE_WIDTH} onClick={@destroyTool}>
       <circle r={RADIUS} fill={FILL_COLOR} />
       <path d={CROSS_PATH} transform="rotate(45)" />
     </g>

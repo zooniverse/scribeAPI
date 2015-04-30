@@ -14,9 +14,9 @@ module.exports = React.createClass
 
   getInitialState: ->
     mark: @props.mark
-  
+
   componentWillReceiveProps: ->
-    @setState 
+    @setState
       mark: @props.mark, =>
         @forceUpdate()
 
@@ -31,7 +31,7 @@ module.exports = React.createClass
     @setState mark: mark
 
   render: ->
-    
+
     fillColor   = 'rgba(0,0,0,0.30)'
     strokeColor = '#fff'
     radius = 40
@@ -42,7 +42,7 @@ module.exports = React.createClass
       scale(#{1}, #{1})
     "
 
-    <g className="point drawing-tool" transform={transform}>
+    <g className="mark-tool" transform={transform}>
 
       { if DEBUG
           <text fill='blue' fontSize='30'>
@@ -50,24 +50,24 @@ module.exports = React.createClass
           </text>
       }
 
-      <Draggable 
-        onStart={@props.handleMarkClick.bind null, @props.mark} 
+      <Draggable
+        onStart={@props.handleMarkClick.bind null, @props.mark}
         onDrag={@handleDrag} >
 
         <g strokeWidth={strokeWidth}>
-          <circle 
-            r={radius + (strokeWidth / 2)} 
-            stroke={strokeColor} 
-            fill={fillColor} 
+          <circle
+            r={radius + (strokeWidth / 2)}
+            stroke={strokeColor}
+            fill={fillColor}
           />
         </g>
 
       </Draggable>
-      
+
       { if @props.isSelected
-          <DeleteButton 
-            transform="translate(#{radius}, #{-radius})" 
-            onClick={@props.onClickDelete.bind null, @props.mark.key} /> 
+          <DeleteButton
+            transform="translate(#{radius}, #{-radius})"
+            onClick={@props.onClickDelete.bind null, @props.mark.key} />
       }
 
     </g>

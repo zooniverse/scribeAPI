@@ -39,13 +39,13 @@ module.exports = React.createClass
 
     scale = (@props.xScale + @props.yScale) / 2
 
-    <g 
-      tool={this} 
-      transform="translate(#{@props.mark.x}, #{@props.mark.y})" 
+    <g
+      tool={this}
+      transform="translate(#{@props.mark.x}, #{@props.mark.y})"
       onMouseDown={@handleMouseDown}
     >
       <g
-        className="drawing-tool-main"
+        className="mark-tool"
         fill='transparent'
         stroke='#f60'
         strokeWidth={SELECTED_STROKE_WIDTH/scale}
@@ -80,7 +80,7 @@ module.exports = React.createClass
   #   @props.mark.x = offset.x
   #   @props.mark.y = offset.y
   #   @props.onChange()
-    
+
   handleMouseDown: ->
     console.log 'handleMouseDown()'
     @props.onSelect @props.mark # unless @props.disabled
