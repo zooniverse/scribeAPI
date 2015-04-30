@@ -271,7 +271,7 @@ module.exports = React.createClass
           </Draggable>
 
           
-          { if @props.subject.location.spec.x?
+          { if @props.subject.location.spec?.x?
             isPriorAnnotation = true # ? 
             <g key={@props.subject.id} className="marks-for-annotation" data-disabled={isPriorAnnotation}>
               {
