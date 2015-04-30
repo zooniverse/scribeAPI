@@ -70,7 +70,7 @@ module.exports = React.createClass
       onMouseDown={@handleMouseDown}
     >
       <g
-        className="drawing-tool-main"
+        className="mark-tool text-row-tool"
         fill='transparent'
         stroke=STROKE_COLOR
         strokeWidth={SELECTED_STROKE_WIDTH/scale}
