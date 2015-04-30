@@ -48,6 +48,7 @@ class Workflow
             retire_count: 3,
             parent_subject_id: parent_subject_id,
             tool_task_description: annotation["tool_task_description"], 
+            key: annotation["key"], 
             location: { 
               standard: classification.subject.file_path,
               spec: value.except(:key, :tool)

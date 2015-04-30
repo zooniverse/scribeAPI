@@ -19,6 +19,9 @@ class Subject
   field :retire_count,            type: Integer
   field :tool_task_description,   type: Hash
 
+  # Optional 'key' value specified in some tool options (drawing) to identify tool option selected ('record-rect', 'point-tool')
+  field :key,                     type: String
+
   after_create :update_subject_set_stats
 
   belongs_to :workflow

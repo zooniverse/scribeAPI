@@ -29,7 +29,7 @@ TextTool = React.createClass
       dragged: true
 
   getInitialState: ->
-    viewerScale: null
+    viewerSize: @props.viewerSize
     annotation:
       value: ''
 
@@ -41,49 +41,43 @@ TextTool = React.createClass
   componentWillReceiveProps: ->
     @setState
       annotation: @props.annotation
-    # console.log "TextTool:componentWillReceiveProps", @props#.input0.value = ''
 
   componentDidMount: ->
-    # console.log "TextTool:componentDidMount refs.input0?", @refs.input0?
-    if @refs.input0?
-      @refs.input0.value = 'changed..'
-      # console.log "TextTool:componentDidMount refs.input0 = ..", @refs.input0
+    @updatePosition()
 
+  # Expects size hash with:
+  #   w: [viewer width]
+  #   h: [viewer height]
+  #   scale: 
+  #     horizontal: [horiz scaling of image to fit within above vals]
+  #     vertical:   [vert scaling of image..]
   onViewerResize: (size) ->
-    return null if @state.dragged
-
-    scale = size.scale.horizontal
-
-    dx = @props.subject.location.x * scale
-    dy = ( @props.subject.location.y + @props.subject.location.h ) * scale
-
     @setState
-      viewerScale: scale # cause horiz should = vert...
-      dx: dx
-      dy: dy
+      viewerSize: size
+    @updatePosition()
+
+  updatePosition: ->
+    if @state.viewerSize? && ! @state.dragged
+      @setState
+        dx: @props.subject.location.spec.x * @state.viewerSize.scale.horizontal
+        dy: (@props.subject.location.spec.y + @props.subject.location.spec.height) * @state.viewerSize.scale.vertical
+      # console.log "TextTool#updatePosition setting state: ", @state
 
   commitAnnotation: ->
     @props.onComplete @state.annotation
 
   handleChange: (e) ->
     @state.annotation.value = e.target.value
-    # console.log "setting ann val: ", @state.annotation
     @forceUpdate()
 
   render: ->
     return null unless @props.viewerSize? && @props.subject?
 
     # If user has set a custom position, position based on that:
-    if @state.dragged
-      style =
-        left: @state.dx
-        top: @state.dy
-
-    # Otherwise compute position based on location of secondary subject:
-    else
-      style =
-        left: "#{@props.subject.location.x / @props.viewerSize.w * 100}%"
-        top: "#{@props.subject.location.y / @props.viewerSize.h * 100}%"
+    style =
+      left: @state.dx
+      top: @state.dy
+    # console.log "TextTool#render pos", @state
 
     val = @state.annotation?.value ? ''
     # console.log "TextTool#render val:", val, @state.annotation?.value

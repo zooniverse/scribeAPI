@@ -50,16 +50,16 @@ module.exports = React.createClass
       windowInnerWidth: window.innerWidth
       windowInnerHeight: window.innerHeight
 
-    # console.log "resize...", @refs.sizeRect
     # console.log "if ! ", @state.loading, @getScale(), @props.onResize
     if ! @state.loading && @getScale()? && @props.onLoad?
       scale = @getScale()
-      # console.log "scale: ", scale, @state.imageWidth, @state.imageHeight
-      translated = {w: scale.horizontal * @state.imageWidth, h: scale.vertical * @state.imageHeight, scale: scale}
-      @props.onLoad translated
+      props =
+        size:
+          w: scale.horizontal * @state.imageWidth
+          h: scale.vertical * @state.imageHeight
+          scale: scale
 
-      # console.log "refs: ", @refs
-      @refs.markingCanvas.getDOMNode().getBoundingClientRect() if @refs.markingCanvas?
+      @props.onLoad props
 
   loadImage: (url) ->
     @setState loading: true, =>
@@ -76,31 +76,6 @@ module.exports = React.createClass
             loading: false
 
           @updateDimensions()
-              #, => console.log 'url: ', url
-            # console.log @state.loading
-            # console.log "Finished Loading."
-
-  # nextSubject: () ->
-  #   @prepareClassification()
-  #   @sendMarkClassification()
-
-  #   # # DEBUG CODE
-  #   # console.log 'CLASSIFICATION: ', @state.classification
-
-  #   # console.log JSON.stringify @state.classification # DEBUG CODE
-  #   @state.classification.send()
-  #   @setState
-  #     marks: [] # clear marks for next subject
-
-  #   # prepare new classification
-  #   if @state.subjects.shift() is undefined or @state.subjects.length <= 0
-  #     @fetchSubjects(@state.subjectEndpoint)
-  #     return
-  #   else
-  #     @setState subject: @state.subjects[0], =>
-  #       @loadImage ((if @usingFakeSubject() then @state.subject.classification.subject.location.standard else @state.subject.location.standard))
-
-  #   @state.classification = new Classification @state.subject
 
   # VARIOUS EVENT HANDLERS
 
@@ -146,14 +121,10 @@ module.exports = React.createClass
 
     MarkComponent = markingTools[toolDescription.type]
 
-    # console.log 'FOO ', markingTools
-
     if MarkComponent.defaultValues?
       defaultValues = MarkComponent.defaultValues mouseCoords
       for key, value of defaultValues
         mark[key] = value
-
-    # console.log 'BAR'
 
     if MarkComponent.initStart?
       initValues = MarkComponent.initStart mouseCoords, mark, e
@@ -300,7 +271,7 @@ module.exports = React.createClass
           </Draggable>
 
           
-          { if @props.subject.location.x?
+          { if @props.subject.location.spec.x?
             isPriorAnnotation = true # ? 
             <g key={@props.subject.id} className="marks-for-annotation" data-disabled={isPriorAnnotation}>
               {
@@ -308,7 +279,7 @@ module.exports = React.createClass
                 # TODO Should really check the drawing tool used (encoded somehow in the 2ndary subject) and display a read-only instance of that tool. For now just defaulting to rect:
                 ToolComponent = markingTools['rectangleTool']
                 # TODO: Note that x, y, w h aren't scaled properly:
-                mark = {x: @props.subject.location.x, y: @props.subject.location.y, width: @props.subject.location.w, height: @props.subject.location.h}
+                mark = {x: @props.subject.location.spec.x, y: @props.subject.location.spec.y, width: @props.subject.location.spec.width, height: @props.subject.location.spec.height}
 
                 <ToolComponent
                   key={@props.subject.id}
@@ -339,6 +310,7 @@ module.exports = React.createClass
 
                     #adds task and description to each annotation
                     @props.annotation["tool_task_description"] = @props.workflow.tasks[annotation.task].tools[mark.tool]
+                    @props.annotation["key"] = @props.workflow.tasks[annotation.task].tools[mark.tool].key
                     ToolComponent = markingTools[toolDescription.type]
 
                     <ToolComponent 

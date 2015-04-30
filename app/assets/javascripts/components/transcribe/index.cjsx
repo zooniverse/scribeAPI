@@ -101,21 +101,20 @@ module.exports = React.createClass
     else
       console.log "WARN: End of subjects"
 
-  handleViewerLoad: (size) ->
-    # console.log "setting size: ", size
+  handleViewerLoad: (props) ->
+    # console.log "Transcribe#handleViewerLoad: setting size: ", props
     @setState
-      viewerSize: size
+      viewerSize: props.size
 
     if (tool = @refs.taskComponent)?
-      tool.onViewerResize size
-      # console.log "viewer resize: ", size, tool
+      tool.onViewerResize props.size
 
   makeBackHandler: ->
     () =>
       console.log "go back"
 
   render: ->
-    console.log "Transcribe#render: ", @state
+    # console.log "Transcribe#render: ", @state
     return null unless @state.currentSubject? && @state.currentTask?
 
     # TODO: HACK HACK HACK
@@ -126,7 +125,7 @@ module.exports = React.createClass
     TaskComponent = @state.currentTool
     onFirstAnnotation = currentAnnotation?.task is @props.workflow.first_task
 
-    console.log "Transcribe#render: tool=#{@state.currentTask.tool} TaskComponent=", TaskComponent
+    # console.log "Transcribe#render: tool=#{@state.currentTask.tool} TaskComponent=", TaskComponent
 
     nextTask = if @state.currentTask.options?[currentAnnotation.value]?
       @state.currentTask.options?[currentAnnotation.value].next_task
@@ -136,8 +135,8 @@ module.exports = React.createClass
     # console.log "viewer size: ", @state.viewerSize
     <div className="classifier">
       <div className="subject-area">
-        <SubjectViewer onLoad={@handleViewerLoad} viewerSize={@state.viewerSize} subject={@state.currentSubject} active=true workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation}>
-          <TaskComponent ref="taskComponent" key={@state.currentTaskKey} task={@state.currentTask} annotation={currentAnnotation} subject={@state.currentSubject} onChange={@handleTaskComponentChange} onComplete={@handleTaskComplete} onBack={@makeBackHandler()} workflow={@props.workflow} viewerSize={@state.viewerSize} />
+        <SubjectViewer onLoad={@handleViewerLoad} subject={@state.currentSubject} active=true workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation}>
+          <TaskComponent ref="taskComponent" viewerSize={@state.viewerSize} key={@state.currentTaskKey} task={@state.currentTask} annotation={currentAnnotation} subject={@state.currentSubject} onChange={@handleTaskComponentChange} onComplete={@handleTaskComplete} onBack={@makeBackHandler()} workflow={@props.workflow} viewerSize={@state.viewerSize} />
         </SubjectViewer>
       </div>
       <div className="task-area">

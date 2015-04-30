@@ -8,13 +8,10 @@
     "em_switch_on_type": {
       "tool": "switch_on_value",
       "tool_options": {  
-        "field": "type",
+        "field": "key",
         "options": {
-          "em_mark_building_address": {
+          "em_record_rect": {
             "task": "em_transcribe_building_address"
-          },
-          "em_mark_building_description": {
-            "task": "em_transcribe_building_description"
           }
         }
       }

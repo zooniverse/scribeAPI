@@ -28,9 +28,8 @@
       "generated_for_workflow" : "",
       "generate_subjects": true,
       "tools": [
-        {"type": "superAwesomePointTool", "label": "Records (point)", "color": "red"},
-        {"type": "rectangleTool", "label": "Records (rectangle)", "color": "green"},
-        {"type": "textRowTool", "label": "Records (row)", "color": "blue"}
+        {"type": "rectangleTool", "label": "Records (rectangle)", "color": "green", "key": "em_record_rect"},
+        {"type": "textRowTool", "label": "Records (row)", "color": "blue", "key": "em_record_row_tool"}
       ],
       "next_task": null
     }
