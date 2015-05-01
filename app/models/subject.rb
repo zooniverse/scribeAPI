@@ -16,7 +16,9 @@ class Subject
   field :type,                        type: String,  default: "root"
   field :meta_data,                   type: Hash
   field :retire_count,                type: Integer
+  # is tool_task_description not relevant anymore?
   field :tool_task_description,       type: Hash
+  field :secondary_subject_count,     type: Integer, default: 0
 
   # Optional 'key' value specified in some tool options (drawing) to identify tool option selected ('record-rect', 'point-tool')
   field :key,                     type: String
@@ -32,25 +34,29 @@ class Subject
 
   # after_create :update_subject_set_stats
 
-  # after_save :increment_classification_count_by_one, :if => :parent_subject
+  after_save :increment_parents_subject_count_by_one, :if => :parent_subject
 
 
   def update_subject_set_stats
     subject_set.inc_subject_count_for_workflow(workflow)
   end
 
-  # we actually want this to happen in the classification.rb
-  # def increment_classification_count_by_one
-  #   parent_subject = self.parent_subject
-  #   parent_subject.classification_count += 1
-  #   parent_subject.save
-  #   # We want the subject itself to know its retire_count, not the workflow of the subject.
-  #   retire! if self.classification_count >= self.retire_count
-  # end
+  # increment the self.parent.secondary_subject_count by 1
+  def increment_parents_subject_count_by_one
+    parent_subject = self.parent_subject
+    parent_subject.secondary_subject_count += 1
+    parent_subject.save
+  end
 
+  # Result 1) should set self.status == "retired" under the following condition:
+  #   1) user indicated that a subject is completely classified
+  #   2) self.annotation_value_count >= self.retire_count
+  # Result 2) should decrement the self.parent_subject.secondary_subject_count by 1, if self.status == "retired"
   def retire!
-    self.status = "retired"
-    subject_set.subject_completed_on_workflow(workflow)
+    puts "EVAL"
+    # TODO: retirement should be based on workflow, right? --- consult team.
+    # self.status = "retired" if self.annotation_value_count >= self.retire_count
+    # subject_set.subject_completed_on_workflow(workflow)
     save
   end
 
