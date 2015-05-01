@@ -23,7 +23,7 @@
       }
     },
     "identify_records":{
-      "tool": "drawing",
+      "tool": "mark",
       "instruction": "Pick a field and mark it with the corresponding marking tool.",
       "generated_for_workflow" : "",
       "generate_subjects": true,
