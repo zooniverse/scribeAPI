@@ -119,7 +119,7 @@ module.exports = React.createClass # rename to Classifier
       workflow_id: @state.workflow.id
       'metadata.finished_at': (new Date).toISOString()
     @props.classification.save()
-    @props.onComplete?()
+    @props.onComplete?() # does this do anything? -STI
     console.log 'CLASSIFICATION: ', @props.classification
 
 window.React = React

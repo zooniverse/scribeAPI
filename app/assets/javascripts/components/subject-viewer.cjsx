@@ -11,6 +11,8 @@ markingTools                  = require './mark/tools'
 
 RowFocusTool                  = require 'components/row-focus-tool'
 
+API = require "lib/api"
+
 
 module.exports = React.createClass
   displayName: 'SubjectViewer'
@@ -221,6 +223,62 @@ module.exports = React.createClass
     @props.classification.update 'annotations'
     @forceUpdate()
 
+  submitMark: (mark) ->
+    console.log 'classifySingleMark!!!!'
+    console.log 'PROPS: ', @props
+    console.log 'MARK: ', mark
+
+    metadata =
+      started_at: (new Date).toISOString() # this is dummy
+      finished_at: (new Date).toISOString()
+
+    classification = API.type('classifications').create
+      name:        'Classification'
+      subject_id:  @props.subject.id
+      workflow_id: @props.workflow.id
+      annotations: []
+      metadata:    metadata
+
+    mark.subject_id = @props.subject.id
+    mark.workflow_id = @props.workflow.id
+
+    annotation =
+      task:               "dummy_task_name" # fix -STI
+      generates_subjects: true
+      value:              mark
+      subject_id:  @props.subject.id
+      workflow_id: @props.workflow.id
+
+    classification.annotations.push annotation
+    classification.update 'annotations'
+
+    console.log 'CLASSIFICATION: ', classification
+
+    classification.save()
+
+    #
+    # $.post('/classifications', {
+    #     classifications:
+    #       name:        'Classification'
+    #       subject_id:  @props.subject.id
+    #       workflow_id: @props.workflow.id
+    #       annotations: [annotation]
+    #       metadata:    metadata
+    #
+    #   }, )
+    #   .done (response) =>
+    #     console.log "Success", response #, response._id.$oid
+    #     # @setTranscribeSubject(key, response._id.$oid)
+    #     # @enableMarkButton(key)
+    #     return
+    #   .fail =>
+    #     console.log "Failure"
+    #     return
+    #   .always ->
+    #     console.log "Always"
+    #     return
+
+
   render: ->
     # return null if @state.subjects is null or @state.subjects.length is 0
     # return null unless @state.subject?
@@ -404,6 +462,7 @@ module.exports = React.createClass
                       selected={mark is @state.selectedMark}
                       getEventOffset={@getEventOffset}
                       ref={@refs.sizeRect}
+                      submitMark={@submitMark}
 
                       onChange={@updateAnnotations}
                       onSelect={@selectMark.bind this, annotation, mark}

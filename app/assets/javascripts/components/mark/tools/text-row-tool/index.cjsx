@@ -113,4 +113,6 @@ module.exports = React.createClass
     @props.onSelect @props.mark # unless @props.disabled
 
   handleTranscribeClick: ->
+    @props.submitMark(@props.mark)
     console.log 'TRANSCRIBE CLICK!'
+    console.log 'THIS TOOL: ', @
