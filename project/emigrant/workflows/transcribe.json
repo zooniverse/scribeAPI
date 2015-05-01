@@ -8,32 +8,51 @@
     "em_switch_on_type": {
       "tool": "switch_on_value",
       "tool_options": {  
-        "field": "key",
+        "field": "type",
         "options": {
           "em_record_rect": {
-            "task": "em_transcribe_building_address"
+            "task": "em_transcribe_date"
           }
         }
       }
     },
 
-    "em_transcribe_building_address": {
+    "em_transcribe_date": {
       "tool": "text_tool",
       "tool_options": {},
-      "instruction": "Enter the building address",
-      "next_task": "em_transcribe_building_address2"
+      "instruction": "Enter the record date",
+      "next_task": "em_transcribe_mortgager"
     },
 
-    "em_transcribe_building_address2": {
+    "em_transcribe_mortgager": {
       "tool": "text_tool",
       "tool_options": {},
-      "instruction": "Say something else about the building address"
+      "instruction": "Enter the mortgager",
+      "next_task": "em_transcribe_address"
     },
 
-    "em_transcribe_building_description": {
+    "em_transcribe_address": {
       "tool": "text_tool",
       "tool_options": {},
-      "instruction": "Enter the building description"
+      "instruction": "Enter the street address",
+      "next_task": "em_transcribe_valuation"
+    },
+
+    "em_transcribe_valuation": {
+      "tool": "composite_tool",
+      "tool_options": {
+        "tools": {
+          "em_valuation_date": {
+            "tool": "text_tool",
+            "tool_options": {}
+          },
+          "em_valuation_amount": {
+            "tool": "text_tool",
+            "tool_options": {}
+          }
+        }
+      },
+      "instruction": "Enter any dated property valuations that were recorded"
     }
   },
 

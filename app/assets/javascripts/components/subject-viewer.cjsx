@@ -39,7 +39,7 @@ module.exports = React.createClass
 
   componentDidMount: ->
     @setView 0, 0, @state.imageWidth, @state.imageHeight
-    @loadImage @state.subject.location.standard
+    @loadImage @props.subject.location.standard
     window.addEventListener "resize", this.updateDimensions
 
   componentWillMount: ->
@@ -82,7 +82,6 @@ module.exports = React.createClass
   # VARIOUS EVENT HANDLERS
 
   handleInitStart: (e) ->
-    console.log "SubjectViewer#handleInitStart: @props.workflow", @props
     return null if ! @props.annotation? || ! @props.annotation.task?
 
     @props.annotation["subject_id"] = @props.subject.id
@@ -141,6 +140,7 @@ module.exports = React.createClass
   handleInitDrag: (e) ->
     task = @props.workflow.tasks[@props.annotation.task]
     mark = @state.selectedMark
+    # console.log "SubjectViewer#handleInitDrag"
     MarkComponent = markingTools[task.tools[mark.tool].type]
     if MarkComponent.initMove?
       mouseCoords = @getEventOffset e
@@ -222,9 +222,9 @@ module.exports = React.createClass
     @forceUpdate()
 
   render: ->
-    # return null if @state.subjects is null or @state.subjects.length is 0
-    # return null unless @state.subject?
-    # console.log 'SUBJECT: ', @state.subject
+    # return null if @props.subjects is null or @props.subjects.length is 0
+    # return null unless @props.subject?
+    # console.log 'SUBJECT: ', @props.subject
 
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     ToolComponent = @state.tool
@@ -243,7 +243,7 @@ module.exports = React.createClass
       else
         <ActionButton onClick={@nextSubject} text="Next Page" />
 
-    # console.log "SubjectViewer#render: render subject with mark? ", @state.subject
+    # console.log "SubjectViewer#render: render subject with mark? ", @props.subject
 
     if @state.loading
       markingSurfaceContent = <LoadingIndicator />
@@ -264,7 +264,7 @@ module.exports = React.createClass
             onDrag  = {@handleInitDrag}
             onEnd   = {@handleInitRelease} >
             <SVGImage
-              src = {@state.subject.location.standard}
+              src = {@props.subject.location.standard}
               width = {@state.imageWidth}
               height = {@state.imageHeight} />
           </Draggable>
@@ -309,7 +309,7 @@ module.exports = React.createClass
 
                     #adds task and description to each annotation
                     @props.annotation["tool_task_description"] = @props.workflow.tasks[annotation.task].tools[mark.tool]
-                    @props.annotation["key"] = @props.workflow.tasks[annotation.task].tools[mark.tool].key
+                    @props.annotation["subject_type"] = @props.workflow.tasks[annotation.task].tools[mark.tool].subject_type
                     ToolComponent = markingTools[toolDescription.type]
 
                     <ToolComponent
@@ -331,9 +331,9 @@ module.exports = React.createClass
             }
 
             { # ROW FOCUS TOOL -------------------------------------------
-              if @props.workflow.name is "transcribe" and @state.subject.location.spec.toolName is "textRowTool"
+              if @props.workflow.name is "transcribe" and @props.subject.location.spec.toolName is "textRowTool"
                 console.log 'ROW TOOL!'
-                markHeight = @state.subject.location.spec.yLower - @state.subject.location.spec.yUpper
+                markHeight = @props.subject.location.spec.yLower - @props.subject.location.spec.yUpper
                 <g>
 
                   <rect
@@ -341,16 +341,16 @@ module.exports = React.createClass
                     x           = 0
                     y           = { 0 }
                     width       = { @state.imageWidth }
-                    height      = { @state.subject.location.spec.yUpper }
+                    height      = { @props.subject.location.spec.yUpper }
                     fill        = "rgba(0,0,0,0.6)"
                   />
 
                   <rect
                     className   = "mark-rectangle"
                     x           = 0
-                    y           = { @state.subject.location.spec.yLower }
+                    y           = { @props.subject.location.spec.yLower }
                     width       = { @state.imageWidth }
-                    height      = { @state.imageHeight - @state.subject.location.spec.yLower }
+                    height      = { @state.imageHeight - @props.subject.location.spec.yLower }
                     fill        = "rgba(0,0,0,0.6)"
                   />
                 </g>
@@ -358,9 +358,9 @@ module.exports = React.createClass
 
 
             { # RECTANGLE FOCUS TOOL ------------------------------------------
-              if @props.workflow.name is "transcribe" and @state.subject.location.spec.toolName is "rectangleTool"
+              if @props.workflow.name is "transcribe" and @props.subject.location.spec.toolName is "rectangleTool"
                 console.log 'RECTANGLE TOOL!'
-                markHeight = @state.subject.location.spec.yLower - @state.subject.location.spec.yUpper
+                markHeight = @props.subject.location.spec.yLower - @props.subject.location.spec.yUpper
                 <g>
 
                   <rect
@@ -368,34 +368,34 @@ module.exports = React.createClass
                     x           = 0
                     y           = 0
                     width       = { @state.imageWidth }
-                    height      = { @state.subject.location.spec.y }
+                    height      = { @props.subject.location.spec.y }
                     fill        = "rgba(0,0,0,0.6)"
                   />
 
                   <rect
                     className   = "mark-rectangle bottom"
                     x           = 0
-                    y           = { @state.subject.location.spec.y + @state.subject.location.spec.height }
+                    y           = { @props.subject.location.spec.y + @props.subject.location.spec.height }
                     width       = { @state.imageWidth }
-                    height      = { @state.imageHeight - @state.subject.location.spec.y + @state.subject.location.spec.height }
+                    height      = { @state.imageHeight - @props.subject.location.spec.y + @props.subject.location.spec.height }
                     fill        = "rgba(0,0,0,0.6)"
                   />
 
                   <rect
                     className   = "mark-rectangle left"
                     x           = 0
-                    y           = { @state.subject.location.spec.y }
-                    width       = { @state.subject.location.spec.x }
-                    height      = { @state.subject.location.spec.height }
+                    y           = { @props.subject.location.spec.y }
+                    width       = { @props.subject.location.spec.x }
+                    height      = { @props.subject.location.spec.height }
                     fill        = "rgba(0,0,0,0.6)"
                   />
 
                   <rect
                     className   = "mark-rectangle right"
-                    x           = { @state.subject.location.spec.x + @state.subject.location.spec.width}
-                    y           = { @state.subject.location.spec.y }
-                    width       = { @state.imageWidth - @state.subject.location.spec.width - @state.subject.location.spec.x }
-                    height      = { @state.subject.location.spec.height }
+                    x           = { @props.subject.location.spec.x + @props.subject.location.spec.width}
+                    y           = { @props.subject.location.spec.y }
+                    width       = { @state.imageWidth - @props.subject.location.spec.width - @props.subject.location.spec.x }
+                    height      = { @props.subject.location.spec.height }
                     fill        = "rgba(0,0,0,0.6)"
                   />
 

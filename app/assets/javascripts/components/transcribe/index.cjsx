@@ -117,7 +117,8 @@ module.exports = React.createClass # rename to Classifier
       console.log "go back"
 
   render: ->
-    # console.log "Transcribe#render: ", @state
+    console.log "Transcribe#render: ", @state
+    console.log "Transcribe#render: classification: ", @props.classification
     return null unless @state.currentTask?
 
     # TODO: HACK HACK HACK
