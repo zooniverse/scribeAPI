@@ -12,11 +12,10 @@ class Subject
   field :location,                    type: Hash
   field :random_no ,                  type: Float
   field :annotation_value_count,      type: Integer, default: 0
-  field :status ,                     type: String,  default: "active"
-  field :type,                        type: String,  default: "root"
+  field :status ,                     type: String,  default: "active" #options: "active", "inactive", "retired", "complete"
+  field :type,                        type: String,  default: "root" #options: "root", "secondary"
   field :meta_data,                   type: Hash
   field :retire_count,                type: Integer
-  # is tool_task_description not relevant anymore?
   field :tool_task_description,       type: Hash
   field :secondary_subject_count,     type: Integer, default: 0
 
@@ -32,6 +31,7 @@ class Subject
   
   belongs_to :subject_set
 
+
   # after_create :update_subject_set_stats
 
   after_save :increment_parents_subject_count_by_one, :if => :parent_subject
@@ -43,6 +43,8 @@ class Subject
 
   # increment the self.parent.secondary_subject_count by 1
   def increment_parents_subject_count_by_one
+    self.type = "secondary"
+    self.save
     parent_subject = self.parent_subject
     parent_subject.secondary_subject_count += 1
     parent_subject.save

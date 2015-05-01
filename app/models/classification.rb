@@ -50,7 +50,6 @@ class Classification
     subject = self.subject
     subject.annotation_value_count += no_annotation_values
     subject.save
-    # We want the subject itself to know its retire_limit, not the workflow of the subject.
     subject.retire!
   end
 
