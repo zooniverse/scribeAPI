@@ -16,7 +16,7 @@ class Subject
   field :status ,                   type: String,  default: "active"
   field :type,                      type: String,  default: "root"
   field :meta_data,                 type: Hash
-  field :retire_limit,              type: Integer
+  field :retire_count,              type: Integer
   field :tool_task_description,     type: Hash
 
   # Optional 'key' value specified in some tool options (drawing) to identify tool option selected ('record-rect', 'point-tool')
@@ -40,12 +40,13 @@ class Subject
     subject_set.inc_subject_count_for_workflow(workflow)
   end
 
+
   def increment_classification_count_by_one
     parent_subject = self.parent_subject
     parent_subject.classification_count += 1
     parent_subject.save
-    # We want the subject itself to know its retire_limit, not the workflow.
-    retire! if self.classification_count >= self.retire_limit
+    # We want the subject itself to know its retire_count, not the workflow of the subject.
+    retire! if self.classification_count >= self.retire_count
   end
 
   def retire!

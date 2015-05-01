@@ -25,4 +25,13 @@ class Classification
     end
   end
 
+  def increment_classification_count_by_one
+    #we need to increment self.subject.classification_count by the nummber of values in annotation.
+    subject = self.subject
+    subject.classification_count += 1
+    subject.save
+    # We want the subject itself to know its retire_limit, not the workflow of the subject.
+    retire! if self.classification_count >= self.retire_limit
+  end
+
 end
