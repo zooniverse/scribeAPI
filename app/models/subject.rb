@@ -34,7 +34,7 @@ class Subject
 
   # after_create :update_subject_set_stats
 
-  after_save :increment_parents_subject_count_by_one, :if => :parent_subject
+  after_create :increment_parents_subject_count_by_one, :if => :parent_subject
 
 
   def update_subject_set_stats
