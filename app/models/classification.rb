@@ -26,12 +26,13 @@ class Classification
     end
   end
 
-  # finds number of values associated with each annotation
+  # finds number of values associated with each classification
   # TODO: this is duplicating work already done in the worklfow.rb
-  # Also, lets make sure that annotation.value is always an array?
+  # Also, lets make sure that annotation.value is always an array?**
   def no_annotation_values
     counter = 0
     self.annotations.each do |annotation|
+      # **so that we can prevent this if-statement
       if annotation["value"].is_a? String
         counter += 1 
       else 
