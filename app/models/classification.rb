@@ -18,6 +18,7 @@ class Classification
   has_many   :triggered_followup_subjects, class_name: "Subject"
 
   before_create :generate_new_subjects
+  after_create :increment_subject_number_of_annontation_values
 
   def generate_new_subjects
     if workflow.generates_new_subjects
@@ -25,13 +26,37 @@ class Classification
     end
   end
 
-  def increment_classification_count_by_one
-    #we need to increment self.subject.classification_count by the nummber of values in annotation.
+  # finds number of values associated with each annotation
+  # TODO: this is duplicating work already done in the worklfow.rb
+  def no_annotation_values
+    counter = 0
+    self.annotations.each do |annotation|
+      if annotation["value"].is_a? String
+        counter += 1 
+      else 
+        annotation["value"].each do |value|
+          counter += annotation["value"].length
+          puts "process counter"
+          puts counter
+        end
+      end
+    end
+    puts "END COUNTER"
+    puts counter
+    counter
+  end
+
+
+  # we need to increment self.subject.classification_count by the nummber of values in annotation.
+  # new ideas for modeling the annotation.values? the current model feels a bit off.
+  def increment_subject_number_of_annontation_values
+    puts "INCRE FUNCTION"
     subject = self.subject
-    subject.classification_count += 1
+    subject.annotation_value_count += no_annotation_values
     subject.save
     # We want the subject itself to know its retire_limit, not the workflow of the subject.
-    retire! if self.classification_count >= self.retire_limit
+    # This should active a subject method, instead of putting the retire logic in the classifcation model
+    # retire! if subject.annotation_value_count >= subject.retire_count
   end
 
 end

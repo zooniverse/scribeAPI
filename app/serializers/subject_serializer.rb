@@ -1,5 +1,5 @@
 class SubjectSerializer < ActiveModel::MongoidSerializer
-  attributes :id, :parent_subject_id, :workflow_id, :name, :location, :classification_count, :child_subjects_info, :meta_data, :user_favourite, :key
+  attributes :id, :parent_subject_id, :workflow_id, :name, :location, :annotation_value_count, :child_subjects_info, :meta_data, :user_favourite, :key
   delegate :current_user, to: :scope
 
   #this seems like the place we want to control the return of subjects only if status == "active"
@@ -16,7 +16,6 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
     child_subjects = object.child_subjects
     child_subject_info = []
     child_subjects.each do |child|
-
       rebuild_info = {
         id: child.id,
         location_standard: child.location["standard"],
