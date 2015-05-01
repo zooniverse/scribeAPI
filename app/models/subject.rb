@@ -22,8 +22,6 @@ class Subject
   # Optional 'key' value specified in some tool options (drawing) to identify tool option selected ('record-rect', 'point-tool')
   field :key,                     type: String
 
-  after_create :update_subject_set_stats
-
   belongs_to :workflow
   has_many :classifications
   has_many :favourites
@@ -33,15 +31,25 @@ class Subject
   
   belongs_to :subject_set
 
+  # after_create :update_subject_set_stats
+
+  after_save :increment_classification_count_by_one, :if => :parent_subject
+
 
   def update_subject_set_stats
     subject_set.inc_subject_count_for_workflow(workflow)
   end
 
-  def increment_classification_count_by(no)
-    self.classification_count += no
-    save
-    retire! if self.classification_count >= workflow.retire_limit
+  def increment_classification_count_by_one
+    puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    # parent_subject = Subject.find(self.parent_subject_id.to_s)
+    parent_subject = self.parent_subject
+    parent_subject.classification_count += 1
+    parent_subject.save
+    # retire! if self.classification_count >= workflow.retire_limit
   end
 
   def retire!
