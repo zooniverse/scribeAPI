@@ -20,7 +20,7 @@ class Subject
   field :secondary_subject_count,     type: Integer, default: 0
 
   # Optional 'key' value specified in some tool options (drawing) to identify tool option selected ('record-rect', 'point-tool')
-  field :key,                     type: String
+  field :key,                         type: String
 
   belongs_to :workflow
   has_many :classifications
