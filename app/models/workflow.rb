@@ -54,6 +54,8 @@ class Workflow
               spec: value.except(:key, :tool)
             }
           )
+        # this allows a generated subject's id to be returned in case of immediate transcription
+        classification.child_subject_id = child_subject.id
         parent_subject = classification.subject
         parent_subject.child_subjects << child_subject
         end

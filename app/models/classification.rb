@@ -7,6 +7,7 @@ class Classification
   field :location
   field :annotations, type: Array
   field :triggered_followup_subject_ids, type: Array
+  field :child_subject_id
 
   field :started_at
   field :finished_at
