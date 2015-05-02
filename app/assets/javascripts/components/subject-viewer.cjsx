@@ -245,7 +245,7 @@ module.exports = React.createClass
     annotation =
       task:               "dummy_task_name" # fix -STI
       generates_subjects: true
-      value:              mark
+      value:              [mark]
       subject_id:  @props.subject.id
       workflow_id: @props.workflow.id
 
