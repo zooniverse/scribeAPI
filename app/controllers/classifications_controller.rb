@@ -9,6 +9,8 @@ class ClassificationsController < ApplicationController
   # end
 
   def create
+    puts '++++++++++++++++++++++++++++++++++'
+    puts 'ALL PARAMS: ', params
     annotations = params["annotations"]
     # subject_set_id  = BSON::ObjectId.from_string params["classifications"]["subject_set"]["id"]
     workflow_id = BSON::ObjectId.from_string params["classifications"]["workflow_id"]
@@ -22,6 +24,8 @@ class ClassificationsController < ApplicationController
     #user_id     = BSON::ObjectId.from_string params["user_id"]
     #use subject_id params
     subject_id = session.id #this should change, auth currently not working
+    # puts '+++++++++++++++++++++++++'
+    # puts 'ANNOTATIONS: ', annotations
     annotations.each do |annotation|
       subject_id = annotation["subject_id"]
       annotation
