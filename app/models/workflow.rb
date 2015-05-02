@@ -41,8 +41,11 @@ class Workflow
     subject_set_id = classification.subject.subject_set.id
     workflow_id = Workflow.find_by(name: "transcribe").id
 
+    puts 'ANNOTATIONS: ', classification.annotations
+
     classification.annotations.each do |annotation|
       if annotation["generate_subjects"]
+        puts 'ANNOTATION: ', annotation
         annotation["value"].each do |value|
           child_subject = Subject.create(
             workflow_id: workflow_id ,

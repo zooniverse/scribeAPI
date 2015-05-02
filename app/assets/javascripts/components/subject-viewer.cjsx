@@ -242,14 +242,18 @@ module.exports = React.createClass
     mark.subject_id = @props.subject.id
     mark.workflow_id = @props.workflow.id
 
-    annotation =
-      task:               "dummy_task_name" # fix -STI
-      generates_subjects: true
-      value:              [mark]
-      subject_id:  @props.subject.id
-      workflow_id: @props.workflow.id
+    # console.log '+++++++++++++++++++++++++++++++++++++++++'
+    # console.log 'PROPS.ANNOTATION.TASK: ', @props.annotation.task
+    #
+    # annotation =
+    #   task:                   @props.annotation.task
+    #   tool_task_description:  @props.workflow.tasks[annotation.task].tools[mark.tool]
+    #   generates_subjects:     true
+    #   value:                  [mark]
+    #   subject_id:             @props.subject.id
+    #   workflow_id:            @props.workflow.id
 
-    classification.annotations.push annotation
+    classification.annotations.push @props.annotation
     classification.update 'annotations'
 
     console.log 'CLASSIFICATION: ', classification
