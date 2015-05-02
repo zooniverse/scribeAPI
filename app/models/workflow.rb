@@ -35,17 +35,12 @@ class Workflow
 
 
   def create_secondary_subjects(classification)
-    puts '++++++++++++++++++++++++++++++++++++++++++++++'
-    puts ' CREATING SECONDAY SUBJECT...'
     parent_subject_id = classification.subject.id
     subject_set_id = classification.subject.subject_set.id
     workflow_id = Workflow.find_by(name: "transcribe").id
 
-    puts 'ANNOTATIONS: ', classification.annotations
-
     classification.annotations.each do |annotation|
       if annotation["generate_subjects"]
-        puts 'ANNOTATION: ', annotation
         annotation["value"].each do |value|
           child_subject = Subject.create(
             workflow_id: workflow_id ,
@@ -63,9 +58,7 @@ class Workflow
         parent_subject.child_subjects << child_subject
         end
       end
-
     end
-    puts 'DONE!'
   end
 
   def create_follow_up_subjects(classification)

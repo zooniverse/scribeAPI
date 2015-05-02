@@ -224,10 +224,6 @@ module.exports = React.createClass
     @forceUpdate()
 
   submitMark: (mark) ->
-    console.log 'classifySingleMark!!!!'
-    console.log 'PROPS: ', @props
-    console.log 'MARK: ', mark
-
     metadata =
       started_at: (new Date).toISOString() # this is dummy
       finished_at: (new Date).toISOString()
@@ -239,24 +235,11 @@ module.exports = React.createClass
       annotations: []
       metadata:    metadata
 
-    mark.subject_id = @props.subject.id
-    mark.workflow_id = @props.workflow.id
-
-    # console.log '+++++++++++++++++++++++++++++++++++++++++'
-    # console.log 'PROPS.ANNOTATION.TASK: ', @props.annotation.task
-    #
-    # annotation =
-    #   task:                   @props.annotation.task
-    #   tool_task_description:  @props.workflow.tasks[annotation.task].tools[mark.tool]
-    #   generates_subjects:     true
-    #   value:                  [mark]
-    #   subject_id:             @props.subject.id
-    #   workflow_id:            @props.workflow.id
-
+    # add current annotation to classification
     classification.annotations.push @props.annotation
     classification.update 'annotations'
 
-    console.log 'CLASSIFICATION: ', classification
+    console.log '(SINGLE) CLASSIFICATION: ', classification
 
     classification.save()
 
