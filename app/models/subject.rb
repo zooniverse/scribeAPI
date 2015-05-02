@@ -11,6 +11,7 @@ class Subject
   field :height
   field :location,                    type: Hash
   field :random_no ,                  type: Float
+  # field :classification_count
   field :annotation_value_count,      type: Integer, default: 0
   field :status ,                     type: String,  default: "active" #options: "active", "inactive", "retired", "complete"
   field :type,                        type: String,  default: "root" #options: "root", "secondary"
@@ -42,6 +43,7 @@ class Subject
   end
 
   # increment the self.parent.secondary_subject_count by 1
+  # check out ink mongomapper
   # sets the proper type value. at the moment this is limited to "secondary" might be more appropiate to say "non-root".
   def increment_parents_subject_count_by_one
     self.type = "secondary"
