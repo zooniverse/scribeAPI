@@ -11,7 +11,6 @@ class Subject
   field :height
   field :location,                    type: Hash
   field :random_no ,                  type: Float
-  # field :classification_count
   field :annotation_value_count,      type: Integer, default: 0
   field :status ,                     type: String,  default: "active" #options: "active", "inactive", "retired", "complete"
   field :type,                        type: String,  default: "root" #options: "root", "secondary"
@@ -19,7 +18,8 @@ class Subject
   field :retire_count,                type: Integer
   field :tool_task_description,       type: Hash
   field :secondary_subject_count,     type: Integer, default: 0
-
+  field :classification_count,        type: Integer, default: 0
+  field :retire_vote,                 type: Integer, default: 0
   # Optional 'key' value specified in some tool options (drawing) to identify tool option selected ('record-rect', 'point-tool')
   field :key,                         type: String
 
