@@ -323,8 +323,9 @@ module.exports = React.createClass
                 y           = { previousMark.spec.yUpper }
                 width       = { @state.imageWidth }
                 height      = { previousMark.spec.yLower - previousMark.spec.yUpper }
-                fill        = "none"
-                stroke      = "#000"
+                fill        = "rgba(0,0,0,0)"
+                stroke      = "#f60"
+                strokeWidth = "5px"
               />
           }
 
