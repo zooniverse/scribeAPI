@@ -315,6 +315,19 @@ module.exports = React.createClass
               height = {@state.imageHeight} />
           </Draggable>
 
+          { for previousMark in @props.subject.child_subjects_info
+              console.log 'PREVIOUS MARK: ', previousMark
+              <rect
+                className   = "previous-mark"
+                x           = 0
+                y           = { previousMark.spec.yUpper }
+                width       = { @state.imageWidth }
+                height      = { previousMark.spec.yLower - previousMark.spec.yUpper }
+                fill        = "none"
+                stroke      = "#000"
+              />
+          }
+
           { if @props.workflow.name is 'transcribe' and @props.subject.location.spec.toolName is 'rectangleTool'
               isPriorAnnotation = true # ?
               <g key={@props.subject.id} className="marks-for-annotation" data-disabled={isPriorAnnotation}>
