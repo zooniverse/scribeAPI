@@ -23,13 +23,13 @@
       }
     },
     "identify_records":{
-      "tool": "drawing",
+      "tool": "mark",
       "instruction": "Pick a field and mark it with the corresponding marking tool.",
       "generated_for_workflow" : "",
       "generate_subjects": true,
       "tools": [
-        {"type": "rectangleTool", "label": "Records (rectangle)", "color": "green", "key": "em_record_rect"},
-        {"type": "textRowTool", "label": "Records (row)", "color": "blue", "key": "em_record_row_tool"}
+        {"type": "rectangleTool", "label": "Records (rectangle)", "color": "green", "subject_type": "em_record_rect"},
+        {"type": "rectangleTool", "label": "Records (row)",       "color": "blue",  "subject_type": "em_record_row_tool"}
       ],
       "next_task": null
     }

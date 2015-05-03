@@ -4,6 +4,7 @@ SubjectViewer      = require '../subject-viewer'
 JSONAPIClient      = require 'json-api-client' # use to manage data?
 FetchSubjectsMixin = require 'lib/fetch-subjects-mixin'
 ForumSubjectWidget = require '../forum-subject-widget'
+tasks              = require '../tasks' # delete? -STI
 
 # Hash of core tools:
 core_tools        = require '../tasks'
@@ -12,9 +13,11 @@ transcribe_tools   = require './tools'
 
 resource = new JSONAPIClient
 
-module.exports = React.createClass
-  displayName: 'Transcribe'
+RowFocusTool       = require '../row-focus-tool'
+API                = require '../../lib/api'
 
+module.exports = React.createClass # rename to Classifier
+  displayName: 'Transcribe'
   mixins: [FetchSubjectsMixin] # load subjects and set state variables: subjects, currentSubject, classification
 
   getInitialState: ->
@@ -39,11 +42,11 @@ module.exports = React.createClass
       @advanceToTask taskOption.next_task
 
   advanceToTask: (key) ->
-    
+
     key = @translateLogicTaskKey key
     task = @state.workflow.tasks[ key ]
     task.key = key
-    
+
     tool = core_tools[task?.tool] ? transcribe_tools[task?.tool]
     if ! task?
       console.log "WARN: Invalid task key: ", key
@@ -114,8 +117,9 @@ module.exports = React.createClass
       console.log "go back"
 
   render: ->
-    # console.log "Transcribe#render: ", @state
-    return null unless @state.currentSubject? && @state.currentTask?
+    console.log "Transcribe#render: ", @state
+    console.log "Transcribe#render: classification: ", @props.classification
+    return null unless @state.currentTask?
 
     # TODO: HACK HACK HACK
     return null if @state.currentTask.tool == 'switch_on_value'
@@ -135,29 +139,37 @@ module.exports = React.createClass
     # console.log "viewer size: ", @state.viewerSize
     <div className="classifier">
       <div className="subject-area">
-        <SubjectViewer onLoad={@handleViewerLoad} subject={@state.currentSubject} active=true workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation}>
-          <TaskComponent ref="taskComponent" viewerSize={@state.viewerSize} key={@state.currentTaskKey} task={@state.currentTask} annotation={currentAnnotation} subject={@state.currentSubject} onChange={@handleTaskComponentChange} onComplete={@handleTaskComplete} onBack={@makeBackHandler()} workflow={@props.workflow} viewerSize={@state.viewerSize} />
-        </SubjectViewer>
+        { if @state.noMoreSubjects
+            console.log 'NO MORE SUBJECTS!!!'
+            style = marginTop: "50px"
+            <p style={style}>There are currently no transcription subjects. Try <a href="/#/mark">marking</a> instead!</p>
+          else if @state.currentSubject?
+            <SubjectViewer onLoad={@handleViewerLoad} subject={@state.currentSubject} active=true workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation}>
+              <TaskComponent ref="taskComponent" viewerSize={@state.viewerSize} key={@state.currentTaskKey} task={@state.currentTask} annotation={currentAnnotation} subject={@state.currentSubject} onChange={@handleTaskComponentChange} onComplete={@handleTaskComplete} onBack={@makeBackHandler()} workflow={@props.workflow} viewerSize={@state.viewerSize} />
+            </SubjectViewer>
+        }
       </div>
-      <div className="task-area">
-        <div className="task-container">
-          <nav className="task-nav">
-            <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
-            { if nextTask?
-                <button type="button" className="continue major-button" onClick={@advanceToTask.bind(@, nextTask)}>Next</button>
-              else
-                <button type="button" className="continue major-button" onClick={@completeClassification}>Done</button>
-            }
-          </nav>
-        </div>
 
-        <div className="forum-holder">
-          <ForumSubjectWidget subject_set=@state.currentSubject />
-        </div>
+      { unless @state.noMoreSubjects
+          <div style={display: "none"} className="task-area">
 
-      </div>
+            <div className="task-container">
+              <nav className="task-nav">
+                <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
+                { if nextTask?
+                    <button type="button" className="continue major-button" onClick={@advanceToTask.bind(@, nextTask)}>Next</button>
+                  else
+                    <button type="button" className="continue major-button" onClick={@completeClassification}>Done</button>
+                }
+              </nav>
+            </div>
+
+            <div className="forum-holder">
+              <ForumSubjectWidget subject_set=@state.currentSubject />
+            </div>
+
+          </div>
+      }
     </div>
 
-
 window.React = React
-

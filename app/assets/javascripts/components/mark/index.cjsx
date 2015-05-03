@@ -29,14 +29,11 @@ module.exports = React.createClass # rename to Classifier
       metadata: {}
       'metadata.started_at': (new Date).toISOString()
 
-
   componentWillMount: ->
     @addAnnotationForTask @props.workflow.first_task
 
   render: ->
     return null unless @state.currentSubjectSet?
-
-    console.log "SUBJECT SET", @state.currentSubjectSet
 
     annotations = @props.classification.annotations
     currentAnnotation = if annotations.length is 0 then {} else annotations[annotations.length-1]
@@ -56,11 +53,16 @@ module.exports = React.createClass # rename to Classifier
 
     <div className="classifier">
       <div className="subject-area">
-        <SubjectSetViewer subject_set={@state.currentSubjectSet} workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation} />
+        { if @state.noMoreSubjectSets
+            style = marginTop: "50px"
+            <p style={style}>There is nothing left to do. Thanks for your work and please check back soon!</p>
+          else if @state.currentSubjectSet?
+            <SubjectSetViewer subject_set={@state.currentSubjectSet} workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation} />
+        }
       </div>
       <div className="task-area">
         <div className="task-container">
-          {console.log 'CURRENT ANNOTATION: ', currentAnnotation }
+          {console.log 'TASK COMPONENT, current  task is ', currentTask}
           <TaskComponent task={currentTask} annotation={currentAnnotation} onChange={@handleTaskComponentChange} />
           <hr/>
           <nav className="task-nav">
@@ -85,6 +87,7 @@ module.exports = React.createClass # rename to Classifier
     @updateAnnotations()
 
   updateAnnotations: ->
+    console.log 'UPDATE ANNOTATIONS'
     @props.classification.update 'annotations'
       # annotations: @props.classification.annotations
     @forceUpdate()
@@ -116,6 +119,7 @@ module.exports = React.createClass # rename to Classifier
       workflow_id: @state.workflow.id
       'metadata.finished_at': (new Date).toISOString()
     @props.classification.save() 
+
     @props.onComplete?()
     console.log 'CLASSIFICATION: ', @props.classification
 

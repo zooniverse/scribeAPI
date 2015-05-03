@@ -44,6 +44,7 @@ TextTool = React.createClass
 
   componentDidMount: ->
     @updatePosition()
+    @refs.input0.getDOMNode().focus()
 
   # Expects size hash with:
   #   w: [viewer width]
@@ -70,8 +71,19 @@ TextTool = React.createClass
     @state.annotation.value = e.target.value
     @forceUpdate()
 
+  handleKeyPress: (e) ->
+
+    if [13].indexOf(e.keyCode) >= 0 # ENTER:
+      @commitAnnotation()
+      e.preventDefault()
+
+    # else if [27].indexOf(e.keyCode) >= 0 # ESC: 
+      # cancel ann? 
+
+
+
   render: ->
-    return null unless @props.viewerSize? && @props.subject?
+    # return null unless @props.viewerSize? && @props.subject?
 
     # If user has set a custom position, position based on that:
     style =
@@ -92,7 +104,7 @@ TextTool = React.createClass
         <div className="left">
           <div className="input-field active">
             <label>{@props.task.instruction}</label>
-            <input ref="input0" type="text" data-task_key={@props.task.key} onChange={@handleChange} value={val} />
+            <input ref="input0" type="text" data-task_key={@props.task.key} onKeyDown={@handleKeyPress} onChange={@handleChange} value={val} />
           </div>
         </div>
         <div className="right">

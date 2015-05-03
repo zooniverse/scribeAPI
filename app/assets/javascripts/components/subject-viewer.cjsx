@@ -9,6 +9,9 @@ SubjectMetadata               = require './subject-metadata'
 ActionButton                  = require './action-button'
 markingTools                  = require './mark/tools'
 
+RowFocusTool                  = require 'components/row-focus-tool'
+
+
 module.exports = React.createClass
   displayName: 'SubjectViewer'
   resizing: false
@@ -21,7 +24,7 @@ module.exports = React.createClass
 
     subject: @props.subject
     classification: null
-    
+
     tool: @props.tool
     marks: []
     selectedMark: null
@@ -36,7 +39,7 @@ module.exports = React.createClass
 
   componentDidMount: ->
     @setView 0, 0, @state.imageWidth, @state.imageHeight
-    @loadImage @state.subject.location.standard
+    @loadImage @props.subject.location.standard
     window.addEventListener "resize", this.updateDimensions
 
   componentWillMount: ->
@@ -74,26 +77,23 @@ module.exports = React.createClass
             imageWidth: img.width
             imageHeight: img.height
             loading: false
-
           @updateDimensions()
 
   # VARIOUS EVENT HANDLERS
 
   handleInitStart: (e) ->
-    console.log "SubjectViewer#handleInitStart: @props.workflow", @props
     return null if ! @props.annotation? || ! @props.annotation.task?
 
     @props.annotation["subject_id"] = @props.subject.id
     @props.annotation["workflow_id"] = @props.workflow.id
-    
+
     taskDescription = @props.workflow.tasks[@props.annotation.task]
 
     # setting flag for generation of new subjects
     if @props.workflow.tasks[@props.annotation.task].generate_subjects
       @props.annotation["generate_subjects"] = @props.workflow.tasks[@props.annotation.task].generate_subjects
-    
-    mark = @state.selectedMark
 
+    mark = @state.selectedMark
 
     markIsComplete = true
     if mark?
@@ -104,16 +104,17 @@ module.exports = React.createClass
 
     mouseCoords = @getEventOffset e
 
-    # console.log 'PROPS.ANNOTATION: ', @props.annotation
-
     if markIsComplete
       toolDescription = taskDescription.tools[@props.annotation._toolIndex]
       mark =
         key: @state.lastMarkKey
         tool: @props.annotation._toolIndex
+        toolName: taskDescription.tools[@props.annotation._toolIndex].type
+
       if toolDescription.details?
         mark.details = for detailTaskDescription in toolDescription.details
-          console.log "!taskTacking", tasks[detailTaskDescription.type]
+          # DEBUG CODE
+          #console.log "!taskTacking", tasks[detailTaskDescription.type]
           tasks[detailTaskDescription.type].getDefaultAnnotation()
 
     @props.annotation.value.push mark
@@ -139,6 +140,7 @@ module.exports = React.createClass
   handleInitDrag: (e) ->
     task = @props.workflow.tasks[@props.annotation.task]
     mark = @state.selectedMark
+    # console.log "SubjectViewer#handleInitDrag"
     MarkComponent = markingTools[task.tools[mark.tool].type]
     if MarkComponent.initMove?
       mouseCoords = @getEventOffset e
@@ -207,7 +209,6 @@ module.exports = React.createClass
     @setState selectedMark: mark, =>
       if mark?.details?
         @forceUpdate() # Re-render to reposition the details tooltip.
-    console.log 'leaving selectMark()...'
 
   destroyMark: (annotation, mark) ->
     if mark is @state.selectedMark
@@ -217,18 +218,17 @@ module.exports = React.createClass
     @updateAnnotations()
 
   updateAnnotations: ->
-    console.log 'updateAnnotations()'
     @props.classification.update 'annotations'
     @forceUpdate()
 
   render: ->
-    # return null if @state.subjects is null or @state.subjects.length is 0
-    # return null unless @state.subject?
-    # console.log 'SUBJECT: ', @state.subject
+    # return null if @props.subjects is null or @props.subjects.length is 0
+    # return null unless @props.subject?
+    # console.log 'SUBJECT: ', @props.subject
+
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     ToolComponent = @state.tool
-    # console.log "SubjectViewer#render tool=", @state.tool
-    # console.log "subjviewer rendering with classification: ", @props.classification
+
     # console.log "Rendering #{if @props.active then 'active' else 'inactive'} subj viewer"
 
     scale = @getScale()
@@ -237,13 +237,13 @@ module.exports = React.createClass
       width: "#{renderSize.w}px"
       height: "#{renderSize.h}px"
 
-    actionButton = 
+    actionButton =
       if @state.loading
         <ActionButton onAction={@nextSubject} className="disabled" text="Loading..." />
       else
         <ActionButton onClick={@nextSubject} text="Next Page" />
 
-    # console.log "SubjectViewer#render: render subject with mark? ", @state.subject
+    # console.log "SubjectViewer#render: render subject with mark? ", @props.subject
 
     if @state.loading
       markingSurfaceContent = <LoadingIndicator />
@@ -255,7 +255,6 @@ module.exports = React.createClass
           height = {@state.imageHeight}
           viewBox = {viewBox}
           data-tool = {@props.selectedDrawingTool?.type} >
-
           <rect
             ref = "sizeRect"
             width = {@state.imageWidth}
@@ -265,14 +264,13 @@ module.exports = React.createClass
             onDrag  = {@handleInitDrag}
             onEnd   = {@handleInitRelease} >
             <SVGImage
-              src = {@state.subject.location.standard}
+              src = {@props.subject.location.standard}
               width = {@state.imageWidth}
               height = {@state.imageHeight} />
           </Draggable>
 
-          
           { if @props.subject.location.spec?.x?
-            isPriorAnnotation = true # ? 
+            isPriorAnnotation = true # ?
             <g key={@props.subject.id} className="marks-for-annotation" data-disabled={isPriorAnnotation}>
               {
                 # Represent the secondary subject as a rectangle mark
@@ -290,18 +288,19 @@ module.exports = React.createClass
                   selected={mark is @state.selectedMark}
                   getEventOffset={@getEventOffset}
                   ref={@refs.sizeRect}
-                  
+
                   onSelect={@selectMark.bind this, @props.subject, mark}
                 />
               }
             </g>
           }
+
           { for annotation in @props.classification.annotations
               annotation._key ?= Math.random()
               isPriorAnnotation = annotation isnt @props.annotation
               taskDescription = @props.workflow.tasks[annotation.task]
 
-              if taskDescription.tool is 'drawing'
+              if taskDescription.tool is 'mark' or taskDescription.tool is 'transcribe'
                 <g key={annotation._key} className="marks-for-annotation" data-disabled={isPriorAnnotation or null}>
                   {for mark, m in annotation.value
 
@@ -310,11 +309,11 @@ module.exports = React.createClass
 
                     #adds task and description to each annotation
                     @props.annotation["tool_task_description"] = @props.workflow.tasks[annotation.task].tools[mark.tool]
-                    @props.annotation["key"] = @props.workflow.tasks[annotation.task].tools[mark.tool].key
+                    @props.annotation["subject_type"] = @props.workflow.tasks[annotation.task].tools[mark.tool].subject_type
                     ToolComponent = markingTools[toolDescription.type]
 
-                    <ToolComponent 
-                      key={mark._key} 
+                    <ToolComponent
+                      key={mark._key}
                       mark={mark}
                       xScale={scale.horizontal}
                       yScale={scale.vertical}
@@ -322,17 +321,90 @@ module.exports = React.createClass
                       selected={mark is @state.selectedMark}
                       getEventOffset={@getEventOffset}
                       ref={@refs.sizeRect}
-                      
-                      onChange={@updateAnnotations} 
+
+                      onChange={@updateAnnotations}
                       onSelect={@selectMark.bind this, annotation, mark}
                       onDestroy={@destroyMark.bind this, annotation}
                     />
-                  }  
+                  }
                 </g>
             }
-        </svg>
 
-    #  Render any tools passed directly in in same parent div so that we can efficiently position them with respect to marks" 
+            { # ROW FOCUS TOOL -------------------------------------------
+              if @props.workflow.name is "transcribe" and @props.subject.location.spec.toolName is "textRowTool"
+                console.log 'ROW TOOL!'
+                markHeight = @props.subject.location.spec.yLower - @props.subject.location.spec.yUpper
+                <g>
+
+                  <rect
+                    className   = "mark-rectangle"
+                    x           = 0
+                    y           = { 0 }
+                    width       = { @state.imageWidth }
+                    height      = { @props.subject.location.spec.yUpper }
+                    fill        = "rgba(0,0,0,0.6)"
+                  />
+
+                  <rect
+                    className   = "mark-rectangle"
+                    x           = 0
+                    y           = { @props.subject.location.spec.yLower }
+                    width       = { @state.imageWidth }
+                    height      = { @state.imageHeight - @props.subject.location.spec.yLower }
+                    fill        = "rgba(0,0,0,0.6)"
+                  />
+                </g>
+            }
+
+
+            { # RECTANGLE FOCUS TOOL ------------------------------------------
+              if @props.workflow.name is "transcribe" and @props.subject.location.spec.toolName is "rectangleTool"
+                console.log 'RECTANGLE TOOL!'
+                markHeight = @props.subject.location.spec.yLower - @props.subject.location.spec.yUpper
+                <g>
+
+                  <rect
+                    className   = "mark-rectangle top"
+                    x           = 0
+                    y           = 0
+                    width       = { @state.imageWidth }
+                    height      = { @props.subject.location.spec.y }
+                    fill        = "rgba(0,0,0,0.6)"
+                  />
+
+                  <rect
+                    className   = "mark-rectangle bottom"
+                    x           = 0
+                    y           = { @props.subject.location.spec.y + @props.subject.location.spec.height }
+                    width       = { @state.imageWidth }
+                    height      = { @state.imageHeight - @props.subject.location.spec.y + @props.subject.location.spec.height }
+                    fill        = "rgba(0,0,0,0.6)"
+                  />
+
+                  <rect
+                    className   = "mark-rectangle left"
+                    x           = 0
+                    y           = { @props.subject.location.spec.y }
+                    width       = { @props.subject.location.spec.x }
+                    height      = { @props.subject.location.spec.height }
+                    fill        = "rgba(0,0,0,0.6)"
+                  />
+
+                  <rect
+                    className   = "mark-rectangle right"
+                    x           = { @props.subject.location.spec.x + @props.subject.location.spec.width}
+                    y           = { @props.subject.location.spec.y }
+                    width       = { @state.imageWidth - @props.subject.location.spec.width - @props.subject.location.spec.x }
+                    height      = { @props.subject.location.spec.height }
+                    fill        = "rgba(0,0,0,0.6)"
+                  />
+
+                </g>
+            }
+
+          </svg>
+
+    #  Render any tools passed directly in in same parent div so that we can efficiently position them with respect to marks"
 
     <div className="subject-viewer#{if @props.active then ' active' else ''}">
       <div className="subject-container">

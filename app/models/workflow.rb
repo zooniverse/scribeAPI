@@ -37,7 +37,7 @@ class Workflow
   def create_secondary_subjects(classification)
     parent_subject_id = classification.subject.id
     subject_set_id = classification.subject.subject_set.id
-    workflow_id = Workflow.find_by(name: "transcribe").id
+    workflow_id = project.workflows.find_by(name: "transcribe").id
 
     classification.annotations.each do |annotation|
       if annotation["generate_subjects"]
@@ -47,9 +47,9 @@ class Workflow
             subject_set_id: subject_set_id,
             retire_count: 3,
             parent_subject_id: parent_subject_id,
-            tool_task_description: annotation["tool_task_description"], 
-            key: annotation["key"], 
-            location: { 
+            tool_task_description: annotation["tool_task_description"],
+            type: annotation["subject_type"],
+            location: {
               standard: classification.subject.file_path,
               spec: value.except(:key, :tool)
             }

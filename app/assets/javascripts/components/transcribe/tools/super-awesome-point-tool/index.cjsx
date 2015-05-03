@@ -39,9 +39,9 @@ module.exports = React.createClass
 
     scale = (@props.xScale + @props.yScale) / 2
 
-    <g
-      tool={this}
-      transform="translate(#{@props.mark.x}, #{@props.mark.y})"
+    <g 
+      tool={this} 
+      transform="translate(#{@props.mark.x}, #{@props.mark.y})" 
       onMouseDown={@handleMouseDown}
     >
       <g
@@ -80,7 +80,7 @@ module.exports = React.createClass
   #   @props.mark.x = offset.x
   #   @props.mark.y = offset.y
   #   @props.onChange()
-
+    
   handleMouseDown: ->
     console.log 'handleMouseDown()'
     @props.onSelect @props.mark # unless @props.disabled
