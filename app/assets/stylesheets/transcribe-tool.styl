@@ -10,6 +10,8 @@
   cursor move
 
   .left
+    padding-bottom 0.8em
+
     // background-color rgb(20,100,20)
     float left
     input
@@ -24,6 +26,8 @@
         display inherit
         margin-left 10px
         color black
+        text-align left
+
       &.active
         display block
       textarea
@@ -41,7 +45,16 @@
         opacity 0.5
         &:focus
           opacity 1.0
-        
+  &.composite
+    .left
+
+      .input-field
+        label
+          display block
+          clear left
+          padding-top 0.8em
+          line-height 1.4em
+
   .right
     line-height 4em
     margin-right 20px

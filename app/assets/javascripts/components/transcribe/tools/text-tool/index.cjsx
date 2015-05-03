@@ -37,15 +37,39 @@ TextTool = React.createClass
     annotation: {}
     task: null
     subject: null
+    standalone: true
+    annotation_key: 'value'
+    focus: true
    
   componentWillReceiveProps: ->
     @setState
       annotation: @props.annotation
 
+    # console.log "focus(receive props)? ", @props.focus
+    @refs.input0.getDOMNode().focus() if @props.focus
+
+  componentWillUnmount: ->
+    if @props.task.tool_options.suggest == 'common'
+      el = $(@refs.input0.getDOMNode())
+      el.autocomplete 'destroy'
+
   componentDidMount: ->
     @updatePosition()
-    @refs.input0.getDOMNode().focus()
+    @refs.input0.getDOMNode().focus() if @props.focus
 
+    if @props.task.tool_options.suggest == 'common'
+      el = $(@refs.input0.getDOMNode())
+      el.autocomplete
+        source: (request, response) =>
+          $.ajax
+            url: "/classifications/terms/#{@props.workflow.id}/#{@props.key}"
+            dataType: "json"
+            data:
+              q: request.term
+            success: ( data ) =>
+              response( data )
+        minLength: 3
+      
   # Expects size hash with:
   #   w: [viewer width]
   #   h: [viewer height]
@@ -68,7 +92,7 @@ TextTool = React.createClass
     @props.onComplete @state.annotation
 
   handleChange: (e) ->
-    @state.annotation.value = e.target.value
+    @state.annotation[@props.annotation_key] = e.target.value
     @forceUpdate()
 
   handleKeyPress: (e) ->
@@ -91,26 +115,37 @@ TextTool = React.createClass
       top: @state.dy
     # console.log "TextTool#render pos", @state
 
-    val = @state.annotation?.value ? ''
+    val = @state.annotation[@props.annotation_key] ? ''
     # console.log "TextTool#render val:", val, @state.annotation?.value
 
-    <Draggable
-      onStart = {@handleInitStart}
-      onDrag  = {@handleInitDrag}
-      onEnd   = {@handleInitRelease}
-      ref     = "inputWrapper0">
+    label = @props.task.instruction
+    if ! @props.standalone
+      label = @props.label ? ''
 
-      <div className="transcribe-tool" style={style}>
-        <div className="left">
-          <div className="input-field active">
-            <label>{@props.task.instruction}</label>
-            <input ref="input0" type="text" data-task_key={@props.task.key} onKeyDown={@handleKeyPress} onChange={@handleChange} value={val} />
-          </div>
-        </div>
-        <div className="right">
-          <DoneButton onClick={@commitAnnotation} />
-        </div>
+    tool_content =
+      <div className="input-field active">
+        <label>{label}</label>
+        <input ref="input0" type="text" data-task_key={@props.task.key} onKeyDown={@handleKeyPress} onChange={@handleChange} value={val} />
       </div>
-    </Draggable>
+
+    if @props.standalone
+      tool_content =
+        <Draggable
+          onStart = {@handleInitStart}
+          onDrag  = {@handleInitDrag}
+          onEnd   = {@handleInitRelease}
+          ref     = "inputWrapper0">
+
+          <div className="transcribe-tool" style={style}>
+            <div className="left">
+              { tool_content }
+            </div>
+            <div className="right">
+              <DoneButton onClick={@commitAnnotation} />
+            </div>
+          </div>
+        </Draggable>
+
+    tool_content
 
 module.exports = TextTool

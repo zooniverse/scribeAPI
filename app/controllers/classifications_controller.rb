@@ -10,7 +10,7 @@ class ClassificationsController < ApplicationController
 
   def create
     annotations = params["annotations"]
-    subject_set_id  = BSON::ObjectId.from_string params["classifications"]["subject_set"]["id"]
+    # subject_set_id  = BSON::ObjectId.from_string params["classifications"]["subject_set"]["id"]
     workflow_id = BSON::ObjectId.from_string params["classifications"]["workflow_id"]
 
     # location         = params["location"]
@@ -36,5 +36,15 @@ class ClassificationsController < ApplicationController
       finished_at: finished_at,
       user_agent: user_agent )
     respond_with @result
+ 
+  end
+
+  def terms
+    workflow_id = params[:workflow_id]
+    annotation_key = params[:annotation_key]
+    q = params[:q]
+
+    terms = Term.autocomplete workflow_id, annotation_key, q
+    respond_with terms
   end
 end

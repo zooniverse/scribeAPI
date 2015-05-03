@@ -26,7 +26,9 @@
 
     "em_transcribe_mortgager": {
       "tool": "text_tool",
-      "tool_options": {},
+      "tool_options": {
+        "suggest": "common"
+      },
       "instruction": "Enter the mortgager",
       "next_task": "em_transcribe_address"
     },
@@ -44,11 +46,13 @@
         "tools": {
           "em_valuation_date": {
             "tool": "text_tool",
-            "tool_options": {}
+            "tool_options": {},
+            "label": "Date"
           },
           "em_valuation_amount": {
             "tool": "text_tool",
-            "tool_options": {}
+            "tool_options": {},
+            "label": "Amount"
           }
         }
       },
