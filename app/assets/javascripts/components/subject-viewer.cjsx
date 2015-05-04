@@ -11,12 +11,17 @@ markingTools                  = require './mark/tools'
 
 RowFocusTool                  = require 'components/row-focus-tool'
 
+ShowPreviousMarksMixin        = require 'lib/show-previous-marks-mixin'
+
 API = require "lib/api"
 
 
 module.exports = React.createClass
   displayName: 'SubjectViewer'
   resizing: false
+
+  mixins: [ShowPreviousMarksMixin] # load subjects and set state variables: subjects, currentSubject, classification
+
 
   getInitialState: ->
     # console.log "setting initial state: #{@props.active}"
@@ -315,20 +320,7 @@ module.exports = React.createClass
               height = {@state.imageHeight} />
           </Draggable>
 
-          { # HANDLE PREVIOUS MARKS
-            for previousMark in @props.subject.child_subjects_info
-              console.log 'PREVIOUS MARK: ', previousMark
-              <rect
-                className   = "previous-mark"
-                x           = 0
-                y           = { previousMark.spec.yUpper }
-                width       = { @state.imageWidth }
-                height      = { previousMark.spec.yLower - previousMark.spec.yUpper }
-                fill        = "rgba(0,0,0,0)"
-                stroke      = "#f60"
-                strokeWidth = "5px"
-              />
-          }
+          { @showPreviousMarks() }
 
           { # HANDLE RECTANGLE TOOL MARKS
             if @props.workflow.name is 'transcribe' and @props.subject.location.spec.toolName is 'rectangleTool'
