@@ -1,10 +1,9 @@
 module.exports =
   showPreviousMarks: ->
-
-
     previousMarks =
       for previousMark in @props.subject.child_subjects_info
-        console.log 'PREVIOUS MARK: ', previousMark
+        # DEBUG CODE
+        # console.log 'PREVIOUS MARK: ', previousMark
         <rect
           className   = "previous-mark"
           x           = 0
@@ -16,7 +15,70 @@ module.exports =
           strokeWidth = "5px"
         />
 
-    console.log 'previousMarks: ', previousMarks
-
-    # return <rect x=100 y=100 width=300 height=300 fill="rgba(200,0,0,0.5)" />
     return <g>{previousMarks}</g>
+
+  showRectangleTranscribeTools: ->
+    return null
+    # console.log 'FOO'
+    #   blah =
+    #     if @props.workflow.name is 'transcribe' and @props.subject.location.spec.toolName is 'rectangleTool'
+    #       isPriorAnnotation = true # ?
+    #       <g key={@props.subject.id} className="marks-for-annotation" data-disabled={isPriorAnnotation}>
+    #         {
+    #           console.log '@props.subject.location.spec: ', @props.subject.location.spec
+    #           # Represent the secondary subject as a rectangle mark
+    #           # TODO Should really check the drawing tool used (encoded somehow in the 2ndary subject) and display a read-only instance of that tool. For now just defaulting to rect:
+    #           ToolComponent = markingTools['rectangleTool']
+    #           # TODO: Note that x, y, w h aren't scaled properly:
+    #           mark = {x: @props.subject.location.spec.x, y: @props.subject.location.spec.y, width: @props.subject.location.spec.width, height: @props.subject.location.spec.height}
+    #
+    #           <g>
+    #             <rect
+    #               className   = "mark-rectangle top"
+    #               x           = 0
+    #               y           = 0
+    #               width       = { @state.imageWidth }
+    #               height      = { mark.y }
+    #               fill        = "rgba(0,0,0,0.6)"
+    #             />
+    #             <rect
+    #               className   = "mark-rectangle bottom"
+    #               x           = 0
+    #               y           = { mark.y + mark.height }
+    #               width       = { @state.imageWidth }
+    #               height      = { @state.imageHeight - mark.y + mark.height }
+    #               fill        = "rgba(0,0,0,0.6)"
+    #             />
+    #             <rect
+    #               className   = "mark-rectangle left"
+    #               x           = 0
+    #               y           = { mark.y }
+    #               width       = { mark.x }
+    #               height      = { mark.height }
+    #               fill        = "rgba(0,0,0,0.6)"
+    #             />
+    #             <rect
+    #               className   = "mark-rectangle right"
+    #               x           = { mark.x + mark.width}
+    #               y           = { mark.y }
+    #               width       = { @state.imageWidth - mark.width - mark.x }
+    #               height      = { mark.height }
+    #               fill        = "rgba(0,0,0,0.6)"
+    #             />
+    #
+    #             <ToolComponent
+    #               key={@props.subject.id}
+    #               mark={mark}
+    #               xScale={scale.horizontal}
+    #               yScale={scale.vertical}
+    #               disabled={isPriorAnnotation}
+    #               selected={mark is @state.selectedMark}
+    #               getEventOffset={@getEventOffset}
+    #               ref={@refs.sizeRect}
+    #
+    #               onSelect={@selectMark.bind this, @props.subject, mark}
+    #             />
+    #           </g>
+    #         }
+    #       </g>
+    # return {blah}
