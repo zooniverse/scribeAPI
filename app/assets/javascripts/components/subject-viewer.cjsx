@@ -315,7 +315,8 @@ module.exports = React.createClass
               height = {@state.imageHeight} />
           </Draggable>
 
-          { for previousMark in @props.subject.child_subjects_info
+          { # HANDLE PREVIOUS MARKS
+            for previousMark in @props.subject.child_subjects_info
               console.log 'PREVIOUS MARK: ', previousMark
               <rect
                 className   = "previous-mark"
@@ -329,7 +330,8 @@ module.exports = React.createClass
               />
           }
 
-          { if @props.workflow.name is 'transcribe' and @props.subject.location.spec.toolName is 'rectangleTool'
+          { # HANDLE RECTANGLE TOOL MARKS
+            if @props.workflow.name is 'transcribe' and @props.subject.location.spec.toolName is 'rectangleTool'
               isPriorAnnotation = true # ?
               <g key={@props.subject.id} className="marks-for-annotation" data-disabled={isPriorAnnotation}>
                 {
@@ -391,7 +393,8 @@ module.exports = React.createClass
               </g>
           }
 
-          { if @props.workflow.name is 'transcribe' and @props.subject.location.spec.toolName is 'textRowTool'
+          { # HANDLE TEXT ROW TOOL MARKS
+            if @props.workflow.name is 'transcribe' and @props.subject.location.spec.toolName is 'textRowTool'
               isPriorAnnotation = true # ?
               <g key={@props.subject.id} className="marks-for-annotation" data-disabled={isPriorAnnotation}>
                 {
@@ -438,7 +441,8 @@ module.exports = React.createClass
               </g>
           }
 
-          { for annotation in @props.classification.annotations
+          { # HANDLE NEW MARKS
+            for annotation in @props.classification.annotations
               annotation._key ?= Math.random()
               isPriorAnnotation = annotation isnt @props.annotation
               taskDescription = @props.workflow.tasks[annotation.task]
