@@ -10,3 +10,4 @@ module.exports =
 
 
   textAreaTool: require './text-area-tool'
+  dateTool: require './date-tool'

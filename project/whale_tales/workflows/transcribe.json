@@ -4,7 +4,7 @@
   "first_task": "entry_date",
   "tasks": {
     "entry_date": {
-      "tool": "text_tool",
+      "tool": "dateTool",
       "tool_options": {},
       "instruction": "What is the entry date?",
       "next_task": "entry_text"
