@@ -1,9 +1,9 @@
 module.exports =
   showPreviousMarks: ->
+    console.log 'PREVIOUS MARKS: ', @props.subject.child_subjects_info
     previousMarks =
       for previousMark in @props.subject.child_subjects_info
-        # DEBUG CODE
-        switch previousMark.tool_type
+        switch previousMark.spec.toolName
           when 'textRowTool'
             x = 0
             y = previousMark.spec.yUpper
@@ -26,46 +26,71 @@ module.exports =
         />
 
     return <g>{previousMarks}</g>
-  #
-  # displayRectangleToolHighlights: ->
-  #   mark = {x: @props.subject.location.spec.x, y: @props.subject.location.spec.y, width: @props.subject.location.spec.width, height: @props.subject.location.spec.height}
-  #   highlight =
-  #       # TODO: Note that x, y, w h aren't scaled properly:
-  #     <g>
-  #       <rect
-  #         className   = "mark-rectangle top"
-  #         x           = 0
-  #         y           = 0
-  #         width       = { @state.imageWidth }
-  #         height      = { mark.y }
-  #         fill        = "rgba(0,0,0,0.6)"
-  #       />
-  #       <rect
-  #         className   = "mark-rectangle bottom"
-  #         x           = 0
-  #         y           = { mark.y + mark.height }
-  #         width       = { @state.imageWidth }
-  #         height      = { @state.imageHeight - mark.y + mark.height }
-  #         fill        = "rgba(0,0,0,0.6)"
-  #       />
-  #       <rect
-  #         className   = "mark-rectangle left"
-  #         x           = 0
-  #         y           = { mark.y }
-  #         width       = { mark.x }
-  #         height      = { mark.height }
-  #         fill        = "rgba(0,0,0,0.6)"
-  #       />
-  #       <rect
-  #         className   = "mark-rectangle right"
-  #         x           = { mark.x + mark.width}
-  #         y           = { mark.y }
-  #         width       = { @state.imageWidth - mark.width - mark.x }
-  #         height      = { mark.height }
-  #         fill        = "rgba(0,0,0,0.6)"
-  #       />
-  #     </g>
-  #   return {highlight}
+
+  highlightMark: (mark, toolName) ->
+    console.log 'TOOL NAME: ', toolName
+    highlight =
+      # TODO: Note that x, y, w h aren't scaled properly:
+      switch toolName
+        when 'rectangleTool'
+          console.log 'RECTANGLE TOOL!'
+          <g>
+            <rect
+              className   = "mark-rectangle top"
+              x           = 0
+              y           = 0
+              width       = { @state.imageWidth }
+              height      = { mark.y }
+              fill        = "rgba(0,0,0,0.6)"
+            />
+            <rect
+              className   = "mark-rectangle bottom"
+              x           = 0
+              y           = { mark.y + mark.height }
+              width       = { @state.imageWidth }
+              height      = { @state.imageHeight - mark.y + mark.height }
+              fill        = "rgba(0,0,0,0.6)"
+            />
+            <rect
+              className   = "mark-rectangle left"
+              x           = 0
+              y           = { mark.y }
+              width       = { mark.x }
+              height      = { mark.height }
+              fill        = "rgba(0,0,0,0.6)"
+            />
+            <rect
+              className   = "mark-rectangle right"
+              x           = { mark.x + mark.width}
+              y           = { mark.y }
+              width       = { @state.imageWidth - mark.width - mark.x }
+              height      = { mark.height }
+              fill        = "rgba(0,0,0,0.6)"
+            />
+          </g>
+        when 'textRowTool'
+          console.log 'TEXT ROW TOOL!'
+          <g>
+            <rect
+              className   = "mark-rectangle"
+              x           = 0
+              y           = { 0 }
+              width       = { @state.imageWidth }
+              height      = { mark.yUpper }
+              fill        = "rgba(0,0,0,0.6)"
+            />
+
+            <rect
+              className   = "mark-rectangle"
+              x           = 0
+              y           = { mark.yLower }
+              width       = { @state.imageWidth }
+              height      = { @state.imageHeight - mark.yLower }
+              fill        = "rgba(0,0,0,0.6)"
+            />
+          </g>
+
+    return {highlight}
 
 
 
