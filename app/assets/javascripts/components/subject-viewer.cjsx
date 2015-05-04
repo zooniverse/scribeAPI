@@ -321,27 +321,26 @@ module.exports = React.createClass
           </Draggable>
 
           {
-            @showPreviousMarks()
-            # @showTranscribeTools()
+            if @props.workflow.name is 'mark'
+              @showPreviousMarks()
+              # @showTranscribeTools()
           }
 
-
           { # HANDLE RECTANGLE TOOL MARKS
-            console.log 'SUBJECT: ', @props.subject
-            workflow = @props.workflow.name
-
-            if workflow is 'transcribe'
-              toolName = @props.subject.location.spec.toolName
-              isPriorAnnotation = true
-              ToolComponent = markingTools[toolName]
-              switch toolName
+            if @props.workflow.name is 'transcribe'
+              console.log 'TRANSCRIBE!!!'
+              switch @props.subject.location.spec.toolName
                 when 'rectangleTool'
-                  mark = {x: @props.subject.location.spec.x, y: @props.subject.location.spec.y, width: @props.subject.location.spec.width, height: @props.subject.location.spec.height}
+                  isPriorAnnotation = true # ?
                   <g key={@props.subject.id} className="marks-for-annotation" data-disabled={isPriorAnnotation}>
                     {
+                      console.log '@props.subject.location.spec: ', @props.subject.location.spec
                       # Represent the secondary subject as a rectangle mark
                       # TODO Should really check the drawing tool used (encoded somehow in the 2ndary subject) and display a read-only instance of that tool. For now just defaulting to rect:
+                      ToolComponent = markingTools['rectangleTool']
                       # TODO: Note that x, y, w h aren't scaled properly:
+                      mark = {x: @props.subject.location.spec.x, y: @props.subject.location.spec.y, width: @props.subject.location.spec.width, height: @props.subject.location.spec.height}
+
                       <g>
                         <rect
                           className   = "mark-rectangle top"
