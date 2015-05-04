@@ -10,7 +10,7 @@
       "next_task": "entry_text"
     },
     "entry_text": {
-      "tool": "text_tool",
+      "tool": "textAreaTool",
       "tool_options": {},
       "instruction": "Please transcribe the remainder of the highlighted entry.",
       "next_task": null
