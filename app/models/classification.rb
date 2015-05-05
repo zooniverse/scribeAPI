@@ -19,11 +19,40 @@ class Classification
   has_many   :triggered_followup_subjects, class_name: "Subject"
 
   before_create :generate_new_subjects
+  after_create :increment_subject_number_of_annontation_values
 
   def generate_new_subjects
     if workflow.generates_new_subjects
       triggered_followup_subject_ids = workflow.create_follow_up_subjects(self)
     end
+  end
+
+  # finds number of values associated with each classification
+  # TODO: this is duplicating work already done in the worklfow.rb
+  # Also, lets make sure that annotation.value is always an array?**
+  def no_annotation_values
+    counter = 0
+    self.annotations.each do |annotation|
+      # **so that we can prevent this if-statement
+      if annotation["value"].is_a? String
+        counter += 1 
+      else 
+        annotation["value"].each do |value|
+          counter += annotation["value"].length
+        end
+      end
+    end
+    counter
+  end
+
+
+  # we need to increment self.subject.classification_count by the nummber of values in annotation.
+  # new ideas for modeling the annotation.values? the current model feels a bit off.
+  def increment_subject_number_of_annontation_values
+    subject = self.subject
+    subject.annotation_value_count += no_annotation_values
+    subject.save
+    subject.retire!
   end
 
 end

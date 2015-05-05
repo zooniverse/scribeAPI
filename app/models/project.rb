@@ -1,3 +1,4 @@
+
 class Project
 	include Mongoid::Document
 	include Mongoid::Timestamps
@@ -62,10 +63,10 @@ class Project
     
     # retrieve subject data
     subjects_data = []    
-    subject_groups = Subject.all.group_by {|d| d.state}   
-    subject_groups.each do |state, subjects|
+    subject_groups = Subject.all.group_by {|d| d.status}   
+    subject_groups.each do |status, subjects|
       subjects_data << {
-      label: state,
+      label: status,
       value: subjects.size
       }
     end

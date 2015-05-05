@@ -64,6 +64,7 @@ class Workflow
         end
       end
     end
+    
   end
 
   def create_follow_up_subjects(classification)

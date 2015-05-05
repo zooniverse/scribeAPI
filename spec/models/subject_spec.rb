@@ -8,8 +8,8 @@ describe Subject do
   let(:done_subject){Subject.create({workflow_id: workflow.id,name: "Inactive Subject",location: {standard: "http://some_server.com/location.jpg"}, state: "inactive"})}
 
 
-  it 'should initally have state active' do
-    subject.state.should  ==  "active"
+  it 'should initally have status active' do
+    subject.status.should  ==  "active"
   end
 
   it 'should initally have zero classification count' do
@@ -20,11 +20,11 @@ describe Subject do
     subject.classification_count.should ==  0
   end
 
-  it 'should change state to done when it reaches classification count' do
+  it 'should change status to done when it reaches classification count' do
     subject.classification_count = subject.workflow.retire_limit - 1
     subject.save
     subject.increment_classification_count_by(1)
-    subject.state.should == 'done'
+    subject.status.should == 'done'
   end
 
   it 'should increment classification count' do
@@ -34,6 +34,6 @@ describe Subject do
 
   it 'should properly activate when told to' do
     inactive_subject.activate!
-    inactive_subject.state.should ==  "active"
+    inactive_subject.status.should ==  "active"
   end
 end
