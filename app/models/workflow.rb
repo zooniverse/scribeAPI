@@ -58,8 +58,8 @@ class Workflow
         parent_subject.child_subjects << child_subject
         end
       end
-
     end
+    
   end
 
   def create_follow_up_subjects(classification)
