@@ -41,7 +41,7 @@ module.exports = React.createClass
       scale(#{1}, #{1})
     "
 
-    <g className="point drawing-tool" transform={transform}>
+    <g className="mark-tool" transform={transform}>
 
       { if DEBUG
           <text fill='blue' fontSize='30'>

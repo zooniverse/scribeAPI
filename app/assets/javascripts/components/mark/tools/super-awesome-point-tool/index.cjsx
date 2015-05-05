@@ -45,7 +45,7 @@ module.exports = React.createClass
       onMouseDown={@handleMouseDown}
     >
       <g
-        className="drawing-tool-main"
+        className="mark-tool"
         fill='transparent'
         stroke='#f60'
         strokeWidth={SELECTED_STROKE_WIDTH/scale}
