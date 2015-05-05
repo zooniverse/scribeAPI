@@ -11,7 +11,7 @@ markingTools                  = require './mark/tools'
 
 RowFocusTool                  = require 'components/row-focus-tool'
 
-ShowPreviousMarksMixin        = require 'lib/show-previous-marks-mixin'
+MarkDrawingMixin              = require 'lib/mark-drawing-mixin'
 
 API = require "lib/api"
 
@@ -20,8 +20,7 @@ module.exports = React.createClass
   displayName: 'SubjectViewer'
   resizing: false
 
-  mixins: [ShowPreviousMarksMixin] # load subjects and set state variables: subjects, currentSubject, classification
-
+  mixins: [MarkDrawingMixin] # load helper methods to draw marks and highlights
 
   getInitialState: ->
     # console.log "setting initial state: #{@props.active}"
@@ -46,7 +45,7 @@ module.exports = React.createClass
 
   componentDidMount: ->
     @setView 0, 0, @state.imageWidth, @state.imageHeight
-    @loadImage @state.subject.location.standard
+    @loadImage @props.subject.location.standard
     window.addEventListener "resize", this.updateDimensions
 
   componentWillMount: ->
@@ -89,7 +88,6 @@ module.exports = React.createClass
   # VARIOUS EVENT HANDLERS
 
   handleInitStart: (e) ->
-    console.log "SubjectViewer#handleInitStart: @props.workflow", @props
     return null if ! @props.annotation? || ! @props.annotation.task?
 
     @props.annotation["subject_id"] = @props.subject.id
@@ -148,6 +146,7 @@ module.exports = React.createClass
   handleInitDrag: (e) ->
     task = @props.workflow.tasks[@props.annotation.task]
     mark = @state.selectedMark
+    # console.log "SubjectViewer#handleInitDrag"
     MarkComponent = markingTools[task.tools[mark.tool].type]
     if MarkComponent.initMove?
       mouseCoords = @getEventOffset e
@@ -273,9 +272,9 @@ module.exports = React.createClass
 
 
   render: ->
-    # return null if @state.subjects is null or @state.subjects.length is 0
-    # return null unless @state.subject?
-    # console.log 'SUBJECT: ', @state.subject
+    # return null if @props.subjects is null or @props.subjects.length is 0
+    # return null unless @props.subject?
+    # console.log 'SUBJECT: ', @props.subject
 
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     ToolComponent = @state.tool
@@ -294,7 +293,7 @@ module.exports = React.createClass
       else
         <ActionButton onClick={@nextSubject} text="Next Page" />
 
-    # console.log "SubjectViewer#render: render subject with mark? ", @state.subject
+    # console.log "SubjectViewer#render: render subject with mark? ", @props.subject
 
     if @state.loading
       markingSurfaceContent = <LoadingIndicator />
@@ -315,7 +314,7 @@ module.exports = React.createClass
             onDrag  = {@handleInitDrag}
             onEnd   = {@handleInitRelease} >
             <SVGImage
-              src = {@state.subject.location.standard}
+              src = {@props.subject.location.standard}
               width = {@state.imageWidth}
               height = {@state.imageHeight} />
           </Draggable>
@@ -365,7 +364,7 @@ module.exports = React.createClass
 
                     #adds task and description to each annotation
                     @props.annotation["tool_task_description"] = @props.workflow.tasks[annotation.task].tools[mark.tool]
-                    @props.annotation["key"] = @props.workflow.tasks[annotation.task].tools[mark.tool].key
+                    @props.annotation["subject_type"] = @props.workflow.tasks[annotation.task].tools[mark.tool].subject_type
                     ToolComponent = markingTools[toolDescription.type]
 
                     <ToolComponent
@@ -387,7 +386,6 @@ module.exports = React.createClass
                 </g>
 
             }
-
 
           </svg>
 
