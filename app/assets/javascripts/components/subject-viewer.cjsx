@@ -246,7 +246,7 @@ module.exports = React.createClass
 
     console.log '(SINGLE) CLASSIFICATION: ', classification
 
-    # classification.save()
+    classification.save()
     # console.log 'FOO ', API.makeHTTPRequest()
     # .then (blah) ->
     #   console.log 'blah: ', blah
@@ -254,22 +254,22 @@ module.exports = React.createClass
     # classification.save().get('classifications').then(blah) ->
     #     console.log 'blah: ', blah
 
-    console.log 'PROPS: ', @props.annotation
-
-    $.post('/classifications',
-        classification
-      )
-      .done (response) =>
-        console.log "Success", response #, response._id.$oid
-        # @setTranscribeSubject(key, response._id.$oid)
-        # @enableMarkButton(key)
-        return
-      .fail =>
-        console.log "Failure"
-        return
-      .always ->
-        console.log "Always"
-        return
+    # console.log 'PROPS: ', @props.annotation
+    #
+    # $.post('/classifications',
+    #     classification
+    #   )
+    #   .done (response) =>
+    #     # console.log "Success", response, response._id.$oid
+    #     # @setTranscribeSubject(key, response._id.$oid)
+    #     # @enableMarkButton(key)
+    #     return
+    #   .fail =>
+    #     console.log "Failure"
+    #     return
+    #   .always ->
+    #     console.log "Always"
+    #     return
 
 
   render: ->

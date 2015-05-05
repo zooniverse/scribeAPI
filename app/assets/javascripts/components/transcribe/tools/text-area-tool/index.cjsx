@@ -4,7 +4,7 @@ Draggable       = require '../../../../lib/draggable'
 DoneButton      = require './done-button'
 
 TextTool = React.createClass
-  displayName: 'TextTool'
+  displayName: 'TextAreaTool'
 
   handleInitStart: (e) ->
     # console.log 'handleInitStart() '
@@ -92,7 +92,7 @@ TextTool = React.createClass
         <div className="left">
           <div className="input-field active">
             <label>{@props.task.instruction}</label>
-            <textarea ref="input0" type="textArea" data-task_key={@props.task.key} onChange={@handleChange} value={val} placeholder={"This is some placeholder text."} />
+            <textarea ref="input0" data-task_key={@props.task.key} onChange={@handleChange} value={val} placeholder={"This is some placeholder text."} />
           </div>
         </div>
         <div className="right">
