@@ -1,7 +1,7 @@
 module.exports =
 
   # NOT SURE IF THESE ARE NECESSARY ANYMORE -STI
-  superAwesomePointTool: require './super-awesome-point-tool'
+  pointTool: require './point-tool'
   textRowTool:           require './text-row-tool'
   rectangleTool:         require './rectangle-tool'
 

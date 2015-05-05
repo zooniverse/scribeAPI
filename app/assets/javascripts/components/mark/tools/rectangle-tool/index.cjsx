@@ -35,7 +35,7 @@ module.exports = React.createClass
       if cursor.x > @initCoords.x
         width = cursor.x - mark.x
         x = mark.x
-      else 
+      else
         width = @initCoords.x - cursor.x
         x = cursor.x
 
@@ -78,7 +78,7 @@ module.exports = React.createClass
     @props.mark.width -= d.x / @props.xScale
     @props.mark.height -= d.y / @props.yScale
     @props.onChange e
-  
+
   handleX1Y2Drag: (e, d) ->
     @props.mark.x += d.x / @props.xScale
     @props.mark.width -= d.x / @props.xScale
@@ -121,13 +121,13 @@ module.exports = React.createClass
       [x1, y1].join ','
     ].join '\n'
 
-    <g 
-      className = {classString} 
+    <g
+      className = {classString}
       tool={this}
       onMouseDown={@props.onSelect unless @props.disabled}
     >
-      <g 
-        className = {classString} 
+      <g
+        className = {classString}
         onMouseDown={@props.onSelect unless @props.disabled}
       >
 
@@ -147,14 +147,3 @@ module.exports = React.createClass
       </g>
 
     </g>
-
-
-
-
-
-
-
-
- 
-    
-

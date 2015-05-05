@@ -28,7 +28,7 @@
       "tool":"mark",
       "instruction":"Pick a tool and mark each record:",
       "tools": [
-        {"type": "superAwesomePointTool", "label": "Point Tool", "color": "red"},
+        {"type": "pointTool", "label": "Point Tool", "color": "red"},
         {"type": "rectangleTool", "label": "Drawing/Note", "color": "green"},
         {"type": "textRowTool", "label": "Journal Entry", "color": "blue"}
       ],
