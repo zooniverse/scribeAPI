@@ -3,7 +3,7 @@ DrawingToolRoot  = require './root'
 Draggable        = require 'lib/draggable'
 DeleteButton     = require './delete-button'
 DragHandle       = require './drag-handle'
-TranscribeButton = require './transcribe-button'
+DoneButton       = require './done-button'
 
 RADIUS = 10
 SELECTED_RADIUS = 20
@@ -48,7 +48,7 @@ module.exports = React.createClass
     x: @props.ref.props.width/2
     y: @props.mark.yLower - @props.mark.y
 
-  getTranscribeButtonPosition: ->
+  getDoneButtonPosition: ->
     x: @props.ref.props.width - 100
     y: (@props.mark.yLower-@props.mark.yUpper)/2
 
@@ -85,7 +85,7 @@ module.exports = React.createClass
             <DragHandle tool={this} onDrag={@handleUpperResize} position={@getUpperHandlePosition()} />
             <DragHandle tool={this} onDrag={@handleLowerResize} position={@getLowerHandlePosition()} />
             <DeleteButton tool={this} position={@getDeleteButtonPosition()} />
-            <TranscribeButton tool={this} onDrag={@handleTranscribeClick} position={@getTranscribeButtonPosition()} />
+            <DoneButton tool={this} onDrag={@handleTranscribeClick} position={@getDoneButtonPosition()} />
           </g>
         }
 
