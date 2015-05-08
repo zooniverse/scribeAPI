@@ -3,7 +3,8 @@ DrawingToolRoot  = require './root'
 Draggable        = require 'lib/draggable'
 DeleteButton     = require './delete-button'
 DragHandle       = require './drag-handle'
-MarkButton       = require './mark-button'
+
+MarkButtonMixin  = require 'lib/mark-button-mixin'
 
 RADIUS = 10
 SELECTED_RADIUS = 20
@@ -22,6 +23,8 @@ MINIMUM_HEIGHT = 25
 module.exports = React.createClass
   displayName: 'TextRowTool'
 
+  mixins: [MarkButtonMixin]
+
   statics:
     defaultValues: ({x, y}) ->
       x: x
@@ -36,8 +39,7 @@ module.exports = React.createClass
       yLower: y + DEFAULT_HEIGHT/2
 
   getInitialState: ->
-    markStatus: 'waiting-for-mark'
-    locked: ''
+    foo: 'bar'
 
   getDeleteButtonPosition: ->
     x: 100
@@ -56,6 +58,9 @@ module.exports = React.createClass
     y: (@props.mark.yLower-@props.mark.yUpper)/2
 
   render: ->
+
+    console.log 'STATE: ', @state
+
     averageScale = (@props.xScale + @props.yScale) / 2
     crosshairSpace = CROSSHAIR_SPACE / averageScale
     crosshairWidth = CROSSHAIR_WIDTH / averageScale
@@ -96,15 +101,7 @@ module.exports = React.createClass
             </g>
         }
 
-        { if @props.selected
-            <MarkButton
-              tool={this}
-              onDrag={@onClickMarkButton}
-              position={@getMarkButtonPosition()}
-              markStatus={@state.markStatus}
-              locked={@state.locked}
-            />
-        }
+        { if @props.selected then @renderMarkButton() }
 
       </g>
     </g>
@@ -129,35 +126,3 @@ module.exports = React.createClass
   handleMouseDown: ->
     console.log 'handleMouseDown()'
     @props.onSelect @props.mark # unless @props.disabled
-
-  onClickMarkButton: ->
-    # @props.submitMark(@props.mark) # disable for now -STI
-
-    markStatus = @state.markStatus
-    switch markStatus
-      when 'waiting-for-mark'
-        @setState
-          markStatus: 'mark-finished'
-          locked: true
-        # @props.submitMark(@props.key)
-        console.log 'Mark submitted. Click TRANSCRIBE to begin transcribing.'
-      when 'mark-finished'
-        @setState
-          markStatus: 'transcribe'
-          locked: true
-        # @props.onClickTranscribe(@state.mark.key)
-        # @transcribeMark(mark)
-
-        console.log 'Going into TRANSCRIBE mode. Stand by.'
-      when 'transcribe'
-        @setState
-          markStatus: 'transcribe-finished'
-          locked: true
-        # @submitTranscription()
-        console.log 'Transcription submitted.'
-      when 'transcribe-finished'
-        @setState locked: true
-        console.log 'All done. Nothing left to do here.'
-      else
-        @setState locked: true
-        console.log 'WARNING: Unknown state in handleToolProgress()'

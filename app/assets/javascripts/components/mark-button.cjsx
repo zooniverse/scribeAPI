@@ -15,7 +15,7 @@ STROKE_WIDTH = 0.5
 DESTROY_TRANSITION_DURATION = 0
 
 module.exports = React.createClass
-  displayName: 'MarkButton'
+  displayName: 'TranscribeButton'
 
   getDefaultProps: ->
     x: 0
