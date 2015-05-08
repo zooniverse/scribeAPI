@@ -38,6 +38,7 @@ module.exports = React.createClass
 
   getInitialState: ->
     markStatus: 'waiting-for-mark'
+    locked: ''
 
   getDeleteButtonPosition: ->
     x: 100
@@ -83,19 +84,27 @@ module.exports = React.createClass
           <rect x={0} y={0} width="100%" height={@props.mark.yLower-@props.mark.yUpper} />
         </Draggable>
 
-        { if @props.selected
+        { if @props.selected and not @state.locked
           <g>
             <DragHandle   tool={this} onDrag={@handleUpperResize} position={@getUpperHandlePosition()} />
             <DragHandle   tool={this} onDrag={@handleLowerResize} position={@getLowerHandlePosition()} />
             <DeleteButton tool={this} position={@getDeleteButtonPosition()} />
-            <MarkButton   tool={this} onDrag={@onClickMarkButton} position={@getMarkButtonPosition()} />
           </g>
         }
+        
+        <MarkButton
+          tool={this}
+          onDrag={@onClickMarkButton}
+          position={@getMarkButtonPosition()}
+          markStatus={@state.markStatus}
+          locked={@state.locked}
+        />
 
       </g>
     </g>
 
   handleDrag: (e, d) ->
+    return if @state.locked
     # @props.mark.x += d.x / @props.xScale
     @props.mark.y += d.y / @props.yScale
     @props.mark.yUpper += d.y / @props.yScale
@@ -117,15 +126,13 @@ module.exports = React.createClass
 
   onClickMarkButton: ->
     # @props.submitMark(@props.mark) # disable for now -STI
-    console.log 'TRANSCRIBE CLICK!'
-    console.log 'THIS TOOL: ', @
 
     markStatus = @state.markStatus
     switch markStatus
       when 'waiting-for-mark'
         @setState
           markStatus: 'mark-finished'
-          locked: false
+          locked: true
         # @props.submitMark(@props.key)
         console.log 'Mark submitted. Click TRANSCRIBE to begin transcribing.'
       when 'mark-finished'
