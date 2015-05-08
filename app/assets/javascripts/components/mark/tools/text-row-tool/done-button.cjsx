@@ -32,15 +32,17 @@ module.exports = React.createClass
     <Draggable onEnd={@props.onDrag}>
       <g
         className="mark-tool transcribe-button"
-        transform={"
-          translate(#{@props.position.x-BUTTON_WID}, #{@props.position.y-2*BUTTON_HEI*@props.tool.props.yScale})
-          rotate(#{@props.rotate})
-        "}
+        transform=
+          "
+            translate(#{@props.position.x},#{@props.position.y})
+            scale(#{1 / @props.tool.props.xScale}, #{1 / @props.tool.props.yScale})
+          "
       >
+
         <rect
           stroke="none"
-          transform="scale(#{1 / @props.tool.props.xScale}, #{1 / @props.tool.props.yScale})"
-          fill="rgba(0,0,0,0)"
+          transform="translate(0,#{-0.5*BUTTON_HEI})"
+          fill="rgba(255,255,255,0.0)"
           width="36"
           height="18"
           x="0"
@@ -50,8 +52,8 @@ module.exports = React.createClass
         />
         <path
           stroke="none"
+          transform="translate(0,#{-0.5*BUTTON_HEI})"
           fill={FILL_COLOR}
-          transform="scale(#{1 / @props.tool.props.xScale}, #{1 / @props.tool.props.yScale})"
           d="m 12,15 -3,3 21,0 0,-3 z m 5,-5 -3,3 22,0 0,-3 z M 22,5 19,8 30,8 30,5 z M 14,0 11,3 15,7 18,4 z M 9.0249385,4.975061 0,14 l 0,4 4,0 9,-9 z"
         />
 
