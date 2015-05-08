@@ -3,7 +3,6 @@ DrawingToolRoot  = require './root'
 Draggable        = require 'lib/draggable'
 DeleteButton     = require './delete-button'
 DragHandle       = require './drag-handle'
-
 MarkButtonMixin  = require 'lib/mark-button-mixin'
 
 RADIUS = 10
@@ -23,7 +22,7 @@ MINIMUM_HEIGHT = 25
 module.exports = React.createClass
   displayName: 'TextRowTool'
 
-  mixins: [MarkButtonMixin]
+  mixins: [MarkButtonMixin] # adds MarkButton and helper methods to each mark
 
   statics:
     defaultValues: ({x, y}) ->
@@ -37,9 +36,6 @@ module.exports = React.createClass
       y: y - DEFAULT_HEIGHT/2
       yUpper: y - DEFAULT_HEIGHT/2 # not sure if these are needed
       yLower: y + DEFAULT_HEIGHT/2
-
-  getInitialState: ->
-    foo: 'bar'
 
   getDeleteButtonPosition: ->
     x: 100
@@ -101,7 +97,9 @@ module.exports = React.createClass
             </g>
         }
 
-        { if @props.selected then @renderMarkButton() }
+        { # REQUIRES MARK-BUTTON-MIXIN
+          if @props.selected then @renderMarkButton()
+        }
 
       </g>
     </g>
