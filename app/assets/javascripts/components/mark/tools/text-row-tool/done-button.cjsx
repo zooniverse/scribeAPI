@@ -33,7 +33,7 @@ module.exports = React.createClass
 
     <Draggable onEnd={@props.onDrag}>
       <g
-        className="mark-tool transcribe-button"
+        className="mark-tool action-button"
         transform=
           "
             translate(#{@props.position.x},#{@props.position.y})
@@ -72,53 +72,46 @@ module.exports = React.createClass
             />
         }
 
-        <path
-          className="checkbox"
-          fill="rgb(200,0,0)"
-          stroke="none"
-          transform="translate(#{-0.5*20},#{-0.5*20})"
-          d="M 4,1 C 2.338,1 1,2.338 1,4 l 0,12 c 0,1.662 1.338,3 3,3 l 12,0 c 1.662,0 3,-1.338 3,-3 L 19,4 C 19,2.338 17.662,1 16,1 L 4,1 z m 1,2 10,0 c 1.108,0 2,0.8920001 2,2 l 0,10 c 0,1.108 -0.892,2 -2,2 L 5,17 C 3.8920001,17 3,16.108 3,15 L 3,5 C 3,3.8920001 3.8920001,3 5,3 z"
-        />
+        <g className="checkbox">
+          <rect
+            transform="translate(#{-0.5*20},#{-0.5*20})"
+            fill="rgba(255,255,255,0)"
+            stroke="none"
+            width="18"
+            height="18"
+            x="0"
+            y="0"
+            rx="0"
+          />
 
-        <path
-          className="checkmark"
-          transform="translate(#{-0.5*25*@props.tool.props.xScale},#{-0.5*20*@props.tool.props.yScale})"
-          d="M 5.9999998,9.4416621 0.9212221,3.4141019 2.5714288,1.7142856 l 3.428571,4.2857142 7.7142852,-8.5714283 1.714286,1.71428567 z"
-          fill="rgb(0,200,0)"
-          stroke="none"
-        />
+          <text
+            x="0"
+            y="0"
+            fontSize="10"
+            transform="translate(10,3)"
+            fill="rgb(67,187,253)"
+            stroke="none">
 
-        <rect
-          transform="translate(#{-0.5*20},#{-0.5*20})"
-          fill="rgba(255,255,255,0)"
-          stroke="none"
-          width="18"
-          height="18"
-          x="0"
-          y="0"
-          rx="0"
-        />
+            DONE
+          </text>
+
+          <path
+            fill="rgb(67,187,253)"
+            stroke="none"
+            transform="translate(#{-0.5*20},#{-0.5*20})"
+            d="M 4,1 C 2.338,1 1,2.338 1,4 l 0,12 c 0,1.662 1.338,3 3,3 l 12,0 c 1.662,0 3,-1.338 3,-3 L 19,4 C 19,2.338 17.662,1 16,1 L 4,1 z m 1,2 10,0 c 1.108,0 2,0.8920001 2,2 l 0,10 c 0,1.108 -0.892,2 -2,2 L 5,17 C 3.8920001,17 3,16.108 3,15 L 3,5 C 3,3.8920001 3.8920001,3 5,3 z"
+          />
+
+          <path
+            className="checkmark"
+            transform="translate(#{-0.5*25*@props.tool.props.xScale},#{-0.5*20*@props.tool.props.yScale})"
+            d="M 5.9999998,9.4416621 0.9212221,3.4141019 2.5714288,1.7142856 l 3.428571,4.2857142 7.7142852,-8.5714283 1.714286,1.71428567 z"
+            fill="rgba(0,200,0,0)"
+            stroke="none"
+          />
+
+        </g>
+
 
       </g>
     </Draggable>
-
-'''
-# CHECKMARK ICON
-<rect
-  stroke="none"
-  fill="rgba(0,0,0,0)"
-  width="28"
-  height="20"
-  x="0"
-  y="0"
-  transform="scale(0.5,0.5)"
-  rx="0.0025846157"
-  ry="0.0025263159"
-/>
-<path
-  stroke="none"
-  fill="rgb(63,87,101)"
-  d="m 5.52,9.53 c 0,0 -5.04,-4.86 -5.04,-4.86 0,0 1.44,-1.39 1.44,-1.39 0,0 3.6,3.47 3.6,3.47 0,0 6.48,-6.25 6.48,-6.25 0,0 1.44,1.39 1.44,1.39 0,0 -7.92,7.64 -7.92,7.64 z"
-/>
-
-'''

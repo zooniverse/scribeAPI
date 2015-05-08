@@ -1,5 +1,5 @@
 .text-row-tool
-  .transcribe-button
+  .action-button
     cursor pointer
     &.disabled
       cursor wait
@@ -7,3 +7,9 @@
       &:active
         cursor wait
         pointer-events none
+
+    .checkbox
+      transition 0.25s
+      opacity 0.6
+      &:hover
+        opacity 1.0
