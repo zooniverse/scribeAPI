@@ -7,13 +7,12 @@ class Workflow
   field    :tasks, 			      	                             type: Hash
   field    :first_task,                                      type: String
   field    :retire_limit, 		                               type: Integer, default: 10
-  field    :enables_workflows,                               type: Hash
   field    :active_subjects,                                 type: Integer, default: 0
   field    :generates_new_subjects,                          type: Boolean, default: false
-  field    :generate_new_subjects_at_classification_count,   type: Integer, default: 1
+  field    :generate_subjects_after,                        type: Integer, default: 0
+  field    :generates_subjects_for
   field    :subject_fetch_limit,                             type: Integer, default: 10
-
-
+  field    :generate_subjects_max,                            type: Integer
   has_many     :subjects
   has_many     :classifications
   belongs_to   :project

@@ -2,6 +2,9 @@
   "name": "transcribe",
   "label": "Transcribe Workflow",
   "first_task": "journal_entry",
+  "generate_subjects_after": 1,
+  "generates_subjects_for": "verify",
+  "generate_subjects_max": 3,
   "tasks": {
     "journal_date": {
       "key": 0,
@@ -27,8 +30,5 @@
       "instruction": "Type something, anything.",
       "next_task": "nil"
     }
-  },
-  "enables_workflows": {
-    
   }
 }

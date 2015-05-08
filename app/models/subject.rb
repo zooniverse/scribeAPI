@@ -67,6 +67,9 @@ class Subject
 
   def activate!
     self.status = "active"
+    puts "THAT WORKFLOW"
+    puts self.workflow
+    # binding.pry
     subject_set.subject_activated_on_workflow(workflow)
     save
   end

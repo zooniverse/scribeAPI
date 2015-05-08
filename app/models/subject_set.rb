@@ -26,6 +26,10 @@ class SubjectSet
   end
 
   def subject_activated_on_workflow(workflow)
+    puts "!!!!!!!!!!!!!!!!!!!!!!!!!"
+    puts "!!!!!!!!!!!!!!!!!!!!!!!!!"
+    puts workflow
+    puts workflow.id
     inc "counts.#{workflow.id.to_s}.active_subjects" => 1
   end
 
