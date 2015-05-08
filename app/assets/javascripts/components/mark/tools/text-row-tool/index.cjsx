@@ -12,13 +12,12 @@ CROSSHAIR_WIDTH = 1
 DELETE_BUTTON_ANGLE = 45
 
 STROKE_COLOR = '#f60'
+SELECTED_STROKE_COLOR = "rgb(100,100,100)"
 STROKE_WIDTH = 1.5
 SELECTED_STROKE_WIDTH = 2.5
 
 DEFAULT_HEIGHT = 100
 MINIMUM_HEIGHT = 25
-
-
 
 module.exports = React.createClass
   displayName: 'TextRowTool'
@@ -76,29 +75,36 @@ module.exports = React.createClass
       <g
         className="mark-tool text-row-tool"
         fill='transparent'
-        stroke=STROKE_COLOR
-        strokeWidth={SELECTED_STROKE_WIDTH/scale}
+        stroke={ if @props.selected then STROKE_COLOR else SELECTED_STROKE_COLOR }
+        strokeWidth={ if @props.selected then SELECTED_STROKE_WIDTH/scale else STROKE_WIDTH/scale }
         onMouseDown={@props.onSelect unless @props.disabled}
       >
         <Draggable onDrag={@handleDrag}>
-          <rect x={0} y={0} width="100%" height={@props.mark.yLower-@props.mark.yUpper} />
+          <rect
+            x="0"
+            y="0"
+            width="100%"
+            height={@props.mark.yLower-@props.mark.yUpper}
+          />
         </Draggable>
 
         { if @props.selected and not @state.locked
-          <g>
-            <DragHandle   tool={this} onDrag={@handleUpperResize} position={@getUpperHandlePosition()} />
-            <DragHandle   tool={this} onDrag={@handleLowerResize} position={@getLowerHandlePosition()} />
-            <DeleteButton tool={this} position={@getDeleteButtonPosition()} />
-          </g>
+            <g>
+              <DragHandle   tool={this} onDrag={@handleUpperResize} position={@getUpperHandlePosition()} />
+              <DragHandle   tool={this} onDrag={@handleLowerResize} position={@getLowerHandlePosition()} />
+              <DeleteButton tool={this} position={@getDeleteButtonPosition()} />
+            </g>
         }
-        
-        <MarkButton
-          tool={this}
-          onDrag={@onClickMarkButton}
-          position={@getMarkButtonPosition()}
-          markStatus={@state.markStatus}
-          locked={@state.locked}
-        />
+
+        { if @props.selected
+            <MarkButton
+              tool={this}
+              onDrag={@onClickMarkButton}
+              position={@getMarkButtonPosition()}
+              markStatus={@state.markStatus}
+              locked={@state.locked}
+            />
+        }
 
       </g>
     </g>
