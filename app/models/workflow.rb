@@ -28,9 +28,10 @@ class Workflow
     follow_up_subjects
   end
 
-  # discuss this later
+  # After Marking --- this is 1
+  # Aft
   def subject_has_enough_classifications(subject)
-    subject.classifications.length >= generate_new_subjects_at_classification_count
+    subject.classifications.length >= self.generate_subjects_after
   end
 
 
