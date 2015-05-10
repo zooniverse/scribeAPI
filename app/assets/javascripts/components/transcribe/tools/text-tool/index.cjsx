@@ -60,8 +60,8 @@ TextTool = React.createClass
   updatePosition: ->
     if @state.viewerSize? && ! @state.dragged
       @setState
-        dx: @props.subject.location.spec.x * @state.viewerSize.scale.horizontal
-        dy: (@props.subject.location.spec.y + @props.subject.location.spec.height) * @state.viewerSize.scale.vertical
+        dx: @props.subject.location.data.x * @state.viewerSize.scale.horizontal
+        dy: (@props.subject.location.data.y + @props.subject.location.data.height) * @state.viewerSize.scale.vertical
       # console.log "TextTool#updatePosition setting state: ", @state
 
   commitAnnotation: ->

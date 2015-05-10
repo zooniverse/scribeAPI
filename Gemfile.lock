@@ -304,7 +304,7 @@ DEPENDENCIES
   moped
   omniauth-facebook
   omniauth-google-oauth2
-  omniauth-zooniverse
+  omniauth-zooniverse (~> 0.0.1)
   pry
   quiet_assets
   rack-cors

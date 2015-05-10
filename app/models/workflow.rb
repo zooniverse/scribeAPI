@@ -13,6 +13,7 @@ class Workflow
   field    :generates_subjects_for
   field    :subject_fetch_limit,                             type: Integer, default: 10
   field    :generate_subjects_max,                            type: Integer
+  
   has_many     :subjects
   has_many     :classifications
   belongs_to   :project
@@ -53,7 +54,7 @@ class Workflow
             type: annotation["subject_type"],
             location: {
               standard: classification.subject.file_path,
-              spec: value.except(:key, :tool)
+              data: value.except(:key, :tool)
             }
           )
         # this allows a generated subject's id to be returned in case of immediate transcription

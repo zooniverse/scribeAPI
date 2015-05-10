@@ -4,17 +4,17 @@ module.exports =
     # console.log 'PREVIOUS MARKS: ', @props.subject.child_subjects_info
     previousMarks =
       for previousMark in @props.subject.child_subjects_info
-        switch previousMark.spec.toolName
+        switch previousMark.data.toolName
           when 'textRowTool'
             x = 0
-            y = previousMark.spec.yUpper
+            y = previousMark.data.yUpper
             width = @state.imageWidth
-            height = previousMark.spec.yLower - previousMark.spec.yUpper
+            height = previousMark.data.yLower - previousMark.data.yUpper
           when 'rectangleTool'
-            x = previousMark.spec.x
-            y = previousMark.spec.y
-            width = previousMark.spec.width
-            height = previousMark.spec.height
+            x = previousMark.data.x
+            y = previousMark.data.y
+            width = previousMark.data.width
+            height = previousMark.data.height
         <rect
           className   = "previous-mark"
           x           = { x }

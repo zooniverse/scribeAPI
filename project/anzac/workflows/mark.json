@@ -33,10 +33,10 @@
       "tool":"mark",
       "instruction":"Draw a rectangle around each record.",
       "tools": [
-        {"type": "rectangleTool", "label": "Number", "color": "green"},
-        {"type": "rectangleTool", "label": "Name", "color": "green"},
-        {"type": "rectangleTool", "label": "Regiment", "color": "green"},
-        {"type": "rectangleTool", "label": "Question", "color": "green"}
+        {"type": "textRowTool", "label": "Number", "color": "green"},
+        {"type": "textRowTool", "label": "Name", "color": "green"},
+        {"type": "textRowTool", "label": "Regiment", "color": "green"},
+        {"type": "textRowTool", "label": "Question", "color": "green"}
       ],
       "next_task": null
     },

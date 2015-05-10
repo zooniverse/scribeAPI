@@ -329,8 +329,8 @@ module.exports = React.createClass
             # TODO: Makr sure x, y, w, h are scaled properly
 
             if @props.workflow.name is 'transcribe'
-              toolName = @props.subject.location.spec.toolName
-              mark = @props.subject.location.spec
+              toolName = @props.subject.location.data.toolName
+              mark = @props.subject.location.data
               ToolComponent = markingTools[toolName]
               isPriorAnnotation = true
               <g>

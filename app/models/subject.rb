@@ -22,6 +22,8 @@ class Subject
   field :retire_vote,                 type: Integer, default: 0
   # Optional 'key' value specified in some tool options (drawing) to identify tool option selected ('record-rect', 'point-tool')
   field :key,                         type: String
+  # Do we data (previously 'spec') information to be accessible directly on the model?
+  field :data,                        type: Hash
 
   belongs_to :workflow
   has_many :classifications
@@ -67,9 +69,6 @@ class Subject
 
   def activate!
     self.status = "active"
-    puts "THAT WORKFLOW"
-    puts self.workflow
-    # binding.pry
     subject_set.subject_activated_on_workflow(workflow)
     save
   end
