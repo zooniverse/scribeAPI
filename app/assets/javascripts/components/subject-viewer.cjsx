@@ -255,7 +255,6 @@ module.exports = React.createClass
 
     console.log '(SINGLE) CLASSIFICATION: ', classification
 
-
     $.ajax({
       type:        'post'
       url:         '/classifications'
@@ -266,6 +265,7 @@ module.exports = React.createClass
       .done (response) =>
         console.log "Success" #, #response #, response._id.$oid
         console.log 'RECEIVED SECONDARY SUBJECT ID: ', response.child_subject_id.$oid
+        console.log 'SELECTED MARK: ', @state.selectedMark
         # @setTranscribeSubject(key, response._id.$oid)
         # @enableMarkButton(key)
         return
@@ -277,6 +277,7 @@ module.exports = React.createClass
         return
 
   render: ->
+    console.log '*********** STATE: ', @state, @props
     # return null if @props.subjects is null or @props.subjects.length is 0
     # return null unless @props.subject?
     # console.log 'SUBJECT: ', @props.subject

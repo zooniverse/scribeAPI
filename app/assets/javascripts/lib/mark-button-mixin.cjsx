@@ -72,6 +72,7 @@ module.exports =
         # @submitTranscription()
         console.log 'Transcription submitted.'
       when 'transcribe-finished'
+        location.replace '/#/transcribe'
         # @setState locked: true
         console.log 'All done. Nothing left to do here.'
       else
