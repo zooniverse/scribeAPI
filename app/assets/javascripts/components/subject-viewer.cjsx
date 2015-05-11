@@ -232,31 +232,20 @@ module.exports = React.createClass
       started_at: (new Date).toISOString() # this is dummy
       finished_at: (new Date).toISOString()
 
-    classification = API.type('classifications').create
-      name:        'Classification'
-      subject_id:  @props.subject.id
-      workflow_id: @props.workflow.id
-      annotations: []
-      metadata:    metadata
-
-    # add current annotation to classification
-    classification.annotations.push @props.annotation
-    classification.update 'annotations'
-
-    console.log '(SINGLE) CLASSIFICATION: ', classification
-
-    # classification.save()
-    # console.log 'FOO ', API.makeHTTPRequest()
-    # .then (blah) ->
-    #   console.log 'blah: ', blah
-
-    # classification.save().get('classifications').then(blah) ->
-    #     console.log 'blah: ', blah
-
-    # console.log 'PROPS: ', @props.annotation
+    # # SUBMITT MARK VIA JSON-API-CLIENT (PROBLEMS WITH RETRIEVING RESPONSE)
+    # classification = API.type('classifications').create
+    #   name:        'Classification'
+    #   subject_id:  @props.subject.id
+    #   workflow_id: @props.workflow.id
+    #   annotations: []
+    #   metadata:    metadata
     #
+    # classification.annotations.push @props.annotation
+    # classification.update 'annotations'
+    # classification.save() # submit classification
 
-    myClassification =
+    # PREPARE CLASSIFICATION TO SEND
+    classification =
       classifications:
         name:        'Classification'
         subject_id:  @props.subject.id
@@ -264,16 +253,19 @@ module.exports = React.createClass
         annotations: [@props.annotation]
         metadata:    metadata
 
-    $.ajax(
-      {
-        type:        'post',
-        url:         '/classifications',
-        data:        JSON.stringify(myClassification),
-        dataType:    'json',
-        contentType: 'application/json'
+    console.log '(SINGLE) CLASSIFICATION: ', classification
+
+
+    $.ajax({
+      type:        'post'
+      url:         '/classifications'
+      data:        JSON.stringify(classification)
+      dataType:    'json'
+      contentType: 'application/json'
       })
       .done (response) =>
-        # console.log "Success", response, response._id.$oid
+        console.log "Success" #, #response #, response._id.$oid
+        console.log 'RECEIVED SECONDARY SUBJECT ID: ', response.child_subject_id.$oid
         # @setTranscribeSubject(key, response._id.$oid)
         # @enableMarkButton(key)
         return
@@ -283,29 +275,6 @@ module.exports = React.createClass
       .always ->
         console.log "Always"
         return
-
-
-
-    # $.post('/classifications', {
-    #   classifications:
-    #     name:        'Classification'
-    #     # subject_id:  @props.subject.id
-    #     # workflow_id: @props.workflow.id
-    #     annotations: someArray
-    #     metadata:    metadata
-    #   }, )
-    #   .done (response) =>
-    #     # console.log "Success", response, response._id.$oid
-    #     # @setTranscribeSubject(key, response._id.$oid)
-    #     # @enableMarkButton(key)
-    #     return
-    #   .fail =>
-    #     console.log "Failure"
-    #     return
-    #   .always ->
-    #     console.log "Always"
-    #     return
-
 
   render: ->
     # return null if @props.subjects is null or @props.subjects.length is 0

@@ -9,8 +9,8 @@ class ClassificationsController < ApplicationController
   # end
 
   def create
-    puts '++++++++++++++++++++++++++++++++++'
-    puts 'ALL PARAMS: ', params
+    # puts '++++++++++++++++++++++++++++++++++'
+    # puts 'ALL PARAMS: ', params
     annotations = params["annotations"]
     # subject_set_id  = BSON::ObjectId.from_string params["classifications"]["subject_set"]["id"]
     workflow_id = BSON::ObjectId.from_string params["classifications"]["workflow_id"]
@@ -20,7 +20,7 @@ class ClassificationsController < ApplicationController
     started_at       = params["classifications"]["metadata"]["started_at"]
     finished_at      = params["classifications"]["metadata"]["finished_at"]
     user_agent       = request.headers["HTTP_USER_AGENT"]
-    #TODO
+    # TODO
     #user_id     = BSON::ObjectId.from_string params["user_id"]
     #use subject_id params
     subject_id = session.id #this should change, auth currently not working
