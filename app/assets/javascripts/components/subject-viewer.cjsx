@@ -245,7 +245,7 @@ module.exports = React.createClass
 
     console.log '(SINGLE) CLASSIFICATION: ', classification
 
-    classification.save()
+    # classification.save()
     # console.log 'FOO ', API.makeHTTPRequest()
     # .then (blah) ->
     #   console.log 'blah: ', blah
@@ -255,9 +255,45 @@ module.exports = React.createClass
 
     # console.log 'PROPS: ', @props.annotation
     #
-    # $.post('/classifications',
-    #     classification
-    #   )
+
+    myClassification =
+      classifications:
+        name:        'Classification'
+        subject_id:  @props.subject.id
+        workflow_id: @props.workflow.id
+        annotations: [@props.annotation]
+        metadata:    metadata
+
+    $.ajax(
+      {
+        type:        'post',
+        url:         '/classifications',
+        data:        JSON.stringify(myClassification),
+        dataType:    'json',
+        contentType: 'application/json'
+      })
+      .done (response) =>
+        # console.log "Success", response, response._id.$oid
+        # @setTranscribeSubject(key, response._id.$oid)
+        # @enableMarkButton(key)
+        return
+      .fail =>
+        console.log "Failure"
+        return
+      .always ->
+        console.log "Always"
+        return
+
+
+
+    # $.post('/classifications', {
+    #   classifications:
+    #     name:        'Classification'
+    #     # subject_id:  @props.subject.id
+    #     # workflow_id: @props.workflow.id
+    #     annotations: someArray
+    #     metadata:    metadata
+    #   }, )
     #   .done (response) =>
     #     # console.log "Success", response, response._id.$oid
     #     # @setTranscribeSubject(key, response._id.$oid)

@@ -26,7 +26,6 @@ module.exports =
     />
 
   onClickMarkButton: ->
-    # @props.submitMark(@props.mark) # disable for now -STI
 
     markStatus = @state.markStatus
     return if markStatus is 'transcribe-finished'
@@ -54,6 +53,8 @@ module.exports =
           2) submit mark
           3) wait for post confirmation
         '''
+        @setState locked: true
+        @props.submitMark(@props.mark)
         # @props.submitMark(@props.key)
         # console.log 'Mark submitted. Click TRANSCRIBE to begin transcribing.'
       when 'mark-finished'
