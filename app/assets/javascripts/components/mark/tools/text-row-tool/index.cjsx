@@ -54,9 +54,6 @@ module.exports = React.createClass
     y: (@props.mark.yLower-@props.mark.yUpper)/2
 
   render: ->
-
-    console.log 'STATE: ', @state
-
     averageScale = (@props.xScale + @props.yScale) / 2
     crosshairSpace = CROSSHAIR_SPACE / averageScale
     crosshairWidth = CROSSHAIR_WIDTH / averageScale

@@ -7,6 +7,7 @@ module.exports =
     locked: ''
 
   renderMarkButton: ->
+    console.log 'Rendering mark button...'
     <MarkButton
       tool={this}
       onDrag={@onClickMarkButton}
