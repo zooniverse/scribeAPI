@@ -27,8 +27,6 @@ module.exports = React.createClass
 
   render: ->
 
-    console.log 'MARK STATUS IS: ', @props.markStatus
-
     transform = "
       translate(#{@props.position.x-BUTTON_WID}, #{@props.position.y-2*BUTTON_HEI*@props.tool.props.yScale})
       rotate(#{@props.rotate})
@@ -45,8 +43,10 @@ module.exports = React.createClass
           "
       >
 
-        { if @props.markStatus is "mark-finished"
+        { if @props.markStatus is "transcribe-enabled"
+
             <g>
+
               <rect
                 stroke="none"
                 transform="translate(0,#{-0.5*BUTTON_HEI})"
@@ -58,13 +58,16 @@ module.exports = React.createClass
                 rx="0"
                 ry="0"
               />
+
               <path
                 stroke="none"
                 transform="translate(0,#{-0.5*BUTTON_HEI})"
                 fill={FILL_COLOR}
                 d="m 12,15 -3,3 21,0 0,-3 z m 5,-5 -3,3 22,0 0,-3 z M 22,5 19,8 30,8 30,5 z M 14,0 11,3 15,7 18,4 z M 9.0249385,4.975061 0,14 l 0,4 4,0 9,-9 z"
               />
+
             </g>
+
           else
 
             <g className="checkbox">
@@ -97,7 +100,7 @@ module.exports = React.createClass
                 d="M 4,1 C 2.338,1 1,2.338 1,4 l 0,12 c 0,1.662 1.338,3 3,3 l 12,0 c 1.662,0 3,-1.338 3,-3 L 19,4 C 19,2.338 17.662,1 16,1 L 4,1 z m 1,2 10,0 c 1.108,0 2,0.8920001 2,2 l 0,10 c 0,1.108 -0.892,2 -2,2 L 5,17 C 3.8920001,17 3,16.108 3,15 L 3,5 C 3,3.8920001 3.8920001,3 5,3 z"
               />
 
-              { if @props.markStatus is 'mark-finished'
+              { if @props.markStatus is 'mark-committed'
                   <path
                     className="checkmark"
                     transform="translate(#{-0.5*25*@props.tool.props.xScale},#{-0.5*20*@props.tool.props.yScale})"
