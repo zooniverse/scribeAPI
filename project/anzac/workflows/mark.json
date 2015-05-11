@@ -10,7 +10,7 @@
   "tasks":{
     "pick_page_type":{
       "order":0,
-      "tool":"pick_one",
+      "tool":"pickOne",
       "instruction":"What kind of page is this?",
       "options":{
         "history_sheet":{
@@ -29,7 +29,7 @@
     },
     "attestation_form_task":{
       "generate_subjects": true,
-      "tool":"mark",
+      "tool":"pickOneMarkOne",
       "instruction":"Draw a rectangle around each record.",
       "tools": [
         {"type": "rectangleTool", "label": "Number", "color": "green"},
