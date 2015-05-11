@@ -6,14 +6,15 @@ class Workflow
   field    :label,                                           type: String
   field    :tasks, 			      	                             type: Hash
   field    :first_task,                                      type: String
-  field    :retire_limit, 		                               type: Integer, default: 10
+  field    :retire_limit, 		                               type: Integer,   default: 10
+  field    :subject_fetch_limit,                             type: Integer,   default: 10
+  field    :generates_new_subjects,                          type: Boolean,   default: false
+  field    :generate_subjects_after,                         type: Integer,   default: 0
+  field    :generates_subjects_for,                          type: String,    default: ""
+  field    :generate_subjects_max,                           type: Integer
   field    :active_subjects,                                 type: Integer, default: 0
-  field    :generates_new_subjects,                          type: Boolean, default: false
-  field    :generate_subjects_after,                        type: Integer, default: 0
-  field    :generates_subjects_for
-  field    :subject_fetch_limit,                             type: Integer, default: 10
-  field    :generate_subjects_max,                            type: Integer
-  
+
+
   has_many     :subjects
   has_many     :classifications
   belongs_to   :project
@@ -72,6 +73,6 @@ class Workflow
     return unless generates_new_subjects
     return unless subject_has_enough_classifications(classification.subject)
     create_secondary_subjects(classification)
-    #trigger_follow_up_workflows(classification.subject)
+    #trigger_follow_up_workflows(classification.subject) 
   end
 end

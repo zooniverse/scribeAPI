@@ -1,34 +1,33 @@
 {
   "name": "transcribe",
   "label": "Transcribe Workflow",
-  "first_task": "journal_entry",
-  "generate_subjects_after": 1,
-  "generates_subjects_for": "verify",
-  "generate_subjects_max": 3,
+  "first_task": "em_switch_on_type",
+
   "tasks": {
-    "journal_date": {
-      "key": 0,
-      "tool": "singleDate",
-      "field_name": "date",
-      "label": "Date",
-      "instruction": "Please type-in the log date.",
-      "next_task": "journal_entry"
-    },
-    "journal_entry": {
-      "key": 1,
-      "tool": "textBlock",
-      "field_name": "journal_entry",
-      "label": "Journal Entry",
-      "instruction": "Please type-in the journal entry for this day.",
-      "next_task": "additional_comment"
-    },
-    "additional_comment": {
-      "key": 2,
-      "type": "textBlock",
-      "field_name": "other_entry",
-      "label": "Other Entry",
-      "instruction": "Type something, anything.",
-      "next_task": "nil"
+    "em_switch_on_type":{
+      "tool": "switch_on_value",
+      "tool_options": {
+        "field": "type",
+        "options": {
+
+          "att_textRowTool_number": {
+            "task":"em_transcribe_number"
+          },            
+          "att_textRowTool_name": {
+            "task":""
+          },
+          "att_textRowTool_regiment": {
+            "task":""
+          },
+          "att_textRowTool_question": {
+            "task":""
+          }
+
+        }
+      }
     }
+    ""
+
   }
+
 }

@@ -1,26 +1,26 @@
 {
   "name":"mark",
   "label":"Mark Workflow",
+
   "subject_fetch_limit":"10",
   "generates_new_subjects": true,
   "generate_subjects_after": 1,
   "generates_subjects_for": "transcribe",
   "generate_subjects_max": 1,
   "retire_limit":2,
+
   "first_task":"pick_page_type",
+
   "tasks":{
     "pick_page_type":{
       "order":0,
       "tool":"pick_one",
       "instruction":"What kind of page is this?",
+      "next_task": null,
       "options":{
         "history_sheet":{
           "label":"history_sheet",
           "next_task":"history_form_task"
-        },
-        "casualty_form":{
-          "label":"casualty_form",
-          "next_task":"casualty_form_task"
         },
         "attestation_form":{
           "label":"attestation_form",
@@ -33,10 +33,10 @@
       "tool":"mark",
       "instruction":"Draw a rectangle around each record.",
       "tools": [
-        {"type": "textRowTool", "label": "Number", "color": "green"},
-        {"type": "textRowTool", "label": "Name", "color": "green"},
-        {"type": "textRowTool", "label": "Regiment", "color": "green"},
-        {"type": "textRowTool", "label": "Question", "color": "green"}
+        {"type": "textRowTool", "label": "Number", "color": "green", "generated_subject_type": "att_textRowTool_number" },
+        {"type": "textRowTool", "label": "Name", "color": "green", "generated_subject_type": "att_textRowTool_name" },
+        {"type": "textRowTool", "label": "Regiment", "color": "green", "generated_subject_type": "att_textRowTool_regiment" },
+        {"type": "textRowTool", "label": "Question", "color": "green", "generated_subject_type": "att_textRowTool_question" }
       ],
       "next_task": null
     },
@@ -45,23 +45,10 @@
       "tool":"mark",
       "instruction":"Draw a rectangle around each record.",
       "tools": [
-        {"type": "rectangleTool", "label": "Occupation", "color": "green"},
-        {"type": "rectangleTool", "label": "Surname", "color": "green"},
-        {"type": "rectangleTool", "label": "Christian name", "color": "green"},
-        {"type": "rectangleTool", "label": "Wounds", "color": "green"}
-      ],
-      "next_task": null
-    },
-    "casualty_form_task":{
-      "repeat": true,
-      "generate_subjects": true,
-      "tool":"mark",
-      "instruction":"Draw a rectangle around each record.",
-      "tools": [
-        {"type": "rectangleTool", "label": "Occupation", "color": "green"},
-        {"type": "rectangleTool", "label": "Surname", "color": "green"},
-        {"type": "rectangleTool", "label": "Christian name", "color": "green"},
-        {"type": "rectangleTool", "label": "Wounds", "color": "green"}
+        {"type": "rectangleTool", "label": "Occupation", "color": "green", "generated_subject_type": "history_rectangleTool_occupation" },
+        {"type": "rectangleTool", "label": "Surname", "color": "green", "generated_subject_type": "history_rectangleTool_" },
+        {"type": "rectangleTool", "label": "Christian name", "color": "green", "generated_subject_type": "history_rectangleTool_christianName" },
+        {"type": "rectangleTool", "label": "Wounds", "color": "green", "generated_subject_type": "history_rectangleTool_wounds" }
       ],
       "next_task": null
     }
