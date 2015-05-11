@@ -10,7 +10,7 @@
   "tasks":{
     "records_present":{
       "order":0,
-      "tool":"pick_one",
+      "tool":"pickOne",
       "instruction":"Are there any records to transcribe in this document?",
       "options":{
         "yes":{

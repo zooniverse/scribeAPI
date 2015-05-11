@@ -1,6 +1,5 @@
 module.exports =
-  single:     require './single'
-  pick_one:   require './single' # dummy task
+  pickOne:    require './pick-one' # dummy task
   drawing:    require './drawing'
   pick_many:  require './multiple'
 
