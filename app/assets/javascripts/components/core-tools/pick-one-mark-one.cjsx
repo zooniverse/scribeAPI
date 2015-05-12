@@ -77,12 +77,11 @@ icons =
 #     </div>
 
 module.exports = React.createClass
-  displayName: 'MarkTask'
+  displayName: 'PickOneMarkOne'
   statics:
     # Summary: Summary
 
     getDefaultAnnotation: ->
-      console.log 'GET DEFAULT ANNOTATION'
       _toolIndex: 0
       value: []
 
@@ -95,12 +94,33 @@ module.exports = React.createClass
     tools = for tool, i in @props.task.tools
       tool._key ?= Math.random()
       count = (true for mark in @props.annotation.value when mark.tool is i).length
-      <label key={tool._key} className="minor-button #{if i is (@props.annotation._toolIndex ? 0) then 'active' else ''}">
-        <span className="drawing-tool-icon" style={color: tool.color}>{icons[tool.type]}</span>{' '}
-        <input type="radio" className="drawing-tool-input" checked={i is (@props.annotation._toolIndex ? 0)} onChange={@handleChange.bind this, i} />
-        <span>{tool.label}</span>
-        {unless count is 0
-          <span className="tool-count">({count})</span>}
+
+      <label
+        key={tool._key}
+        className="minor-button #{if i is (@props.annotation._toolIndex ? 0) then 'active' else ''}"
+      >
+        <span
+          className="drawing-tool-icon"
+          style={color: tool.color}>{icons[tool.type]}
+        </span>{' '}
+
+        <input
+          type="radio"
+          className="drawing-tool-input"
+          checked={ i is (@props.annotation._toolIndex ? 0) }
+          onChange={ @handleChange.bind this, i }
+        />
+
+        <span>
+          {tool.label}
+        </span>
+
+        { unless count is 0
+            <span className="tool-count">
+              ({count})
+            </span>
+        }
+
       </label>
 
     <GenericTask question={@props.task.instruction} help={@props.task.help} answers={tools} />

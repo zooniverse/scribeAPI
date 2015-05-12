@@ -338,7 +338,7 @@ module.exports = React.createClass
               toolName = @props.subject.location.spec.toolName
               mark = @props.subject.location.spec
               ToolComponent = markingTools[toolName]
-              isPriorAnnotation = true
+              isPriorMark = true
               <g>
                 { @highlightMark(mark, toolName) }
                 <ToolComponent
@@ -346,7 +346,7 @@ module.exports = React.createClass
                   mark={mark}
                   xScale={scale.horizontal}
                   yScale={scale.vertical}
-                  disabled={isPriorAnnotation}
+                  disabled={isPriorMark}
                   selected={mark is @state.selectedMark}
                   getEventOffset={@getEventOffset}
                   ref={@refs.sizeRect}
@@ -358,11 +358,11 @@ module.exports = React.createClass
           { # HANDLE NEW MARKS
             for annotation in @props.classification.annotations
               annotation._key ?= Math.random()
-              isPriorAnnotation = annotation isnt @props.annotation
+              isPriorMark = annotation isnt @props.annotation
               taskDescription = @props.workflow.tasks[annotation.task]
 
               if taskDescription.tool is 'pickOneMarkOne' #or taskDescription.tool is 'transcribe'
-                <g key={annotation._key} className="marks-for-annotation" data-disabled={isPriorAnnotation or null}>
+                <g key={annotation._key} className="marks-for-annotation" data-disabled={isPriorMark or null}>
                   {for mark, m in annotation.value
 
                     mark._key ?= Math.random()
@@ -378,7 +378,8 @@ module.exports = React.createClass
                       mark={mark}
                       xScale={scale.horizontal}
                       yScale={scale.vertical}
-                      disabled={isPriorAnnotation}
+                      disabled={false}
+                      isPriorMark={isPriorMark}
                       selected={mark is @state.selectedMark}
                       getEventOffset={@getEventOffset}
                       ref={@refs.sizeRect}
