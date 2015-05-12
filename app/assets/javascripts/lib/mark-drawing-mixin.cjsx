@@ -1,10 +1,17 @@
+markingTools = require 'components/mark/tools'
+
 module.exports =
+
   showPreviousMarks: ->
     # DEBUG CODE
     # console.log 'PREVIOUS MARKS: ', @props.subject.child_subjects_info
     previousMarks =
       for previousMark in @props.subject.child_subjects_info
-        switch previousMark.spec.toolName
+        toolName = previousMark.spec.toolName
+        ToolComponent = markingTools[toolName]
+        scale = @getScale()
+
+        switch toolName
           when 'textRowTool'
             x = 0
             y = previousMark.spec.yUpper
@@ -15,16 +22,27 @@ module.exports =
             y = previousMark.spec.y
             width = previousMark.spec.width
             height = previousMark.spec.height
-        <rect
-          className   = "previous-mark"
-          x           = { x }
-          y           = { y }
-          width       = { width }
-          height      = { height }
-          fill        = "rgba(0,0,0,0)"
-          stroke      = "#f60"
-          strokeWidth = "5px"
+
+        <ToolComponent
+          key={@props.subject.id}
+          mark={previousMark.spec}
+          disabled={true}
+          isPriorMark={true}
+          selected={false}
+          getEventOffset={@getEventOffset}
+          ref={@refs.sizeRect}
         />
+
+        # <rect
+        #   className   = "previous-mark"
+        #   x           = { x }
+        #   y           = { y }
+        #   width       = { width }
+        #   height      = { height }
+        #   fill        = "rgba(0,0,0,0)"
+        #   stroke      = "#f60"
+        #   strokeWidth = "5px"
+        # />
 
     return <g>{previousMarks}</g>
 
