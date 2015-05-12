@@ -6,7 +6,7 @@ module.exports =
     # DEBUG CODE
     # console.log 'PREVIOUS MARKS: ', @props.subject.child_subjects_info
     previousMarks =
-      for previousMark in @props.subject.child_subjects_info
+      for previousMark, i in @props.subject.child_subjects_info
         toolName = previousMark.spec.toolName
         ToolComponent = markingTools[toolName]
         scale = @getScale()
@@ -24,7 +24,7 @@ module.exports =
             height = previousMark.spec.height
 
         <ToolComponent
-          key={@props.subject.id}
+          key={i}
           mark={previousMark.spec}
           disabled={true}
           isPriorMark={true}
