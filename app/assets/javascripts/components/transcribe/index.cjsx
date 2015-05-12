@@ -72,6 +72,7 @@ module.exports = React.createClass # rename to Classifier
     field = task.tool_options.field
     # console.log "  Transcribe#translateLogicTaskKey Looking for ", field, @state.currentSubject
     field_value = @state.currentSubject[field]
+    console.log "@state.currentSubject", @state.currentSubject
     matched_option = task.tool_options.options[field_value]
     if ! matched_option?
       console.log "WARN: SwitchOnValueTask can't find matching task \"#{field_value}\" in", task.tool_options.options

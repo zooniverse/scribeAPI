@@ -45,10 +45,10 @@
       "tool":"mark",
       "instruction":"Draw a rectangle around each record.",
       "tools": [
-        {"type": "rectangleTool", "label": "Occupation", "color": "green", "generated_subject_type": "history_rectangleTool_occupation" },
-        {"type": "rectangleTool", "label": "Surname", "color": "green", "generated_subject_type": "history_rectangleTool_" },
-        {"type": "rectangleTool", "label": "Christian name", "color": "green", "generated_subject_type": "history_rectangleTool_christianName" },
-        {"type": "rectangleTool", "label": "Wounds", "color": "green", "generated_subject_type": "history_rectangleTool_wounds" }
+        {"type": "rectangleTool", "label": "Occupation", "color": "green", "generated_subject_type": "att_textRowTool_name" },
+        {"type": "rectangleTool", "label": "Surname", "color": "green", "generated_subject_type": "att_textRowTool_name" },
+        {"type": "rectangleTool", "label": "Christian name", "color": "green", "generated_subject_type": "att_textRowTool_name" },
+        {"type": "rectangleTool", "label": "Wounds", "color": "green", "generated_subject_type": "att_textRowTool_name" }
       ],
       "next_task": null
     }

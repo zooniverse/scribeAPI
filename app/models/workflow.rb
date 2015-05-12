@@ -50,7 +50,8 @@ class Workflow
             location: {
               standard: classification.subject.file_path,
             },
-            data: value.except(:key, :tool)
+            data: value.except(:key, :tool),
+            type: annotation["tool_task_description"]["generated_subject_type"]
           )
         # this allows a generated subject's id to be returned in case of immediate transcription
         classification.child_subject_id = child_subject.id

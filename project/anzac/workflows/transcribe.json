@@ -9,21 +9,21 @@
                 "field": "type",
                 "options": {
                     "att_textRowTool_number": {
-                        "task": "em_transcribe_number"
+                        "task": "att_transcribe_number"
                     },
                     "att_textRowTool_name": {
-                        "task": ""
+                        "task": "att_textRowTool_name"
                     },
                     "att_textRowTool_regiment": {
-                        "task": ""
+                        "task": "att_textRowTool_regiment"
                     },
                     "att_textRowTool_question": {
-                        "task": ""
+                        "task": "att_textRowTool_question"
                     }
                 }
             }
         },
-        "em_transcribe_number": {
+        "att_transcribe_number": {
             "tool": "text_tool",
             "tool_options": {},
             "instruction": "Enter the record date"
