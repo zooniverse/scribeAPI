@@ -78,7 +78,7 @@ module.exports = React.createClass
 
     if @state.markStatus is 'mark-committed'
       isPriorMark = true
-      # @props.disabled = true
+      @props.disabled = true
 
     averageScale = (@props.xScale + @props.yScale) / 2
     crosshairSpace = CROSSHAIR_SPACE / averageScale
