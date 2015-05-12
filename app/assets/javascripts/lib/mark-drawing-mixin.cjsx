@@ -4,6 +4,7 @@ module.exports =
     # console.log 'PREVIOUS MARKS: ', @props.subject.child_subjects_info
     previousMarks =
       for previousMark in @props.subject.child_subjects_info
+        console.log "props in the mark-draw mixin", @props.subject
         switch previousMark.data.toolName
           when 'textRowTool'
             x = 0
