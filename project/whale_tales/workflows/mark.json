@@ -32,7 +32,7 @@
         {"type": "rectangleTool", "label": "Drawing/Note", "color": "green"},
         {"type": "textRowTool", "label": "Journal Entry", "color": "blue"}
       ],
-      "next_task": null
+      "next_task": "records_present"
     }
   }
 }
