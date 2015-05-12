@@ -42,11 +42,11 @@
             "tool": "composite_tool",
             "tool_options": {
                 "tools": {
-                    "em_valuation_date": {
+                    "em_valuation_questions": {
                         "tool": "text_tool",
                         "tool_options": {}
                     },
-                    "em_valuation_amount": {
+                    "em_valuation_answer": {
                         "tool": "text_tool",
                         "tool_options": {}
                     }
