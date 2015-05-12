@@ -19,18 +19,16 @@ class Workflow
   has_many     :classifications
   belongs_to   :project
 
-  def trigger_follow_up_workflows(subject)
-    follow_up_subjects = []
+  # def trigger_follow_up_workflows(subject)
+  #   follow_up_subjects = []
 
-  	enables_workflows.each_pair do |workflow_id, denormed_fields|
-      follow_up_subjects << Workflow.find(workflow_id).create_follow_up_subject(subject, denormed_fields)
-  	end
+  # 	enables_workflows.each_pair do |workflow_id, denormed_fields|
+  #     follow_up_subjects << Workflow.find(workflow_id).create_follow_up_subject(subject, denormed_fields)
+  # 	end
 
-    follow_up_subjects
-  end
+  #   follow_up_subjects
+  # end
 
-  # After Marking --- this is 1
-  # Aft
   def subject_has_enough_classifications(subject)
     subject.classifications.length >= self.generate_subjects_after
   end
@@ -41,10 +39,8 @@ class Workflow
     subject_set_id = classification.subject.subject_set.id
     workflow_id = project.workflows.find_by(name: "transcribe").id
 
-    puts 'ANNOTATION: ', classification.annotations
 
     classification.annotations.each do |annotation|
-      puts 'ANNOTATION: ', annotation
       if annotation["generate_subjects"]
         annotation["value"].each do |value|
           child_subject = Subject.create(
@@ -70,9 +66,8 @@ class Workflow
   end
 
   def create_follow_up_subjects(classification)
-    return unless generates_new_subjects
+    return unless self.generates_new_subjects
     return unless subject_has_enough_classifications(classification.subject)
     create_secondary_subjects(classification)
-    #trigger_follow_up_workflows(classification.subject) 
   end
 end
