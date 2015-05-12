@@ -1,8 +1,9 @@
 # @cjsx React.DOM
-React          = require 'react'
-Draggable      = require 'lib/draggable'
-DragHandle     = require './drag-handle'
+React           = require 'react'
+Draggable       = require 'lib/draggable'
+DragHandle      = require './drag-handle'
 DeleteButton    = require './delete-button'
+MarkButtonMixin = require 'lib/mark-button-mixin'
 
 SELECTED_RADIUS = 20
 MINIMUM_SIZE = 5
@@ -13,6 +14,8 @@ DEBUG = false
 
 module.exports = React.createClass
   displayName: 'RectangleTool'
+
+  mixins: [MarkButtonMixin]
 
   propTypes:
     # key:  React.PropTypes.number.isRequired
@@ -101,6 +104,10 @@ module.exports = React.createClass
     x: (SELECTED_RADIUS / @props.xScale) * Math.cos theta
     y: -1 * (SELECTED_RADIUS / @props.yScale) * Math.sin theta
 
+  getMarkButtonPosition: ->
+    x: @props.mark.x + @props.mark.width
+    y: @props.mark.y + @props.mark.height + 20 / @props.yScale
+
   handleMouseDown: ->
     @props.onSelect @props.mark
 
@@ -144,6 +151,8 @@ module.exports = React.createClass
             <DragHandle x={x1} y={y2} onDrag={@handleX1Y2Drag} />
           </g>
         }
+
+        { if @props.selected then @renderMarkButton() }
       </g>
 
     </g>

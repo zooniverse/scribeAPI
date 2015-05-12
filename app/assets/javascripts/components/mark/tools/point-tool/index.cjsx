@@ -2,6 +2,7 @@ React           = require 'react'
 DrawingToolRoot = require './root'
 Draggable       = require 'lib/draggable'
 DeleteButton    = require './delete-button'
+MarkButtonMixin = require 'lib/mark-button-mixin'
 
 RADIUS = 10
 SELECTED_RADIUS = 20
@@ -15,6 +16,8 @@ SELECTED_STROKE_WIDTH = 2.5
 module.exports = React.createClass
   displayName: 'SuperAwesomePointTool'
 
+  mixins: [MarkButtonMixin]
+
   statics:
     defaultValues: ({x, y}) ->
       {x, y}
@@ -26,6 +29,10 @@ module.exports = React.createClass
     theta = (DELETE_BUTTON_ANGLE) * (Math.PI / 180)
     x: (SELECTED_RADIUS / @props.xScale) * Math.cos theta
     y: -1 * (SELECTED_RADIUS / @props.yScale) * Math.sin theta
+
+  getMarkButtonPosition: ->
+    x: SELECTED_RADIUS/@props.xScale
+    y: SELECTED_RADIUS/@props.yScale
 
   render: ->
     averageScale = (@props.xScale + @props.yScale) / 2
@@ -63,6 +70,8 @@ module.exports = React.createClass
         { if @props.selected
           <DeleteButton tool={this} getDeleteButtonPosition={@getDeleteButtonPosition} />
         }
+
+        { if @props.selected then @renderMarkButton() }
 
       </g>
     </g>
