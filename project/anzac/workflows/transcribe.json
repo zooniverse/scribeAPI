@@ -1,33 +1,58 @@
 {
-  "name": "transcribe",
-  "label": "Transcribe Workflow",
-  "first_task": "em_switch_on_type",
-
-  "tasks": {
-    "em_switch_on_type":{
-      "tool": "switch_on_value",
-      "tool_options": {
-        "field": "type",
-        "options": {
-
-          "att_textRowTool_number": {
-            "task":"em_transcribe_number"
-          },            
-          "att_textRowTool_name": {
-            "task":""
-          },
-          "att_textRowTool_regiment": {
-            "task":""
-          },
-          "att_textRowTool_question": {
-            "task":""
-          }
-
+    "name": "transcribe",
+    "label": "Transcribe Workflow",
+    "first_task": "em_switch_on_type",
+    "tasks": {
+        "em_switch_on_type": {
+            "tool": "switch_on_value",
+            "tool_options": {
+                "field": "type",
+                "options": {
+                    "att_textRowTool_number": {
+                        "task": "em_transcribe_number"
+                    },
+                    "att_textRowTool_name": {
+                        "task": ""
+                    },
+                    "att_textRowTool_regiment": {
+                        "task": ""
+                    },
+                    "att_textRowTool_question": {
+                        "task": ""
+                    }
+                }
+            }
+        },
+        "em_transcribe_number": {
+            "tool": "text_tool",
+            "tool_options": {},
+            "instruction": "Enter the record date"
+        },
+        "att_textRowTool_name": {
+            "tool": "text_tool",
+            "tool_options": {},
+            "instruction": "Enter the record date"
+        },
+        "att_textRowTool_regiment": {
+            "tool": "text_tool",
+            "tool_options": {},
+            "instruction": "Enter the record date"
+        },
+        "att_textRowTool_question": {
+            "tool": "composite_tool",
+            "tool_options": {
+                "tools": {
+                    "em_valuation_date": {
+                        "tool": "text_tool",
+                        "tool_options": {}
+                    },
+                    "em_valuation_amount": {
+                        "tool": "text_tool",
+                        "tool_options": {}
+                    }
+                }
+            },
+            "instruction": "Please enter the questions and the written answer."
         }
-      }
     }
-    ""
-
-  }
-
 }
