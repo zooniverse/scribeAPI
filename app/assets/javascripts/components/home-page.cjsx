@@ -13,7 +13,7 @@ HomePage = React.createClass
       </div>
 
       <div className='group-area'>
-        <GroupBrowser></GroupBrowser>
+        <GroupBrowser project={@props.project} />
       </div>
     </div>
 

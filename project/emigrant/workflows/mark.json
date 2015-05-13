@@ -8,7 +8,6 @@
   "first_task":"determine_has_records",
   "tasks":{
     "determine_has_records":{
-      "order":0,
       "tool":"pick_one",
       "instruction":"Does this page have records?",
       "options":{

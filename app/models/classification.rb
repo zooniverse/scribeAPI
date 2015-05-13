@@ -28,14 +28,31 @@ class Classification
 
   def generate_terms
     annotations.each do |ann|
-      next if ann['value'].nil? || ann['value'].size < 3
+      puts " considering: #{ann.inspect}"
+      anns = [{val: ann['value'], key: ann['key']}]
+      if anns.first[:val].is_a? Hash
+        anns = ann['value'].map { |(k, v)| {val: v, key: k} }
+      end
+      puts "got anns: #{anns.inspect}"
 
-      # Get tool_options from workflow task config to determine if suggest='common'
-      tool_options = workflow.tasks.select { |(key, task)| key == ann['key'] }[ann['key']]['tool_options']
-      index_term = ! tool_options['suggest'].nil? && tool_options['suggest'] == 'common'
-      next if ! index_term
+      anns.each do |sub_ann|
+        next if sub_ann[:val].nil? || sub_ann[:val].size < 3
 
-      Term.index_term! workflow_id, ann['key'], ann['value'] 
+        # Get tool_options from workflow task config to determine if suggest='common'
+        task = workflow.tasks.select { |(key, task)| key == ann['key'] }.map { |p| p[1]}.first
+        puts " index? #{task.inspect}.... #{sub_ann[:key]}"
+        next if task.nil?
+        # tool_options = task[ann['key']]['tool_options']
+        tool_options = task['tool_options']
+
+        puts " index? ", tool_options
+        index_term = ! tool_options['suggest'].nil? && tool_options['suggest'] == 'common'
+        puts " index? ", index_term
+        next if ! index_term
+
+        puts "Term.index_term! #{workflow_id}, #{sub_ann[:key]}, #{sub_ann[:val]}"
+        Term.index_term! workflow_id, sub_ann[:key], sub_ann[:val] 
+      end
     end
   end
 

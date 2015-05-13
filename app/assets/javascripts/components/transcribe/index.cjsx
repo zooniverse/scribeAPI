@@ -31,7 +31,7 @@ module.exports = React.createClass # rename to Classifier
 
   completeClassification: ->
     # FIXME hack to translate anns hash into array:
-    anns = ({key: key, value: ann['value']} for key, ann of @props.classification.annotations)
+    anns = ({key: key, value: (ann['value'] ? ann)} for key, ann of @props.classification.annotations)
 
     @props.classification.update
       completed: true
@@ -138,7 +138,6 @@ module.exports = React.createClass # rename to Classifier
 
   render: ->
     console.log "Transcribe#render: ", @state
-    console.log "Transcribe#render: classification: ", @props.classification
     return null unless @state.currentTask?
 
     # TODO: HACK HACK HACK
