@@ -57,6 +57,7 @@ class Classification
         Term.index_term! workflow_id, sub_ann[:key], sub_ann[:val] 
       end
     end
+  end
 
   # finds number of values associated with each classification
   # TODO: this is duplicating work already done in the worklfow.rb
