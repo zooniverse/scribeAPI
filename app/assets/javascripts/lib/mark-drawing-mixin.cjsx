@@ -6,44 +6,25 @@ module.exports =
     # DEBUG CODE
     # console.log 'PREVIOUS MARKS: ', @props.subject.child_subjects_info
     previousMarks =
-      for previousMark, i in @props.subject.child_subjects_info
-        toolName = previousMark.spec.toolName
+      for mark, i in @props.subject.child_subjects_info
+        toolName = mark.spec.toolName
         ToolComponent = markingTools[toolName]
         scale = @getScale()
 
-        switch toolName
-          when 'textRowTool'
-            x = 0
-            y = previousMark.spec.yUpper
-            width = @state.imageWidth
-            height = previousMark.spec.yLower - previousMark.spec.yUpper
-          when 'rectangleTool'
-            x = previousMark.spec.x
-            y = previousMark.spec.y
-            width = previousMark.spec.width
-            height = previousMark.spec.height
+        console.log 'SCALE: ', scale
+        console.log 'REF: ', @refs
 
         <ToolComponent
-          key={i}
-          mark={previousMark.spec}
+          key={mark._key}
+          mark={mark.spec}
+          xScale={scale.horizontal}
+          yScale={scale.vertical}
           disabled={true}
           isPriorMark={true}
-          selected={false}
+          selected={true}
           getEventOffset={@getEventOffset}
           ref={@refs.sizeRect}
-          onSelect={=> console.log 'SELECTED!'}
         />
-
-        # <rect
-        #   className   = "previous-mark"
-        #   x           = { x }
-        #   y           = { y }
-        #   width       = { width }
-        #   height      = { height }
-        #   fill        = "rgba(0,0,0,0)"
-        #   stroke      = "#f60"
-        #   strokeWidth = "5px"
-        # />
 
     return <g>{previousMarks}</g>
 

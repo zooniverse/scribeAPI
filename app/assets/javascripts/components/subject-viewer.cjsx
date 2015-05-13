@@ -326,8 +326,31 @@ module.exports = React.createClass
           </Draggable>
 
           {
-            if @props.workflow.name is 'mark'
-              @showPreviousMarks()
+            console.log 'PROPS::::::::::::::::::: ', @props
+
+            for mark, i in @props.subject.child_subjects_info
+              toolName = mark.spec.toolName
+              ToolComponent = markingTools[toolName]
+              scale = @getScale()
+
+              console.log 'REFS: ', @refs
+
+              <ToolComponent
+                key={i}
+                mark={mark.spec}
+                xScale={scale.horizontal}
+                yScale={scale.vertical}
+                disabled={true}
+                isPriorMark={true}
+                selected={true}
+                getEventOffset={@getEventOffset}
+                ref={@refs.sizeRect}
+              />
+
+
+            # # THIS IS CAUSING PROBLEMS - STI
+            # if @props.workflow.name is 'mark'
+            #   @showPreviousMarks()
               # @showTranscribeTools()
           }
 
@@ -364,6 +387,8 @@ module.exports = React.createClass
               if taskDescription.tool is 'pickOneMarkOne' #or taskDescription.tool is 'transcribe'
                 <g key={annotation._key} className="marks-for-annotation" data-disabled={isPriorMark or null}>
                   {for mark, m in annotation.value
+
+                    console.log 'OH YEAH AWESOME MAKR: ', mark
 
                     mark._key ?= Math.random()
                     toolDescription = taskDescription.tools[mark.tool]
