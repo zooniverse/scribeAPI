@@ -11,9 +11,6 @@ module.exports =
         ToolComponent = markingTools[toolName]
         scale = @getScale()
 
-        console.log 'SCALE: ', scale
-        console.log 'REF: ', @refs
-
         <ToolComponent
           key={mark._key}
           mark={mark.spec}

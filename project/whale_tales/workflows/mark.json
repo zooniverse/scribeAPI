@@ -43,6 +43,8 @@
       "tool":"pickOneMarkOne",
       "instruction":"Pick an item and mark it on the document.",
       "tools": [
+        {"type": "rectangleTool", "label": "Location", "color": "red"},
+        {"type": "rectangleTool", "label": "Weather Information", "color": "red"},
         {"type": "rectangleTool", "label": "Cargo", "color": "red"},
         {"type": "rectangleTool", "label": "Inventory", "color": "green"},
         {"type": "rectangleTool", "label": "Illustration/Poetry", "color": "red"},
