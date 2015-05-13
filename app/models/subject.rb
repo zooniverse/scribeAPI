@@ -28,11 +28,10 @@ class Subject
   belongs_to :workflow
   has_many :classifications
   has_many :favourites
-
+  belongs_to :subject_set
   belongs_to :parent_subject, :class_name => "Subject", :foreign_key => "parent_subject_id"  
   has_many :child_subjects, :class_name => "Subject"
   
-  belongs_to :subject_set
 
 
   # after_create :update_subject_set_stats
@@ -57,17 +56,18 @@ class Subject
   #   1) user indicated that a subject is completely classified
   #   2) self.annotation_value_count >= self.retire_count
   # Result 2) should decrement the self.parent_subject.secondary_subject_count by 1, if self.status == "retired"
-  def retire!
-    puts "EVAL"
+  # def retire!
+  #   puts "EVAL"
     # TODO: retirement should be based on workflow, right? --- consult team.
     # self.status = "retired" if self.annotation_value_count >= self.retire_count
     # subject_set.subject_completed_on_workflow(workflow)
-    save
-  end
+  #   save
+  # end
 
   def activate!
     self.status = "active"
     subject_set.subject_activated_on_workflow(workflow)
     save
   end
+  
 end
