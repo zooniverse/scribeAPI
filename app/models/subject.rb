@@ -66,8 +66,8 @@ class Subject
 
   def activate!
     self.status = "active"
-    subject_set.subject_activated_on_workflow(workflow)
+    # subject_set.subject_activated_on_workflow(workflow)
     save
   end
-  
+
 end

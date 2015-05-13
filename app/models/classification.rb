@@ -52,7 +52,7 @@ class Classification
     subject = self.subject
     subject.annotation_value_count += no_annotation_values
     subject.save
-    subject.retire!
+    # subject.retire!
   end
 
 end

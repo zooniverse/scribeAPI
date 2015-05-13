@@ -46,7 +46,7 @@ group :test do
   gem 'capybara'
   gem 'cucumber-rails', :require=>false
   gem 'database_cleaner', '1.0.1'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 3.0'
   gem 'shoulda-matchers'
   gem 'email_spec'
   gem 'launchy'
