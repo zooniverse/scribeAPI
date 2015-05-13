@@ -31,6 +31,7 @@ module.exports =
           selected={false}
           getEventOffset={@getEventOffset}
           ref={@refs.sizeRect}
+          onSelect={=> console.log 'SELECTED!'}
         />
 
         # <rect

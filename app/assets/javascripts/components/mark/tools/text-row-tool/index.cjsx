@@ -5,37 +5,40 @@ DeleteButton     = require './delete-button'
 DragHandle       = require './drag-handle'
 MarkButtonMixin  = require 'lib/mark-button-mixin'
 
+
+# HANDLE STYLES
+
 RADIUS = 10
 SELECTED_RADIUS = 20
 CROSSHAIR_SPACE = 0.2
 CROSSHAIR_WIDTH = 1
 DELETE_BUTTON_ANGLE = 45
 
-PRIOR_MARK =
-  STROKE_COLOR:          'rgba(90,200,90,0.5)'
-  STROKE_WIDTH:          2.0
-  HOVER_FILL:            'rgba(100,100,0,0.5)'
-  DISABLED_STROKE_COLOR: 'rgba(90,200,90,0.25)'
-  DISABLED_STROKE_WIDTH: 2.0
-  DISABLED_HOVER_FILL:   'transparent'
+markStyles =
 
+  prior:
+    strokeColor:         'rgba(90,200,90,0.5)'
+    strokeWidth:         2.0
+    hoverFill:           'rgba(100,100,0,0.5)'
+    disabledStrokeColor: 'rgba(90,200,90,0.5)'
+    disabledStrokeWidth: 2.0
+    disabledHoverFill:   'transparent'
 
-SELECTED_MARK =
-  STROKE_COLOR:          '#43bbfd'
-  STROKE_WIDTH:          2.5
-  HOVER_FILL:            'transparent'
-  DISABLED_STROKE_COLOR: '#43bbfd'
-  DISABLED_STROKE_WIDTH: 2.0
-  DISABLED_HOVER_FILL:   'transparent'
+  selected:
+    strokeColor:         '#43bbfd'
+    strokeWidth:         2.5
+    hoverFill:           'transparent'
+    disabledStrokeColor: '#43bbfd'
+    disabledStrokeWidth: 2.0
+    disabledHoverFill:   'transparent'
 
-
-REGULAR_MARK =
-  STROKE_COLOR:          'rgba(100,100,0,0.5)'
-  STROKE_WIDTH:          2.0
-  HOVER_FILL:            'transparent'
-  DISABLED_STROKE_COLOR: 'rgba(100,100,0,0.5)'
-  DISABLED_STROKE_WIDTH: 2.0
-  DISABLED_HOVER_FILL:   'transparent'
+  regular:
+    strokeColor:         'rgba(100,100,0,0.5)'
+    strokeWidth:         2.0
+    hoverFill:           'transparent'
+    disabledStrokeColor: 'rgba(100,100,0,0.5)'
+    disabledStrokeWidth: 2.0
+    disabledHoverFill:   'transparent'
 
 DEFAULT_HEIGHT = 100
 MINIMUM_HEIGHT = 25
@@ -93,13 +96,13 @@ module.exports = React.createClass
 
     if isPriorMark
       console.log 'PRIOR MARK'
-      markStyle = PRIOR_MARK
+      markStyle = markStyles.prior
     else if @props.selected
       console.log 'SELECTED MARK'
-      markStyle = SELECTED_MARK
+      markStyle = markStyles.selected
     else
       console.log 'REGULAR MARK'
-      markStyle = REGULAR_MARK
+      markStyle = markStyles.regular
 
     <g
       tool={this}
@@ -108,9 +111,23 @@ module.exports = React.createClass
     >
       <g
         className="mark-tool text-row-tool"
+
         fill='transparent'
-        stroke={ unless @props.disabled then markStyle.STROKE_COLOR else markStyle.DISABLED_STROKE_COLOR}
-        strokeWidth={ unless @props.disabled then markStyle.STROKE_WIDTH/scale else markStyle.DISABLED_STROKE_WIDTH/scale }
+
+        stroke={
+           if @props.disabled
+             markStyle.disabledStrokeColor
+           else
+             markStyle.strokeColor
+         }
+
+        strokeWidth={
+          if @props.disabled
+            markStyle.disabledStrokeWidth/scale
+          else
+            markStyle.strokeWidth/scale
+        }
+
         onMouseDown={@props.onSelect unless @props.disabled}
       >
         <Draggable onDrag={@handleDrag}>
