@@ -6,58 +6,31 @@
   "generate_new_subjects_at_classification_count": 1,
   "enables_workflows":{
   },
-  "first_task":"pick_page_type",
+  "first_task":"records_present",
   "tasks":{
-    "pick_page_type":{
+    "records_present":{
       "order":0,
       "tool":"pick_one",
-      "instruction":"What kind of page is this?",
+      "instruction":"Are there any records to transcribe in this document?",
       "options":{
-        "history_sheet":{
-          "label":"history_sheet",
-          "next_task":"history_form_task"
+        "yes":{
+          "label":"Yes",
+          "next_task":"mark_records_for_transcription"
         },
-        "casualty_form":{
-          "label":"casualty_form",
-          "next_task":"casualty_form_task"
-        },
-        "attestation_form":{
-          "label":"attestation_form",
-          "next_task":"attestation_form_task"
+        "no":{
+          "label":"No",
+          "next_task": null
         }
       }
     },
-    "attestation_form_task":{
+    "mark_records_for_transcription":{
       "generate_subjects": true,
       "tool":"mark",
-      "instruction":"Draw a rectangle around each record.",
+      "instruction":"Pick a tool and mark each record:",
       "tools": [
-        {"type": "superAwesomePointTool", "label": "Records (point)", "color": "red"},
-        {"type": "rectangleTool", "label": "Records (rectangle)", "color": "green"},
-        {"type": "textRowTool", "label": "Records (row)", "color": "blue"}
-      ],
-      "next_task": null
-    },
-    "history_form_task":{
-      "generate_subjects": true,
-      "tool":"mark",
-      "instruction":"Draw a rectangle around each record.",
-      "tools": [
-        {"type": "rectangleTool", "label": "Occupation", "color": "green"},
-        {"type": "rectangleTool", "label": "Surname", "color": "green"},
-        {"type": "rectangleTool", "label": "Christian name", "color": "green"},
-        {"type": "rectangleTool", "label": "Wounds", "color": "green"}
-      ],
-      "next_task": null
-    },
-    "casualty_form_task":{
-      "generate_subjects": true,
-      "tool":"mark",
-      "instruction":"Draw a rectangle around each record.",
-      "tools": [
-        {"type": "superAwesomePointTool", "label": "Records (point)", "color": "red"},
-        {"type": "rectangleTool", "label": "Records (rectangle)", "color": "green"},
-        {"type": "textRowTool", "label": "Records (row)", "color": "blue"}
+        {"type": "pointTool", "label": "Point Tool", "color": "red"},
+        {"type": "rectangleTool", "label": "Drawing/Note", "color": "green"},
+        {"type": "textRowTool", "label": "Journal Entry", "color": "blue"}
       ],
       "next_task": null
     }

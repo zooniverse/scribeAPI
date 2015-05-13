@@ -11,10 +11,16 @@ markingTools                  = require './mark/tools'
 
 RowFocusTool                  = require 'components/row-focus-tool'
 
+MarkDrawingMixin              = require 'lib/mark-drawing-mixin'
+
+API = require "lib/api"
+
 
 module.exports = React.createClass
   displayName: 'SubjectViewer'
   resizing: false
+
+  mixins: [MarkDrawingMixin] # load helper methods to draw marks and highlights
 
   getInitialState: ->
     # console.log "setting initial state: #{@props.active}"
@@ -223,7 +229,57 @@ module.exports = React.createClass
     @props.classification.update 'annotations'
     @forceUpdate()
 
+  submitMark: (mark) ->
+    metadata =
+      started_at: (new Date).toISOString() # this is dummy
+      finished_at: (new Date).toISOString()
+
+    # # SUBMITT MARK VIA JSON-API-CLIENT (PROBLEMS WITH RETRIEVING RESPONSE)
+    # classification = API.type('classifications').create
+    #   name:        'Classification'
+    #   subject_id:  @props.subject.id
+    #   workflow_id: @props.workflow.id
+    #   annotations: []
+    #   metadata:    metadata
+    #
+    # classification.annotations.push @props.annotation
+    # classification.update 'annotations'
+    # classification.save() # submit classification
+
+    # PREPARE CLASSIFICATION TO SEND
+    classification =
+      classifications:
+        name:        'Classification'
+        subject_id:  @props.subject.id
+        workflow_id: @props.workflow.id
+        annotations: [@props.annotation]
+        metadata:    metadata
+
+    console.log '(SINGLE) CLASSIFICATION: ', classification
+
+    $.ajax({
+      type:        'post'
+      url:         '/classifications'
+      data:        JSON.stringify(classification)
+      dataType:    'json'
+      contentType: 'application/json'
+      })
+      .done (response) =>
+        console.log "Success" #, #response #, response._id.$oid
+        console.log 'RECEIVED SECONDARY SUBJECT ID: ', response.child_subject_id.$oid
+        console.log 'SELECTED MARK: ', @state.selectedMark
+        # @setTranscribeSubject(key, response._id.$oid)
+        # @enableMarkButton(key)
+        return
+      .fail =>
+        console.log "Failure"
+        return
+      .always ->
+        console.log "Always"
+        return
+
   render: ->
+    console.log '*********** STATE: ', @state, @props
     # return null if @props.subjects is null or @props.subjects.length is 0
     # return null unless @props.subject?
     # console.log 'SUBJECT: ', @props.subject
@@ -271,16 +327,22 @@ module.exports = React.createClass
               height = {@state.imageHeight} />
           </Draggable>
 
-          { if @props.subject.location.spec?.x?
-            isPriorAnnotation = true # ?
-            <g key={@props.subject.id} className="marks-for-annotation" data-disabled={isPriorAnnotation}>
-              {
-                # Represent the secondary subject as a rectangle mark
-                # TODO Should really check the drawing tool used (encoded somehow in the 2ndary subject) and display a read-only instance of that tool. For now just defaulting to rect:
-                ToolComponent = markingTools['rectangleTool']
-                # TODO: Note that x, y, w h aren't scaled properly:
-                mark = {x: @props.subject.location.spec.x, y: @props.subject.location.spec.y, width: @props.subject.location.spec.width, height: @props.subject.location.spec.height}
+          {
+            if @props.workflow.name is 'mark'
+              @showPreviousMarks()
+              # @showTranscribeTools()
+          }
 
+          { # HIGHLIGHT SUBJECT FOR TRANSCRIPTION
+            # TODO: Makr sure x, y, w, h are scaled properly
+
+            if @props.workflow.name is 'transcribe'
+              toolName = @props.subject.location.spec.toolName
+              mark = @props.subject.location.spec
+              ToolComponent = markingTools[toolName]
+              isPriorAnnotation = true
+              <g>
+                { @highlightMark(mark, toolName) }
                 <ToolComponent
                   key={@props.subject.id}
                   mark={mark}
@@ -290,14 +352,13 @@ module.exports = React.createClass
                   selected={mark is @state.selectedMark}
                   getEventOffset={@getEventOffset}
                   ref={@refs.sizeRect}
-
                   onSelect={@selectMark.bind this, @props.subject, mark}
                 />
-              }
-            </g>
+              </g>
           }
 
-          { for annotation in @props.classification.annotations
+          { # HANDLE NEW MARKS
+            for annotation in @props.classification.annotations
               annotation._key ?= Math.random()
               isPriorAnnotation = annotation isnt @props.annotation
               taskDescription = @props.workflow.tasks[annotation.task]
@@ -322,6 +383,7 @@ module.exports = React.createClass
                       selected={mark is @state.selectedMark}
                       getEventOffset={@getEventOffset}
                       ref={@refs.sizeRect}
+                      submitMark={@submitMark}
 
                       onChange={@updateAnnotations}
                       onSelect={@selectMark.bind this, annotation, mark}
@@ -329,78 +391,7 @@ module.exports = React.createClass
                     />
                   }
                 </g>
-            }
 
-            { # ROW FOCUS TOOL -------------------------------------------
-              if @props.workflow.name is "transcribe" and @props.subject.location.spec.toolName is "textRowTool"
-                console.log 'ROW TOOL!'
-                markHeight = @props.subject.location.spec.yLower - @props.subject.location.spec.yUpper
-                <g>
-
-                  <rect
-                    className   = "mark-rectangle"
-                    x           = 0
-                    y           = { 0 }
-                    width       = { @state.imageWidth }
-                    height      = { @props.subject.location.spec.yUpper }
-                    fill        = "rgba(0,0,0,0.6)"
-                  />
-
-                  <rect
-                    className   = "mark-rectangle"
-                    x           = 0
-                    y           = { @props.subject.location.spec.yLower }
-                    width       = { @state.imageWidth }
-                    height      = { @state.imageHeight - @props.subject.location.spec.yLower }
-                    fill        = "rgba(0,0,0,0.6)"
-                  />
-                </g>
-            }
-
-
-            { # RECTANGLE FOCUS TOOL ------------------------------------------
-              if @props.workflow.name is "transcribe" and @props.subject.location.spec.toolName is "rectangleTool"
-                console.log 'RECTANGLE TOOL!'
-                markHeight = @props.subject.location.spec.yLower - @props.subject.location.spec.yUpper
-                <g>
-
-                  <rect
-                    className   = "mark-rectangle top"
-                    x           = 0
-                    y           = 0
-                    width       = { @state.imageWidth }
-                    height      = { @props.subject.location.spec.y }
-                    fill        = "rgba(0,0,0,0.6)"
-                  />
-
-                  <rect
-                    className   = "mark-rectangle bottom"
-                    x           = 0
-                    y           = { @props.subject.location.spec.y + @props.subject.location.spec.height }
-                    width       = { @state.imageWidth }
-                    height      = { @state.imageHeight - @props.subject.location.spec.y + @props.subject.location.spec.height }
-                    fill        = "rgba(0,0,0,0.6)"
-                  />
-
-                  <rect
-                    className   = "mark-rectangle left"
-                    x           = 0
-                    y           = { @props.subject.location.spec.y }
-                    width       = { @props.subject.location.spec.x }
-                    height      = { @props.subject.location.spec.height }
-                    fill        = "rgba(0,0,0,0.6)"
-                  />
-
-                  <rect
-                    className   = "mark-rectangle right"
-                    x           = { @props.subject.location.spec.x + @props.subject.location.spec.width}
-                    y           = { @props.subject.location.spec.y }
-                    width       = { @state.imageWidth - @props.subject.location.spec.width - @props.subject.location.spec.x }
-                    height      = { @props.subject.location.spec.height }
-                    fill        = "rgba(0,0,0,0.6)"
-                  />
-
-                </g>
             }
 
           </svg>

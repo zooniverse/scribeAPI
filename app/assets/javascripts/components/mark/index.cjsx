@@ -62,7 +62,6 @@ module.exports = React.createClass # rename to Classifier
       </div>
       <div className="task-area">
         <div className="task-container">
-          {console.log 'TASK COMPONENT, current  task is ', currentTask}
           <TaskComponent task={currentTask} annotation={currentAnnotation} onChange={@handleTaskComponentChange} />
           <hr/>
           <nav className="task-nav">
@@ -87,7 +86,8 @@ module.exports = React.createClass # rename to Classifier
     @updateAnnotations()
 
   updateAnnotations: ->
-    console.log 'UPDATE ANNOTATIONS'
+    # DEBUG CODE
+    # console.log 'UPDATE ANNOTATIONS'
     @props.classification.update 'annotations'
       # annotations: @props.classification.annotations
     @forceUpdate()
@@ -119,7 +119,7 @@ module.exports = React.createClass # rename to Classifier
       workflow_id: @state.workflow.id
       'metadata.finished_at': (new Date).toISOString()
     @props.classification.save()
-    @props.onComplete?()
+    @props.onComplete?() # does this do anything? -STI
     console.log 'CLASSIFICATION: ', @props.classification
 
 window.React = React

@@ -1,72 +1,95 @@
-# @cjsx React.DOM
-React = require 'react'
-Draggable = require 'lib/draggable'
-DeleteButton = require './delete-button'
+React           = require 'react'
+DrawingToolRoot = require './root'
+Draggable       = require 'lib/draggable'
+DeleteButton    = require './delete-button'
+MarkButtonMixin = require 'lib/mark-button-mixin'
 
-DEBUG = false
+RADIUS = 10
+SELECTED_RADIUS = 20
+CROSSHAIR_SPACE = 0.2
+CROSSHAIR_WIDTH = 1
+DELETE_BUTTON_ANGLE = 45
+
+STROKE_WIDTH = 1.5
+SELECTED_STROKE_WIDTH = 2.5
 
 module.exports = React.createClass
-  displayName: 'PointTool'
+  displayName: 'SuperAwesomePointTool'
 
-  propTypes:
-    key:  React.PropTypes.number.isRequired
-    mark: React.PropTypes.object.isRequired
+  mixins: [MarkButtonMixin]
 
-  getInitialState: ->
-    mark: @props.mark
+  statics:
+    defaultValues: ({x, y}) ->
+      {x, y}
 
-  componentWillReceiveProps: ->
-    @setState
-      mark: @props.mark, =>
-        @forceUpdate()
+    initMove: ({x, y}) ->
+      {x, y}
 
-  handleDrag: (e) ->
-    @update @props.getEventOffset(e)
+  getDeleteButtonPosition: ->
+    theta = (DELETE_BUTTON_ANGLE) * (Math.PI / 180)
+    x: (SELECTED_RADIUS / @props.xScale) * Math.cos theta
+    y: -1 * (SELECTED_RADIUS / @props.yScale) * Math.sin theta
 
-  update: ({x,y}) ->
-    mark = @state.mark
-    mark.x = x
-    mark.y = y
-    @setState mark: mark
+  getMarkButtonPosition: ->
+    x: SELECTED_RADIUS/@props.xScale
+    y: SELECTED_RADIUS/@props.yScale
 
   render: ->
+    averageScale = (@props.xScale + @props.yScale) / 2
+    crosshairSpace = CROSSHAIR_SPACE / averageScale
+    crosshairWidth = CROSSHAIR_WIDTH / averageScale
+    selectedRadius = SELECTED_RADIUS / averageScale
+    radius = if @props.selected
+      SELECTED_RADIUS / averageScale
+    else
+      RADIUS / averageScale
 
-    fillColor   = 'rgba(0,0,0,0.30)'
-    strokeColor = '#fff'
-    radius = 40
-    strokeWidth = 3
+    scale = (@props.xScale + @props.yScale) / 2
 
-    transform = "
-      translate(#{@state.mark.x}, #{@state.mark.y})
-      scale(#{1}, #{1})
-    "
+    <g
+      tool={this}
+      transform="translate(#{@props.mark.x}, #{@props.mark.y})"
+      onMouseDown={@handleMouseDown}
+    >
+      <g
+        className="mark-tool"
+        fill='transparent'
+        stroke='#f60'
+        strokeWidth={SELECTED_STROKE_WIDTH/scale}
+        onMouseDown={@props.onSelect unless @props.disabled}
+      >
 
-    <g className="point drawing-tool" transform={transform}>
+        <line x1="0" y1={-1 * crosshairSpace * selectedRadius} x2="0" y2={-1 * selectedRadius} strokeWidth={crosshairWidth} />
+        <line x1={-1 * crosshairSpace * selectedRadius} y1="0" x2={-1 * selectedRadius} y2="0" strokeWidth={crosshairWidth} />
+        <line x1="0" y1={crosshairSpace * selectedRadius} x2="0" y2={selectedRadius} strokeWidth={crosshairWidth} />
+        <line x1={crosshairSpace * selectedRadius} y1="0" x2={selectedRadius} y2="0" strokeWidth={crosshairWidth} />
+        <Draggable onDrag={@handleDrag}>
+          <circle r={radius} />
+        </Draggable>
 
-      { if DEBUG
-          <text fill='blue' fontSize='30'>
-            {@props.mark.key}
-          </text>
-      }
+        { if @props.selected
+          <DeleteButton tool={this} getDeleteButtonPosition={@getDeleteButtonPosition} />
+        }
 
-      <Draggable
-        onStart={@props.handleMarkClick.bind null, @props.mark}
-        onDrag={@handleDrag} >
+        { if @props.selected then @renderMarkButton() }
 
-        <g strokeWidth={strokeWidth}>
-          <circle
-            r={radius + (strokeWidth / 2)}
-            stroke={strokeColor}
-            fill={fillColor}
-          />
-        </g>
-
-      </Draggable>
-
-      { if @props.isSelected
-          <DeleteButton
-            transform="translate(#{radius}, #{-radius})"
-            onClick={@props.onClickDelete.bind null, @props.mark.key} />
-      }
-
+      </g>
     </g>
+
+    # <text x={@props.mark.x} y={@props.mark.y} fill="red" fontSize="55">SuperAwesomePoint!</text>
+
+  handleDrag: (e, d) ->
+    @props.mark.x += d.x / @props.xScale
+    @props.mark.y += d.y / @props.yScale
+    @props.onChange e
+
+  # handleDrag: (e, d) ->
+  #   console.log 'handleDrag()'
+  #   offset = @props.getEventOffset e
+  #   @props.mark.x = offset.x
+  #   @props.mark.y = offset.y
+  #   @props.onChange()
+
+  handleMouseDown: ->
+    console.log 'handleMouseDown()'
+    @props.onSelect @props.mark # unless @props.disabled

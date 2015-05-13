@@ -10,5 +10,5 @@ module.exports = React.createClass
   render: ->
 
     <Draggable onDrag = {@props.onDrag} >
-      <circle className="drag-handle" r={RADIUS} fill="red" cx="#{@props.x}", cy="#{@props.y}"} stroke="transparent" />
+      <circle className="mark-tool resize-button" r={RADIUS} fill="red" cx="#{@props.x}", cy="#{@props.y}"} stroke="transparent" />
     </Draggable>

@@ -7,7 +7,7 @@
   display none
   &.active
     display block
-  .subject-container    
+  .subject-container
     // background-color #fff
     // background none
     margin-bottom 20px
@@ -25,31 +25,12 @@
     border 2px solid #000
     width 840px
     height 100%
-    .drawing-tool
-      cursor grab
-      cursor -webkit-grab
-      &.locked
-        &:active
-          cursor not-allowed
-      &:active
-        cursor grabbing
-        cursor -webkit-grabbing
-      .drawing-tool-resize-button
-        cursor row-resize
-        cursor -webkit-row-resize
-        &:active
-          cursor grabbing
-          cursor -webkit-grabbing
-      .drawing-tool-delete-button
-        cursor pointer
-      .drawing-tool-done-button
-        cursor pointer
-        &.disabled
-          cursor wait
-          opacity 0.2
-          &:active
-            cursor wait
-            pointer-events none
-          
+    rect.previous-mark
+      opacity 0.5
+      transition 0.25s
+    rect.previous-mark:hover
+      opacity 1.0
+      transition 0.25s
+      fill rgba(200,200,0,0.2)
   .button
     @extends $button

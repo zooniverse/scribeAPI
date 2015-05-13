@@ -39,7 +39,10 @@ class Workflow
     subject_set_id = classification.subject.subject_set.id
     workflow_id = project.workflows.find_by(name: "transcribe").id
 
+    puts 'ANNOTATION: ', classification.annotations
+
     classification.annotations.each do |annotation|
+      puts 'ANNOTATION: ', annotation
       if annotation["generate_subjects"]
         annotation["value"].each do |value|
           child_subject = Subject.create(
@@ -54,12 +57,14 @@ class Workflow
               spec: value.except(:key, :tool)
             }
           )
+        # this allows a generated subject's id to be returned in case of immediate transcription
+        classification.child_subject_id = child_subject.id
         parent_subject = classification.subject
         parent_subject.child_subjects << child_subject
         end
       end
-
     end
+    
   end
 
   def create_follow_up_subjects(classification)
