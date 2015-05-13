@@ -24,7 +24,12 @@ module.exports = React.createClass
     "
 
     <Draggable onDrag = {@props.onDrag}>
-      <g className="mark-tool resize-button" transform={transform} stroke={STROKE_COLOR} strokeWidth={STROKE_WIDTH} >
+      <g
+        className="mark-tool resize-button"
+        transform={transform}
+        stroke={STROKE_COLOR}
+        strokeWidth={STROKE_WIDTH}
+      >
         <circle r={RADIUS} fill={FILL_COLOR} />
       </g>
     </Draggable>

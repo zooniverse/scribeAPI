@@ -120,6 +120,9 @@ module.exports = React.createClass
     height = @props.mark.height
     y2 = y1 + height
 
+    scale = (@props.xScale + @props.yScale) / 2
+
+
     points = [
       [x1, y1].join ','
       [x2, y1].join ','
@@ -139,16 +142,16 @@ module.exports = React.createClass
       >
 
         <Draggable onDrag = {@handleMainDrag} >
-          <polyline points={points} strokeWidth="2" stroke="orange" fill="none"/>
+          <polyline points={points} strokeWidth={2 / @props.xScale} stroke="orange" fill="none"/>
         </Draggable>
 
         { if @props.selected
           <g>
             <DeleteButton tool={this} x={x1 + (width * DELETE_BUTTON_DISTANCE)} y={y1} />
-            <DragHandle x={x1} y={y1} onDrag={@handleX1Y1Drag} />
-            <DragHandle x={x2} y={y1} onDrag={@handleX2Y1Drag} />
-            <DragHandle x={x2} y={y2} onDrag={@handleX2Y2Drag} />
-            <DragHandle x={x1} y={y2} onDrag={@handleX1Y2Drag} />
+            <DragHandle tool={this} x={x1} y={y1} onDrag={@handleX1Y1Drag} />
+            <DragHandle tool={this} x={x2} y={y1} onDrag={@handleX2Y1Drag} />
+            <DragHandle tool={this} x={x2} y={y2} onDrag={@handleX2Y2Drag} />
+            <DragHandle tool={this} x={x1} y={y2} onDrag={@handleX1Y2Drag} />
           </g>
         }
 
