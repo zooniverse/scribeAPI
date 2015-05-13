@@ -11,6 +11,9 @@ DELETE_BUTTON_ANGLE = 45
 DELETE_BUTTON_DISTANCE = 9 / 10
 DEBUG = false
 
+STROKE_COLOR = '#43bbfd'
+STROKE_WIDTH = 2.5
+
 
 module.exports = React.createClass
   displayName: 'RectangleTool'
@@ -142,7 +145,12 @@ module.exports = React.createClass
       >
 
         <Draggable onDrag = {@handleMainDrag} >
-          <polyline points={points} strokeWidth={2 / @props.xScale} stroke="orange" fill="none"/>
+          <polyline
+            points={points}
+            strokeWidth={2 / @props.xScale}
+            stroke={STROKE_COLOR}
+            fill="transparent"
+          />
         </Draggable>
 
         { if @props.selected
