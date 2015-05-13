@@ -74,7 +74,6 @@ module.exports = React.createClass
     y: @props.mark.yLower - @props.mark.y
 
   getMarkButtonPosition: ->
-    console.log 'PROPS.REF.PROPS: ', @props
     x: @props.ref?.props.width - 100
     y: (@props.mark.yLower-@props.mark.yUpper)/2
 
@@ -150,7 +149,8 @@ module.exports = React.createClass
         }
 
         { # REQUIRES MARK-BUTTON-MIXIN
-          if @props.selected then @renderMarkButton()
+          console.log 'MARK STATUS: ', @state.markStatus
+          if @props.selected or @state.markStatus is 'mark-committed' or @state.markStatus is 'transcribe-enabled' then @renderMarkButton()
         }
 
       </g>

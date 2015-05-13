@@ -325,8 +325,7 @@ module.exports = React.createClass
               height = {@state.imageHeight} />
           </Draggable>
 
-          {
-            console.log 'PROPS::::::::::::::::::: ', @props
+          { # DISPLAY PREVIOUS MARKS
 
             for mark, i in @props.subject.child_subjects_info
               toolName = mark.spec.toolName
@@ -342,9 +341,13 @@ module.exports = React.createClass
                 yScale={scale.vertical}
                 disabled={true}
                 isPriorMark={true}
-                selected={true}
+                selected={false}
                 getEventOffset={@getEventOffset}
                 ref={@refs.sizeRect}
+
+                onChange={=> console.log 'ON CHANGE'}
+                onSelect={=> console.log 'ON SELECT'}
+                onDestroy={=> console.log 'ON DESTORY'}
               />
 
 
