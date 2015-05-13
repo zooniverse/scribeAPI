@@ -15,13 +15,53 @@
       "options":{
         "yes":{
           "label":"Yes",
-          "next_task":"mark_records_for_transcription"
+          "next_task":"type_of_record"
         },
         "no":{
           "label":"No",
           "next_task": null
         }
       }
+    },
+    "type_of_record":{
+      "order":0,
+      "tool":"pickOne",
+      "instruction":"What type of record are you transcribing?",
+      "options":{
+        "event":{
+          "label":"Event",
+          "next_task":"mark_event_for_transcription"
+        },
+        "item":{
+          "label":"Item",
+          "next_task": "mark_item_for_transcription"
+        }
+      }
+    },
+    "mark_item_for_transcription":{
+      "generate_subjects": true,
+      "tool":"pickOneMarkOne",
+      "instruction":"Pick an item and mark it on the document.",
+      "tools": [
+        {"type": "rectangleTool", "label": "Cargo", "color": "red"},
+        {"type": "rectangleTool", "label": "Inventory", "color": "green"},
+        {"type": "rectangleTool", "label": "Illustration/Poetry", "color": "red"},
+        {"type": "rectangleTool", "label": "Other", "color": "red"}
+      ],
+      "next_task": "records_present"
+    },
+    "mark_event_for_transcription":{
+      "generate_subjects": true,
+      "tool":"pickOneMarkOne",
+      "instruction":"Pick an event and mark it on the document.",
+      "tools": [
+        {"type": "rectangleTool", "label": "Whaling Activity", "color": "red"},
+        {"type": "rectangleTool", "label": "Ship Interaction", "color": "green"},
+        {"type": "rectangleTool", "label": "Interaction with Natives", "color": "red"},
+        {"type": "rectangleTool", "label": "Unusual Occurrences", "color": "red"},
+        {"type": "rectangleTool", "label": "Other", "color": "red"}
+      ],
+      "next_task": "records_present"
     },
     "mark_records_for_transcription":{
       "generate_subjects": true,
