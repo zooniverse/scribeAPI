@@ -115,7 +115,6 @@ module.exports = React.createClass
     @props.onSelect @props.mark
 
   render: ->
-    classString = "rectangleTool"
     x1 = @props.mark.x
     width = @props.mark.width
     x2 = x1 + width
@@ -135,12 +134,12 @@ module.exports = React.createClass
     ].join '\n'
 
     <g
-      className = {classString}
+      className='rectangle-tool'
       tool={this}
       onMouseDown={@props.onSelect unless @props.disabled}
     >
       <g
-        className = {classString}
+        className='rectangle-tool'
         onMouseDown={@props.onSelect unless @props.disabled}
       >
 
