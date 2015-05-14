@@ -144,12 +144,30 @@ module.exports = React.createClass
       >
 
         <Draggable onDrag = {@handleMainDrag} >
-          <polyline
-            points={points}
-            strokeWidth={2 / @props.xScale}
-            stroke={STROKE_COLOR}
-            fill="transparent"
+          <g
+            dangerouslySetInnerHTML={
+              __html: "
+                <filter id=\"dropShadow\">
+                  <feGaussianBlur in=\"SourceAlpha\" stdDeviation=\"3\" />
+                  <feOffset dx=\"2\" dy=\"4\" />
+                  <feMerge>
+                    <feMergeNode />
+                    <feMergeNode in=\"SourceGraphic\" />
+                  </feMerge>
+                </filter>
+
+                <polyline
+                  points=\"#{points}\"
+                  strokeWidth=\"#{STROKE_WIDTH / scale}\"
+                  stroke=\"#{STROKE_COLOR}\"
+                  fill=\"transparent\"
+                  filter=\"#{if @props.selected then 'url(#dropShadow)' else 'none'}\"
+                />
+
+              "
+            }
           />
+
         </Draggable>
 
         { if @props.selected

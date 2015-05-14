@@ -64,7 +64,26 @@ module.exports = React.createClass
         <line x1="0" y1={crosshairSpace * selectedRadius} x2="0" y2={selectedRadius} strokeWidth={crosshairWidth} />
         <line x1={crosshairSpace * selectedRadius} y1="0" x2={selectedRadius} y2="0" strokeWidth={crosshairWidth} />
         <Draggable onDrag={@handleDrag}>
-          <circle r={radius} />
+
+          <g
+            dangerouslySetInnerHTML={
+              __html: "
+                <filter id=\"dropShadow\">
+                  <feGaussianBlur in=\"SourceAlpha\" stdDeviation=\"3\" />
+                  <feOffset dx=\"2\" dy=\"4\" />
+                  <feMerge>
+                    <feMergeNode />
+                    <feMergeNode in=\"SourceGraphic\" />
+                  </feMerge>
+                </filter>
+                <circle
+                  r=\"#{radius}\"
+                  filter=\"#{if @props.selected then 'url(#dropShadow)' else 'none'}\"
+                />
+              "
+            }
+          />
+
         </Draggable>
 
         { if @props.selected
