@@ -20,6 +20,10 @@
         "no":{
           "label":"No",
           "next_task": null
+        },
+        "debug":{
+          "label":"DEBUG",
+          "next_task": "mark_records_for_transcription"
         }
       }
     },

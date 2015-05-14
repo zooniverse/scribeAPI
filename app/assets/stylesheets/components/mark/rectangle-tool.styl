@@ -1,4 +1,37 @@
 .rectangle-tool
+  cursor grab
+  cursor -webkit-grab
+  &.locked
+    &:active
+      cursor not-allowed
+  &:active
+    cursor grabbing
+    cursor -webkit-grabbing
+
+  .resize-button
+    cursor grab
+    cursor -webkit-grab
+    &:active
+      cursor grabbing
+      cursor -webkit-grabbing
+
+  .delete-button
+    cursor pointer
+
+  .action-button
+    cursor pointer
+    &.disabled
+      cursor wait
+      opacity 0.2
+      &:active
+        cursor wait
+        pointer-events none
+    .checkbox
+      transition 0.25s
+      opacity 0.6
+      &:hover
+        opacity 1.0
+
   polyline
     cursor grab
     cursor -webkit-grab
