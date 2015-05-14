@@ -150,7 +150,7 @@ module.exports = React.createClass
                   width=\"100%\"
                   height=\"#{@props.mark.yLower-@props.mark.yUpper}\"
                   className=\"#{ if isPriorMark then 'previous-mark'}\"
-                  filter=\"url(#dropShadow)\"
+                  filter=\"#{if @props.selected then 'url(#dropShadow)' else 'none'}\"
                 />
               "
             }
