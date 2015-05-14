@@ -97,8 +97,7 @@ require 'active_support'
           name: name,
           project: project,
           thumbnail: thumbnail,
-          meta_data: meta_data,
-          counts: {"#{mark_workflow.id}" => {active_subjects: subjects.size}}
+          meta_data: meta_data
         })
         puts "      - saved subject set #{subject_set.thumbnail}"
 
