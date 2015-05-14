@@ -1,27 +1,24 @@
 .text-row-tool
-
   cursor grab
   cursor -webkit-grab
-
   &.locked
     &:active
       cursor not-allowed
-
   &:active
     cursor grabbing
     cursor -webkit-grabbing
 
-  &.resize-button
+  .resize-button
     cursor row-resize
     cursor -webkit-row-resize
     &:active
       cursor grabbing
       cursor -webkit-grabbing
 
-  &.delete-button
+  .delete-button
     cursor pointer
 
-  &.action-button
+  .mark-button
     cursor pointer
     &.disabled
       cursor wait

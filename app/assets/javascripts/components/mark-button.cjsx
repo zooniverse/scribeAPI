@@ -36,7 +36,7 @@ module.exports = React.createClass
 
     <Draggable onEnd={@props.onDrag}>
       <g
-        className="mark-tool action-button"
+        className="mark-tool button-button"
         transform=
           "
             translate(#{@props.position.x},#{@props.position.y})
