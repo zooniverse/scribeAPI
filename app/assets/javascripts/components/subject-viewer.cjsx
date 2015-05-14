@@ -328,7 +328,7 @@ module.exports = React.createClass
           { # DISPLAY PREVIOUS MARKS
 
             for mark, i in @props.subject.child_subjects_info
-              toolName = mark.spec.toolName
+              toolName = mark.data.toolName
               ToolComponent = markingTools[toolName]
               scale = @getScale()
 
@@ -336,7 +336,7 @@ module.exports = React.createClass
 
               <ToolComponent
                 key={i}
-                mark={mark.spec}
+                mark={mark.data}
                 xScale={scale.horizontal}
                 yScale={scale.vertical}
                 disabled={true}
