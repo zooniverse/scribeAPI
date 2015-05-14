@@ -7,13 +7,13 @@ module.exports =
     # console.log 'PREVIOUS MARKS: ', @props.subject.child_subjects_info
     previousMarks =
       for mark, i in @props.subject.child_subjects_info
-        toolName = mark.spec.toolName
+        toolName = mark.data.toolName
         ToolComponent = markingTools[toolName]
         scale = @getScale()
 
         <ToolComponent
           key={mark._key}
-          mark={mark.spec}
+          mark={mark.data}
           xScale={scale.horizontal}
           yScale={scale.vertical}
           disabled={true}

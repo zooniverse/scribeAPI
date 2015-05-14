@@ -304,7 +304,7 @@ DEPENDENCIES
   moped
   omniauth-facebook
   omniauth-google-oauth2
-  omniauth-zooniverse
+  omniauth-zooniverse (~> 0.0.1)
   pry
   quiet_assets
   rack-cors
@@ -312,7 +312,7 @@ DEPENDENCIES
   rails (= 4.0.2)
   rails_layout
   react-rails (~> 1.0.0.pre)!
-  rspec-rails
+  rspec-rails (~> 3.0)
   sass-rails (~> 4.0.0)
   shoulda-matchers
   sprockets-coffee-react
