@@ -14,7 +14,7 @@ STROKE_WIDTH = 1.5
 SELECTED_STROKE_WIDTH = 2.5
 
 module.exports = React.createClass
-  displayName: 'SuperAwesomePointTool'
+  displayName: 'PointTool'
 
   mixins: [MarkButtonMixin]
 
@@ -52,9 +52,9 @@ module.exports = React.createClass
       onMouseDown={@handleMouseDown}
     >
       <g
-        className="mark-tool"
+        className='mark-tool point-tool'
         fill='transparent'
-        stroke='#f60'
+        stroke='#43bbfd'
         strokeWidth={SELECTED_STROKE_WIDTH/scale}
         onMouseDown={@props.onSelect unless @props.disabled}
       >

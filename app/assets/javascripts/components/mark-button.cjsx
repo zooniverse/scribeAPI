@@ -13,6 +13,9 @@ STROKE_COLOR = 'white'
 FILL_COLOR = 'rgb(67,187,253)'
 STROKE_WIDTH = 0.5
 
+TEXT_COLOR = '#000'
+CHECKBOX_COLOR = '#000'
+
 DESTROY_TRANSITION_DURATION = 0
 
 module.exports = React.createClass
@@ -26,6 +29,21 @@ module.exports = React.createClass
   componentWillReceiveProps: ->
     console.log 'component will receive props: ', @props.markStatus, @props.locked
 
+
+  foo: ->
+    return {
+      __html: '
+      <filter id="dropShadow">
+        <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
+        <feOffset dx="2" dy="4" />
+        <feMerge>
+          <feMergeNode />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+      <circle cx="60"  cy="60" r="50" fill="transparent" filter="url(#dropShadow)" />
+      '
+    }
   render: ->
 
     transform = "
@@ -43,7 +61,6 @@ module.exports = React.createClass
             scale(#{1 / @props.tool.props.xScale}, #{1 / @props.tool.props.yScale})
           "
       >
-
         { if @props.markStatus is "transcribe-enabled"
 
             <g>
@@ -88,14 +105,14 @@ module.exports = React.createClass
                 y="0"
                 fontSize="10"
                 transform="translate(10,3)"
-                fill="rgb(67,187,253)"
+                fill={TEXT_COLOR}
                 stroke="none">
 
                 DONE
               </text>
 
               <path
-                fill="rgb(67,187,253)"
+                fill={CHECKBOX_COLOR}
                 stroke="none"
                 transform="translate(#{-0.5*20},#{-0.5*20})"
                 d="M 4,1 C 2.338,1 1,2.338 1,4 l 0,12 c 0,1.662 1.338,3 3,3 l 12,0 c 1.662,0 3,-1.338 3,-3 L 19,4 C 19,2.338 17.662,1 16,1 L 4,1 z m 1,2 10,0 c 1.108,0 2,0.8920001 2,2 l 0,10 c 0,1.108 -0.892,2 -2,2 L 5,17 C 3.8920001,17 3,16.108 3,15 L 3,5 C 3,3.8920001 3.8920001,3 5,3 z"

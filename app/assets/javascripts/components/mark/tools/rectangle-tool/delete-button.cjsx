@@ -1,8 +1,8 @@
 React = require 'react'
 
 RADIUS = 8
-STROKE_COLOR = 'white'
-FILL_COLOR = 'black'
+STROKE_COLOR = '#000'
+FILL_COLOR = '#f00'
 STROKE_WIDTH = 1.5
 
 CROSS_PATH = "

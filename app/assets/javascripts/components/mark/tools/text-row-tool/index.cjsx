@@ -131,13 +131,31 @@ module.exports = React.createClass
         onMouseDown={@props.onSelect unless @props.disabled}
       >
         <Draggable onDrag={@handleDrag}>
-          <rect
-            x="0"
-            y="0"
-            width="100%"
-            height={@props.mark.yLower-@props.mark.yUpper}
-            className="#{ if isPriorMark then 'previous-mark'}"
+
+
+          <g
+            dangerouslySetInnerHTML={
+              __html: "
+                <filter id=\"dropShadow\">
+                  <feGaussianBlur in=\"SourceAlpha\" stdDeviation=\"3\" />
+                  <feOffset dx=\"2\" dy=\"4\" />
+                  <feMerge>
+                    <feMergeNode />
+                    <feMergeNode in=\"SourceGraphic\" />
+                  </feMerge>
+                </filter>
+                <rect
+                  x=\"0\"
+                  y=\"0\"
+                  width=\"100%\"
+                  height=\"#{@props.mark.yLower-@props.mark.yUpper}\"
+                  className=\"#{ if isPriorMark then 'previous-mark'}\"
+                  filter=\"url(#dropShadow)\"
+                />
+              "
+            }
           />
+
         </Draggable>
 
         { if @props.selected and not @state.locked
