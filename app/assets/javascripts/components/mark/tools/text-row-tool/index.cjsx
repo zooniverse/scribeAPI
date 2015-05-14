@@ -94,14 +94,12 @@ module.exports = React.createClass
 
     scale = (@props.xScale + @props.yScale) / 2
 
+    # DETERMINE MARK STYLE
     if isPriorMark
-      console.log 'PRIOR MARK'
       markStyle = markStyles.prior
     else if @props.selected
-      console.log 'SELECTED MARK'
       markStyle = markStyles.selected
     else
-      console.log 'REGULAR MARK'
       markStyle = markStyles.regular
 
     <g
@@ -167,16 +165,16 @@ module.exports = React.createClass
         }
 
         { # REQUIRES MARK-BUTTON-MIXIN
-          console.log 'MARK STATUS: ', @state.markStatus
-          if @props.selected or @state.markStatus is 'mark-committed' or @state.markStatus is 'transcribe-enabled' then @renderMarkButton()
+          if @props.selected or @state.markStatus is 'transcribe-enabled' then @renderMarkButton()
         }
 
       </g>
     </g>
 
   handleDrag: (e, d) ->
-    return if @state.locked or @props.disabled
-    # @props.mark.x += d.x / @props.xScale
+    console.log 'handleDrag: ', 'disabled: ', @props.disabled, ' locked: ', @state.locked
+    return if @state.locked
+    return if @props.disabled
     @props.mark.y += d.y / @props.yScale
     @props.mark.yUpper += d.y / @props.yScale
     @props.mark.yLower += d.y / @props.yScale

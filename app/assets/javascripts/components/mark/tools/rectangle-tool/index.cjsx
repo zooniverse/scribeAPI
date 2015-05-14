@@ -95,10 +95,11 @@ module.exports = React.createClass
     lockTool: false
 
   handleMainDrag: (e, d) ->
-    return if @state.locked or @props.disabled
-     @props.mark.x += d.x / @props.xScale
-     @props.mark.y += d.y / @props.yScale
-     @props.onChange e
+    return if @state.locked
+    return if @props.disabled
+    @props.mark.x += d.x / @props.xScale
+    @props.mark.y += d.y / @props.yScale
+    @props.onChange e
 
   handleX1Y1Drag: (e, d) ->
     @props.mark.x += d.x / @props.xScale
@@ -137,7 +138,6 @@ module.exports = React.createClass
     @props.onSelect @props.mark
 
   render: ->
-
     if @state.markStatus is 'mark-committed'
       isPriorMark = true
       @props.disabled = true
@@ -151,14 +151,12 @@ module.exports = React.createClass
 
     scale = (@props.xScale + @props.yScale) / 2
 
+    # DETERMINE MARK STYLE
     if isPriorMark
-      console.log 'PRIOR MARK'
       markStyle = markStyles.prior
     else if @props.selected
-      console.log 'SELECTED MARK'
       markStyle = markStyles.selected
     else
-      console.log 'REGULAR MARK'
       markStyle = markStyles.regular
 
     points = [
@@ -177,6 +175,8 @@ module.exports = React.createClass
       <g
         className='rectangle-tool'
         onMouseDown={@props.onSelect unless @props.disabled}
+        stroke={markStyle.strokeColor}
+        strokeWidth={markStyle.strokeWidth/scale}
       >
 
         <Draggable onDrag = {@handleMainDrag} >
@@ -194,8 +194,6 @@ module.exports = React.createClass
 
                 <polyline
                   points=\"#{points}\"
-                  strokeWidth=\"#{markStyle.strokeWidth / scale}\"
-                  stroke=\"#{markStyle.strokeColor}\"
                   fill=\"transparent\"
                   filter=\"#{if @props.selected then 'url(#dropShadow)' else 'none'}\"
                 />
@@ -206,7 +204,7 @@ module.exports = React.createClass
 
         </Draggable>
 
-        { if @props.selected
+        { if @props.selected and not @props.disabled
           <g>
             <DeleteButton tool={this} x={x1 + (width * DELETE_BUTTON_DISTANCE)} y={y1} />
             <DragHandle tool={this} x={x1} y={y1} onDrag={@handleX1Y1Drag} />
@@ -216,7 +214,10 @@ module.exports = React.createClass
           </g>
         }
 
-        { if @props.selected then @renderMarkButton() }
+        { # REQUIRES MARK-BUTTON-MIXIN
+          if @props.selected or @state.markStatus is 'transcribe-enabled' then @renderMarkButton()
+        }
+
       </g>
 
     </g>

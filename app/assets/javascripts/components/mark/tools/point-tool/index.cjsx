@@ -58,7 +58,8 @@ module.exports = React.createClass
     y: SELECTED_RADIUS/@props.yScale
 
   handleDrag: (e, d) ->
-    return if @state.locked or @props.disabled
+    return if @state.locked
+    return if @props.disabled
     @props.mark.x += d.x / @props.xScale
     @props.mark.y += d.y / @props.yScale
     @props.onChange e
@@ -77,21 +78,19 @@ module.exports = React.createClass
     crosshairWidth = CROSSHAIR_WIDTH / averageScale
     selectedRadius = SELECTED_RADIUS / averageScale
 
-    radius = if @props.selected
+    radius = if @props.selected or @props.disabled
       SELECTED_RADIUS / averageScale
     else
       RADIUS / averageScale
 
     scale = (@props.xScale + @props.yScale) / 2
 
+    # DETERMINE MARK STYLE
     if isPriorMark
-      console.log 'PRIOR MARK'
       markStyle = markStyles.prior
     else if @props.selected
-      console.log 'SELECTED MARK'
       markStyle = markStyles.selected
     else
-      console.log 'REGULAR MARK'
       markStyle = markStyles.regular
 
     <g
@@ -134,11 +133,13 @@ module.exports = React.createClass
 
         </Draggable>
 
-        { if @props.selected
+        { if @props.selected and not @props.disabled
           <DeleteButton tool={this} getDeleteButtonPosition={@getDeleteButtonPosition} />
         }
 
-        { if @props.selected then @renderMarkButton() }
+        { # REQUIRES MARK-BUTTON-MIXIN
+          if @props.selected or @state.markStatus is 'transcribe-enabled' then @renderMarkButton()
+        }
 
       </g>
     </g>
