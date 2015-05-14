@@ -14,7 +14,7 @@
   "tasks":{
     "pick_page_type":{
       "order":0,
-      "tool":"pick_one",
+      "tool":"pickOne",
       "instruction":"What kind of page is this?",
       "next_task": null,
       "options":{
@@ -30,7 +30,7 @@
     },
     "attestation_form_task":{
       "generate_subjects": true,
-      "tool":"mark",
+      "tool":"pickOneMarkOne",
       "instruction":"Draw a rectangle around each record.",
       "tools": [
         {"type": "textRowTool", "label": "Number", "color": "green", "generated_subject_type": "att_textRowTool_number" },

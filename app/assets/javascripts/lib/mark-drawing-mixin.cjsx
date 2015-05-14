@@ -1,30 +1,26 @@
+markingTools = require 'components/mark/tools'
+
 module.exports =
+
   showPreviousMarks: ->
     # DEBUG CODE
     # console.log 'PREVIOUS MARKS: ', @props.subject.child_subjects_info
     previousMarks =
-      for previousMark in @props.subject.child_subjects_info
-        console.log "props in the mark-draw mixin", @props.subject
-        switch previousMark.data.toolName
-          when 'textRowTool'
-            x = 0
-            y = previousMark.data.yUpper
-            width = @state.imageWidth
-            height = previousMark.data.yLower - previousMark.data.yUpper
-          when 'rectangleTool'
-            x = previousMark.data.x
-            y = previousMark.data.y
-            width = previousMark.data.width
-            height = previousMark.data.height
-        <rect
-          className   = "previous-mark"
-          x           = { x }
-          y           = { y }
-          width       = { width }
-          height      = { height }
-          fill        = "rgba(0,0,0,0)"
-          stroke      = "#f60"
-          strokeWidth = "5px"
+      for mark, i in @props.subject.child_subjects_info
+        toolName = mark.data.toolName
+        ToolComponent = markingTools[toolName]
+        scale = @getScale()
+
+        <ToolComponent
+          key={mark._key}
+          mark={mark.data}
+          xScale={scale.horizontal}
+          yScale={scale.vertical}
+          disabled={true}
+          isPriorMark={true}
+          selected={true}
+          getEventOffset={@getEventOffset}
+          ref={@refs.sizeRect}
         />
 
     return <g>{previousMarks}</g>

@@ -1,4 +1,4 @@
-.text-row-tool
+.point-tool
   cursor grab
   cursor -webkit-grab
   &.locked
@@ -9,8 +9,8 @@
     cursor -webkit-grabbing
 
   .resize-button
-    cursor row-resize
-    cursor -webkit-row-resize
+    cursor grab
+    cursor -webkit-grab
     &:active
       cursor grabbing
       cursor -webkit-grabbing
@@ -31,3 +31,10 @@
       opacity 0.6
       &:hover
         opacity 1.0
+
+  polyline
+    cursor grab
+    cursor -webkit-grab
+    &:active
+      cursor grabbing
+      cursor -webkit-grabbing

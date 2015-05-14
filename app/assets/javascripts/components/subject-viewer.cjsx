@@ -325,9 +325,35 @@ module.exports = React.createClass
               height = {@state.imageHeight} />
           </Draggable>
 
-          {
-            if @props.workflow.name is 'mark'
-              @showPreviousMarks()
+          { # DISPLAY PREVIOUS MARKS
+
+            for mark, i in @props.subject.child_subjects_info
+              toolName = mark.data.toolName
+              ToolComponent = markingTools[toolName]
+              scale = @getScale()
+
+              console.log 'REFS: ', @refs
+
+              <ToolComponent
+                key={i}
+                mark={mark.data}
+                xScale={scale.horizontal}
+                yScale={scale.vertical}
+                disabled={true}
+                isPriorMark={true}
+                selected={false}
+                getEventOffset={@getEventOffset}
+                ref={@refs.sizeRect}
+
+                onChange={=> console.log 'ON CHANGE'}
+                onSelect={=> console.log 'ON SELECT'}
+                onDestroy={=> console.log 'ON DESTORY'}
+              />
+
+
+            # # THIS IS CAUSING PROBLEMS - STI
+            # if @props.workflow.name is 'mark'
+            #   @showPreviousMarks()
               # @showTranscribeTools()
           }
 
@@ -340,7 +366,7 @@ module.exports = React.createClass
               toolName = @props.subject.data.toolName
               mark = @props.subject.data
               ToolComponent = markingTools[toolName]
-              isPriorAnnotation = true
+              isPriorMark = true
               <g>
                 { @highlightMark(mark, toolName) }
                 <ToolComponent
@@ -348,7 +374,7 @@ module.exports = React.createClass
                   mark={mark}
                   xScale={scale.horizontal}
                   yScale={scale.vertical}
-                  disabled={isPriorAnnotation}
+                  disabled={isPriorMark}
                   selected={mark is @state.selectedMark}
                   getEventOffset={@getEventOffset}
                   ref={@refs.sizeRect}
@@ -360,11 +386,11 @@ module.exports = React.createClass
           { # HANDLE NEW MARKS
             for annotation in @props.classification.annotations
               annotation._key ?= Math.random()
-              isPriorAnnotation = annotation isnt @props.annotation
+              isPriorMark = annotation isnt @props.annotation
               taskDescription = @props.workflow.tasks[annotation.task]
 
-              if taskDescription.tool is 'mark' or taskDescription.tool is 'transcribe'
-                <g key={annotation._key} className="marks-for-annotation" data-disabled={isPriorAnnotation or null}>
+              if taskDescription.tool is 'pickOneMarkOne' #or taskDescription.tool is 'transcribe'
+                <g key={annotation._key} className="marks-for-annotation" data-disabled={isPriorMark or null}>
                   {for mark, m in annotation.value
 
                     mark._key ?= Math.random()
@@ -380,7 +406,8 @@ module.exports = React.createClass
                       mark={mark}
                       xScale={scale.horizontal}
                       yScale={scale.vertical}
-                      disabled={isPriorAnnotation}
+                      disabled={false}
+                      isPriorMark={isPriorMark}
                       selected={mark is @state.selectedMark}
                       getEventOffset={@getEventOffset}
                       ref={@refs.sizeRect}

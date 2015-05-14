@@ -13,7 +13,7 @@ class Subject
   field :random_no ,                  type: Float
   field :annotation_value_count,      type: Integer, default: 0
   field :status ,                     type: String,  default: "active" #options: "active", "inactive", "retired", "complete"
-  field :type,                        type: String,  default: "root" 
+  field :type,                        type: String,  default: "root"
   field :meta_data,                   type: Hash
   field :retire_count,                type: Integer
   field :tool_task_description,       type: Hash
@@ -29,9 +29,9 @@ class Subject
   has_many :classifications
   has_many :favourites
   belongs_to :subject_set
-  belongs_to :parent_subject, :class_name => "Subject", :foreign_key => "parent_subject_id"  
+  belongs_to :parent_subject, :class_name => "Subject", :foreign_key => "parent_subject_id"
   has_many :child_subjects, :class_name => "Subject"
-  
+
 
 
   # after_create :update_subject_set_stats
