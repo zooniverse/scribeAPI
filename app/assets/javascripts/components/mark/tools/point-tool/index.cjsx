@@ -57,11 +57,21 @@ module.exports = React.createClass
     x: SELECTED_RADIUS/@props.xScale
     y: SELECTED_RADIUS/@props.yScale
 
+  handleDrag: (e, d) ->
+    return if @state.locked or @props.disabled
+    @props.mark.x += d.x / @props.xScale
+    @props.mark.y += d.y / @props.yScale
+    @props.onChange e
+
+  handleMouseDown: ->
+    console.log 'handleMouseDown()'
+    @props.onSelect @props.mark # unless @props.disabled
+
   render: ->
     if @state.markStatus is 'mark-committed'
       isPriorMark = true
       @props.disabled = true
-      
+
     averageScale = (@props.xScale + @props.yScale) / 2
     crosshairSpace = CROSSHAIR_SPACE / averageScale
     crosshairWidth = CROSSHAIR_WIDTH / averageScale
@@ -73,7 +83,6 @@ module.exports = React.createClass
       RADIUS / averageScale
 
     scale = (@props.xScale + @props.yScale) / 2
-
 
     if isPriorMark
       console.log 'PRIOR MARK'
@@ -133,21 +142,3 @@ module.exports = React.createClass
 
       </g>
     </g>
-
-    # <text x={@props.mark.x} y={@props.mark.y} fill="red" fontSize="55">SuperAwesomePoint!</text>
-
-  handleDrag: (e, d) ->
-    @props.mark.x += d.x / @props.xScale
-    @props.mark.y += d.y / @props.yScale
-    @props.onChange e
-
-  # handleDrag: (e, d) ->
-  #   console.log 'handleDrag()'
-  #   offset = @props.getEventOffset e
-  #   @props.mark.x = offset.x
-  #   @props.mark.y = offset.y
-  #   @props.onChange()
-
-  handleMouseDown: ->
-    console.log 'handleMouseDown()'
-    @props.onSelect @props.mark # unless @props.disabled

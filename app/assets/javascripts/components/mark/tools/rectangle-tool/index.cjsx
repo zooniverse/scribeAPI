@@ -95,6 +95,7 @@ module.exports = React.createClass
     lockTool: false
 
   handleMainDrag: (e, d) ->
+    return if @state.locked or @props.disabled
      @props.mark.x += d.x / @props.xScale
      @props.mark.y += d.y / @props.yScale
      @props.onChange e
