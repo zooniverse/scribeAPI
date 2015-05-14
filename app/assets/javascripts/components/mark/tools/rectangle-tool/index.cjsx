@@ -5,15 +5,36 @@ DragHandle      = require './drag-handle'
 DeleteButton    = require './delete-button'
 MarkButtonMixin = require 'lib/mark-button-mixin'
 
-SELECTED_RADIUS = 20
 MINIMUM_SIZE = 5
 DELETE_BUTTON_ANGLE = 45
 DELETE_BUTTON_DISTANCE = 9 / 10
 DEBUG = false
 
-STROKE_COLOR = '#43bbfd'
-STROKE_WIDTH = 2.5
+markStyles =
 
+  prior:
+    strokeColor:         'rgba(90,200,90,0.5)'
+    strokeWidth:         2.0
+    hoverFill:           'rgba(100,100,0,0.5)'
+    disabledStrokeColor: 'rgba(90,200,90,0.5)'
+    disabledStrokeWidth: 2.0
+    disabledHoverFill:   'transparent'
+
+  selected:
+    strokeColor:         '#43bbfd'
+    strokeWidth:         2.5
+    hoverFill:           'transparent'
+    disabledStrokeColor: '#43bbfd'
+    disabledStrokeWidth: 2.0
+    disabledHoverFill:   'transparent'
+
+  regular:
+    strokeColor:         'rgba(100,100,0,0.5)'
+    strokeWidth:         2.0
+    hoverFill:           'transparent'
+    disabledStrokeColor: 'rgba(100,100,0,0.5)'
+    disabledStrokeWidth: 2.0
+    disabledHoverFill:   'transparent'
 
 module.exports = React.createClass
   displayName: 'RectangleTool'
@@ -115,6 +136,11 @@ module.exports = React.createClass
     @props.onSelect @props.mark
 
   render: ->
+
+    if @state.markStatus is 'mark-committed'
+      isPriorMark = true
+      @props.disabled = true
+
     x1 = @props.mark.x
     width = @props.mark.width
     x2 = x1 + width
@@ -124,6 +150,15 @@ module.exports = React.createClass
 
     scale = (@props.xScale + @props.yScale) / 2
 
+    if isPriorMark
+      console.log 'PRIOR MARK'
+      markStyle = markStyles.prior
+    else if @props.selected
+      console.log 'SELECTED MARK'
+      markStyle = markStyles.selected
+    else
+      console.log 'REGULAR MARK'
+      markStyle = markStyles.regular
 
     points = [
       [x1, y1].join ','
@@ -158,8 +193,8 @@ module.exports = React.createClass
 
                 <polyline
                   points=\"#{points}\"
-                  strokeWidth=\"#{STROKE_WIDTH / scale}\"
-                  stroke=\"#{STROKE_COLOR}\"
+                  strokeWidth=\"#{markStyle.strokeWidth / scale}\"
+                  stroke=\"#{markStyle.strokeColor}\"
                   fill=\"transparent\"
                   filter=\"#{if @props.selected then 'url(#dropShadow)' else 'none'}\"
                 />
