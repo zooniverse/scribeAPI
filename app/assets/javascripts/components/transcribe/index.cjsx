@@ -4,12 +4,12 @@ SubjectViewer      = require '../subject-viewer'
 JSONAPIClient      = require 'json-api-client' # use to manage data?
 FetchSubjectsMixin = require 'lib/fetch-subjects-mixin'
 ForumSubjectWidget = require '../forum-subject-widget'
-tasks              = require '../tasks' # delete? -STI
 
 # Hash of core tools:
-core_tools        = require '../tasks'
+coreTools          = require 'components/core-tools'
+
 # Hash of transcribe tools:
-transcribe_tools   = require './tools'
+transcribeTools   = require './tools'
 
 resource = new JSONAPIClient
 
@@ -47,7 +47,7 @@ module.exports = React.createClass # rename to Classifier
     task = @state.workflow.tasks[ key ]
     task.key = key
 
-    tool = core_tools[task?.tool] ? transcribe_tools[task?.tool]
+    tool = coreTools[task?.tool] ? transcribeTools[task?.tool]
     if ! task?
       console.log "WARN: Invalid task key: ", key
 
@@ -72,6 +72,7 @@ module.exports = React.createClass # rename to Classifier
     field = task.tool_options.field
     # console.log "  Transcribe#translateLogicTaskKey Looking for ", field, @state.currentSubject
     field_value = @state.currentSubject[field]
+    console.log "@state.currentSubject", @state.currentSubject
     matched_option = task.tool_options.options[field_value]
     if ! matched_option?
       console.log "WARN: SwitchOnValueTask can't find matching task \"#{field_value}\" in", task.tool_options.options
