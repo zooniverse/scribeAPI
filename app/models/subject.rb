@@ -3,35 +3,42 @@ class Subject
   include Mongoid::Timestamps
   include Randomizer
 
-  field :name,                        type: String
-  field :thumbnail,                   type: String
-  field :file_path
-  field :order
-  field :width
-  field :height
-  field :location,                    type: Hash
-  field :random_no ,                  type: Float
-  field :annotation_value_count,      type: Integer, default: 0
-  field :status ,                     type: String,  default: "active" #options: "active", "inactive", "retired", "complete"
+  # This is a hash with one entry per deriv; `standard', 'thumbnail', etc
+  field :location,                    type: Hash 
   field :type,                        type: String,  default: "root" #options: "root", "secondary"
+  field :status,                      type: String,  default: "active" #options: "active", "inactive", "retired", "complete"
   field :meta_data,                   type: Hash
-  field :retire_count,                type: Integer
-  field :tool_task_description,       type: Hash
   field :secondary_subject_count,     type: Integer, default: 0
   field :classification_count,        type: Integer, default: 0
+  field :random_no,                   type: Float
+
+  # TODO PB This is, I believe soon to be renamed to retire_vote:
+  field :retire_count,                type: Integer
+  # TODO PB This is, I believe, the new retire_count?
   field :retire_vote,                 type: Integer, default: 0
+
+  # ROOT SUBJECT concerns:
+  field :order
+  field :name,                        type: String
+  field :width
+  field :height
+
+  # SECONDARY SUBJECT concerns:
+  field :tool_task_description,       type: Hash
+
+  # field :thumbnail,                   type: String # PB Deprecating this
+  # field :file_path # PB Deprecating this
   # Optional 'key' value specified in some tool options (drawing) to identify tool option selected ('record-rect', 'point-tool')
-  field :key,                         type: String
+  # field :key,                         type: String # PB Dep
+  # field :annotation_value_count,      type: Integer, default: 0 # PB I believe this is deprecated in favor of classification_count:
 
   belongs_to :workflow
-  has_many :classifications
-  has_many :favourites
-
   belongs_to :parent_subject, :class_name => "Subject", :foreign_key => "parent_subject_id"  
-  has_many :child_subjects, :class_name => "Subject"
-  
   belongs_to :subject_set
 
+  has_many :child_subjects, :class_name => "Subject"
+  has_many :classifications
+  has_many :favourites
 
   # after_create :update_subject_set_stats
 
@@ -46,8 +53,8 @@ class Subject
   # check out ink mongomapper
   # sets the proper type value. at the moment this is limited to "secondary" might be more appropiate to say "non-root".
   def increment_parents_subject_count_by_one
-    self.type = "secondary"
-    self.save
+    # self.type = "secondary" # This needs to remain the user-supplied value
+    # self.save
     parent_subject = self.parent_subject
     parent_subject.secondary_subject_count += 1
     parent_subject.save

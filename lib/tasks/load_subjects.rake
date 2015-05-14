@@ -90,7 +90,7 @@ require 'active_support'
         data = subjects.first
         thumbnail       = data['thumbnail']
         name            = data['name']
-        meta_data       = data.except('group_id', 'file_path', 'retire_count', 'thumbnail')
+        meta_data       = data.except('group_id', 'file_path', 'retire_count', 'thumbnail', 'width','height', 'order')
 
         puts "    Adding subject set: #{set_key}"
         subject_set = group.subject_sets.create({
@@ -101,25 +101,38 @@ require 'active_support'
         })
         puts "      - saved subject set #{subject_set.thumbnail}"
 
-        subjects.each do |subj|
+        subjects.each_with_index do |subj, i|
           data = subj
-          # puts "    Load subject/subjeset: #{data}"
-          # group_id = group.id # args['group_id']
-          meta_data = subj.except('file_path', 'retire_count', 'thumbnail')
+
+          width = subj['width'].nil? ? nil : subj['width'].to_i
+          height = subj['height'].nil? ? nil : subj['height'].to_i
+
+          # If width/height not specified in CSV, autodetect:
+          if width.nil? || height.nil?
+            require 'fastimage'
+            width, height = FastImage.size(subj['file_path'])
+            puts "        - Autodetected image size: #{width} x #{height}"
+          end
+
+          # Parse order from csv if avail; otherwise default to position in csv:
+          order = subj['order'].nil? ? i : subj['order'].to_i
 
           puts "      Adding subject: #{subj['file_path']}"
           s = subject_set.subjects.create({
-            file_path: subj['file_path'],
+            # file_path: subj['file_path'], #PB: Nah, goes in location:
             location: {
               standard: subj['file_path'],
               thumbnail: subj['thumbnail']
             },
             workflow: mark_workflow,
-            retire_count: subj['retire_count'],
-            meta_data: meta_data
+            # retire_count: subj['retire_count'], # PB Don't see why we'd set this via csv
+            meta_data: meta_data,
+            width: width,
+            height: height,
+            order: order
           })
           s.activate!
-          puts "        - saved subject: #{s.file_path}"
+          puts "        - Saved subject: #{s.location[:standard]}"
         end
 
       end

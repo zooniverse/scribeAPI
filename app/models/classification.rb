@@ -21,7 +21,9 @@ class Classification
   before_create :generate_new_subjects
 
   after_create :generate_terms
-  after_create :increment_subject_number_of_annontation_values
+
+  # PB I believe this will take a different form: classification_count? 
+  # after_create :increment_subject_number_of_annontation_values
 
   def generate_new_subjects
     if workflow.generates_new_subjects
