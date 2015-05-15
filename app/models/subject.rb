@@ -17,6 +17,7 @@ class Subject
   field :meta_data,                   type: Hash
   field :tool_task_description,       type: Hash
   
+  #TODO: can we delete these fields?
   field :file_path
   field :random_no ,                  type: Float
   field :key,                         type: String
@@ -42,22 +43,19 @@ class Subject
     subject_set.inc_subject_count_for_workflow(workflow)
   end
 
-  # TODO: check out ink mongomapper for incrementation
   def increment_parents_subject_count_by_one
-    self.parent_subject.secondary_subject_count += 1
-    parent_subject.save
+    parent_subject.inc(secondary_subject_count: 1)
   end
 
-  
   def retire!
-    self.status = "retired" if self.classification_count >= self.retire_count
-    self.subject_set.subject_completed_on_workflow(workflow)
+    self.status = "retired" if classification_count >= retire_count
+    subject_set.subject_completed_on_workflow(workflow)
     save
   end
 
   def activate!
     self.status = "active"
-    self.subject_set.subject_activated_on_workflow(workflow)
+    subject_set.subject_activated_on_workflow(workflow)
     save
   end
 

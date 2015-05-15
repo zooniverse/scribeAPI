@@ -30,20 +30,20 @@ class Workflow
   # end
 
   def subject_has_enough_classifications(subject)
-    subject.classifications.length >= self.generate_subjects_after
+    subject.classification_count >= self.generate_subjects_after
   end
 
 
   def create_secondary_subjects(classification)   
-    workflow_id = Workflow.find_by(name: classification.subject.workflow.generates_subjects_for).id
 
+    workflow_for_new_subject = Workflow.find_by(name: classification.subject.workflow.generates_subjects_for).id
     classification.annotations.each do |annotation|
       if annotation["generate_subjects"]
         annotation["value"].each do |value|
           child_subject = Subject.create(
-            workflow_id: workflow_id ,
-            subject_set_id: classification.subject_set_id,
-            retire_count: 3,
+            workflow: workflow_for_new_subject,
+            subject_set: classification.subject.subject_set,
+            retire_count: workflow_for_new_subject.retire_limit,
             parent_subject_id: classification.subject_id,
             tool_task_description: annotation["tool_task_description"],
             type: annotation["subject_type"],

@@ -26,33 +26,22 @@
         "att_transcribe_number": {
             "tool": "text_tool",
             "tool_options": {},
-            "instruction": "Enter the record date"
+            "instruction": "Enter the number"
         },
         "att_textRowTool_name": {
             "tool": "text_tool",
             "tool_options": {},
-            "instruction": "Enter the record date"
+            "instruction": "Enter the name"
         },
         "att_textRowTool_regiment": {
             "tool": "text_tool",
             "tool_options": {},
-            "instruction": "Enter the record date"
+            "instruction": "Enter the regiment"
         },
         "att_textRowTool_question": {
-            "tool": "composite_tool",
-            "tool_options": {
-                "tools": {
-                    "em_valuation_questions": {
-                        "tool": "text_tool",
-                        "tool_options": {}
-                    },
-                    "em_valuation_answer": {
-                        "tool": "text_tool",
-                        "tool_options": {}
-                    }
-                }
-            },
-            "instruction": "Please enter the questions and the written answer."
+            "tool": "text_tool",
+            "tool_options": {},
+            "instruction": "Enter the question"
         }
     }
 }

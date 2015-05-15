@@ -42,7 +42,7 @@
     },
     "history_form_task":{
       "generate_subjects": true,
-      "tool":"mark",
+      "tool":"pickOneMarkOne",
       "instruction":"Draw a rectangle around each record.",
       "tools": [
         {"type": "rectangleTool", "label": "Occupation", "color": "green", "generated_subject_type": "att_textRowTool_name" },
