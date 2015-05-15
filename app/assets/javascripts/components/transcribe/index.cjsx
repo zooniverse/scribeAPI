@@ -21,7 +21,6 @@ module.exports = React.createClass # rename to Classifier
   mixins: [FetchSubjectsMixin] # load subjects and set state variables: subjects, currentSubject, classification
 
   getInitialState: ->
-    # TODO: why is workflow an array!?!?
     workflow: @props.workflow
 
   getDefaultProps: ->
@@ -120,6 +119,17 @@ module.exports = React.createClass # rename to Classifier
       console.log "go back"
 
   render: ->
+
+
+    console.log 'COMONENT DID MOUNT'
+    if @props.query.scrollX? and @props.query.scrollY?
+      console.log 'SCROLLING...'
+      window.scrollTo(@props.query.scrollX,@props.query.scrollY)
+
+
+
+
+
     console.log "Transcribe#render: ", @state
     console.log "Transcribe#render: classification: ", @props.classification
     return null unless @state.currentTask?

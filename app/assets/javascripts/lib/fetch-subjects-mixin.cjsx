@@ -63,8 +63,10 @@ module.exports =
   #     @fetchSubjects @props.workflow.id, @props.workflow.subject_fetch_limit
   #
 
-    if @props.workflow.name is "mark"
-      @fetchSubjectSets @props.workflow.id, @props.workflow.subject_fetch_limit
+    if @props.workflow.name is 'transcribe' and @props.params.subject_id
+      @fetchSubject @props.params.subject_id,@props.workflow.id
+    else if @props.workflow.name is "mark"
+        @fetchSubjectSets @props.workflow.id, @props.workflow.subject_fetch_limit
     else
       @fetchSubjects @props.workflow.id, @props.workflow.subject_fetch_limit
 
@@ -77,10 +79,13 @@ module.exports =
       currentSubject: null
 
     request.then (subject)=>
-      console.log("retrived subejct set", subject_set)
+      console.log("retrived subejct set", subject)
       @setState
-        subject: [subject]
+        subjects: [subject]
         currentSubject: subject
+
+      if @fetchSubjectsCallback?
+        @fetchSubjectsCallback()
 
   fetchSubjects: (workflow_id, limit) ->
     console.log 'fetchSubjects()'

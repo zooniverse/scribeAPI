@@ -264,8 +264,17 @@ module.exports = React.createClass
       })
       .done (response) =>
         console.log "Success", response #, #response #, response._id.$oid
-        console.log 'RECEIVED SECONDARY SUBJECT ID: ', response.child_subject_id
+        console.log 'RECEIVED SECONDARY SUBJECT ID: ', response
         console.log 'SELECTED MARK: ', @state.selectedMark
+
+        selectedMark = @state.selectedMark
+        console.log 'CHILD_SUBJECT_ID: ', response.classification.child_subject_id
+        selectedMark.child_subject_id = response.classification.child_subject_id
+        @setState selectedMark: selectedMark, =>
+          console.log 'UPDATED MARK WITH CHILD SUBJECT ID: ', @state.selectedMark
+          @forceUpdate()
+
+        # console.log 'TEST ANNOTATION: ', @props.annotation.value.child_subject_id = response.child_subject.id
         # @setTranscribeSubject(key, response._id.$oid)
         # @enableMarkButton(key)
         return
@@ -328,6 +337,9 @@ module.exports = React.createClass
           { # DISPLAY PREVIOUS MARKS
 
             for mark, i in @props.subject.child_subjects_info
+
+              console.log 'PREVIOUS MARK: ', mark
+
               toolName = mark.data.toolName
               ToolComponent = markingTools[toolName]
               scale = @getScale()
@@ -392,6 +404,8 @@ module.exports = React.createClass
               if taskDescription.tool is 'pickOneMarkOne' #or taskDescription.tool is 'transcribe'
                 <g key={annotation._key} className="marks-for-annotation" data-disabled={isPriorMark or null}>
                   {for mark, m in annotation.value
+
+                    console.log 'NEW MARK: ', mark
 
                     mark._key ?= Math.random()
                     toolDescription = taskDescription.tools[mark.tool]
