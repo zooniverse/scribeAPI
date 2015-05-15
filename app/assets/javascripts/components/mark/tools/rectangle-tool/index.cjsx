@@ -5,12 +5,36 @@ DragHandle      = require './drag-handle'
 DeleteButton    = require './delete-button'
 MarkButtonMixin = require 'lib/mark-button-mixin'
 
-SELECTED_RADIUS = 20
 MINIMUM_SIZE = 5
 DELETE_BUTTON_ANGLE = 45
 DELETE_BUTTON_DISTANCE = 9 / 10
 DEBUG = false
 
+markStyles =
+
+  prior:
+    strokeColor:         'rgba(90,200,90,0.5)'
+    strokeWidth:         2.0
+    hoverFill:           'rgba(100,100,0,0.5)'
+    disabledStrokeColor: 'rgba(90,200,90,0.5)'
+    disabledStrokeWidth: 2.0
+    disabledHoverFill:   'transparent'
+
+  selected:
+    strokeColor:         '#43bbfd'
+    strokeWidth:         2.5
+    hoverFill:           'transparent'
+    disabledStrokeColor: '#43bbfd'
+    disabledStrokeWidth: 2.0
+    disabledHoverFill:   'transparent'
+
+  regular:
+    strokeColor:         'rgba(100,100,0,0.5)'
+    strokeWidth:         2.0
+    hoverFill:           'transparent'
+    disabledStrokeColor: 'rgba(100,100,0,0.5)'
+    disabledStrokeWidth: 2.0
+    disabledHoverFill:   'transparent'
 
 module.exports = React.createClass
   displayName: 'RectangleTool'
@@ -71,9 +95,11 @@ module.exports = React.createClass
     lockTool: false
 
   handleMainDrag: (e, d) ->
-     @props.mark.x += d.x / @props.xScale
-     @props.mark.y += d.y / @props.yScale
-     @props.onChange e
+    return if @state.locked
+    return if @props.disabled
+    @props.mark.x += d.x / @props.xScale
+    @props.mark.y += d.y / @props.yScale
+    @props.onChange e
 
   handleX1Y1Drag: (e, d) ->
     @props.mark.x += d.x / @props.xScale
@@ -112,13 +138,26 @@ module.exports = React.createClass
     @props.onSelect @props.mark
 
   render: ->
-    classString = "rectangleTool"
+    if @state.markStatus is 'mark-committed'
+      isPriorMark = true
+      @props.disabled = true
+
     x1 = @props.mark.x
     width = @props.mark.width
     x2 = x1 + width
     y1 = @props.mark.y
     height = @props.mark.height
     y2 = y1 + height
+
+    scale = (@props.xScale + @props.yScale) / 2
+
+    # DETERMINE MARK STYLE
+    if isPriorMark
+      markStyle = markStyles.prior
+    else if @props.selected
+      markStyle = markStyles.selected
+    else
+      markStyle = markStyles.regular
 
     points = [
       [x1, y1].join ','
@@ -129,30 +168,56 @@ module.exports = React.createClass
     ].join '\n'
 
     <g
-      className = {classString}
+      className='rectangle-tool'
       tool={this}
       onMouseDown={@props.onSelect unless @props.disabled}
     >
       <g
-        className = {classString}
+        className='rectangle-tool'
         onMouseDown={@props.onSelect unless @props.disabled}
+        stroke={markStyle.strokeColor}
+        strokeWidth={markStyle.strokeWidth/scale}
       >
 
         <Draggable onDrag = {@handleMainDrag} >
-          <polyline points={points} strokeWidth="2" stroke="orange" fill="none"/>
+          <g
+            dangerouslySetInnerHTML={
+              __html: "
+                <filter id=\"dropShadow\">
+                  <feGaussianBlur in=\"SourceAlpha\" stdDeviation=\"3\" />
+                  <feOffset dx=\"2\" dy=\"4\" />
+                  <feMerge>
+                    <feMergeNode />
+                    <feMergeNode in=\"SourceGraphic\" />
+                  </feMerge>
+                </filter>
+
+                <polyline
+                  points=\"#{points}\"
+                  fill=\"transparent\"
+                  filter=\"#{if @props.selected then 'url(#dropShadow)' else 'none'}\"
+                />
+
+              "
+            }
+          />
+
         </Draggable>
 
-        { if @props.selected
+        { if @props.selected and not @props.disabled
           <g>
             <DeleteButton tool={this} x={x1 + (width * DELETE_BUTTON_DISTANCE)} y={y1} />
-            <DragHandle x={x1} y={y1} onDrag={@handleX1Y1Drag} />
-            <DragHandle x={x2} y={y1} onDrag={@handleX2Y1Drag} />
-            <DragHandle x={x2} y={y2} onDrag={@handleX2Y2Drag} />
-            <DragHandle x={x1} y={y2} onDrag={@handleX1Y2Drag} />
+            <DragHandle tool={this} x={x1} y={y1} onDrag={@handleX1Y1Drag} />
+            <DragHandle tool={this} x={x2} y={y1} onDrag={@handleX2Y1Drag} />
+            <DragHandle tool={this} x={x2} y={y2} onDrag={@handleX2Y2Drag} />
+            <DragHandle tool={this} x={x1} y={y2} onDrag={@handleX1Y2Drag} />
           </g>
         }
 
-        { if @props.selected then @renderMarkButton() }
+        { # REQUIRES MARK-BUTTON-MIXIN
+          if @props.selected or @state.markStatus is 'transcribe-enabled' then @renderMarkButton()
+        }
+
       </g>
 
     </g>

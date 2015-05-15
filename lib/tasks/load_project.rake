@@ -64,7 +64,14 @@ desc 'creates a poject object from the project directory'
 
     project.save
 
-    Rake::Task['project_setup'].invoke(args[:project_name])
+    begin
+      Rake::Task['project_setup'].invoke(args[:project_name])
 
-    puts "Done loading \"#{project.title}\" with #{project.workflows.count} workflow(s), #{project.subject_sets.count} subject sets."
+      puts "Done loading \"#{project.title}\" with #{project.workflows.count} workflow(s), #{project.subject_sets.count} subject sets."
+
+    rescue Exception => e  
+      # If a workflow json can't be parsed, halt:
+      puts ""
+      puts "Halting: #{e.message}"
+    end
   end

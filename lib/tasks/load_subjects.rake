@@ -19,6 +19,7 @@ require 'active_support'
       subjects_dir = Rails.root.join('project', project_name, 'subjects')
 
       project = project_for_key project_name
+
       Rake::Task['load_workflows'].invoke(project_name, project.id)
 
       Rake::Task['load_groups'].invoke(project_name)
@@ -150,13 +151,20 @@ require 'active_support'
     Dir.glob(workflows_path).each do |workflow_hash_path|
       content = File.read(workflow_hash_path) # .gsub(/\n/, '')
       begin
+        next if content == ''
+
         workflow_hash = JSON.parse content
         workflow_hash.deep_symbolize_keys!
         workflow_hash[:project] = project
         workflow = Workflow.create workflow_hash
         puts "  Loaded '#{workflow.name}' workflow with #{workflow.tasks.count} tasks"
+
+        if workflow.generates_subjects && ! workflow.generates_subjects_for
+          puts "    WARN: #{workflow.name} generates subjects, but generates_subjects_for not set"
+        end
       rescue => e
         puts "  WARN: Couldn't parse workflow from #{workflow_hash_path}: #{e}"
+        raise "Error parsing #{workflow_hash_path}"
       end
     end
 

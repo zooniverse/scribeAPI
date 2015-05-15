@@ -18,8 +18,7 @@ class Classification
   belongs_to :subject
   has_many   :triggered_followup_subjects, class_name: "Subject"
 
-  before_create :generate_new_subjects
-
+  after_create :generate_new_subjects
   after_create :generate_terms
 
   # PB I believe this will take a different form: classification_count? 
@@ -86,7 +85,7 @@ class Classification
     subject = self.subject
     subject.annotation_value_count += no_annotation_values
     subject.save
-    subject.retire!
+    # subject.retire!
   end
 
 end

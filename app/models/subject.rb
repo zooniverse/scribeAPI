@@ -7,6 +7,7 @@ class Subject
   field :location,                    type: Hash 
   field :type,                        type: String,  default: "root" #options: "root", "secondary"
   field :status,                      type: String,  default: "active" #options: "active", "inactive", "retired", "complete"
+
   field :meta_data,                   type: Hash
   field :secondary_subject_count,     type: Integer, default: 0
   field :classification_count,        type: Integer, default: 0
@@ -25,6 +26,8 @@ class Subject
 
   # SECONDARY SUBJECT concerns:
   field :tool_task_description,       type: Hash
+  field :data,                        type: Hash
+  field :region,                      type: Hash
 
   # field :thumbnail,                   type: String # PB Deprecating this
   # field :file_path # PB Deprecating this
@@ -53,8 +56,6 @@ class Subject
   # check out ink mongomapper
   # sets the proper type value. at the moment this is limited to "secondary" might be more appropiate to say "non-root".
   def increment_parents_subject_count_by_one
-    # self.type = "secondary" # This needs to remain the user-supplied value
-    # self.save
     parent_subject = self.parent_subject
     parent_subject.secondary_subject_count += 1
     parent_subject.save
@@ -64,17 +65,18 @@ class Subject
   #   1) user indicated that a subject is completely classified
   #   2) self.annotation_value_count >= self.retire_count
   # Result 2) should decrement the self.parent_subject.secondary_subject_count by 1, if self.status == "retired"
-  def retire!
-    puts "EVAL"
+  # def retire!
+  #   puts "EVAL"
     # TODO: retirement should be based on workflow, right? --- consult team.
     # self.status = "retired" if self.annotation_value_count >= self.retire_count
     # subject_set.subject_completed_on_workflow(workflow)
-    save
-  end
+  #   save
+  # end
 
   def activate!
     self.status = "active"
     subject_set.subject_activated_on_workflow(workflow)
     save
   end
+
 end

@@ -12,7 +12,11 @@ MARK_STATES = [
 module.exports =
 
   getInitialState: ->
-    markStatus: 'waiting-for-mark'
+    if @props.isPriorMark
+      markStatus = 'transcribe-enabled'
+    else
+      markStatus = 'waiting-for-mark'
+    markStatus: markStatus
     locked: ''
 
   renderMarkButton: ->

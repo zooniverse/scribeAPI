@@ -1,6 +1,6 @@
 React                   = require 'react'
 SubjectSetViewer        = require '../subject-set-viewer'
-tasks                   = require '../tasks'
+coreTools               = require 'components/core-tools'
 FetchSubjectSetsMixin   = require 'lib/fetch-subject-sets-mixin'
 JSONAPIClient           = require 'json-api-client' # use to manage data?
 ForumSubjectWidget      = require '../forum-subject-widget'
@@ -39,7 +39,7 @@ module.exports = React.createClass # rename to Classifier
     currentAnnotation = if annotations.length is 0 then {} else annotations[annotations.length-1]
     currentTask = @props.workflow.tasks[currentAnnotation?.task]
     console.log "wtf: ", currentAnnotation?.task, currentTask
-    TaskComponent = tasks[currentTask.tool]
+    TaskComponent = coreTools[currentTask.tool]
     onFirstAnnotation = currentAnnotation?.task is @props.workflow.first_task
 
     nextTask = if currentTask.options?[currentAnnotation.value]?
@@ -99,8 +99,8 @@ module.exports = React.createClass # rename to Classifier
   addAnnotationForTask: (taskKey) ->
     console.log 'TASKS: ', @props.workflow.tasks
     taskDescription = @props.workflow.tasks[taskKey]
-
-    annotation = tasks[taskDescription.tool].getDefaultAnnotation() # sets {value: null}
+    console.log "ERROR: Invalid tool: #{taskDescription.tool}. Available tools are: #{(k for k,v of coreTools)}" if ! coreTools[taskDescription.tool]?
+    annotation = coreTools[taskDescription.tool].getDefaultAnnotation() # sets {value: null}
     annotation.task = taskKey # e.g. {task: "cool"}
     @props.classification.annotations.push annotation
     @updateAnnotations()

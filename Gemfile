@@ -12,7 +12,7 @@ gem 'jbuilder', '~> 1.2'
 gem 'devise'
 gem 'omniauth-facebook'
 gem "omniauth-google-oauth2"
-gem "omniauth-zooniverse"
+gem 'omniauth-zooniverse', '~> 0.0.1'
 
 gem 'mongoid', :github=>"mongoid/mongoid"
 gem 'active_model_serializers'
@@ -48,7 +48,7 @@ group :test do
   gem 'capybara'
   gem 'cucumber-rails', :require=>false
   gem 'database_cleaner', '1.0.1'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 3.0'
   gem 'shoulda-matchers'
   gem 'email_spec'
   gem 'launchy'
