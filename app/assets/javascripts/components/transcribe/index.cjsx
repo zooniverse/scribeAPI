@@ -52,6 +52,8 @@ module.exports = React.createClass # rename to Classifier
       console.log "WARN: Invalid task key: ", key
 
     else if ! tool?
+      console.log "Props", @props
+      console.log "STATE", @state
       console.log "WARN: Invalid tool specified in #{key}: #{task.tool}"
 
     else

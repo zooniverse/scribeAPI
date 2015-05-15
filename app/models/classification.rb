@@ -18,7 +18,7 @@ class Classification
   belongs_to :subject
   has_many   :triggered_followup_subjects, class_name: "Subject"
 
-  before_create :generate_new_subjects
+  after_create :generate_new_subjects
   after_create :increment_subject_number_of_annontation_values
 
   def generate_new_subjects
@@ -50,7 +50,7 @@ class Classification
   # new ideas for modeling the annotation.values? the current model feels a bit off.
   def increment_subject_number_of_annontation_values
     subject = self.subject
-    subject.annotation_value_count += no_annotation_values
+    subject.classification_count += no_annotation_values
     subject.save
     # subject.retire!
   end

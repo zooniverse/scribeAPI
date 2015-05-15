@@ -263,8 +263,8 @@ module.exports = React.createClass
       contentType: 'application/json'
       })
       .done (response) =>
-        console.log "Success" #, #response #, response._id.$oid
-        console.log 'RECEIVED SECONDARY SUBJECT ID: ', response.child_subject_id.$oid
+        console.log "Success", response #, #response #, response._id.$oid
+        console.log 'RECEIVED SECONDARY SUBJECT ID: ', response.child_subject_id
         console.log 'SELECTED MARK: ', @state.selectedMark
         # @setTranscribeSubject(key, response._id.$oid)
         # @enableMarkButton(key)
