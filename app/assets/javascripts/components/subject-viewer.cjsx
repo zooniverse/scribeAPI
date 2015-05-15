@@ -264,8 +264,14 @@ module.exports = React.createClass
       })
       .done (response) =>
         console.log "Success", response #, #response #, response._id.$oid
-        console.log 'RECEIVED SECONDARY SUBJECT ID: ', response.child_subject_id
+        console.log 'RECEIVED SECONDARY SUBJECT ID: ', response
         console.log 'SELECTED MARK: ', @state.selectedMark
+
+        selectedMark = @state.selectedMark
+        selectedMark.child_subject_id = response.classification.child_subject_id
+        @setState selectedMark: selectedMark, => console.log 'UPDATED MARK WITH CHILD SUBJECT ID: ', @state.selectedMark
+
+        # console.log 'TEST ANNOTATION: ', @props.annotation.value.child_subject_id = response.child_subject.id
         # @setTranscribeSubject(key, response._id.$oid)
         # @enableMarkButton(key)
         return
