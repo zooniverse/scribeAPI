@@ -6,8 +6,8 @@ describe Subject do
     it { should have_many(:classifications) }
     it { should have_many(:favourites) }
     it { should have_many(:child_subjects) }
-    it { should belong_to(:workflow) }
     it { should belong_to(:parent_subject) }
+    it { should belong_to(:workflow) }
     it { should belong_to(:subject_set) }
   end
 
@@ -16,9 +16,18 @@ describe Subject do
     let(:project){Project.create(title: "test")}
     let(:workflow){Workflow.create(project_id: project.id)}
     let(:subject){Subject.create({workflow: workflow, name: "Basic Subject",location: {standard: "http://some_server.com/location.jpg"}} )}
-    let(:inactive_subject){Subject.create({workflow_id: workflow.id, name: "Inactive Subject",location: {standard: "http://some_server.com/location.jpg"}, status: "inactive"})}
+    let(:inactive_subject){
+      Subject.create( 
+      {
+        workflow_id: workflow.id, 
+        name: "Inactive Subject", 
+        status: "inactive", 
+        location: {standard: "http://some_server.com/location.jpg"},
+        subject_set: subject_set
+      }
+    )}
     let(:done_subject){Subject.create({workflow_id: workflow.id,name: "Inactive Subject",location: {standard: "http://some_server.com/location.jpg"}, status: "inactive"})}
-    let(:subject_set){ Subject_set.create(name: "Record Grouping", state: active, workflow_id: workflow.id, subject: inactive_subject) }
+    let(:subject_set){ SubjectSet.create(name: "Record Grouping", state: "active") }
 
     describe '.status' do
       it 'should initally have status active' do
@@ -41,7 +50,7 @@ describe Subject do
     describe '#activate!' do
       it 'should properly activate when told to' do
         inactive_subject.activate!
-        expect(subject.status).to eq("active")
+        expect(inactive_subject.status).to eq("active")
       end
     end
 
