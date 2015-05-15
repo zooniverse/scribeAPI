@@ -2,6 +2,7 @@ class Workflow
   include Mongoid::Document
 
   field    :name,                                            type: String
+  #TODO: can we delete :key field?
   field    :key, 				                                     type: String
   field    :label,                                           type: String
   field    :tasks, 			      	                             type: Hash
@@ -51,6 +52,7 @@ class Workflow
             location: {
               standard: classification.subject.file_path,
             },
+            # is there we would set the region field for tiertiary subjects, filling it with parent_subject.data?
             data: value.except(:key, :tool),
             type: annotation["tool_task_description"]["generated_subject_type"]
           )
@@ -68,4 +70,5 @@ class Workflow
     return unless subject_has_enough_classifications(classification.subject)
     create_secondary_subjects(classification)
   end
+  
 end

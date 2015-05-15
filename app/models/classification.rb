@@ -16,6 +16,7 @@ class Classification
   belongs_to :workflow
   belongs_to :user
   belongs_to :subject
+  #belong_to :child_subject, 
   has_many   :triggered_followup_subjects, class_name: "Subject"
 
   after_create :increment_subject_classification_count
@@ -28,12 +29,11 @@ class Classification
   end
 
   # finds number of values associated with each classification
-  # TODO: this is duplicating work already done in the worklfow.rb
-  # Also, lets make sure that annotation.value is always an array?**
+  # TODO: this should reflect the new classification model!!!
+  ####### aka shouldn't need to check annotation[value], just annotation.
   def no_annotation_values
     counter = 0
     self.annotations.each do |annotation|
-      # **so that we can prevent this if-statement
       if annotation["value"].is_a? String
         counter += 1 
       else 
@@ -45,14 +45,12 @@ class Classification
     counter
   end
 
-
-  # we need to increment self.subject.classification_count by the nummber of values in annotation.
-  # new ideas for modeling the annotation.values? the current model feels a bit off.
   def increment_subject_classification_count
     subject = self.subject
     subject.classification_count += no_annotation_values
     subject.save
-    # subject.retire!
+    # check to see if subject.type == "root" 
+    # subject.retire! # we are still working out retirement implementation
   end
 
 end

@@ -17,15 +17,14 @@ class Subject
   field :meta_data,                   type: Hash
   field :tool_task_description,       type: Hash
   
-  #TODO: can we delete these fields?
+  #TODO: can we delete these fields (file_path, random_no, key)?
   field :file_path
   field :random_no ,                  type: Float
   field :key,                         type: String
   
   field :secondary_subject_count,     type: Integer, default: 0
   field :classification_count,        type: Integer, default: 0
-  field :retire_count,                type: Integer
-  field :retire_vote,                 type: Integer, default: 0
+  field :retire_count,                type: Integer # number of votes that a primary subject finished
 
   belongs_to :workflow
   has_many :classifications
@@ -34,7 +33,7 @@ class Subject
   belongs_to :parent_subject, :class_name => "Subject", :foreign_key => "parent_subject_id"
   has_many :child_subjects, :class_name => "Subject"
 
-  after_create :update_subject_set_stats
+  after_create :update_subject_set_stats # this method must come before :increment_parents_subject_count_by_one
 
   after_create :increment_parents_subject_count_by_one, :if => :parent_subject
 
