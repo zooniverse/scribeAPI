@@ -32,6 +32,7 @@ module.exports = React.createClass
 
 
   render: ->
+    console.log 'SUBJECT-SET-VIEWER::render()  CURRENT ANNOTATION: ', @props.annotation
     <div className="subject-set-viewer">
       { for subject, index in @props.subject_set.subjects
         <SubjectViewer key={index} subject={subject} workflow={@props.workflow} classification={@props.classification} annotation={@props.annotation} active={index == @state.subject_set_index}/>
