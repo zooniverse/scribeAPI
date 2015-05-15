@@ -56,13 +56,12 @@ class Subject
   #   1) user indicated that a subject is completely classified
   #   2) self.annotation_value_count >= self.retire_count
   # Result 2) should decrement the self.parent_subject.secondary_subject_count by 1, if self.status == "retired"
-  # def retire!
-  #   puts "EVAL"
+  def retire!
     # TODO: retirement should be based on workflow, right? --- consult team.
-    # self.status = "retired" if self.annotation_value_count >= self.retire_count
-    # subject_set.subject_completed_on_workflow(workflow)
-  #   save
-  # end
+    self.status = "retired" if self.classification_count >= self.retire_count
+    self.subject_set.subject_completed_on_workflow(workflow)
+    save
+  end
 
   def activate!
     self.status = "active"
