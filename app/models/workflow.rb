@@ -54,10 +54,9 @@ class Workflow
             data: value.except(:key, :tool),
             type: annotation["tool_task_description"]["generated_subject_type"]
           )
-        # this allows a generated subject's id to be returned in case of immediate transcription
+        #TODO -- no longer needed?:
+        ##### this allows a generated subject's id to be returned in case of immediate transcription
         classification.child_subject_id = child_subject.id
-        parent_subject = classification.subject
-        parent_subject.child_subjects << child_subject
         end
       end
     end
