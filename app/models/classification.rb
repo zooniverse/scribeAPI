@@ -5,7 +5,7 @@ class Classification
   field :subject_id
   field :subject_set_id
   field :location
-  field :annotations, type: Array
+  field :annotation #, type: Array
   field :triggered_followup_subject_ids, type: Array
   field :child_subject_id
 
@@ -35,8 +35,8 @@ class Classification
     self.annotations.each do |annotation|
       # **so that we can prevent this if-statement
       if annotation["value"].is_a? String
-        counter += 1 
-      else 
+        counter += 1
+      else
         annotation["value"].each do |value|
           counter += annotation["value"].length
         end

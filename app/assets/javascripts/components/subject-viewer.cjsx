@@ -159,7 +159,7 @@ module.exports = React.createClass
     task = @props.workflow.tasks[@props.annotation.task]
     mark = @props.annotation #@state.selectedMark
     # console.log "SubjectViewer#handleInitDrag"
-    MarkComponent = markingTools[task.tools[mark.tool].type]
+    MarkComponent = markingTools[mark.toolName]
     if MarkComponent.initMove?
       mouseCoords = @getEventOffset e
       initMoveValues = MarkComponent.initMove mouseCoords, mark, e
@@ -229,7 +229,11 @@ module.exports = React.createClass
       if mark?.details?
         @forceUpdate() # Re-render to reposition the details tooltip.
 
-  destroyMark: (annotation, mark) ->
+  destroyMark: (annotation) ->
+    console.log 'destroyMark(): annotation: ', annotation
+    annotation = null
+    return
+
     if mark is @state.selectedMark
       @setState selectedMark: null
     markIndex = annotation.value.indexOf mark
@@ -264,7 +268,7 @@ module.exports = React.createClass
         name:        'Classification'
         subject_id:  @props.subject.id
         workflow_id: @props.workflow.id
-        annotations: [@props.annotation]
+        annotation:  @props.annotation
         metadata:    metadata
 
     console.log '(SINGLE) CLASSIFICATION: ', classification

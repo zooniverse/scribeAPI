@@ -34,33 +34,35 @@ class Workflow
   end
 
 
-  def create_secondary_subjects(classification)   
+  def create_secondary_subjects(classification)
     workflow_id = Workflow.find_by(name: classification.subject.workflow.generates_subjects_for).id
 
-    classification.annotations.each do |annotation|
-      if annotation["generate_subjects"]
-        annotation["value"].each do |value|
-          child_subject = Subject.create(
-            workflow_id: workflow_id ,
-            subject_set_id: classification.subject_set_id,
-            retire_count: 3,
-            parent_subject_id: classification.subject_id,
-            tool_task_description: annotation["tool_task_description"],
-            type: annotation["subject_type"],
-            location: {
-              standard: classification.subject.file_path,
-            },
-            data: value.except(:key, :tool),
-            type: annotation["tool_task_description"]["generated_subject_type"]
-          )
-        # this allows a generated subject's id to be returned in case of immediate transcription
-        classification.child_subject_id = child_subject.id
-        parent_subject = classification.subject
-        parent_subject.child_subjects << child_subject
-        end
+    annotation = classification.annotation
+
+    puts 'ANNOTATION: ', annotation
+
+    if annotation["generate_subjects"]
+      annotation["value"].each do |value|
+        child_subject = Subject.create(
+          workflow_id: workflow_id ,
+          subject_set_id: classification.subject_set_id,
+          retire_count: 3,
+          parent_subject_id: classification.subject_id,
+          tool_task_description: annotation["tool_task_description"],
+          type: annotation["subject_type"],
+          location: {
+            standard: classification.subject.file_path,
+          },
+          data: value.except(:key, :tool),
+          type: annotation["tool_task_description"]["generated_subject_type"]
+        )
+      # this allows a generated subject's id to be returned in case of immediate transcription
+      classification.child_subject_id = child_subject.id
+      parent_subject = classification.subject
+      parent_subject.child_subjects << child_subject
       end
     end
-    
+
   end
 
   def create_follow_up_subjects(classification)

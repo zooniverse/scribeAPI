@@ -16,7 +16,7 @@ class ClassificationsController < ApplicationController
     workflow_id = BSON::ObjectId.from_string params["classifications"]["workflow_id"]
 
     # location         = params["location"]
-    annotations      = params["classifications"]["annotations"]
+    annotation       = params["classifications"]["annotation"]
     started_at       = params["classifications"]["metadata"]["started_at"]
     finished_at      = params["classifications"]["metadata"]["finished_at"]
     user_agent       = request.headers["HTTP_USER_AGENT"]
@@ -26,16 +26,13 @@ class ClassificationsController < ApplicationController
     subject_id = session.id #this should change, auth currently not working
     # puts '+++++++++++++++++++++++++'
     # puts 'ANNOTATIONS: ', annotations
-    annotations.each do |annotation|
-      subject_id = annotation["subject_id"]
-      annotation
-    end
+    subject_id = annotation["subject_id"]
 
     @result = Classification.create(
       workflow_id: workflow_id,
       subject_id: subject_id,
       location: location,
-      annotations: annotations,
+      annotation: annotation,
       started_at: started_at,
       finished_at: finished_at,
       user_agent: user_agent )
