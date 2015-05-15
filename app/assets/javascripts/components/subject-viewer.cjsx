@@ -157,7 +157,7 @@ module.exports = React.createClass
   handleInitDrag: (e) ->
     console.log 'handleInitDrag()'
     task = @props.workflow.tasks[@props.annotation.task]
-    mark = @state.selectedMark
+    mark = @props.annotation #@state.selectedMark
     # console.log "SubjectViewer#handleInitDrag"
     MarkComponent = markingTools[task.tools[mark.tool].type]
     if MarkComponent.initMove?
