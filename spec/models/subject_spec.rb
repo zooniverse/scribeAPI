@@ -14,8 +14,19 @@ describe Subject do
   context 'methods' do
 
     let(:project){Project.create(title: "test")}
+    let(:subject_set){ SubjectSet.create(name: "Record Grouping", state: "active") }
     let(:workflow){Workflow.create(project_id: project.id)}
-    let(:subject){Subject.create({workflow: workflow, subject_set: subject_set, parent_subject: parent_subject, retire_count: 1, name: "Basic Subject",location: {standard: "http://some_server.com/location.jpg"}} )}
+    let(:subject){
+      Subject.create(
+        {
+          name: "Basic Subject",
+          workflow: workflow, 
+          subject_set: subject_set, 
+          parent_subject: parent_subject, 
+          retire_count: 1, 
+          location: {standard: "http://some_server.com/location.jpg"}
+        } 
+    )}
     let(:inactive_subject){
       Subject.create( 
       {
@@ -26,8 +37,7 @@ describe Subject do
         subject_set: subject_set
       }
     )}
-    let(:parent_subject){Subject.create(secondary_subject_count: 1)}
-    let(:subject_set){ SubjectSet.create(name: "Record Grouping", state: "active") }
+    let(:parent_subject){Subject.create(secondary_subject_count: 1, workflow: workflow, subject_set: subject_set)}
 
     describe '.status' do
       it 'should initally have status active' do
