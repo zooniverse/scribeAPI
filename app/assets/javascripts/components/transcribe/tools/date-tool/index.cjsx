@@ -6,28 +6,6 @@ DoneButton      = require './done-button'
 TextTool = React.createClass
   displayName: 'DateTool'
 
-  handleInitStart: (e) ->
-    # console.log 'handleInitStart() '
-    @setState preventDrag: false
-    if e.target.nodeName is "INPUT" or e.target.nodeName is "TEXTAREA"
-      @setState preventDrag: true
-
-    @setState
-      xClick: e.pageX - $('.transcribe-tool').offset().left
-      yClick: e.pageY - $('.transcribe-tool').offset().top
-
-  handleInitDrag: (e, delta) ->
-
-    return if @state.preventDrag # not too happy about this one
-
-    dx = e.pageX - @state.xClick - window.scrollX
-    dy = e.pageY - @state.yClick # + window.scrollY
-
-    @setState
-      dx: dx
-      dy: dy #, =>
-      dragged: true
-
   getInitialState: ->
     viewerSize: @props.viewerSize
     annotation:
@@ -37,13 +15,38 @@ TextTool = React.createClass
     annotation: {}
     task: null
     subject: null
+    clickOffsetX: 0
+    clickOffsetY: 0
 
   componentWillReceiveProps: ->
     @setState
       annotation: @props.annotation
 
   componentDidMount: ->
-    @updatePosition()
+    console.log 'componentDidMount()'
+    # @updatePosition()
+
+  handleInitStart: (e,d) ->
+    @setState preventDrag: false
+    if e.target.nodeName is "INPUT" or e.target.nodeName is "TEXTAREA"
+      @setState preventDrag: true
+
+    @props.clickOffsetX = e.nativeEvent.offsetX + e.nativeEvent.srcElement.offsetParent.offsetLeft  #$('.transcribe-tool').offsetX# - e.offsetX #().left
+    @props.clickOffsetY = e.nativeEvent.offsetY + e.nativeEvent.srcElement.offsetParent.offsetTop #$('.transcribe-tool').offsetY# - e.offsetY #().top
+
+  handleInitDrag: (e, delta) ->
+    console.log 'handleInitDrag()'
+
+    return if @state.preventDrag # not too happy about this one
+
+    dx = e.clientX - @props.clickOffsetX #- window.scrollX
+    dy = e.clientY - @props.clickOffsetY #@props.yClick # + window.scrollY
+
+    @setState
+      dx: dx
+      dy: dy
+      dragged: true
+        # , => @updatePosition()
 
   # Expects size hash with:
   #   w: [viewer width]
