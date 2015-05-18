@@ -31,13 +31,12 @@ class Workflow
   # end
 
   def subject_has_enough_classifications(subject)
-    subject.classifications.length >= self.generates_subjects_after
+    subject.classification_count >= self.generates_subjects_after
   end
 
 
   def create_secondary_subjects(classification)   
-    workflow = Workflow.find_by(name: classification.subject.workflow.generates_subjects_for)
-
+    workflow_for_new_subject = Workflow.find_by(name: classification.subject.workflow.generates_subjects_for).id
     classification.annotations.each do |annotation|
       if annotation["generates_subjects"]
         annotation["value"].each do |value|
@@ -54,9 +53,10 @@ class Workflow
           end
 
           child_subject = Subject.create(
-            workflow_id: workflow.id ,
-            subject_set_id: classification.subject_set_id,
-            # retire_count: 3, # PB: I believe we're deprecating this in favor of limits configured in the workflow
+            workflow: workflow_for_new_subject,
+            subject_set: classification.subject.subject_set,
+            # TODO discuss how this will be implemented!!
+            # retire_count: workflow_for_new_subject.retire_limit,
             parent_subject_id: classification.subject_id,
             tool_task_description: annotation["tool_task_description"],
             location: {

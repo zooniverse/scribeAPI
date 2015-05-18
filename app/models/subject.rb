@@ -13,7 +13,6 @@ class Subject
   field :classification_count,        type: Integer, default: 0
   field :random_no,                   type: Float
 
-  # TODO PB This is, I believe soon to be renamed to retire_vote:
   field :retire_count,                type: Integer
   # TODO PB This is, I believe, the new retire_count?
   field :retire_vote,                 type: Integer, default: 0
@@ -43,7 +42,7 @@ class Subject
   has_many :classifications
   has_many :favourites
 
-  # after_create :update_subject_set_stats
+  after_create :update_subject_set_stats
 
   after_create :increment_parents_subject_count_by_one, :if => :parent_subject
 
@@ -52,26 +51,15 @@ class Subject
     subject_set.inc_subject_count_for_workflow(workflow)
   end
 
-  # increment the self.parent.secondary_subject_count by 1
-  # check out ink mongomapper
-  # sets the proper type value. at the moment this is limited to "secondary" might be more appropiate to say "non-root".
   def increment_parents_subject_count_by_one
-    parent_subject = self.parent_subject
-    parent_subject.secondary_subject_count += 1
-    parent_subject.save
+    parent_subject.inc(secondary_subject_count: 1)
   end
 
-  # Result 1) should set self.status == "retired" under the following condition:
-  #   1) user indicated that a subject is completely classified
-  #   2) self.annotation_value_count >= self.retire_count
-  # Result 2) should decrement the self.parent_subject.secondary_subject_count by 1, if self.status == "retired"
-  # def retire!
-  #   puts "EVAL"
-    # TODO: retirement should be based on workflow, right? --- consult team.
-    # self.status = "retired" if self.annotation_value_count >= self.retire_count
-    # subject_set.subject_completed_on_workflow(workflow)
-  #   save
-  # end
+  def retire!
+    self.status = "retired" if classification_count >= retire_count
+    subject_set.subject_completed_on_workflow(workflow)
+    save
+  end
 
   def activate!
     self.status = "active"

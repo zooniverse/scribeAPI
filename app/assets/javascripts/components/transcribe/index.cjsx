@@ -19,7 +19,6 @@ module.exports = React.createClass # rename to Classifier
   mixins: [FetchSubjectsMixin] # load subjects and set state variables: subjects, currentSubject, classification
 
   getInitialState: ->
-    # TODO: why is workflow an array!?!?
     workflow: @props.workflow
 
   getDefaultProps: ->
@@ -69,6 +68,8 @@ module.exports = React.createClass # rename to Classifier
       console.log "WARN: Invalid task key: ", key
 
     else if ! tool?
+      console.log "Props", @props
+      console.log "STATE", @state
       console.log "WARN: Invalid tool specified in #{key}: #{task.tool}"
 
     else
@@ -138,6 +139,17 @@ module.exports = React.createClass # rename to Classifier
       console.log "go back"
 
   render: ->
+
+
+    console.log 'COMONENT DID MOUNT'
+    if @props.query.scrollX? and @props.query.scrollY?
+      console.log 'SCROLLING...'
+      window.scrollTo(@props.query.scrollX,@props.query.scrollY)
+
+
+
+
+
     console.log "Transcribe#render: ", @state
     return null unless @state.currentTask?
 
