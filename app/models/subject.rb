@@ -48,7 +48,7 @@ class Subject
     parent_subject.inc(secondary_subject_count: 1)
   end
 
-  def one_upvote_for_retirement
+  def increment_retire_count_by_one
     self.inc(retire_count: 1)
   end
 

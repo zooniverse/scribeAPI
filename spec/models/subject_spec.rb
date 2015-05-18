@@ -65,16 +65,16 @@ describe Subject do
       end
     end
 
-    describe '#one_upvote_for_retirement' do
+    describe '#increment_retire_count_by_one' do
       it 'increments subjects retire_count by 1' do
-        parent_subject.one_upvote_for_retirement
-        expect{parent_subject.one_upvote_for_retirement}.to change{parent_subject.retire_count}.by(1)
+        parent_subject.increment_retire_count_by_one
+        expect{parent_subject.increment_retire_count_by_one}.to change{parent_subject.retire_count}.by(1)
       end
     end
 
     describe '#retire_by_vote!' do
       it "if a subject retire_count is greater than or equal to the retire limit, set subject status to retired" do
-        parent_subject.one_upvote_for_retirement
+        parent_subject.increment_retire_count_by_one
         parent_subject.retire_by_vote!
         expect(parent_subject.status).to eq("retired")
       end
