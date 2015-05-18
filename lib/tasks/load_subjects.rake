@@ -115,7 +115,6 @@ require 'active_support'
               thumbnail: subj['thumbnail']
             },
             workflow: mark_workflow,
-            retire_count: subj['retire_count'],
             meta_data: meta_data
           })
           s.activate!

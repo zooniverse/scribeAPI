@@ -24,29 +24,13 @@ class Classification
     end
   end
 
-  # finds number of values associated with each classification
-  # TODO: this should reflect the new classification model!!!
-  ####### aka shouldn't need to check annotation[value], just annotation.
-  def no_annotation_values
-    counter = 0
-    self.annotations.each do |annotation|
-      if annotation["value"].is_a? String
-        counter += 1 
-      else 
-        annotation["value"].each do |value|
-          counter += annotation["value"].length
-        end
-      end
-    end
-    counter
-  end
-
   def check_for_retirement
     subject.retire_by_vote! if subject.type == "root"
   end  
 
   def increment_subject_classification_count
-    subject.classification_count += no_annotation_values #the method can now be replaced by self.annotations.length
+    # do we want this to just be an increment by 1 action?
+    subject.classification_count += self.annotations.length
     subject.save
   end
 

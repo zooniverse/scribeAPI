@@ -1,9 +1,10 @@
 class ClassificationSerializer < ActiveModel::MongoidSerializer
-  attributes :id, :workflow_id, :subject_id, :subject_set_id, :location, :annotations, :triggered_followup_subject_ids, :child_subject_id, :child_subject
+  attributes :id, :workflow_id, :subject_id, :subject_set_id, :location, :annotations, :triggered_followup_subject_ids, :child_subject
   
   has_one :workflow
   has_one :user
   has_one :subject
+  has_one :child_subject
 
   def id
     object._id.to_s
@@ -23,10 +24,6 @@ class ClassificationSerializer < ActiveModel::MongoidSerializer
 
   def child_subject_id
     object.child_subject_id.to_s
-  end
-
-  def child_subject
-    Subject.find(child_subject_id)
   end
 
 end

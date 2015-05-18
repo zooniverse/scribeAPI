@@ -26,7 +26,7 @@ class Subject
   
   field :secondary_subject_count,     type: Integer, default: 0
   field :classification_count,        type: Integer, default: 0
-  field :retire_count,                type: Integer # number of votes that a primary subject finished
+  field :retire_count,                type: Integer, default: 0 # number of votes that a primary subject finished
 
   belongs_to :workflow
   has_many :classifications
@@ -53,6 +53,7 @@ class Subject
   end
 
   def retire_by_vote!
+    binding.pry
     self.status = "retired" if (self.retire_count >= self.workflow.retire_limit)
     subject_set.subject_completed_on_workflow(workflow)
     save
