@@ -54,15 +54,23 @@ TextTool = React.createClass
 
   updatePosition: ->
     console.log 'updatePosition()'
-  
+    console.log 'state.viewerSize? ', @state.viewerSize?
+    console.log 'PROPS: ', @props
+    console.log 'STATE: ', @state
+
+
     toolName = @props.subject.data.toolName
     switch toolName
+      when 'pointTool'
+        x = @props.subject.data.x + 40
+        y = @props.subject.data.y + 40 # TODO: don't hard-wire dimensions
       when 'rectangleTool'
         x = @props.subject.data.x
         y = @props.subject.data.y + @props.subject.data.height
       when 'textRowTool'
-        x = '50%'
+        x = if @state.viewerSize? then (@state.viewerSize.w-650 )/2 else 0 # TODO: don't hard-wire dimensions
         y = @props.subject.data.yLower
+
 
 
     if @state.viewerSize? && ! @state.dragged
