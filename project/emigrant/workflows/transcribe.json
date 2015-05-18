@@ -8,7 +8,7 @@
 
     "em_switch_on_type": {
       "tool": "switch_on_value",
-      "tool_options": {  
+      "tool_options": {
         "field": "type",
         "options": {
           "em_record_rect": {
@@ -40,7 +40,7 @@
     },
 
     "em_transcribe_valuation": {
-      "tool": "composite_tool",
+      "tool": "compositeTool",
       "tool_options": {
         "tools": {
           "em_valuation_date": {
@@ -58,6 +58,6 @@
   },
 
   "enables_workflows": {
-    
+
   }
 }

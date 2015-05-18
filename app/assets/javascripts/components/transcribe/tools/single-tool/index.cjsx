@@ -2,11 +2,10 @@
 React           = require 'react'
 Draggable       = require 'lib/draggable'
 DoneButton      = require './done-button'
-
-inputComponents = require 'transcribe/input-components'
+inputComponents = require '../../input-components'
 
 TextTool = React.createClass
-  displayName: 'DateTool'
+  displayName: 'SingleTool'
 
   getInitialState: ->
     viewerSize: @props.viewerSize
@@ -93,20 +92,24 @@ TextTool = React.createClass
     val = @state.annotation?.value ? ''
     # console.log "TextTool#render val:", val, @state.annotation?.value
 
+    console.log 'INPUT FIELD: ', inputComponents
+    InputComponent = inputComponents['dateField']
+    console.log 'INPUT COMPONENT: ', InputComponent
+
+
     <Draggable
       onStart = {@handleInitStart}
       onDrag  = {@handleInitDrag}
       onEnd   = {@handleInitRelease}
       ref     = "inputWrapper0">
-
       <div className="transcribe-tool" style={style}>
         <InputComponent
           key={@props.task.key}
+          val={@state.annotation?.value ? ''}
           instruction={@props.task.instruction}
           handleChange={@handleChange}
           commitAnnotation{@commitAnnotation}
         />
-
       </div>
     </Draggable>
 
