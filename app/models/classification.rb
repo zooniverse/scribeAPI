@@ -15,7 +15,7 @@ class Classification
   belongs_to  :child_subject, :class_name => "Subject"
   has_many   :triggered_followup_subjects, class_name: "Subject"
 
-  after_create :increment_subject_classification_count
+  after_create :increment_subject_classification_count, :check_for_retirement
   after_create :generate_new_subjects
 
   def generate_new_subjects
@@ -39,14 +39,15 @@ class Classification
       end
     end
     counter
+  end
+
+  def check_for_retirement
+    subject.retire_by_vote! if subject.type == "root"
   end  
-
-
 
   def increment_subject_classification_count
     subject.classification_count += no_annotation_values #the method can now be replaced by self.annotations.length
     subject.save
-    subject.retire_by_vote! if subject.type == "root"
   end
 
 end
