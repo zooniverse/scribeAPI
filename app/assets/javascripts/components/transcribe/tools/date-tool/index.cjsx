@@ -27,16 +27,19 @@ TextTool = React.createClass
     # @updatePosition()
 
   handleInitStart: (e,d) ->
-    @setState preventDrag: false
-    if e.target.nodeName is "INPUT" or e.target.nodeName is "TEXTAREA"
-      @setState preventDrag: true
+
+    @setState preventDrag: e.target.nodeName isnt 'DIV'# if $(e.srcElement).hasClass('transcribe-tool') # not my pro --STI
+
+    #
+    # console.log 'NODE NAME: ', e.target.n
+    # if e.target.nodeName is "INPUT" or e.target.nodeName is "TEXTAREA"
+    #   @setState preventDrag: true
 
     @props.clickOffsetX = e.nativeEvent.offsetX + e.nativeEvent.srcElement.offsetParent.offsetLeft  #$('.transcribe-tool').offsetX# - e.offsetX #().left
     @props.clickOffsetY = e.nativeEvent.offsetY + e.nativeEvent.srcElement.offsetParent.offsetTop #$('.transcribe-tool').offsetY# - e.offsetY #().top
 
   handleInitDrag: (e, delta) ->
     console.log 'handleInitDrag()'
-
     return if @state.preventDrag # not too happy about this one
 
     dx = e.clientX - @props.clickOffsetX #- window.scrollX
