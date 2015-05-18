@@ -5,6 +5,8 @@ class SubjectSetsController < ApplicationController
     puts "SUBJECT SET CONTORLLER"
     puts "SUBJECT SET CONTORLLER"
     puts "SUBJECT SET CONTORLLER"
+    puts "PARAMS", params
+
   	workflow_id  = params["workflow_id"]
     random = params["random"] || false
     limit  = params["limit"].to_i  || 10

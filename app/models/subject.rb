@@ -35,7 +35,7 @@ class Subject
   belongs_to :parent_subject, :class_name => "Subject", :foreign_key => "parent_subject_id"
   has_many :child_subjects, :class_name => "Subject"
 
-  after_create :update_subject_set_stats # this method before :increment_parents_subject_count_by_one
+  after_create :update_subject_set_stats, :activate! # this method before :increment_parents_subject_count_by_one
 
   after_create :increment_parents_subject_count_by_one, :if => :parent_subject
 
@@ -53,7 +53,6 @@ class Subject
   end
 
   def retire_by_vote!
-    binding.pry
     self.status = "retired" if (self.retire_count >= self.workflow.retire_limit)
     subject_set.subject_completed_on_workflow(workflow)
     save
@@ -61,7 +60,7 @@ class Subject
 
   def activate!
     self.status = "active"
-    subject_set.subject_activated_on_workflow(workflow)
+    self.subject_set.subject_activated_on_workflow(workflow)
     save
   end
 

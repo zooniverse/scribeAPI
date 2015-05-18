@@ -56,7 +56,7 @@ class Workflow
             data: value.except(:key, :tool),
             type: annotation["tool_task_description"]["generated_subject_type"]
           )
-
+        child_subject.activate!
         classification.child_subject = child_subject
         classification.save
         child_subject
