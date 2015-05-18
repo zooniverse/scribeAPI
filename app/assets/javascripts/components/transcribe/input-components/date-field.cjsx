@@ -12,7 +12,7 @@ DateField = React.createClass
             ref="input0"
             type="date"
             data-task_key={@props.key}
-            onChange={@handleChange}
+            onChange={@props.handleChange}
             value={@props.val}
           />
         </div>

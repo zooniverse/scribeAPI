@@ -11,7 +11,7 @@ TextAreaField = React.createClass
           <textarea
             ref="input0"
             data-task_key={@props.key}
-            onChange={@handleChange}
+            onChange={@props.handleChange}
             value={@props.val}
             placeholder={"This is some place-holder text."}
           />
