@@ -2,13 +2,11 @@
   "name":"mark",
   "label":"Mark Workflow",
   "subject_fetch_limit":"10",
+  "generates_subjects_for": "transcribe",
   "generates_new_subjects": true,
-  "enables_workflows":{
-  },
   "first_task":"determine_has_records",
   "tasks":{
     "determine_has_records":{
-      "order":0,
       "tool":"pickOne",
       "instruction":"Does this page have records?",
       "options":{
@@ -26,10 +24,10 @@
       "tool": "pickOneMarkOne",
       "instruction": "Pick a field and mark it with the corresponding marking tool.",
       "generated_for_workflow" : "",
-      "generate_subjects": true,
+      "generates_subjects": true,
       "tools": [
-        {"type": "rectangleTool", "label": "Records (rectangle)", "color": "green", "subject_type": "em_record_rect"},
-        {"type": "rectangleTool", "label": "Records (row)",       "color": "blue",  "subject_type": "em_record_row_tool"}
+        {"type": "rectangleTool", "label": "Records (rectangle)", "color": "green", "generates_subject_type": "em_record_rect"},
+        {"type": "rectangleTool", "label": "Records (row)",       "color": "blue",  "generates_subject_type": "em_record_row_tool"}
       ],
       "next_task": null
     }

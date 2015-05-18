@@ -96,8 +96,7 @@ module.exports = React.createClass
     taskDescription = @props.workflow.tasks[@props.annotation.task]
 
     # setting flag for generation of new subjects
-    if @props.workflow.tasks[@props.annotation.task].generate_subjects
-      @props.annotation["generate_subjects"] = @props.workflow.tasks[@props.annotation.task].generate_subjects
+    @props.annotation["generates_subjects"] = @props.workflow.tasks[@props.annotation.task].generates_subjects
 
     mark = @state.selectedMark
 
@@ -112,10 +111,12 @@ module.exports = React.createClass
 
     if markIsComplete
       toolDescription = taskDescription.tools[@props.annotation._toolIndex]
+      console.log "setting subj type: ", @props.workflow.tasks[@props.annotation.task], @props.annotation._toolIndex
       mark =
         key: @state.lastMarkKey
         tool: @props.annotation._toolIndex
         toolName: taskDescription.tools[@props.annotation._toolIndex].type
+        subject_type: @props.workflow.tasks[@props.annotation.task].tools[@props.annotation._toolIndex].subject_type
 
       if toolDescription.details?
         mark.details = for detailTaskDescription in toolDescription.details
@@ -264,7 +265,7 @@ module.exports = React.createClass
       })
       .done (response) =>
         console.log "Success", response #, #response #, response._id.$oid
-        console.log 'RECEIVED SECONDARY SUBJECT ID: ', response
+        console.log 'RECEIVED SECONDARY SUBJECT ID: ', response.child_subject_id
         console.log 'SELECTED MARK: ', @state.selectedMark
 
         selectedMark = @state.selectedMark
@@ -412,7 +413,6 @@ module.exports = React.createClass
 
                     #adds task and description to each annotation
                     @props.annotation["tool_task_description"] = @props.workflow.tasks[annotation.task].tools[mark.tool]
-                    @props.annotation["subject_type"] = @props.workflow.tasks[annotation.task].tools[mark.tool].subject_type
                     ToolComponent = markingTools[toolDescription.type]
 
                     <ToolComponent

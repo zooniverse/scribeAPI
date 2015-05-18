@@ -1,6 +1,6 @@
-order,file_path,thumbnail,width,height,type,date,set_key
-1,https://s3.amazonaws.com/scribe.nypl.org/emigrant-records/originals/072.jpg,https://s3.amazonaws.com/scribe.nypl.org/emigrant-records/originals/072.jpg,2110,3150,Img 97,2013_04_20,set_1
-1,https://s3.amazonaws.com/scribe.nypl.org/emigrant-records/originals/073.jpg,https://s3.amazonaws.com/scribe.nypl.org/emigrant-records/originals/073.jpg,2110,3150,Img 98,2013_04_20,set_1
-2,https://s3.amazonaws.com/scribe.nypl.org/emigrant-records/originals/074.jpg,https://s3.amazonaws.com/scribe.nypl.org/emigrant-records/originals/074.jpg,2110,3150,Img 99,2013_04_20,set_2
-2,https://s3.amazonaws.com/scribe.nypl.org/emigrant-records/originals/075.jpg,https://s3.amazonaws.com/scribe.nypl.org/emigrant-records/originals/075.jpg,2110,3150,Img 99,2013_04_20,set_2
-2,https://s3.amazonaws.com/scribe.nypl.org/emigrant-records/originals/056.jpg,https://s3.amazonaws.com/scribe.nypl.org/emigrant-records/originals/056.jpg,2110,3150,Img 99,2013_04_20,set_2
+file_path,thumbnail,something_something,date,set_key
+https://s3.amazonaws.com/scribe.nypl.org/emigrant-records/originals/072.jpg,https://s3.amazonaws.com/scribe.nypl.org/emigrant-records/originals/072.jpg,Img 97,2013_04_20,set_1
+https://s3.amazonaws.com/scribe.nypl.org/emigrant-records/originals/073.jpg,https://s3.amazonaws.com/scribe.nypl.org/emigrant-records/originals/073.jpg,Img 98,2013_04_20,set_1
+https://s3.amazonaws.com/scribe.nypl.org/emigrant-records/originals/074.jpg,https://s3.amazonaws.com/scribe.nypl.org/emigrant-records/originals/074.jpg,Img 99,2013_04_20,set_2
+https://s3.amazonaws.com/scribe.nypl.org/emigrant-records/originals/075.jpg,https://s3.amazonaws.com/scribe.nypl.org/emigrant-records/originals/075.jpg,Img 99,2013_04_20,set_2
+https://s3.amazonaws.com/scribe.nypl.org/emigrant-records/originals/056.jpg,https://s3.amazonaws.com/scribe.nypl.org/emigrant-records/originals/056.jpg,Img 99,2013_04_20,set_2

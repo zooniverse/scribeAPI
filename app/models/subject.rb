@@ -3,42 +3,45 @@ class Subject
   include Mongoid::Timestamps
   include Randomizer
 
+
   scope :root_type, -> { where(type: 'root') }
 
-  field :name,                        type: String
-  field :thumbnail,                   type: String
-  field :order
-  field :width
-  field :height
-  field :location,                    type: Hash
+  # This is a hash with one entry per deriv; `standard', 'thumbnail', etc
+  field :location,                    type: Hash 
+  field :type,                        type: String,  default: "root" #options: "root", "secondary"
   field :status,                      type: String,  default: "active" #options: "active", "inactive", "retired", "complete"
-  field :type,                        type: String,  default: "root"
-  
-  field :data,                        type: Hash
-  field :region,                      type: Hash
+
   field :meta_data,                   type: Hash
-  field :tool_task_description,       type: Hash
-  
-  #TODO: can we delete these fields (file_path, random_no, key)?
-  field :file_path
-  field :random_no ,                  type: Float
-  field :key,                         type: String
-  
   field :secondary_subject_count,     type: Integer, default: 0
   field :classification_count,        type: Integer, default: 0
-  field :retire_count,                type: Integer, default: 0 # number of votes that a primary subject finished
+  field :random_no,                   type: Float
+  field :secondary_subject_count,     type: Integer, default: 0
+
+  # Need to sort out relationship between these two fields. Are these two fields Is this :shj
+  field :retire_count,                type: Integer
+
+
+  # ROOT SUBJECT concerns:
+  field :order
+  field :name,                        type: String
+  field :width
+  field :height
+
+  # SECONDARY SUBJECT concerns:
+  field :tool_task_description,       type: Hash
+  field :data,                        type: Hash
+  field :region,                      type: Hash
 
   belongs_to :workflow
+  belongs_to :parent_subject, :class_name => "Subject", :foreign_key => "parent_subject_id"  
+  belongs_to :subject_set
+
+  has_many :child_subjects, :class_name => "Subject"
   has_many :classifications
   has_many :favourites
-  belongs_to :subject_set
-  belongs_to :parent_subject, :class_name => "Subject", :foreign_key => "parent_subject_id"
-  has_many :child_subjects, :class_name => "Subject"
 
   after_create :update_subject_set_stats, :activate! # this method before :increment_parents_subject_count_by_one
-
   after_create :increment_parents_subject_count_by_one, :if => :parent_subject
-
 
   def update_subject_set_stats
     subject_set.inc_subject_count_for_workflow(workflow)

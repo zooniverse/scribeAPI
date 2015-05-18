@@ -11,9 +11,9 @@ describe Workflow do
 
       "subject_fetch_limit"=>"10",
       "generates_new_subjects"=> true,
-      "generate_subjects_after"=> 1,
+      "generates_subjects_after"=> 1,
       "generates_subjects_for"=> "transcribe",
-      "generate_subjects_max"=> 1,
+      "generates_subjects_max"=> 1,
       "retire_limit"=>2,
 
       "first_task"=>"pick_page_type",
@@ -36,26 +36,26 @@ describe Workflow do
           }
         },
         "attestation_form_task"=>{
-          "generate_subjects"=> true,
+          "generates_subjects"=> true,
           "tool"=>"mark",
           "instruction"=>"Draw a rectangle around each record.",
           "tools"=> [
-            {"type"=> "textRowTool", "label"=> "Number", "color"=> "green", "generated_subject_type"=> "att_textRowTool_number" },
-            {"type"=> "textRowTool", "label"=> "Name", "color"=> "green", "generated_subject_type"=> "att_textRowTool_name" },
-            {"type"=> "textRowTool", "label"=> "Regiment", "color"=> "green", "generated_subject_type"=> "att_textRowTool_regiment" },
-            {"type"=> "textRowTool", "label"=> "Question", "color"=> "green", "generated_subject_type"=> "att_textRowTool_question" }
+            {"type"=> "textRowTool", "label"=> "Number", "color"=> "green", "generates_subject_type"=> "att_textRowTool_number" },
+            {"type"=> "textRowTool", "label"=> "Name", "color"=> "green", "generates_subject_type"=> "att_textRowTool_name" },
+            {"type"=> "textRowTool", "label"=> "Regiment", "color"=> "green", "generates_subject_type"=> "att_textRowTool_regiment" },
+            {"type"=> "textRowTool", "label"=> "Question", "color"=> "green", "generates_subject_type"=> "att_textRowTool_question" }
           ],
           "next_task"=> nil
         },
         "history_form_task"=>{
-          "generate_subjects"=> true,
+          "generates_subjects"=> true,
           "tool"=>"mark",
           "instruction"=>"Draw a rectangle around each record.",
           "tools"=> [
-            {"type"=> "rectangleTool", "label"=> "Occupation", "color"=> "green", "generated_subject_type"=> "att_textRowTool_name" },
-            {"type"=> "rectangleTool", "label"=> "Surname", "color"=> "green", "generated_subject_type"=> "att_textRowTool_name" },
-            {"type"=> "rectangleTool", "label"=> "Christian name", "color"=> "green", "generated_subject_type"=> "att_textRowTool_name" },
-            {"type"=> "rectangleTool", "label"=> "Wounds", "color"=> "green", "generated_subject_type"=> "att_textRowTool_name" }
+            {"type"=> "rectangleTool", "label"=> "Occupation", "color"=> "green", "generates_subject_type"=> "att_textRowTool_name" },
+            {"type"=> "rectangleTool", "label"=> "Surname", "color"=> "green", "generates_subject_type"=> "att_textRowTool_name" },
+            {"type"=> "rectangleTool", "label"=> "Christian name", "color"=> "green", "generates_subject_type"=> "att_textRowTool_name" },
+            {"type"=> "rectangleTool", "label"=> "Wounds", "color"=> "green", "generates_subject_type"=> "att_textRowTool_name" }
           ],
           "next_task"=> nil
         }
@@ -87,12 +87,12 @@ describe Workflow do
             "_key" => 0.7740179121028632, 
             "subject_id" => subject.id, 
             "workflow_id" => "555257fb782d31c138010000", 
-            "generate_subjects" => true, 
+            "generates_subjects" => true, 
             "tool_task_description" => { 
               "type" => "textRowTool", 
               "label" => "Question", 
               "color" => "green", 
-              "generated_subject_type" => "att_textRowTool_question", 
+              "generates_subject_type" => "att_textRowTool_question", 
               "_key" => 0.9674423730466515 } 
             } 
         ], 
@@ -154,7 +154,6 @@ describe Workflow do
       end
 
     end
-    
 
 
     # describe '#create_secondary_subjects' do

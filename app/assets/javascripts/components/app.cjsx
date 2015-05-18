@@ -56,6 +56,7 @@ App = React.createClass
               handler={HomePage}
               name="root"
               content={@state.home_page_content}
+              project={@state.project}
               title={@state.project.title} />
             <Route
               path='/mark'
