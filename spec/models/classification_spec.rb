@@ -17,7 +17,7 @@ describe Classification do
     let(:subject_set){ SubjectSet.create(name: "Record Grouping") }
     let(:workflow){ Workflow.create(project_id: project.id)}
     let(:subject){ Subject.create(workflow: workflow, subject_set: subject_set, name: "Basic Subject") }
-    let(:classification){ Classification.create(workflow: workflow.id, subject_id: subject.id, annotations: []) }
+    let(:classification){ Classification.create(workflow: workflow.id, subject: subject, annotations: []) }
 
     describe '#check_for_retirement' do
       it 'if the classification.type is not root, return nil' do
@@ -25,26 +25,22 @@ describe Classification do
         expect(classification.check_for_retirement).to be(nil)
       end
     end
+    
+    describe '#increment_subject_classification_count' do
+      it 'should increment a subjects classifcation count by 1 or lenght of annontation array?' do
+        expect{classification.increment_subject_classification_count}.to change{subject.classification_count}.by(1)
+      end
+    end
 
     describe '#generate_new_subjects' do
-      it '' do
-        pending("write the spec")
-        expect(classification.generate_new_subjects).to be_an_instance_of(Subject)
+      it 'should return nil if workflow.generate_new_subjects is false' do
+        workflow2 = Workflow.create(generates_new_subjects: false)
+        classification = Classification.new(workflow: workflow2)
+        expect(classification.generate_new_subjects).to be(nil)
       end
     end    
 
-    describe '#no_annotation_values' do
-      it '' do
-        pending("write the spec")
-      end
-    end
 
-
-    describe '#increment_subject_number_of_annontation_values' do
-      it '' do
-        pending("write the spec")
-      end
-    end
 
   end
 end

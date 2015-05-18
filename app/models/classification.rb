@@ -29,8 +29,7 @@ class Classification
   end  
 
   def increment_subject_classification_count
-    # do we want this to just be an increment by 1 action?
-    subject.classification_count += self.annotations.length
+    subject.classification_count += 1
     subject.save
   end
 
