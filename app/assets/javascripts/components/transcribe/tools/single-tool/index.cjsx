@@ -68,7 +68,7 @@ TextTool = React.createClass
         x = if @state.viewerSize? then (@state.viewerSize.w-650 )/2 else 0 # TODO: don't hard-wire dimensions
         y = @props.subject.data.yLower
       else
-        console.log "ERROR: Cannot update position on unknown transcription tool #{toolName}"
+        console.log "ERROR: Cannot update position on unknown transcription tool #{toolName}!"
 
     if @state.viewerSize? && ! @state.dragged
       @setState
@@ -76,7 +76,6 @@ TextTool = React.createClass
         dy: y * @state.viewerSize.scale.vertical
 
   commitAnnotation: ->
-    console.log 'commit annottion'
     @props.onComplete @state.annotation
 
   handleChange: (e) ->
@@ -84,7 +83,6 @@ TextTool = React.createClass
     @forceUpdate()
 
   handleKeyPress: (e) ->
-    console.log 'handleKeyPress()'
     if [13].indexOf(e.keyCode) >= 0 # ENTER:
       @commitAnnotation()
       e.preventDefault()
@@ -96,10 +94,8 @@ TextTool = React.createClass
     style =
       left: @state.dx
       top: @state.dy
-    # console.log "TextTool#render pos", @state
 
     val = @state.annotation?.value ? ''
-    # console.log "TextTool#render val:", val, @state.annotation?.value
 
     toolType = @props.task.tool_options.tool_type
 
