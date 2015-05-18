@@ -56,9 +56,11 @@ class Subject
   end
 
   def retire_by_vote!
-    self.status = "retired" if (self.retire_count >= self.workflow.retire_limit)
-    subject_set.subject_completed_on_workflow(workflow)
-    save
+    if (self.retire_count >= self.workflow.retire_limit)
+      self.status = "retired" 
+      subject_set.subject_completed_on_workflow(workflow)
+      save
+    end
   end
 
   def activate!
