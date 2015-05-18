@@ -265,7 +265,7 @@ module.exports = React.createClass
       })
       .done (response) =>
         console.log "Success", response #, #response #, response._id.$oid
-        console.log 'RECEIVED SECONDARY SUBJECT ID: ', response
+        console.log 'RECEIVED SECONDARY SUBJECT ID: ', response.child_subject_id
         console.log 'SELECTED MARK: ', @state.selectedMark
 
         selectedMark = @state.selectedMark

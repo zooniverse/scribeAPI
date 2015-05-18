@@ -36,7 +36,8 @@ class Workflow
 
 
   def create_secondary_subjects(classification)   
-    workflow_for_new_subject = Workflow.find_by(name: classification.subject.workflow.generates_subjects_for).id
+    workflow_for_new_subject = Workflow.find_by(name: classification.subject.workflow.generates_subjects_for)
+
     classification.annotations.each do |annotation|
       if annotation["generates_subjects"]
         annotation["value"].each do |value|
@@ -53,7 +54,7 @@ class Workflow
           end
 
           child_subject = Subject.create(
-            workflow: workflow_for_new_subject,
+            workflow: workflow_for_new_subject.id ,
             subject_set: classification.subject.subject_set,
             # TODO discuss how this will be implemented!!
             # retire_count: workflow_for_new_subject.retire_limit,
@@ -66,8 +67,12 @@ class Workflow
             region: region,
             type: annotation["tool_task_description"]["generates_subject_type"]
           )
+          #TODO -- no longer needed?:
+          ##### this allows a generated subject's id to be returned in case of immediate transcription
           # this allows a generated subject's id to be returned in case of immediate transcription
           classification.child_subject_id = child_subject.id
+
+          # PB: The following was removed at some point, but don't we need this relationship?
           parent_subject = classification.subject
           parent_subject.child_subjects << child_subject
         end

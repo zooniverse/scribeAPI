@@ -12,7 +12,9 @@ class Subject
   field :secondary_subject_count,     type: Integer, default: 0
   field :classification_count,        type: Integer, default: 0
   field :random_no,                   type: Float
+  field :secondary_subject_count,     type: Integer, default: 0
 
+  # Need to sort out relationship between these two fields. Are these two fields Is this :shj
   field :retire_count,                type: Integer
   # TODO PB This is, I believe, the new retire_count?
   field :retire_vote,                 type: Integer, default: 0
@@ -28,12 +30,6 @@ class Subject
   field :data,                        type: Hash
   field :region,                      type: Hash
 
-  # field :thumbnail,                   type: String # PB Deprecating this
-  # field :file_path # PB Deprecating this
-  # Optional 'key' value specified in some tool options (drawing) to identify tool option selected ('record-rect', 'point-tool')
-  # field :key,                         type: String # PB Dep
-  # field :annotation_value_count,      type: Integer, default: 0 # PB I believe this is deprecated in favor of classification_count:
-
   belongs_to :workflow
   belongs_to :parent_subject, :class_name => "Subject", :foreign_key => "parent_subject_id"  
   belongs_to :subject_set
@@ -43,9 +39,7 @@ class Subject
   has_many :favourites
 
   after_create :update_subject_set_stats
-
   after_create :increment_parents_subject_count_by_one, :if => :parent_subject
-
 
   def update_subject_set_stats
     subject_set.inc_subject_count_for_workflow(workflow)
