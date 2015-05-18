@@ -1,13 +1,9 @@
 class Classification
   include Mongoid::Document
 
-  field :workflow_id
-  field :subject_id
-  field :subject_set_id
   field :location
   field :annotations, type: Array
   field :triggered_followup_subject_ids, type: Array
-  field :child_subject_id
 
   field :started_at
   field :finished_at
@@ -16,7 +12,7 @@ class Classification
   belongs_to :workflow
   belongs_to :user
   belongs_to :subject
-  #belong_to :child_subject, 
+  belongs_to  :child_subject, :class_name => "Subject"
   has_many   :triggered_followup_subjects, class_name: "Subject"
 
   after_create :increment_subject_classification_count
@@ -24,7 +20,7 @@ class Classification
 
   def generate_new_subjects
     if workflow.generates_new_subjects
-      triggered_followup_subject_ids = workflow.create_follow_up_subjects(self)
+      triggered_followup_subject_ids = workflow.create_secondary_subjects(self)
     end
   end
 
@@ -43,11 +39,13 @@ class Classification
       end
     end
     counter
-  end
+  end  
+
+
 
   def increment_subject_classification_count
     subject = self.subject
-    subject.classification_count += no_annotation_values
+    subject.classification_count += no_annotation_values #the method can now be replaced by self.annotations.length
     subject.save
     # check to see if subject.type == "root" 
     # subject.retire! # we are still working out retirement implementation

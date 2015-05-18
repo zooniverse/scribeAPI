@@ -36,6 +36,8 @@ class Workflow
 
 
   def create_secondary_subjects(classification)   
+    return unless self.generates_new_subjects
+    return unless subject_has_enough_classifications(classification.subject)
 
     workflow_for_new_subject = Workflow.find_by(name: classification.subject.workflow.generates_subjects_for).id
     classification.annotations.each do |annotation|
@@ -44,31 +46,25 @@ class Workflow
           child_subject = Subject.create(
             workflow: workflow_for_new_subject,
             subject_set: classification.subject.subject_set,
-            # TODO discuss how this will be implemented!!
-            # retire_count: workflow_for_new_subject.retire_limit,
             parent_subject_id: classification.subject_id,
             tool_task_description: annotation["tool_task_description"],
             type: annotation["subject_type"],
             location: {
               standard: classification.subject.file_path,
             },
-            # is there we would set the region field for tiertiary subjects, filling it with parent_subject.data?
+            # TODO: region field for tiertiary subjects, filling it with parent_subject.data?
             data: value.except(:key, :tool),
             type: annotation["tool_task_description"]["generated_subject_type"]
           )
-        #TODO -- no longer needed?:
-        ##### this allows a generated subject's id to be returned in case of immediate transcription
-        classification.child_subject_id = child_subject.id
+
+        classification.child_subject = child_subject
+        classification.save
+        child_subject
         end
       end
     end
     
   end
 
-  def create_follow_up_subjects(classification)
-    return unless self.generates_new_subjects
-    return unless subject_has_enough_classifications(classification.subject)
-    create_secondary_subjects(classification)
-  end
   
 end

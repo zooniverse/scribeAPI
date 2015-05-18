@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'pry'
 
 
 describe Workflow do
@@ -63,10 +64,10 @@ describe Workflow do
   end
 
 
-  def front_end_classification_object
+  def classification_object
     { "_id" => "55525d08782d314af3300000", 
-    "workflow_id" => "555257fb782d31c138010000", 
-    "subject_id" => "555257fb782d31c138070000", 
+    "workflow_id" => workflow.id, 
+    "subject_id" => primary_subject.id, 
     "location" => nil, 
     "annotations" => 
       [ { 
@@ -84,7 +85,7 @@ describe Workflow do
             "_key" => 0.1621886498760432 } ], 
             "task" => "attestation_form_task", 
             "_key" => 0.7740179121028632, 
-            "subject_id" => @subject.id, 
+            "subject_id" => subject.id, 
             "workflow_id" => "555257fb782d31c138010000", 
             "generate_subjects" => true, 
             "tool_task_description" => { 
@@ -98,7 +99,6 @@ describe Workflow do
       "started_at" => "2015-05-12T20:05:28.217Z", 
       "finished_at" => "2015-05-12T20:05:28.217Z", 
       "user_agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5)", 
-      "child_subject_id" => "55525d08782d314af3310000" 
     }
   end
 
@@ -108,32 +108,54 @@ describe Workflow do
     it { should belong_to(:project) }
   end
 
-  before(:each) do
-    @project = Project.create(title: "Transcibe-a-lot")
-    @workflow = Workflow.create(mark_workflow)
-    @workflow2 = Workflow.create(generates_new_subjects: false, project: @project)
-    @subject_set = SubjectSet.create(name: "Record Grouping", state: "active")
-    
-    # @subject2 = Subject.crete(workflow: @workflow2)
-    # @classification = Classification.create(workflow: @workflow2)
-    # @subject.classifications << @classification
-  end
-
 
   context 'methods' do
-    
+
+    let(:project){ Project.create(title: "Transcibe-a-lot") }
+    let(:workflow){ Workflow.create(mark_workflow) }
+    let(:workflow2){ Workflow.create(generates_new_subjects: false, project: project, name: "transcribe") }
+    let(:subject_set){ SubjectSet.create(name: "Record Grouping", state: "active") }
+    let(:subject){ Subject.create(subject_set: subject_set, workflow: workflow2) }  
+    let(:primary_subject){ Subject.create(subject_set: subject_set, workflow: workflow ) }  
+    # let(:classification){ Classification.create(workflow: @workflow, subject: primary_subject, annotations: classification_object.annotations) }
+
     describe '#subject_has_enough_classifications' do
       it 'should evaluate whether a subject.cassification is greater than workflow.generate_subjects_after' do
-        @subject = Subject.create(workflow: @workflow, subject_set: @subject_set)
-        @subject.classification_count = 1
-        expect(@workflow.subject_has_enough_classifications(@subject)).to be(true)
+        subject = Subject.create(workflow: workflow, subject_set: subject_set)
+        subject.classification_count = 1
+        expect(workflow.subject_has_enough_classifications(subject)).to be(true)
       end
     end
 
-    describe "#create_follow_up_subjects" do
-      it "only if the workflow.generate_subjects == true should the method allows secondary subject generation" do
-        expect(@workflow.create_follow_up_subjects(classification_object)).to be(true)
+    describe "#create_secondary_subjects" do
+      it "return false if self.generates_new_subjects is false" do
+        expect(workflow2.create_secondary_subjects(classification_object)).to be(nil)
       end
+
+      it 'should increase the total number of subjects by 1' do
+        classification = Classification.new(classification_object) 
+
+        classification.subject.classification_count = 1
+        # we expect the Subject count to increase because 1 through Classification creation and once by calling #create_secondary_subjects
+        expect{workflow.create_secondary_subjects(classification)}.to change{Subject.all.count}.by(2)
+      end
+
+      it 'should set the classification.child_subject_id to the generated subject' do
+        # pending("write this test").error()
+        workflow2
+        # classification = double(classification_count: 1, subject: primary_subject)
+        classification = double(classification_object)
+        # classification = Classification.new(classification_object)
+        allow(classification).to receive(:subject).and_return(primary_subject)
+        allow(classification).to receive(:child_subject)
+        classification.subject.classification_count = 1
+
+        child_subject = workflow.create_secondary_subjects(classification)
+        binding.pry
+        expect(classification.child_subject.id).to eq(primary_subject.child_subjects[0].id)
+
+      end
+
     end
     
 
@@ -142,7 +164,7 @@ describe Workflow do
 
     #   it 'Should correctly update its subject counter when a subject changes status ' do
     #     pending("dealing with other methods first")
-    #     s = Subject.create(:workflow =>@workflow, :status =>"pending")
+    #     s = Subject.create(:workflow =>workflow, :status =>"pending")
     #     s.activate!
     #     @workflow.active_subjects.should  == 1
     #     s.retire!
