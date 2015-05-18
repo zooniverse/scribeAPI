@@ -101,16 +101,11 @@ TextTool = React.createClass
     val = @state.annotation?.value ? ''
     # console.log "TextTool#render val:", val, @state.annotation?.value
 
-    console.log 'RENDER:'
-    console.log 'PROPS: ', @props
-    console.log 'STATE: ', @state
-
-
     toolType = @props.task.tool_options.tool_type
 
-    unless toolType? then console.log "ERROR: transcribe tool #{toolType} does not exist"
-
-    console.log 'TOOL TYPE: ', toolType
+    unless inputComponents[toolType]?
+      console.log "ERROR: Field type, #{toolType}, does not exist!"
+      return null
 
     InputComponent = inputComponents[toolType]
 

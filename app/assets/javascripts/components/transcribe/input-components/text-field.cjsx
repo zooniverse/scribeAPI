@@ -4,7 +4,7 @@ TextField = React.createClass
   displayName: 'TextField'
 
   render: ->
-    <div>
+    <span>
       <div className="left">
         <div className="input-field active">
           <label>{@props.instruction}</label>
@@ -20,6 +20,6 @@ TextField = React.createClass
       <div className="right">
         <DoneButton onClick={@props.commitAnnotation} />
       </div>
-    </div>
+    </span>
 
 module.exports = TextField
