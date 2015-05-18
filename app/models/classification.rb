@@ -25,7 +25,9 @@ class Classification
   end
 
   def check_for_retirement
-    subject.retire_by_vote! if subject.type == "root"
+    # PB: Currently this is causing the retire_count to be incremented every time a classification is saved
+    # I think we should check that the user actually told us that there's nothing more to mark before calling subject.retire_by_vote!
+    # subject.retire_by_vote! if subject.type == "root"
   end  
 
   def increment_subject_classification_count
