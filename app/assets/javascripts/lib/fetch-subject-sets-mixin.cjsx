@@ -3,11 +3,9 @@ API            = require './api'
 module.exports =
   componentDidMount: ->
     console.log "Fetch Subjects Mixin: ", @
-    console.log "Props at Mixin", @props
     if @props.params.subject_set_id
       @fetchSubjectSet @props.params.subject_set_id,@props.workflow.id
     else
-      console.log "testing else assumption"
       @fetchSubjectSets @props.workflow.id, @props.workflow.subject_fetch_limit
 
   fetchSubjectSet: (subject_set_id, workflow_id)->
