@@ -22,9 +22,8 @@ TextTool = React.createClass
     @setState
       annotation: @props.annotation
 
-  componentDidMount: ->
-    console.log 'componentDidMount()'
-    # @updatePosition()
+  componentDidMount: -> # not sure if this does anything? --STI
+    @updatePosition()
 
   handleInitStart: (e,d) ->
     # prevent dragging from non-divs (a bit hacky) --STI
@@ -33,17 +32,15 @@ TextTool = React.createClass
     @props.clickOffsetX = e.nativeEvent.offsetX + e.nativeEvent.srcElement.offsetParent.offsetLeft  #$('.transcribe-tool').offsetX# - e.offsetX #().left
     @props.clickOffsetY = e.nativeEvent.offsetY + e.nativeEvent.srcElement.offsetParent.offsetTop #$('.transcribe-tool').offsetY# - e.offsetY #().top
 
-  handleInitDrag: (e, delta) ->
-    console.log 'handleInitDrag()'
+  handleInitDrag: (e, d) ->
+    # console.log 'handleInitDrag()'
     return if @state.preventDrag # not too happy about this one
 
     dx = e.clientX - @props.clickOffsetX + window.scrollX
     dy = e.clientY - @props.clickOffsetY + window.scrollY
 
-    @setState
-      dx: dx
-      dy: dy
-      dragged: true
+    @setState dragged: true, dx: dx, dy: dy
+
   # Expects size hash with:
   #   w: [viewer width]
   #   h: [viewer height]
@@ -56,11 +53,22 @@ TextTool = React.createClass
     @updatePosition()
 
   updatePosition: ->
+    console.log 'updatePosition()'
+  
+    toolName = @props.subject.data.toolName
+    switch toolName
+      when 'rectangleTool'
+        x = @props.subject.data.x
+        y = @props.subject.data.y + @props.subject.data.height
+      when 'textRowTool'
+        x = '50%'
+        y = @props.subject.data.yLower
+
+
     if @state.viewerSize? && ! @state.dragged
       @setState
-        dx: @props.subject.data.x * @state.viewerSize.scale.horizontal
-        dy: (@props.subject.data.y + @props.subject.data.height) * @state.viewerSize.scale.vertical
-      # console.log "TextTool#updatePosition setting state: ", @state
+        dx: x * @state.viewerSize.scale.horizontal
+        dy: y * @state.viewerSize.scale.vertical
 
   commitAnnotation: ->
     @props.onComplete @state.annotation
