@@ -9,14 +9,14 @@ class Classification
   field :finished_at
   field :user_agent
 
-  belongs_to :workflow
-  belongs_to :user
-  belongs_to :subject
-  belongs_to  :child_subject, :class_name => "Subject"
-  has_many   :triggered_followup_subjects, class_name: "Subject"
+  belongs_to    :workflow
+  belongs_to    :user
+  belongs_to    :subject
+  belongs_to    :child_subject, :class_name => "Subject"
+  has_many      :triggered_followup_subjects, class_name: "Subject"
 
-  after_create :increment_subject_classification_count, :check_for_retirement
-  after_create :generate_new_subjects
+  after_create  :increment_subject_classification_count, :check_for_retirement
+  after_create  :generate_new_subjects
 
   def generate_new_subjects
     if workflow.generates_new_subjects
