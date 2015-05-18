@@ -48,8 +48,12 @@ class Subject
     parent_subject.inc(secondary_subject_count: 1)
   end
 
+  def one_upvote_for_retirement
+    self.inc(retire_count: 1)
+  end
+
   def retire_by_vote!
-    self.status = "retired" if retire_count >= workflow.retire_limit
+    self.status = "retired" if (self.retire_count >= self.workflow.retire_limit)
     subject_set.subject_completed_on_workflow(workflow)
     save
   end

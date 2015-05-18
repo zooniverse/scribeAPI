@@ -44,11 +44,9 @@ class Classification
 
 
   def increment_subject_classification_count
-    subject = self.subject
     subject.classification_count += no_annotation_values #the method can now be replaced by self.annotations.length
     subject.save
-    # check to see if subject.type == "root" 
-    # subject.retire! # we are still working out retirement implementation
+    subject.retire_by_vote! if subject.type == "root"
   end
 
 end

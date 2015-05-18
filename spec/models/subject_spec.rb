@@ -15,7 +15,7 @@ describe Subject do
 
     let(:project){Project.create(title: "test")}
     let(:subject_set){ SubjectSet.create(name: "Record Grouping", state: "active") }
-    let(:workflow){Workflow.create(project_id: project.id)}
+    let(:workflow){Workflow.create(project_id: project.id, retire_limit: 1)}
     let(:subject){
       Subject.create(
         {
@@ -37,7 +37,7 @@ describe Subject do
         subject_set: subject_set
       }
     )}
-    let(:parent_subject){Subject.create(secondary_subject_count: 1, workflow: workflow, subject_set: subject_set)}
+    let(:parent_subject){Subject.create(secondary_subject_count: 1, workflow: workflow, subject_set: subject_set, type: "root")}
 
     describe '.status' do
       it 'should initally have status active' do
@@ -65,11 +65,18 @@ describe Subject do
       end
     end
 
-    describe '#retire!' do
-      it "if a subject classification_count is greater than or equal to the retire limit, set subject status to retired" do
-        subject.classification_count = 1
-        subject.retire!
-        expect(subject.status).to eq("retired")
+    describe '#one_upvote_for_retirement' do
+      it 'increments subjects retire_count by 1' do
+        parent_subject.one_upvote_for_retirement
+        expect{parent_subject.one_upvote_for_retirement}.to change{parent_subject.retire_count}.by(1)
+      end
+    end
+
+    describe '#retire_by_vote!' do
+      it "if a subject retire_count is greater than or equal to the retire limit, set subject status to retired" do
+        parent_subject.one_upvote_for_retirement
+        parent_subject.retire_by_vote!
+        expect(parent_subject.status).to eq("retired")
       end
     end
 
