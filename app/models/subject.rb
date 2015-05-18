@@ -3,7 +3,7 @@ class Subject
   include Mongoid::Timestamps
   include Randomizer
 
-  scope :root, -> { where(type: 'root') }
+  scope :root_type, -> { where(type: 'root') }
 
   field :name,                        type: String
   field :thumbnail,                   type: String
