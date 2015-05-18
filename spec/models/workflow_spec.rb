@@ -3,22 +3,6 @@ require 'spec_helper'
 
 describe Workflow do
 
-
-  context 'associations' do
-    it { should have_many(:subjects) }
-    it { should have_many(:classifications) }
-    it { should belong_to(:project) }
-  end
-
-  before(:each) do
-    @workflow = Workflow.create(mark_workflow)
-    @workflow2 = Workflow.create(generates_new_subjects: false)
-    @classifications = Classification.create(workflow: @workflow2)
-    @subject = Subject.create(workflow: @workflow)
-    @subject.classifications << @classification
-  end
-
-
   def mark_workflow
     {
       "name"=>"mark",
@@ -118,12 +102,30 @@ describe Workflow do
     }
   end
 
+  context 'associations' do
+    it { should have_many(:subjects) }
+    it { should have_many(:classifications) }
+    it { should belong_to(:project) }
+  end
+
+  before(:each) do
+    @project = Project.create(title: "Transcibe-a-lot")
+    @workflow = Workflow.create(mark_workflow)
+    @workflow2 = Workflow.create(generates_new_subjects: false, project: @project)
+    @subject_set = SubjectSet.create(name: "Record Grouping", state: "active")
+    
+    # @subject2 = Subject.crete(workflow: @workflow2)
+    # @classification = Classification.create(workflow: @workflow2)
+    # @subject.classifications << @classification
+  end
 
 
   context 'methods' do
     
     describe '#subject_has_enough_classifications' do
       it 'should evaluate whether a subject.cassification is greater than workflow.generates_subjects_after' do
+        @subject = Subject.create(workflow: @workflow, subject_set: @subject_set)
+        @subject.classification_count = 1
         expect(@workflow.subject_has_enough_classifications(@subject)).to be(true)
       end
     end
@@ -136,29 +138,29 @@ describe Workflow do
     
 
 
-    describe '#create_secondary_subjects' do
+    # describe '#create_secondary_subjects' do
 
-      it 'Should correctly update its subject counter when a subject changes status ' do
-        pending("dealing with other methods first")
-        s = Subject.create(:workflow =>@workflow, :status =>"pending")
-        s.activate!
-        @workflow.active_subjects.should  == 1
-        s.retire!
-        @workflow.active_subjects.should  == 0
-      end
+    #   it 'Should correctly update its subject counter when a subject changes status ' do
+    #     pending("dealing with other methods first")
+    #     s = Subject.create(:workflow =>@workflow, :status =>"pending")
+    #     s.activate!
+    #     @workflow.active_subjects.should  == 1
+    #     s.retire!
+    #     @workflow.active_subjects.should  == 0
+    #   end
 
-      it 'should trigger a new subject in a subsequent workflow if a task requires it' do
-        pending("dealing with other methods first")
-        triggering_workflow  = Workflow.create(:tasks=> marking_task, first_task: "drawSomething")
-        s = Subject.create(:workflows =>[triggering_workflow.id])
+    #   it 'should trigger a new subject in a subsequent workflow if a task requires it' do
+    #     pending("dealing with other methods first")
+    #     triggering_workflow  = Workflow.create(:tasks=> marking_task, first_task: "drawSomething")
+    #     s = Subject.create(:workflows =>[triggering_workflow.id])
 
-        classification = Classification.create(:subject => s, :workflow => triggering_workflow, annotations: triggering_annotations )
-        @workflow.active_subjects.should == 1
-        Subject.find(:workflow_ids => @workflow.id).count.should  == 1
+    #     classification = Classification.create(:subject => s, :workflow => triggering_workflow, annotations: triggering_annotations )
+    #     @workflow.active_subjects.should == 1
+    #     Subject.find(:workflow_ids => @workflow.id).count.should  == 1
 
-      end
+    #   end
 
-    end
+    # end
 
 
   end #end of context

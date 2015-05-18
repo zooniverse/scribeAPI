@@ -3,6 +3,7 @@ class Project
 	include Mongoid::Document
 	include Mongoid::Timestamps
 
+	field  :key , 		     type: String # unique key identifying project (subfolder under /projects holding project jsons)
 	field  :producer , 		 type: String, default: "Adler"
 	field  :title , 		   type: String, default: "ZooZoo"
 	field  :short_title, 	 type: String, default: "Scribe 2.0"

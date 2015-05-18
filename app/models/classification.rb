@@ -20,9 +20,7 @@ class Classification
 
   after_create :generate_new_subjects
   after_create :generate_terms
-
-  # PB I believe this will take a different form: classification_count? 
-  # after_create :increment_subject_number_of_annontation_values
+  after_create :increment_subject_classification_count
 
   def generate_new_subjects
     if workflow.generates_new_subjects
@@ -81,9 +79,9 @@ class Classification
 
   # we need to increment self.subject.classification_count by the nummber of values in annotation.
   # new ideas for modeling the annotation.values? the current model feels a bit off.
-  def increment_subject_number_of_annontation_values
+  def increment_subject_classification_count
     subject = self.subject
-    subject.annotation_value_count += no_annotation_values
+    subject.classification_count += no_annotation_values
     subject.save
     # subject.retire!
   end

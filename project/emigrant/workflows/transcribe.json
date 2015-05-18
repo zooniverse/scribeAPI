@@ -2,6 +2,7 @@
   "name": "transcribe",
   "label": "Transcribe Workflow",
   "first_task": "em_switch_on_type",
+  "retire_limit": 3,
 
   "tasks": {
 

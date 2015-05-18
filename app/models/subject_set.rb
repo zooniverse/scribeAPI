@@ -20,7 +20,6 @@ class SubjectSet
     save
   end
 
-
   def inc_subject_count_for_workflow(workflow)
     inc "counts.#{workflow.id.to_s}.total_subjects" => 1
   end

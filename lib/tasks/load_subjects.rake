@@ -7,31 +7,31 @@ require 'active_support'
     # Given a project key (aka name/title), returns the Project instance from the db:
     def project_for_key(key)
 
-      project_file_path = Rails.root.join('project', key, 'project.rb')
-      require project_file_path
+      # project_file_path = Rails.root.join('project', key, 'project.json')
+      # project_hash = JSON.parse File.read(project_file_path)
 
-      project = Project.find_by title: Specific_project[:title]
+      project = Project.find_by key: key
       project
     end
 
-    task :project_setup, [:project_name] => :environment do |task, args|
-      project_name = args[:project_name]
-      subjects_dir = Rails.root.join('project', project_name, 'subjects')
+    task :project_setup, [:project_key] => :environment do |task, args|
+      project_key = args[:project_key]
+      subjects_dir = Rails.root.join('project', project_key, 'subjects')
 
-      project = project_for_key project_name
+      project = project_for_key project_key
 
-      Rake::Task['load_workflows'].invoke(project_name, project.id)
+      Rake::Task['load_workflows'].invoke(project_key, project.id)
 
-      Rake::Task['load_groups'].invoke(project_name)
+      Rake::Task['load_groups'].invoke(project_key)
     end
 
-    task :load_groups, [:project_name] => :environment do |task, args|
-      project_name = args[:project_name]
-      subjects_dir = Rails.root.join('project', project_name, 'subjects')
+    task :load_groups, [:project_key] => :environment do |task, args|
+      project_key = args[:project_key]
+      subjects_dir = Rails.root.join('project', project_key, 'subjects')
 
       groups_file = Rails.root.join(subjects_dir, 'groups.csv')
 
-      project = project_for_key project_name
+      project = project_for_key project_key
 
       project.groups.destroy_all
 
@@ -56,21 +56,21 @@ require 'active_support'
                               meta_data: meta_data})
 
         puts "  Creating group #{$. - 1} of #{num_groups}: #{group_key}"
-        Rake::Task['load_group_subjects'].invoke(project_name, group_key)
+        Rake::Task['load_group_subjects'].invoke(project_key, group_key)
 
         Rake::Task['load_group_subjects'].reenable
 
       end
     end
 
-    task :load_group_subjects, [:project_name, :group_key] => :environment do |task, args|
-      project_name = args[:project_name]
-      subjects_dir = Rails.root.join('project', project_name, 'subjects')
+    task :load_group_subjects, [:project_key, :group_key] => :environment do |task, args|
+      project_key = args[:project_key]
+      subjects_dir = Rails.root.join('project', project_key, 'subjects')
       group_file = Rails.root.join subjects_dir, "group_#{args[:group_key]}.csv"
 
       group = Group.find_by key: args[:group_key]
 
-      project = project_for_key args[:project_name]
+      project = project_for_key args[:project_key]
       mark_workflow = project.workflows.find_by(name: 'mark')
 
       # Loop over contents of group file, which has one subject per row
@@ -140,12 +140,12 @@ require 'active_support'
     end
 
   desc "loads workflow jsons from workflows/*.json"
-  task :load_workflows, [:project_name, :project_id] => :environment do |task, args|
+  task :load_workflows, [:project_key, :project_id] => :environment do |task, args|
     project_id = args[:project_id]
     project = Project.find project_id
     project.workflows.destroy_all
 
-    workflows_path = Rails.root.join('project', args[:project_name], 'workflows', '*.json')
+    workflows_path = Rails.root.join('project', args[:project_key], 'workflows', '*.json')
     puts "Workflows: Loading workflows from #{workflows_path}"
 
     Dir.glob(workflows_path).each do |workflow_hash_path|

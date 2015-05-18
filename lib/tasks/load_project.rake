@@ -2,19 +2,21 @@
 
 desc 'creates a poject object from the project directory'
 
-  task :project_load, [:project_name] => :environment do |task, args|
-    project_dir = Rails.root.join('project', args[:project_name])
-    project_file_path = "#{project_dir}/project.rb"
+  task :project_load, [:project_key] => :environment do |task, args|
+    project_dir = Rails.root.join('project', args[:project_key])
+    project_file_path = "#{project_dir}/project.json"
+    project_hash = JSON.parse File.read(project_file_path)
 
-    load project_file_path
-    project = Project.find_or_create_by title: Specific_project[:title]
+    # load project_file_path
+    project = Project.find_or_create_by key: args[:project_key]
     project.update({
-      short_title: Specific_project[:short_title],
-      summary: Specific_project[:summary],
-      organizations: Specific_project[:organizations],
-      background: Specific_project[:background],
-      team: Specific_project[:team],
-      forum: Specific_project[:forum],
+      title: project_hash['title'],
+      short_title: project_hash['short_title'],
+      summary: project_hash['summary'],
+      organizations: project_hash['organizations'],
+      background: project_hash['background'],
+      team: project_hash['team'],
+      forum: project_hash['forum'],
       pages: []
     })
 
@@ -31,7 +33,7 @@ desc 'creates a poject object from the project directory'
     puts "Project: Created '#{project.title}'"
 
     # Load pages from content/*:
-    content_path = Rails.root.join('project', args[:project_name], 'content')
+    content_path = Rails.root.join('project', args[:project_key], 'content')
     puts "Loading pages from #{content_path}:"
     Dir.foreach(content_path).each do |file|
       path = Rails.root.join content_path, file
@@ -55,7 +57,7 @@ desc 'creates a poject object from the project directory'
       end
     end
 
-    styles_path = Rails.root.join('project', args[:project_name], 'styles.css')
+    styles_path = Rails.root.join('project', args[:project_key], 'styles.css')
     if File.exist? styles_path
       styles = File.read styles_path
       puts "Loading #{styles.size}b of custom CSS"
@@ -65,13 +67,14 @@ desc 'creates a poject object from the project directory'
     project.save
 
     begin
-      Rake::Task['project_setup'].invoke(args[:project_name])
+      Rake::Task['project_setup'].invoke(args[:project_key])
 
       puts "Done loading \"#{project.title}\" with #{project.workflows.count} workflow(s), #{project.subject_sets.count} subject sets."
 
     rescue Exception => e  
       # If a workflow json can't be parsed, halt:
       puts ""
+      puts "ERROR: #{e.inspect}"
       puts "Halting: #{e.message}"
     end
   end
