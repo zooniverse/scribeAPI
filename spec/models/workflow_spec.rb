@@ -115,8 +115,8 @@ describe Workflow do
     let(:workflow){ Workflow.create(mark_workflow) }
     let(:workflow2){ Workflow.create(generates_new_subjects: false, project: project, name: "transcribe") }
     let(:subject_set){ SubjectSet.create(name: "Record Grouping", state: "active") }
-    let(:subject){ Subject.create(subject_set: subject_set, workflow: workflow2) }  
     let(:primary_subject){ Subject.create(subject_set: subject_set, workflow: workflow ) }  
+    let(:subject){ Subject.create(subject_set: subject_set, parent_subject: primary_subject, workflow: workflow2) }  
     # let(:classification){ Classification.create(workflow: @workflow, subject: primary_subject, annotations: classification_object.annotations) }
 
     describe '#subject_has_enough_classifications' do
@@ -141,17 +141,14 @@ describe Workflow do
       end
 
       it 'should set the classification.child_subject_id to the generated subject' do
-        # pending("write this test").error()
-        workflow2
-        # classification = double(classification_count: 1, subject: primary_subject)
+        
         classification = double(classification_object)
-        # classification = Classification.new(classification_object)
         allow(classification).to receive(:subject).and_return(primary_subject)
-        allow(classification).to receive(:child_subject)
+        allow(classification).to receive(:child_subject).and_return(subject)
         classification.subject.classification_count = 1
 
-        child_subject = workflow.create_secondary_subjects(classification)
-        binding.pry
+        workflow.create_secondary_subjects(classification)
+  
         expect(classification.child_subject.id).to eq(primary_subject.child_subjects[0].id)
 
       end
