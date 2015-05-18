@@ -93,7 +93,7 @@ TextTool = React.createClass
     # console.log "TextTool#render val:", val, @state.annotation?.value
 
     console.log 'INPUT FIELD: ', inputComponents
-    InputComponent = inputComponents['dateField']
+    InputComponent = inputComponents['textAreaField']
     console.log 'INPUT COMPONENT: ', InputComponent
 
 

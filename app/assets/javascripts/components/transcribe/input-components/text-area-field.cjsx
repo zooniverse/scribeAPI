@@ -1,19 +1,19 @@
 DoneButton = require './done-button'
 
-DateField = React.createClass
-  displayName: 'DateField'
+TextAreaField = React.createClass
+  displayName: 'TextAreaField'
 
   render: ->
     <div>
       <div className="left">
         <div className="input-field active">
           <label>{@props.instruction}</label>
-          <input
+          <textarea
             ref="input0"
-            type="date"
             data-task_key={@props.key}
             onChange={@handleChange}
             value={@props.val}
+            placeholder={"This is some place-holder text."}
           />
         </div>
       </div>
@@ -22,4 +22,4 @@ DateField = React.createClass
       </div>
     </div>
 
-module.exports = DateField
+module.exports = TextAreaField

@@ -1,2 +1,3 @@
 module.exports =
-  dateField: require './date-field'
+  dateField:     require './date-field'
+  textAreaField: require './text-area-field'

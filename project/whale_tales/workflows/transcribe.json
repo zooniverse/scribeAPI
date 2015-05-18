@@ -4,9 +4,10 @@
   "first_task": "entry_date",
   "tasks": {
     "entry_date": {
-      "tool": "singleTool",
+      "tool": "compositeTool",
       "tool_options": {
         "tool_type": "dateTool"
+
       },
       "instruction": "What is the entry date?",
       "next_task": "entry_text"
