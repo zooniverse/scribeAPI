@@ -67,6 +67,8 @@ TextTool = React.createClass
       when 'textRowTool'
         x = if @state.viewerSize? then (@state.viewerSize.w-650 )/2 else 0 # TODO: don't hard-wire dimensions
         y = @props.subject.data.yLower
+      else
+        console.log "ERROR: Cannot update position on unknown transcription tool #{toolName}"
 
     if @state.viewerSize? && ! @state.dragged
       @setState
@@ -74,11 +76,18 @@ TextTool = React.createClass
         dy: y * @state.viewerSize.scale.vertical
 
   commitAnnotation: ->
+    console.log 'commit annottion'
     @props.onComplete @state.annotation
 
   handleChange: (e) ->
     @state.annotation.value = e.target.value
     @forceUpdate()
+
+  handleKeyPress: (e) ->
+    console.log 'handleKeyPress()'
+    if [13].indexOf(e.keyCode) >= 0 # ENTER:
+      @commitAnnotation()
+      e.preventDefault()
 
   render: ->
     return null unless @props.viewerSize? && @props.subject?
@@ -92,10 +101,18 @@ TextTool = React.createClass
     val = @state.annotation?.value ? ''
     # console.log "TextTool#render val:", val, @state.annotation?.value
 
-    console.log 'INPUT FIELD: ', inputComponents
-    InputComponent = inputComponents['dateField']
-    console.log 'INPUT COMPONENT: ', InputComponent
+    console.log 'RENDER:'
+    console.log 'PROPS: ', @props
+    console.log 'STATE: ', @state
 
+
+    toolType = @props.task.tool_options.tool_type
+
+    unless toolType? then console.log "ERROR: transcribe tool #{toolType} does not exist"
+
+    console.log 'TOOL TYPE: ', toolType
+
+    InputComponent = inputComponents[toolType]
 
     <Draggable
       onStart = {@handleInitStart}
@@ -108,7 +125,8 @@ TextTool = React.createClass
           val={@state.annotation?.value ? ''}
           instruction={@props.task.instruction}
           handleChange={@handleChange}
-          commitAnnotation{@commitAnnotation}
+          onKeyPress={@handleKeyPress}
+          commitAnnotation={@commitAnnotation}
         />
       </div>
     </Draggable>

@@ -4,10 +4,9 @@
   "first_task": "entry_date",
   "tasks": {
     "entry_date": {
-      "tool": "compositeTool",
+      "tool": "singleTool",
       "tool_options": {
-        "tool_type": "dateTool"
-
+        "tool_type": "dateField"
       },
       "instruction": "What is the entry date?",
       "next_task": "entry_text"
@@ -15,7 +14,7 @@
     "entry_text": {
       "tool": "singleTool",
       "tool_options": {
-        "tool_type": "textAreaTool"
+        "tool_type": "textAreaField"
       },
       "instruction": "Please transcribe the remainder of the highlighted entry.",
       "next_task": null

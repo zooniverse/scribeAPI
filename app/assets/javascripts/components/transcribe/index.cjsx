@@ -84,6 +84,7 @@ module.exports = React.createClass # rename to Classifier
       return matched_option.task
 
   handleTaskComplete: (ann) ->
+    console.log 'handleTaskCoplete()'
     @props.classification.annotations[@state.currentTaskKey] = ann
     console.log "INFO Text complete: ", @props.classification.annotations
 
@@ -125,10 +126,6 @@ module.exports = React.createClass # rename to Classifier
     if @props.query.scrollX? and @props.query.scrollY?
       console.log 'SCROLLING...'
       window.scrollTo(@props.query.scrollX,@props.query.scrollY)
-
-
-
-
 
     console.log "Transcribe#render: ", @state
     console.log "Transcribe#render: classification: ", @props.classification

@@ -18,7 +18,7 @@ DateField = React.createClass
         </div>
       </div>
       <div className="right">
-        <DoneButton onClick={@commitAnnotation} />
+        <DoneButton onClick={@props.commitAnnotation} />
       </div>
     </div>
 
