@@ -27,13 +27,8 @@ TextTool = React.createClass
     # @updatePosition()
 
   handleInitStart: (e,d) ->
-
-    @setState preventDrag: e.target.nodeName isnt 'DIV'# if $(e.srcElement).hasClass('transcribe-tool') # not my pro --STI
-
-    #
-    # console.log 'NODE NAME: ', e.target.n
-    # if e.target.nodeName is "INPUT" or e.target.nodeName is "TEXTAREA"
-    #   @setState preventDrag: true
+    # prevent dragging from non-divs (a bit hacky) --STI
+    @setState preventDrag: e.target.nodeName isnt 'DIV'
 
     @props.clickOffsetX = e.nativeEvent.offsetX + e.nativeEvent.srcElement.offsetParent.offsetLeft  #$('.transcribe-tool').offsetX# - e.offsetX #().left
     @props.clickOffsetY = e.nativeEvent.offsetY + e.nativeEvent.srcElement.offsetParent.offsetTop #$('.transcribe-tool').offsetY# - e.offsetY #().top
@@ -42,15 +37,13 @@ TextTool = React.createClass
     console.log 'handleInitDrag()'
     return if @state.preventDrag # not too happy about this one
 
-    dx = e.clientX - @props.clickOffsetX #- window.scrollX
-    dy = e.clientY - @props.clickOffsetY #@props.yClick # + window.scrollY
+    dx = e.clientX - @props.clickOffsetX + window.scrollX
+    dy = e.clientY - @props.clickOffsetY + window.scrollY
 
     @setState
       dx: dx
       dy: dy
       dragged: true
-        # , => @updatePosition()
-
   # Expects size hash with:
   #   w: [viewer width]
   #   h: [viewer height]
