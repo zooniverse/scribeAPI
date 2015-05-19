@@ -18,13 +18,23 @@ Build project:
 
 <h1>Deploying To Heroku</h1>
 
+Since we're running a node front-end within a rails app, we need a custom buildback https://github.com/ddollar/heroku-buildpack-multi
+
+`$ heroku config:add BUILDPACK_URL=https://github.com/ddollar/heroku-buildpack-multi.git`
+
+Then, set up a heroku remote and deploy to it.
+
 ```
 $ heroku git:remote -a HEROKU_APP_NAME
 $ git add .
 $ git commit -am "make it better"
 $ git push heroku master
-$ heroku run rake --trace project_load[%PROJECT_KEY%]
 ```
+
+Lastly, load the project with the provided rake task. To start from scratch, first run `rake db:drop`
+
+`$ heroku run rake project_load[%PROJECT_KEY%]`
+
 
 <h1>Background</h1>
 
