@@ -101,8 +101,9 @@ module.exports = React.createClass # rename to Classifier
       return matched_option.task
 
   handleTaskComplete: (ann) ->
+    # console.log 'handleTaskCoplete()'
     @props.classification.annotations[@state.currentTaskKey] = ann
-    console.log "INFO Text complete: ", @props.classification.annotations
+    # console.log "INFO Text complete: ", @props.classification.annotations
 
     if @state.currentTask['next_task']?
       # console.log "advance to next task...", @state.currentTask['next_task']
@@ -145,10 +146,6 @@ module.exports = React.createClass # rename to Classifier
     if @props.query.scrollX? and @props.query.scrollY?
       console.log 'SCROLLING...'
       window.scrollTo(@props.query.scrollX,@props.query.scrollY)
-
-
-
-
 
     console.log "Transcribe#render: ", @state
     return null unless @state.currentTask?

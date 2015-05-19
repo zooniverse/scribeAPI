@@ -2,11 +2,10 @@
 React           = require 'react'
 Draggable       = require 'lib/draggable'
 DoneButton      = require './done-button'
-
-inputComponents = require 'transcribe/input-components'
+inputComponents = require '../../input-components'
 
 TextTool = React.createClass
-  displayName: 'DateTool'
+  displayName: 'SingleTool'
 
   getInitialState: ->
     viewerSize: @props.viewerSize
@@ -68,6 +67,8 @@ TextTool = React.createClass
       when 'textRowTool'
         x = if @state.viewerSize? then (@state.viewerSize.w-650 )/2 else 0 # TODO: don't hard-wire dimensions
         y = @props.subject.data.yLower
+      else
+        console.log "ERROR: Cannot update position on unknown transcription tool #{toolName}!"
 
     if @state.viewerSize? && ! @state.dragged
       @setState
@@ -81,6 +82,11 @@ TextTool = React.createClass
     @state.annotation.value = e.target.value
     @forceUpdate()
 
+  handleKeyPress: (e) ->
+    if [13].indexOf(e.keyCode) >= 0 # ENTER:
+      @commitAnnotation()
+      e.preventDefault()
+
   render: ->
     return null unless @props.viewerSize? && @props.subject?
 
@@ -88,25 +94,31 @@ TextTool = React.createClass
     style =
       left: @state.dx
       top: @state.dy
-    # console.log "TextTool#render pos", @state
 
     val = @state.annotation?.value ? ''
-    # console.log "TextTool#render val:", val, @state.annotation?.value
+
+    toolType = @props.task.tool_options.tool_type
+
+    unless inputComponents[toolType]?
+      console.log "ERROR: Field type, #{toolType}, does not exist!"
+      return null
+
+    InputComponent = inputComponents[toolType]
 
     <Draggable
       onStart = {@handleInitStart}
       onDrag  = {@handleInitDrag}
       onEnd   = {@handleInitRelease}
       ref     = "inputWrapper0">
-
       <div className="transcribe-tool" style={style}>
         <InputComponent
           key={@props.task.key}
+          val={@state.annotation?.value ? ''}
           instruction={@props.task.instruction}
           handleChange={@handleChange}
-          commitAnnotation{@commitAnnotation}
+          onKeyPress={@handleKeyPress}
+          commitAnnotation={@commitAnnotation}
         />
-
       </div>
     </Draggable>
 
