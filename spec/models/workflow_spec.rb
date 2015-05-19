@@ -66,10 +66,10 @@ describe Workflow do
 
   def classification_object
     { "_id" => "55525d08782d314af3300000", 
-    "workflow_id" => workflow.id, 
-    "subject_id" => primary_subject.id, 
+    "workflow" => workflow, 
+    "subject" => primary_subject, 
     "location" => nil, 
-    "annotations" => 
+    "annotation" => 
       [ { 
         "_toolIndex" => 3,  
         "value" => [ 
@@ -119,39 +119,43 @@ describe Workflow do
     let(:subject){ Subject.create(subject_set: subject_set, parent_subject: primary_subject, workflow: workflow2) }  
     # let(:classification){ Classification.create(workflow: @workflow, subject: primary_subject, annotations: classification_object.annotations) }
 
-    describe '#subject_has_enough_classifications' do
-      it 'should evaluate whether a subject.cassification is greater than workflow.generate_subjects_after' do
-        subject = Subject.create(workflow: workflow, subject_set: subject_set)
-        subject.classification_count = 1
-        expect(workflow.subject_has_enough_classifications(subject)).to be(true)
-      end
-    end
+    # describe '#subject_has_enough_classifications' do
+    #   it 'should evaluate whether a subject.cassification is greater than workflow.generate_subjects_after' do
+    #     subject = Subject.create(workflow: workflow, subject_set: subject_set)
+    #     subject.classification_count = 1
+    #     expect(workflow.subject_has_enough_classifications(subject)).to be(true)
+    #   end
+    # end
 
     describe "#create_secondary_subjects" do
-      it "return false if self.generates_new_subjects is false" do
-        expect(workflow2.create_secondary_subjects(classification_object)).to be(nil)
-      end
+      # it "return false if self.generates_new_subjects is false" do
+      #   expect(workflow2.create_secondary_subjects(classification_object)).to be(nil)
+      # end
 
       it 'should increase the total number of subjects by 1' do
-        classification = Classification.new(classification_object) 
-
-        classification.subject.classification_count = 1
-        # we expect the Subject count to increase because 1 through Classification creation and once by calling #create_secondary_subjects
-        expect{workflow.create_secondary_subjects(classification)}.to change{Subject.all.count}.by(2)
-      end
-
-      it 'should set the classification.child_subject_id to the generated subject' do
-        
         classification = double(classification_object)
-        allow(classification).to receive(:subject).and_return(primary_subject)
-        allow(classification).to receive(:child_subject).and_return(subject)
-        classification.subject.classification_count = 1
-
-        workflow.create_secondary_subjects(classification)
-  
-        expect(classification.child_subject.id).to eq(primary_subject.child_subjects[0].id)
-
+        expect(classification).to receive(:annotation).and_return(classification_object["annotation"])
+        workflow = Workflow.create(generates_new_subjects: true, name: "transcribe")
+        classification.subject.location = {standard: "this/is/a/img.jpg"}
+        expect(classification).to receive(:child_subject=)
+        expect(classification).to receive(:save)
+        subject.classification_count = 1
+        # we expect the Subject count to increase because 1 through Classification creation and once by calling #create_secondary_subjects
+        expect{workflow.create_secondary_subjects(classification)}.to change{Subject.all.count}.by(1)
       end
+
+      # it 'should set the classification.child_subject_id to the generated subject' do
+        
+      #   classification = double(classification_object)
+      #   allow(classification).to receive(:subject).and_return(primary_subject)
+      #   allow(classification).to receive(:child_subject).and_return(subject)
+      #   classification.subject.classification_count = 1
+
+      #   workflow.create_secondary_subjects(classification)
+  
+      #   expect(classification.child_subject.id).to eq(primary_subject.child_subjects[0].id)
+
+      # end
 
     end
 

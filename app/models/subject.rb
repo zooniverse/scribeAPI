@@ -9,7 +9,7 @@ class Subject
   # This is a hash with one entry per deriv; `standard', 'thumbnail', etc
   field :location,                    type: Hash 
   field :type,                        type: String,  default: "root" #options: "root", "secondary"
-  field :status,                      type: String,  default: "active" #options: "active", "inactive", "retired", "complete"
+  field :status,                      type: String,  default: "active" #options: "active", "inactive", "retired", "complete", "contentious"
 
   field :meta_data,                   type: Hash
   field :secondary_subject_count,     type: Integer, default: 0

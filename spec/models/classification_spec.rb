@@ -22,6 +22,7 @@ describe Classification do
     describe '#check_for_retirement' do
       it 'if the classification.type is not root, return nil' do
         classification.subject.type = "em_date_record"
+
         expect(classification.check_for_retirement).to be(nil)
       end
     end
@@ -43,4 +44,4 @@ describe Classification do
     end    
 
   end
-end
+endq
