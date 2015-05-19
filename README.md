@@ -5,7 +5,7 @@ Check out the <a href="http://docs.scribeapi1.apiary.io/#reference">documentatio
 
 <h1>Quick Start</h1>
 Copy example project folder:
-``cp -R project/example_project project/%PROJECT_KEY%``
+`cp -R project/example_project project/%PROJECT_KEY%`
 
 Edit your project files - in particular:
  * Project properties (project.rb)
@@ -14,7 +14,17 @@ Edit your project files - in particular:
  * Pages (content/*.html.erb)
 
 Build project:
-``rake project_load[%PROJECT_KEY%]``
+`rake project_load[%PROJECT_KEY%]`
+
+<h1>Deploying To Heroku</h1>
+
+```
+$ heroku git:remote -a HEROKU_APP_NAME
+$ git add .
+$ git commit -am "make it better"
+$ git push heroku master
+$ heroku run rake --trace project_load[%PROJECT_KEY%]
+```
 
 <h1>Background</h1>
 
