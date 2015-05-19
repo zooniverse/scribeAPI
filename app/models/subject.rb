@@ -4,7 +4,7 @@ class Subject
   include Randomizer
 
 
-  scope :root_type, -> { where(type: 'root') }
+  scope :active_root, -> { where(type: 'root', status: 'active') }
 
   # This is a hash with one entry per deriv; `standard', 'thumbnail', etc
   field :location,                    type: Hash 

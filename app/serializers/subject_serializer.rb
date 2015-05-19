@@ -1,7 +1,5 @@
 class SubjectSerializer < ActiveModel::MongoidSerializer
 
-  #this seems like the place we want to control the return of subjects only if status == "active"
-
   attributes :id, :type, :parent_subject_id, :workflow_id, :name, :location, :data, :classification_count, :child_subjects_info, :meta_data, :user_favourite # , :key #PB deprecating this; unused
   attributes :width, :height
   delegate :current_user, to: :scope
