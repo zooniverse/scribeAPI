@@ -27,7 +27,9 @@ describe Classification do
     end
     
     describe '#increment_subject_classification_count' do
-      it 'should increment a subjects classifcation count by 1 or lenght of annontation array?' do
+      it 'should increment a subjects classifcation count by 1' do
+        classification.workflow.generates_new_subjects = false
+
         expect{classification.increment_subject_classification_count}.to change{subject.classification_count}.by(1)
       end
     end
