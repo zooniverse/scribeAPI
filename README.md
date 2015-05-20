@@ -31,10 +31,7 @@ $ git commit -am "make it better"
 $ git push heroku master
 ```
 
-Lastly, load the project with the provided rake task. To start from scratch, first run `rake db:drop`
-
-`$ heroku run rake project_load[%PROJECT_KEY%]`
-
+Make sure you have a MongoDB instance running, e.g. by adding MongoLab to your Heroku app, before loading the project with the provided rake task: `$ heroku run rake project_load[%PROJECT_KEY%]`
 
 <h1>Background</h1>
 
