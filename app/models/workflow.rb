@@ -45,7 +45,7 @@ class Workflow
           # Otherwise, it's a later workflow and we should copy `region` from parent subject
           region = classification.subject.region
         end
-
+      binding.pry
       child_subject = Subject.create(
         workflow: workflow_for_new_subject.id ,
         subject_set: classification.subject.subject_set,
