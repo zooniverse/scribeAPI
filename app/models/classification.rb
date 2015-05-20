@@ -16,7 +16,7 @@ class Classification
   belongs_to    :child_subject, :class_name => "Subject"
   has_many      :triggered_followup_subjects, class_name: "Subject"
 
-  after_create  :increment_subject_classification_count, :check_for_retirement
+  after_create  :increment_subject_classification_count
   after_create  :generate_new_subjects
   after_create  :generate_terms
 
