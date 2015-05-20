@@ -5,7 +5,7 @@ Check out the <a href="http://docs.scribeapi1.apiary.io/#reference">documentatio
 
 <h1>Quick Start</h1>
 Copy example project folder:
-``cp -R project/example_project project/%PROJECT_KEY%``
+`cp -R project/example_project project/%PROJECT_KEY%`
 
 Edit your project files - in particular:
  * Project properties (project.rb)
@@ -14,7 +14,24 @@ Edit your project files - in particular:
  * Pages (content/*.html.erb)
 
 Build project:
-``rake project_load[%PROJECT_KEY%]``
+`rake project_load[%PROJECT_KEY%]`
+
+<h1>Deploying To Heroku</h1>
+
+Since we're running a node front-end within a rails app, we need a custom buildback https://github.com/ddollar/heroku-buildpack-multi
+
+`$ heroku config:add BUILDPACK_URL=https://github.com/ddollar/heroku-buildpack-multi.git`
+
+Then, set up a heroku remote and deploy to it.
+
+```
+$ heroku git:remote -a HEROKU_APP_NAME
+$ git add .
+$ git commit -am "make it better"
+$ git push heroku master
+```
+
+Make sure you have a MongoDB instance running, e.g. by adding MongoLab to your Heroku app, before loading the project with the provided rake task: `$ heroku run rake project_load[%PROJECT_KEY%]`
 
 <h1>Background</h1>
 
