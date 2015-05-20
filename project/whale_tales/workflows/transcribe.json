@@ -6,7 +6,7 @@
     "entry_date": {
       "tool": "singleTool",
       "tool_options": {
-        "tool_type": "dateField"
+        "tool_type": "testComponent"
       },
       "instruction": "What is the entry date?",
       "next_task": "entry_text"
