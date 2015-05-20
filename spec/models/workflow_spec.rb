@@ -65,40 +65,33 @@ describe Workflow do
 
 
   def classification_object
-    { "_id" => "55525d08782d314af3300000", 
-    "workflow" => workflow, 
-    "subject" => primary_subject, 
-    "location" => nil, 
-    "annotation" => 
-      [ { 
-        "_toolIndex" => 3,  
-        "value" => [ 
-          { 
-            "key" => 0, 
-            "tool" => 3, 
-            "toolName" => 
-            "textRowTool", 
-            "x" => 290.18228252155285, 
-            "y" => 468.2760019591559, 
-            "yUpper" => 468.2760019591559, 
-            "yLower" => 510.3945391348069, 
-            "_key" => 0.1621886498760432 } ], 
-            "task" => "attestation_form_task", 
-            "_key" => 0.7740179121028632, 
-            "subject_id" => subject.id, 
-            "workflow_id" => "555257fb782d31c138010000", 
-            "generates_subjects" => true, 
-            "tool_task_description" => { 
-              "type" => "textRowTool", 
-              "label" => "Question", 
-              "color" => "green", 
-              "generates_subject_type" => "att_textRowTool_question", 
-              "_key" => 0.9674423730466515 } 
-            } 
-        ], 
-      "started_at" => "2015-05-12T20:05:28.217Z", 
-      "finished_at" => "2015-05-12T20:05:28.217Z", 
-      "user_agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5)", 
+    { 
+      "_id" => "555cdc15412d4d05952d0000",
+      "workflow_id" => workflow.id,
+      "subject_id" => primary_subject.id,
+      "annotation" => { 
+        "_toolIndex" => 0,
+        "task" => "attestation_form_task",
+        "_key" => 0.8344426495023072,
+        "subject_id" => "555cdc08782d311833070000",
+        "workflow_id" => "555cdc08782d311833010000",
+        "key" => 0,
+        "toolIndex" => 0,
+        "toolName" => "textRowTool",
+        "x" => 563.3333333333334,
+        "y" => 182.5,
+        "yUpper" => 182.5,
+        "yLower" => 282.5,
+        "tool_task_description" => { 
+          "type" => "textRowTool",
+          "label" => "Number",
+          "color" => "green",
+          "generates_subject_type" => "att_textRowTool_number",
+          "_key" => 0.1147315001580864 } 
+        },
+      "started_at" => "2015-05-20T19:10:13.887Z",
+      "finished_at" => "2015-05-20T19:10:13.887Z",
+      "user_agent" => "Mozilla/5.0" 
     }
   end
 
@@ -136,13 +129,17 @@ describe Workflow do
         
         workflow = Workflow.create(generates_new_subjects: true, name: "transcribe")
         classification = double(classification_object)
-        expect(classification).to receive(:annotations).and_return(classification_object["annotation"])
+        allow(classification).to receive(:subject).and_return(primary_subject)
+        allow(classification).to receive(:workflow).and_return(workflow)
+
+        allow(classification).to receive(:annotation).and_return(classification_object["annotation"])
         classification.subject.location = {standard: "this/is/a/img.jpg"}
-        expect(classification).to receive(:child_subject=)
-        expect(classification).to receive(:save)
+        allow(classification).to receive(:child_subject=)
+        allow(classification).to receive(:save)
         subject.classification_count = 1
 
         expect{workflow.create_secondary_subjects(classification)}.to change{Subject.all.count}.by(1)
+        
       end
 
     end

@@ -31,7 +31,6 @@ class Workflow
     return unless self.generates_new_subjects
     return unless subject_has_enough_classifications(classification.subject)
     workflow_for_new_subject = Workflow.find_by(name: classification.subject.workflow.generates_subjects_for)
-    # classification.annotations.each do |annotation|
     annotation = classification.annotation
       if classification.workflow.generates_new_subjects
         value = annotation["value"]
@@ -46,8 +45,6 @@ class Workflow
           # Otherwise, it's a later workflow and we should copy `region` from parent subject
           region = classification.subject.region
         end
-
-      puts "JUST BEFORE SUBJECT CREATION"
 
       child_subject = Subject.create(
         workflow: workflow_for_new_subject.id ,
@@ -70,7 +67,6 @@ class Workflow
       child_subject
 
       end
-    # end
 
   end
 
