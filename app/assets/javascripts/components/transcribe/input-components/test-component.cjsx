@@ -12,11 +12,14 @@ TestComponent = React.createClass
             <label>Name:</label>
             <input type='text'/>
             <label>Coordinates:</label>
-            <label>Lat:</label><input type='text'/>
-            <label>Lon:</label><input type='text'/>
-            <hr>
-            <label>Date:</label><input type='text'/>
-            <label>Page No.:</label><input type='text'/>
+            <label>Lat:</label>
+            <input type='text'/>
+            <label>Lon:</label>
+            <input type='text'/>
+            <label>Date:</label>
+            <input type='text'/>
+            <label>Page No.:</label>
+            <input type='text'/>
           </fieldset>
         </div>
       </div>
