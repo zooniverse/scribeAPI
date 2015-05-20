@@ -34,7 +34,6 @@ class Workflow
     classification.annotations.each do |annotation|
       if annotation["generates_subjects"]
         annotation["value"].each do |value|
-          binding.pry
 
           # If this is the mark workflow, create region:
           if classification.workflow.name == 'mark'
@@ -46,8 +45,7 @@ class Workflow
             # Otherwise, it's a later workflow and we should copy `region` from parent subject
             region = classification.subject.region
           end
-          puts "PAST THE REGION"
-          puts "!!!!!!!!!!!!!!!!!!!!!!!!"
+
 
           child_subject = Subject.create(
             workflow: workflow_for_new_subject.id ,
