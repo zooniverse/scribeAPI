@@ -130,6 +130,7 @@ module.exports = React.createClass # rename to Classifier
       completed: true
       subject_set: @state.currentSubjectSet
       workflow_id: @state.workflow.id
+      console.log "Gen NEw SUB", @state.workflow.generates_new_subjects
       'metadata.finished_at': (new Date).toISOString()
     @props.classification.save()
     @props.onComplete?() # does this do anything? -STI

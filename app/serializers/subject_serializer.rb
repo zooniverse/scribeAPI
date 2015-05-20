@@ -1,7 +1,6 @@
 class SubjectSerializer < ActiveModel::MongoidSerializer
 
-  attributes :id, :type, :parent_subject_id, :workflow_id, :name, :location, :data, :classification_count, :child_subjects_info, :meta_data, :user_favourite # , :key #PB deprecating this; unused
-  attributes :width, :height
+  attributes :id, :type, :parent_subject_id, :workflow_id, :name, :location, :data, :region, :classification_count, :child_subjects_info, :meta_data, :user_favourite
   delegate :current_user, to: :scope
 
   
@@ -22,6 +21,7 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
         id: child.id,
         location_standard: child.location["standard"],
         data: child.data,
+        region: child.region,
         tool_type: child.tool_task_description["type"],
         label: child.tool_task_description["label"]
       }

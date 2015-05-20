@@ -31,44 +31,46 @@ class Workflow
     return unless self.generates_new_subjects
     return unless subject_has_enough_classifications(classification.subject)
     workflow_for_new_subject = Workflow.find_by(name: classification.subject.workflow.generates_subjects_for)
-    classification.annotations.each do |annotation|
-      if annotation["generates_subjects"]
-        annotation["value"].each do |value|
+    # classification.annotations.each do |annotation|
+    annotation = classification.annotation
+      if classification.workflow.generates_new_subjects
+        value = annotation["value"]
 
-          # If this is the mark workflow, create region:
-          if classification.workflow.name == 'mark'
-            region = value.inject({}) do |h, (k,v)|
-              h[k] = v if ['toolName','x','y','width','height','yUpper','yLower'].include? k
-              h
-            end
-          else
-            # Otherwise, it's a later workflow and we should copy `region` from parent subject
-            region = classification.subject.region
+        # If this is the mark workflow, create region:
+        if classification.workflow.name == 'mark'
+          region = annotation.inject({}) do |h, (k,v)|
+            h[k] = v if ['toolName','x','y','width','height','yUpper','yLower'].include? k
+            h
           end
-
-
-          child_subject = Subject.create(
-            workflow: workflow_for_new_subject.id ,
-            subject_set: classification.subject.subject_set,
-            parent_subject_id: classification.subject.id,
-            tool_task_description: annotation["tool_task_description"],
-            location: {
-              standard: classification.subject.location[:standard]
-            },
-            # TODO: region field for tiertiary subjects, filling it with parent_subject.data?
-            data: value.except(:key, :tool),
-            region: region,
-            type: annotation["tool_task_description"]["generates_subject_type"]
-          )
-          puts child_subject
-        classification.child_subject = child_subject
-        classification.save
-        child_subject
-
+        else
+          # Otherwise, it's a later workflow and we should copy `region` from parent subject
+          region = classification.subject.region
         end
-        
+
+      puts "JUST BEFORE SUBJECT CREATION"
+
+      child_subject = Subject.create(
+        workflow: workflow_for_new_subject.id ,
+        subject_set: classification.subject.subject_set,
+        parent_subject_id: classification.subject.id,
+        tool_task_description: annotation["tool_task_description"],
+        location: {
+          standard: classification.subject.location[:standard]
+        },
+        # TODO: do we even need data now?
+
+        data: annotation,
+        region: region,
+        type: annotation["tool_task_description"]["generates_subject_type"]
+      )
+      puts child_subject
+
+      classification.child_subject = child_subject
+      classification.save
+      child_subject
+
       end
-    end
+    # end
 
   end
 
