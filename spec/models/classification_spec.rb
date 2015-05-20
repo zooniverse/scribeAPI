@@ -17,7 +17,29 @@ describe Classification do
     let(:subject_set){ SubjectSet.create(name: "Record Grouping") }
     let(:workflow){ Workflow.create(project_id: project.id)}
     let(:subject){ Subject.create(workflow: workflow, subject_set: subject_set, name: "Basic Subject") }
-    let(:classification){ Classification.create(workflow: workflow.id, subject: subject, annotations: []) }
+    let(:classification){ 
+      Classification.create(
+        workflow: workflow.id, 
+        subject: subject, 
+        annotation: 
+        { 
+          "task" => "attestation_form_task",
+          "subject_id" => "555cdc08782d311833070000",
+          "workflow_id" => "555cdc08782d311833010000",
+          "key" => 0,
+          "toolIndex" => 0,
+          "toolName" => "textRowTool",
+          "x" => 563.3333333333334,
+          "y" => 182.5,
+          "tool_task_description" => { 
+            "type" => "textRowTool",
+            "label" => "Number",
+            "color" => "green",
+            "generates_subject_type" => "att_textRowTool_number",
+          } 
+        }
+      ) 
+    }
 
     describe '#check_for_retirement' do
       it 'if the classification.type is not root, return nil' do

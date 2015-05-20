@@ -65,7 +65,6 @@ class Classification
       puts "Term.index_term! #{workflow_id}, #{sub_annotation[:key]}, #{sub_annotation[:val]}"
       Term.index_term! workflow_id, sub_annotation[:key], sub_annotation[:val] 
     end
-    puts "END OF THE GENERATE_TERM METHOD"
   end
 
   def increment_subject_classification_count
