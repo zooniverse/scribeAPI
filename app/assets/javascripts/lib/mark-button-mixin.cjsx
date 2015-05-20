@@ -76,7 +76,8 @@ module.exports =
         # @submitTranscription()
         console.log 'Transcription submitted.'
       when 'transcribe-finished'
-        location.replace '/#/transcribe'
+        console.log 'TRANSCRIBING MARK WITH ID: ', @props.mark.child_subject_id
+        location.replace "/#/transcribe/#{@props.mark.child_subject_id}?scrollX=#{window.scrollX}&scrollY=#{window.scrollY}"
         # @setState locked: true
         console.log 'All done. Nothing left to do here.'
       else

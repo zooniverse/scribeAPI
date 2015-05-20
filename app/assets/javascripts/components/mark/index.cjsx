@@ -104,7 +104,7 @@ module.exports = React.createClass # rename to Classifier
   addAnnotationForTask: (taskKey) ->
     console.log 'addAnnotationForTask(): TASKS: ', @props.workflow.tasks
     taskDescription = @props.workflow.tasks[taskKey]
-
+    console.log "ERROR: Invalid tool: #{taskDescription.tool}. Available tools are: #{(k for k,v of coreTools)}" if ! coreTools[taskDescription.tool]?
     annotation = coreTools[taskDescription.tool].getDefaultAnnotation() # sets {value: null}
     annotation.task = taskKey # e.g. {task: "cool"}
     # @props.classification.annotations.push annotation
@@ -121,6 +121,11 @@ module.exports = React.createClass # rename to Classifier
     @addAnnotationForTask.bind this, nextTask
 
   completeClassification: ->
+    # TODO: PB This doesn't post subject_id, which is required for classification model
+    # Because we're requiring a single classification to be saved for each mark created, I don't think this method makes sense as written anymore
+    # Rather than create a classification, it should probably ask the user if there's anything more to mark on the currently viewed subject, and inc subject.retire_count accordingly
+    console.log "TODO: At this point, ask user if there's more to mark and then load next subjectset to classify."
+    return
     @props.classification.update
       completed: true
       subject_set: @state.currentSubjectSet

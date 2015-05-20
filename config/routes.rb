@@ -30,8 +30,10 @@ API::Application.routes.draw do
 
   resources :subjects, :defaults => { :format => 'json' }
   resources :subject_sets, :defaults => { :format => 'json' }
+  get '/classifications/terms/:workflow_id/:annotation_key', to: 'classifications#terms'
   resources :classifications, :defaults => { :format => 'json' }
   resources :groups, :defaults => { :format => 'json' }
+
 
   get  '/current_user' => "users#logged_in_user"
   resources :favourites, only: [:index, :create, :destroy]

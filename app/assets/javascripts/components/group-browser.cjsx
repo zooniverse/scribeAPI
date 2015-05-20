@@ -11,7 +11,7 @@ GroupBrowser = React.createClass
 
   componentDidMount:->
     console.log('getting groups')
-    API.type("groups").get().then (groups)=>
+    API.type("groups").get(project_id: @props.project.id).then (groups)=>
       console.log('got groups', groups )
       @setState
         groups: groups

@@ -7,30 +7,31 @@ require 'active_support'
     # Given a project key (aka name/title), returns the Project instance from the db:
     def project_for_key(key)
 
-      project_file_path = Rails.root.join('project', key, 'project.rb')
-      require project_file_path
+      # project_file_path = Rails.root.join('project', key, 'project.json')
+      # project_hash = JSON.parse File.read(project_file_path)
 
-      project = Project.find_by title: Specific_project[:title]
+      project = Project.find_by key: key
       project
     end
 
-    task :project_setup, [:project_name] => :environment do |task, args|
-      project_name = args[:project_name]
-      subjects_dir = Rails.root.join('project', project_name, 'subjects')
+    task :project_setup, [:project_key] => :environment do |task, args|
+      project_key = args[:project_key]
+      subjects_dir = Rails.root.join('project', project_key, 'subjects')
 
-      project = project_for_key project_name
-      Rake::Task['load_workflows'].invoke(project_name, project.id)
+      project = project_for_key project_key
 
-      Rake::Task['load_groups'].invoke(project_name)
+      Rake::Task['load_workflows'].invoke(project_key, project.id)
+
+      Rake::Task['load_groups'].invoke(project_key)
     end
 
-    task :load_groups, [:project_name] => :environment do |task, args|
-      project_name = args[:project_name]
-      subjects_dir = Rails.root.join('project', project_name, 'subjects')
+    task :load_groups, [:project_key] => :environment do |task, args|
+      project_key = args[:project_key]
+      subjects_dir = Rails.root.join('project', project_key, 'subjects')
 
       groups_file = Rails.root.join(subjects_dir, 'groups.csv')
 
-      project = project_for_key project_name
+      project = project_for_key project_key
 
       project.groups.destroy_all
 
@@ -55,21 +56,21 @@ require 'active_support'
                               meta_data: meta_data})
 
         puts "  Creating group #{$. - 1} of #{num_groups}: #{group_key}"
-        Rake::Task['load_group_subjects'].invoke(project_name, group_key)
+        Rake::Task['load_group_subjects'].invoke(project_key, group_key)
 
         Rake::Task['load_group_subjects'].reenable
 
       end
     end
 
-    task :load_group_subjects, [:project_name, :group_key] => :environment do |task, args|
-      project_name = args[:project_name]
-      subjects_dir = Rails.root.join('project', project_name, 'subjects')
+    task :load_group_subjects, [:project_key, :group_key] => :environment do |task, args|
+      project_key = args[:project_key]
+      subjects_dir = Rails.root.join('project', project_key, 'subjects')
       group_file = Rails.root.join subjects_dir, "group_#{args[:group_key]}.csv"
 
       group = Group.find_by key: args[:group_key]
 
-      project = project_for_key args[:project_name]
+      project = project_for_key args[:project_key]
       mark_workflow = project.workflows.find_by(name: 'mark')
 
       # Loop over contents of group file, which has one subject per row
@@ -90,7 +91,7 @@ require 'active_support'
         data = subjects.first
         thumbnail       = data['thumbnail']
         name            = data['name']
-        meta_data       = data.except('group_id', 'file_path', 'retire_count', 'thumbnail')
+        meta_data       = data.except('group_id', 'file_path', 'retire_count', 'thumbnail', 'width','height', 'order')
 
         puts "    Adding subject set: #{set_key}"
         subject_set = group.subject_sets.create({
@@ -101,49 +102,67 @@ require 'active_support'
         })
         puts "      - saved subject set #{subject_set.thumbnail}"
 
-        subjects.each do |subj|
+        subjects.each_with_index do |subj, i|
           data = subj
-          # puts "    Load subject/subjeset: #{data}"
-          # group_id = group.id # args['group_id']
-          meta_data = subj.except('file_path', 'retire_count', 'thumbnail')
+
+          width = subj['width'].nil? ? nil : subj['width'].to_i
+          height = subj['height'].nil? ? nil : subj['height'].to_i
+
+          # If width/height not specified in CSV, autodetect:
+          if width.nil? || height.nil?
+            require 'fastimage'
+            width, height = FastImage.size(subj['file_path'])
+            puts "        - Autodetected image size: #{width} x #{height}"
+          end
+
+          # Parse order from csv if avail; otherwise default to position in csv:
+          order = subj['order'].nil? ? i : subj['order'].to_i
 
           puts "      Adding subject: #{subj['file_path']}"
           s = subject_set.subjects.create({
-            file_path: subj['file_path'],
             location: {
               standard: subj['file_path'],
               thumbnail: subj['thumbnail']
             },
             workflow: mark_workflow,
-            retire_count: subj['retire_count'],
-            meta_data: meta_data
+            meta_data: meta_data,
+            width: width,
+            height: height,
+            order: order
           })
           s.activate!
-          puts "        - saved subject: #{s.file_path}"
+          puts "        - Saved subject: #{s.location[:standard]}"
         end
 
       end
     end
 
   desc "loads workflow jsons from workflows/*.json"
-  task :load_workflows, [:project_name, :project_id] => :environment do |task, args|
+  task :load_workflows, [:project_key, :project_id] => :environment do |task, args|
     project_id = args[:project_id]
     project = Project.find project_id
     project.workflows.destroy_all
 
-    workflows_path = Rails.root.join('project', args[:project_name], 'workflows', '*.json')
+    workflows_path = Rails.root.join('project', args[:project_key], 'workflows', '*.json')
     puts "Workflows: Loading workflows from #{workflows_path}"
 
     Dir.glob(workflows_path).each do |workflow_hash_path|
       content = File.read(workflow_hash_path) # .gsub(/\n/, '')
       begin
+        next if content == ''
+
         workflow_hash = JSON.parse content
         workflow_hash.deep_symbolize_keys!
         workflow_hash[:project] = project
         workflow = Workflow.create workflow_hash
         puts "  Loaded '#{workflow.name}' workflow with #{workflow.tasks.count} tasks"
+
+        if workflow.generates_subjects && ! workflow.generates_subjects_for
+          puts "    WARN: #{workflow.name} generates subjects, but generates_subjects_for not set"
+        end
       rescue => e
         puts "  WARN: Couldn't parse workflow from #{workflow_hash_path}: #{e}"
+        raise "Error parsing #{workflow_hash_path}"
       end
     end
 

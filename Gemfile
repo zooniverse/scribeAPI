@@ -27,6 +27,8 @@ gem 'react-rails', '~> 1.0.0.pre', github: 'reactjs/react-rails'
 # gem 'rails_12factor'
 
 gem 'rack-streaming-proxy', '~> 2.0.1'
+gem 'will_paginate_mongoid', '2.0.1'
+gem 'fastimage', '1.7.0'
 
 group :development do
   gem 'dotenv-rails'
@@ -51,5 +53,5 @@ group :test do
   gem 'email_spec'
   gem 'launchy'
   gem 'factory_girl'
-  gem 'mongoid-rspec', '>= 1.6.0', :github=>"evansagge/mongoid-rspec"
+  gem 'mongoid-rspec', '>= 1.6.0', :github=>"mongoid-rspec/mongoid-rspec"
 end

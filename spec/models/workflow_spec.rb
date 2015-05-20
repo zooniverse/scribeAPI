@@ -1,23 +1,8 @@
 require 'spec_helper'
+require 'pry'
 
 
 describe Workflow do
-
-
-  context 'associations' do
-    it { should have_many(:subjects) }
-    it { should have_many(:classifications) }
-    it { should belong_to(:project) }
-  end
-
-  before(:each) do
-    @workflow = Workflow.create(mark_workflow)
-    @workflow2 = Workflow.create(generates_new_subjects: false)
-    @classifications = Classification.create(workflow: @workflow2)
-    @subject = Subject.create(workflow: @workflow)
-    @subject.classifications << @classification
-  end
-
 
   def mark_workflow
     {
@@ -26,9 +11,9 @@ describe Workflow do
 
       "subject_fetch_limit"=>"10",
       "generates_new_subjects"=> true,
-      "generate_subjects_after"=> 1,
+      "generates_subjects_after"=> 1,
       "generates_subjects_for"=> "transcribe",
-      "generate_subjects_max"=> 1,
+      "generates_subjects_max"=> 1,
       "retire_limit"=>2,
 
       "first_task"=>"pick_page_type",
@@ -51,26 +36,26 @@ describe Workflow do
           }
         },
         "attestation_form_task"=>{
-          "generate_subjects"=> true,
+          "generates_subjects"=> true,
           "tool"=>"mark",
           "instruction"=>"Draw a rectangle around each record.",
           "tools"=> [
-            {"type"=> "textRowTool", "label"=> "Number", "color"=> "green", "generated_subject_type"=> "att_textRowTool_number" },
-            {"type"=> "textRowTool", "label"=> "Name", "color"=> "green", "generated_subject_type"=> "att_textRowTool_name" },
-            {"type"=> "textRowTool", "label"=> "Regiment", "color"=> "green", "generated_subject_type"=> "att_textRowTool_regiment" },
-            {"type"=> "textRowTool", "label"=> "Question", "color"=> "green", "generated_subject_type"=> "att_textRowTool_question" }
+            {"type"=> "textRowTool", "label"=> "Number", "color"=> "green", "generates_subject_type"=> "att_textRowTool_number" },
+            {"type"=> "textRowTool", "label"=> "Name", "color"=> "green", "generates_subject_type"=> "att_textRowTool_name" },
+            {"type"=> "textRowTool", "label"=> "Regiment", "color"=> "green", "generates_subject_type"=> "att_textRowTool_regiment" },
+            {"type"=> "textRowTool", "label"=> "Question", "color"=> "green", "generates_subject_type"=> "att_textRowTool_question" }
           ],
           "next_task"=> nil
         },
         "history_form_task"=>{
-          "generate_subjects"=> true,
+          "generates_subjects"=> true,
           "tool"=>"mark",
           "instruction"=>"Draw a rectangle around each record.",
           "tools"=> [
-            {"type"=> "rectangleTool", "label"=> "Occupation", "color"=> "green", "generated_subject_type"=> "att_textRowTool_name" },
-            {"type"=> "rectangleTool", "label"=> "Surname", "color"=> "green", "generated_subject_type"=> "att_textRowTool_name" },
-            {"type"=> "rectangleTool", "label"=> "Christian name", "color"=> "green", "generated_subject_type"=> "att_textRowTool_name" },
-            {"type"=> "rectangleTool", "label"=> "Wounds", "color"=> "green", "generated_subject_type"=> "att_textRowTool_name" }
+            {"type"=> "rectangleTool", "label"=> "Occupation", "color"=> "green", "generates_subject_type"=> "att_textRowTool_name" },
+            {"type"=> "rectangleTool", "label"=> "Surname", "color"=> "green", "generates_subject_type"=> "att_textRowTool_name" },
+            {"type"=> "rectangleTool", "label"=> "Christian name", "color"=> "green", "generates_subject_type"=> "att_textRowTool_name" },
+            {"type"=> "rectangleTool", "label"=> "Wounds", "color"=> "green", "generates_subject_type"=> "att_textRowTool_name" }
           ],
           "next_task"=> nil
         }
@@ -79,12 +64,12 @@ describe Workflow do
   end
 
 
-  def front_end_classification_object
+  def classification_object
     { "_id" => "55525d08782d314af3300000", 
-    "workflow_id" => "555257fb782d31c138010000", 
-    "subject_id" => "555257fb782d31c138070000", 
+    "workflow" => workflow, 
+    "subject" => primary_subject, 
     "location" => nil, 
-    "annotations" => 
+    "annotation" => 
       [ { 
         "_toolIndex" => 3,  
         "value" => [ 
@@ -100,66 +85,68 @@ describe Workflow do
             "_key" => 0.1621886498760432 } ], 
             "task" => "attestation_form_task", 
             "_key" => 0.7740179121028632, 
-            "subject_id" => @subject.id, 
+            "subject_id" => subject.id, 
             "workflow_id" => "555257fb782d31c138010000", 
-            "generate_subjects" => true, 
+            "generates_subjects" => true, 
             "tool_task_description" => { 
               "type" => "textRowTool", 
               "label" => "Question", 
               "color" => "green", 
-              "generated_subject_type" => "att_textRowTool_question", 
+              "generates_subject_type" => "att_textRowTool_question", 
               "_key" => 0.9674423730466515 } 
             } 
         ], 
       "started_at" => "2015-05-12T20:05:28.217Z", 
       "finished_at" => "2015-05-12T20:05:28.217Z", 
       "user_agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5)", 
-      "child_subject_id" => "55525d08782d314af3310000" 
     }
   end
 
+  context 'associations' do
+    it { should have_many(:subjects) }
+    it { should have_many(:classifications) }
+    it { should belong_to(:project) }
+  end
 
 
   context 'methods' do
-    
+
+    let(:project){ Project.create(title: "Transcibe-a-lot") }
+    let(:workflow){ Workflow.create(mark_workflow) }
+    let(:workflow2){ Workflow.create(generates_new_subjects: false, project: project, name: "transcribe") }
+    let(:subject_set){ SubjectSet.create(name: "Record Grouping", state: "active") }
+    let(:primary_subject){ Subject.create(subject_set: subject_set, workflow: workflow ) }  
+    let(:subject){ Subject.create(subject_set: subject_set, parent_subject: primary_subject, workflow: workflow2) }  
+
     describe '#subject_has_enough_classifications' do
       it 'should evaluate whether a subject.cassification is greater than workflow.generate_subjects_after' do
-        expect(@workflow.subject_has_enough_classifications(@subject)).to be(true)
+        subject = Subject.create(workflow: workflow, subject_set: subject_set)
+        subject.classification_count = 1
+        expect(workflow.subject_has_enough_classifications(subject)).to be(true)
       end
     end
 
-    describe "#create_follow_up_subjects" do
-      it "only if the workflow.generate_subjects == true should the method allows secondary subject generation" do
-        expect(@workflow.create_follow_up_subjects(classification_object)).to be(true)
-      end
-    end
-    
-
-
-    describe '#create_secondary_subjects' do
-
-      it 'Should correctly update its subject counter when a subject changes status ' do
-        pending("dealing with other methods first")
-        s = Subject.create(:workflow =>@workflow, :status =>"pending")
-        s.activate!
-        @workflow.active_subjects.should  == 1
-        s.retire!
-        @workflow.active_subjects.should  == 0
+    describe "#create_secondary_subjects" do
+      
+      it "return false if self.generates_new_subjects is false" do
+        expect(workflow2.create_secondary_subjects(classification_object)).to be(nil)
       end
 
-      it 'should trigger a new subject in a subsequent workflow if a task requires it' do
-        pending("dealing with other methods first")
-        triggering_workflow  = Workflow.create(:tasks=> marking_task, first_task: "drawSomething")
-        s = Subject.create(:workflows =>[triggering_workflow.id])
+      it 'should increase the total number of subjects by 1' do
+        
+        workflow = Workflow.create(generates_new_subjects: true, name: "transcribe")
+        classification = double(classification_object)
+        expect(classification).to receive(:annotations).and_return(classification_object["annotation"])
+        classification.subject.location = {standard: "this/is/a/img.jpg"}
+        expect(classification).to receive(:child_subject=)
+        expect(classification).to receive(:save)
+        subject.classification_count = 1
 
-        classification = Classification.create(:subject => s, :workflow => triggering_workflow, annotations: triggering_annotations )
-        @workflow.active_subjects.should == 1
-        Subject.find(:workflow_ids => @workflow.id).count.should  == 1
-
+        expect{workflow.create_secondary_subjects(classification)}.to change{Subject.all.count}.by(1)
       end
 
     end
 
 
-  end #end of context
+  end 
 end

@@ -56,6 +56,7 @@ App = React.createClass
               handler={HomePage}
               name="root"
               content={@state.home_page_content}
+              project={@state.project}
               title={@state.project.title} />
             <Route
               path='/mark'
@@ -73,7 +74,7 @@ App = React.createClass
               name='transcribe_specific'
               workflow={(workflow for workflow in workflows when workflow.name is 'transcribe')[0]} />
             <Route
-              path='/transcribe/:subject_set_id'
+              path='/transcribe/:subject_id'
               handler={Transcribe}
               name='transcribe'
               workflow={(workflow for workflow in workflows when workflow.name is 'transcribe')[0]} />

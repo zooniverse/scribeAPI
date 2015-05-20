@@ -13,6 +13,8 @@ class Group
   belongs_to :project
   has_many :subject_sets, dependent: :destroy
 
+  scope :by_project, -> (project_id) { where(project_id: project_id) }
+
   def update_stats
 
   end

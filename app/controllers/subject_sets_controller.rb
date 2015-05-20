@@ -2,9 +2,7 @@ class SubjectSetsController < ApplicationController
   respond_to :json
 
   def index
-    puts "SUBJECT SET CONTORLLER"
-    puts "SUBJECT SET CONTORLLER"
-    puts "SUBJECT SET CONTORLLER"
+
   	workflow_id  = params["workflow_id"]
     random = params["random"] || false
     limit  = params["limit"].to_i  || 10
@@ -26,11 +24,13 @@ class SubjectSetsController < ApplicationController
   end
 
   # DOES NOT APPEAR TO BE IN USE -STI
-  # def show
-  #   set = SubjectSet.find(params[:id])
-  #   workflow_id  = params["workflow_id"]
-  #
-  #   respond_with set, serializer: SubjectSetSerializer, workflow_id: workflow_id
-  # end
+  def show
+    set = SubjectSet.find(params[:id])
+    workflow_id  = params["workflow_id"]
+
+    return render status: 404, json: {status: 404} if set.nil?
+
+    respond_with set, status: (set.nil? ? :not_found : 201), serializer: SubjectSetSerializer, workflow_id: workflow_id
+  end
 
 end
