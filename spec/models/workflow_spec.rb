@@ -117,73 +117,36 @@ describe Workflow do
     let(:subject_set){ SubjectSet.create(name: "Record Grouping", state: "active") }
     let(:primary_subject){ Subject.create(subject_set: subject_set, workflow: workflow ) }  
     let(:subject){ Subject.create(subject_set: subject_set, parent_subject: primary_subject, workflow: workflow2) }  
-    # let(:classification){ Classification.create(workflow: @workflow, subject: primary_subject, annotations: classification_object.annotations) }
 
-    # describe '#subject_has_enough_classifications' do
-    #   it 'should evaluate whether a subject.cassification is greater than workflow.generate_subjects_after' do
-    #     subject = Subject.create(workflow: workflow, subject_set: subject_set)
-    #     subject.classification_count = 1
-    #     expect(workflow.subject_has_enough_classifications(subject)).to be(true)
-    #   end
-    # end
+    describe '#subject_has_enough_classifications' do
+      it 'should evaluate whether a subject.cassification is greater than workflow.generate_subjects_after' do
+        subject = Subject.create(workflow: workflow, subject_set: subject_set)
+        subject.classification_count = 1
+        expect(workflow.subject_has_enough_classifications(subject)).to be(true)
+      end
+    end
 
     describe "#create_secondary_subjects" do
-      # it "return false if self.generates_new_subjects is false" do
-      #   expect(workflow2.create_secondary_subjects(classification_object)).to be(nil)
-      # end
+      
+      it "return false if self.generates_new_subjects is false" do
+        expect(workflow2.create_secondary_subjects(classification_object)).to be(nil)
+      end
 
       it 'should increase the total number of subjects by 1' do
-        classification = double(classification_object)
-        expect(classification).to receive(:annotation).and_return(classification_object["annotation"])
+        
         workflow = Workflow.create(generates_new_subjects: true, name: "transcribe")
+        classification = double(classification_object)
+        expect(classification).to receive(:annotations).and_return(classification_object["annotation"])
         classification.subject.location = {standard: "this/is/a/img.jpg"}
         expect(classification).to receive(:child_subject=)
         expect(classification).to receive(:save)
         subject.classification_count = 1
-        # we expect the Subject count to increase because 1 through Classification creation and once by calling #create_secondary_subjects
+
         expect{workflow.create_secondary_subjects(classification)}.to change{Subject.all.count}.by(1)
       end
-
-      # it 'should set the classification.child_subject_id to the generated subject' do
-        
-      #   classification = double(classification_object)
-      #   allow(classification).to receive(:subject).and_return(primary_subject)
-      #   allow(classification).to receive(:child_subject).and_return(subject)
-      #   classification.subject.classification_count = 1
-
-      #   workflow.create_secondary_subjects(classification)
-  
-      #   expect(classification.child_subject.id).to eq(primary_subject.child_subjects[0].id)
-
-      # end
 
     end
 
 
-    # describe '#create_secondary_subjects' do
-
-    #   it 'Should correctly update its subject counter when a subject changes status ' do
-    #     pending("dealing with other methods first")
-    #     s = Subject.create(:workflow =>workflow, :status =>"pending")
-    #     s.activate!
-    #     @workflow.active_subjects.should  == 1
-    #     s.retire!
-    #     @workflow.active_subjects.should  == 0
-    #   end
-
-    #   it 'should trigger a new subject in a subsequent workflow if a task requires it' do
-    #     pending("dealing with other methods first")
-    #     triggering_workflow  = Workflow.create(:tasks=> marking_task, first_task: "drawSomething")
-    #     s = Subject.create(:workflows =>[triggering_workflow.id])
-
-    #     classification = Classification.create(:subject => s, :workflow => triggering_workflow, annotations: triggering_annotations )
-    #     @workflow.active_subjects.should == 1
-    #     Subject.find(:workflow_ids => @workflow.id).count.should  == 1
-
-    #   end
-
-    # end
-
-
-  end #end of context
+  end 
 end

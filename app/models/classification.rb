@@ -2,6 +2,7 @@ class Classification
   include Mongoid::Document
 
   field :location
+  #TODO: :annotations shoud be :annotation, however that breaks currentAnnotation logic in subject-viewer.cjsx
   field :annotations, type: Array
   field :triggered_followup_subject_ids, type: Array
 
@@ -33,7 +34,7 @@ class Classification
     # I think we should check that the user actually told us that there's nothing more to mark before calling subject.retire_by_vote!
 
     # AMS: Definitely.
-    
+
     # subject.retire_by_vote! if subject.type == "root"
   end  
 
