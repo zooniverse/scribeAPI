@@ -27,13 +27,13 @@ class Workflow
   end
 
 
-  def create_secondary_subjects(classification)   
+  def create_secondary_subjects(classification) 
+    binding.pry  
     return unless self.generates_new_subjects
     return unless subject_has_enough_classifications(classification.subject)
     workflow_for_new_subject = Workflow.find_by(name: classification.subject.workflow.generates_subjects_for)
     annotation = classification.annotation
       if classification.workflow.generates_new_subjects
-        value = annotation["value"]
 
         # If this is the mark workflow, create region:
         if classification.workflow.name == 'mark'
@@ -45,9 +45,8 @@ class Workflow
           # Otherwise, it's a later workflow and we should copy `region` from parent subject
           region = classification.subject.region
         end
-      binding.pry
       child_subject = Subject.create(
-        workflow: workflow_for_new_subject.id ,
+        workflow: workflow_for_new_subject ,
         subject_set: classification.subject.subject_set,
         parent_subject_id: classification.subject.id,
         tool_task_description: annotation["tool_task_description"],

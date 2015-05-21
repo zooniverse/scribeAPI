@@ -6,13 +6,14 @@ class Classification
 
   field :triggered_followup_subject_ids, type: Array
 
+  field :tool_name
   field :started_at
   field :finished_at
   field :user_agent
 
-  belongs_to    :workflow
+  belongs_to    :workflow, :foreign_key => "workflow_id"
   belongs_to    :user
-  belongs_to    :subject
+  belongs_to    :subject, :foreign_key => "subject_id"
   belongs_to    :child_subject, :class_name => "Subject"
   has_many      :triggered_followup_subjects, class_name: "Subject"
 
