@@ -28,7 +28,6 @@ class Workflow
 
 
   def create_secondary_subjects(classification) 
-    binding.pry  
     return unless self.generates_new_subjects
     return unless subject_has_enough_classifications(classification.subject)
     workflow_for_new_subject = Workflow.find_by(name: classification.subject.workflow.generates_subjects_for)

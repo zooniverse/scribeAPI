@@ -21,7 +21,6 @@ class Classification
   after_create  :generate_new_subjects
   after_create  :generate_terms
 
-  after_create  :increment_subject_classification_count
 
 
   def generate_new_subjects

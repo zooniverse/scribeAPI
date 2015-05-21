@@ -346,15 +346,15 @@ module.exports = React.createClass
           </Draggable>
 
           { # DISPLAY PREVIOUS MARKS
-            null
+            # null
             # COMMENT FOR NOW -- STI
             # for mark, i in @props.subject.child_subjects_info
             #   toolName = mark.data.toolName
             #   ToolComponent = markingTools[toolName]
             #   scale = @getScale()
-            #
+            
             #   console.log 'REFS: ', @refs
-            #
+            
             #   <ToolComponent
             #     key={i}
             #     mark={mark.data}
@@ -365,16 +365,16 @@ module.exports = React.createClass
             #     selected={false}
             #     getEventOffset={@getEventOffset}
             #     ref={@refs.sizeRect}
-            #
+            
             #     onChange={=> console.log 'ON CHANGE'}
             #     onSelect={=> console.log 'ON SELECT'}
             #     onDestroy={=> console.log 'ON DESTORY'}
             #   />
 
 
-            # # THIS IS CAUSING PROBLEMS - STI
-            # if @props.workflow.name is 'mark'
-            #   @showPreviousMarks()
+            # THIS IS CAUSING PROBLEMS - STI
+            if @props.workflow.name is 'mark'
+              @showPreviousMarks()
               # @showTranscribeTools()
           }
 
