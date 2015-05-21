@@ -31,14 +31,16 @@ describe SubjectSet do
 
     describe '#activate!' do
       it '' do
-        pending("are we actually using this method -- AMS").error("maybe in the rake project_load")
+        pending("are we actually using this method? -- AMS").error("maybe in the rake project_load")
       end
     end
     
     describe '#inc_subject_count_for_workflow' do
       it 'should increment a specific workflows total_subjects key by 1' do
-
-        expect{subject_set.inc_subject_count_for_workflow(workflow)}.to change{subject_set.counts["#{workflow.id.to_s}"]["total_subjects"]}.by(1)
+        subject_set.inc_subject_count_for_workflow(workflow)
+        
+        sleep 3
+        expect(subject_set.counts["#{workflow.id.to_s}"]["total_subjects"]).to be(1)
 
       end
     end

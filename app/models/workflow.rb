@@ -33,7 +33,6 @@ class Workflow
     workflow_for_new_subject = Workflow.find_by(name: classification.subject.workflow.generates_subjects_for)
     annotation = classification.annotation
       if classification.workflow.generates_new_subjects
-        value = annotation["value"]
 
         # If this is the mark workflow, create region:
         if classification.workflow.name == 'mark'
@@ -46,7 +45,7 @@ class Workflow
           region = classification.subject.region
         end
       child_subject = Subject.create(
-        workflow: workflow_for_new_subject.id ,
+        workflow: workflow_for_new_subject ,
         subject_set: classification.subject.subject_set,
         parent_subject_id: classification.subject.id,
         tool_task_description: annotation["tool_task_description"],
