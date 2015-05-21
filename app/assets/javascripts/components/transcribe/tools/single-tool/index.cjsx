@@ -97,7 +97,12 @@ TextTool = React.createClass
 
     val = @state.annotation?.value ? ''
 
-    toolType = @props.task.tool_options.tool_type
+    console.log '@PSOPS: ', @props
+
+    if @props.subject.type is 'item_location'
+      toolType = 'testComponent'
+    else
+      toolType = @props.task.tool_options.tool_type
 
     unless inputComponents[toolType]?
       console.log "ERROR: Field type, #{toolType}, does not exist!"

@@ -6,9 +6,25 @@
     "entry_date": {
       "tool": "singleTool",
       "tool_options": {
-        "tool_type": "testComponent"
+        "tool_type": "dateField"
       },
       "instruction": "What is the entry date?",
+      "next_task": "page_number"
+    },
+    "page_number": {
+      "tool": "singleTool",
+      "tool_options": {
+        "tool_type": "textField"
+      },
+      "instruction": "What is the page number?",
+      "next_task": "location"
+    },
+    "location": {
+      "tool": "singleTool",
+      "tool_options": {
+        "tool_type": "textField"
+      },
+      "instruction": "What is the location?",
       "next_task": "entry_text"
     },
     "entry_text": {
@@ -16,7 +32,7 @@
       "tool_options": {
         "tool_type": "textAreaField"
       },
-      "instruction": "Please transcribe the remainder of the highlighted entry.",
+      "instruction": "Please write down any additional comments.",
       "next_task": null
     }
   }

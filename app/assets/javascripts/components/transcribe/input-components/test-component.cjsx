@@ -11,15 +11,17 @@ TestComponent = React.createClass
             <legend>Location</legend>
             <label>Name:</label>
             <input type='text'/>
-            <label>Coordinates:</label>
-            <label>Lat:</label>
-            <input type='text'/>
-            <label>Lon:</label>
-            <input type='text'/>
-            <label>Date:</label>
-            <input type='text'/>
-            <label>Page No.:</label>
-            <input type='text'/>
+            <div>
+              <label>Coordinates:</label>
+              <label>Lat:</label>
+              <input type='text'/>
+              <label>Lon:</label>
+              <input type='text'/>
+              <label>Date:</label>
+              <input type='text'/>
+              <label>Page No.:</label>
+              <input type='text'/>
+            </div>
           </fieldset>
         </div>
       </div>
