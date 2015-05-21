@@ -1,5 +1,5 @@
 class ClassificationSerializer < ActiveModel::MongoidSerializer
-  attributes :id, :workflow_id, :subject_id, :subject_set_id, :location, :annotations, :triggered_followup_subject_ids, :child_subject_id, :child_subject
+  attributes :id, :workflow_id, :subject_id, :subject_set_id, :location, :annotation, :triggered_followup_subject_ids, :child_subject_id, :child_subject
   
   has_one :workflow
   has_one :user

@@ -101,18 +101,8 @@ module.exports = React.createClass # rename to Classifier
       return matched_option.task
 
   handleTaskComplete: (ann) ->
-    # @props.classification.annotations[@state.currentTaskKey] = ann
-    classification = API.type('classifications').create
-      annotation: ann
-      workflow_id: @state.workflow.id
-      subject_id: @state.currentSubject['id']
-      generates_subject_type: @state.currentTask['generates_subject_type']
-      metadata:
-        started_at: (new Date).toISOString() # < TODO wrong started_at time 
-        finished_at: (new Date).toISOString()
-
-    classification.save()
-    console.log "INFO Text complete: ", classification
+    @props.classification.annotations[@state.currentTaskKey] = ann
+    console.log "INFO Text complete: ", @props.classification.annotations
 
     if @state.currentTask['next_task']?
       # console.log "advance to next task...", @state.currentTask['next_task']

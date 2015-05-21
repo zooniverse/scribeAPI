@@ -18,10 +18,6 @@ require 'active_support'
       project_key = args[:project_key]
       subjects_dir = Rails.root.join('project', project_key, 'subjects')
 
-      project = project_for_key project_key
-
-      Rake::Task['load_workflows'].invoke(project_key, project.id)
-
       Rake::Task['load_groups'].invoke(project_key)
     end
 
@@ -139,34 +135,3 @@ require 'active_support'
       end
     end
 
-  desc "loads workflow jsons from workflows/*.json"
-  task :load_workflows, [:project_key, :project_id] => :environment do |task, args|
-    project_id = args[:project_id]
-    project = Project.find project_id
-    project.workflows.destroy_all
-
-    workflows_path = Rails.root.join('project', args[:project_key], 'workflows', '*.json')
-    puts "Workflows: Loading workflows from #{workflows_path}"
-
-    Dir.glob(workflows_path).each do |workflow_hash_path|
-      content = File.read(workflow_hash_path) # .gsub(/\n/, '')
-      begin
-        next if content == ''
-
-        workflow_hash = JSON.parse content
-        workflow_hash.deep_symbolize_keys!
-        workflow_hash[:project] = project
-        workflow = Workflow.create workflow_hash
-        puts "  Loaded '#{workflow.name}' workflow with #{workflow.tasks.count} tasks"
-
-        if workflow.generates_subjects && ! workflow.generates_subjects_for
-          puts "    WARN: #{workflow.name} generates subjects, but generates_subjects_for not set"
-        end
-      rescue => e
-        puts "  WARN: Couldn't parse workflow from #{workflow_hash_path}: #{e}"
-        raise "Error parsing #{workflow_hash_path}"
-      end
-    end
-
-    puts "  WARN: No mark workflow found" if project.workflows.find_by(name: 'mark').nil?
-  end

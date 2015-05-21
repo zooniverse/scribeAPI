@@ -34,7 +34,6 @@ class Workflow
     subject.classification_count >= self.generates_subjects_after
   end
 
-
   def create_secondary_subjects(classification)   
     workflow_for_new_subject = Workflow.find_by(name: classification.subject.workflow.generates_subjects_for)
 
@@ -81,9 +80,49 @@ class Workflow
     
   end
 
+  def create_secondary_subjects_new(classification)   
+    workflow_for_new_subject = Workflow.find_by(name: classification.subject.workflow.generates_subjects_for)
+
+    data = classification.annotation
+
+    # If this is the mark workflow, create region:
+    if classification.workflow.name == 'mark'
+      region = data.inject({}) do |h, (k,v)|
+        h[k] = v if ['toolName','x','y','width','height','yUpper','yLower'].include? k
+        h
+      end
+    else
+      # Otherwise, it's a later workflow and we should copy `region` from parent subject
+      region = classification.subject.region
+    end
+
+    generate_type = annotation["generates_subject_type"]
+
+    child_subject = Subject.create(
+      workflow: workflow_for_new_subject.id ,
+      subject_set: classification.subject.subject_set,
+      parent_subject_id: classification.subject_id,
+      tool_task_description: annotation["tool_task_description"],
+      location: {
+        standard: classification.subject.location[:standard]
+      },
+      data: data,
+      region: region,
+      type: generate_type
+    )
+    #TODO -- no longer needed?:
+    ##### this allows a generated subject's id to be returned in case of immediate transcription
+    # this allows a generated subject's id to be returned in case of immediate transcription
+    classification.child_subject_id = child_subject.id
+
+    # PB: The following was removed at some point, but don't we need this relationship?
+    parent_subject = classification.subject
+    parent_subject.child_subjects << child_subject
+  end
+
   def create_follow_up_subjects(classification)
     return unless self.generates_new_subjects
     return unless subject_has_enough_classifications(classification.subject)
-    create_secondary_subjects(classification)
+    create_secondary_subjects_new(classification)
   end
 end

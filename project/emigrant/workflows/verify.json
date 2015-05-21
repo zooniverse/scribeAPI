@@ -1,0 +1,13 @@
+{
+  "name": "verify",
+  "label": "Verify Workflow",
+  "retire_limit": 3,
+
+  "tasks": {
+
+    "em_verify_all_values": {
+      "tool": "verifyTool",
+      "tool_config": {}  
+    }
+  }
+}

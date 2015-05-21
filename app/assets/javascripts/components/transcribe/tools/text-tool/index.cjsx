@@ -49,7 +49,7 @@ TextTool = React.createClass
     @refs.input0.getDOMNode().focus() if @props.focus
 
   componentWillUnmount: ->
-    if @props.task.tool_options.suggest == 'common'
+    if @props.task.tool_config.suggest == 'common'
       el = $(@refs.input0.getDOMNode())
       el.autocomplete 'destroy'
 
@@ -57,7 +57,7 @@ TextTool = React.createClass
     @updatePosition()
     @refs.input0.getDOMNode().focus() if @props.focus
 
-    if @props.task.tool_options.suggest == 'common'
+    if @props.task.tool_config.suggest == 'common'
       el = $(@refs.input0.getDOMNode())
       el.autocomplete
         source: (request, response) =>

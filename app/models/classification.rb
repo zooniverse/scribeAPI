@@ -5,8 +5,8 @@ class Classification
   field :subject_id
   field :subject_set_id
   field :location
-  field :annotations, type: Array
-  field :triggered_followup_subject_ids, type: Array
+  field :annotation,                      type: Hash
+  field :triggered_followup_subject_ids,  type: Array
   field :child_subject_id
 
   field :started_at
@@ -24,12 +24,15 @@ class Classification
   after_create :increment_subject_classification_count
 
   def generate_new_subjects
+    puts "trigger"
     if workflow.generates_new_subjects
       triggered_followup_subject_ids = workflow.create_follow_up_subjects(self)
     end
   end
 
   def generate_terms
+    # TODO: update this to work with annotation; previously written for annotations
+    return 
     annotations.each do |ann|
       puts " considering: #{ann.inspect}"
       anns = [{val: ann['value'], key: ann['key']}]
@@ -41,15 +44,15 @@ class Classification
       anns.each do |sub_ann|
         next if sub_ann[:val].nil? || sub_ann[:val].size < 3
 
-        # Get tool_options from workflow task config to determine if suggest='common'
+        # Get tool_config from workflow task config to determine if suggest='common'
         task = workflow.tasks.select { |(key, task)| key == ann['key'] }.map { |p| p[1]}.first
         puts " index? #{task.inspect}.... #{sub_ann[:key]}"
         next if task.nil?
-        # tool_options = task[ann['key']]['tool_options']
-        tool_options = task['tool_options']
+        # tool_config = task[ann['key']]['tool_config']
+        tool_config = task['tool_config']
 
-        puts " index? ", tool_options
-        index_term = ! tool_options['suggest'].nil? && tool_options['suggest'] == 'common'
+        puts " index? ", tool_config
+        index_term = ! tool_config['suggest'].nil? && tool_config['suggest'] == 'common'
         puts " index? ", index_term
         next if ! index_term
 
@@ -82,7 +85,8 @@ class Classification
   # new ideas for modeling the annotation.values? the current model feels a bit off.
   def increment_subject_classification_count
     subject = self.subject
-    subject.classification_count += no_annotation_values
+    # PB: I think classification_count can just be the number of actual classifications now that there's one classification per task:
+    subject.classification_count += 1 # no_annotation_values 
     subject.save
     # subject.retire!
   end

@@ -5,7 +5,7 @@
     "tasks": {
         "em_switch_on_type": {
             "tool": "switch_on_value",
-            "tool_options": {
+            "tool_config": {
                 "field": "type",
                 "options": {
                     "att_textRowTool_number": {
@@ -25,22 +25,22 @@
         },
         "att_transcribe_number": {
             "tool": "text_tool",
-            "tool_options": {},
+            "tool_config": {},
             "instruction": "Enter the number"
         },
         "att_textRowTool_name": {
             "tool": "text_tool",
-            "tool_options": {},
+            "tool_config": {},
             "instruction": "Enter the name"
         },
         "att_textRowTool_regiment": {
             "tool": "text_tool",
-            "tool_options": {},
+            "tool_config": {},
             "instruction": "Enter the regiment"
         },
         "att_textRowTool_question": {
             "tool": "text_tool",
-            "tool_options": {},
+            "tool_config": {},
             "instruction": "Enter the question"
         }
     }

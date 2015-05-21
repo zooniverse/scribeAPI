@@ -245,13 +245,15 @@ module.exports = React.createClass
     # classification.update 'annotations'
     # classification.save() # submit classification
 
+    taskDescription = @props.workflow.tasks[@props.annotation.task]
     # PREPARE CLASSIFICATION TO SEND
     classification =
       classifications:
         name:        'Classification'
         subject_id:  @props.subject.id
+        generates_subject_type:  taskDescription['generates_subject_type']
         workflow_id: @props.workflow.id
-        annotations: [@props.annotation]
+        annotation: @props.annotation
         metadata:    metadata
 
     console.log '(SINGLE) CLASSIFICATION: ', classification
