@@ -28,7 +28,6 @@ class Subject
   field :height
 
   # SECONDARY SUBJECT concerns:
-  field :tool_task_description,       type: Hash
   field :data,                        type: Hash
   field :region,                      type: Hash
 

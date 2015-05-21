@@ -3,6 +3,7 @@ class Classification
 
   field :location
   field :annotation #, type: Array
+  field :label
 
   field :triggered_followup_subject_ids, type: Array
 
@@ -28,7 +29,6 @@ class Classification
       triggered_followup_subject_ids = workflow.create_secondary_subjects(self)
     end
   end
-
 
   def check_for_retirement
     # PB: Currently this is causing the retire_count to be incremented every time a classification is saved
@@ -71,5 +71,7 @@ class Classification
     subject.classification_count += 1
     subject.save
   end
+
+
 
 end

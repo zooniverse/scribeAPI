@@ -46,18 +46,6 @@ describe Workflow do
             {"type"=> "textRowTool", "label"=> "Question", "color"=> "green", "generates_subject_type"=> "att_textRowTool_question" }
           ],
           "next_task"=> nil
-        },
-        "history_form_task"=>{
-          "generates_subjects"=> true,
-          "tool"=>"mark",
-          "instruction"=>"Draw a rectangle around each record.",
-          "tools"=> [
-            {"type"=> "rectangleTool", "label"=> "Occupation", "color"=> "green", "generates_subject_type"=> "att_textRowTool_name" },
-            {"type"=> "rectangleTool", "label"=> "Surname", "color"=> "green", "generates_subject_type"=> "att_textRowTool_name" },
-            {"type"=> "rectangleTool", "label"=> "Christian name", "color"=> "green", "generates_subject_type"=> "att_textRowTool_name" },
-            {"type"=> "rectangleTool", "label"=> "Wounds", "color"=> "green", "generates_subject_type"=> "att_textRowTool_name" }
-          ],
-          "next_task"=> nil
         }
       }
     }
@@ -143,6 +131,14 @@ describe Workflow do
       end
 
     end
+
+    describe '#find_tools_from_subject_type' do
+      it 'should find the tools for a given subject_type in a workflow' do
+        
+        expect(workflow.find_tools_from_subject_type("att_textRowTool_number")).to eq({"type"=> "textRowTool", "label"=> "Number", "color"=> "green", "generates_subject_type"=> "att_textRowTool_number" })
+
+      end
+    end    
 
 
   end 

@@ -264,6 +264,7 @@ module.exports = React.createClass
     # classification.save() # submit classification
 
     # PREPARE CLASSIFICATION TO SEND
+    console.log "PROPS BEFORE SUMBIT MARK HAPPENS", @props
     classification =
       classifications:
         name:        'Classification'
@@ -427,9 +428,8 @@ module.exports = React.createClass
 
                   console.log 'WORKFLOW: ', @props.workflow.tasks[annotation.task].tools
 
-                  #adds task and description to each annotation
-                  @props.annotation["tool_task_description"] = @props.workflow.tasks[annotation.task].tools[annotation.toolIndex]
-                  @props.annotation["generated_subject_type"] = @props.workflow.tasks[annotation.task].tools[annotation.toolIndex].generated_subject_type
+                  #necessary to add generated subject type to annotation
+                  @props.annotation["generates_subject_type"] = @props.workflow.tasks[annotation.task].tools[annotation.toolIndex]["generates_subject_type"]
                   ToolComponent = markingTools[@props.annotation.toolName]
 
                   <ToolComponent

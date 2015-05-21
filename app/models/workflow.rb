@@ -48,7 +48,6 @@ class Workflow
         workflow: workflow_for_new_subject ,
         subject_set: classification.subject.subject_set,
         parent_subject_id: classification.subject.id,
-        tool_task_description: annotation["tool_task_description"],
         location: {
           standard: classification.subject.location[:standard]
         },
@@ -56,7 +55,7 @@ class Workflow
 
         data: annotation,
         region: region,
-        type: annotation["tool_task_description"]["generates_subject_type"]
+        type: annotation["generates_subject_type"]
       )
       puts child_subject
 
@@ -68,20 +67,21 @@ class Workflow
 
   end
 
-  # not sure this is the best place for this method,
-  # maybe it is better suited to classification or subject model?
-  # def package_region_data(classification)
-  #   binding.pry
-  #   if classification.workflow.name == 'mark'
-  #     region = classification.annotations.value.inject({}) do |h, (k,v)|
-  #       h[k] = v if ['toolName','x','y','width','height','yUpper','yLower'].include? k
-  #       h
-  #     end
-  #   else
-  #     # Otherwise, it's a later workflow and we should copy `region` from parent subject
-  #     region = classification.subject.region
-  #   end
-  #   region
-  # end
+  def find_tools_from_subject_type(subject_type)
+    task_keys = self.tasks.keys
+    task_keys.each do |task|
+
+      if self.tasks[task]["tools"].present?
+
+        array_of_tool_boxes = self.tasks["attestation_form_task"]["tools"]
+        array_of_tool_boxes.each do |tool_box|
+          return tool_box if tool_box["generates_subject_type"] == subject_type
+          # example tool_box:{"type"=> "textRowTool", "label"=> "Question", "color"=> "green", "generates_subject_type"=> "att_textRowTool_question" }
+
+        end
+
+      end
+    end
+  end
 
 end
