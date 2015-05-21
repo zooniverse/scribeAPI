@@ -30,7 +30,7 @@ module.exports =
     # console.log 'TOOL NAME: ', toolName
     highlight =
       # TODO: Note that x, y, w h aren't scaled properly:
-      switch tool_type
+      switch toolName
         when 'rectangleTool'
           console.log "RECTANGLE TOOL FOLKS "
           <g>

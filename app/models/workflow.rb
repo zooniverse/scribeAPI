@@ -73,7 +73,7 @@ class Workflow
 
       if self.tasks[task]["tools"].present?
 
-        array_of_tool_boxes = self.tasks["attestation_form_task"]["tools"]
+        array_of_tool_boxes = self.tasks[task]["tools"]
         array_of_tool_boxes.each do |tool_box|
           return tool_box if tool_box["generates_subject_type"] == subject_type
           # example tool_box:{"type"=> "textRowTool", "label"=> "Question", "color"=> "green", "generates_subject_type"=> "att_textRowTool_question" }
