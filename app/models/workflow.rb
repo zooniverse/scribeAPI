@@ -55,7 +55,7 @@ class Workflow
 
         data: annotation,
         region: region,
-        type: annotation["tool_task_description"]["generates_subject_type"]
+        type: annotation["generates_subject_type"]
       )
       puts child_subject
 
@@ -68,9 +68,7 @@ class Workflow
   end
 
   def find_tools_from_subject_type(subject_type)
-    # only search tasks that have a tools_hash
     task_keys = self.tasks.keys
-
     task_keys.each do |task|
       
       if self.tasks[task]["tools"].present?
@@ -78,10 +76,11 @@ class Workflow
         array_of_tool_boxes = self.tasks["attestation_form_task"]["tools"]
         array_of_tool_boxes.each do |tool_box|
           return tool_box if tool_box["generates_subject_type"] == subject_type
+          # example tool_box:{"type"=> "textRowTool", "label"=> "Question", "color"=> "green", "generates_subject_type"=> "att_textRowTool_question" }
+
         end
-      
+
       end
-    
     end
   end
   

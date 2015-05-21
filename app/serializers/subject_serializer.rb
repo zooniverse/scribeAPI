@@ -14,6 +14,7 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
   end
 
   def child_subjects_info
+    
     child_subjects = object.child_subjects
     child_subject_info = []
     child_subjects.each do |child|
@@ -23,9 +24,8 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
         location_standard: child.location["standard"],
         data: child.data,
         region: child.region,
-        # tool_task_description is no longer a subject field, this relies on annotation now?
         tool_type: child.data["toolName"],
-        label: child.data["tool_task_description"]["label"]["label"]
+        label: child.data["label"]
       }
 
       child_subject_info << rebuild_info
