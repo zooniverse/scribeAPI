@@ -27,7 +27,7 @@ class Workflow
   end
 
 
-  def create_secondary_subjects(classification)   
+  def create_secondary_subjects(classification)
     return unless self.generates_new_subjects
     return unless subject_has_enough_classifications(classification.subject)
     workflow_for_new_subject = Workflow.find_by(name: classification.subject.workflow.generates_subjects_for)
@@ -45,7 +45,6 @@ class Workflow
           # Otherwise, it's a later workflow and we should copy `region` from parent subject
           region = classification.subject.region
         end
-      binding.pry
       child_subject = Subject.create(
         workflow: workflow_for_new_subject.id ,
         subject_set: classification.subject.subject_set,
@@ -70,7 +69,7 @@ class Workflow
 
   end
 
-  # not sure this is the best place for this method, 
+  # not sure this is the best place for this method,
   # maybe it is better suited to classification or subject model?
   # def package_region_data(classification)
   #   binding.pry
@@ -85,5 +84,5 @@ class Workflow
   #   end
   #   region
   # end
-  
+
 end

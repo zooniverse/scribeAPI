@@ -246,6 +246,7 @@ module.exports = React.createClass
     @forceUpdate()
 
   submitMark: (mark) ->
+    console.log ':::::::::::::::::::: submitMark(): MARK: ', mark
     metadata =
       started_at: (new Date).toISOString() # this is dummy
       finished_at: (new Date).toISOString()
@@ -412,9 +413,6 @@ module.exports = React.createClass
 
             annotation._key ?= Math.random()
             isPriorMark = annotation isnt @props.annotation
-
-            console.log 'WORKFLOW BLAH BLAHJ BLAHHLKAJS ', @props.workflow
-            console.log 'BALSA: ANNOTATION ', annotation
 
             taskDescription = @props.workflow.tasks[annotation.task]
 
