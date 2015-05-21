@@ -48,7 +48,6 @@ class Workflow
         workflow: workflow_for_new_subject ,
         subject_set: classification.subject.subject_set,
         parent_subject_id: classification.subject.id,
-        tool_task_description: annotation["tool_task_description"],
         location: {
           standard: classification.subject.location[:standard]
         },
@@ -66,6 +65,24 @@ class Workflow
 
       end
 
+  end
+
+  def find_tools_from_subject_type(subject_type)
+    # only search tasks that have a tools_hash
+    task_keys = self.tasks.keys
+
+    task_keys.each do |task|
+      
+      if self.tasks[task]["tools"].present?
+        
+        array_of_tool_boxes = self.tasks["attestation_form_task"]["tools"]
+        array_of_tool_boxes.each do |tool_box|
+          return tool_box if tool_box["generates_subject_type"] == subject_type
+        end
+      
+      end
+    
+    end
   end
   
 end

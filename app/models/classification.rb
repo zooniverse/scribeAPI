@@ -3,6 +3,7 @@ class Classification
 
   field :location
   field :annotation #, type: Array
+  field :label
 
   field :triggered_followup_subject_ids, type: Array
 
@@ -71,5 +72,7 @@ class Classification
     subject.classification_count += 1
     subject.save
   end
+
+
 
 end

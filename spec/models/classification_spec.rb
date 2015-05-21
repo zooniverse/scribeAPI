@@ -63,7 +63,9 @@ describe Classification do
         classification = Classification.new(workflow: workflow2)
         expect(classification.generate_new_subjects).to be(nil)
       end
-    end    
+    end  
+
+
 
   end
 end

@@ -6,6 +6,7 @@ class ClassificationsController < ApplicationController
     workflow_id      = BSON::ObjectId.from_string params["classifications"]["workflow_id"]
     annotation       = params["classifications"]["annotation"]
     tool_name        = params["classifications"]["annotation"]["tool_task_description"]["type"]
+    label            = paramparams["classifications"]["annotation"]["tool_task_description"]["label"]
     started_at       = params["classifications"]["metadata"]["started_at"]
     finished_at      = params["classifications"]["metadata"]["finished_at"]
     user_agent       = request.headers["HTTP_USER_AGENT"]
