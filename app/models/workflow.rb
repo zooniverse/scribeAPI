@@ -2,7 +2,7 @@ class Workflow
   include Mongoid::Document
 
   field    :name,                                            type: String
-  #TODO: can we delete :key field?
+  #TODO: can we delete :key field? --AMS
   field    :key, 				                                     type: String
   field    :label,                                           type: String
   field    :tasks, 			      	                             type: Hash
@@ -51,8 +51,6 @@ class Workflow
         location: {
           standard: classification.subject.location[:standard]
         },
-        # TODO: do we even need data now?
-
         data: annotation,
         region: region,
         type: annotation["generates_subject_type"]
@@ -62,7 +60,6 @@ class Workflow
       classification.child_subject = child_subject
       classification.save
       child_subject
-
       end
 
   end
@@ -73,7 +70,7 @@ class Workflow
       
       if self.tasks[task]["tools"].present?
         
-        array_of_tool_boxes = self.tasks["attestation_form_task"]["tools"]
+        array_of_tool_boxes = self.tasks[task]["tools"]
         array_of_tool_boxes.each do |tool_box|
           return tool_box if tool_box["generates_subject_type"] == subject_type
           # example tool_box:{"type"=> "textRowTool", "label"=> "Question", "color"=> "green", "generates_subject_type"=> "att_textRowTool_question" }

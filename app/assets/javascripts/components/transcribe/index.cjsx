@@ -146,10 +146,6 @@ module.exports = React.createClass # rename to Classifier
       console.log 'SCROLLING...'
       window.scrollTo(@props.query.scrollX,@props.query.scrollY)
 
-
-
-
-
     console.log "Transcribe#render: ", @state
     return null unless @state.currentTask?
 
@@ -175,6 +171,7 @@ module.exports = React.createClass # rename to Classifier
             style = marginTop: "50px"
             <p style={style}>There are currently no transcription subjects. Try <a href="/#/mark">marking</a> instead!</p>
           else if @state.currentSubject?
+            console.log "~~~~~~~CURRENT STATE", @state.currentSubject
             <SubjectViewer onLoad={@handleViewerLoad} subject={@state.currentSubject} active=true workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation}>
               <TaskComponent ref="taskComponent" viewerSize={@state.viewerSize} key={@state.currentTaskKey} task={@state.currentTask} annotation={currentAnnotation} subject={@state.currentSubject} onChange={@handleTaskComponentChange} onComplete={@handleTaskComplete} onBack={@makeBackHandler()} workflow={@props.workflow} viewerSize={@state.viewerSize} transcribeTools={transcribeTools}/>
             </SubjectViewer>

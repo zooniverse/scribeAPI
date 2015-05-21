@@ -14,12 +14,10 @@ class ClassificationsController < ApplicationController
     started_at       = params["classifications"]["metadata"]["started_at"]
     finished_at      = params["classifications"]["metadata"]["finished_at"]
     user_agent       = request.headers["HTTP_USER_AGENT"]
+    
     #user_id     = BSON::ObjectId.from_string params["user_id"]
     #use subject_id params
-    
-    # PB: Setting subject_id to session.id? Is this a mistake? Commenting it out:
-    # subject_id = session.id #this should change, auth currently not working
-    subject_id = nil
+    #TODO session id
 
 
     # TODO PB: subject_id should be submitted as part of the classification, not embedded within the annotation like this:
