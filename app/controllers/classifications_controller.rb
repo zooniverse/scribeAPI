@@ -2,9 +2,10 @@ class ClassificationsController < ApplicationController
   respond_to :json
 
   def create
-    annotations = params["annotations"]
-    workflow_id = BSON::ObjectId.from_string params["classifications"]["workflow_id"]
+    annotations      = params["annotations"]
+    workflow_id      = BSON::ObjectId.from_string params["classifications"]["workflow_id"]
     annotation       = params["classifications"]["annotation"]
+    tool_name        = params["classifications"]["annotation"]["tool_task_description"]["type"]
     started_at       = params["classifications"]["metadata"]["started_at"]
     finished_at      = params["classifications"]["metadata"]["finished_at"]
     user_agent       = request.headers["HTTP_USER_AGENT"]
@@ -22,11 +23,12 @@ class ClassificationsController < ApplicationController
     @result = Classification.create(
       workflow_id: workflow_id,
       subject_id: subject_id,
-      location: location,
+      tool_name: tool_name,
       annotation: annotation,
       started_at: started_at,
       finished_at: finished_at,
-      user_agent: user_agent )
+      user_agent: user_agent 
+      )
 
     respond_with @result
  

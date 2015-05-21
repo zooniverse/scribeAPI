@@ -67,21 +67,5 @@ class Workflow
       end
 
   end
-
-  # not sure this is the best place for this method, 
-  # maybe it is better suited to classification or subject model?
-  # def package_region_data(classification)
-  #   binding.pry
-  #   if classification.workflow.name == 'mark'
-  #     region = classification.annotations.value.inject({}) do |h, (k,v)|
-  #       h[k] = v if ['toolName','x','y','width','height','yUpper','yLower'].include? k
-  #       h
-  #     end
-  #   else
-  #     # Otherwise, it's a later workflow and we should copy `region` from parent subject
-  #     region = classification.subject.region
-  #   end
-  #   region
-  # end
   
 end
