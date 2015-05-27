@@ -27,7 +27,7 @@ class Workflow
   end
 
 
-  def create_secondary_subjects(classification) 
+  def create_secondary_subjects(classification)
     return unless self.generates_new_subjects
     return unless subject_has_enough_classifications(classification.subject)
     workflow_for_new_subject = Workflow.find_by(name: classification.subject.workflow.generates_subjects_for)
@@ -67,9 +67,8 @@ class Workflow
   def find_tools_from_subject_type(subject_type)
     task_keys = self.tasks.keys
     task_keys.each do |task|
-      
+
       if self.tasks[task]["tools"].present?
-        
         array_of_tool_boxes = self.tasks[task]["tools"]
         array_of_tool_boxes.each do |tool_box|
           return tool_box if tool_box["generates_subject_type"] == subject_type
@@ -80,5 +79,5 @@ class Workflow
       end
     end
   end
-  
+
 end

@@ -3,8 +3,11 @@ markingTools = require 'components/mark/tools'
 module.exports =
 
   showPreviousMarks: ->
+    console.log 'showPreviousMarks()'
     # DEBUG CODE
-    console.log 'PREVIOUS MARKS: ', @props.subject.child_subjects_info
+
+
+    console.log 'PREVIOUS MARKS FROM SERVER: ', @props.subject.child_subjects_info
     previousMarks =
       for mark, i in @props.subject.child_subjects_info
         toolName = mark.data.toolName
@@ -30,7 +33,7 @@ module.exports =
     # console.log 'TOOL NAME: ', toolName
     highlight =
       # TODO: Note that x, y, w h aren't scaled properly:
-      switch tool_type
+      switch toolName
         when 'rectangleTool'
           console.log "RECTANGLE TOOL FOLKS "
           <g>

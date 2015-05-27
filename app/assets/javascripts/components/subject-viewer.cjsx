@@ -263,10 +263,10 @@ module.exports = React.createClass
     # classification.save() # submit classification
 
     # PREPARE CLASSIFICATION TO SEND
-    console.log "PROPS BEFORE SUMBIT MARK HAPPENS", @props
     classification =
       classifications:
         name:        'Classification'
+
         subject_id:  @props.subject.id
         workflow_id: @props.workflow.id
         annotation:  @props.annotation
@@ -353,9 +353,9 @@ module.exports = React.createClass
             #   toolName = mark.data.toolName
             #   ToolComponent = markingTools[toolName]
             #   scale = @getScale()
-            
+
             #   console.log 'REFS: ', @refs
-            
+
             #   <ToolComponent
             #     key={i}
             #     mark={mark.data}
@@ -366,7 +366,7 @@ module.exports = React.createClass
             #     selected={false}
             #     getEventOffset={@getEventOffset}
             #     ref={@refs.sizeRect}
-            
+
             #     onChange={=> console.log 'ON CHANGE'}
             #     onSelect={=> console.log 'ON SELECT'}
             #     onDestroy={=> console.log 'ON DESTORY'}
@@ -408,53 +408,50 @@ module.exports = React.createClass
           { # TODO: ANNOTATIONS SHOULD NOT BE AN ARRAY
             # DISPLAY CURRENT ANNOTATION (MARK)
             # for annotation in @props.classification.annotations
+            if @props.workflow.name is 'transcribe'
 
-            annotation = @props.annotation
+              annotation = @props.annotation
 
-            annotation._key ?= Math.random()
-            isPriorMark = annotation isnt @props.annotation
+              annotation._key ?= Math.random()
+              isPriorMark = annotation isnt @props.annotation
 
-            console.log 'WORKFLOW BLAH BLAHJ BLAHHLKAJS ', @props.workflow
-            console.log 'BALSA: ANNOTATION ', annotation
+              # taskDescription = @props.workflow.tasks[annotation.task]
 
-            taskDescription = @props.workflow.tasks[annotation.task]
+              if @props.subject.region.toolName is 'pickOneMarkOne' and @props.annotationIsComplete #or taskDescription.tool is 'transcribe'
+                <g key={annotation._key} className="marks-for-annotation" data-disabled={isPriorMark or null}>
+                  {
 
-            if taskDescription.tool is 'pickOneMarkOne' and @props.annotationIsComplete #or taskDescription.tool is 'transcribe'
-              <g key={annotation._key} className="marks-for-annotation" data-disabled={isPriorMark or null}>
-                {
+                    #for mark, m in annotation.value
 
-                  #for mark, m in annotation.value
+                    # mark._key ?= Math.random()
+                    # toolDescription = taskDescription.tools[annotation.tool]
 
-                  # mark._key ?= Math.random()
-                  toolDescription = taskDescription.tools[annotation.tool]
+                    # console.log 'WORKFLOW: ', @props.workflow.tasks[annotation.task].tools
 
-                  console.log 'WORKFLOW: ', @props.workflow.tasks[annotation.task].tools
+                    #adds task and description to each annotation
+                    @props.annotation["tool_task_description"] = @props.workflow.tasks[annotation.task].tools[annotation.toolIndex]
+                    @props.annotation["generated_subject_type"] = @props.workflow.tasks[annotation.task].tools[annotation.toolIndex].generated_subject_type
+                    ToolComponent = markingTools[@props.annotation.toolName]
 
-                  #necessary to add generated subject type to annotation
-                  @props.annotation["generates_subject_type"] = @props.workflow.tasks[annotation.task].tools[annotation.toolIndex]["generates_subject_type"]
-                  ToolComponent = markingTools[@props.annotation.toolName]
+                    <ToolComponent
+                      key={annotation._key}
+                      mark={annotation}
+                      xScale={scale.horizontal}
+                      yScale={scale.vertical}
+                      disabled={false}
+                      isPriorMark={isPriorMark}
+                      selected={true}
+                      getEventOffset={@getEventOffset}
+                      ref={@refs.sizeRect}
+                      submitMark={@submitMark}
 
-                  <ToolComponent
-                    key={annotation._key}
-                    mark={annotation}
-                    xScale={scale.horizontal}
-                    yScale={scale.vertical}
-                    disabled={false}
-                    isPriorMark={isPriorMark}
-                    selected={true}
-                    getEventOffset={@getEventOffset}
-                    ref={@refs.sizeRect}
-                    submitMark={@submitMark}
-
-                    onChange={@updateAnnotations}
-                    onSelect={@selectMark.bind this, annotation, mark}
-                    onDestroy={@destroyMark.bind this, annotation}
-                  />
-                }
-              </g>
-
+                      onChange={@updateAnnotations}
+                      onSelect={@selectMark.bind this, annotation, mark}
+                      onDestroy={@destroyMark.bind this, annotation}
+                    />
+                  }
+                </g>
             }
-
           </svg>
 
     #  Render any tools passed directly in in same parent div so that we can efficiently position them with respect to marks"
