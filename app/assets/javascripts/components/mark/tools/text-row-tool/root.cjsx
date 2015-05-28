@@ -17,6 +17,9 @@ module.exports = React.createClass
     destroying: false
 
   render: ->
+    console.log "TEXTROW TOOL"
+    console.log "TEXTROW TOOL"
+    console.log "TEXTROW TOOL PROPS", @props 
     toolProps = @props.tool.props
 
     rootProps =

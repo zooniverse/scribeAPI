@@ -34,6 +34,9 @@ module.exports = React.createClass # rename to Classifier
     @addAnnotationForTask @props.workflow.first_task
 
   render: ->
+    console.log "STATE FROM SB", @sta
+    console.log "PROPS FROM SB", @props    
+
     return null unless @state.currentSubjectSet?
 
     # annotations = @props.classification.annotations
@@ -44,6 +47,8 @@ module.exports = React.createClass # rename to Classifier
 
     
     currentTask = @props.workflow.tasks[currentAnnotation?.task]
+
+    console.log "coreTools[currentTask.tool]", coreTools[currentTask.tool]
     TaskComponent = coreTools[currentTask.tool]
     onFirstAnnotation = currentAnnotation?.task is @props.workflow.first_task
 
@@ -80,7 +85,7 @@ module.exports = React.createClass # rename to Classifier
         </div>
 
         <div className="forum-holder">
-          <ForumSubjectWidget subject_set=@state.currentSubjectSet />
+          <ForumSubjectWidget subject_set = @state.currentSubjectSet />
         </div>
 
       </div>
@@ -104,6 +109,7 @@ module.exports = React.createClass # rename to Classifier
   addAnnotationForTask: (taskKey) ->
     console.log 'addAnnotationForTask(): TASKS: ', @props.workflow.tasks
     taskDescription = @props.workflow.tasks[taskKey]
+    console.log "coreTools[taskDescription.tool]", coreTools[taskDescription.tool]
     console.log "ERROR: Invalid tool: #{taskDescription.tool}. Available tools are: #{(k for k,v of coreTools)}" if ! coreTools[taskDescription.tool]?
     annotation = coreTools[taskDescription.tool].getDefaultAnnotation() # sets {value: null}
     annotation.task = taskKey # e.g. {task: "cool"}

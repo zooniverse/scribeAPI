@@ -24,6 +24,11 @@ module.exports = React.createClass
 
   getInitialState: ->
     # console.log "setting initial state: #{@props.active}"
+    console.log '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+    console.log '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+    console.log '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+    console.log '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+    console.log 'Initial props', @props
 
     imageWidth: 0
     imageHeight: 0
@@ -90,6 +95,7 @@ module.exports = React.createClass
 
   handleInitStart: (e) ->
     console.log 'handleInitStart()'
+    console.log "PROPS PROPS PROPS", @props
     return null if ! @props.annotation? || ! @props.annotation.task?
 
     @props.annotation["subject_id"] = @props.subject.id
