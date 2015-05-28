@@ -102,7 +102,7 @@ module.exports = React.createClass
 
     markIsComplete = true
     if mark?
-      toolDescription = taskDescription.tools[mark.tool]
+      toolDescription = taskDescription.tool_config.tools[mark.tool]
       MarkComponent = markingTools[toolDescription.type]
       if MarkComponent.isComplete?
         markIsComplete = MarkComponent.isComplete mark
@@ -110,13 +110,13 @@ module.exports = React.createClass
     mouseCoords = @getEventOffset e
 
     if markIsComplete
-      toolDescription = taskDescription.tools[@props.annotation._toolIndex]
+      toolDescription = taskDescription.tool_config.tools[@props.annotation._toolIndex]
       console.log "setting subj type: ", @props.workflow.tasks[@props.annotation.task], @props.annotation._toolIndex
       mark =
         key: @state.lastMarkKey
         tool: @props.annotation._toolIndex
-        toolName: taskDescription.tools[@props.annotation._toolIndex].type
-        subject_type: @props.workflow.tasks[@props.annotation.task].tools[@props.annotation._toolIndex].subject_type
+        toolName: taskDescription.tool_config.tools[@props.annotation._toolIndex].type
+        subject_type: @props.workflow.tasks[@props.annotation.task].tool_config.tools[@props.annotation._toolIndex].subject_type
 
       if toolDescription.details?
         mark.details = for detailTaskDescription in toolDescription.details
@@ -148,7 +148,7 @@ module.exports = React.createClass
     task = @props.workflow.tasks[@props.annotation.task]
     mark = @state.selectedMark
     # console.log "SubjectViewer#handleInitDrag"
-    MarkComponent = markingTools[task.tools[mark.tool].type]
+    MarkComponent = markingTools[task.tool_config.tools[mark.tool].type]
     if MarkComponent.initMove?
       mouseCoords = @getEventOffset e
       initMoveValues = MarkComponent.initMove mouseCoords, mark, e
@@ -160,7 +160,7 @@ module.exports = React.createClass
     return null if ! @props.annotation? || ! @props.annotation.task?
     task = @props.workflow.tasks[@props.annotation.task]
     mark = @state.selectedMark
-    MarkComponent = markingTools[task.tools[mark.tool].type]
+    MarkComponent = markingTools[task.tool_config.tools[mark.tool].type]
     if MarkComponent.initRelease?
       mouseCoords = @getEventOffset e
       initReleaseValues = MarkComponent.initRelease mouseCoords, mark, e
@@ -245,25 +245,26 @@ module.exports = React.createClass
     # classification.update 'annotations'
     # classification.save() # submit classification
 
-    taskDescription = @props.workflow.tasks[@props.annotation.task]
+    # console.log "task: ", @props.annotation
     # PREPARE CLASSIFICATION TO SEND
     classification =
       classifications:
         name:        'Classification'
         subject_id:  @props.subject.id
-        generates_subject_type:  taskDescription['generates_subject_type']
+        generates_subject_type:  @props.annotation.tool_task_description.generates_subject_type
+        task_key:  @props.annotation.task
         workflow_id: @props.workflow.id
         annotation: @props.annotation
         metadata:    metadata
 
-    console.log '(SINGLE) CLASSIFICATION: ', classification
+    console.log '(SINGLE) CLASSIFICATION: ', classification, JSON.stringify(classification)
 
     $.ajax({
       type:        'post'
       url:         '/classifications'
-      data:        JSON.stringify(classification)
-      dataType:    'json'
-      contentType: 'application/json'
+      data:        classification # JSON.stringify(classification)
+      # dataType:    'json'
+      # contentType: 'application/json'
       })
       .done (response) =>
         console.log "Success", response #, #response #, response._id.$oid
@@ -344,26 +345,28 @@ module.exports = React.createClass
               console.log 'PREVIOUS MARK: ', mark
 
               toolName = mark.data.toolName
-              ToolComponent = markingTools[toolName]
-              scale = @getScale()
+              if toolName?
+                ToolComponent = markingTools[toolName]
+                scale = @getScale()
 
-              console.log 'REFS: ', @refs
+                console.log 'REFS: ', @refs
+                console.log 'toolComponent: ', ToolComponent, toolName
 
-              <ToolComponent
-                key={i}
-                mark={mark.data}
-                xScale={scale.horizontal}
-                yScale={scale.vertical}
-                disabled={true}
-                isPriorMark={true}
-                selected={false}
-                getEventOffset={@getEventOffset}
-                ref={@refs.sizeRect}
+                <ToolComponent
+                  key={i}
+                  mark={mark.region}
+                  xScale={scale.horizontal}
+                  yScale={scale.vertical}
+                  disabled={true}
+                  isPriorMark={true}
+                  selected={false}
+                  getEventOffset={@getEventOffset}
+                  ref={@refs.sizeRect}
 
-                onChange={=> console.log 'ON CHANGE'}
-                onSelect={=> console.log 'ON SELECT'}
-                onDestroy={=> console.log 'ON DESTORY'}
-              />
+                  onChange={=> console.log 'ON CHANGE'}
+                  onSelect={=> console.log 'ON SELECT'}
+                  onDestroy={=> console.log 'ON DESTORY'}
+                />
 
 
             # # THIS IS CAUSING PROBLEMS - STI
@@ -375,11 +378,11 @@ module.exports = React.createClass
           { # HIGHLIGHT SUBJECT FOR TRANSCRIPTION
             # TODO: Makr sure x, y, w, h are scaled properly
 
-            if @props.workflow.name is 'transcribe'
+            if @props.workflow.name in ['transcribe', 'verify']
               console.log "props in subject viewer", @props
               console.log @props.subject
-              toolName = @props.subject.data.toolName
-              mark = @props.subject.data
+              toolName = @props.subject.region.toolName
+              mark = @props.subject.region
               ToolComponent = markingTools[toolName]
               isPriorMark = true
               <g>
@@ -411,10 +414,10 @@ module.exports = React.createClass
                     console.log 'NEW MARK: ', mark
 
                     mark._key ?= Math.random()
-                    toolDescription = taskDescription.tools[mark.tool]
+                    toolDescription = taskDescription.tool_config.tools[mark.tool]
 
                     #adds task and description to each annotation
-                    @props.annotation["tool_task_description"] = @props.workflow.tasks[annotation.task].tools[mark.tool]
+                    @props.annotation["tool_task_description"] = @props.workflow.tasks[annotation.task].tool_config.tools[mark.tool]
                     ToolComponent = markingTools[toolDescription.type]
 
                     <ToolComponent

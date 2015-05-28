@@ -10,11 +10,16 @@ class ClassificationsController < ApplicationController
 
   def create
     workflow_id = BSON::ObjectId.from_string params["classifications"]["workflow_id"]
+    task_key         = params["classifications"]["task_key"]
     annotation       = params["classifications"]["annotation"]
     started_at       = params["classifications"]["metadata"]["started_at"]
     finished_at      = params["classifications"]["metadata"]["finished_at"]
     subject_id       = params["classifications"]["subject_id"]
     user_agent       = request.headers["HTTP_USER_AGENT"]
+
+    # hack incoming annotation hash to match dm doc:
+    annotation = annotation['value'] && annotation['value']['0'] ? annotation['value']['0'] : annotation
+    annotation['generates_subject_type'] = params['classifications']['generates_subject_type']
 
     @result = Classification.create(
       workflow_id: workflow_id,
@@ -23,7 +28,9 @@ class ClassificationsController < ApplicationController
       annotation: annotation,
       started_at: started_at,
       finished_at: finished_at,
-      user_agent: user_agent )
+      user_agent: user_agent,
+      task_key: task_key
+    )
 
     respond_with @result
  

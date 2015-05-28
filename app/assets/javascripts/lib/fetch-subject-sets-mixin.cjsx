@@ -3,7 +3,6 @@ API            = require './api'
 module.exports =
   componentDidMount: ->
     console.log "Fetch Subjects Mixin: ", @
-
     if @props.params.subject_set_id
       @fetchSubjectSet @props.params.subject_set_id,@props.workflow.id
     else
@@ -31,12 +30,14 @@ module.exports =
           currentSubjectSet: subject_sets[0]
 
     else
+      console.log "in the other else"
       request = API.type('subject_sets').get
         workflow_id: workflow_id
         limit: limit
         random: true
 
       request.then (subject_sets)=>    # DEBUG CODE
+        console.log "subject sets",  subject_sets
         @setState
           subjectSets: subject_sets
           currentSubjectSet: subject_sets[0]

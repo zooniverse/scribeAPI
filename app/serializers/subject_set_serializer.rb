@@ -15,9 +15,9 @@ class SubjectSetSerializer < ActiveModel::MongoidSerializer
     return nil if object.nil?
 
     if random
-      object.subjects.where(workflow_id: workflow_id, status: "active").random(limit: limit)
+      object.subjects.active_root.where(workflow_id: workflow_id).random(limit: limit)
     else
-      object.subjects.where(workflow_id: workflow_id, status: "active").limit(limit)
+      object.subjects.active_root.where(workflow_id: workflow_id).limit(limit)
     end
 
     

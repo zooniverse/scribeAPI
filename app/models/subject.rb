@@ -3,10 +3,13 @@ class Subject
   include Mongoid::Timestamps
   include Randomizer
 
+
+  scope :active_root, -> { where(type: 'root', status: 'active') }
+
   # This is a hash with one entry per deriv; `standard', 'thumbnail', etc
   field :location,                    type: Hash 
   field :type,                        type: String,  default: "root" #options: "root", "secondary"
-  field :status,                      type: String,  default: "active" #options: "active", "inactive", "retired", "complete"
+  field :status,                      type: String,  default: "active" #options: "active", "inactive", "retired", "complete", "contentious"
 
   field :meta_data,                   type: Hash
   field :secondary_subject_count,     type: Integer, default: 0
@@ -16,8 +19,7 @@ class Subject
 
   # Need to sort out relationship between these two fields. Are these two fields Is this :shj
   field :retire_count,                type: Integer
-  # TODO PB This is, I believe, the new retire_count?
-  field :retire_vote,                 type: Integer, default: 0
+
 
   # ROOT SUBJECT concerns:
   field :order
@@ -38,26 +40,32 @@ class Subject
   has_many :classifications
   has_many :favourites
 
-  after_create :update_subject_set_stats
+  after_create :update_subject_set_stats, :activate! # this method before :increment_parents_subject_count_by_one
   after_create :increment_parents_subject_count_by_one, :if => :parent_subject
 
   def update_subject_set_stats
-    subject_set.inc_subject_count_for_workflow(workflow)
+    subject_set.inc_subject_count_for_workflow(workflow) if ! workflow.nil?
   end
 
   def increment_parents_subject_count_by_one
     parent_subject.inc(secondary_subject_count: 1)
   end
 
-  def retire!
-    self.status = "retired" if classification_count >= retire_count
-    subject_set.subject_completed_on_workflow(workflow)
-    save
+  def increment_retire_count_by_one
+    self.inc(retire_count: 1)
+  end
+
+  def retire_by_vote!
+    if (self.retire_count >= self.workflow.retire_limit)
+      self.status = "retired" 
+      subject_set.subject_completed_on_workflow(workflow) if ! workflow.nil?
+      save
+    end
   end
 
   def activate!
     self.status = "active"
-    subject_set.subject_activated_on_workflow(workflow)
+    self.subject_set.subject_activated_on_workflow(workflow) if ! workflow.nil?
     save
   end
 

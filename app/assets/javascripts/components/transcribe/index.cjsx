@@ -43,10 +43,11 @@ module.exports = React.createClass # rename to Classifier
     console.log 'CLASSIFICATION: ', @props.classification.annotations['em_transcribe_address'], @props.classification
 
   fetchSubjectsCallback: ->
-    new_key = @state.workflow.first_task
+    new_key = @state.workflow.first_task ? @state.currentSubject['type']
     @advanceToTask new_key
 
   handleTaskComponentChange: (val) ->
+
     taskOption = @state.currentTask.options[val]
     if taskOption.next_task?
       @advanceToTask taskOption.next_task
@@ -59,7 +60,8 @@ module.exports = React.createClass # rename to Classifier
 
   advanceToTask: (key) ->
 
-    key = @translateLogicTaskKey key
+    console.log "Transcribe#advanceToTask(#{key})"
+    # key = @translateLogicTaskKey key
     task = @state.workflow.tasks[ key ]
     task.key = key
 
@@ -85,7 +87,6 @@ module.exports = React.createClass # rename to Classifier
     return key if ! @state.currentSubject?
     # console.log "Transcribe#translateLogicTaskKey: #{key} .. proceeding"
     task = @state.workflow.tasks[ key ]
-    return key if task.tool != 'switch_on_value'
 
     field = task.tool_config.field
     # console.log "  Transcribe#translateLogicTaskKey Looking for ", field, @state.currentSubject
@@ -110,6 +111,7 @@ module.exports = React.createClass # rename to Classifier
       metadata:
         started_at: (new Date).toISOString() # < TODO wrong started_at time 
         finished_at: (new Date).toISOString()
+      task_key: @state.currentTask.key
 
     classification.save()
     console.log "INFO Text complete: ", classification
@@ -162,9 +164,6 @@ module.exports = React.createClass # rename to Classifier
 
     console.log "Transcribe#render: ", @state
     return null unless @state.currentTask?
-
-    # TODO: HACK HACK HACK
-    return null if @state.currentTask.tool == 'switch_on_value'
 
     # annotations = @props.annotations
     currentAnnotation = (@props.classification.annotations[@state.currentTaskKey] ||= {})

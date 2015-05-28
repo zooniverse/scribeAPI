@@ -1,11 +1,11 @@
 class SubjectSerializer < ActiveModel::MongoidSerializer
 
-  #this seems like the place we want to control the return of subjects only if status == "active"
-
   attributes :id, :type, :parent_subject_id, :workflow_id, :name, :location, :data, :classification_count, :child_subjects_info, :meta_data, :user_favourite # , :key #PB deprecating this; unused
-  attributes :width, :height
+  attributes :width, :height, :region
   delegate :current_user, to: :scope
 
+  
+  
   def id
     object._id.to_s
   end
@@ -21,9 +21,12 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
       rebuild_info = {
         id: child.id,
         location_standard: child.location["standard"],
+        # TODO Probably don't need data going forward:
         data: child.data,
-        tool_type: child.tool_task_description["type"],
-        label: child.tool_task_description["label"]
+        region: child.region,
+        tool_type: child.region['toolName'],
+        # tool_type: child.tool_task_description["type"],
+        # label: child.tool_task_description["label"]
       }
 
       child_subject_info << rebuild_info

@@ -116,13 +116,11 @@ require 'active_support'
 
           puts "      Adding subject: #{subj['file_path']}"
           s = subject_set.subjects.create({
-            # file_path: subj['file_path'], #PB: Nah, goes in location:
             location: {
               standard: subj['file_path'],
               thumbnail: subj['thumbnail']
             },
             workflow: mark_workflow,
-            # retire_count: subj['retire_count'], # PB Don't see why we'd set this via csv
             meta_data: meta_data,
             width: width,
             height: height,

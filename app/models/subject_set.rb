@@ -14,6 +14,8 @@ class SubjectSet
   belongs_to :project
   has_many :subjects, dependent: :destroy
 
+  #should a subject_set belong to a workflow, or do we get that throught the subject?
+  # I think this is being used in the rake load_group_subjects around line133
   def activate!
     state = "active"
     workflows.each{|workflow| workflow.inc(:active_subjects => 1 )}

@@ -29,8 +29,11 @@ module.exports = React.createClass
 
       <nav className="main-nav main-header-group">
         <a href="/" root={true} className="main-header-item logo">{@props.short_title}</a>
-        <a href="/#/mark" className="main-header-item">Mark</a>
-        <a href="/#/transcribe" className="main-header-item">Transcribe</a>
+
+        { (w for w in @props.workflows when w.name in ['mark','transcribe','verify']).map (workflow) =>
+          title = workflow.name.charAt(0).toUpperCase() + workflow.name.slice(1)
+          <a href="/#/#{workflow.name}" className="main-header-item">{title}</a>
+        }
 
         { @props.pages.map (page, key) =>
             <a href={'/#/'+page.name} className="main-header-item" key={key}>{page.name}</a>

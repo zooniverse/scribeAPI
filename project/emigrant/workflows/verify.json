@@ -2,12 +2,16 @@
   "name": "verify",
   "label": "Verify Workflow",
   "retire_limit": 3,
+  "generates_subjects": true,
+  "generates_subjects_method": "most-popular",
 
   "tasks": {
 
     "em_verify_all_values": {
+      "instruction": "Choose the best transcription!",
       "tool": "verifyTool",
-      "tool_config": {}  
+      "tool_config": {},
+      "generates_subject_type": "consensus"
     }
   }
 }
