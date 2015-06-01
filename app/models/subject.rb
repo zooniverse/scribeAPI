@@ -3,10 +3,13 @@ class Subject
   include Mongoid::Timestamps
   include Randomizer
 
+
+  scope :active_root, -> { where(type: 'root', status: 'active') }
+
   # This is a hash with one entry per deriv; `standard', 'thumbnail', etc
   field :location,                    type: Hash 
   field :type,                        type: String,  default: "root" #options: "root", "secondary"
-  field :status,                      type: String,  default: "active" #options: "active", "inactive", "retired", "complete"
+  field :status,                      type: String,  default: "active" #options: "active", "inactive", "retired", "complete", "contentious"
 
   field :meta_data,                   type: Hash
   field :secondary_subject_count,     type: Integer, default: 0
@@ -16,8 +19,7 @@ class Subject
 
   # Need to sort out relationship between these two fields. Are these two fields Is this :shj
   field :retire_count,                type: Integer
-  # TODO PB This is, I believe, the new retire_count?
-  field :retire_vote,                 type: Integer, default: 0
+
 
   # ROOT SUBJECT concerns:
   field :order
@@ -26,19 +28,18 @@ class Subject
   field :height
 
   # SECONDARY SUBJECT concerns:
-  field :tool_task_description,       type: Hash
   field :data,                        type: Hash
   field :region,                      type: Hash
 
   belongs_to :workflow
   belongs_to :parent_subject, :class_name => "Subject", :foreign_key => "parent_subject_id"  
-  belongs_to :subject_set
+  belongs_to :subject_set, :class_name => "SubjectSet", :foreign_key => "subject_set_id"
 
   has_many :child_subjects, :class_name => "Subject"
   has_many :classifications
   has_many :favourites
 
-  after_create :update_subject_set_stats
+  after_create :update_subject_set_stats, :activate! # this method before :increment_parents_subject_count_by_one
   after_create :increment_parents_subject_count_by_one, :if => :parent_subject
 
   def update_subject_set_stats
@@ -49,15 +50,21 @@ class Subject
     parent_subject.inc(secondary_subject_count: 1)
   end
 
-  def retire!
-    self.status = "retired" if classification_count >= retire_count
-    subject_set.subject_completed_on_workflow(workflow)
-    save
+  def increment_retire_count_by_one
+    self.inc(retire_count: 1)
+  end
+
+  def retire_by_vote!
+    if (self.retire_count >= self.workflow.retire_limit)
+      self.status = "retired" 
+      subject_set.subject_completed_on_workflow(workflow)
+      save
+    end
   end
 
   def activate!
     self.status = "active"
-    subject_set.subject_activated_on_workflow(workflow)
+    self.subject_set.subject_activated_on_workflow(workflow)
     save
   end
 

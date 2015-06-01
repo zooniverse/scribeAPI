@@ -25,7 +25,8 @@ module.exports = React.createClass # rename to Classifier
   getDefaultProps: ->
     classification: API.type('classifications').create
       name: 'Classification'
-      annotations: []
+      annotations: [] # TODO: REMOVE
+      annotation: ''
       metadata: {}
       'metadata.started_at': (new Date).toISOString()
 
@@ -35,10 +36,14 @@ module.exports = React.createClass # rename to Classifier
   render: ->
     return null unless @state.currentSubjectSet?
 
-    annotations = @props.classification.annotations
-    currentAnnotation = if annotations.length is 0 then {} else annotations[annotations.length-1]
+    # annotations = @props.classification.annotations
+    # currentAnnotation = if annotations.length is 0 then {} else annotations[annotations.length-1]
+    currentAnnotation = @props.classification.annotation
+
+    console.log 'CURRENT ANNOTATION: ', currentAnnotation
+
+    
     currentTask = @props.workflow.tasks[currentAnnotation?.task]
-    console.log "wtf: ", currentAnnotation?.task, currentTask
     TaskComponent = coreTools[currentTask.tool]
     onFirstAnnotation = currentAnnotation?.task is @props.workflow.first_task
 
@@ -97,12 +102,15 @@ module.exports = React.createClass # rename to Classifier
     @updateAnnotations()
 
   addAnnotationForTask: (taskKey) ->
-    console.log 'TASKS: ', @props.workflow.tasks
+    console.log 'addAnnotationForTask(): TASKS: ', @props.workflow.tasks
     taskDescription = @props.workflow.tasks[taskKey]
     console.log "ERROR: Invalid tool: #{taskDescription.tool}. Available tools are: #{(k for k,v of coreTools)}" if ! coreTools[taskDescription.tool]?
     annotation = coreTools[taskDescription.tool].getDefaultAnnotation() # sets {value: null}
     annotation.task = taskKey # e.g. {task: "cool"}
-    @props.classification.annotations.push annotation
+    # @props.classification.annotations.push annotation
+    @props.classification.annotation = annotation
+
+    console.log 'annotation: ', annotation
     @updateAnnotations()
 
   loadNextTask: (nextTask) ->
@@ -122,6 +130,7 @@ module.exports = React.createClass # rename to Classifier
       completed: true
       subject_set: @state.currentSubjectSet
       workflow_id: @state.workflow.id
+      console.log "Gen NEw SUB", @state.workflow.generates_new_subjects
       'metadata.finished_at': (new Date).toISOString()
     @props.classification.save()
     @props.onComplete?() # does this do anything? -STI

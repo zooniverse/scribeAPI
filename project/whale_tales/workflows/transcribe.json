@@ -4,15 +4,35 @@
   "first_task": "entry_date",
   "tasks": {
     "entry_date": {
-      "tool": "dateTool",
-      "tool_options": {},
+      "tool": "singleTool",
+      "tool_options": {
+        "tool_type": "dateField"
+      },
       "instruction": "What is the entry date?",
+      "next_task": "page_number"
+    },
+    "page_number": {
+      "tool": "singleTool",
+      "tool_options": {
+        "tool_type": "textField"
+      },
+      "instruction": "What is the page number?",
+      "next_task": "location"
+    },
+    "location": {
+      "tool": "singleTool",
+      "tool_options": {
+        "tool_type": "textField"
+      },
+      "instruction": "What is the location?",
       "next_task": "entry_text"
     },
     "entry_text": {
-      "tool": "textAreaTool",
-      "tool_options": {},
-      "instruction": "Please transcribe the remainder of the highlighted entry.",
+      "tool": "singleTool",
+      "tool_options": {
+        "tool_type": "textAreaField"
+      },
+      "instruction": "Please write down any additional comments.",
       "next_task": null
     }
   }
