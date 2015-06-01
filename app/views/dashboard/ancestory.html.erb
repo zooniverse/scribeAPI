@@ -1,0 +1,32 @@
+<h1>All Subjects<h1>
+
+<table id="subjects-table" width="100%" border="2%">
+  <tr>
+    <th>SubjectID</th>
+    <th>URL</th> 
+    <th>Status</th>
+    <th>Classification Count</th>
+    <th>Secondary Subject</th>
+    <th>Child_Subjects</th>
+    <th>Retire Count</th>
+  </tr>
+
+<% @root_subjects.each do |subject| %>
+  <tr>
+    <td> <a href="/subjects/<%= subject.id %>" ><%= subject.id %></a> </td>
+    <td> <%= subject.location["standard"] %> </td>
+    <td> <%= subject.status %> </td> 
+    <td> <%= subject.classification_count %> </td> 
+    <td> <%= subject.secondary_subject_count %> </td> 
+    <td> 
+      <% if subject["child_subjects_info"] %>
+        <% subject["child_subjects_info"].each do |child| %>
+        <%= child.id %>
+        <% end %>
+      <% end %>
+  </tr>
+    <td> <%= subject.retire_count %> </td> 
+<% end %>
+</table>
+
+  

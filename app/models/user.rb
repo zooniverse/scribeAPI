@@ -7,7 +7,7 @@ class User
          :recoverable, :rememberable, :trackable, :validatable
 
 
-  devise :omniauthable, :omniauth_providers => [:facebook,:google,:zooniverse]
+  devise :omniauthable, :omniauth_providers => [:facebook,:google_oauth2,:zooniverse]
 
 
   ## Database authenticatable
@@ -23,6 +23,7 @@ class User
 
   ## Trackable
   field :name,               :type => String
+  field :admin,              :type => Boolean 
   field :sign_in_count,      :type => Integer, :default => 0
   field :current_sign_in_at, :type => Time
   field :last_sign_in_at,    :type => Time

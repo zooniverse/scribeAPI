@@ -12,7 +12,7 @@ gem 'jbuilder', '~> 1.2'
 gem 'devise'
 gem 'omniauth-facebook'
 gem "omniauth-google-oauth2"
-gem 'omniauth-zooniverse', '~> 0.0.1'
+gem 'omniauth-zooniverse', '~> 0.0.2'
 
 gem 'mongoid', :github=>"mongoid/mongoid"
 gem 'active_model_serializers'
@@ -29,6 +29,7 @@ gem 'react-rails', '~> 1.0.0.pre', github: 'reactjs/react-rails'
 gem 'rack-streaming-proxy', '~> 2.0.1'
 gem 'will_paginate_mongoid', '2.0.1'
 gem 'fastimage', '1.7.0'
+
 
 group :development do
   gem 'dotenv-rails'
