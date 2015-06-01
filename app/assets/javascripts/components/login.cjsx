@@ -70,7 +70,7 @@ Login = React.createClass
       Login
       <div className='options'>
         <a href='/users/auth/facebook' title="Log in using Facebook"><i className="fa fa-facebook fa-2" /></a>
-        <a href='/users/auth/google-oauth2' title="Log in using Google+"><i className="fa fa-google-plus fa-2" /></a>
+        <a href='/users/auth/google_oauth2' title="Log in using Google+"><i className="fa fa-google-plus fa-2" /></a>
         <a href='/users/auth/zooniverse' title="Log in using Zooniverse"><i className="fa fa-dot-circle-o fa-2" /></a>
       </div>
     </div>

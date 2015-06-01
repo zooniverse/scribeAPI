@@ -20,4 +20,15 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
    redirect_to :root
  end
 
+ def google_oauth2
+    # You need to implement the method below in your model
+   @user = User.find_for_oauth(request.env["omniauth.auth"], current_user)
+
+   if @user
+     sign_in(@user, :bypass => true)
+   end
+   redirect_to :root
+ end
+
+
 end

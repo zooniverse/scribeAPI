@@ -29,6 +29,7 @@ gem 'react-rails', '~> 1.0.0.pre', github: 'reactjs/react-rails'
 gem 'rack-streaming-proxy', '~> 2.0.1'
 gem 'will_paginate_mongoid', '2.0.1'
 gem 'fastimage', '1.7.0'
+gem "binding_of_caller"
 
 group :development do
   gem 'dotenv-rails'
