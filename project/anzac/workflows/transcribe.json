@@ -1,6 +1,7 @@
 {
     "name": "transcribe",
     "label": "Transcribe Workflow",
+    "retire_limit": 3,
 
     "generates_subjects": true,
     "generates_subjects_for": "verify",
@@ -12,22 +13,27 @@
         "att_transcribe_number": {
             "tool": "text_tool",
             "tool_config": {},
-            "instruction": "Enter the number"
+            "instruction": "Enter the number",
+            "generates_subject_type": "transcribed_number"
+
         },
         "att_textRowTool_name": {
             "tool": "text_tool",
             "tool_config": {},
-            "instruction": "Enter the name"
+            "instruction": "Enter the name",
+            "generates_subject_type": "transcribed_name"
         },
         "att_textRowTool_regiment": {
             "tool": "text_tool",
             "tool_config": {},
-            "instruction": "Enter the regiment"
+            "instruction": "Enter the regiment",
+            "generates_subject_type": "transcribed_regiment"
         },
         "att_textRowTool_question": {
             "tool": "text_tool",
             "tool_config": {},
-            "instruction": "Enter the question"
+            "instruction": "Enter the question",
+            "generates_subject_type": "transcribed_question"
         }
     }
 }

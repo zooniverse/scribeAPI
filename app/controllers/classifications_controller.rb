@@ -1,6 +1,6 @@
 class ClassificationsController < ApplicationController
   respond_to :json
-
+  binding.pry
   # EARLY CODE TO FAKE SECONDARY SUBJECTS -STI
   # def show
   #   puts 'SHOW: ', params["subject_id"]
