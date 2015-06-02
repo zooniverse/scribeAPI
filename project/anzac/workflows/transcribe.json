@@ -1,7 +1,6 @@
 {
     "name": "transcribe",
     "label": "Transcribe Workflow",
-    "first_task": "em_switch_on_type",
 
     "generates_subjects": true,
     "generates_subjects_for": "verify",
@@ -10,26 +9,6 @@
     "generates_subjects_method": "collect-unique",
 
     "tasks": {
-        "em_switch_on_type": {
-            "tool": "switch_on_value",
-            "tool_config": {
-                "field": "type",
-                "options": {
-                    "att_textRowTool_number": {
-                        "task": "att_transcribe_number"
-                    },
-                    "att_textRowTool_name": {
-                        "task": "att_textRowTool_name"
-                    },
-                    "att_textRowTool_regiment": {
-                        "task": "att_textRowTool_regiment"
-                    },
-                    "att_textRowTool_question": {
-                        "task": "att_textRowTool_question"
-                    }
-                }
-            }
-        },
         "att_transcribe_number": {
             "tool": "text_tool",
             "tool_config": {},
