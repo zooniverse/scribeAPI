@@ -162,7 +162,7 @@ module.exports = React.createClass
     # console.log "SubjectViewer#handleInitDrag"
     console.log "mark._toolIndex", mark._toolIndex
     console.log "task.tool_config.tools", task.tool_config.tools
-    console.log "task.tool_config.tools[mark.tool]", task.tool_config.tools[mark.tool]
+    console.log "task.tool_config.tools[mark._toolIndex]", task.tool_config.tools[mark._toolIndex]
     console.log "markingTools[task.tool_config.tools[mark._toolIndex].type]", markingTools[task.tool_config.tools[mark._toolIndex].type]
     MarkComponent = markingTools[task.tool_config.tools[mark._toolIndex].type]
 
@@ -176,8 +176,9 @@ module.exports = React.createClass
   handleInitRelease: (e) ->
     return null if ! @props.annotation? || ! @props.annotation.task?
     task = @props.workflow.tasks[@props.annotation.task]
-    mark = @state.selectedMark
-    MarkComponent = markingTools[task.tool_config.tools[mark.tool].type]
+    mark = @props.annotation
+    console.log "handleInitRelase mark", mark
+    MarkComponent = markingTools[task.tool_config.tools[mark._toolIndex].type]
     if MarkComponent.initRelease?
       mouseCoords = @getEventOffset e
       initReleaseValues = MarkComponent.initRelease mouseCoords, mark, e
