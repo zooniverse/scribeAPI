@@ -160,10 +160,11 @@ module.exports = React.createClass
     task = @props.workflow.tasks[@props.annotation.task]
     mark = @props.annotation #@state.selectedMark
     # console.log "SubjectViewer#handleInitDrag"
-    console.log "mark", mark
+    console.log "mark._toolIndex", mark._toolIndex
     console.log "task.tool_config.tools", task.tool_config.tools
     console.log "task.tool_config.tools[mark.tool]", task.tool_config.tools[mark.tool]
-    MarkComponent = markingTools[task.tool_config.tools[mark.tool].type]
+    console.log "markingTools[task.tool_config.tools[mark._toolIndex].type]", markingTools[task.tool_config.tools[mark._toolIndex].type]
+    MarkComponent = markingTools[task.tool_config.tools[mark._toolIndex].type]
 
     if MarkComponent.initMove?
       mouseCoords = @getEventOffset e
