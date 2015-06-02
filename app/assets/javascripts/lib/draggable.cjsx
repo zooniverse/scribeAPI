@@ -6,6 +6,17 @@ module.exports = React.createClass
 
   _previousEventCoords: null
 
+  getInitialState: ->
+    # console.log "Draggable[#{@props.inst}]#getInitialState: ", @props.x, @props.y
+    x: @props.x ? 0
+    y: @props.y ? 0
+
+  # componentWillReceiveProps: ->
+    # console.log "Draggable#willreceive", @props.x
+
+  # shouldComponentUpdate: ->
+    # console.log "Draggable#shouldComponentUpdate", @props.x
+
   propTypes:
     children: React.PropTypes.component.isRequired
     onStart: React.PropTypes.oneOfType [
@@ -22,9 +33,14 @@ module.exports = React.createClass
     if @props.disabled
       @props.children
     else
+      style =
+        left: @state.x
+        top: @state.y
+      # console.log "Draggable[#{@props.inst}] render: ", style
       cloneWithProps @props.children,
         className: 'draggable'
         onMouseDown: @handleStart
+        style: style
 
   _rememberCoords: (e) ->
     # console.log "remCoord event", e
@@ -34,8 +50,24 @@ module.exports = React.createClass
       y: e.pageY
 
   handleStart: (e) ->
-    return if e.target.nodeName is "INPUT" or e.target.nodeName is "TEXTAREA"
+
+    return if e.button != 0
+    # console.log "Draggable: handleStart"
+    return false if e.target.nodeName is "INPUT" or e.target.nodeName is "TEXTAREA"
+    return false if $(e.target).parents('a').length > 0
+    # console.log "Draggable: handleStart ... continuing"
     e.preventDefault()
+    e.stopPropagation()
+
+    # pos = $(this.getDOMNode()).offset()
+    pos = $(this.getDOMNode()).position()
+
+    # console.log "Draggable#handleStart: ", e.pageX, pos.left
+    @setState
+      dragging: true,
+      rel:
+        x: e.pageX - pos.left,
+        y: e.pageY - pos.top
 
     @_rememberCoords e
     # console.log "previous coords", @_previousEventCoords
@@ -52,16 +84,40 @@ module.exports = React.createClass
       startHandler e
 
   handleDrag: (e) ->
-    console.log "handleDrag event", e
+    # console.log "handleDrag event", e
+
+    return if ! @state.dragging
+
+    x = e.pageX - this.state.rel.x
+    y = e.pageY - this.state.rel.y
+    @setState
+      x: x
+      y: y
+
+
     d =
       x: e.pageX - @_previousEventCoords.x
       y: e.pageY - @_previousEventCoords.y
 
-    @props.onDrag? e, d
+    @props.onDrag? x, y, d.x, d.y
+
+    pos = $(@getDOMNode()).offset()
+    # x = e.pageX - $(@props.children[0]).offset().left
+    # console.log "compute ", e.pageX, pos
+
+    x = e.pageX#  - pos.left
+    y = e.pageY#  - pos.top
+    # console.log "pos: ", e.pageX, e.pageY, pos.left, pos.top
+    # @props.onDrag? e, d
+    @props.onDrag? x, y
 
     @_rememberCoords e
 
   handleEnd: (e) ->
+    @setState
+      dragging: false
+
+    
     document.removeEventListener 'mousemove', @handleDrag
     document.removeEventListener 'mouseup', @handleEnd
 

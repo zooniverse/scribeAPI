@@ -4,6 +4,7 @@ React                         = require 'react'
 {Router, Routes, Route, Link} = require 'react-router'
 SVGImage                      = require './svg-image'
 Draggable                     = require '../lib/draggable'
+MouseHandler                  = require '../lib/mouse-handler'
 LoadingIndicator              = require './loading-indicator'
 SubjectMetadata               = require './subject-metadata'
 ActionButton                  = require './action-button'
@@ -15,6 +16,7 @@ MarkDrawingMixin              = require 'lib/mark-drawing-mixin'
 
 API = require "lib/api"
 
+cloneWithProps = require 'react/lib/cloneWithProps'
 
 module.exports = React.createClass
   displayName: 'SubjectViewer'
@@ -25,8 +27,8 @@ module.exports = React.createClass
   getInitialState: ->
     # console.log "setting initial state: #{@props.active}"
 
-    imageWidth: 0
-    imageHeight: 0
+    imageWidth: @props.subject.width
+    imageHeight: @props.subject.height
 
     subject: @props.subject
     classification: null
@@ -76,14 +78,14 @@ module.exports = React.createClass
       img.src = url
       # console.log 'URL: ', url
       img.onload = =>
-        if @isMounted()
+        # if @isMounted()
 
-          @setState
-            url: url
-            imageWidth: img.width
-            imageHeight: img.height
-            loading: false
-          @updateDimensions()
+        @setState
+          url: url
+          # imageWidth: img.width
+          # imageHeight: img.height
+          loading: false
+        @updateDimensions()
 
   # VARIOUS EVENT HANDLERS
 
@@ -102,7 +104,7 @@ module.exports = React.createClass
 
     markIsComplete = true
     if mark?
-      toolDescription = taskDescription.tools[mark.tool]
+      toolDescription = taskDescription.tool_config.tools[mark.tool]
       MarkComponent = markingTools[toolDescription.type]
       if MarkComponent.isComplete?
         markIsComplete = MarkComponent.isComplete mark
@@ -110,13 +112,13 @@ module.exports = React.createClass
     mouseCoords = @getEventOffset e
 
     if markIsComplete
-      toolDescription = taskDescription.tools[@props.annotation._toolIndex]
+      toolDescription = taskDescription.tool_config.tools[@props.annotation._toolIndex]
       console.log "setting subj type: ", @props.workflow.tasks[@props.annotation.task], @props.annotation._toolIndex
       mark =
         key: @state.lastMarkKey
         tool: @props.annotation._toolIndex
-        toolName: taskDescription.tools[@props.annotation._toolIndex].type
-        subject_type: @props.workflow.tasks[@props.annotation.task].tools[@props.annotation._toolIndex].subject_type
+        toolName: taskDescription.tool_config.tools[@props.annotation._toolIndex].type
+        subject_type: @props.workflow.tasks[@props.annotation.task].tool_config.tools[@props.annotation._toolIndex].subject_type
 
       if toolDescription.details?
         mark.details = for detailTaskDescription in toolDescription.details
@@ -148,7 +150,7 @@ module.exports = React.createClass
     task = @props.workflow.tasks[@props.annotation.task]
     mark = @state.selectedMark
     # console.log "SubjectViewer#handleInitDrag"
-    MarkComponent = markingTools[task.tools[mark.tool].type]
+    MarkComponent = markingTools[task.tool_config.tools[mark.tool].type]
     if MarkComponent.initMove?
       mouseCoords = @getEventOffset e
       initMoveValues = MarkComponent.initMove mouseCoords, mark, e
@@ -160,7 +162,7 @@ module.exports = React.createClass
     return null if ! @props.annotation? || ! @props.annotation.task?
     task = @props.workflow.tasks[@props.annotation.task]
     mark = @state.selectedMark
-    MarkComponent = markingTools[task.tools[mark.tool].type]
+    MarkComponent = markingTools[task.tool_config.tools[mark.tool].type]
     if MarkComponent.initRelease?
       mouseCoords = @getEventOffset e
       initReleaseValues = MarkComponent.initRelease mouseCoords, mark, e
@@ -176,6 +178,7 @@ module.exports = React.createClass
   # PB This is not returning anything but 0, 0 for me; Seems like @refs.sizeRect is empty when evaluated (though nonempty later)
   getScale: ->
     rect = @refs.sizeRect?.getDOMNode().getBoundingClientRect()
+    return {horizontal: 1, vertical: 1} if ! rect? || ! rect.width?
     rect ?= width: 0, height: 0
     horizontal = rect.width / @state.imageWidth
     vertical = rect.height / @state.imageHeight
@@ -245,23 +248,26 @@ module.exports = React.createClass
     # classification.update 'annotations'
     # classification.save() # submit classification
 
+    # console.log "task: ", @props.annotation
     # PREPARE CLASSIFICATION TO SEND
     classification =
       classifications:
         name:        'Classification'
         subject_id:  @props.subject.id
+        generates_subject_type:  @props.annotation.tool_task_description.generates_subject_type
+        task_key:  @props.annotation.task
         workflow_id: @props.workflow.id
-        annotations: [@props.annotation]
+        annotation: @props.annotation
         metadata:    metadata
 
-    console.log '(SINGLE) CLASSIFICATION: ', classification
+    console.log '(SINGLE) CLASSIFICATION: ', classification, JSON.stringify(classification)
 
     $.ajax({
       type:        'post'
       url:         '/classifications'
-      data:        JSON.stringify(classification)
-      dataType:    'json'
-      contentType: 'application/json'
+      data:        classification # JSON.stringify(classification)
+      # dataType:    'json'
+      # contentType: 'application/json'
       })
       .done (response) =>
         console.log "Success", response #, #response #, response._id.$oid
@@ -287,7 +293,7 @@ module.exports = React.createClass
         return
 
   render: ->
-    console.log '*********** STATE: ', @state, @props
+    console.log '*********** STATE: ', @state, @props, @state.imageWidth
     # return null if @props.subjects is null or @props.subjects.length is 0
     # return null unless @props.subject?
     # console.log 'SUBJECT: ', @props.subject
@@ -298,10 +304,10 @@ module.exports = React.createClass
     # console.log "Rendering #{if @props.active then 'active' else 'inactive'} subj viewer"
 
     scale = @getScale()
-    renderSize = {w: scale.horizontal * @state.imageWidth, h: scale.vertical * @state.imageHeight}
-    holderStyle =
-      width: "#{renderSize.w}px"
-      height: "#{renderSize.h}px"
+    # renderSize = {w: scale.horizontal * @state.imageWidth, h: scale.vertical * @state.imageHeight}
+    # holderStyle =
+     #  width: "#{renderSize.w}px"
+      # height: "#{renderSize.h}px"
 
     actionButton =
       if @state.loading
@@ -311,7 +317,7 @@ module.exports = React.createClass
 
     # console.log "SubjectViewer#render: render subject with mark? ", @props.subject
 
-    if @state.loading
+    if false && @state.loading
       markingSurfaceContent = <LoadingIndicator />
     else
       markingSurfaceContent =
@@ -325,15 +331,16 @@ module.exports = React.createClass
             ref = "sizeRect"
             width = {@state.imageWidth}
             height = {@state.imageHeight} />
-          <Draggable
+          <MouseHandler
             onStart = {@handleInitStart}
             onDrag  = {@handleInitDrag}
-            onEnd   = {@handleInitRelease} >
+            onEnd   = {@handleInitRelease}
+            inst    = "marking surface">
             <SVGImage
               src = {@props.subject.location.standard}
               width = {@state.imageWidth}
               height = {@state.imageHeight} />
-          </Draggable>
+          </MouseHandler>
 
           { # DISPLAY PREVIOUS MARKS
 
@@ -342,26 +349,28 @@ module.exports = React.createClass
               console.log 'PREVIOUS MARK: ', mark
 
               toolName = mark.data.toolName
-              ToolComponent = markingTools[toolName]
-              scale = @getScale()
+              if toolName?
+                ToolComponent = markingTools[toolName]
+                scale = @getScale()
 
-              console.log 'REFS: ', @refs
+                console.log 'REFS: ', @refs
+                console.log 'toolComponent: ', ToolComponent, toolName
 
-              <ToolComponent
-                key={i}
-                mark={mark.data}
-                xScale={scale.horizontal}
-                yScale={scale.vertical}
-                disabled={true}
-                isPriorMark={true}
-                selected={false}
-                getEventOffset={@getEventOffset}
-                ref={@refs.sizeRect}
+                <ToolComponent
+                  key={i}
+                  mark={mark.region}
+                  xScale={scale.horizontal}
+                  yScale={scale.vertical}
+                  disabled={true}
+                  isPriorMark={true}
+                  selected={false}
+                  getEventOffset={@getEventOffset}
+                  # ref={@refs.sizeRect}
 
-                onChange={=> console.log 'ON CHANGE'}
-                onSelect={=> console.log 'ON SELECT'}
-                onDestroy={=> console.log 'ON DESTORY'}
-              />
+                  onChange={=> console.log 'ON CHANGE'}
+                  onSelect={=> console.log 'ON SELECT'}
+                  onDestroy={=> console.log 'ON DESTORY'}
+                />
 
 
             # # THIS IS CAUSING PROBLEMS - STI
@@ -373,11 +382,9 @@ module.exports = React.createClass
           { # HIGHLIGHT SUBJECT FOR TRANSCRIPTION
             # TODO: Makr sure x, y, w, h are scaled properly
 
-            if @props.workflow.name is 'transcribe'
-              console.log "props in subject viewer", @props
-              console.log @props.subject
-              toolName = @props.subject.data.toolName
-              mark = @props.subject.data
+            if @props.workflow.name in ['transcribe', 'verify']
+              toolName = @props.subject.region.toolName
+              mark = @props.subject.region
               ToolComponent = markingTools[toolName]
               isPriorMark = true
               <g>
@@ -390,7 +397,7 @@ module.exports = React.createClass
                   disabled={isPriorMark}
                   selected={mark is @state.selectedMark}
                   getEventOffset={@getEventOffset}
-                  ref={@refs.sizeRect}
+                  # ref={@refs.sizeRect}
                   onSelect={@selectMark.bind this, @props.subject, mark}
                 />
               </g>
@@ -409,10 +416,10 @@ module.exports = React.createClass
                     console.log 'NEW MARK: ', mark
 
                     mark._key ?= Math.random()
-                    toolDescription = taskDescription.tools[mark.tool]
+                    toolDescription = taskDescription.tool_config.tools[mark.tool]
 
                     #adds task and description to each annotation
-                    @props.annotation["tool_task_description"] = @props.workflow.tasks[annotation.task].tools[mark.tool]
+                    @props.annotation["tool_task_description"] = @props.workflow.tasks[annotation.task].tool_config.tools[mark.tool]
                     ToolComponent = markingTools[toolDescription.type]
 
                     <ToolComponent
@@ -424,7 +431,7 @@ module.exports = React.createClass
                       isPriorMark={isPriorMark}
                       selected={mark is @state.selectedMark}
                       getEventOffset={@getEventOffset}
-                      ref={@refs.sizeRect}
+                      # ref={@refs.sizeRect}
                       submitMark={@submitMark}
 
                       onChange={@updateAnnotations}
@@ -444,7 +451,12 @@ module.exports = React.createClass
       <div className="subject-container">
         <div className="marking-surface">
           {markingSurfaceContent}
-          {@props.children}
+          {
+            if @props.children?
+              cloneWithProps @props.children,
+                subject: @props.subject
+                scale: scale
+          }
         </div>
       </div>
     </div>

@@ -60,7 +60,7 @@ module.exports = React.createClass
     onChange: NOOP
 
   render: ->
-    answers = for i, answer of @props.task.options
+    answers = for i, answer of @props.task.tool_config.options
       answer._key ?= Math.random()
       <label key={answer._key} className="minor-button">
         <input type="radio" checked={i is @props.annotation?.value} onChange={@handleChange.bind this, i} />

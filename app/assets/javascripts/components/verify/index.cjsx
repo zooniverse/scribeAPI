@@ -9,13 +9,12 @@ ForumSubjectWidget = require '../forum-subject-widget'
 coreTools          = require 'components/core-tools'
 
 # Hash of transcribe tools:
-transcribeTools   = require './tools'
+verifyTools   = require './tools'
 
-RowFocusTool       = require '../row-focus-tool'
 API                = require '../../lib/api'
 
 module.exports = React.createClass # rename to Classifier
-  displayName: 'Transcribe'
+  displayName: 'Verify'
   mixins: [FetchSubjectsMixin] # load subjects and set state variables: subjects, currentSubject, classification
 
   getInitialState: ->
@@ -28,44 +27,15 @@ module.exports = React.createClass # rename to Classifier
       metadata: {}
     # overrideFetchSubjectsUrl: '/fake-transcription-subjects.json'
 
-  completeClassification: ->
-    # FIXME hack to translate anns hash into array:
-    anns = ({key: key, value: (ann['value'] ? ann)} for key, ann of @props.classification.annotations)
-
-    @props.classification.update
-      completed: true
-      subject_id: @state.currentSubject.id
-      workflow_id: @state.workflow.id
-      'metadata.finished_at': (new Date).toISOString()
-      annotations: anns
-    @props.classification.save()
-    # @props.onComplete?()
-    console.log 'CLASSIFICATION: ', @props.classification.annotations['em_transcribe_address'], @props.classification
-
   fetchSubjectsCallback: ->
-    new_key = @state.workflow.first_task ? @state.currentSubject['type']
+    new_key = @state.workflow.first_task ? (k for k, v of @state.workflow.tasks)[0]
     @advanceToTask new_key
-
-  handleTaskComponentChange: (val) ->
-
-    taskOption = @state.currentTask.options[val]
-    if taskOption.next_task?
-      @advanceToTask taskOption.next_task
-
-  __updateAnnotations: ->
-    console.log 'UPDATE ANNOTATIONS'
-    @props.classification.update 'annotations'
-      # annotations: @props.classification.annotations
-    @forceUpdate()
 
   advanceToTask: (key) ->
 
-    console.log "Transcribe#advanceToTask(#{key})"
-    # key = @translateLogicTaskKey key
     task = @state.workflow.tasks[ key ]
-    task.key = key
 
-    tool = coreTools[task?.tool] ? transcribeTools[task?.tool]
+    tool = coreTools[task?.tool] ? verifyTools[task?.tool]
     if ! task?
       console.log "WARN: Invalid task key: ", key
 
@@ -82,25 +52,8 @@ module.exports = React.createClass # rename to Classifier
         currentTask: task
         currentTool: tool
 
-  translateLogicTaskKey: (key) ->
-    # console.log "Transcribe#translateLogicTaskKey: #{key}"
-    return key if ! @state.currentSubject?
-    # console.log "Transcribe#translateLogicTaskKey: #{key} .. proceeding"
-    task = @state.workflow.tasks[ key ]
 
-    field = task.tool_config.field
-    # console.log "  Transcribe#translateLogicTaskKey Looking for ", field, @state.currentSubject
-    field_value = @state.currentSubject[field]
-    console.log "@state.currentSubject", @state.currentSubject
-    matched_option = task.tool_config.options[field_value]
-    if ! matched_option?
-      console.log "WARN: SwitchOnValueTask can't find matching task \"#{field_value}\" in", task.tool_config.options
-      return null
-
-    else
-      console.log "INFO: SwitchOnValue: because #{field}=\"#{field_value}\" routing to #{matched_option.task}"
-      return matched_option.task
-
+  # copied wholesale from trancribe: (like a lot of things)
   handleTaskComplete: (ann) ->
     # @props.classification.annotations[@state.currentTaskKey] = ann
     classification = API.type('classifications').create
@@ -122,7 +75,7 @@ module.exports = React.createClass # rename to Classifier
 
     else
       @advanceToNextSubject()
-
+    
   advanceToNextSubject: ->
     # console.log "next subj: ", @state.subjects, (s for s, i in @state.subjects when s['id'] == @state.currentSubject['id'])
     currentIndex = (i for s, i in @state.subjects when s['id'] == @state.currentSubject['id'])[0]
@@ -136,39 +89,24 @@ module.exports = React.createClass # rename to Classifier
       console.log "WARN: End of subjects"
       @setState noMoreSubjects: true
 
-      @completeClassification()
 
-  handleViewerLoad: (props) ->
-    # console.log "Transcribe#handleViewerLoad: setting size: ", props
-    @setState
-      viewerSize: props.size
-
-    if (tool = @refs.taskComponent)?
-      tool.onViewerResize props.size
-
-  makeBackHandler: ->
-    () =>
-      console.log "go back"
 
   render: ->
-
-
-    console.log 'COMONENT DID MOUNT'
     if @props.query.scrollX? and @props.query.scrollY?
       console.log 'SCROLLING...'
       window.scrollTo(@props.query.scrollX,@props.query.scrollY)
 
-
-
-
-
-    console.log "Transcribe#render: ", @state
+    # console.log "Verify#render: ", @state
     return null unless @state.currentTask?
+
+    # TODO: HACK HACK HACK
+    return null if @state.currentTask.tool == 'switch_on_value'
 
     # annotations = @props.annotations
     currentAnnotation = (@props.classification.annotations[@state.currentTaskKey] ||= {})
     TaskComponent = @state.currentTool
     onFirstAnnotation = currentAnnotation?.task is @props.workflow.first_task
+    console.log "Verify#render: ..", currentAnnotation, @state
 
     # console.log "Transcribe#render: tool=#{@state.currentTask.tool} TaskComponent=", TaskComponent
 
@@ -185,7 +123,17 @@ module.exports = React.createClass # rename to Classifier
             <p style={style}>There are currently no transcription subjects. Try <a href="/#/mark">marking</a> instead!</p>
           else if @state.currentSubject?
             <SubjectViewer onLoad={@handleViewerLoad} subject={@state.currentSubject} active=true workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation}>
-              <TaskComponent ref="taskComponent" viewerSize={@state.viewerSize} key={@state.currentTaskKey} task={@state.currentTask} annotation={currentAnnotation} subject={@state.currentSubject} onChange={@handleTaskComponentChange} onComplete={@handleTaskComplete} onBack={@makeBackHandler()} workflow={@props.workflow} viewerSize={@state.viewerSize} transcribeTools={transcribeTools}/>
+              <TaskComponent
+                ref="taskComponent"
+                viewerSize={@state.viewerSize}
+                key={@state.currentTaskKey}
+                task={@state.currentTask}
+                annotation={currentAnnotation}
+                subject={@state.currentSubject}
+                onChange={@handleTaskComponentChange}
+                onComplete={@handleTaskComplete}
+                workflow={@props.workflow}
+                verifyTools={verifyTools} />
             </SubjectViewer>
         }
       </div>

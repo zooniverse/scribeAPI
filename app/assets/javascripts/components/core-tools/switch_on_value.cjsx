@@ -15,12 +15,12 @@ module.exports = React.createClass
     onChange: NOOP
 
   render: ->
-    field = @props.task.tool_options.field
+    field = @props.task.tool_config.field
     field_value = @props.annotation[field]
-    console.log "SwitchOnValue#render: getting matched_option #{@props.task.tool_options.field} from annotation:", @props.annotation
-    matched_option = @props.task.tool_options.options[field_value]
+    console.log "SwitchOnValue#render: getting matched_option #{@props.task.tool_config.field} from annotation:", @props.annotation
+    matched_option = @props.task.tool_config.options[field_value]
     if ! matched_option?
-      console.log "WARN: SwitchOnValueTask can't find matching task \"#{field_value}\" in", @props.task.tool_options.options
+      console.log "WARN: SwitchOnValueTask can't find matching task \"#{field_value}\" in", @props.task.tool_config.options
       return null
 
     else

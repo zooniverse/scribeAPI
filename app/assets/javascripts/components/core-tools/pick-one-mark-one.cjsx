@@ -91,7 +91,7 @@ module.exports = React.createClass
     onChange: NOOP
 
   render: ->
-    tools = for tool, i in @props.task.tools
+    tools = for tool, i in @props.task.tool_config.tools
       tool._key ?= Math.random()
       count = (true for mark in @props.annotation.value when mark.tool is i).length
 

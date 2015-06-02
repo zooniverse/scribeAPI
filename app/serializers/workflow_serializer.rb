@@ -5,4 +5,11 @@ class WorkflowSerializer < ActiveModel::MongoidSerializer
     object._id.to_s
   end
 
+  def tasks
+    object.tasks.inject({}) do |h, t|
+      h[t.key] = WorkflowTaskSerializer.new(t, root: false)
+      h
+    end
+  end
+
 end

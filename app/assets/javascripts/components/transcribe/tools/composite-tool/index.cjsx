@@ -41,12 +41,12 @@ CompositeTool = React.createClass
   componentWillReceiveProps: ->
     @setState
       annotation: @props.annotation
-      active_field_key: (key for key, v of @props.task.tool_options.tools)[0]
+      active_field_key: (key for key, v of @props.task.tool_config.tools)[0]
 
   componentDidMount: ->
     @updatePosition()
     @setState
-      active_field_key: (key for key, v of @props.task.tool_options.tools)[0]
+      active_field_key: (key for key, v of @props.task.tool_config.tools)[0]
 
   # Expects size hash with:
   #   w: [viewer width]
@@ -69,7 +69,7 @@ CompositeTool = React.createClass
   handleFieldComplete: (key, ann) ->
     inp = @refs[key]
 
-    keys = (key for key, t in @props.task.tool_options.tools)
+    keys = (key for key, t in @props.task.tool_config.tools)
     next_key = keys[keys.indexOf(@state.active_field_key) + 1]
     if next_key?
       @setState active_field_key: next_key, () =>
@@ -97,7 +97,7 @@ CompositeTool = React.createClass
         <div className="left">
           <div className="input-field active">
             <label>{@props.task.instruction}</label>
-            { for annotation_key, tool_config of @props.task.tool_options.tools
+            { for annotation_key, tool_config of @props.task.tool_config.tools
               # path = "../#{tool_config.tool.replace(/_/, '-')}"
               tool_inst = @props.transcribe_tools[tool_config.tool]
               focus = annotation_key == @state.active_field_key
@@ -106,7 +106,7 @@ CompositeTool = React.createClass
                 task: @props.task
                 subject: @props.subject
                 workflow: @props.workflow
-                label: @props.task.tool_options.tools[annotation_key].label ? ''
+                label: @props.task.tool_config.tools[annotation_key].label ? ''
                 annotation_key: annotation_key
                 standalone: false
                 onComplete: @handleFieldComplete.bind(@, annotation_key)

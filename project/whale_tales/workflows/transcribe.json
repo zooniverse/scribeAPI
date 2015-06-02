@@ -5,13 +5,13 @@
   "tasks": {
     "entry_date": {
       "tool": "dateTool",
-      "tool_options": {},
+      "tool_config": {},
       "instruction": "What is the entry date?",
       "next_task": "entry_text"
     },
     "entry_text": {
       "tool": "textAreaTool",
-      "tool_options": {},
+      "tool_config": {},
       "instruction": "Please transcribe the remainder of the highlighted entry.",
       "next_task": null
     }

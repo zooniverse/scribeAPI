@@ -1,61 +1,58 @@
 {
   "name": "transcribe",
   "label": "Transcribe Workflow",
-  "first_task": "em_switch_on_type",
   "retire_limit": 3,
+
+  "generates_subjects": true,
+  "generates_subjects_for": "verify",
+  "generates_subjects_after": 3,
+  "generates_subjects_max": 10,
+  "generates_subjects_method": "collect-unique",
 
   "tasks": {
 
-    "em_switch_on_type": {
-      "tool": "switch_on_value",
-      "tool_options": {  
-        "field": "type",
-        "options": {
-          "em_record_rect": {
-            "task": "em_transcribe_date"
-          }
-        }
-      }
-    },
-
-    "em_transcribe_date": {
+    "em_record_rect": {
       "tool": "text_tool",
-      "tool_options": {},
+      "tool_config": {},
       "instruction": "Enter the record date",
-      "next_task": "em_transcribe_mortgager"
+      "next_task": "em_transcribe_mortgager",
+      "generates_subject_type": "em_transcribed_date"
     },
 
     "em_transcribe_mortgager": {
       "tool": "text_tool",
-      "tool_options": {
+      "tool_config": {
         "suggest": "common"
       },
       "instruction": "Enter the mortgager",
-      "next_task": "em_transcribe_address"
+      "next_task": "em_transcribe_address",
+      "generates_subject_type": "em_transcribed_mortgager"
     },
 
     "em_transcribe_address": {
       "tool": "text_tool",
-      "tool_options": {},
+      "tool_config": {},
       "instruction": "Enter the street address",
-      "next_task": "em_transcribe_valuation"
+      "next_task": "em_transcribe_valuation",
+      "generates_subject_type": "em_transcribed_address"
     },
 
     "em_transcribe_valuation": {
       "tool": "composite_tool",
-      "tool_options": {
+      "tool_config": {
         "tools": {
           "em_valuation_date": {
             "tool": "text_tool",
-            "tool_options": {},
+            "tool_config": {},
             "label": "Date"
           },
           "em_valuation_amount": {
             "tool": "text_tool",
-            "tool_options": {},
+            "tool_config": {},
             "label": "Amount"
           }
-        }
+        },
+        "generates_subject_type": "em_transcribed_valuation"
       },
       "instruction": "Enter any dated property valuations that were recorded"
     }

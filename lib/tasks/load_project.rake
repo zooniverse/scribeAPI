@@ -67,14 +67,61 @@ desc 'creates a poject object from the project directory'
     project.save
 
     begin
-      Rake::Task['project_setup'].invoke(args[:project_key])
+      Rake::Task['load_workflows'].invoke project.key
+      Rake::Task['project_setup'].invoke project.key
 
       puts "Done loading \"#{project.title}\" with #{project.workflows.count} workflow(s), #{project.subject_sets.count} subject sets."
 
-    rescue Exception => e  
+    # rescue Exception => e  
       # If a workflow json can't be parsed, halt:
       puts ""
-      puts "ERROR: #{e.inspect}"
-      puts "Halting: #{e.message}"
+      # puts "ERROR: #{e.inspect}"
+     #  puts "Halting: #{e.message}"
     end
+  end
+
+
+  desc "loads workflow jsons from workflows/*.json"
+  task :load_workflows, [:project_key] => :environment do |task, args|
+    project = Project.find_by key: args[:project_key]
+    project.workflows.destroy_all
+
+    workflows_path = Rails.root.join('project', args[:project_key], 'workflows', '*.json')
+    puts "Workflows: Loading workflows from #{workflows_path}"
+
+    Dir.glob(workflows_path).each do |workflow_hash_path|
+      content = File.read(workflow_hash_path) # .gsub(/\n/, '')
+      begin
+        next if content == ''
+
+        workflow_hash = JSON.parse content
+        workflow_hash.deep_symbolize_keys!
+        workflow_hash[:project] = project
+
+        tasks = workflow_hash.delete :tasks
+        if tasks.is_a? Hash
+          tasks = tasks.inject([]) do |a, (task_key, task_config)|
+            task_config[:key] = task_key.to_s
+            # PB Hack to auto-set generates_subjects for a given task automatically based on presence of generates_subject_type
+            #   should probably deprecate config
+            task_config[:generates_subjects] = ! task_config[:generates_subject_type].nil? || ! (c = task_config[:tool_config]).nil? && ! (c = c[:tools]).nil? && ! c.select { |c| ! c['generates_subject_type'].nil? }.empty?
+            # task_config[:tool_name] = task_config.delete :tool
+            a << task_config
+          end
+        end
+        workflow_hash[:tasks] = tasks
+
+        workflow = Workflow.create workflow_hash
+        puts "  Loaded '#{workflow.name}' workflow with #{workflow.tasks.count} task(s)"
+
+        if workflow.generates_subjects && ! workflow.generates_subjects_for
+          puts "    WARN: #{workflow.name} generates subjects, but generates_subjects_for not set"
+        end
+      # rescue => e
+       #  puts "  WARN: Couldn't parse workflow from #{workflow_hash_path}: #{e}"
+        # raise "Error parsing #{workflow_hash_path}"
+      end
+    end
+
+    puts "  WARN: No mark workflow found" if project.workflows.find_by(name: 'mark').nil?
   end

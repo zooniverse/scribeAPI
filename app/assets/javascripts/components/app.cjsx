@@ -4,6 +4,7 @@ MainHeader                    = require '../partials/main-header'
 HomePage                      = require './home-page'
 Mark                          = require './mark'
 Transcribe                    = require './transcribe'
+Verify                        = require './verify'
 API                           = require '../lib/api'
 GroupPage                     = require './group-page'
 
@@ -47,7 +48,7 @@ App = React.createClass
         <div className="readymade-site-background-effect"></div>
       </div>
       <div className="panoptes-main">
-        <MainHeader pages={@state.pages} short_title={@state.project.short_title} />
+        <MainHeader workflows={workflows} pages={@state.pages} short_title={@state.project.short_title} />
         <div className="main-content">
           <Routes>
             <Redirect from="_=_" to="/" />
@@ -58,31 +59,32 @@ App = React.createClass
               content={@state.home_page_content}
               project={@state.project}
               title={@state.project.title} />
-            <Route
-              path='/mark'
-              handler={Mark}
-              name='mark'
-              workflow={(workflow for workflow in workflows when workflow.name is 'mark')[0]} />
-            <Route
-              path='/mark/:subject_set_id'
-              handler={Mark}
-              name='mark_specific'
-              workflow={(workflow for workflow in workflows when workflow.name is 'mark')[0]} />
-            <Route
-              path='/transcribe'
-              handler={Transcribe}
-              name='transcribe_specific'
-              workflow={(workflow for workflow in workflows when workflow.name is 'transcribe')[0]} />
-            <Route
-              path='/transcribe/:subject_id'
-              handler={Transcribe}
-              name='transcribe'
-              workflow={(workflow for workflow in workflows when workflow.name is 'transcribe')[0]} />
-            <Route
-              path='/groups/:group_id'
-              handler={GroupPage}
-              name="group"
-            />
+
+            { (w for w in workflows when w.name in ['mark','transcribe','verify']).map (workflow) =>
+                handler = eval workflow.name.charAt(0).toUpperCase() + workflow.name.slice(1)
+                <Route
+                  path={'/' + workflow.name}
+                  handler={handler}
+                  name={workflow.name}
+                  workflow={workflow} />
+            }
+ 
+            { (w for w in workflows when w.name in ['mark']).map (workflow) =>
+                handler = eval workflow.name.charAt(0).toUpperCase() + workflow.name.slice(1)
+                <Route
+                  path={'/' + workflow.name + '/:subject_set_id'}
+                  handler={handler}
+                  name={workflow.name + '_specific'}
+                  workflow={workflow} />
+            }
+            { (w for w in workflows when w.name in ['transcribe','verify']).map (workflow) =>
+                handler = eval workflow.name.charAt(0).toUpperCase() + workflow.name.slice(1)
+                <Route
+                  path={'/' + workflow.name + '/:subject_id'}
+                  handler={handler}
+                  name={workflow.name + '_specific'}
+                  workflow={workflow} />
+            }
 
             { @state.pages?.map (page, key) =>
                 <Route
