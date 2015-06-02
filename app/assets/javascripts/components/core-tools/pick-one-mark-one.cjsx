@@ -94,7 +94,8 @@ module.exports = React.createClass
     tools = for tool, i in @props.task.tool_config.tools
       tool._key ?= Math.random()
       console.log "~~~~~Checking MARK~~~~~~~~~~~~~"
-      console.log @props.annotation.value
+      # console.log "@props.annotation.value", @props.annotation.value
+      console.log "@props.annotation", @props.annotation
       console.log mark for mark in @props.task.tools 
       count = (true for mark in @props.task.tools when mark.tool is i).length
       <label
