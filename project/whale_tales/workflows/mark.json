@@ -3,7 +3,8 @@
   "label":"Mark Workflow",
 
   "subject_fetch_limit":     10,
-  "generates_new_subjects":  true,
+
+  "generates_subjects":  true,
   "generates_subjects_after": 1,
   "generates_subjects_for":  "transcribe",
   "generates_subjects_max":   1,
@@ -14,37 +15,39 @@
   "tasks":{
 
     "records_present":{
-      "order":0,
       "tool":"pickOne",
       "instruction":"Are there any records to transcribe in this document?",
-      "options":{
-        "yes":{
-          "label":"Yes",
-          "next_task":"type_of_record"
-        },
-        "no":{
-          "label":"No",
-          "next_task": null
-        },
-        "debug":{
-          "label":"DEBUG",
-          "next_task": "mark_records_for_transcription"
+      "tool_config": {
+        "options":{
+          "yes":{
+            "label":"Yes",
+            "next_task":"type_of_record"
+          },
+          "no":{
+            "label":"No",
+            "next_task": null
+          },
+          "debug":{
+            "label":"DEBUG",
+            "next_task": "mark_records_for_transcription"
+          }
         }
       }
     },
 
     "type_of_record":{
-      "order":0,
       "tool":"pickOne",
       "instruction":"What type of record are you transcribing?",
-      "options":{
-        "event":{
-          "label":"Event",
-          "next_task":"mark_event_for_transcription"
-        },
-        "item":{
-          "label":"Item",
-          "next_task": "mark_item_for_transcription"
+      "tool_config": {
+        "options":{
+          "event":{
+            "label":"Event",
+            "next_task":"mark_event_for_transcription"
+          },
+          "item":{
+            "label":"Item",
+            "next_task": "mark_item_for_transcription"
+          }
         }
       }
     },
@@ -53,14 +56,16 @@
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
       "instruction":"Pick an item and mark it on the document.",
-      "tools": [
-        {"type": "rectangleTool", "label": "Location",            "color": "red", "generates_subject_type": "item_location" },
-        {"type": "rectangleTool", "label": "Weather Information", "color": "red", "generates_subject_type": "item_weather" },
-        {"type": "rectangleTool", "label": "Cargo",               "color": "red", "generates_subject_type": "item_cargo" },
-        {"type": "rectangleTool", "label": "Inventory",           "color": "red", "generates_subject_type": "item_inventory" },
-        {"type": "rectangleTool", "label": "Illustration/Poetry", "color": "red", "generates_subject_type": "item_illustration" },
-        {"type": "rectangleTool", "label": "Other",               "color": "red", "generates_subject_type": "item_other" }
-      ],
+      "tool_config": {
+        "tools": [
+          {"type": "rectangleTool", "label": "Location",            "color": "red", "generates_subject_type": "item_location" },
+          {"type": "rectangleTool", "label": "Weather Information", "color": "red", "generates_subject_type": "item_weather" },
+          {"type": "rectangleTool", "label": "Cargo",               "color": "red", "generates_subject_type": "item_cargo" },
+          {"type": "rectangleTool", "label": "Inventory",           "color": "red", "generates_subject_type": "item_inventory" },
+          {"type": "rectangleTool", "label": "Illustration/Poetry", "color": "red", "generates_subject_type": "item_illustration" },
+          {"type": "rectangleTool", "label": "Other",               "color": "red", "generates_subject_type": "item_other" }
+        ]
+      },
       "next_task": "records_present"
     },
 
@@ -68,13 +73,15 @@
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
       "instruction":"Pick an event and mark it on the document.",
-      "tools": [
-        {"type": "rectangleTool", "label": "Whaling Activity",         "color": "red", "generates_subject_type": "event_whaling_activity" },
-        {"type": "rectangleTool", "label": "Ship Interaction",         "color": "red", "generates_subject_type": "event_ship_interaction" },
-        {"type": "rectangleTool", "label": "Interaction with Natives", "color": "red", "generates_subject_type": "event_natie_interaction" },
-        {"type": "rectangleTool", "label": "Unusual Occurrences",      "color": "red", "generates_subject_type": "event_unusual_occurrence" },
-        {"type": "rectangleTool", "label": "Other",                    "color": "red", "generates_subject_type": "event_other" }
-      ],
+      "tool_config": {
+        "tools": [
+          {"type": "rectangleTool", "label": "Whaling Activity",         "color": "red", "generates_subject_type": "event_whaling_activity" },
+          {"type": "rectangleTool", "label": "Ship Interaction",         "color": "red", "generates_subject_type": "event_ship_interaction" },
+          {"type": "rectangleTool", "label": "Interaction with Natives", "color": "red", "generates_subject_type": "event_natie_interaction" },
+          {"type": "rectangleTool", "label": "Unusual Occurrences",      "color": "red", "generates_subject_type": "event_unusual_occurrence" },
+          {"type": "rectangleTool", "label": "Other",                    "color": "red", "generates_subject_type": "event_other" }
+        ]
+      },
       "next_task": "records_present"
     },
 
@@ -82,11 +89,13 @@
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
       "instruction":"Pick a tool and mark each record:",
-      "tools": [
-        {"type": "pointTool",     "label": "Point Tool",    "color": "red",   "generates_subject_type": "debug1" },
-        {"type": "rectangleTool", "label": "Drawing/Note",  "color": "green", "generates_subject_type": "debug2" },
-        {"type": "textRowTool",   "label": "Journal Entry", "color": "blue",  "generates_subject_type": "debug3" }
-      ],
+      "tool_config": {
+        "tools": [
+          {"type": "pointTool",     "label": "Point Tool",    "color": "red",   "generates_subject_type": "debug1" },
+          {"type": "rectangleTool", "label": "Drawing/Note",  "color": "green", "generates_subject_type": "debug2" },
+          {"type": "textRowTool",   "label": "Journal Entry", "color": "blue",  "generates_subject_type": "debug3" }
+        ]
+      },
       "next_task": "records_present"
     }
   }
