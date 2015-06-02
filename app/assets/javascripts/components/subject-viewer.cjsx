@@ -413,7 +413,7 @@ module.exports = React.createClass
                 <g key={annotation._key} className="marks-for-annotation" data-disabled={isPriorMark or null}>
                   {for mark, m in annotation.value
 
-                    console.log 'NEW MARK: ', mark
+                    console.log 'NEW MARK: ', mark, (mark.x), (mark.y+0)
 
                     mark._key ?= Math.random()
                     toolDescription = taskDescription.tool_config.tools[mark.tool]

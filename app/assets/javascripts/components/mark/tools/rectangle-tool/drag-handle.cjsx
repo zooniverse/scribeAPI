@@ -12,7 +12,7 @@ module.exports = React.createClass
   displayName: 'DragHandle'
 
   render: ->
-    console.log 'PROPS: ', @props
+    # console.log 'PROPS: ', @props
 
     scale = (@props.tool.props.xScale + @props.tool.props.yScale) / 2
 
