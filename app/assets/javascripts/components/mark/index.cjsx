@@ -42,7 +42,6 @@ module.exports = React.createClass # rename to Classifier
     TaskComponent = coreTools[currentTask.tool]
     onFirstAnnotation = currentAnnotation?.task is @props.workflow.first_task
 
-    console.log "here: ", currentTask.tool_config.options, currentAnnotation.value
     nextTask = if currentTask.tool_config.options?[currentAnnotation.value]?
       currentTask.tool_config.options?[currentAnnotation.value].next_task
     else

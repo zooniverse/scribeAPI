@@ -34,7 +34,7 @@ class Workflow
     if ! classification.subject.workflow.next_workflow.nil?
       workflow_for_new_subject_id = classification.subject.workflow.next_workflow.id
     end
-    puts "gen secondary from: #{classification.inspect}"
+    # puts "gen secondary from: #{classification.inspect}"
 
     task = task_by_key classification.task_key
 
@@ -46,8 +46,8 @@ class Workflow
       subject_type = classification.annotation['generates_subject_type']
     end
 
-    puts "task: #{task.inspect}"
-    puts "generating? #{task.generates_subjects}: #{subject_type}"
+    # puts "task: #{task.inspect}"
+    # puts "generating? #{task.generates_subjects}: #{subject_type}"
 
     if task.generates_subjects
 
@@ -64,20 +64,20 @@ class Workflow
       end
 
       data = classification.annotation.except(:key, :tool, :generates_subject_type)
-      puts "saving data: #{data.inspect}"
+      # puts "saving data: #{data.inspect}"
 
       # classification.child_subject = Subject.create(
 
-      puts "ClassificationsController: workflow_id: #{workflow_for_new_subject_id}, subject_id: #{classification.subject.id})"
+      # puts "ClassificationsController: workflow_id: #{workflow_for_new_subject_id}, subject_id: #{classification.subject.id})"
 
       classification.child_subject = Subject.find_or_initialize_by(workflow_id: workflow_for_new_subject_id, parent_subject_id: classification.subject.id, type: subject_type)
 
            # annotation["tool_task_description"]["generates_subject_type"]
       if classification.child_subject.persisted?
-        puts "ClassificationsController: persisted.. #{classification.workflow.generates_subjects_method}"
+        # puts "ClassificationsController: persisted.. #{classification.workflow.generates_subjects_method}"
         if classification.workflow.generates_subjects_method == 'collect-unique'
           classification.child_subject.data['values'].push data unless classification.child_subject.data['values'].include?(data)
-          puts "ClassificationsController: pushing data: #{classification.child_subject.data}"
+          # puts "ClassificationsController: pushing data: #{classification.child_subject.data}"
           classification.child_subject.save
         end
 
@@ -85,14 +85,16 @@ class Workflow
         if classification.workflow.generates_subjects_method == 'collect-unique'
           data = {'values' => [data]}
         end
-        puts "ClassificationsController: not persisted; svaing data: #{data}"
+        # puts "ClassificationsController: not persisted; svaing data: #{data}"
         classification.child_subject.update_attributes({
           subject_set: classification.subject.subject_set,
           location: {
             standard: classification.subject.location[:standard]
           },
           data: data,
-          region: region
+          region: region,
+          width: classification.subject.width,
+          height: classification.subject.height
         })
       end
       # puts child_subject
@@ -115,7 +117,7 @@ class Workflow
   end
 
   def task_by_key(key)
-    puts "tasks: #{tasks.inspect}"
+    # puts "tasks: #{tasks.inspect}"
     tasks.where(key: key).first
   end
 

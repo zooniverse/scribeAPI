@@ -76,13 +76,27 @@ module.exports = React.createClass # rename to Classifier
     else
       @advanceToNextSubject()
     
+  advanceToNextSubject: ->
+    # console.log "next subj: ", @state.subjects, (s for s, i in @state.subjects when s['id'] == @state.currentSubject['id'])
+    currentIndex = (i for s, i in @state.subjects when s['id'] == @state.currentSubject['id'])[0]
+    # console.log "subjects: ", @state.subjects
+    if currentIndex + 1 < @state.subjects.length
+      nextSubject = @state.subjects[currentIndex + 1]
+      @setState currentSubject: nextSubject, () =>
+        key = @state.workflow.first_task
+        @advanceToTask key
+    else
+      console.log "WARN: End of subjects"
+      @setState noMoreSubjects: true
+
+
 
   render: ->
     if @props.query.scrollX? and @props.query.scrollY?
       console.log 'SCROLLING...'
       window.scrollTo(@props.query.scrollX,@props.query.scrollY)
 
-    console.log "Verify#render: ", @state
+    # console.log "Verify#render: ", @state
     return null unless @state.currentTask?
 
     # TODO: HACK HACK HACK
@@ -109,7 +123,17 @@ module.exports = React.createClass # rename to Classifier
             <p style={style}>There are currently no transcription subjects. Try <a href="/#/mark">marking</a> instead!</p>
           else if @state.currentSubject?
             <SubjectViewer onLoad={@handleViewerLoad} subject={@state.currentSubject} active=true workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation}>
-              <TaskComponent ref="taskComponent" viewerSize={@state.viewerSize} key={@state.currentTaskKey} task={@state.currentTask} annotation={currentAnnotation} subject={@state.currentSubject} onChange={@handleTaskComponentChange} onComplete={@handleTaskComplete} workflow={@props.workflow} viewerSize={@state.viewerSize} verifyTools={verifyTools}/>
+              <TaskComponent
+                ref="taskComponent"
+                viewerSize={@state.viewerSize}
+                key={@state.currentTaskKey}
+                task={@state.currentTask}
+                annotation={currentAnnotation}
+                subject={@state.currentSubject}
+                onChange={@handleTaskComponentChange}
+                onComplete={@handleTaskComplete}
+                workflow={@props.workflow}
+                verifyTools={verifyTools} />
             </SubjectViewer>
         }
       </div>

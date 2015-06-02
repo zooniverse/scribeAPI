@@ -4,10 +4,10 @@ Draggable       = require '../../../../lib/draggable'
 DoneButton      = require './done-button'
 
 VerifyTool = React.createClass
-  displayName: 'TextTool'
+  displayName: 'VerifyTool'
 
   handleInitStart: (e) ->
-    console.log 'handleInitStart() ', ['INPUT','TEXTAREA'].indexOf(e.target.nodeName) >= 0, $(e.target), $(e.target).parents('a'), $(e.target).parents('a').length > 0
+    # console.log 'handleInitStart() ', ['INPUT','TEXTAREA'].indexOf(e.target.nodeName) >= 0, $(e.target), $(e.target).parents('a'), $(e.target).parents('a').length > 0
     @setState preventDrag: false
     if ['INPUT','TEXTAREA'].indexOf(e.target.nodeName) >= 0 || $(e.target).parents('a').length > 0
       @setState preventDrag: true
@@ -15,6 +15,10 @@ VerifyTool = React.createClass
     @setState
       xClick: e.pageX - $('.transcribe-tool').offset().left
       yClick: e.pageY - $('.transcribe-tool').offset().top
+
+  shouldComponentUpdate: ->
+    # console.log "VerifyTool#shouldComponentUpdate", (@props.subject.region.x + 0), (@props.scale.horizontal + 0)
+    true
 
   handleInitDrag: (e, delta) ->
 
@@ -27,6 +31,12 @@ VerifyTool = React.createClass
       dx: dx
       dy: dy #, =>
       dragged: true
+
+  handleDragged: (x, y) ->
+    # console.log "handle dragged: ", x, y
+    @setState
+      dx: x,
+      dy: y
 
   getInitialState: ->
     viewerSize: @props.viewerSize
@@ -90,13 +100,11 @@ VerifyTool = React.createClass
 
   render: ->
     # return null unless @props.viewerSize? && @props.subject?
+    return null if ! @props.scale? || ! @props.scale.horizontal?
 
-    console.log "VerifyTool#render ", @props
+    # console.log "VerifyTool#render ", @props.scale.horizontal
 
     # If user has set a custom position, position based on that:
-    style =
-      left: @state.dx
-      top: @state.dy
     # console.log "TextTool#render pos", @state
 
     val = @state.annotation[@props.annotation_key] ? ''
@@ -125,24 +133,26 @@ VerifyTool = React.createClass
         </ul>
       </div>
 
-    if @props.standalone
-      tool_content =
-        <Draggable
-          onStart = {@handleInitStart}
-          onDrag  = {@handleInitDrag}
-          onEnd   = {@handleInitRelease}
-          ref     = "inputWrapper0">
+    transX = parseFloat(@props.subject.region.x) * parseFloat(@props.scale.horizontal)
+    # console.log "translating x,y: ", (@props.subject.region.x + 0), (@props.scale.horizontal + 0), transX
+    transY = Math.round @props.subject.region.y * @props.scale.vertical
+    # console.log " ...translating x,y: ", (@props.subject.region.y + 0), (@props.scale.vertical + 0), transY
 
-          <div className="transcribe-tool" style={style}>
-            <div className="left">
-              { tool_content }
-            </div>
-            <div className="right">
-              <DoneButton onClick={@commitAnnotation} />
-            </div>
-          </div>
-        </Draggable>
+    <Draggable
+      onDrag  = {@handleDragged}
+      x       = {transX}
+      y       = {transY}
+      inst    = "verify tool"
+      ref     = "inputWrapper0">
 
-    tool_content
+      <div className="transcribe-tool">
+        <div className="left">
+          { tool_content }
+        </div>
+        <div className="right">
+          <DoneButton onClick={@commitAnnotation} />
+        </div>
+      </div>
+    </Draggable>
 
 module.exports = VerifyTool

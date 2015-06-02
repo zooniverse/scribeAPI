@@ -4,6 +4,7 @@ React                         = require 'react'
 {Router, Routes, Route, Link} = require 'react-router'
 SVGImage                      = require './svg-image'
 Draggable                     = require '../lib/draggable'
+MouseHandler                  = require '../lib/mouse-handler'
 LoadingIndicator              = require './loading-indicator'
 SubjectMetadata               = require './subject-metadata'
 ActionButton                  = require './action-button'
@@ -15,6 +16,7 @@ MarkDrawingMixin              = require 'lib/mark-drawing-mixin'
 
 API = require "lib/api"
 
+cloneWithProps = require 'react/lib/cloneWithProps'
 
 module.exports = React.createClass
   displayName: 'SubjectViewer'
@@ -25,8 +27,8 @@ module.exports = React.createClass
   getInitialState: ->
     # console.log "setting initial state: #{@props.active}"
 
-    imageWidth: 0
-    imageHeight: 0
+    imageWidth: @props.subject.width
+    imageHeight: @props.subject.height
 
     subject: @props.subject
     classification: null
@@ -76,14 +78,14 @@ module.exports = React.createClass
       img.src = url
       # console.log 'URL: ', url
       img.onload = =>
-        if @isMounted()
+        # if @isMounted()
 
-          @setState
-            url: url
-            imageWidth: img.width
-            imageHeight: img.height
-            loading: false
-          @updateDimensions()
+        @setState
+          url: url
+          # imageWidth: img.width
+          # imageHeight: img.height
+          loading: false
+        @updateDimensions()
 
   # VARIOUS EVENT HANDLERS
 
@@ -176,6 +178,7 @@ module.exports = React.createClass
   # PB This is not returning anything but 0, 0 for me; Seems like @refs.sizeRect is empty when evaluated (though nonempty later)
   getScale: ->
     rect = @refs.sizeRect?.getDOMNode().getBoundingClientRect()
+    return {horizontal: 1, vertical: 1} if ! rect? || ! rect.width?
     rect ?= width: 0, height: 0
     horizontal = rect.width / @state.imageWidth
     vertical = rect.height / @state.imageHeight
@@ -290,7 +293,7 @@ module.exports = React.createClass
         return
 
   render: ->
-    console.log '*********** STATE: ', @state, @props
+    console.log '*********** STATE: ', @state, @props, @state.imageWidth
     # return null if @props.subjects is null or @props.subjects.length is 0
     # return null unless @props.subject?
     # console.log 'SUBJECT: ', @props.subject
@@ -301,10 +304,10 @@ module.exports = React.createClass
     # console.log "Rendering #{if @props.active then 'active' else 'inactive'} subj viewer"
 
     scale = @getScale()
-    renderSize = {w: scale.horizontal * @state.imageWidth, h: scale.vertical * @state.imageHeight}
-    holderStyle =
-      width: "#{renderSize.w}px"
-      height: "#{renderSize.h}px"
+    # renderSize = {w: scale.horizontal * @state.imageWidth, h: scale.vertical * @state.imageHeight}
+    # holderStyle =
+     #  width: "#{renderSize.w}px"
+      # height: "#{renderSize.h}px"
 
     actionButton =
       if @state.loading
@@ -314,7 +317,7 @@ module.exports = React.createClass
 
     # console.log "SubjectViewer#render: render subject with mark? ", @props.subject
 
-    if @state.loading
+    if false && @state.loading
       markingSurfaceContent = <LoadingIndicator />
     else
       markingSurfaceContent =
@@ -328,15 +331,16 @@ module.exports = React.createClass
             ref = "sizeRect"
             width = {@state.imageWidth}
             height = {@state.imageHeight} />
-          <Draggable
+          <MouseHandler
             onStart = {@handleInitStart}
             onDrag  = {@handleInitDrag}
-            onEnd   = {@handleInitRelease} >
+            onEnd   = {@handleInitRelease}
+            inst    = "marking surface">
             <SVGImage
               src = {@props.subject.location.standard}
               width = {@state.imageWidth}
               height = {@state.imageHeight} />
-          </Draggable>
+          </MouseHandler>
 
           { # DISPLAY PREVIOUS MARKS
 
@@ -361,7 +365,7 @@ module.exports = React.createClass
                   isPriorMark={true}
                   selected={false}
                   getEventOffset={@getEventOffset}
-                  ref={@refs.sizeRect}
+                  # ref={@refs.sizeRect}
 
                   onChange={=> console.log 'ON CHANGE'}
                   onSelect={=> console.log 'ON SELECT'}
@@ -379,8 +383,6 @@ module.exports = React.createClass
             # TODO: Makr sure x, y, w, h are scaled properly
 
             if @props.workflow.name in ['transcribe', 'verify']
-              console.log "props in subject viewer", @props
-              console.log @props.subject
               toolName = @props.subject.region.toolName
               mark = @props.subject.region
               ToolComponent = markingTools[toolName]
@@ -395,7 +397,7 @@ module.exports = React.createClass
                   disabled={isPriorMark}
                   selected={mark is @state.selectedMark}
                   getEventOffset={@getEventOffset}
-                  ref={@refs.sizeRect}
+                  # ref={@refs.sizeRect}
                   onSelect={@selectMark.bind this, @props.subject, mark}
                 />
               </g>
@@ -429,7 +431,7 @@ module.exports = React.createClass
                       isPriorMark={isPriorMark}
                       selected={mark is @state.selectedMark}
                       getEventOffset={@getEventOffset}
-                      ref={@refs.sizeRect}
+                      # ref={@refs.sizeRect}
                       submitMark={@submitMark}
 
                       onChange={@updateAnnotations}
@@ -449,7 +451,12 @@ module.exports = React.createClass
       <div className="subject-container">
         <div className="marking-surface">
           {markingSurfaceContent}
-          {@props.children}
+          {
+            if @props.children?
+              cloneWithProps @props.children,
+                subject: @props.subject
+                scale: scale
+          }
         </div>
       </div>
     </div>
