@@ -160,6 +160,9 @@ module.exports = React.createClass
     task = @props.workflow.tasks[@props.annotation.task]
     mark = @props.annotation #@state.selectedMark
     # console.log "SubjectViewer#handleInitDrag"
+    console.log "mark", mark
+    console.log "task.tool_config.tools", task.tool_config.tools
+    console.log "task.tool_config.tools[mark.tool]", task.tool_config.tools[mark.tool]
     MarkComponent = markingTools[task.tool_config.tools[mark.tool].type]
 
     if MarkComponent.initMove?
@@ -437,7 +440,9 @@ module.exports = React.createClass
 
                     #adds task and description to each annotation
                     @props.annotation["tool_task_description"] = @props.workflow.tasks[annotation.task].tool_config.tools[mark.tool]
+                    console.log "markingTools[toolDescription.type]", markingTools[toolDescription.type]
                     ToolComponent = markingTools[toolDescription.type]
+
 
                     <ToolComponent
                       key={annotation._key}
