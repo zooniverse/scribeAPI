@@ -3,7 +3,7 @@
   "label":"Mark Workflow",
 
   "subject_fetch_limit":"10",
-  "generates_new_subjects": true,
+  "generates_subjects": true,
   "generates_subjects_after": 1,
   "generates_subjects_for": "transcribe",
   "generates_subjects_max": 1,
@@ -13,18 +13,19 @@
 
   "tasks":{
     "pick_page_type":{
-      "order":0,
       "tool":"pickOne",
       "instruction":"What kind of page is this?",
       "next_task": null,
-      "options":{
-        "history_sheet":{
-          "label":"history_sheet",
-          "next_task":"history_form_task"
-        },
-        "attestation_form":{
-          "label":"attestation_form",
-          "next_task":"attestation_form_task"
+      "tool_config": {
+        "options":{
+          "history_sheet":{
+            "label":"history_sheet",
+            "next_task":"history_form_task"
+          },
+          "attestation_form":{
+            "label":"attestation_form",
+            "next_task":"attestation_form_task"
+          }
         }
       }
     },
@@ -32,24 +33,28 @@
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
       "instruction":"Draw a rectangle around each record.",
-      "tools": [
-        {"type": "textRowTool", "label": "Number", "color": "green", "generates_subject_type": "att_textRowTool_number" },
-        {"type": "textRowTool", "label": "Name", "color": "green", "generates_subject_type": "att_textRowTool_name" },
-        {"type": "textRowTool", "label": "Regiment", "color": "green", "generates_subject_type": "att_textRowTool_regiment" },
-        {"type": "textRowTool", "label": "Question", "color": "green", "generates_subject_type": "att_textRowTool_question" }
-      ],
+      "tool_config": {
+        "tools": [
+          {"type": "textRowTool", "label": "Number", "color": "green", "generates_subject_type": "att_textRowTool_number" },
+          {"type": "textRowTool", "label": "Name", "color": "green", "generates_subject_type": "att_textRowTool_name" },
+          {"type": "textRowTool", "label": "Regiment", "color": "green", "generates_subject_type": "att_textRowTool_regiment" },
+          {"type": "textRowTool", "label": "Question", "color": "green", "generates_subject_type": "att_textRowTool_question" }
+        ]
+      },
       "next_task": null
     },
     "history_form_task":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
       "instruction":"Draw a rectangle around each record.",
-      "tools": [
-        {"type": "rectangleTool", "label": "Occupation", "color": "green", "generates_subject_type": "att_textRowTool_name" },
-        {"type": "rectangleTool", "label": "Surname", "color": "green", "generates_subject_type": "att_textRowTool_name" },
-        {"type": "rectangleTool", "label": "Christian name", "color": "green", "generates_subject_type": "att_textRowTool_name" },
-        {"type": "rectangleTool", "label": "Wounds", "color": "green", "generates_subject_type": "att_textRowTool_name" }
-      ],
+      "tool_config": {
+        "tools": [
+          {"type": "rectangleTool", "label": "Occupation", "color": "green", "generates_subject_type": "att_textRowTool_name" },
+          {"type": "rectangleTool", "label": "Surname", "color": "green", "generates_subject_type": "att_textRowTool_name" },
+          {"type": "rectangleTool", "label": "Christian name", "color": "green", "generates_subject_type": "att_textRowTool_name" },
+          {"type": "rectangleTool", "label": "Wounds", "color": "green", "generates_subject_type": "att_textRowTool_name" }
+        ]
+      },
       "next_task": null
     }
   }
