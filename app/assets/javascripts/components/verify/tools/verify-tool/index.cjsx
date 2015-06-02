@@ -32,11 +32,11 @@ VerifyTool = React.createClass
       dy: dy #, =>
       dragged: true
 
-  handleDragged: (x, y) ->
+  handleDragged: (pos) ->
     # console.log "handle dragged: ", x, y
     @setState
-      dx: x,
-      dy: y
+      dx: pos.x,
+      dy: pos.y
 
   getInitialState: ->
     viewerSize: @props.viewerSize

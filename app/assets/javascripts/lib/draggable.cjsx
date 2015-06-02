@@ -94,22 +94,11 @@ module.exports = React.createClass
       x: x
       y: y
 
-
     d =
       x: e.pageX - @_previousEventCoords.x
       y: e.pageY - @_previousEventCoords.y
 
-    @props.onDrag? x, y, d.x, d.y
-
-    pos = $(@getDOMNode()).offset()
-    # x = e.pageX - $(@props.children[0]).offset().left
-    # console.log "compute ", e.pageX, pos
-
-    x = e.pageX#  - pos.left
-    y = e.pageY#  - pos.top
-    # console.log "pos: ", e.pageX, e.pageY, pos.left, pos.top
-    # @props.onDrag? e, d
-    @props.onDrag? x, y
+    @props.onDrag? {x, y}, d
 
     @_rememberCoords e
 
