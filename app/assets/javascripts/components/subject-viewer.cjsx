@@ -44,6 +44,7 @@ module.exports = React.createClass
   getDefaultProps: ->
     tool: null # Optional tool to place alongside subject (e.g. transcription tool placed alongside mark)
     onLoad: null
+    annotationIsComplete: false
 
   componentDidMount: ->
     @setView 0, 0, @state.imageWidth, @state.imageHeight
@@ -90,6 +91,8 @@ module.exports = React.createClass
   # VARIOUS EVENT HANDLERS
 
   handleInitStart: (e) ->
+    console.log 'handleInitStart()'
+    console.log "PROPS PROPS PROPS", @props
     return null if ! @props.annotation? || ! @props.annotation.task?
 
     @props.annotation["subject_id"] = @props.subject.id
@@ -97,10 +100,16 @@ module.exports = React.createClass
 
     taskDescription = @props.workflow.tasks[@props.annotation.task]
 
-    # setting flag for generation of new subjects
-    @props.annotation["generates_subjects"] = @props.workflow.tasks[@props.annotation.task].generates_subjects
+    console.log 'ANNOTATION AT BEGINNING OF HANDLE INIT START: ', @props.annotation
 
-    mark = @state.selectedMark
+    console.log 'TASK DESCRIPTION: ', taskDescription
+
+    # setting flag for generation of new subjects
+    if @props.workflow.tasks[@props.annotation.task].generate_subjects
+      @props.annotation["generate_subjects"] = @props.workflow.tasks[@props.annotation.task].generate_subjects
+
+    annotation = @props.annotation #@state.selectedMark
+    @props.annotationIsComplete = true
 
     markIsComplete = true
     if mark?
@@ -121,25 +130,25 @@ module.exports = React.createClass
         subject_type: @props.workflow.tasks[@props.annotation.task].tool_config.tools[@props.annotation._toolIndex].subject_type
 
       if toolDescription.details?
-        mark.details = for detailTaskDescription in toolDescription.details
+        annotation.details = for detailTaskDescription in toolDescription.details
           # DEBUG CODE
           #console.log "!taskTacking", tasks[detailTaskDescription.type]
           tasks[detailTaskDescription.type].getDefaultAnnotation()
 
-    @props.annotation.value.push mark
-    @selectMark @props.annotation, mark
+    # @props.annotation = mark
+    @selectMark @props.annotation
 
     MarkComponent = markingTools[toolDescription.type]
 
     if MarkComponent.defaultValues?
       defaultValues = MarkComponent.defaultValues mouseCoords
       for key, value of defaultValues
-        mark[key] = value
+        annotation[key] = value
 
     if MarkComponent.initStart?
-      initValues = MarkComponent.initStart mouseCoords, mark, e
+      initValues = MarkComponent.initStart mouseCoords, annotation, e
       for key, value of initValues
-        mark[key] = value
+        annotation[key] = value
 
     @setState lastMarkKey: @state.lastMarkKey + 1
 
@@ -147,10 +156,12 @@ module.exports = React.createClass
       @updateAnnotations()
 
   handleInitDrag: (e) ->
+    console.log 'handleInitDrag()'
     task = @props.workflow.tasks[@props.annotation.task]
-    mark = @state.selectedMark
+    mark = @props.annotation #@state.selectedMark
     # console.log "SubjectViewer#handleInitDrag"
     MarkComponent = markingTools[task.tool_config.tools[mark.tool].type]
+
     if MarkComponent.initMove?
       mouseCoords = @getEventOffset e
       initMoveValues = MarkComponent.initMove mouseCoords, mark, e
@@ -211,7 +222,8 @@ module.exports = React.createClass
         y: mark.y - y
       # , => @forceUpdate()
 
-  selectMark: (annotation, mark) ->
+  selectMark: (annotation) ->
+    return # this will be broken for now -- STI
     if annotation? and mark?
       index = annotation.value.indexOf mark
       annotation.value.splice index, 1
@@ -220,7 +232,11 @@ module.exports = React.createClass
       if mark?.details?
         @forceUpdate() # Re-render to reposition the details tooltip.
 
-  destroyMark: (annotation, mark) ->
+  destroyMark: (annotation) ->
+    console.log 'destroyMark(): annotation: ', annotation
+    annotation = null
+    return
+
     if mark is @state.selectedMark
       @setState selectedMark: null
     markIndex = annotation.value.indexOf mark
@@ -228,7 +244,8 @@ module.exports = React.createClass
     @updateAnnotations()
 
   updateAnnotations: ->
-    @props.classification.update 'annotations'
+    # @props.classification.update 'annotations'
+    @props.classification.update 'annotation'
     @forceUpdate()
 
   submitMark: (mark) ->
@@ -253,11 +270,13 @@ module.exports = React.createClass
     classification =
       classifications:
         name:        'Classification'
+
         subject_id:  @props.subject.id
         generates_subject_type:  @props.annotation.tool_task_description.generates_subject_type
         task_key:  @props.annotation.task
         workflow_id: @props.workflow.id
         annotation: @props.annotation
+
         metadata:    metadata
 
     console.log '(SINGLE) CLASSIFICATION: ', classification, JSON.stringify(classification)
@@ -270,18 +289,9 @@ module.exports = React.createClass
       # contentType: 'application/json'
       })
       .done (response) =>
-        console.log "Success", response #, #response #, response._id.$oid
+        console.log "Success" #, #response #, response._id.$oid
         console.log 'RECEIVED SECONDARY SUBJECT ID: ', response.child_subject_id
         console.log 'SELECTED MARK: ', @state.selectedMark
-
-        selectedMark = @state.selectedMark
-        console.log 'CHILD_SUBJECT_ID: ', response.classification.child_subject_id
-        selectedMark.child_subject_id = response.classification.child_subject_id
-        @setState selectedMark: selectedMark, =>
-          console.log 'UPDATED MARK WITH CHILD SUBJECT ID: ', @state.selectedMark
-          @forceUpdate()
-
-        # console.log 'TEST ANNOTATION: ', @props.annotation.value.child_subject_id = response.child_subject.id
         # @setTranscribeSubject(key, response._id.$oid)
         # @enableMarkButton(key)
         return
@@ -294,13 +304,13 @@ module.exports = React.createClass
 
   render: ->
     console.log '*********** STATE: ', @state, @props, @state.imageWidth
+
     # return null if @props.subjects is null or @props.subjects.length is 0
     # return null unless @props.subject?
     # console.log 'SUBJECT: ', @props.subject
 
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     ToolComponent = @state.tool
-
     # console.log "Rendering #{if @props.active then 'active' else 'inactive'} subj viewer"
 
     scale = @getScale()
@@ -376,6 +386,7 @@ module.exports = React.createClass
             # # THIS IS CAUSING PROBLEMS - STI
             # if @props.workflow.name is 'mark'
             #   @showPreviousMarks()
+
               # @showTranscribeTools()
           }
 
@@ -403,15 +414,21 @@ module.exports = React.createClass
               </g>
           }
 
-          { # HANDLE NEW MARKS
-            for annotation in @props.classification.annotations
+          { # TODO: ANNOTATIONS SHOULD NOT BE AN ARRAY
+            # DISPLAY CURRENT ANNOTATION (MARK)
+            # for annotation in @props.classification.annotations
+            if @props.workflow.name is 'transcribe'
+
+              annotation = @props.annotation
+
               annotation._key ?= Math.random()
               isPriorMark = annotation isnt @props.annotation
-              taskDescription = @props.workflow.tasks[annotation.task]
 
-              if taskDescription.tool is 'pickOneMarkOne' #or taskDescription.tool is 'transcribe'
+              # taskDescription = @props.workflow.tasks[annotation.task]
+
+              if @props.subject.region.toolName is 'pickOneMarkOne' and @props.annotationIsComplete #or taskDescription.tool is 'transcribe'
                 <g key={annotation._key} className="marks-for-annotation" data-disabled={isPriorMark or null}>
-                  {for mark, m in annotation.value
+                  {
 
                     console.log 'NEW MARK: ', mark, (mark.x), (mark.y+0)
 
@@ -423,13 +440,13 @@ module.exports = React.createClass
                     ToolComponent = markingTools[toolDescription.type]
 
                     <ToolComponent
-                      key={mark._key}
-                      mark={mark}
+                      key={annotation._key}
+                      mark={annotation}
                       xScale={scale.horizontal}
                       yScale={scale.vertical}
                       disabled={false}
                       isPriorMark={isPriorMark}
-                      selected={mark is @state.selectedMark}
+                      selected={true}
                       getEventOffset={@getEventOffset}
                       # ref={@refs.sizeRect}
                       submitMark={@submitMark}
@@ -440,9 +457,7 @@ module.exports = React.createClass
                     />
                   }
                 </g>
-
             }
-
           </svg>
 
     #  Render any tools passed directly in in same parent div so that we can efficiently position them with respect to marks"

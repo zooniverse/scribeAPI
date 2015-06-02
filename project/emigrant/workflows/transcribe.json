@@ -9,7 +9,21 @@
   "generates_subjects_max": 10,
   "generates_subjects_method": "collect-unique",
 
+<<<<<<< HEAD
   "tasks": {
+=======
+    "em_switch_on_type": {
+      "tool": "switch_on_value",
+      "tool_options": {
+        "field": "type",
+        "options": {
+          "em_record_rect": {
+            "task": "em_transcribe_date"
+          }
+        }
+      }
+    },
+>>>>>>> simensta-annotation-fix
 
     "em_record_rect": {
       "tool": "text_tool",
@@ -38,8 +52,13 @@
     },
 
     "em_transcribe_valuation": {
+<<<<<<< HEAD
       "tool": "composite_tool",
       "tool_config": {
+=======
+      "tool": "compositeTool",
+      "tool_options": {
+>>>>>>> simensta-annotation-fix
         "tools": {
           "em_valuation_date": {
             "tool": "text_tool",
@@ -57,5 +76,4 @@
       "instruction": "Enter any dated property valuations that were recorded"
     }
   }
-
 }

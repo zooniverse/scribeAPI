@@ -28,13 +28,12 @@ class Subject
   field :height
 
   # SECONDARY SUBJECT concerns:
-  field :tool_task_description,       type: Hash
   field :data,                        type: Hash
   field :region,                      type: Hash
 
   belongs_to :workflow
   belongs_to :parent_subject, :class_name => "Subject", :foreign_key => "parent_subject_id"  
-  belongs_to :subject_set
+  belongs_to :subject_set, :class_name => "SubjectSet", :foreign_key => "subject_set_id"
 
   has_many :child_subjects, :class_name => "Subject"
   has_many :classifications

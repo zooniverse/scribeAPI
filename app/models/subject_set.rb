@@ -14,7 +14,7 @@ class SubjectSet
   belongs_to :project
   has_many :subjects, dependent: :destroy
 
-  #should a subject_set belong to a workflow, or do we get that throught the subject?
+  # AMS: should a subject_set belong to a workflow, or do we get that throught the subject?
   # I think this is being used in the rake load_group_subjects around line133
   def activate!
     state = "active"
@@ -23,18 +23,22 @@ class SubjectSet
   end
 
   def inc_subject_count_for_workflow(workflow)
-    inc "counts.#{workflow.id.to_s}.total_subjects" => 1
+    self.inc("counts.#{workflow.id.to_s}.total_subjects" => 1)
   end
 
   def subject_activated_on_workflow(workflow)
-    inc "counts.#{workflow.id.to_s}.active_subjects" => 1
+    self.inc("counts.#{workflow.id.to_s}.active_subjects" => 1)
   end
 
   def subject_completed_on_workflow(workflow)
-    inc "counts.#{workflow.id.to_s}.complete_subjects" => -1, "counts.#{workflow.id.to_s}.active_subjects" => -1
+    self.inc("counts.#{workflow.id.to_s}.complete_subjects" => +1)
+    self.inc("counts.#{workflow.id.to_s}.active_subjects" => -1)
   end
 
+
+  # AMS: what is this for?
   def active_subjects_for_workflow(workflow)
     subject.active.for_workflow(workflow)
   end
+
 end

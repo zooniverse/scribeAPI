@@ -93,8 +93,10 @@ module.exports = React.createClass
   render: ->
     tools = for tool, i in @props.task.tool_config.tools
       tool._key ?= Math.random()
-      count = (true for mark in @props.annotation.value when mark.tool is i).length
-
+      console.log "~~~~~Checking MARK~~~~~~~~~~~~~"
+      console.log @props.annotation.value
+      console.log mark for mark in @props.task.tools 
+      count = (true for mark in @props.task.tools when mark.tool is i).length
       <label
         key={tool._key}
         className="minor-button #{if i is (@props.annotation._toolIndex ? 0) then 'active' else ''}"
