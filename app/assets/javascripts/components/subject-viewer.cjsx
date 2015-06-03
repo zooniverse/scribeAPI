@@ -160,10 +160,10 @@ module.exports = React.createClass
     task = @props.workflow.tasks[@props.annotation.task]
     mark = @props.annotation #@state.selectedMark
     # console.log "SubjectViewer#handleInitDrag"
-    console.log "mark._toolIndex", mark._toolIndex
-    console.log "task.tool_config.tools", task.tool_config.tools
-    console.log "task.tool_config.tools[mark._toolIndex]", task.tool_config.tools[mark._toolIndex]
-    console.log "markingTools[task.tool_config.tools[mark._toolIndex].type]", markingTools[task.tool_config.tools[mark._toolIndex].type]
+    # console.log "mark._toolIndex", mark._toolIndex
+    # console.log "task.tool_config.tools", task.tool_config.tools
+    # console.log "task.tool_config.tools[mark._toolIndex]", task.tool_config.tools[mark._toolIndex]
+    # console.log "markingTools[task.tool_config.tools[mark._toolIndex].type]", markingTools[task.tool_config.tools[mark._toolIndex].type]
     MarkComponent = markingTools[task.tool_config.tools[mark._toolIndex].type]
 
     if MarkComponent.initMove?
@@ -419,41 +419,66 @@ module.exports = React.createClass
               </g>
           }
 
-          { # TODO: ANNOTATIONS SHOULD NOT BE AN ARRAY
-            # DISPLAY CURRENT ANNOTATION (MARK)
-            # for annotation in @props.classification.annotations
-            if @props.workflow.name is 'transcribe'
+           { # HIGHLIGHT SUBJECT FOR TRANSCRIPTION
+            # TODO: Makr sure x, y, w, h are scaled properly
 
-              annotation = @props.annotation
+            if @props.workflow.name in ['transcribe', 'verify']
+              toolName = @props.subject.region.toolName
+              mark = @props.subject.region
+              ToolComponent = markingTools[toolName]
+              isPriorMark = true
+              <g>
+                { @highlightMark(mark, toolName) }
+                <ToolComponent
+                  key={@props.subject.id}
+                  mark={mark}
+                  xScale={scale.horizontal}
+                  yScale={scale.vertical}
+                  disabled={isPriorMark}
+                  selected={mark is @state.selectedMark}
+                  getEventOffset={@getEventOffset}
+                  # ref={@refs.sizeRect}
+                  onSelect={@selectMark.bind this, @props.subject, mark}
+                />
+              </g>
+          }
 
+          { # HANDLE NEW MARKS
+            if @props.classification.annotation
+              annotation = @props.classification.annotation
+              console.log "HANDLING NEW ANNOTATION", annotation 
               annotation._key ?= Math.random()
+              console.log "annotation._key", annotation._key
+              console.log "@props.classification.annotation._key", @props.classification.annotation._key
+
               isPriorMark = annotation isnt @props.annotation
+              taskDescription = @props.workflow.tasks[annotation.task]
+              console.log "taskDescription", taskDescription
 
-              # taskDescription = @props.workflow.tasks[annotation.task]
-
-              if @props.subject.region.toolName is 'pickOneMarkOne' and @props.annotationIsComplete #or taskDescription.tool is 'transcribe'
+              if taskDescription.tool is 'pickOneMarkOne' #or taskDescription.tool is 'transcribe'
+                console.log "yes it is pickOneMarkOne"
+                # console.log "annotation.key", annotation.key
+                console.log "annotation._key", annotation.key
                 <g key={annotation._key} className="marks-for-annotation" data-disabled={isPriorMark or null}>
-                  {
+                    console.log "Do we make it here"
+                    console.log 'NEW MARK: ', annotation, (annotation.x), (annotation.y+0)
 
-                    console.log 'NEW MARK: ', mark, (mark.x), (mark.y+0)
-
-                    mark._key ?= Math.random()
-                    toolDescription = taskDescription.tool_config.tools[mark.tool]
+                    annotation._key ?= Math.random()
+                    toolDescription = taskDescription.tool_config.tools[annotation._toolIndex]
+                    console.log "toolDescription", toolDescription
 
                     #adds task and description to each annotation
-                    @props.annotation["tool_task_description"] = @props.workflow.tasks[annotation.task].tool_config.tools[mark.tool]
-                    console.log "markingTools[toolDescription.type]", markingTools[toolDescription.type]
                     ToolComponent = markingTools[toolDescription.type]
-
+                    console.log "TOOL COMPONET", ToolComponent
 
                     <ToolComponent
-                      key={annotation._key}
-                      mark={annotation}
+                      key={mark._key}
+                      mark={mark}
                       xScale={scale.horizontal}
                       yScale={scale.vertical}
                       disabled={false}
                       isPriorMark={isPriorMark}
-                      selected={true}
+                      selected={mark is @state.selectedMark}
                       getEventOffset={@getEventOffset}
                       # ref={@refs.sizeRect}
                       submitMark={@submitMark}
@@ -462,9 +487,11 @@ module.exports = React.createClass
                       onSelect={@selectMark.bind this, annotation, mark}
                       onDestroy={@destroyMark.bind this, annotation}
                     />
-                  }
+          
                 </g>
+
             }
+
           </svg>
 
     #  Render any tools passed directly in in same parent div so that we can efficiently position them with respect to marks"
