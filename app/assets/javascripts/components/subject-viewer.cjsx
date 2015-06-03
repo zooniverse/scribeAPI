@@ -31,7 +31,6 @@ module.exports = React.createClass
     imageHeight: @props.subject.height
 
     subject: @props.subject
-    classification: null
 
     tool: @props.tool
     marks: []
@@ -49,9 +48,6 @@ module.exports = React.createClass
     @setView 0, 0, @state.imageWidth, @state.imageHeight
     @loadImage @props.subject.location.standard
     window.addEventListener "resize", this.updateDimensions
-
-  componentWillMount: ->
-    # @updateDimensions()
 
   componentWillUnmount: ->
     window.removeEventListener "resize", this.updateDimensions
@@ -89,88 +85,80 @@ module.exports = React.createClass
 
   # VARIOUS EVENT HANDLERS
 
+  # Handle initial mousedown:
   handleInitStart: (e) ->
-    return null if ! @props.annotation? || ! @props.annotation.task?
 
-    @props.annotation["subject_id"] = @props.subject.id
-    @props.annotation["workflow_id"] = @props.workflow.id
+    return null if ! @props.subToolIndex?
+    subTool = @props.task.tool_config.tools[@props.subToolIndex]
+    return null if ! subTool?
+    
+    # If there's a current, uncommitted mark, commit it:
+    if @state.uncommittedMark?
+      @submitMark()
 
-    taskDescription = @props.workflow.tasks[@props.annotation.task]
+    # Instantiate appropriate marking tool:
+    MarkComponent = markingTools[subTool.type]
 
-    # setting flag for generation of new subjects
-    @props.annotation["generates_subjects"] = @props.workflow.tasks[@props.annotation.task].generates_subjects
-
-    mark = @state.selectedMark
-
-    markIsComplete = true
-    if mark?
-      toolDescription = taskDescription.tool_config.tools[mark.tool]
-      MarkComponent = markingTools[toolDescription.type]
-      if MarkComponent.isComplete?
-        markIsComplete = MarkComponent.isComplete mark
+    # Create an initial mark instance, which will soon gather coords:
+    mark = tool: subTool.type
 
     mouseCoords = @getEventOffset e
-
-    if markIsComplete
-      toolDescription = taskDescription.tool_config.tools[@props.annotation._toolIndex]
-      console.log "setting subj type: ", @props.workflow.tasks[@props.annotation.task], @props.annotation._toolIndex
-      mark =
-        key: @state.lastMarkKey
-        tool: @props.annotation._toolIndex
-        toolName: taskDescription.tool_config.tools[@props.annotation._toolIndex].type
-        subject_type: @props.workflow.tasks[@props.annotation.task].tool_config.tools[@props.annotation._toolIndex].subject_type
-
-      if toolDescription.details?
-        mark.details = for detailTaskDescription in toolDescription.details
-          # DEBUG CODE
-          #console.log "!taskTacking", tasks[detailTaskDescription.type]
-          tasks[detailTaskDescription.type].getDefaultAnnotation()
-
-    @props.annotation.value.push mark
-    @selectMark @props.annotation, mark
-
-    MarkComponent = markingTools[toolDescription.type]
 
     if MarkComponent.defaultValues?
       defaultValues = MarkComponent.defaultValues mouseCoords
       for key, value of defaultValues
         mark[key] = value
 
+    # Gather initial coords from event into mark instance:
     if MarkComponent.initStart?
       initValues = MarkComponent.initStart mouseCoords, mark, e
       for key, value of initValues
         mark[key] = value
 
-    @setState lastMarkKey: @state.lastMarkKey + 1
+    @setState
+      uncommittedMark: mark
+      lastMarkKey: @state.lastMarkKey + 1
 
-    setTimeout =>
-      @updateAnnotations()
+    @selectMark mark
 
+  # Handle mouse dragging
   handleInitDrag: (e) ->
-    task = @props.workflow.tasks[@props.annotation.task]
-    mark = @state.selectedMark
-    # console.log "SubjectViewer#handleInitDrag"
-    MarkComponent = markingTools[task.tool_config.tools[mark.tool].type]
+    return null if ! @state.uncommittedMark?
+
+    mark = @state.uncommittedMark
+
+    # Instantiate appropriate marking tool:
+    MarkComponent = markingTools[mark.tool]
+
     if MarkComponent.initMove?
       mouseCoords = @getEventOffset e
       initMoveValues = MarkComponent.initMove mouseCoords, mark, e
       for key, value of initMoveValues
         mark[key] = value
-    @updateAnnotations()
 
+    @props.onChange? mark
+    @setState
+      uncommittedMark: mark
+
+  # Handle mouseup at end of drag:
   handleInitRelease: (e) ->
-    return null if ! @props.annotation? || ! @props.annotation.task?
-    task = @props.workflow.tasks[@props.annotation.task]
-    mark = @state.selectedMark
-    MarkComponent = markingTools[task.tool_config.tools[mark.tool].type]
+    return null if ! @state.uncommittedMark?
+
+    mark = @state.uncommittedMark
+
+    # Instantiate appropriate marking tool:
+    MarkComponent = markingTools[mark.tool]
+
     if MarkComponent.initRelease?
       mouseCoords = @getEventOffset e
       initReleaseValues = MarkComponent.initRelease mouseCoords, mark, e
       for key, value of initReleaseValues
         mark[key] = value
-    @updateAnnotations()
     if MarkComponent.initValid? and not MarkComponent.initValid mark
       @destroyMark @props.annotation, mark
+
+    @setState
+      uncommittedMark: mark
 
   setView: (viewX, viewY, viewWidth, viewHeight) ->
     @setState {viewX, viewY, viewWidth, viewHeight}
@@ -192,122 +180,38 @@ module.exports = React.createClass
     y = ((e.pageY - pageYOffset - rect.top) / scale.vertical) + @state.viewY
     return {x, y}
 
-  onClickDelete: (key) ->
-    marks = @state.marks
-    for mark, i in [ marks...]
-      if mark.key is key
-        marks.splice(i,1) # delete marks[key]
-    @setState
-      marks: marks
-      selectedMark: null, =>
-        @forceUpdate() # make sure keys are up-to-date
-
-  handleMarkClick: (mark, e) ->
-    { x, y } = @getEventOffset e
-    @setState
-      selectedMark: mark
-      clickOffset:
-        x: mark.x - x
-        y: mark.y - y
-      # , => @forceUpdate()
-
-  selectMark: (annotation, mark) ->
-    if annotation? and mark?
-      index = annotation.value.indexOf mark
-      annotation.value.splice index, 1
-      annotation.value.push mark
+  # Set mark to currently selected:
+  selectMark: (mark) ->
     @setState selectedMark: mark, =>
       if mark?.details?
         @forceUpdate() # Re-render to reposition the details tooltip.
 
+  # Destroy mark:
   destroyMark: (annotation, mark) ->
     if mark is @state.selectedMark
       @setState selectedMark: null
     markIndex = annotation.value.indexOf mark
     annotation.value.splice markIndex, 1
-    @updateAnnotations()
 
-  updateAnnotations: ->
-    @props.classification.update 'annotations'
-    @forceUpdate()
-
+  # Commit mark
   submitMark: (mark) ->
-    metadata =
-      started_at: (new Date).toISOString() # this is dummy
-      finished_at: (new Date).toISOString()
+    mark = @state.uncommittedMark
 
-    # # SUBMITT MARK VIA JSON-API-CLIENT (PROBLEMS WITH RETRIEVING RESPONSE)
-    # classification = API.type('classifications').create
-    #   name:        'Classification'
-    #   subject_id:  @props.subject.id
-    #   workflow_id: @props.workflow.id
-    #   annotations: []
-    #   metadata:    metadata
-    #
-    # classification.annotations.push @props.annotation
-    # classification.update 'annotations'
-    # classification.save() # submit classification
+    marks = @state.marks
+    marks.push mark
 
-    # console.log "task: ", @props.annotation
-    # PREPARE CLASSIFICATION TO SEND
-    classification =
-      classifications:
-        name:        'Classification'
-        subject_id:  @props.subject.id
-        generates_subject_type:  @props.annotation.tool_task_description.generates_subject_type
-        task_key:  @props.annotation.task
-        workflow_id: @props.workflow.id
-        annotation: @props.annotation
-        metadata:    metadata
+    @setState
+      uncommittedMark: null
 
-    console.log '(SINGLE) CLASSIFICATION: ', classification, JSON.stringify(classification)
-
-    $.ajax({
-      type:        'post'
-      url:         '/classifications'
-      data:        classification # JSON.stringify(classification)
-      # dataType:    'json'
-      # contentType: 'application/json'
-      })
-      .done (response) =>
-        console.log "Success", response #, #response #, response._id.$oid
-        console.log 'RECEIVED SECONDARY SUBJECT ID: ', response.child_subject_id
-        console.log 'SELECTED MARK: ', @state.selectedMark
-
-        selectedMark = @state.selectedMark
-        console.log 'CHILD_SUBJECT_ID: ', response.classification.child_subject_id
-        selectedMark.child_subject_id = response.classification.child_subject_id
-        @setState selectedMark: selectedMark, =>
-          console.log 'UPDATED MARK WITH CHILD SUBJECT ID: ', @state.selectedMark
-          @forceUpdate()
-
-        # console.log 'TEST ANNOTATION: ', @props.annotation.value.child_subject_id = response.child_subject.id
-        # @setTranscribeSubject(key, response._id.$oid)
-        # @enableMarkButton(key)
-        return
-      .fail =>
-        console.log "Failure"
-        return
-      .always ->
-        console.log "Always"
-        return
+    @props.onComplete? mark
 
   render: ->
     console.log '*********** STATE: ', @state, @props, @state.imageWidth
-    # return null if @props.subjects is null or @props.subjects.length is 0
-    # return null unless @props.subject?
-    # console.log 'SUBJECT: ', @props.subject
 
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     ToolComponent = @state.tool
 
-    # console.log "Rendering #{if @props.active then 'active' else 'inactive'} subj viewer"
-
     scale = @getScale()
-    # renderSize = {w: scale.horizontal * @state.imageWidth, h: scale.vertical * @state.imageHeight}
-    # holderStyle =
-     #  width: "#{renderSize.w}px"
-      # height: "#{renderSize.h}px"
 
     actionButton =
       if @state.loading
@@ -315,8 +219,7 @@ module.exports = React.createClass
       else
         <ActionButton onClick={@nextSubject} text="Next Page" />
 
-    # console.log "SubjectViewer#render: render subject with mark? ", @props.subject
-
+    # TODO PB: had to disable this to debug something...
     if false && @state.loading
       markingSurfaceContent = <LoadingIndicator />
     else
@@ -404,42 +307,40 @@ module.exports = React.createClass
           }
 
           { # HANDLE NEW MARKS
-            for annotation in @props.classification.annotations
-              annotation._key ?= Math.random()
-              isPriorMark = annotation isnt @props.annotation
-              taskDescription = @props.workflow.tasks[annotation.task]
+            # TODO: PB: Note @state.marks not currently filled with previous marks (i.e. previously genereated subjects)
+            marks = @state.marks ? []
+            # Here we append the currently-being-drawn mark to the list of marks, if it's avail:
+            marks = marks.concat @state.uncommittedMark if @state.uncommittedMark?
+            for mark in marks
+              mark._key ?= Math.random()
 
-              if taskDescription.tool is 'pickOneMarkOne' #or taskDescription.tool is 'transcribe'
-                <g key={annotation._key} className="marks-for-annotation" data-disabled={isPriorMark or null}>
-                  {for mark, m in annotation.value
+              # If mark hasn't acquired coords yet, don't draw it yet:
+              continue if ! mark.x? || ! mark.y?
 
-                    console.log 'NEW MARK: ', mark, (mark.x), (mark.y+0)
+              <g key={mark._key} className="marks-for-annotation" data-disabled={isPriorMark or null}>
+                {
 
-                    mark._key ?= Math.random()
-                    toolDescription = taskDescription.tool_config.tools[mark.tool]
+                  console.log 'NEW MARK: ', mark, (mark.x), (mark.y+0)
 
-                    #adds task and description to each annotation
-                    @props.annotation["tool_task_description"] = @props.workflow.tasks[annotation.task].tool_config.tools[mark.tool]
-                    ToolComponent = markingTools[toolDescription.type]
+                  mark._key ?= Math.random()
+                  ToolComponent = markingTools[mark.tool]
 
-                    <ToolComponent
-                      key={mark._key}
-                      mark={mark}
-                      xScale={scale.horizontal}
-                      yScale={scale.vertical}
-                      disabled={false}
-                      isPriorMark={isPriorMark}
-                      selected={mark is @state.selectedMark}
-                      getEventOffset={@getEventOffset}
-                      # ref={@refs.sizeRect}
-                      submitMark={@submitMark}
+                  <ToolComponent
+                    key={mark._key}
+                    mark={mark}
+                    xScale={scale.horizontal}
+                    yScale={scale.vertical}
+                    disabled={false}
+                    isPriorMark={isPriorMark}
+                    selected={mark is @state.selectedMark}
+                    getEventOffset={@getEventOffset}
+                    submitMark={@submitMark}
 
-                      onChange={@updateAnnotations}
-                      onSelect={@selectMark.bind this, annotation, mark}
-                      onDestroy={@destroyMark.bind this, annotation}
-                    />
-                  }
-                </g>
+                    onSelect={@selectMark.bind this, mark}
+                    onDestroy={@destroyMark.bind this, mark}
+                  />
+                }
+              </g>
 
             }
 

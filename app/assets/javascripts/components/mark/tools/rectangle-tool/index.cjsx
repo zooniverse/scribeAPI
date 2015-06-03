@@ -149,7 +149,6 @@ module.exports = React.createClass
     height = @props.mark.height
     y2 = y1 + height
 
-    console.log "rendering rect tool: ", @props.mark, x1, x2, y1, y2
     scale = (@props.xScale + @props.yScale) / 2
 
     # DETERMINE MARK STYLE

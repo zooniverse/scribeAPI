@@ -18,8 +18,9 @@ class ClassificationsController < ApplicationController
     user_agent       = request.headers["HTTP_USER_AGENT"]
 
     # hack incoming annotation hash to match dm doc:
-    annotation = annotation['value'] && annotation['value']['0'] ? annotation['value']['0'] : annotation
-    annotation['generates_subject_type'] = params['classifications']['generates_subject_type']
+    # annotation = annotation['value'] && annotation['value']['0'] ? annotation['value']['0'] : annotation
+
+    # annotation['generates_subject_type'] = params['classifications']['generates_subject_type']
 
     @result = Classification.create(
       workflow_id: workflow_id,
