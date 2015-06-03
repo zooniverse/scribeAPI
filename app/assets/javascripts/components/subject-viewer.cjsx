@@ -448,8 +448,7 @@ module.exports = React.createClass
               annotation = @props.classification.annotation
               console.log "HANDLING NEW ANNOTATION", annotation 
               annotation._key ?= Math.random()
-              console.log "annotation._key", annotation._key
-              console.log "@props.classification.annotation._key", @props.classification.annotation._key
+              console.log "1annotation._key", annotation._key
 
               isPriorMark = annotation isnt @props.annotation
               taskDescription = @props.workflow.tasks[annotation.task]
@@ -457,8 +456,8 @@ module.exports = React.createClass
 
               if taskDescription.tool is 'pickOneMarkOne' #or taskDescription.tool is 'transcribe'
                 console.log "yes it is pickOneMarkOne"
-                # console.log "annotation.key", annotation.key
-                console.log "annotation._key", annotation.key
+                # somehow losing the value annotation._key
+                console.log "2annotation._key", annotation._key
                 <g key={annotation._key} className="marks-for-annotation" data-disabled={isPriorMark or null}>
                     console.log "Do we make it here"
                     console.log 'NEW MARK: ', annotation, (annotation.x), (annotation.y+0)
@@ -472,8 +471,8 @@ module.exports = React.createClass
                     console.log "TOOL COMPONET", ToolComponent
 
                     <ToolComponent
-                      key={mark._key}
-                      mark={mark}
+                      key={annotation._key}
+                      mark={annotation}
                       xScale={scale.horizontal}
                       yScale={scale.vertical}
                       disabled={false}
