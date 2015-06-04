@@ -110,7 +110,7 @@ module.exports = React.createClass # rename to Classifier
     console.log 'handleDataFromTool(): ', d
     classifications = @state.classifications
     classifications[@state.classificationIndex].annotation[k] = v for k, v of d
-
+    @forceUpdate()
     @setState
       classifications: classifications
 
