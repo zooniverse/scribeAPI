@@ -40,17 +40,11 @@ module.exports = React.createClass # rename to Classifier
   componentWillMount: ->
     @setState
       taskKey: @props.workflow.first_task
-
-    console.log "finding error location: @componentWillMount"
-    console.log "this", this
-    
+          
     @beginClassification()
 
 
   render: ->
-    console.log "STATE FROM mark-index", @state
-    console.log "PROPS FROM mark-index", @props    
-
     return null unless @state.currentSubjectSet?
 
     # annotations = @props.classification.annotations
@@ -173,7 +167,6 @@ module.exports = React.createClass # rename to Classifier
     classification.subject_set_id = @state.currentSubjectSet.id
     classification.workflow_id = @state.workflow.id
     classification.task_key = @state.taskKey
-    console.log "classification, before commit", classification
 
     classification.commit()
 
@@ -183,7 +176,8 @@ module.exports = React.createClass # rename to Classifier
 
   completeSubjectSet: ->
     console.log "TODO: At this point, ask user if there's more to mark and then load next subjectset to classify."
-    # AMS: classification-refactor has this commented out...
+    
+    # AMS: branch classification-refactor has this commented out...
     # return
     # @props.classification.update
     #   completed: true
