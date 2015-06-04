@@ -63,7 +63,15 @@ module.exports = React.createClass # rename to Classifier
             style = marginTop: "50px"
             <p style={style}>There is nothing left to do. Thanks for your work and please check back soon!</p>
           else if @state.currentSubjectSet?
-            <SubjectSetViewer subject_set={@state.currentSubjectSet} workflow={@props.workflow} task={currentTask} annotation={@currentClassification().annotation ? {}} subToolIndex={@state.subToolIndex} onComplete={@handleToolComplete} onViewSubject={@handleViewSubject} />
+            <SubjectSetViewer
+              subject_set={@state.currentSubjectSet}
+              workflow={@props.workflow}
+              task={currentTask}
+              annotation={@currentClassification().annotation ? {}}
+              subToolIndex={@state.subToolIndex}
+              onComplete={@handleToolComplete}
+              onViewSubject={@handleViewSubject}
+            />
         }
       </div>
       <div className="task-area">
@@ -92,18 +100,19 @@ module.exports = React.createClass # rename to Classifier
     @setState
       currentSubject: subject
 
-  # User somehow indicated current task is complete; commit current classification 
+  # User somehow indicated current task is complete; commit current classification
   handleToolComplete: (d) ->
     @handleDataFromTool(d)
     @commitClassification()
     console.log "finding error location: @handleToolComplete"
     @beginClassification()
-  
+
   # Handle user selecting a pick/drawing tool:
   handleDataFromTool: (d) ->
+    console.log 'handleDataFromTool(): ', d
     classifications = @state.classifications
     classifications[@state.classificationIndex].annotation[k] = v for k, v of d
-
+    @forceUpdate()
     @setState
       classifications: classifications
 
@@ -158,7 +167,7 @@ module.exports = React.createClass # rename to Classifier
     @setState
       classifications: classifications
       classificationIndex: classifications.length-1
-    
+
   # Push current classification to server:
   commitClassification: ->
     classification = @currentClassification()

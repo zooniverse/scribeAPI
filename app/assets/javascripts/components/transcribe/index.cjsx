@@ -33,6 +33,9 @@ module.exports = React.createClass # rename to Classifier
     anns = ({key: key, value: (ann['value'] ? ann)} for key, ann of @props.classification.annotations)
     console.log "HERE WE ARE"
     console.log "HERE WE ARE"
+    console.log "HERE WE ARE"
+    console.log "HERE WE ARE"
+    console.log "HERE WE ARE"
     @props.classification.update
       completed: true
       subject_id: @state.currentSubject.id

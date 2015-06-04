@@ -93,6 +93,8 @@ module.exports = React.createClass
 
   render: ->
 
+    console.log 'PROPS: ', @props
+
     tools = for tool, i in @props.task.tool_config.tools
       tool._key ?= Math.random()
 
@@ -101,7 +103,7 @@ module.exports = React.createClass
 
       <label
         key={tool._key}
-        className="minor-button #{if i is @props.subToolIndex then 'active' else ''}"
+        className="minor-button #{if i is @props.annotation.subToolIndex then 'active' else ''}"
       >
         <span
           className="drawing-tool-icon"
@@ -130,6 +132,6 @@ module.exports = React.createClass
       # @props.onChange? e
       @props.onChange? {
         subToolIndex: index,
-        tool: @props.task.tool_config.tools[index].tool
+        tool: @props.task.tool_config.tools[index].type
       }
       @forceUpdate()
