@@ -205,6 +205,11 @@ module.exports = React.createClass
 
     @props.onComplete? mark
 
+  handleChange: (mark) ->
+    console.log 'Ch-ch-ch-CHANGES!'
+    @setState
+      selectedMark: mark, => console.log 'SELECTED MARK: ', mark
+
   render: ->
     # console.log '*********** STATE: ', @state, @props, @state.imageWidth
 
@@ -337,6 +342,7 @@ module.exports = React.createClass
                     submitMark={@submitMark}
 
                     onSelect={@selectMark.bind this, mark}
+                    onChange={@handleChange.bind this, mark}
                     onDestroy={@destroyMark.bind this, mark}
                   />
                 }

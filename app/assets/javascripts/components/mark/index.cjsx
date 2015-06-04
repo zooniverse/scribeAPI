@@ -166,6 +166,9 @@ module.exports = React.createClass # rename to Classifier
 
     classification.commit()
 
+    console.log 'COMMITTED CLASSIFICATION: ', classification
+    console.log '(ALL CLASSIFICATIONS): ', @state.classifications
+
   # Get current classification:
   currentClassification: ->
     @state.classifications[@state.classificationIndex]
