@@ -91,7 +91,7 @@ module.exports = React.createClass
     return null if ! @props.subToolIndex?
     subTool = @props.task.tool_config.tools[@props.subToolIndex]
     return null if ! subTool?
-    
+
     # If there's a current, uncommitted mark, commit it:
     if @state.uncommittedMark?
       @submitMark()
@@ -206,7 +206,7 @@ module.exports = React.createClass
     @props.onComplete? mark
 
   render: ->
-    console.log '*********** STATE: ', @state, @props, @state.imageWidth
+    # console.log '*********** STATE: ', @state, @props, @state.imageWidth
 
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     ToolComponent = @state.tool
@@ -249,7 +249,7 @@ module.exports = React.createClass
 
             for mark, i in @props.subject.child_subjects_info
 
-              console.log 'PREVIOUS MARK: ', mark
+              # console.log 'PREVIOUS MARK: ', mark
 
               toolName = mark.data.toolName
               if toolName?

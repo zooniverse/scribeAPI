@@ -2,7 +2,7 @@ API            = require './api'
 
 module.exports =
   componentDidMount: ->
-    console.log "Fetch Subjects Mixin: ", @
+    # console.log "Fetch Subjects Mixin: ", @
     if @props.params.subject_set_id
       @fetchSubjectSet @props.params.subject_set_id,@props.workflow.id
     else
@@ -23,7 +23,7 @@ module.exports =
   fetchSubjectSets: (workflow_id, limit) ->
 
     if @props.overrideFetchSubjectsUrl?
-      console.log "Fetching (fake) subject sets from #{@props.overrideFetchSubjectsUrl}"
+      # console.log "Fetching (fake) subject sets from #{@props.overrideFetchSubjectsUrl}"
       $.getJSON @props.overrideFetchSubjectsUrl, (subject_sets) =>
         @setState
           subjectSets: subject_sets
@@ -36,7 +36,7 @@ module.exports =
         random: true
 
       request.then (subject_sets)=>    # DEBUG CODE
-        console.log "subject sets",  subject_sets
+        # console.log "subject sets",  subject_sets
         @setState
           subjectSets: subject_sets
           currentSubjectSet: subject_sets[0]
@@ -45,4 +45,3 @@ module.exports =
     # WHY DOES THIS BREAK?
     # request.error (xhr, status, err) =>
     #   console.error "Error loading subjects: ", url, status, err.toString()
-

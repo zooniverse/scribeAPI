@@ -134,6 +134,6 @@ module.exports = React.createClass
       # @props.onChange? e
       @props.onChange? {
         subToolIndex: index,
-        tool: @props.task.tool_config.tools[index].tool
+        tool: @props.task.tool_config.tools[index].type
       }
       @forceUpdate()
