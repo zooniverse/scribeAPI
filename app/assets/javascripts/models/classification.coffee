@@ -4,6 +4,7 @@ class Classification
   subject_id: null,
   subject_set_id: null,
   task_key: null,
+  generates_subject_type: null,
 
   constructor: ->
     @metadata =
@@ -19,7 +20,6 @@ class Classification
       task_key: @task_key
       metadata: @metadata
       workflow_id: @workflow_id
-    console.log "rec", rec
     rec.save()
 
 module.exports = Classification

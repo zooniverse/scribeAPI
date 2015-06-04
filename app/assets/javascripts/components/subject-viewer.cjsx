@@ -25,14 +25,12 @@ module.exports = React.createClass
   mixins: [MarkDrawingMixin] # load helper methods to draw marks and highlights
 
   getInitialState: ->
-    # console.log "setting initial state: #{@props.active}"
 
     imageWidth: @props.subject.width
     imageHeight: @props.subject.height
 
     subject: @props.subject
 
-    # tool: @props.tool #this value no longer exists in @props
     marks: []
     selectedMark: null
     lastMarkKey: 0
@@ -58,7 +56,6 @@ module.exports = React.createClass
       windowInnerWidth: window.innerWidth
       windowInnerHeight: window.innerHeight
 
-    # console.log "if ! ", @state.loading, @getScale(), @props.onResize
     if ! @state.loading && @getScale()? && @props.onLoad?
       scale = @getScale()
       props =
@@ -73,7 +70,6 @@ module.exports = React.createClass
     @setState loading: true, =>
       img = new Image()
       img.src = url
-      # console.log 'URL: ', url
       img.onload = =>
         # if @isMounted()
 
@@ -199,6 +195,9 @@ module.exports = React.createClass
 
   # Commit mark
   submitMark: (mark) ->
+    console.log "submitMark mark", mark
+    console.log "submitMark @state", @state
+    console.log "submitMark @props", @props
     mark = @state.uncommittedMark
 
     marks = @state.marks

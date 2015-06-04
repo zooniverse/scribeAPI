@@ -173,6 +173,7 @@ module.exports = React.createClass # rename to Classifier
     classification.subject_set_id = @state.currentSubjectSet.id
     classification.workflow_id = @state.workflow.id
     classification.task_key = @state.taskKey
+    console.log "classification, before commit", classification
 
     classification.commit()
 
