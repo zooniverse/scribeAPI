@@ -113,7 +113,7 @@ module.exports = React.createClass # rename to Classifier
     @setState
       classifications: classifications
 
-destroyCurrentAnnotation: ->
+  destroyCurrentAnnotation: ->
     # TODO: implement mechanism for going backwards to previous classification, potentially deleting later classifications from stack:
     console.log "WARN: destroyCurrentAnnotation not implemented"
     # @props.classification.annotations.pop()

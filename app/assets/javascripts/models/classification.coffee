@@ -19,6 +19,7 @@ class Classification
       task_key: @task_key
       metadata: @metadata
       workflow_id: @workflow_id
+    console.log "rec", rec
     rec.save()
 
 module.exports = Classification

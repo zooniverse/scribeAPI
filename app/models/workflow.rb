@@ -107,11 +107,10 @@ class Workflow
   end
 
   def find_tools_from_subject_type(subject_type)
-    task_keys = self.tasks.keys
-    task_keys.each do |task|
+    self.tasks.each do |task|
 
-      if self.tasks[task]["tools"].present?
-        array_of_tool_boxes = self.tasks[task]["tools"]
+      if task.tool_config["tools"].present?
+        array_of_tool_boxes = task.tool_config["tools"]
         array_of_tool_boxes.each do |tool_box|
           return tool_box if tool_box["generates_subject_type"] == subject_type
           # example tool_box:{"type"=> "textRowTool", "label"=> "Question", "color"=> "green", "generates_subject_type"=> "att_textRowTool_question" }

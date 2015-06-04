@@ -1,3 +1,4 @@
+require 'pry'
 class ClassificationsController < ApplicationController
   respond_to :json
   # EARLY CODE TO FAKE SECONDARY SUBJECTS -STI
@@ -9,14 +10,15 @@ class ClassificationsController < ApplicationController
 
 
   def create
-
     workflow_id      = BSON::ObjectId.from_string params["classifications"]["workflow_id"]
     task_key         = params["classifications"]["task_key"]
     generates_subject_type = params["classifications"]["annotation"]["generates_subject_type"]
-    
-    tool_box         = find_tool_box(workflow_id, generates_subject_type)
-    tool_name        = tool_box["type"]
-    label            = tool_box["label"]
+
+    if generates_subject_type
+      tool_box         = find_tool_box(workflow_id, generates_subject_type)
+      tool_name        = tool_box["type"]
+      label            = tool_box["label"]
+    end
     
     annotation       = params["classifications"]["annotation"]
     started_at       = params["classifications"]["metadata"]["started_at"]
@@ -37,8 +39,8 @@ class ClassificationsController < ApplicationController
       started_at: started_at,
       finished_at: finished_at,
       user_agent: user_agent,
-      task_key: task_key
-      tool_name: tool_name,
+      task_key: task_key,
+      tool_name: tool_name ? tool_name : nil,
     )
 
     respond_with @result
