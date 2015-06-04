@@ -41,6 +41,9 @@ module.exports = React.createClass # rename to Classifier
     @setState
       taskKey: @props.workflow.first_task
 
+    console.log "finding error location: @componentWillMount"
+    console.log "this", this
+    
     @beginClassification()
 
 
@@ -99,6 +102,7 @@ module.exports = React.createClass # rename to Classifier
   handleToolComplete: (d) ->
     @handleDataFromTool(d)
     @commitClassification()
+    console.log "finding error location: @handleToolComplete"
     @beginClassification()
   
   # Handle user selecting a pick/drawing tool:
