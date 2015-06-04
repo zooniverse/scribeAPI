@@ -108,13 +108,13 @@ module.exports = React.createClass
     if MarkComponent.defaultValues?
       defaultValues = MarkComponent.defaultValues mouseCoords
       for key, value of defaultValues
-        annotation[key] = value
+        mark[key] = value
 
     # Gather initial coords from event into mark instance:
     if MarkComponent.initStart?
-      initValues = MarkComponent.initStart mouseCoords, annotation, e
+      initValues = MarkComponent.initStart mouseCoords, mark, e
       for key, value of initValues
-        annotation[key] = value
+        mark[key] = value
 
     @setState
       uncommittedMark: mark
