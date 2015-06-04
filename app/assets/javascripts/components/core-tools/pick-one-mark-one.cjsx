@@ -89,18 +89,19 @@ module.exports = React.createClass
     task: null
     annotation: null
     onChange: NOOP
+    subToolIndex: 0
 
   render: ->
+
     tools = for tool, i in @props.task.tool_config.tools
       tool._key ?= Math.random()
-      console.log "~~~~~Checking MARK in PickOneMarkOne~~~~~~~~~~~~~"
-      console.log "@props.annotation", @props.annotation
-      # console.log "@props.annotation.value", @props.annotation.value
-      console.log "tool.type", tool.type
-      # console.log mark for mark in @props.task.tools 
+
+      # TODO: fix count:
+      count = 1 # (true for mark in @props.annotation.value when mark.tool is i).length
+
       <label
         key={tool._key}
-        className="minor-button #{if i is (@props.annotation._toolIndex ? 0) then 'active' else ''}"
+        className="minor-button #{if i is @props.subToolIndex then 'active' else ''}"
       >
         <span
           className="drawing-tool-icon"
@@ -110,7 +111,7 @@ module.exports = React.createClass
         <input
           type="radio"
           className="drawing-tool-input"
-          checked={ i is (@props.annotation._toolIndex ? 0) }
+          checked={ i is @props.subToolIndex }
           onChange={ @handleChange.bind this, i }
         />
 
@@ -125,6 +126,10 @@ module.exports = React.createClass
 
   handleChange: (index, e) ->
     if e.target.checked
-      @props.annotation._toolIndex = index
-      @props.onChange? e
+      # @props.annotation._toolIndex = index
+      # @props.onChange? e
+      @props.onChange? {
+        subToolIndex: index,
+        tool: @props.task.tool_config.tools[index].tool
+      }
       @forceUpdate()

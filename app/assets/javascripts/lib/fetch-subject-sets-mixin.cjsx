@@ -30,7 +30,6 @@ module.exports =
           currentSubjectSet: subject_sets[0]
 
     else
-      console.log "in the other else"
       request = API.type('subject_sets').get
         workflow_id: workflow_id
         limit: limit
@@ -41,6 +40,7 @@ module.exports =
         @setState
           subjectSets: subject_sets
           currentSubjectSet: subject_sets[0]
+          currentSubject: subject_sets[0].subjects[0]
 
     # WHY DOES THIS BREAK?
     # request.error (xhr, status, err) =>
