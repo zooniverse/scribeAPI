@@ -34,8 +34,8 @@ module.exports = React.createClass # rename to Classifier
     @addAnnotationForTask @props.workflow.first_task
 
   render: ->
-    console.log "STATE FROM SB", @sta
-    console.log "PROPS FROM SB", @props    
+    console.log "STATE FROM mark-index", @state
+    console.log "PROPS FROM mark-index", @props    
 
     return null unless @state.currentSubjectSet?
 
@@ -48,7 +48,6 @@ module.exports = React.createClass # rename to Classifier
     
     currentTask = @props.workflow.tasks[currentAnnotation?.task]
 
-    console.log "coreTools[currentTask.tool]", coreTools[currentTask.tool]
     TaskComponent = coreTools[currentTask.tool]
     onFirstAnnotation = currentAnnotation?.task is @props.workflow.first_task
 
@@ -120,6 +119,7 @@ module.exports = React.createClass # rename to Classifier
     @updateAnnotations()
 
   loadNextTask: (nextTask) ->
+    console.log "loadNextTask"
     if nextTask is null
       console.log 'NOTHING LEFT TO DO'
       return

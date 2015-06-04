@@ -33,7 +33,7 @@ module.exports = React.createClass
     subject: @props.subject
     classification: null
 
-    tool: @props.tool
+    # tool: @props.tool #this value no longer exists in @props
     marks: []
     selectedMark: null
     lastMarkKey: 0
@@ -254,6 +254,7 @@ module.exports = React.createClass
     @forceUpdate()
 
   submitMark: (mark) ->
+    console.log "submitMark mark", mark
     metadata =
       started_at: (new Date).toISOString() # this is dummy
       finished_at: (new Date).toISOString()
@@ -272,6 +273,7 @@ module.exports = React.createClass
 
     # console.log "task: ", @props.annotation
     # PREPARE CLASSIFICATION TO SEND
+
     classification =
       classifications:
         name:        'Classification'
@@ -308,15 +310,12 @@ module.exports = React.createClass
         return
 
   render: ->
-    console.log '*********** STATE: ', @state, @props, @state.imageWidth
-
-    # return null if @props.subjects is null or @props.subjects.length is 0
-    # return null unless @props.subject?
-    # console.log 'SUBJECT: ', @props.subject
+    console.log '*********** STATE: ', @state
+    console.log "PROPS in SB render", @props
 
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
-    ToolComponent = @state.tool
-    # console.log "Rendering #{if @props.active then 'active' else 'inactive'} subj viewer"
+
+      # ToolComponent = @state.tool
 
     scale = @getScale()
     # renderSize = {w: scale.horizontal * @state.imageWidth, h: scale.vertical * @state.imageHeight}
@@ -329,8 +328,6 @@ module.exports = React.createClass
         <ActionButton onAction={@nextSubject} className="disabled" text="Loading..." />
       else
         <ActionButton onClick={@nextSubject} text="Next Page" />
-
-    # console.log "SubjectViewer#render: render subject with mark? ", @props.subject
 
     if false && @state.loading
       markingSurfaceContent = <LoadingIndicator />
@@ -365,7 +362,7 @@ module.exports = React.createClass
 
               toolName = mark.data.toolName
               if toolName?
-                ToolComponent = markingTools[toolName]
+               # = markingTools[toolName]
                 scale = @getScale()
 
                 console.log 'REFS: ', @refs
@@ -399,6 +396,7 @@ module.exports = React.createClass
             # TODO: Makr sure x, y, w, h are scaled properly
 
             if @props.workflow.name in ['transcribe', 'verify']
+              console.log "We SHOULD not be in the highlight code"
               toolName = @props.subject.region.toolName
               mark = @props.subject.region
               ToolComponent = markingTools[toolName]
@@ -444,32 +442,24 @@ module.exports = React.createClass
           }
 
           { # HANDLE NEW MARKS
-            if @props.classification.annotation
+            # this if statement checks to see if there is annontation
               annotation = @props.classification.annotation
+              mark = annotation
               console.log "HANDLING NEW ANNOTATION", annotation 
-              annotation._key ?= Math.random()
-              console.log "1annotation._key", annotation._key
-
-              isPriorMark = annotation isnt @props.annotation
+              isPriorMark = annotation isnt @props.annotation #AMS: is this logic wrong?
               taskDescription = @props.workflow.tasks[annotation.task]
-              console.log "taskDescription", taskDescription
 
               if taskDescription.tool is 'pickOneMarkOne' #or taskDescription.tool is 'transcribe'
-                console.log "yes it is pickOneMarkOne"
-                # somehow losing the value annotation._key
-                console.log "2annotation._key", annotation._key
-                <g key={annotation._key} className="marks-for-annotation" data-disabled={isPriorMark or null}>
-                    console.log "Do we make it here"
-                    console.log 'NEW MARK: ', annotation, (annotation.x), (annotation.y+0)
+                console.log "yes, it is pickOneMarkOne" 
 
-                    annotation._key ?= Math.random()
+                <g className="new-annotation">
+                  {
                     toolDescription = taskDescription.tool_config.tools[annotation._toolIndex]
-                    console.log "toolDescription", toolDescription
-
-                    #adds task and description to each annotation
                     ToolComponent = markingTools[toolDescription.type]
-                    console.log "TOOL COMPONET", ToolComponent
-
+                    console.log 'NEW MARK: ', annotation, (annotation.x), (annotation.y+0)
+                    console.log "New ANN TOOL COMPONENT", ToolComponent
+                  }
+                  
                     <ToolComponent
                       key={annotation._key}
                       mark={annotation}
@@ -477,7 +467,7 @@ module.exports = React.createClass
                       yScale={scale.vertical}
                       disabled={false}
                       isPriorMark={isPriorMark}
-                      selected={mark is @state.selectedMark}
+                      selected={true}
                       getEventOffset={@getEventOffset}
                       # ref={@refs.sizeRect}
                       submitMark={@submitMark}
