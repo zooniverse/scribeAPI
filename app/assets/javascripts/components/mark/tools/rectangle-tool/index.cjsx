@@ -81,6 +81,10 @@ module.exports = React.createClass
   initCoords: null
 
   getInitialState: ->
+    console.log "!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    console.log "!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    console.log "!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    console.log "@pros rectangle index", @props
     mark = @props.mark
     unless mark.status?
       mark.status = 'mark'
@@ -138,6 +142,7 @@ module.exports = React.createClass
     @props.onSelect @props.mark
 
   render: ->
+    console.log "RENDER OF RectangleTool"
     if @state.markStatus is 'mark-committed'
       isPriorMark = true
       @props.disabled = true
@@ -149,7 +154,6 @@ module.exports = React.createClass
     height = @props.mark.height
     y2 = y1 + height
 
-    console.log "rendering rect tool: ", @props.mark, x1, x2, y1, y2
     scale = (@props.xScale + @props.yScale) / 2
 
     # DETERMINE MARK STYLE

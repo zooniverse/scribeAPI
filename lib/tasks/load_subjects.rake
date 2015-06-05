@@ -36,7 +36,7 @@ require 'active_support'
       CSV.foreach(groups_file, :headers=>true, :header_converters=> lambda {|f| f.strip}, :converters=> lambda {|f| f ? f.strip : nil}) do |row|
         data = row.to_hash
 
-        group_key        = data['key'].downcase
+        group_key        = data['key'] # .downcase # is there a reason for downcasing?
         name             = data['name']
         description      = data['description']
         cover_image_url  = data['cover_image_url']

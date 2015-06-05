@@ -60,18 +60,28 @@ module.exports = React.createClass
     onChange: NOOP
 
   render: ->
-    answers = for i, answer of @props.task.tool_config.options
+    answers = for k, answer of @props.task.tool_config.options
+
       answer._key ?= Math.random()
-      <label key={answer._key} className="minor-button">
-        <input type="radio" checked={i is @props.annotation?.value} onChange={@handleChange.bind this, i} />
+      checked = k is @props.annotation.value
+
+      classes = ['minor-button']
+      classes.push 'active' if checked
+      classes = classes.join ' '
+
+      <label key={answer._key} className={classes}>
+        <input type="radio" name="input0" value={k} checked={checked} onChange={@handleChange.bind this, k} />
         <span>{answer.label}</span>
       </label>
 
-    <GenericTask question={@props.task.instruction} help={@props.task.help} answers={answers} />
+    <GenericTask ref="inputs" question={@props.task.instruction} help={@props.task.help} answers={answers} />
 
   handleChange: (index, e) ->
     if e.target.checked
-      @props.annotation.value = index
-      @props.onChange index
+      checked = $(@refs.inputs.getDOMNode()).find('input[type=radio]:checked')
+      @props.onChange({
+        value: checked.val()
+      })
       @forceUpdate() # update the radiobuttons after selection
 
+window.React = React

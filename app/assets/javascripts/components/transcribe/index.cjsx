@@ -31,7 +31,6 @@ module.exports = React.createClass # rename to Classifier
   completeClassification: ->
     # FIXME hack to translate anns hash into array:
     anns = ({key: key, value: (ann['value'] ? ann)} for key, ann of @props.classification.annotations)
-
     @props.classification.update
       completed: true
       subject_id: @state.currentSubject.id
@@ -43,11 +42,16 @@ module.exports = React.createClass # rename to Classifier
     console.log 'CLASSIFICATION: ', @props.classification.annotations['em_transcribe_address'], @props.classification
 
   fetchSubjectsCallback: ->
+    console.log "fetchSubjectsCallback"
+    console.log "fSC @state", @state
+    console.log "@state.workflow.first_task", @state.workflow.first_task 
+    console.log "@state.currentSubject['type']", @state.currentSubject['type']
+    #TODO: We do need to account for times when there are no subjects? type won't do that. -AMS
     new_key = @state.workflow.first_task ? @state.currentSubject['type']
     @advanceToTask new_key
 
   handleTaskComponentChange: (val) ->
-
+    console.log "handleTaskComponentChange val", val
     taskOption = @state.currentTask.options[val]
     if taskOption.next_task?
       @advanceToTask taskOption.next_task
@@ -59,7 +63,8 @@ module.exports = React.createClass # rename to Classifier
     @forceUpdate()
 
   advanceToTask: (key) ->
-
+    console.log "advanceToTask @state", @state
+    console.log "advanceToTask key", key
     console.log "Transcribe#advanceToTask(#{key})"
     # key = @translateLogicTaskKey key
     task = @state.workflow.tasks[ key ]
@@ -158,11 +163,7 @@ module.exports = React.createClass # rename to Classifier
       console.log 'SCROLLING...'
       window.scrollTo(@props.query.scrollX,@props.query.scrollY)
 
-
-
-
-
-    console.log "Transcribe#render: ", @state
+    console.log "Transcribe#render: state", @state
     return null unless @state.currentTask?
 
     # annotations = @props.annotations
@@ -184,6 +185,7 @@ module.exports = React.createClass # rename to Classifier
             style = marginTop: "50px"
             <p style={style}>There are currently no transcription subjects. Try <a href="/#/mark">marking</a> instead!</p>
           else if @state.currentSubject?
+            console.log "~~~~~~~CURRENT STATE", @state.currentSubject
             <SubjectViewer onLoad={@handleViewerLoad} subject={@state.currentSubject} active=true workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation}>
               <TaskComponent ref="taskComponent" viewerSize={@state.viewerSize} key={@state.currentTaskKey} task={@state.currentTask} annotation={currentAnnotation} subject={@state.currentSubject} onChange={@handleTaskComponentChange} onComplete={@handleTaskComplete} onBack={@makeBackHandler()} workflow={@props.workflow} viewerSize={@state.viewerSize} transcribeTools={transcribeTools}/>
             </SubjectViewer>

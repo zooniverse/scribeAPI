@@ -2,7 +2,7 @@ class Workflow
   include Mongoid::Document
 
   field    :name,                                            type: String
-  #TODO: can we delete :key field?
+  #TODO: can we delete :key field? --AMS
   field    :key, 				                                     type: String
   field    :label,                                           type: String
   # field    :tasks, 			      	                             type: Hash
@@ -26,6 +26,7 @@ class Workflow
   def subject_has_enough_classifications(subject)
     subject.classification_count >= self.generates_subjects_after
   end
+
 
   def create_secondary_subjects(classification)   
     return unless self.generates_subjects || true
@@ -61,6 +62,7 @@ class Workflow
       else
         # Otherwise, it's a later workflow and we should copy `region` from parent subject
         region = classification.subject.region
+
       end
 
       data = classification.annotation.except(:key, :tool, :generates_subject_type)
@@ -104,6 +106,21 @@ class Workflow
     end
   end
 
+  def find_tools_from_subject_type(subject_type)
+    self.tasks.each do |task|
+
+      if task.tool_config["tools"].present?
+        array_of_tool_boxes = task.tool_config["tools"]
+        array_of_tool_boxes.each do |tool_box|
+          return tool_box if tool_box["generates_subject_type"] == subject_type
+          # example tool_box:{"type"=> "textRowTool", "label"=> "Question", "color"=> "green", "generates_subject_type"=> "att_textRowTool_question" }
+
+        end
+
+      end
+    end
+  end
+
   def next_workflow
     if ! generates_subjects_for.nil? 
       Workflow.find_by(name: generates_subjects_for)
@@ -120,5 +137,4 @@ class Workflow
     # puts "tasks: #{tasks.inspect}"
     tasks.where(key: key).first
   end
-
 end
