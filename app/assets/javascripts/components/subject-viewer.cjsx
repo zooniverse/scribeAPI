@@ -187,11 +187,17 @@ module.exports = React.createClass
         @forceUpdate() # Re-render to reposition the details tooltip.
 
   # Destroy mark:
-  destroyMark: (annotation, mark) ->
+  destroyMark: (mark) ->
+    # return
+    console.log 'destroyMark()'
+    marks = @state.marks
+    console.log 'MARKS (before): ', @state.marks
+
     if mark is @state.selectedMark
-      @setState selectedMark: null
-    markIndex = annotation.value.indexOf mark
-    annotation.value.splice markIndex, 1
+      marks.splice (marks.indexOf mark), 1
+      @setState
+        marks: marks
+        selectedMark: null, => console.log 'MARKS (after): ', @state.marks
 
   # Commit mark
   submitMark: (mark) ->
@@ -255,34 +261,34 @@ module.exports = React.createClass
           </MouseHandler>
 
           { # DISPLAY PREVIOUS MARKS
-
-            for mark, i in @props.subject.child_subjects_info
-
-              # console.log 'PREVIOUS MARK: ', mark
-
-              toolName = mark.data.toolName
-              if toolName?
-               # = markingTools[toolName]
-                scale = @getScale()
-
-                console.log 'REFS: ', @refs
-                console.log 'toolComponent: ', ToolComponent, toolName
-
-                <ToolComponent
-                  key={i}
-                  mark={mark.region}
-                  xScale={scale.horizontal}
-                  yScale={scale.vertical}
-                  disabled={true}
-                  isPriorMark={true}
-                  selected={false}
-                  getEventOffset={@getEventOffset}
-                  # ref={@refs.sizeRect}
-
-                  onChange={=> console.log 'ON CHANGE'}
-                  onSelect={=> console.log 'ON SELECT'}
-                  onDestroy={=> console.log 'ON DESTORY'}
-                />
+            null
+            # for mark, i in @props.subject.child_subjects_info
+            #
+            #   # console.log 'PREVIOUS MARK: ', mark
+            #
+            #   toolName = mark.data.toolName
+            #   if toolName?
+            #    # = markingTools[toolName]
+            #     scale = @getScale()
+            #
+            #     console.log 'REFS: ', @refs
+            #     console.log 'toolComponent: ', ToolComponent, toolName
+            #
+            #     <ToolComponent
+            #       key={i}
+            #       mark={mark.region}
+            #       xScale={scale.horizontal}
+            #       yScale={scale.vertical}
+            #       disabled={true}
+            #       isPriorMark={true}
+            #       selected={false}
+            #       getEventOffset={@getEventOffset}
+            #       # ref={@refs.sizeRect}
+            #
+            #       onChange={=> console.log 'ON CHANGE'}
+            #       onSelect={=> console.log 'ON SELECT'}
+            #       onDestroy={=> console.log 'ON DESTORY'}
+            #     />
 
 
             # # THIS IS CAUSING PROBLEMS - STI
@@ -294,51 +300,51 @@ module.exports = React.createClass
 
           { # HIGHLIGHT SUBJECT FOR TRANSCRIPTION
             # TODO: Makr sure x, y, w, h are scaled properly
-
-            if @props.workflow.name in ['transcribe', 'verify']
-              console.log "We SHOULD not be in the highlight code"
-              toolName = @props.subject.region.toolName
-              mark = @props.subject.region
-              ToolComponent = markingTools[toolName]
-              isPriorMark = true
-              <g>
-                { @highlightMark(mark, toolName) }
-                <ToolComponent
-                  key={@props.subject.id}
-                  mark={mark}
-                  xScale={scale.horizontal}
-                  yScale={scale.vertical}
-                  disabled={isPriorMark}
-                  selected={mark is @state.selectedMark}
-                  getEventOffset={@getEventOffset}
-                  # ref={@refs.sizeRect}
-                  onSelect={@selectMark.bind this, @props.subject, mark}
-                />
-              </g>
+            null
+            # if @props.workflow.name in ['transcribe', 'verify']
+            #   console.log "We SHOULD not be in the highlight code"
+            #   toolName = @props.subject.region.toolName
+            #   mark = @props.subject.region
+            #   ToolComponent = markingTools[toolName]
+            #   isPriorMark = true
+            #   <g>
+            #     { @highlightMark(mark, toolName) }
+            #     <ToolComponent
+            #       key={@props.subject.id}
+            #       mark={mark}
+            #       xScale={scale.horizontal}
+            #       yScale={scale.vertical}
+            #       disabled={isPriorMark}
+            #       selected={mark is @state.selectedMark}
+            #       getEventOffset={@getEventOffset}
+            #       # ref={@refs.sizeRect}
+            #       onSelect={@selectMark.bind this, @props.subject, mark}
+            #     />
+            #   </g>
           }
 
            { # HIGHLIGHT SUBJECT FOR TRANSCRIPTION
             # TODO: Makr sure x, y, w, h are scaled properly
-
-            if @props.workflow.name in ['transcribe', 'verify']
-              toolName = @props.subject.region.toolName
-              mark = @props.subject.region
-              ToolComponent = markingTools[toolName]
-              isPriorMark = true
-              <g>
-                { @highlightMark(mark, toolName) }
-                <ToolComponent
-                  key={@props.subject.id}
-                  mark={mark}
-                  xScale={scale.horizontal}
-                  yScale={scale.vertical}
-                  disabled={isPriorMark}
-                  selected={mark is @state.selectedMark}
-                  getEventOffset={@getEventOffset}
-                  # ref={@refs.sizeRect}
-                  onSelect={@selectMark.bind this, @props.subject, mark}
-                />
-              </g>
+            null
+            # if @props.workflow.name in ['transcribe', 'verify']
+            #   toolName = @props.subject.region.toolName
+            #   mark = @props.subject.region
+            #   ToolComponent = markingTools[toolName]
+            #   isPriorMark = true
+            #   <g>
+            #     { @highlightMark(mark, toolName) }
+            #     <ToolComponent
+            #       key={@props.subject.id}
+            #       mark={mark}
+            #       xScale={scale.horizontal}
+            #       yScale={scale.vertical}
+            #       disabled={isPriorMark}
+            #       selected={mark is @state.selectedMark}
+            #       getEventOffset={@getEventOffset}
+            #       # ref={@refs.sizeRect}
+            #       onSelect={@selectMark.bind this, @props.subject, mark}
+            #     />
+            #   </g>
           }
 
           { # HANDLE NEW MARKS
@@ -351,6 +357,8 @@ module.exports = React.createClass
 
               # If mark hasn't acquired coords yet, don't draw it yet:
               continue if ! mark.x? || ! mark.y?
+
+              isPriorMark = false
 
               <g key={mark._key} className="marks-for-annotation" data-disabled={isPriorMark or null}>
                 {
