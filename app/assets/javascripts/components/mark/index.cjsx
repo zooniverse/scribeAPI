@@ -29,14 +29,14 @@ module.exports = React.createClass # rename to Classifier
     annotation: {}
     classifications: []
 
-  # # this isn't being used --STI
-  # getDefaultProps: ->
-  #   classification: API.type('classifications').create
-  #     name: 'Classification'
-  #     annotations: [] # TODO: REMOVE
-  #     annotation: ''
-  #     metadata: {}
-  #     'metadata.started_at': (new Date).toISOString()
+# #TODO: We should not need this.
+#   getDefaultProps: ->
+#     classification: API.type('classifications').create
+#       name: 'Classification'
+#       annotations: [] # TODO: REMOVE
+#       annotation: ''
+#       metadata: {}
+#       'metadata.started_at': (new Date).toISOString()
 
   componentWillMount: ->
     @setState

@@ -5,6 +5,7 @@ class Classification
   subject_set_id: null,
   task_key: null,
   generates_subject_type: null,
+  toolName: null,
 
   constructor: ->
     @metadata =

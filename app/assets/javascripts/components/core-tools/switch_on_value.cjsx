@@ -1,4 +1,4 @@
-""" 
+
 React = require 'react'
 core_tools        = require './index'
 transcribe_tools   = require '../transcribe/tools'
@@ -35,4 +35,4 @@ module.exports = React.createClass
       @props.annotation.value = index
       @props.onChange index
       @forceUpdate() # update the radiobuttons after selection
-"""
+

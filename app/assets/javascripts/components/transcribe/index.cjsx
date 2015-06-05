@@ -31,11 +31,6 @@ module.exports = React.createClass # rename to Classifier
   completeClassification: ->
     # FIXME hack to translate anns hash into array:
     anns = ({key: key, value: (ann['value'] ? ann)} for key, ann of @props.classification.annotations)
-    console.log "HERE WE ARE"
-    console.log "HERE WE ARE"
-    console.log "HERE WE ARE"
-    console.log "HERE WE ARE"
-    console.log "HERE WE ARE"
     @props.classification.update
       completed: true
       subject_id: @state.currentSubject.id
@@ -47,11 +42,15 @@ module.exports = React.createClass # rename to Classifier
     console.log 'CLASSIFICATION: ', @props.classification.annotations['em_transcribe_address'], @props.classification
 
   fetchSubjectsCallback: ->
+    console.log "fetchSubjectsCallback"
+    console.log "fSC @state", @state
+    console.log "@state.workflow.first_task", @state.workflow.first_task 
+    console.log "@state.currentSubject['type']", @state.currentSubject['type']
     new_key = @state.workflow.first_task ? @state.currentSubject['type']
     @advanceToTask new_key
 
   handleTaskComponentChange: (val) ->
-
+    console.log "handleTaskComponentChange val", val
     taskOption = @state.currentTask.options[val]
     if taskOption.next_task?
       @advanceToTask taskOption.next_task
@@ -63,7 +62,8 @@ module.exports = React.createClass # rename to Classifier
     @forceUpdate()
 
   advanceToTask: (key) ->
-
+    console.log "advanceToTask @state", @state
+    console.log "advanceToTask key", key
     console.log "Transcribe#advanceToTask(#{key})"
     # key = @translateLogicTaskKey key
     task = @state.workflow.tasks[ key ]
