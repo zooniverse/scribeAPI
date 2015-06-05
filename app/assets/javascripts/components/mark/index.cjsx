@@ -158,17 +158,6 @@ module.exports = React.createClass # rename to Classifier
 
     @props.workflow.tasks[nextKey]
 
-  # Get next logical task
-  nextTask: ->
-    task = @props.workflow.tasks[@state.taskKey]
-    # console.log "looking up next task based on current ann: ", task, task.tool_config?.options, @getCurrentClassification().annotation?.value
-    if task.tool_config?.options?[@getCurrentClassification().annotation?.value]?.next_task?
-      nextKey = task.tool_config.options[@getCurrentClassification().annotation.value].next_task
-    else
-      nextKey = @props.workflow.tasks[@state.taskKey].next_task
-
-    @props.workflow.tasks[nextKey]
-
   # Start a new classification:
   beginClassification: ->
     classifications = @state.classifications

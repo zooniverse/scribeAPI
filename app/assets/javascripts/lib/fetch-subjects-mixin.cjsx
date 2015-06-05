@@ -62,7 +62,7 @@ module.exports =
   #   else
   #     @fetchSubjects @props.workflow.id, @props.workflow.subject_fetch_limit
   #
-
+    console.log "in the fetchSubjectsMxin"
     if @props.workflow.name is 'transcribe' and @props.params.subject_id
       @fetchSubject @props.params.subject_id,@props.workflow.id
     else if @props.workflow.name is "mark"
@@ -72,6 +72,7 @@ module.exports =
 
   fetchSubject: (subject_id, workflow_id)->
     console.log 'fetchSubject()'
+
     request = API.type("subjects").get(subject_id, workflow_id: workflow_id)
 
     @setState
@@ -88,8 +89,7 @@ module.exports =
         @fetchSubjectsCallback()
 
   fetchSubjects: (workflow_id, limit) ->
-    console.log 'fetchSubjects()'
-
+    console.log '@props.overrideFetchSubjectsUrl', @props.overrideFetchSubjectsUrl
     if @props.overrideFetchSubjectsUrl?
       console.log "Fetching (fake) subject sets from #{@props.overrideFetchSubjectsUrl}"
       $.getJSON @props.overrideFetchSubjectsUrl, (subjects) =>
@@ -101,6 +101,7 @@ module.exports =
           @fetchSubjectsCallback()
 
     else
+      console.log "ELSE reguest"
       request = API.type('subjects').get
         workflow_id: workflow_id
         limit: limit

@@ -10,6 +10,7 @@ class ClassificationsController < ApplicationController
 
 
   def create
+    binding.pry
     workflow_id      = BSON::ObjectId.from_string params["classifications"]["workflow_id"]
     task_key         = params["classifications"]["task_key"]
     generates_subject_type = params["classifications"]["annotation"]["generates_subject_type"]

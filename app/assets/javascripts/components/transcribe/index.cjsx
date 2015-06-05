@@ -46,6 +46,7 @@ module.exports = React.createClass # rename to Classifier
     console.log "fSC @state", @state
     console.log "@state.workflow.first_task", @state.workflow.first_task 
     console.log "@state.currentSubject['type']", @state.currentSubject['type']
+    #TODO: We do need to account for times when there are no subjects? type won't do that. -AMS
     new_key = @state.workflow.first_task ? @state.currentSubject['type']
     @advanceToTask new_key
 
@@ -162,7 +163,7 @@ module.exports = React.createClass # rename to Classifier
       console.log 'SCROLLING...'
       window.scrollTo(@props.query.scrollX,@props.query.scrollY)
 
-    console.log "Transcribe#render: ", @state
+    console.log "Transcribe#render: state", @state
     return null unless @state.currentTask?
 
     # annotations = @props.annotations
