@@ -33,9 +33,7 @@ module.exports = React.createClass
     @setState subject_set_index: new_index, () =>
       @props.onViewSubject? @props.subject_set.subjects[@state.subject_set_index]
 
-
   render: ->
-    console.log 'SUBJECT-SET-VIEWER::render()  CURRENT ANNOTATION: ', @props.annotation
     <div className="subject-set-viewer">
       { for subject, index in @props.subject_set.subjects
         <SubjectViewer

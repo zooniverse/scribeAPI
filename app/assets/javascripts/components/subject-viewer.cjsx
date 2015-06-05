@@ -94,10 +94,10 @@ module.exports = React.createClass
       @submitMark()
 
     # Instantiate appropriate marking tool:
-    MarkComponent = markingTools[subTool.type]
+    MarkComponent = markingTools[subTool.type] # NEEDS FIXING
 
     # Create an initial mark instance, which will soon gather coords:
-    mark = tool: subTool.type
+    mark = toolName: subTool.type
 
     mouseCoords = @getEventOffset e
 
@@ -127,7 +127,7 @@ module.exports = React.createClass
 
     # Instantiate appropriate marking tool:
     # AMS: MarkComponent = markingTools[task.tool_config.tools[mark._toolIndex].type]
-    MarkComponent = markingTools[mark.tool]
+    MarkComponent = markingTools[mark.toolName]
 
     if MarkComponent.initMove?
       mouseCoords = @getEventOffset e
@@ -147,7 +147,7 @@ module.exports = React.createClass
 
     # Instantiate appropriate marking tool:
     # AMS: think this is going to markingTools[mark._toolIndex]
-    MarkComponent = markingTools[mark.tool]
+    MarkComponent = markingTools[mark.toolName]
 
     if MarkComponent.initRelease?
       mouseCoords = @getEventOffset e
@@ -209,7 +209,6 @@ module.exports = React.createClass
     @props.onComplete? mark
 
   handleChange: (mark) ->
-    console.log 'Ch-ch-ch-CHANGES!'
     @setState
       selectedMark: mark, => console.log 'SELECTED MARK: ', mark
 
@@ -355,11 +354,9 @@ module.exports = React.createClass
 
               <g key={mark._key} className="marks-for-annotation" data-disabled={isPriorMark or null}>
                 {
-
-                  console.log 'NEW MARK: ', mark, (mark.x), (mark.y+0)
-
+                  # console.log 'NEW MARK: ', mark, (mark.x), (mark.y+0)
                   mark._key ?= Math.random()
-                  ToolComponent = markingTools[mark.tool]
+                  ToolComponent = markingTools[mark.toolName]
 
                   <ToolComponent
                     key={mark._key}

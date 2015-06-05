@@ -127,12 +127,13 @@ module.exports = React.createClass
     <GenericTask question={@props.task.instruction} help={@props.task.help} answers={tools} />
 
   handleChange: (index, e) ->
+    console.log 'handleChange(): INDEX = ', index
     if e.target.checked
       # @props.annotation._toolIndex = index
       # @props.onChange? e
       @props.onChange? {
         subToolIndex: index,
-        tool: @props.task.tool_config.tools[index].type
+        toolName: @props.task.tool_config.tools[index].type
         generates_subject_type: @props.task.tool_config.tools[index].generates_subject_type
       }
       @forceUpdate()

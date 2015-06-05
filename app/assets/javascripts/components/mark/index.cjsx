@@ -29,18 +29,19 @@ module.exports = React.createClass # rename to Classifier
     annotation: {}
     classifications: []
 
-  getDefaultProps: ->
-    classification: API.type('classifications').create
-      name: 'Classification'
-      annotations: [] # TODO: REMOVE
-      annotation: ''
-      metadata: {}
-      'metadata.started_at': (new Date).toISOString()
+  # # this isn't being used --STI
+  # getDefaultProps: ->
+  #   classification: API.type('classifications').create
+  #     name: 'Classification'
+  #     annotations: [] # TODO: REMOVE
+  #     annotation: ''
+  #     metadata: {}
+  #     'metadata.started_at': (new Date).toISOString()
 
   componentWillMount: ->
     @setState
       taskKey: @props.workflow.first_task
-          
+
     @beginClassification()
 
 
@@ -67,7 +68,7 @@ module.exports = React.createClass # rename to Classifier
               subject_set={@state.currentSubjectSet}
               workflow={@props.workflow}
               task={currentTask}
-              annotation={@currentClassification().annotation ? {}}
+              annotation={@getCurrentClassification().annotation ? {}}
               subToolIndex={@state.subToolIndex}
               onComplete={@handleToolComplete}
               onViewSubject={@handleViewSubject}
@@ -76,7 +77,12 @@ module.exports = React.createClass # rename to Classifier
       </div>
       <div className="task-area">
         <div className="task-container">
-          <TaskComponent task={currentTask} onChange={@handleDataFromTool} annotation={@currentClassification().annotation ? {}} subToolIndex={@state.subToolIndex} />
+          <TaskComponent
+            task={currentTask}
+            onChange={@handleDataFromTool}
+            annotation={@getCurrentClassification().annotation ? {}}
+            subToolIndex={@state.subToolIndex}
+          />
           <hr/>
           <nav className="task-nav">
             <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
@@ -109,12 +115,15 @@ module.exports = React.createClass # rename to Classifier
 
   # Handle user selecting a pick/drawing tool:
   handleDataFromTool: (d) ->
-    console.log 'handleDataFromTool(): ', d
     classifications = @state.classifications
     classifications[@state.classificationIndex].annotation[k] = v for k, v of d
+
     @forceUpdate()
     @setState
       classifications: classifications
+        # , =>
+        #   console.log 'CLASSIFICATIONS: ', classifications
+        #   console.log 'CURRENT TOOL: ', @getCurrentClassification().annotation.toolName
 
   destroyCurrentAnnotation: ->
     # TODO: implement mechanism for going backwards to previous classification, potentially deleting later classifications from stack:
@@ -141,9 +150,9 @@ module.exports = React.createClass # rename to Classifier
   # Get next logical task
   nextTask: ->
     task = @props.workflow.tasks[@state.taskKey]
-    # console.log "looking up next task based on current ann: ", task, task.tool_config?.options, @currentClassification().annotation?.value
-    if task.tool_config?.options?[@currentClassification().annotation?.value]?.next_task?
-      nextKey = task.tool_config.options[@currentClassification().annotation.value].next_task
+    # console.log "looking up next task based on current ann: ", task, task.tool_config?.options, @getCurrentClassification().annotation?.value
+    if task.tool_config?.options?[@getCurrentClassification().annotation?.value]?.next_task?
+      nextKey = task.tool_config.options[@getCurrentClassification().annotation.value].next_task
     else
       nextKey = @props.workflow.tasks[@state.taskKey].next_task
 
@@ -152,9 +161,9 @@ module.exports = React.createClass # rename to Classifier
   # Get next logical task
   nextTask: ->
     task = @props.workflow.tasks[@state.taskKey]
-    # console.log "looking up next task based on current ann: ", task, task.tool_config?.options, @currentClassification().annotation?.value
-    if task.tool_config?.options?[@currentClassification().annotation?.value]?.next_task?
-      nextKey = task.tool_config.options[@currentClassification().annotation.value].next_task
+    # console.log "looking up next task based on current ann: ", task, task.tool_config?.options, @getCurrentClassification().annotation?.value
+    if task.tool_config?.options?[@getCurrentClassification().annotation?.value]?.next_task?
+      nextKey = task.tool_config.options[@getCurrentClassification().annotation.value].next_task
     else
       nextKey = @props.workflow.tasks[@state.taskKey].next_task
 
@@ -170,7 +179,7 @@ module.exports = React.createClass # rename to Classifier
 
   # Push current classification to server:
   commitClassification: ->
-    classification = @currentClassification()
+    classification = @getCurrentClassification()
 
     classification.subject_id = @state.currentSubject.id
     classification.subject_set_id = @state.currentSubjectSet.id
@@ -183,12 +192,12 @@ module.exports = React.createClass # rename to Classifier
     console.log '(ALL CLASSIFICATIONS): ', @state.classifications
 
   # Get current classification:
-  currentClassification: ->
+  getCurrentClassification: ->
     @state.classifications[@state.classificationIndex]
 
   completeSubjectSet: ->
     console.log "TODO: At this point, ask user if there's more to mark and then load next subjectset to classify."
-    
+
     # AMS: branch classification-refactor has this commented out...
     # return
     # @props.classification.update
