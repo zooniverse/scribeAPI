@@ -279,7 +279,7 @@ module.exports = React.createClass
                   isPriorMark={true}
                   selected={false}
                   getEventOffset={@getEventOffset}
-                  # ref={@refs.sizeRect}
+                  ref={@refs.sizeRect}
 
                   onChange={=> console.log 'ON CHANGE'}
                   onSelect={=> console.log 'ON SELECT'}
@@ -312,7 +312,7 @@ module.exports = React.createClass
                   disabled={isPriorMark}
                   selected={mark is @state.selectedMark}
                   getEventOffset={@getEventOffset}
-                  # ref={@refs.sizeRect}
+                  ref={@refs.sizeRect}
                   onSelect={@selectMark.bind this, @props.subject, mark}
                 />
               </g>
@@ -339,7 +339,7 @@ module.exports = React.createClass
                   disabled={isPriorMark}
                   selected={mark is @state.selectedMark}
                   getEventOffset={@getEventOffset}
-                  # ref={@refs.sizeRect}
+                  ref={@refs.sizeRect}
                   onSelect={@selectMark.bind this, @props.subject, mark}
                 />
               </g>
@@ -374,6 +374,7 @@ module.exports = React.createClass
                     selected={mark is @state.selectedMark}
                     getEventOffset={@getEventOffset}
                     submitMark={@submitMark}
+                    ref={@refs.sizeRect}
 
                     onSelect={@selectMark.bind this, mark}
                     onChange={@handleChange.bind this, mark}
