@@ -84,7 +84,7 @@ module.exports = React.createClass
 
   # Handle initial mousedown:
   handleInitStart: (e) ->
-
+    console.log "hIS", @props
     return null if ! @props.subToolIndex?
     subTool = @props.task.tool_config.tools[@props.subToolIndex]
     return null if ! subTool?
@@ -97,7 +97,9 @@ module.exports = React.createClass
     MarkComponent = markingTools[subTool.type]
 
     # Create an initial mark instance, which will soon gather coords:
-    mark = tool: subTool.type
+    mark = toolName: subTool.type
+    console.log "~~~~~~~~~~~~~~~~~~~~HEY ANDI~~~~~~~~~~~~~~~~~~~~"
+    console.log "mark", mark
 
     mouseCoords = @getEventOffset e
 
@@ -127,7 +129,7 @@ module.exports = React.createClass
 
     # Instantiate appropriate marking tool:
     # AMS: MarkComponent = markingTools[task.tool_config.tools[mark._toolIndex].type]
-    MarkComponent = markingTools[mark.tool]
+    MarkComponent = markingTools[mark.toolName]
 
     if MarkComponent.initMove?
       mouseCoords = @getEventOffset e
@@ -147,7 +149,7 @@ module.exports = React.createClass
 
     # Instantiate appropriate marking tool:
     # AMS: think this is going to markingTools[mark._toolIndex]
-    MarkComponent = markingTools[mark.tool]
+    MarkComponent = markingTools[mark.toolName]
 
     if MarkComponent.initRelease?
       mouseCoords = @getEventOffset e
@@ -229,10 +231,12 @@ module.exports = React.createClass
       else
         <ActionButton onClick={@nextSubject} text="Next Page" />
 
-
+    console.log "ARE WE HERE 1"
     if false && @state.loading
       markingSurfaceContent = <LoadingIndicator />
+      console.log "First clause of the IF"
     else
+      console.log "ElSE clause"
       markingSurfaceContent =
         <svg
           className = "subject-viewer-svg"
@@ -254,12 +258,9 @@ module.exports = React.createClass
               width = {@state.imageWidth}
               height = {@state.imageHeight} />
           </MouseHandler>
-
+          {console.log "After SVG Placement"}
           { # DISPLAY PREVIOUS MARKS
-
             for mark, i in @props.subject.child_subjects_info
-
-              # console.log 'PREVIOUS MARK: ', mark
 
               toolName = mark.data.toolName
               if toolName?
@@ -295,9 +296,8 @@ module.exports = React.createClass
 
           { # HIGHLIGHT SUBJECT FOR TRANSCRIPTION
             # TODO: Makr sure x, y, w, h are scaled properly
-
+           
             if @props.workflow.name in ['transcribe', 'verify']
-              console.log "We SHOULD not be in the highlight code"
               toolName = @props.subject.region.toolName
               mark = @props.subject.region
               ToolComponent = markingTools[toolName]
@@ -322,12 +322,15 @@ module.exports = React.createClass
             # TODO: Makr sure x, y, w, h are scaled properly
 
             if @props.workflow.name in ['transcribe', 'verify']
-              toolName = @props.subject.region.toolName
               mark = @props.subject.region
               ToolComponent = markingTools[toolName]
               isPriorMark = true
+              console.log "outside g"
               <g>
-                { @highlightMark(mark, toolName) }
+                { 
+                  @highlightMark(mark, toolName) 
+                  console.log "inside the <g>"
+                }
                 <ToolComponent
                   key={@props.subject.id}
                   mark={mark}
@@ -359,7 +362,7 @@ module.exports = React.createClass
                   console.log 'NEW MARK: ', mark, (mark.x), (mark.y+0)
 
                   mark._key ?= Math.random()
-                  ToolComponent = markingTools[mark.tool]
+                  ToolComponent = markingTools[mark.toolName]
 
                   <ToolComponent
                     key={mark._key}
