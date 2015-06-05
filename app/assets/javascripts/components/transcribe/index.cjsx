@@ -50,6 +50,7 @@ module.exports = React.createClass # rename to Classifier
     @advanceToTask new_key
 
   handleTaskComponentChange: (val) ->
+    console.log "handleTaskComponentChange val", val
     taskOption = @state.currentTask.options[val]
     if taskOption.next_task?
       @advanceToTask taskOption.next_task
@@ -62,6 +63,7 @@ module.exports = React.createClass # rename to Classifier
 
   advanceToTask: (key) ->
     console.log "advanceToTask @state", @state
+    console.log "advanceToTask key", key
     console.log "Transcribe#advanceToTask(#{key})"
     # key = @translateLogicTaskKey key
     task = @state.workflow.tasks[ key ]

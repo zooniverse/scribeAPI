@@ -98,8 +98,6 @@ module.exports = React.createClass
 
     # Create an initial mark instance, which will soon gather coords:
     mark = toolName: subTool.type
-    console.log "~~~~~~~~~~~~~~~~~~~~HEY ANDI~~~~~~~~~~~~~~~~~~~~"
-    console.log "mark", mark
 
     mouseCoords = @getEventOffset e
 
@@ -197,9 +195,6 @@ module.exports = React.createClass
 
   # Commit mark
   submitMark: (mark) ->
-    console.log "submitMark mark", mark
-    console.log "submitMark @state", @state
-    console.log "submitMark @props", @props
     mark = @state.uncommittedMark
 
     marks = @state.marks
@@ -301,6 +296,7 @@ module.exports = React.createClass
               toolName = @props.subject.region.toolName
               mark = @props.subject.region
               ToolComponent = markingTools[toolName]
+              console.log "ToolComponent", ToolComponent
               isPriorMark = true
               <g>
                 { @highlightMark(mark, toolName) }
