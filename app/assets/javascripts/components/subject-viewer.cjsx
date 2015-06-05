@@ -268,6 +268,7 @@ module.exports = React.createClass
                 scale = @getScale()
 
                 console.log 'REFS: ', @refs
+                ToolComponent = markingTools[toolName]
                 console.log 'toolComponent: ', ToolComponent, toolName
 
                 <ToolComponent
