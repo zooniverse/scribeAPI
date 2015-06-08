@@ -4,4 +4,4 @@ module.exports =
   pickMany:         require './pick-many'
   pickOneMarkOne:   require './pick-one-mark-one'
   transcribe:       require './transcribe' # ????
-  switch_on_value:  require './switch_on_value'
+  # switch_on_value:  require './switch_on_value'
