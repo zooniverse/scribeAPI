@@ -273,9 +273,9 @@ module.exports = React.createClass
                # = markingTools[toolName]
                 scale = @getScale()
 
-                console.log 'REFS: ', @refs
+                # console.log 'REFS: ', @refs
                 ToolComponent = markingTools[toolName]
-                console.log 'toolComponent: ', ToolComponent, toolName
+                # console.log 'toolComponent: ', ToolComponent, toolName
 
                 <ToolComponent
                   key={i}
@@ -307,7 +307,7 @@ module.exports = React.createClass
               toolName = @props.subject.region.toolName
               mark = @props.subject.region
               ToolComponent = markingTools[toolName]
-              console.log "ToolComponent", ToolComponent
+              # console.log "ToolComponent", ToolComponent
               isPriorMark = true
               <g>
                 { @highlightMark(mark, toolName) }

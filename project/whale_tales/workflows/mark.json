@@ -91,7 +91,7 @@
       "instruction":"Pick a tool and mark each record:",
       "tool_config": {
         "tools": [
-          {"type": "textRowTool",     "label": "Point Tool",    "color": "red",   "generates_subject_type": "debug1" },
+          {"type": "pointTool",     "label": "Point Tool",    "color": "red",   "generates_subject_type": "debug1" },
           {"type": "rectangleTool", "label": "Drawing/Note",  "color": "green", "generates_subject_type": "debug2" },
           {"type": "textRowTool",   "label": "Journal Entry", "color": "blue",  "generates_subject_type": "debug3" }
         ]
