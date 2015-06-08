@@ -84,9 +84,10 @@ module.exports = React.createClass
 
   # Handle initial mousedown:
   handleInitStart: (e) ->
-    console.log "hIS", @props
+    console.log 'SUBJECT-VIEWER::handleInitStart(): ', @props
+
     return null if ! @props.subToolIndex?
-    subTool = @props.task.tool_config.tools[@props.subToolIndex]
+    subTool = @props.task.tool_config.tools[@props.annotation.subToolIndex]
     return null if ! subTool?
 
     # If there's a current, uncommitted mark, commit it:
