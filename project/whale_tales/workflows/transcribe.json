@@ -1,7 +1,6 @@
 {
   "name": "transcribe",
   "label": "Transcribe Workflow",
-  "first_task": "entry_date",
 
   "generates_subjects": true,
   "generates_subjects_for": "verify",
@@ -10,8 +9,26 @@
   "generates_subjects_method": "collect-unique",
 
   "tasks": {
+    "transcribe_point": {
+      "tool": "text_tool",
+      "tool_config": {},
+      "instruction": "Transcribe this point.",
+      "next_task": null
+    },
+    "transcribe_rectangle": {
+      "tool": "text_tool",
+      "tool_config": {},
+      "instruction": "Transcribe this rectangle.",
+      "next_task": null
+    },
+    "transcribe_text_row": {
+      "tool": "text_tool",
+      "tool_config": {},
+      "instruction": "Transcribe this text row.",
+      "next_task": null
+    },
     "entry_date": {
-      "tool": "dateTool",
+      "tool": "text_tool",
       "tool_config": {},
       "instruction": "What is the entry date?",
       "next_task": "page_number"
