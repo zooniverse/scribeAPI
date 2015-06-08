@@ -84,9 +84,10 @@ module.exports = React.createClass
 
   # Handle initial mousedown:
   handleInitStart: (e) ->
-    console.log "hIS", @props
+    console.log 'SUBJECT-VIEWER::handleInitStart(): ', @props
+
     return null if ! @props.subToolIndex?
-    subTool = @props.task.tool_config.tools[@props.subToolIndex]
+    subTool = @props.task.tool_config.tools[@props.annotation.subToolIndex]
     return null if ! subTool?
 
     # If there's a current, uncommitted mark, commit it:
@@ -216,8 +217,8 @@ module.exports = React.createClass
       selectedMark: mark, => console.log 'SELECTED MARK: ', mark
 
   render: ->
-    console.log '*********** STATE: ', @state
-    console.log "PROPS in SB render", @props
+    # console.log '*********** STATE: ', @state
+    # console.log "PROPS in SB render", @props
 
 
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
@@ -231,12 +232,12 @@ module.exports = React.createClass
       else
         <ActionButton onClick={@nextSubject} text="Next Page" />
 
-    console.log "ARE WE HERE 1"
+    # console.log "ARE WE HERE 1"
     if false && @state.loading
       markingSurfaceContent = <LoadingIndicator />
-      console.log "First clause of the IF"
+      # console.log "First clause of the IF"
     else
-      console.log "ElSE clause"
+      # console.log "ElSE clause"
       markingSurfaceContent =
         <svg
           className = "subject-viewer-svg"
@@ -258,7 +259,13 @@ module.exports = React.createClass
               width = {@state.imageWidth}
               height = {@state.imageHeight} />
           </MouseHandler>
-          {console.log "After SVG Placement"}
+
+          {
+            # DEBUG CODE
+            null
+            #console.log "After SVG Placement"
+          }
+
           { # DISPLAY PREVIOUS MARKS
             for mark, i in @props.subject.child_subjects_info
 
@@ -267,9 +274,9 @@ module.exports = React.createClass
                # = markingTools[toolName]
                 scale = @getScale()
 
-                console.log 'REFS: ', @refs
+                # console.log 'REFS: ', @refs
                 ToolComponent = markingTools[toolName]
-                console.log 'toolComponent: ', ToolComponent, toolName
+                # console.log 'toolComponent: ', ToolComponent, toolName
 
                 <ToolComponent
                   key={i}
@@ -301,7 +308,7 @@ module.exports = React.createClass
               toolName = @props.subject.region.toolName
               mark = @props.subject.region
               ToolComponent = markingTools[toolName]
-              console.log "ToolComponent", ToolComponent
+              # console.log "ToolComponent", ToolComponent
               isPriorMark = true
               <g>
                 { @highlightMark(mark, toolName) }

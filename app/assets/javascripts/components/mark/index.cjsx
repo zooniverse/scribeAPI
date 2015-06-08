@@ -165,6 +165,8 @@ module.exports = React.createClass # rename to Classifier
     @setState
       classifications: classifications
       classificationIndex: classifications.length-1
+        ,=>
+          window.classifications = @state.classifications # make accessible to console
 
   # Push current classification to server:
   commitClassification: ->
@@ -178,7 +180,6 @@ module.exports = React.createClass # rename to Classifier
     classification.commit()
 
     console.log 'COMMITTED CLASSIFICATION: ', classification
-    console.log '(ALL CLASSIFICATIONS): ', @state.classifications
 
   # Get current classification:
   getCurrentClassification: ->
