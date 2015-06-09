@@ -27,6 +27,9 @@ class Workflow
     subject.classification_count >= self.generates_subjects_after
   end
 
+  def task_by_key(key)
+    tasks.where(key: key).first
+  end
 
   def create_secondary_subjects(classification)   
     return unless self.generates_subjects || true
@@ -35,31 +38,15 @@ class Workflow
     if ! classification.subject.workflow.next_workflow.nil?
       workflow_for_new_subject_id = classification.subject.workflow.next_workflow.id
     end
-    # puts "gen secondary from: #{classification.inspect}"
     task = task_by_key classification.task_key
-
-    subject_type = task.generates_subject_type
-
-    # TODO this is temporary:
-    # If tool specified in annotation, we need to look deeper:
-    if subject_type.nil?
-      subject_type = classification.annotation['generates_subject_type']
-    end
-
-    # puts "task: #{task.inspect}"
-    # puts "generating? #{task.generates_subjects}: #{subject_type}"
-
     if task.generates_subjects
 
-      tool_box = find_tool_box(task, classification.annotation["subToolIndex"])
+      tool_box = task.find_tool_box(classification.annotation["subToolIndex"])
       subject_type = tool_box[:generates_subject_type]
+      
       # If this is the mark workflow, create region:
       if classification.workflow.name == 'mark'
-        region = classification.annotation.inject({}) do |h, (k,v)|
-          h[k] = v if ['toolName'].include? k
-          h[k] = v.to_f if ['x','y','width','height','yUpper','yLower'].include? k
-          h
-        end
+        region = build_mark_region(classification)
       else
         # Otherwise, it's a later workflow and we should copy `region` from parent subject
         region = classification.subject.region
@@ -67,15 +54,8 @@ class Workflow
       end
 
       data = classification.annotation.except(:key, :tool, :generates_subject_type)
-      # puts "saving data: #{data.inspect}"
-
-      # classification.child_subject = Subject.create(
-
-      # puts "ClassificationsController: workflow_id: #{workflow_for_new_subject_id}, subject_id: #{classification.subject.id})"
-
       classification.child_subject = Subject.find_or_initialize_by(workflow_id: workflow_for_new_subject_id, parent_subject_id: classification.subject.id, type: subject_type)
 
-           # annotation["tool_task_description"]["generates_subject_type"]
       if classification.child_subject.persisted?
         # puts "ClassificationsController: persisted.. #{classification.workflow.generates_subjects_method}"
         if classification.workflow.generates_subjects_method == 'collect-unique'
@@ -107,6 +87,14 @@ class Workflow
     end
   end
 
+  #This should be a classification method --AMS
+  def build_mark_region(classification)
+    region = classification.annotation.inject({}) do |h, (k,v)|
+          h[k] = v if ['toolName'].include? k
+          h[k] = v.to_f if ['x','y','width','height','yUpper','yLower'].include? k
+          h
+    end
+  end
 
   def next_workflow
     if ! generates_subjects_for.nil? 
@@ -114,18 +102,11 @@ class Workflow
     end
   end
 
+  #DEPRECATED? I don't see it being used anywhere --AMS
   def create_follow_up_subjects(classification)
     return unless self.generates_subjects
     return unless subject_has_enough_classifications(classification.subject)
     create_secondary_subjects(classification)
   end
 
-  def task_by_key(key)
-    # puts "tasks: #{tasks.inspect}"
-    tasks.where(key: key).first
-  end
-
-  def find_tool_box(task, subToolIndex)
-    task.tool_config["tools"][subToolIndex]
-  end
 end

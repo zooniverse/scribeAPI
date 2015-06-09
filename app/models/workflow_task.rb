@@ -12,5 +12,8 @@ class WorkflowTask
 
   embedded_in :workflow
 
+  def find_tool_box(subToolIndex)
+    task.tool_config["tools"][subToolIndex]
+  end
 
 end
