@@ -13,7 +13,7 @@ class WorkflowTask
   embedded_in :workflow
 
   def find_tool_box(subToolIndex)
-    task.tool_config["tools"][subToolIndex]
+    tool_config["tools"][subToolIndex] if tool_config["tools"]
   end
 
 end

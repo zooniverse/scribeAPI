@@ -40,7 +40,7 @@ class Workflow
     end
     task = task_by_key classification.task_key
     if task.generates_subjects
-
+      #this is going to be in issue with transcribe, if subToolIndex is not sent on the classification.
       tool_box = task.find_tool_box(classification.annotation["subToolIndex"])
       subject_type = tool_box[:generates_subject_type]
       
