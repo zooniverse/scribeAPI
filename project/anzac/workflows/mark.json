@@ -35,7 +35,7 @@
       "instruction":"Draw a rectangle around each record.",
       "tool_config": {
         "tools": [
-          {"type": "textRowTool", "label": "Number", "color": "green", "generates_subject_type": "att_textRowTool_number" },
+          {"type": "textRowTool", "label": "Number", "color": "green", "generates_subject_type": "att_transcribe_number" },
           {"type": "textRowTool", "label": "Name", "color": "green", "generates_subject_type": "att_textRowTool_name" },
           {"type": "textRowTool", "label": "Regiment", "color": "green", "generates_subject_type": "att_textRowTool_regiment" },
           {"type": "textRowTool", "label": "Question", "color": "green", "generates_subject_type": "att_textRowTool_question" }

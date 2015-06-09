@@ -51,7 +51,7 @@ describe Classification do
     
     describe '#increment_subject_classification_count' do
       it 'should increment a subjects classifcation count by 1' do
-        classification.workflow.generates_new_subjects = false
+        classification.workflow.generates_subjects = false
 
         expect{classification.increment_subject_classification_count}.to change{subject.classification_count}.by(1)
       end
@@ -59,7 +59,7 @@ describe Classification do
 
     describe '#generate_new_subjects' do
       it 'should return nil if workflow.generate_new_subjects is false' do
-        workflow2 = Workflow.create(generates_new_subjects: false)
+        workflow2 = Workflow.create(generates_subjects: false)
         classification = Classification.new(workflow: workflow2)
         expect(classification.generate_new_subjects).to be(nil)
       end
