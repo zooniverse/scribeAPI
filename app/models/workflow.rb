@@ -36,7 +36,6 @@ class Workflow
       workflow_for_new_subject_id = classification.subject.workflow.next_workflow.id
     end
     # puts "gen secondary from: #{classification.inspect}"
-
     task = task_by_key classification.task_key
 
     subject_type = task.generates_subject_type
@@ -52,6 +51,8 @@ class Workflow
 
     if task.generates_subjects
 
+      tool_box = find_tool_box(task, classification.annotation["subToolIndex"])
+      subject_type = tool_box[:generates_subject_type]
       # If this is the mark workflow, create region:
       if classification.workflow.name == 'mark'
         region = classification.annotation.inject({}) do |h, (k,v)|
@@ -88,38 +89,24 @@ class Workflow
           data = {'values' => [data]}
         end
         # puts "ClassificationsController: not persisted; svaing data: #{data}"
-        classification.child_subject.update_attributes({
-          subject_set: classification.subject.subject_set,
-          location: {
-            standard: classification.subject.location[:standard]
-          },
-          data: data,
-          region: region,
-          width: classification.subject.width,
-          height: classification.subject.height
-        })
+      classification.child_subject.update_attributes({
+        subject_set: classification.subject.subject_set,
+        location: {
+          standard: classification.subject.location[:standard]
+        },
+        data: data,
+        region: region,
+        width: classification.subject.width,
+        height: classification.subject.height
+      })
+
+      #add tool_name field to classifcation, but do we need this field? --AMS
+      classification.update_attributes({tool_name: tool_box[:type], child_subject: classification.child_subject})
       end
-      # puts child_subject
-      # classification.child_subject = child_subject
-      classification.save
       classification.child_subject
     end
   end
 
-  def find_tools_from_subject_type(subject_type)
-    self.tasks.each do |task|
-
-      if task.tool_config["tools"].present?
-        array_of_tool_boxes = task.tool_config["tools"]
-        array_of_tool_boxes.each do |tool_box|
-          return tool_box if tool_box["generates_subject_type"] == subject_type
-          # example tool_box:{"type"=> "textRowTool", "label"=> "Question", "color"=> "green", "generates_subject_type"=> "att_textRowTool_question" }
-
-        end
-
-      end
-    end
-  end
 
   def next_workflow
     if ! generates_subjects_for.nil? 
@@ -136,5 +123,9 @@ class Workflow
   def task_by_key(key)
     # puts "tasks: #{tasks.inspect}"
     tasks.where(key: key).first
+  end
+
+  def find_tool_box(task, subToolIndex)
+    task.tool_config["tools"][subToolIndex]
   end
 end
