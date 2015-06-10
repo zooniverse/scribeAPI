@@ -54,7 +54,12 @@ class Workflow
       end
 
       data = classification.annotation.except(:key, :tool, :generates_subject_type)
-      classification.child_subject = Subject.find_or_initialize_by(workflow_id: workflow_for_new_subject_id, parent_subject_id: classification.subject.id, type: subject_type)
+      # if workflow_methods_for 
+      if classification.workflow.generates_subjects_method == "one-per-classification"
+        classification.child_subject = Subject.new(workflow_id: workflow_for_new_subject_id, parent_subject_id: classification.subject.id, type: subject_type)
+      else
+        classification.child_subject = Subject.find_or_initialize_by(workflow_id: workflow_for_new_subject_id, parent_subject_id: classification.subject.id, type: subject_type)
+      end
 
       if classification.child_subject.persisted?
         # puts "ClassificationsController: persisted.. #{classification.workflow.generates_subjects_method}"
@@ -96,7 +101,7 @@ class Workflow
     end
   end
 
-  def next_workflow
+  def next_workflow  
     if ! generates_subjects_for.nil? 
       Workflow.find_by(name: generates_subjects_for)
     end
