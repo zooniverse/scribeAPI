@@ -31,7 +31,7 @@ class Workflow
     tasks.where(key: key).first
   end
 
-  def create_secondary_subjects(classification)   
+  def create_secondary_subjects(classification)
     return unless self.generates_subjects || true
     # return unless subject_has_enough_classifications(classification.subject)
     workflow_for_new_subject_id = nil
@@ -43,7 +43,7 @@ class Workflow
       #this is going to be in issue with transcribe, if subToolIndex is not sent on the classification.
       tool_box = task.find_tool_box(classification.annotation["subToolIndex"])
       subject_type = tool_box[:generates_subject_type]
-      
+
       # If this is the mark workflow, create region:
       if classification.workflow.name == 'mark'
         region = build_mark_region(classification)
@@ -54,7 +54,7 @@ class Workflow
       end
 
       data = classification.annotation.except(:key, :tool, :generates_subject_type)
-      # if workflow_methods_for 
+      # if workflow_methods_for
       if classification.workflow.generates_subjects_method == "one-per-classification"
         classification.child_subject = Subject.new(workflow_id: workflow_for_new_subject_id, parent_subject_id: classification.subject.id, type: subject_type)
       else
@@ -101,8 +101,8 @@ class Workflow
     end
   end
 
-  def next_workflow  
-    if ! generates_subjects_for.nil? 
+  def next_workflow
+    if ! generates_subjects_for.nil?
       Workflow.find_by(name: generates_subjects_for)
     end
   end

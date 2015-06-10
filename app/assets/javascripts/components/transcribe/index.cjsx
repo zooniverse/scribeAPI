@@ -44,7 +44,7 @@ module.exports = React.createClass # rename to Classifier
   fetchSubjectsCallback: ->
     console.log "fetchSubjectsCallback"
     console.log "fSC @state", @state
-    console.log "@state.workflow.first_task", @state.workflow.first_task 
+    console.log "@state.workflow.first_task", @state.workflow.first_task
     console.log "@state.currentSubject['type']", @state.currentSubject['type']
     #TODO: We do need to account for times when there are no subjects? type won't do that. -AMS
     new_key = @state.workflow.first_task ? @state.currentSubject['type']
@@ -114,7 +114,7 @@ module.exports = React.createClass # rename to Classifier
       subject_id: @state.currentSubject['id']
       generates_subject_type: @state.currentTask['generates_subject_type']
       metadata:
-        started_at: (new Date).toISOString() # < TODO wrong started_at time 
+        started_at: (new Date).toISOString() # < TODO wrong started_at time
         finished_at: (new Date).toISOString()
       task_key: @state.currentTask.key
 
@@ -156,7 +156,7 @@ module.exports = React.createClass # rename to Classifier
       console.log "go back"
 
   render: ->
-
+    console.log '[[[[[[[[[[[ STATE ]]]]]]]]]]]', @state
 
     console.log 'COMONENT DID MOUNT'
     if @props.query.scrollX? and @props.query.scrollY?
@@ -177,6 +177,10 @@ module.exports = React.createClass # rename to Classifier
       @state.currentTask.options?[currentAnnotation.value].next_task
     else
       @state.currentTask.next_task
+
+    console.log "[[[[[[[[[[ CURRENT TASK: #{@state.currentTask} ]]]]]]]]]]", @state.currentTask
+
+    console.log "[[[[[[[[[[ NEXT TASK: #{nextTask} ]]]]]]]]]]", nextTask
 
     # console.log "viewer size: ", @state.viewerSize
     <div className="classifier">
