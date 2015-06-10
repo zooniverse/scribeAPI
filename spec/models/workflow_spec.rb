@@ -25,14 +25,14 @@ describe Workflow do
           "next_task" =>  nil,
           "tool_config" =>  {
             "options" => {
-              "history_sheet" => {
-                "label" => "history_sheet",
-                "next_task" => "history_form_task"
+              "attestation_form" => {
+                "label" => "attestation_form",
+                "next_task" => "attestation_form_task"
               }
             }
           }
         },
-        "history_form_task" => {
+        "attestation_form_task" => {
           "generates_subjects" =>  true,
           "tool" => "pickOneMarkOne",
           "instruction" => "Draw a rectangle around each record.",
@@ -76,6 +76,12 @@ describe Workflow do
     it { should have_many(:subjects) }
     it { should have_many(:classifications) }
     it { should belong_to(:project) }
+
+    it "should embed many albums" do
+     relation = Workflow.relations['tasks']
+     relation.klass.should ==(WorkflowTask)
+     relation.relation.should ==(Mongoid::Relations::Embedded::Many)
+   end
   end
 
 
@@ -97,37 +103,43 @@ describe Workflow do
     end
 
     describe "#create_secondary_subjects" do
-      
-  #     it "return false if self.generates_new_subjects is false" do
-  #       expect(workflow2.create_secondary_subjects(classification_object)).to be(nil)
-  #     end
 
       it 'should increase the total number of subjects by 1' do
-        
-        workflow = Workflow.create(generates_subjects: true, name: "transcribe")
         classification = double(classification_object)
-        allow(classification).to receive(:subject).and_return(primary_subject)
-        allow(classification).to receive(:workflow).and_return(workflow)
+        task = double("attestation_form_task" => {
+                      "generates_subjects" =>  true,
+                      "tool" => "pickOneMarkOne",
+                      "instruction" => "Draw a rectangle around each record.",
+                      "tool_config" =>  {
+                        "tools" => [
+                          {"type" => "rectangleTool", "label" => "Occupation", "color" => "green", "generates_subject_type" => "att_textRowTool_name" },
+                          {"type" => "rectangleTool", "label" => "Surname", "color" => "green", "generates_subject_type" => "att_textRowTool_name" },
+                          {"type" => "rectangleTool", "label" => "Christian name", "color" => "green", "generates_subject_type" => "att_textRowTool_name" },
+                          {"type" => "rectangleTool", "label" => "Wounds", "color" => "green", "generates_subject_type" => "att_textRowTool_name" }
+                        ]
+                      },
+                      "next_task" => nil
+                    }
+                )
 
+        allow(classification).to receive(:subject).and_return(primary_subject)
         allow(classification).to receive(:annotation).and_return(classification_object["annotation"])
+        expect(classification).to receive(:workflow).and_return(workflow)
+        expect(classification).to receive(:child_subject).and_return(subject)
+
+        expect(workflow).to receive(:task_by_key).and_return(task)
+        expect(task).to receive(:generates_subjects).and_return(true)
+        expect(task).to receive(:find_tool_box).and_return({"type" => "rectangleTool", "label" => "Occupation", "color" => "green", "generates_subject_type" => "att_textRowTool_name" })
+        expect(classification).to receive(:child_subject=)
+
         classification.subject.location = {standard: "this/is/a/img.jpg"}
-        allow(classification).to receive(:child_subject=)
         allow(classification).to receive(:save)
-        subject.classification_count = 1
 
         expect{workflow.create_secondary_subjects(classification)}.to change{Subject.all.count}.by(1)
         
       end
 
-    end
-
-  #   describe '#find_tools_from_subject_type' do
-  #     it 'should find the tools for a given subject_type in a workflow' do
-        
-  #       expect(workflow.find_tools_from_subject_type("att_textRowTool_number")).to eq({"type"=> "textRowTool", "label"=> "Number", "color"=> "green", "generates_subject_type"=> "att_textRowTool_number" })
-
-  #     end
-    # end    
+    end  
 
   end 
 
