@@ -12,7 +12,7 @@
   "tasks": {
 
     "em_record_rect": {
-      "tool": "text_tool",
+      "tool": "textTool",
       "tool_config": {},
       "instruction": "Enter the record date",
       "next_task": "em_transcribe_mortgager",
@@ -20,7 +20,7 @@
     },
 
     "em_transcribe_mortgager": {
-      "tool": "text_tool",
+      "tool": "textTool",
       "tool_config": {
         "suggest": "common"
       },
@@ -30,7 +30,7 @@
     },
 
     "em_transcribe_address": {
-      "tool": "text_tool",
+      "tool": "textTool",
       "tool_config": {},
       "instruction": "Enter the street address",
       "next_task": "em_transcribe_valuation",
@@ -38,17 +38,17 @@
     },
 
     "em_transcribe_valuation": {
-      "tool": "composite_tool",
+      "tool": "compositeTool",
       "tool_config": {
 
         "tools": {
           "em_valuation_date": {
-            "tool": "text_tool",
+            "tool": "textTool",
             "tool_config": {},
             "label": "Date"
           },
           "em_valuation_amount": {
-            "tool": "text_tool",
+            "tool": "textTool",
             "tool_config": {},
             "label": "Amount"
           }

@@ -2,10 +2,10 @@ React                   = require 'react'
 SubjectSetViewer        = require '../subject-set-viewer'
 coreTools               = require 'components/core-tools'
 FetchSubjectSetsMixin   = require 'lib/fetch-subject-sets-mixin'
+BaseWorkflowMethods     = require 'lib/workflow-methods-mixin'
 JSONAPIClient           = require 'json-api-client' # use to manage data?
 ForumSubjectWidget      = require '../forum-subject-widget'
 
-Classification          = require 'models/classification.coffee'
 
 API                     = require '../../lib/api'
 
@@ -15,43 +15,60 @@ module.exports = React.createClass # rename to Classifier
   propTypes:
     workflow: React.PropTypes.object.isRequired
 
-  mixins: [FetchSubjectSetsMixin] # load subjects and set state variables: subjects, currentSubject, classification
+  mixins: [FetchSubjectSetsMixin, BaseWorkflowMethods] # load subjects and set state variables: subjects, currentSubject, classification
 
   getInitialState: ->
-    subjects:       null
-    currentSubjectSet: null
-    currentSubject: null
-    workflow:       @props.workflow
-    project:        @props.project
-    currentTask:    @props.workflow.tasks[@props.workflow.first_task]
-    subToolIndex: 0
-    taskKey: null
-    annotation: {}
-    classifications: []
-
-# #TODO: We should not need this.
-#   getDefaultProps: ->
-#     classification: API.type('classifications').create
-#       name: 'Classification'
-#       annotations: [] # TODO: REMOVE
-#       annotation: ''
-#       metadata: {}
-#       'metadata.started_at': (new Date).toISOString()
+    currentSubjectSet:            null
+    currentSubject:               null
+    workflow:                     @props.workflow
+    # project:        @props.project
+    # currentTask:    @props.workflow.tasks[@props.workflow.first_task]
+    taskKey:                      null
+    # annotation: {}
+    classifications:              []
+    classificationIndex:          0
 
   componentWillMount: ->
+    completion_assessment_task = {
+        "generates_subject_type": null,
+        "instruction": "Is there anything left to mark?",
+        "key": "completion_assessment_task",
+        "next_task": null,
+        "tool": "pickOne",
+        "tool_config": {
+            "options": {
+                "complete_subject": {
+                    "label": "yes",
+                    "next_task": null
+                },
+                "incomplete_subject": {
+                    "label": "no",
+                    "next_task": null
+                }
+            }
+        },
+        "subToolIndex": 0
+      }
+
+    @props.workflow.tasks["completion_assessment_task"] = completion_assessment_task
     @setState
       taskKey: @props.workflow.first_task
+    # TODO: insert the final task into workflow.tasks
 
     @beginClassification()
 
 
   render: ->
     return null unless @state.currentSubjectSet?
+    console.log "mark/index state", @state
+    console.log "@state.currentTask", @state.currentTask
 
+    # TODO: can we delete the commented out code below?
     # annotations = @props.classification.annotations
     # currentAnnotation = if annotations.length is 0 then {} else annotations[annotations.length-1]
+
     currentTask = @props.workflow.tasks[@state.taskKey] # [currentAnnotation?.task]
-    TaskComponent = coreTools[currentTask.tool]
+    TaskComponent = @getCurrentTool() # coreTools[currentTask.tool]
     onFirstAnnotation = @state.taskKey == @props.workflow.first_task
 
     if currentTask.tool is 'pick_one'
@@ -69,7 +86,7 @@ module.exports = React.createClass # rename to Classifier
               workflow={@props.workflow}
               task={currentTask}
               annotation={@getCurrentClassification().annotation ? {}}
-              subToolIndex={@state.subToolIndex}
+              subToolIndex={@getCurrentClassification().annotation?.subToolIndex}
               onComplete={@handleToolComplete}
               onViewSubject={@handleViewSubject}
             />
@@ -81,15 +98,18 @@ module.exports = React.createClass # rename to Classifier
             task={currentTask}
             onChange={@handleDataFromTool}
             annotation={@getCurrentClassification().annotation ? {}}
-            subToolIndex={@state.subToolIndex}
+            subToolIndex={@getCurrentClassification().annotation?.subToolIndex}
           />
           <hr/>
           <nav className="task-nav">
             <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
-            { if @nextTask()?
-                <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@loadNextTask}>Next</button>
+            { if @getNextTask()?
+                <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@advanceToNextTask}>Next</button>
               else
-                <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Done</button>
+                if @state.taskKey == "completion_assessment_task" 
+                  <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Next Subject</button>    
+                else
+                  <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Done</button>
             }
           </nav>
         </div>
@@ -121,84 +141,22 @@ module.exports = React.createClass # rename to Classifier
     @forceUpdate()
     @setState
       classifications: classifications
-        # , =>
-        #   console.log 'CLASSIFICATIONS: ', classifications
-        #   console.log 'CURRENT TOOL: ', @getCurrentClassification().annotation.toolName
+
 
   destroyCurrentAnnotation: ->
     # TODO: implement mechanism for going backwards to previous classification, potentially deleting later classifications from stack:
     console.log "WARN: destroyCurrentAnnotation not implemented"
     # @props.classification.annotations.pop()
-
-  # Load next logical task
-  loadNextTask: () ->
-    nextTaskKey = @nextTask()?.key
-    if nextTaskKey is null
-      console.log 'NOTHING LEFT TO DO'
-      return
-    console.log 'LOADING NEXT TASK: ', nextTaskKey
-
-    # Commit whatever current classification is:
-    @commitClassification()
-    # start a new one:
-    @beginClassification()
-
-    # record where we are in workflow:
-    @setState
-      taskKey: nextTaskKey
-
-  # Get next logical task
-  nextTask: ->
-    task = @props.workflow.tasks[@state.taskKey]
-    # console.log "looking up next task based on current ann: ", task, task.tool_config?.options, @getCurrentClassification().annotation?.value
-    if task.tool_config?.options?[@getCurrentClassification().annotation?.value]?.next_task?
-      nextKey = task.tool_config.options[@getCurrentClassification().annotation.value].next_task
-    else
-      nextKey = @props.workflow.tasks[@state.taskKey].next_task
-
-    @props.workflow.tasks[nextKey]
-
-  # Start a new classification:
-  beginClassification: ->
-    classifications = @state.classifications
-    classifications.push new Classification()
-    @setState
-      classifications: classifications
-      classificationIndex: classifications.length-1
-        ,=>
-          window.classifications = @state.classifications # make accessible to console
-
-  # Push current classification to server:
-  commitClassification: ->
-    classification = @getCurrentClassification()
-
-    classification.subject_id = @state.currentSubject.id
-    classification.subject_set_id = @state.currentSubjectSet.id
-    classification.workflow_id = @state.workflow.id
-    classification.task_key = @state.taskKey
-
-    classification.commit()
-
-    console.log 'COMMITTED CLASSIFICATION: ', classification
-
-  # Get current classification:
-  getCurrentClassification: ->
-    @state.classifications[@state.classificationIndex]
-
+      
   completeSubjectSet: ->
-    console.log "TODO: At this point, ask user if there's more to mark and then load next subjectset to classify."
+    console.log "currentTask from #completeSubjectSet", @state.currentTask
+    if @state.taskKey != "completion_assessment_task"
+      @setState 
+        taskKey: "completion_assessment_task"
+    else
+      console.log "before commit of completeSubjectSet"
+      @commitClassification()
 
-    # AMS: branch classification-refactor has this commented out...
-    # return
-    # @props.classification.update
-    #   completed: true
-    #   subject_set: @state.currentSubjectSet
-    #   workflow_id: @state.workflow.id
-    #   console.log "Gen NEw SUB", @state.workflow.generates_new_subjects
-    #   'metadata.finished_at': (new Date).toISOString()
-    # @props.classification.save()
-    # @props.onComplete?() # does this do anything? -STI
-    # console.log 'CLASSIFICATION: ', @props.classification
 
 
 window.React = React

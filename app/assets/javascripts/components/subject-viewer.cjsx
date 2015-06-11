@@ -43,6 +43,10 @@ module.exports = React.createClass
     onLoad: null
     annotationIsComplete: false
 
+  componentWillReceiveProps: ->
+    console.log "SubjectViewer# willReceiveProps"
+    console.dir @props.annotation
+
   componentDidMount: ->
     @setView 0, 0, @state.imageWidth, @state.imageHeight
     @loadImage @props.subject.location.standard
@@ -84,8 +88,6 @@ module.exports = React.createClass
 
   # Handle initial mousedown:
   handleInitStart: (e) ->
-    console.log 'SUBJECT-VIEWER::handleInitStart(): ', @props
-
     return null if ! @props.subToolIndex?
     subTool = @props.task.tool_config.tools[@props.annotation.subToolIndex]
     return null if ! subTool?
@@ -217,10 +219,6 @@ module.exports = React.createClass
       selectedMark: mark, => console.log 'SELECTED MARK: ', mark
 
   render: ->
-    console.log '*********** STATE: ', @state
-    console.log "PROPS in SB render", @props
-
-
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     # ToolComponent = @state.tool # AMS:from classification refactor.
     mark = @state.uncommittedMark
@@ -232,12 +230,9 @@ module.exports = React.createClass
       else
         <ActionButton onClick={@nextSubject} text="Next Page" />
 
-    # console.log "ARE WE HERE 1"
     if false && @state.loading
       markingSurfaceContent = <LoadingIndicator />
-      # console.log "First clause of the IF"
     else
-      console.log "ElSE clause: markindSurfaceContent"
       markingSurfaceContent =
         <svg
           className = "subject-viewer-svg"
@@ -260,19 +255,14 @@ module.exports = React.createClass
               height = {@state.imageHeight} />
           </MouseHandler>
 
-          {console.log "JUST BEFORE PREVIOUS MARKS"}
           { # DISPLAY PREVIOUS MARKS
             for mark, i in @props.subject.child_subjects_info
-              console.log "PREVIOUS MARK", mark 
-              console.log "@props.subject.child_subjects_info", @props.subject.child_subjects_info
               toolName = mark.data.toolName
               if toolName?
                # = markingTools[toolName]
                 scale = @getScale()
 
-                # console.log 'REFS: ', @refs
                 ToolComponent = markingTools[toolName]
-                # console.log 'toolComponent: ', ToolComponent, toolName
 
                 <ToolComponent
                   key={i}
@@ -304,37 +294,10 @@ module.exports = React.createClass
               toolName = @props.subject.region.toolName
               mark = @props.subject.region
               ToolComponent = markingTools[toolName]
-              # console.log "ToolComponent", ToolComponent
+
               isPriorMark = true
               <g>
                 { @highlightMark(mark, toolName) }
-                <ToolComponent
-                  key={@props.subject.id}
-                  mark={mark}
-                  xScale={scale.horizontal}
-                  yScale={scale.vertical}
-                  disabled={isPriorMark}
-                  selected={mark is @state.selectedMark}
-                  getEventOffset={@getEventOffset}
-                  ref={@refs.sizeRect}
-                  onSelect={@selectMark.bind this, @props.subject, mark}
-                />
-              </g>
-          }
-
-           { # HIGHLIGHT SUBJECT FOR TRANSCRIPTION
-            # TODO: Makr sure x, y, w, h are scaled properly
-
-            if @props.workflow.name in ['transcribe', 'verify']
-              mark = @props.subject.region
-              ToolComponent = markingTools[toolName]
-              isPriorMark = true
-              console.log "outside g"
-              <g>
-                {
-                  @highlightMark(mark, toolName)
-                  console.log "inside the <g>"
-                }
                 <ToolComponent
                   key={@props.subject.id}
                   mark={mark}
@@ -398,10 +361,12 @@ module.exports = React.createClass
         <div className="marking-surface">
           {markingSurfaceContent}
           {
+            console.log "SubjectViewer#render children: ", @props.children
             if @props.children?
-              cloneWithProps @props.children,
-                subject: @props.subject
-                scale: scale
+              @props.children
+              # cloneWithProps @props.children,
+               #  subject: @props.subject
+                # scale: scale
           }
         </div>
       </div>
