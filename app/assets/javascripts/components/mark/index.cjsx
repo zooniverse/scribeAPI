@@ -48,9 +48,11 @@ module.exports = React.createClass # rename to Classifier
   render: ->
     return null unless @state.currentSubjectSet?
 
+    console.log '<<<<<<<<<<<<<<< SUBTOOL INDEX >>>>>>>>>>>>>>>>', @state.subToolIndex
     # annotations = @props.classification.annotations
     # currentAnnotation = if annotations.length is 0 then {} else annotations[annotations.length-1]
     currentTask = @props.workflow.tasks[@state.taskKey] # [currentAnnotation?.task]
+
     TaskComponent = coreTools[currentTask.tool]
     onFirstAnnotation = @state.taskKey == @props.workflow.first_task
 
@@ -109,18 +111,19 @@ module.exports = React.createClass # rename to Classifier
 
   # User somehow indicated current task is complete; commit current classification
   handleToolComplete: (d) ->
+    console.log 'handleToolComplete(): DATA = ', d
+    console.log 'TASK IS COMPLETE!'
     @handleDataFromTool(d)
     @commitClassification()
-    console.log "finding error location: @handleToolComplete"
     @beginClassification()
 
   # Handle user selecting a pick/drawing tool:
   handleDataFromTool: (d) ->
-    console.log 'handleDataFromTool(): DATA RECEIVED = ', d
+    # console.log 'handleDataFromTool(): DATA RECEIVED = ', d
     classifications = @state.classifications
     classifications[@state.classificationIndex].annotation[k] = v for k, v of d
 
-    console.log '[[[[[[[ CURRENT CLASSIFICATION ]]]]]]]', classifications[@state.classificationIndex]
+    # console.log '[[[[[[[ CURRENT CLASSIFICATION ]]]]]]]', classifications[@state.classificationIndex]
 
     @forceUpdate()
     @setState
@@ -164,6 +167,7 @@ module.exports = React.createClass # rename to Classifier
 
   # Start a new classification:
   beginClassification: ->
+    console.log 'CLASSIFICATION CREATED!'
     classifications = @state.classifications
     newClassification = new Classification()
 
@@ -172,13 +176,14 @@ module.exports = React.createClass # rename to Classifier
       classifications: classifications
       classificationIndex: classifications.length-1
         ,=>
-          console.log 'making classifications accessible via console'
+          # console.log 'making classifications accessible via console'
           window.classifications = @state.classifications # make accessible to console
 
   # Push current classification to server:
   commitClassification: ->
     classification = @getCurrentClassification()
 
+    # populate remaining fields before submitting
     classification.subject_id = @state.currentSubject.id
     classification.subject_set_id = @state.currentSubjectSet.id
     classification.workflow_id = @state.workflow.id
@@ -186,7 +191,8 @@ module.exports = React.createClass # rename to Classifier
 
     classification.commit()
 
-    console.log 'COMMITTED CLASSIFICATION: ', classification
+    # DEBUG CODE
+    # console.log 'COMMITTED CLASSIFICATION: ', classification
 
   # Get current classification:
   getCurrentClassification: ->

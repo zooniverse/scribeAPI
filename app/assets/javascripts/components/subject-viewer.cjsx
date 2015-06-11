@@ -84,8 +84,6 @@ module.exports = React.createClass
 
   # Handle initial mousedown:
   handleInitStart: (e) ->
-    console.log 'SUBJECT-VIEWER::handleInitStart(): ', @props
-
     return null if ! @props.subToolIndex?
     subTool = @props.task.tool_config.tools[@props.annotation.subToolIndex]
     return null if ! subTool?
@@ -114,9 +112,7 @@ module.exports = React.createClass
       for key, value of initValues
         mark[key] = value
 
-    console.log 'ABOUT TO UPDFATE...', @props
     @props.onChange? mark
-    console.log '>>>>>>>>>>>>>>>>>>>> MARK <<<<<<<<<<<<<<<<<<<<<<<', mark
 
     @setState
       uncommittedMark: mark

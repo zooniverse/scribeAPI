@@ -14,7 +14,7 @@
       "tool": "text_tool",
       "tool_config": {},
       "instruction": "Transcribe this point." ,
-      "next_task": null
+      "next_task": "entry_date"
     },
     "transcribe_rectangle": {
       "tool": "text_tool",
@@ -37,17 +37,13 @@
     },
     "page_number": {
       "tool": "text_tool",
-      "tool_config": {
-        "tool_type": "textField"
-      },
+      "tool_config": {},
       "instruction": "What is the page number?",
       "next_task": "location"
     },
     "location": {
       "tool": "text_tool",
-      "tool_config": {
-        "tool_type": "textField"
-      },
+      "tool_config": {},
       "instruction": "What is the location?",
       "next_task": "entry_text"
     },
