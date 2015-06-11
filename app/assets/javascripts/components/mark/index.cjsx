@@ -167,7 +167,6 @@ module.exports = React.createClass # rename to Classifier
     classifications = @state.classifications
     newClassification = new Classification()
 
-    console.log 'CREATED NEW CLASSIFICATION!!!!!!!!!!!!!', newClassification
     classifications.push newClassification
     @setState
       classifications: classifications

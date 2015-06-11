@@ -142,6 +142,7 @@ module.exports = React.createClass
         mark[key] = value
 
     @props.onChange? mark
+    
     @setState
       uncommittedMark: mark
 
@@ -219,8 +220,10 @@ module.exports = React.createClass
 
   handleChange: (mark) ->
     @setState
-      selectedMark: mark, => console.log 'SELECTED MARK: ', mark
-
+      selectedMark: mark
+        , =>
+          console.log 'SELECTED MARK: ', mark
+          @props.onChange? mark
   render: ->
     console.log '*********** STATE: ', @state
     console.log "PROPS in SB render", @props
