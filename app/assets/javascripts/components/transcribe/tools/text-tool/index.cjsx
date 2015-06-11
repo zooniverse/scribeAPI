@@ -42,11 +42,17 @@ TextTool = React.createClass
     focus: true
    
   componentWillReceiveProps: ->
+    # console.log "TextTool# willReceiveProps"
+    # console.dir @props.annotation
     @setState
       annotation: @props.annotation
 
     # console.log "focus(receive props)? ", @props.focus
     @refs.input0.getDOMNode().focus() if @props.focus
+
+  componentWillMount: ->
+    # console.log "TextTool# mounting"
+    # console.dir @state.annotation
 
   componentWillUnmount: ->
     if @props.task.tool_config.suggest == 'common'
@@ -92,6 +98,7 @@ TextTool = React.createClass
     @props.onComplete @state.annotation
 
   handleChange: (e) ->
+    # console.log "TextTool#handleChange: ", e.target.value
     @state.annotation[@props.annotation_key] = e.target.value
     @forceUpdate()
 
@@ -115,6 +122,8 @@ TextTool = React.createClass
       top: @state.dy
     # console.log "TextTool#render pos", @state
 
+    # console.log "TextTool# render"
+    # console.dir @state.annotation
     val = @state.annotation[@props.annotation_key] ? ''
     # console.log "TextTool#render val:", val, @state.annotation?.value
 

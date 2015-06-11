@@ -31,11 +31,12 @@ module.exports =
   highlightMark: (mark, toolName) ->
     # DEBUG CODE
     # console.log 'TOOL NAME: ', toolName
+    console.log "highlightMark: ", mark
     highlight =
       # TODO: Note that x, y, w h aren't scaled properly:
       switch toolName
         when 'rectangleTool'
-          console.log "RECTANGLE TOOL FOLKS "
+          # console.log "RECTANGLE TOOL FOLKS "
           <g>
             <rect
               className   = "mark-rectangle top"
