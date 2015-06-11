@@ -29,9 +29,32 @@ module.exports = React.createClass # rename to Classifier
     classificationIndex:          0
 
   componentWillMount: ->
+    completion_assessment_task = {
+        "generates_subject_type": null,
+        "instruction": "Is there anything left to mark?",
+        "key": "completion_assessment_task",
+        "next_task": null,
+        "tool": "pickOne",
+        "tool_config": {
+            "options": {
+                "affirmation": {
+                    "label": "yes",
+                    "next_task": null
+                },
+                "negation": {
+                    "label": "no",
+                    "next_task": null
+                }
+            }
+        },
+        "subToolIndex": 0
+      }
+
+    @props.workflow.tasks["completion_assessment_task"] = completion_assessment_task
     @setState
       taskKey: @props.workflow.first_task
-      # TODO: insert the final task into workflow.tasks
+    # TODO: insert the final task into workflow.tasks
+
     @beginClassification()
 
 
@@ -126,33 +149,13 @@ module.exports = React.createClass # rename to Classifier
       
   completeSubjectSet: ->
     console.log "currentTask from #completeSubjectSet", @state.currentTask
-    if @state.currentTask.key == "completion_assessment_task"
-      console.log "TODO: commit yes/no classification and then load next subjectset to classify."
-      @commitClassification()
-    else
-      completion_assessment_task = {
-        "generates_subject_type": null,
-        "instruction": "Is there anything left to mark?",
-        "key": "completion_assessment_task",
-        "next_task": null,
-        "tool": "pickOne",
-        "tool_config": {
-            "options": {
-                "affirmation": {
-                    "label": "yes",
-                    "next_task": null
-                },
-                "negation": {
-                    "label": "no",
-                    "next_task": null
-                }
-            }
-        },
-        "subToolIndex": 0
-      }
-
+    if @props.workflow.tasks[@state.taskKey] != "completion_assessment_task"
+      console.log "Implement final task"
       @setState 
-        currentTask: completion_assessment_task
         taskKey: "completion_assessment_task"
+    else
+      @commitClassification()
+
+
 
 window.React = React
