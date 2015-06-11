@@ -142,7 +142,7 @@ module.exports = React.createClass
         mark[key] = value
 
     @props.onChange? mark
-    
+
     @setState
       uncommittedMark: mark
 
@@ -222,11 +222,10 @@ module.exports = React.createClass
     @setState
       selectedMark: mark
         , =>
-          console.log 'SELECTED MARK: ', mark
+          # console.log 'SELECTED MARK: ', mark
           @props.onChange? mark
   render: ->
-    console.log '*********** STATE: ', @state
-    console.log "PROPS in SB render", @props
+
 
 
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
@@ -245,7 +244,6 @@ module.exports = React.createClass
       markingSurfaceContent = <LoadingIndicator />
       # console.log "First clause of the IF"
     else
-      console.log "ElSE clause: markindSurfaceContent"
       markingSurfaceContent =
         <svg
           className = "subject-viewer-svg"
@@ -268,11 +266,10 @@ module.exports = React.createClass
               height = {@state.imageHeight} />
           </MouseHandler>
 
-          {console.log "JUST BEFORE PREVIOUS MARKS"}
           { # DISPLAY PREVIOUS MARKS
             for mark, i in @props.subject.child_subjects_info
-              console.log "PREVIOUS MARK", mark
-              console.log "@props.subject.child_subjects_info", @props.subject.child_subjects_info
+              # console.log "PREVIOUS MARK", mark
+              # console.log "@props.subject.child_subjects_info", @props.subject.child_subjects_info
               toolName = mark.data.toolName
               if toolName?
                # = markingTools[toolName]

@@ -142,7 +142,6 @@ module.exports = React.createClass
     @props.onSelect @props.mark
 
   render: ->
-    console.log "RENDER OF RectangleTool"
     if @state.markStatus is 'mark-committed'
       isPriorMark = true
       @props.disabled = true

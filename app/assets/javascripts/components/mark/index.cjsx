@@ -140,7 +140,7 @@ module.exports = React.createClass # rename to Classifier
     if nextTaskKey is null
       console.log 'NOTHING LEFT TO DO'
       return
-    console.log 'LOADING NEXT TASK: ', nextTaskKey
+    # console.log 'LOADING NEXT TASK: ', nextTaskKey
 
     # Commit whatever current classification is:
     @commitClassification()

@@ -92,9 +92,6 @@ module.exports = React.createClass
     subToolIndex: 0
 
   render: ->
-    console.log 'PICK-ONE-MARK-ONE::render()'
-    console.log 'PROPS: ', @props
-
     tools = for tool, i in @props.task.tool_config.tools
       tool._key ?= Math.random()
 
