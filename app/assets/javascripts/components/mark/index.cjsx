@@ -32,7 +32,7 @@ module.exports = React.createClass # rename to Classifier
   componentWillMount: ->
     @setState
       taskKey: @props.workflow.first_task
-
+      # TODO: insert the final task into workflow.tasks
     @beginClassification()
 
 
@@ -41,9 +41,16 @@ module.exports = React.createClass # rename to Classifier
     console.log "mark/index state", @state
     console.log "@state.currentTask", @state.currentTask
 
+    # TODO: can we delete the commented out code below?
     # annotations = @props.classification.annotations
     # currentAnnotation = if annotations.length is 0 then {} else annotations[annotations.length-1]
-    currentTask = @props.workflow.tasks[@state.taskKey] unless @state.currentTask.key == "completion_assessment_task"# [currentAnnotation?.task]
+    # currentTask = @props.workflow.tasks[@state.taskKey] unless @state.currentTask.key == "completion_assessment_task"# [currentAnnotation?.task]
+    
+    if @state.taskKey != "completion_assessment_task"
+      currentTask = @props.workflow.tasks[@state.taskKey]
+    else
+      currentTask = @state.currentTask
+    
     TaskComponent = coreTools[currentTask.tool]
     onFirstAnnotation = @state.taskKey == @props.workflow.first_task
 
@@ -142,17 +149,21 @@ module.exports = React.createClass # rename to Classifier
 
   # Get next logical task
   nextTask: ->
-    task = @props.workflow.tasks[@state.taskKey]
+    if @state.taskKey != "completion_assessment_task"
+      task = @props.workflow.tasks[@state.taskKey] 
+    else 
+      task = @state.currentTask
     # console.log "looking up next task based on current ann: ", task, task.tool_config?.options, @getCurrentClassification().annotation?.value
     if task.tool_config?.options?[@getCurrentClassification().annotation?.value]?.next_task?
       nextKey = task.tool_config.options[@getCurrentClassification().annotation.value].next_task
     else
-      nextKey = @props.workflow.tasks[@state.taskKey].next_task
+      nextKey = task.next_task
 
     @props.workflow.tasks[nextKey]
 
   # Start a new classification:
   beginClassification: ->
+    console.log "beginClassification"
     classifications = @state.classifications
     classifications.push new Classification()
     @setState
@@ -176,47 +187,40 @@ module.exports = React.createClass # rename to Classifier
 
   # Get current classification:
   getCurrentClassification: ->
+    console.log "getCurrentClassification"
+    console.log "#gCC: @state", @state
+    console.log "#gCC: @state.classificationIndex", @state.classificationIndex
     @state.classifications[@state.classificationIndex]
 
   completeSubjectSet: ->
-    console.log "hey hey hey"
-    completion_assessment_task = {
-      "generates_subject_type": null,
-      "instruction": "Is there anything left to mark?",
-      "key": "completion_assessment_task",
-      "next_task": null,
-      "tool": "pickOne",
-      "tool_config": {
-          "options": {
-              "affirmation": {
-                  "label": "yes",
-                  "next_task": null
-              },
-              "negation": {
-                  "label": "no",
-                  "next_task": null
-              }
-          }
-      },
-      "subToolIndex": 0
-    }
-    @state.currentTask = completion_assessment_task
-    @forceUpdate()
-    console.log "TODO: At this point, ask user if there's more to mark and then load next subjectset to classify."
-    console.log "STATE CHANGE", @state
+    console.log "currentTask from #completeSubjectSet", @state.currentTask
+    if @state.currentTask.key == "completion_assessment_task"
+      console.log "TODO: commit yes/no classification and then load next subjectset to classify."
+      @commitClassification()
+    else
+      completion_assessment_task = {
+        "generates_subject_type": null,
+        "instruction": "Is there anything left to mark?",
+        "key": "completion_assessment_task",
+        "next_task": null,
+        "tool": "pickOne",
+        "tool_config": {
+            "options": {
+                "affirmation": {
+                    "label": "yes",
+                    "next_task": null
+                },
+                "negation": {
+                    "label": "no",
+                    "next_task": null
+                }
+            }
+        },
+        "subToolIndex": 0
+      }
 
-
-    # AMS: branch classification-refactor has this commented out...
-    # return
-    # @props.classification.update
-    #   completed: true
-    #   subject_set: @state.currentSubjectSet
-    #   workflow_id: @state.workflow.id
-    #   console.log "Gen NEw SUB", @state.workflow.generates_new_subjects
-    #   'metadata.finished_at': (new Date).toISOString()
-    # @props.classification.save()
-    # @props.onComplete?() # does this do anything? -STI
-    # console.log 'CLASSIFICATION: ', @props.classification
-
+      @setState 
+        currentTask: completion_assessment_task
+        taskKey: "completion_assessment_task"
 
 window.React = React
