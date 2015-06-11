@@ -40,7 +40,6 @@ class Workflow
     end
     task = task_by_key classification.task_key
     return if task == nil # safe-guard against final_task, hopefully we can take this out at somepoint.
-    binding.pry
       # TODO --- quietly, fail nil tasks. AMS
     if task.generates_subjects
       #this is going to be in issue with transcribe, if subToolIndex is not sent on the classification.

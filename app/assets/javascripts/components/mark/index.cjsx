@@ -106,7 +106,10 @@ module.exports = React.createClass # rename to Classifier
             { if @getNextTask()?
                 <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@advanceToNextTask}>Next</button>
               else
-                <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Done</button>
+                if @state.taskKey == "completion_assessment_task" 
+                  <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Next Subject</button>    
+                else
+                  <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Done</button>
             }
           </nav>
         </div>
