@@ -71,6 +71,7 @@ module.exports = React.createClass # rename to Classifier
               annotation={@getCurrentClassification().annotation ? {}}
               subToolIndex={@state.subToolIndex}
               onComplete={@handleToolComplete}
+              onChange={@handleDataFromTool}
               onViewSubject={@handleViewSubject}
             />
         }
@@ -115,8 +116,11 @@ module.exports = React.createClass # rename to Classifier
 
   # Handle user selecting a pick/drawing tool:
   handleDataFromTool: (d) ->
+    console.log 'handleDataFromTool(): DATA RECEIVED = ', d
     classifications = @state.classifications
     classifications[@state.classificationIndex].annotation[k] = v for k, v of d
+
+    console.log '[[[[[[[ CURRENT CLASSIFICATION ]]]]]]]', classifications[@state.classificationIndex]
 
     @forceUpdate()
     @setState
@@ -161,11 +165,15 @@ module.exports = React.createClass # rename to Classifier
   # Start a new classification:
   beginClassification: ->
     classifications = @state.classifications
-    classifications.push new Classification()
+    newClassification = new Classification()
+
+    console.log 'CREATED NEW CLASSIFICATION!!!!!!!!!!!!!', newClassification
+    classifications.push newClassification
     @setState
       classifications: classifications
       classificationIndex: classifications.length-1
         ,=>
+          console.log 'making classifications accessible via console'
           window.classifications = @state.classifications # make accessible to console
 
   # Push current classification to server:

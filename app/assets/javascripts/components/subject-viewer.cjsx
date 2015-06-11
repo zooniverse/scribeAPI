@@ -100,6 +100,7 @@ module.exports = React.createClass
     # Create an initial mark instance, which will soon gather coords:
     mark = toolName: subTool.type
 
+
     mouseCoords = @getEventOffset e
 
     if MarkComponent.defaultValues?
@@ -112,6 +113,10 @@ module.exports = React.createClass
       initValues = MarkComponent.initStart mouseCoords, mark, e
       for key, value of initValues
         mark[key] = value
+
+    console.log 'ABOUT TO UPDFATE...', @props
+    @props.onChange? mark
+    console.log '>>>>>>>>>>>>>>>>>>>> MARK <<<<<<<<<<<<<<<<<<<<<<<', mark
 
     @setState
       uncommittedMark: mark
@@ -263,7 +268,7 @@ module.exports = React.createClass
           {console.log "JUST BEFORE PREVIOUS MARKS"}
           { # DISPLAY PREVIOUS MARKS
             for mark, i in @props.subject.child_subjects_info
-              console.log "PREVIOUS MARK", mark 
+              console.log "PREVIOUS MARK", mark
               console.log "@props.subject.child_subjects_info", @props.subject.child_subjects_info
               toolName = mark.data.toolName
               if toolName?
