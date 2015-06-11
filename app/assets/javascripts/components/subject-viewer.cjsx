@@ -217,10 +217,6 @@ module.exports = React.createClass
       selectedMark: mark, => console.log 'SELECTED MARK: ', mark
 
   render: ->
-    console.log '*********** STATE: ', @state
-    console.log "PROPS in SB render", @props
-
-
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     # ToolComponent = @state.tool # AMS:from classification refactor.
     mark = @state.uncommittedMark
@@ -237,7 +233,6 @@ module.exports = React.createClass
       markingSurfaceContent = <LoadingIndicator />
       # console.log "First clause of the IF"
     else
-      console.log "ElSE clause: markindSurfaceContent"
       markingSurfaceContent =
         <svg
           className = "subject-viewer-svg"
@@ -260,11 +255,8 @@ module.exports = React.createClass
               height = {@state.imageHeight} />
           </MouseHandler>
 
-          {console.log "JUST BEFORE PREVIOUS MARKS"}
           { # DISPLAY PREVIOUS MARKS
             for mark, i in @props.subject.child_subjects_info
-              console.log "PREVIOUS MARK", mark 
-              console.log "@props.subject.child_subjects_info", @props.subject.child_subjects_info
               toolName = mark.data.toolName
               if toolName?
                # = markingTools[toolName]

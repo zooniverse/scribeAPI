@@ -29,15 +29,6 @@ module.exports = React.createClass # rename to Classifier
     annotation: {}
     classifications: []
 
-# #TODO: We should not need this.
-#   getDefaultProps: ->
-#     classification: API.type('classifications').create
-#       name: 'Classification'
-#       annotations: [] # TODO: REMOVE
-#       annotation: ''
-#       metadata: {}
-#       'metadata.started_at': (new Date).toISOString()
-
   componentWillMount: ->
     @setState
       taskKey: @props.workflow.first_task
@@ -47,10 +38,12 @@ module.exports = React.createClass # rename to Classifier
 
   render: ->
     return null unless @state.currentSubjectSet?
+    console.log "mark/index state", @state
+    console.log "@state.currentTask", @state.currentTask
 
     # annotations = @props.classification.annotations
     # currentAnnotation = if annotations.length is 0 then {} else annotations[annotations.length-1]
-    currentTask = @props.workflow.tasks[@state.taskKey] # [currentAnnotation?.task]
+    currentTask = @props.workflow.tasks[@state.taskKey] unless @state.currentTask.key == "completion_assessment_task"# [currentAnnotation?.task]
     TaskComponent = coreTools[currentTask.tool]
     onFirstAnnotation = @state.taskKey == @props.workflow.first_task
 
@@ -186,7 +179,32 @@ module.exports = React.createClass # rename to Classifier
     @state.classifications[@state.classificationIndex]
 
   completeSubjectSet: ->
+    console.log "hey hey hey"
+    completion_assessment_task = {
+      "generates_subject_type": null,
+      "instruction": "Is there anything left to mark?",
+      "key": "completion_assessment_task",
+      "next_task": null,
+      "tool": "pickOne",
+      "tool_config": {
+          "options": {
+              "affirmation": {
+                  "label": "yes",
+                  "next_task": null
+              },
+              "negation": {
+                  "label": "no",
+                  "next_task": null
+              }
+          }
+      },
+      "subToolIndex": 0
+    }
+    @state.currentTask = completion_assessment_task
+    @forceUpdate()
     console.log "TODO: At this point, ask user if there's more to mark and then load next subjectset to classify."
+    console.log "STATE CHANGE", @state
+
 
     # AMS: branch classification-refactor has this commented out...
     # return
