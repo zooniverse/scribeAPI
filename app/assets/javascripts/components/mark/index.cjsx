@@ -149,11 +149,15 @@ module.exports = React.createClass # rename to Classifier
       
   completeSubjectSet: ->
     console.log "currentTask from #completeSubjectSet", @state.currentTask
-    if @props.workflow.tasks[@state.taskKey] != "completion_assessment_task"
+    if @state.taskKey != "completion_assessment_task"
       console.log "Implement final task"
       @setState 
         taskKey: "completion_assessment_task"
     else
+      console.log "HEY ANDREA HEY"
+      console.log "HEY ANDREA HEY"
+      console.log "HEY ANDREA HEY"
+      console.log "before commit of completeSubjectSet"
       @commitClassification()
 
 

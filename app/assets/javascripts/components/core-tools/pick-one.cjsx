@@ -77,9 +77,6 @@ module.exports = React.createClass
     <GenericTask ref="inputs" question={@props.task.instruction} help={@props.task.help} answers={answers} />
 
   handleChange: (index, e) ->
-    console.log "PLEASE HANDLE CHANGE"
-    console.log "PLEASE HANDLE CHANGE"
-    console.log "PLEASE HANDLE CHANGE"
     if e.target.checked
       checked = $(@refs.inputs.getDOMNode()).find('input[type=radio]:checked')
       @props.onChange({
