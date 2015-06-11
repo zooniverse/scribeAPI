@@ -20,7 +20,6 @@ module.exports =
 
   # Push current classification to server:
   commitClassification: ->
-    console.log "commitClassification"
     classification = @getCurrentClassification()
 
     classification.subject_id = @state.currentSubject.id
@@ -35,8 +34,6 @@ module.exports =
 
   # Get current classification:
   getCurrentClassification: ->
-    console.log "getCurrentClassification"
-    console.log "getCC state", @state 
     @state.classifications[@state.classificationIndex]
 
   # Get current task:

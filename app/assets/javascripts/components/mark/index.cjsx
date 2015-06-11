@@ -37,11 +37,11 @@ module.exports = React.createClass # rename to Classifier
         "tool": "pickOne",
         "tool_config": {
             "options": {
-                "affirmation": {
+                "complete_subject": {
                     "label": "yes",
                     "next_task": null
                 },
-                "negation": {
+                "incomplete_subject": {
                     "label": "no",
                     "next_task": null
                 }
@@ -138,9 +138,7 @@ module.exports = React.createClass # rename to Classifier
     @forceUpdate()
     @setState
       classifications: classifications
-        # , =>
-        #   console.log 'CLASSIFICATIONS: ', classifications
-        #   console.log 'CURRENT TOOL: ', @getCurrentClassification().annotation.toolName
+
 
   destroyCurrentAnnotation: ->
     # TODO: implement mechanism for going backwards to previous classification, potentially deleting later classifications from stack:
@@ -150,13 +148,9 @@ module.exports = React.createClass # rename to Classifier
   completeSubjectSet: ->
     console.log "currentTask from #completeSubjectSet", @state.currentTask
     if @state.taskKey != "completion_assessment_task"
-      console.log "Implement final task"
       @setState 
         taskKey: "completion_assessment_task"
     else
-      console.log "HEY ANDREA HEY"
-      console.log "HEY ANDREA HEY"
-      console.log "HEY ANDREA HEY"
       console.log "before commit of completeSubjectSet"
       @commitClassification()
 
