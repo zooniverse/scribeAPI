@@ -5,6 +5,7 @@ markTools               = require 'components/mark/tools'
 transcribeTools         = require 'components/transcribe/tools'
 
 module.exports =
+
   # Start a new classification:
   beginClassification: ->
     classifications = @state.classifications
@@ -35,16 +36,17 @@ module.exports =
   getCurrentClassification: ->
     @state.classifications[@state.classificationIndex]
 
+  # Get current task:
   getCurrentTask: ->
     @props.workflow.tasks[@state.taskKey] # [currentAnnotation?.task]
 
-
+  # Get instance of current tool:
   getCurrentTool: ->
     toolKey = @getCurrentTask()?.tool
     tool = ( coreTools[toolKey] ? markTools[toolKey] ) ? transcribeTools[toolKey]
 
   # Load next logical task
-  loadNextTask: () ->
+  advanceToNextTask: () ->
     nextTaskKey = @getNextTask()?.key
     if nextTaskKey is null
       console.log 'NOTHING LEFT TO DO'
@@ -70,6 +72,7 @@ module.exports =
 
     @props.workflow.tasks[nextKey]
 
+  # Advance to a named task:
   advanceToTask: (key) ->
     task = @state.workflow.tasks[ key ]
 

@@ -14,6 +14,7 @@ CompositeTool = React.createClass
 
   handleInitStart: (e) ->
     # console.log 'handleInitStart() '
+
     @setState preventDrag: false
     if e.target.nodeName is "INPUT" or e.target.nodeName is "TEXTAREA"
       @setState preventDrag: true
@@ -21,6 +22,7 @@ CompositeTool = React.createClass
     @setState
       xClick: e.pageX - $('.transcribe-tool').offset().left
       yClick: e.pageY - $('.transcribe-tool').offset().top
+
 
   handleInitDrag: (e, delta) ->
 
@@ -60,10 +62,11 @@ CompositeTool = React.createClass
     @updatePosition()
 
   updatePosition: ->
-    if @state.viewerSize? && ! @state.dragged
-      @setState
-        dx: @props.subject.location.spec.x * @state.viewerSize.scale.horizontal
-        dy: (@props.subject.location.spec.y + @props.subject.location.spec.height) * @state.viewerSize.scale.vertical
+    # TODO: PB: Sascha is working on positioning; disabling this dep code for now:
+    # if @state.viewerSize? && ! @state.dragged
+      # @setState
+        # dx: @props.subject.location.spec.x * @state.viewerSize.scale.horizontal
+        # dy: (@props.subject.location.spec.y + @props.subject.location.spec.height) * @state.viewerSize.scale.vertical
       # console.log "TextTool#updatePosition setting state: ", @state
 
   handleFieldComplete: (key, ann) ->
@@ -99,7 +102,7 @@ CompositeTool = React.createClass
             <label>{@props.task.instruction}</label>
             { for annotation_key, tool_config of @props.task.tool_config.tools
               # path = "../#{tool_config.tool.replace(/_/, '-')}"
-              tool_inst = @props.transcribe_tools[tool_config.tool]
+              tool_inst = @props.transcribeTools[tool_config.tool]
               focus = annotation_key == @state.active_field_key
 
               tool_props =

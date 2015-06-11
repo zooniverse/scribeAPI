@@ -47,7 +47,6 @@ TextTool = React.createClass
     @setState
       annotation: @props.annotation
 
-    # console.log "focus(receive props)? ", @props.focus
     @refs.input0.getDOMNode().focus() if @props.focus
 
   componentWillMount: ->
