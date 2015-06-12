@@ -14,19 +14,25 @@
       "tool": "textTool",
       "tool_config": {},
       "instruction": "Transcribe this point." ,
-      "next_task": "entry_date"
+      "next_task": "entry_date",
+      "generates_subject_type": "verify_point"
+
     },
     "transcribe_rectangle": {
       "tool": "textTool",
       "tool_config": {},
       "instruction": "Transcribe this rectangle.",
-      "next_task": null
+      "next_task": null,
+      "generates_subject_type": "verify_rectangle"
+
     },
     "transcribe_text_row": {
       "tool": "textTool",
       "tool_config": {},
       "instruction": "Transcribe this text row.",
-      "next_task": null
+      "next_task": null,
+      "generates_subject_type": "verify_text_row"
+
     },
 
     "entry_date": {

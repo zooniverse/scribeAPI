@@ -119,11 +119,10 @@ TextTool = React.createClass
     # return null unless @props.viewerSize? && @props.subject?
 
     # If user has set a custom position, position based on that:
-    console.log 'RENDER', @
     style =
       left: "#{@state.dx*@props.scale.horizontal}px"
       top: "#{@state.dy*@props.scale.vertical}px"
-    console.log 'FOO'
+
     # console.log "TextTool# render"
     # console.dir @state.annotation
     val = @state.annotation[@props.annotation_key] ? ''
@@ -145,7 +144,11 @@ TextTool = React.createClass
           onStart = {@handleInitStart}
           onDrag  = {@handleInitDrag}
           onEnd   = {@handleInitRelease}
-          ref     = "inputWrapper0">
+          ref     = "inputWrapper0"
+          x       = {@state.dx*@props.scale.horizontal}
+          y       = {@state.dy*@props.scale.vertical}
+
+          >
 
           <div className="transcribe-tool" style={style}>
             <div className="left">
@@ -155,6 +158,7 @@ TextTool = React.createClass
               <DoneButton onClick={@commitAnnotation} />
             </div>
           </div>
+
         </Draggable>
 
     tool_content
