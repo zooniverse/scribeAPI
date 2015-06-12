@@ -89,7 +89,9 @@ module.exports = React.createClass
     task: null
     annotation: null
     onChange: NOOP
-    subToolIndex: 0
+
+  componentDidMount: ->
+    @handleChange 0
 
   render: ->
 
@@ -103,7 +105,7 @@ module.exports = React.createClass
 
       <label
         key={tool._key}
-        className="minor-button #{if i is @props.annotation.subToolIndex then 'active' else ''}"
+        className="minor-button #{if i is (@props.annotation.subToolIndex ? 0) then 'active' else ''}"
       >
         <span
           className="drawing-tool-icon"
@@ -113,7 +115,8 @@ module.exports = React.createClass
         <input
           type="radio"
           className="drawing-tool-input"
-          checked={ i is @props.subToolIndex }
+          checked={ i is (@props.annotation.subToolIndex ? 0) }
+          ref={"inp-" + i}
           onChange={ @handleChange.bind this, i }
         />
 
@@ -127,10 +130,10 @@ module.exports = React.createClass
     <GenericTask question={@props.task.instruction} help={@props.task.help} answers={tools} />
 
   handleChange: (index, e) ->
-    console.log 'handleChange(): INDEX = ', index
-    if e.target.checked
-      # @props.annotation._toolIndex = index
-      # @props.onChange? e
+    console.log 'handleChange(): INDEX = ', index, @refs
+    inp = @refs["inp-#{index}"]
+    if inp.getDOMNode().checked
+      # if e.target.checked
       @props.onChange? {
         subToolIndex: index,
         toolName: @props.task.tool_config.tools[index].type

@@ -88,9 +88,10 @@ module.exports = React.createClass
 
   # Handle initial mousedown:
   handleInitStart: (e) ->
-    console.log "SubjectViewer#handleInitStart: sub tool index:", @props.subToolIndex
-    return null if ! @props.subToolIndex?
-    subTool = @props.task.tool_config.tools[@props.subToolIndex]
+    console.log 'SUBJECT-VIEWER::handleInitStart(): ', @props
+
+    return null if ! @props.annotation?.subToolIndex?
+    subTool = @props.task.tool_config.tools[@props.annotation.subToolIndex]
     return null if ! subTool?
 
     # If there's a current, uncommitted mark, commit it:
@@ -102,6 +103,7 @@ module.exports = React.createClass
 
     # Create an initial mark instance, which will soon gather coords:
     mark = toolName: subTool.type
+    console.log "uncomitted: ", mark, subTool
 
     mouseCoords = @getEventOffset e
 

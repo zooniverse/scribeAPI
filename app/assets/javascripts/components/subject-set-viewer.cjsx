@@ -43,7 +43,6 @@ module.exports = React.createClass
           task={@props.task}
           annotation={@props.annotation}
           active={index == @state.subject_set_index}
-          subToolIndex={@props.subToolIndex}
           onComplete={@props.onComplete}
         />
       }

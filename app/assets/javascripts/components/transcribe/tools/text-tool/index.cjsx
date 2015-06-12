@@ -32,6 +32,8 @@ TextTool = React.createClass
     viewerSize: @props.viewerSize
     annotation:
       value: ''
+    x: 100
+    y: 200
 
   getDefaultProps: ->
     annotation: {}
@@ -46,6 +48,8 @@ TextTool = React.createClass
     # console.dir @props.annotation
     @setState
       annotation: @props.annotation
+      x: 100
+      y: 200
 
     @refs.input0.getDOMNode().focus() if @props.focus
 
@@ -142,7 +146,10 @@ TextTool = React.createClass
           onStart = {@handleInitStart}
           onDrag  = {@handleInitDrag}
           onEnd   = {@handleInitRelease}
-          ref     = "inputWrapper0">
+          ref     = "inputWrapper0"
+          x       = @state.x
+          y       = @state.y
+        >
 
           <div className="transcribe-tool" style={style}>
             <div className="left">
