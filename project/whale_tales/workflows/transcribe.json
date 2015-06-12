@@ -11,44 +11,44 @@
   "tasks": {
 
     "transcribe_point": {
-      "tool": "text_tool",
+      "tool": "textTool",
       "tool_config": {},
       "instruction": "Transcribe this point." ,
       "next_task": "entry_date"
     },
     "transcribe_rectangle": {
-      "tool": "text_tool",
+      "tool": "textTool",
       "tool_config": {},
       "instruction": "Transcribe this rectangle.",
       "next_task": null
     },
     "transcribe_text_row": {
-      "tool": "text_tool",
+      "tool": "textTool",
       "tool_config": {},
       "instruction": "Transcribe this text row.",
       "next_task": null
     },
 
     "entry_date": {
-      "tool": "text_tool",
+      "tool": "textTool",
       "tool_config": {},
       "instruction": "What is the entry date?",
       "next_task": "page_number"
     },
     "page_number": {
-      "tool": "text_tool",
+      "tool": "textTool",
       "tool_config": {},
       "instruction": "What is the page number?",
       "next_task": "location"
     },
     "location": {
-      "tool": "text_tool",
+      "tool": "textTool",
       "tool_config": {},
       "instruction": "What is the location?",
       "next_task": "entry_text"
     },
     "entry_text": {
-      "tool": "text_tool",
+      "tool": "textTool",
       "tool_config": {},
       "instruction": "Please transcribe the remainder of the highlighted entry.",
       "next_task": null
