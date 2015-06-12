@@ -11,26 +11,26 @@
 
     "tasks": {
         "att_transcribe_number": {
-            "tool": "text_tool",
+            "tool": "textTool",
             "tool_config": {},
             "instruction": "Enter the number",
             "generates_subject_type": "transcribed_number"
 
         },
         "att_textRowTool_name": {
-            "tool": "text_tool",
+            "tool": "textTool",
             "tool_config": {},
             "instruction": "Enter the name",
             "generates_subject_type": "transcribed_name"
         },
         "att_textRowTool_regiment": {
-            "tool": "text_tool",
+            "tool": "textTool",
             "tool_config": {},
             "instruction": "Enter the regiment",
             "generates_subject_type": "transcribed_regiment"
         },
         "att_textRowTool_question": {
-            "tool": "text_tool",
+            "tool": "textTool",
             "tool_config": {},
             "instruction": "Enter the question",
             "generates_subject_type": "transcribed_question"

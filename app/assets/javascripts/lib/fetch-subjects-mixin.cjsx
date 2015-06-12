@@ -83,10 +83,10 @@ module.exports =
       console.log("retrived subejct set", subject)
       @setState
         subjects: [subject]
-        currentSubject: subject
-
-      if @fetchSubjectsCallback?
-        @fetchSubjectsCallback()
+        currentSubject: subject,
+        () =>
+          if @fetchSubjectsCallback?
+            @fetchSubjectsCallback()
 
   fetchSubjects: (workflow_id, limit) ->
     console.log '@props.overrideFetchSubjectsUrl', @props.overrideFetchSubjectsUrl
