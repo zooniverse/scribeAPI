@@ -29,18 +29,44 @@ module.exports = React.createClass # rename to Classifier
     classificationIndex:          0
 
   componentWillMount: ->
+    completion_assessment_task = {
+        "generates_subject_type": null,
+        "instruction": "Is there anything left to mark?",
+        "key": "completion_assessment_task",
+        "next_task": null,
+        "tool": "pickOne",
+        "tool_config": {
+            "options": {
+                "complete_subject": {
+                    "label": "yes",
+                    "next_task": null
+                },
+                "incomplete_subject": {
+                    "label": "no",
+                    "next_task": null
+                }
+            }
+        },
+        "subToolIndex": 0
+      }
+
+    @props.workflow.tasks["completion_assessment_task"] = completion_assessment_task
     @setState
       taskKey: @props.workflow.first_task
+    # TODO: insert the final task into workflow.tasks
 
     @beginClassification()
 
 
   render: ->
     return null unless @state.currentSubjectSet?
+    console.log "mark/index state", @state
+    console.log "@state.currentTask", @state.currentTask
 
-    console.log '<<<<<<<<<<<<<<< SUBTOOL INDEX >>>>>>>>>>>>>>>>', @state.subToolIndex
+    # TODO: can we delete the commented out code below?
     # annotations = @props.classification.annotations
     # currentAnnotation = if annotations.length is 0 then {} else annotations[annotations.length-1]
+
     currentTask = @props.workflow.tasks[@state.taskKey] # [currentAnnotation?.task]
     TaskComponent = @getCurrentTool() # coreTools[currentTask.tool]
     onFirstAnnotation = @state.taskKey == @props.workflow.first_task
@@ -81,7 +107,10 @@ module.exports = React.createClass # rename to Classifier
             { if @getNextTask()?
                 <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@advanceToNextTask}>Next</button>
               else
-                <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Done</button>
+                if @state.taskKey == "completion_assessment_task"
+                  <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Next Subject</button>
+                else
+                  <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Done</button>
             }
           </nav>
         </div>
@@ -108,18 +137,12 @@ module.exports = React.createClass # rename to Classifier
 
   # Handle user selecting a pick/drawing tool:
   handleDataFromTool: (d) ->
-    # console.log 'handleDataFromTool(): DATA RECEIVED = ', d
     classifications = @state.classifications
     classifications[@state.classificationIndex].annotation[k] = v for k, v of d
-
-    # console.log '[[[[[[[ CURRENT CLASSIFICATION ]]]]]]]', classifications[@state.classificationIndex]
 
     @forceUpdate()
     @setState
       classifications: classifications
-        # , =>
-        #   console.log 'CLASSIFICATIONS: ', classifications
-        #   console.log 'CURRENT TOOL: ', @getCurrentClassification().annotation.toolName
 
   destroyCurrentAnnotation: ->
     # TODO: implement mechanism for going backwards to previous classification, potentially deleting later classifications from stack:
@@ -127,18 +150,12 @@ module.exports = React.createClass # rename to Classifier
     # @props.classification.annotations.pop()
 
   completeSubjectSet: ->
-    console.log "TODO: At this point, ask user if there's more to mark and then load next subjectset to classify."
-
-    # AMS: branch classification-refactor has this commented out...
-    # return
-    # @props.classification.update
-    #   completed: true
-    #   subject_set: @state.currentSubjectSet
-    #   workflow_id: @state.workflow.id
-    #   console.log "Gen NEw SUB", @state.workflow.generates_new_subjects
-    #   'metadata.finished_at': (new Date).toISOString()
-    # @props.classification.save()
-    # @props.onComplete?() # does this do anything? -STI
-    # console.log 'CLASSIFICATION: ', @props.classification
+    console.log "currentTask from #completeSubjectSet", @state.currentTask
+    if @state.taskKey != "completion_assessment_task"
+      @setState
+        taskKey: "completion_assessment_task"
+    else
+      console.log "before commit of completeSubjectSet"
+      @commitClassification()
 
 window.React = React

@@ -81,7 +81,6 @@ module.exports = React.createClass
   initCoords: null
 
   getInitialState: ->
-    # console.log "@pros rectangle index", @props
     mark = @props.mark
     unless mark.status?
       mark.status = 'mark'

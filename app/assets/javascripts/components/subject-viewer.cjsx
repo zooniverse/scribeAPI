@@ -88,8 +88,6 @@ module.exports = React.createClass
 
   # Handle initial mousedown:
   handleInitStart: (e) ->
-
-    # console.log "SubjectViewer#handleInitStart: sub tool index:", @props.subToolIndex
     return null if ! @props.subToolIndex?
     subTool = @props.task.tool_config.tools[@props.annotation.subToolIndex]
     return null if ! subTool?
@@ -227,7 +225,6 @@ module.exports = React.createClass
           # console.log 'SELECTED MARK: ', mark
           @props.onChange? mark
   render: ->
-
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     # ToolComponent = @state.tool # AMS:from classification refactor.
     mark = @state.uncommittedMark
@@ -266,8 +263,6 @@ module.exports = React.createClass
 
           { # DISPLAY PREVIOUS MARKS
             for mark, i in @props.subject.child_subjects_info
-              # console.log "PREVIOUS MARK", mark
-              # console.log "@props.subject.child_subjects_info", @props.subject.child_subjects_info
               toolName = mark.data.toolName
               if toolName?
                # = markingTools[toolName]

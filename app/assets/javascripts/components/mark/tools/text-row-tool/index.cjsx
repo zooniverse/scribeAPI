@@ -78,7 +78,6 @@ module.exports = React.createClass
     y: (@props.mark.yLower-@props.mark.yUpper)/2
 
   render: ->
-    console.log "TextRowTool TextRowTool TextRowTool"
     if @state.markStatus is 'mark-committed'
       isPriorMark = true
       @props.disabled = true
