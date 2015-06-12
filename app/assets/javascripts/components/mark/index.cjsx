@@ -156,6 +156,7 @@ module.exports = React.createClass # rename to Classifier
     else
       console.log "before commit of completeSubjectSet"
       @commitClassification()
+      @fetchSubjectSets(@props.workflow.id, 1)
 
 
 
