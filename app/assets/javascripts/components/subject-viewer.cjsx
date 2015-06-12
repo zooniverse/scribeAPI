@@ -365,8 +365,8 @@ module.exports = React.createClass
             if @props.children?
               @props.children
               # cloneWithProps @props.children,
-               #  subject: @props.subject
-                # scale: scale
+              #   subject: @props.subject
+              #   scale: scale
           }
         </div>
       </div>
