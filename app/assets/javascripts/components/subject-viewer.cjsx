@@ -102,6 +102,7 @@ module.exports = React.createClass
     # Create an initial mark instance, which will soon gather coords:
     mark = toolName: subTool.type
 
+
     mouseCoords = @getEventOffset e
 
     if MarkComponent.defaultValues?
@@ -114,6 +115,8 @@ module.exports = React.createClass
       initValues = MarkComponent.initStart mouseCoords, mark, e
       for key, value of initValues
         mark[key] = value
+
+    @props.onChange? mark
 
     @setState
       uncommittedMark: mark
@@ -139,6 +142,7 @@ module.exports = React.createClass
         mark[key] = value
 
     @props.onChange? mark
+
     @setState
       uncommittedMark: mark
 
@@ -216,8 +220,10 @@ module.exports = React.createClass
 
   handleChange: (mark) ->
     @setState
-      selectedMark: mark, => console.log 'SELECTED MARK: ', mark
-
+      selectedMark: mark
+        , =>
+          # console.log 'SELECTED MARK: ', mark
+          @props.onChange? mark
   render: ->
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     # ToolComponent = @state.tool # AMS:from classification refactor.
@@ -294,7 +300,6 @@ module.exports = React.createClass
               toolName = @props.subject.region.toolName
               mark = @props.subject.region
               ToolComponent = markingTools[toolName]
-
               isPriorMark = true
               <g>
                 { @highlightMark(mark, toolName) }
@@ -364,9 +369,9 @@ module.exports = React.createClass
             console.log "SubjectViewer#render children: ", @props.children
             if @props.children?
               @props.children
-              # cloneWithProps @props.children,
-              #   subject: @props.subject
-              #   scale: scale
+              cloneWithProps @props.children,
+                scale: scale # pass scale down to children (for transcribe tools)
+               #  subject: @props.subject
           }
         </div>
       </div>

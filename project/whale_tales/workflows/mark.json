@@ -1,14 +1,11 @@
 {
   "name":"mark",
   "label":"Mark Workflow",
-
   "subject_fetch_limit":     10,
 
   "generates_subjects":  true,
   "generates_subjects_after": 1,
   "generates_subjects_for":  "transcribe",
-  "generates_subjects_max":   1,
-  "retire_limit":            2,
 
   "first_task":"records_present",
 

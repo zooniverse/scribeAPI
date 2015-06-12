@@ -13,8 +13,10 @@ module.exports =
     classifications.push classification
     @setState
       classifications: classifications
-      classificationIndex: classifications.length-1,
-      () =>
+      classificationIndex: classifications.length-1
+        , =>
+          window.classifications = @state.classifications # make accessible to console
+
         # console.log "Begin classification: ", @state.classifications
         # console.log "  ann: ", c.annotation for c in @state.classifications
 

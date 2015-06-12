@@ -11,7 +11,7 @@ TextTool = React.createClass
     @setState preventDrag: false
     if e.target.nodeName is "INPUT" or e.target.nodeName is "TEXTAREA"
       @setState preventDrag: true
-      
+
     @setState
       xClick: e.pageX - $('.transcribe-tool').offset().left
       yClick: e.pageY - $('.transcribe-tool').offset().top
@@ -29,9 +29,12 @@ TextTool = React.createClass
       dragged: true
 
   getInitialState: ->
+    console.log 'PROPS ', @props
     viewerSize: @props.viewerSize
     annotation:
       value: ''
+    dx: @props.subject.data.x
+    dy: @props.subject.data.y
 
   getDefaultProps: ->
     annotation: {}
@@ -40,7 +43,7 @@ TextTool = React.createClass
     standalone: true
     annotation_key: 'value'
     focus: true
-   
+
   componentWillReceiveProps: ->
     # console.log "TextTool# willReceiveProps"
     # console.dir @props.annotation
@@ -74,11 +77,11 @@ TextTool = React.createClass
             success: ( data ) =>
               response( data )
         minLength: 3
-      
+
   # Expects size hash with:
   #   w: [viewer width]
   #   h: [viewer height]
-  #   scale: 
+  #   scale:
   #     horizontal: [horiz scaling of image to fit within above vals]
   #     vertical:   [vert scaling of image..]
   onViewerResize: (size) ->
@@ -107,8 +110,8 @@ TextTool = React.createClass
       @commitAnnotation()
       e.preventDefault()
 
-    # else if [27].indexOf(e.keyCode) >= 0 # ESC: 
-      # cancel ann? 
+    # else if [27].indexOf(e.keyCode) >= 0 # ESC:
+      # cancel ann?
 
 
 
@@ -117,14 +120,12 @@ TextTool = React.createClass
 
     # If user has set a custom position, position based on that:
     style =
-      left: @state.dx
-      top: @state.dy
-    # console.log "TextTool#render pos", @state
+      left: "#{@state.dx*@props.scale.horizontal}px"
+      top: "#{@state.dy*@props.scale.vertical}px"
 
     # console.log "TextTool# render"
     # console.dir @state.annotation
     val = @state.annotation[@props.annotation_key] ? ''
-    # console.log "TextTool#render val:", val, @state.annotation?.value
 
     label = @props.task.instruction
     if ! @props.standalone
@@ -137,12 +138,17 @@ TextTool = React.createClass
       </div>
 
     if @props.standalone
+      console.log 'STANDALONE'
       tool_content =
         <Draggable
           onStart = {@handleInitStart}
           onDrag  = {@handleInitDrag}
           onEnd   = {@handleInitRelease}
-          ref     = "inputWrapper0">
+          ref     = "inputWrapper0"
+          x       = {@state.dx*@props.scale.horizontal}
+          y       = {@state.dy*@props.scale.vertical}
+
+          >
 
           <div className="transcribe-tool" style={style}>
             <div className="left">
@@ -152,6 +158,7 @@ TextTool = React.createClass
               <DoneButton onClick={@commitAnnotation} />
             </div>
           </div>
+
         </Draggable>
 
     tool_content

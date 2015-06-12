@@ -88,6 +88,7 @@ module.exports = React.createClass # rename to Classifier
               annotation={@getCurrentClassification().annotation ? {}}
               subToolIndex={@getCurrentClassification().annotation?.subToolIndex}
               onComplete={@handleToolComplete}
+              onChange={@handleDataFromTool}
               onViewSubject={@handleViewSubject}
             />
         }
@@ -128,9 +129,10 @@ module.exports = React.createClass # rename to Classifier
 
   # User somehow indicated current task is complete; commit current classification
   handleToolComplete: (d) ->
+    console.log 'handleToolComplete(): DATA = ', d
+    console.log 'TASK IS COMPLETE!'
     @handleDataFromTool(d)
     @commitClassification()
-    console.log "finding error location: @handleToolComplete"
     @beginClassification()
 
   # Handle user selecting a pick/drawing tool:
@@ -142,22 +144,19 @@ module.exports = React.createClass # rename to Classifier
     @setState
       classifications: classifications
 
-
   destroyCurrentAnnotation: ->
     # TODO: implement mechanism for going backwards to previous classification, potentially deleting later classifications from stack:
     console.log "WARN: destroyCurrentAnnotation not implemented"
     # @props.classification.annotations.pop()
-      
+
   completeSubjectSet: ->
     console.log "currentTask from #completeSubjectSet", @state.currentTask
     if @state.taskKey != "completion_assessment_task"
-      @setState 
+      @setState
         taskKey: "completion_assessment_task"
     else
       console.log "before commit of completeSubjectSet"
       @commitClassification()
       @fetchSubjectSets(@props.workflow.id, 1)
-
-
 
 window.React = React
