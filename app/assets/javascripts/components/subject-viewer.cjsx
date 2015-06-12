@@ -374,9 +374,9 @@ module.exports = React.createClass
             console.log "SubjectViewer#render children: ", @props.children
             if @props.children?
               @props.children
-              # cloneWithProps @props.children,
+              cloneWithProps @props.children,
+                scale: scale # pass scale down to children (for transcribe tools)
                #  subject: @props.subject
-                # scale: scale
           }
         </div>
       </div>
