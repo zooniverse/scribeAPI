@@ -106,7 +106,7 @@ module.exports = React.createClass
     @setState
       dragging: false
 
-    
+
     document.removeEventListener 'mousemove', @handleDrag
     document.removeEventListener 'mouseup', @handleEnd
 
