@@ -92,9 +92,6 @@ module.exports = React.createClass
     subToolIndex: 0
 
   render: ->
-    console.log 'PICK-ONE-MARK-ONE::render()'
-    console.log 'PROPS: ', @props
-
     tools = for tool, i in @props.task.tool_config.tools
       tool._key ?= Math.random()
 
@@ -127,7 +124,7 @@ module.exports = React.createClass
     <GenericTask question={@props.task.instruction} help={@props.task.help} answers={tools} />
 
   handleChange: (index, e) ->
-    console.log 'handleChange(): INDEX = ', index
+    console.log 'handle change: ', @
     if e.target.checked
       # @props.annotation._toolIndex = index
       # @props.onChange? e

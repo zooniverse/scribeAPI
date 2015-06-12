@@ -60,26 +60,29 @@ App = React.createClass
               project={@state.project}
               title={@state.project.title} />
 
-            { (w for w in workflows when w.name in ['mark','transcribe','verify']).map (workflow) =>
+            { (w for w in workflows when w.name in ['mark','transcribe','verify']).map (workflow, key) =>
                 handler = eval workflow.name.charAt(0).toUpperCase() + workflow.name.slice(1)
                 <Route
+                  key={key}
                   path={'/' + workflow.name}
                   handler={handler}
                   name={workflow.name}
                   workflow={workflow} />
             }
- 
-            { (w for w in workflows when w.name in ['mark']).map (workflow) =>
+
+            { (w for w, i in workflows when w.name in ['mark']).map (workflow, key) =>
                 handler = eval workflow.name.charAt(0).toUpperCase() + workflow.name.slice(1)
                 <Route
+                  key={key}
                   path={'/' + workflow.name + '/:subject_set_id'}
                   handler={handler}
                   name={workflow.name + '_specific'}
                   workflow={workflow} />
             }
-            { (w for w in workflows when w.name in ['transcribe','verify']).map (workflow) =>
+            { (w for w, i in workflows when w.name in ['transcribe','verify']).map (workflow, key) =>
                 handler = eval workflow.name.charAt(0).toUpperCase() + workflow.name.slice(1)
                 <Route
+                  key={key}
                   path={'/' + workflow.name + '/:subject_id'}
                   handler={handler}
                   name={workflow.name + '_specific'}
@@ -88,9 +91,11 @@ App = React.createClass
 
             { @state.pages?.map (page, key) =>
                 <Route
+                  key={key}
                   path={'/'+page.name}
                   handler={@controllerForPage(page)}
-                  name={page.name} key={key} />
+                  name={page.name}
+                />
             }
 
           </Routes>

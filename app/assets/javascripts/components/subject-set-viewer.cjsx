@@ -45,6 +45,7 @@ module.exports = React.createClass
           active={index == @state.subject_set_index}
           subToolIndex={@props.subToolIndex}
           onComplete={@props.onComplete}
+          onChange={@props.onChange}
         />
       }
       <div className="subject-set-nav">

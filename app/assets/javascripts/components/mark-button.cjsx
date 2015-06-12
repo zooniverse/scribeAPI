@@ -26,24 +26,25 @@ module.exports = React.createClass
     y: 0
     rotate: 0
 
-  componentWillReceiveProps: ->
-    console.log 'component will receive props: ', @props.markStatus, @props.locked
-
-
-  foo: ->
-    return {
-      __html: '
-      <filter id="dropShadow">
-        <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
-        <feOffset dx="2" dy="4" />
-        <feMerge>
-          <feMergeNode />
-          <feMergeNode in="SourceGraphic" />
-        </feMerge>
-      </filter>
-      <circle cx="60"  cy="60" r="50" fill="transparent" filter="url(#dropShadow)" />
-      '
-    }
+  # componentWillReceiveProps: ->
+  #   # console.log 'component will receive props: ', @props.markStatus, @props.locked
+  #
+  #
+  # foo: ->
+  #   return {
+  #     __html: '
+  #     <filter id="dropShadow">
+  #       <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
+  #       <feOffset dx="2" dy="4" />
+  #       <feMerge>
+  #         <feMergeNode />
+  #         <feMergeNode in="SourceGraphic" />
+  #       </feMerge>
+  #     </filter>
+  #     <circle cx="60"  cy="60" r="50" fill="transparent" filter="url(#dropShadow)" />
+  #     '
+  #   }
+  #
   render: ->
 
     transform = "

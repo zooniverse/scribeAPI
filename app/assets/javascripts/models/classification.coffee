@@ -3,6 +3,10 @@ class Classification
   constructor: ->
     @metadata =
       started_at: (new Date).toISOString()
+    @annotation = {}
+    @subject_id = null
+    @subject_set_id = null
+    @task_key = null
 
     @annotation = {}
     @subject_id = null
