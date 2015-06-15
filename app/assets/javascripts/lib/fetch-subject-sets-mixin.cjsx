@@ -42,6 +42,16 @@ module.exports =
           currentSubjectSet: subject_sets[0]
           currentSubject: subject_sets[0].subjects[0]
 
+  # Once we get down to subject level, the subjects need to be sorted by region.y. 
+  # 
+  # orderChildSubjectsByY: ->
+  #   for subject_set, i in subject_sets
+  #     for subject, i in subject_set
+  #       for key, value of subject
+
+
+
+
     # WHY DOES THIS BREAK?
     # request.error (xhr, status, err) =>
     #   console.error "Error loading subjects: ", url, status, err.toString()

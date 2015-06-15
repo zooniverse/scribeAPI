@@ -35,6 +35,10 @@ module.exports = React.createClass
 
   render: ->
     <div className="subject-set-viewer">
+      <div className="subject-set-nav">
+        <ActionButton text="Previous" onClick={@advancePrevious} className={if @state.subject_set_index == 0 then 'disabled' else ''}/>
+        <ActionButton text="Next" onClick={@advanceNext} className={if @state.subject_set_index == @props.subject_set.subjects.length-1 then 'disabled' else ''} />
+      </div>
       { for subject, index in @props.subject_set.subjects
         <SubjectViewer
           key={index}
@@ -48,10 +52,6 @@ module.exports = React.createClass
           onChange={@props.onChange}
         />
       }
-      <div className="subject-set-nav">
-        <ActionButton text="Previous" onClick={@advancePrevious} className={if @state.subject_set_index == 0 then 'disabled' else ''}/>
-        <ActionButton text="Next" onClick={@advanceNext} className={if @state.subject_set_index == @props.subject_set.subjects.length-1 then 'disabled' else ''} />
-      </div>
     </div>
 
 window.React = React

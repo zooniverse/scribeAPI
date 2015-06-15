@@ -27,6 +27,7 @@ module.exports = React.createClass # rename to Classifier
     # annotation: {}
     classifications:              []
     classificationIndex:          0
+    subject_set_index:            0
 
   componentWillMount: ->
     completion_assessment_task = {
@@ -122,8 +123,22 @@ module.exports = React.createClass # rename to Classifier
       </div>
     </div>
 
+  getNextSubject: ->
+    console.log "BEFORE @setState", @state
+    new_index = @state.subject_set_index + 1
+    return if new_index < 0 || new_index >= @state.currentSubjectSet.subjects.length
+    console.log "NEW INDEX", new_index
+
+    @setState subject_set_index: new_index, () =>
+      @handleViewSubject @state.currentSubjectSet.subjects[@state.subject_set_index]
+      console.log "AFTER @setState", @state
+      
   # User changed currently-viewed subject:
+
   handleViewSubject: (subject) ->
+    console.log "HANDLE View Subject: subject", subject
+    # @state.currentSubject = subject
+    # @forceUpdate()
     @setState
       currentSubject: subject
 
@@ -155,8 +170,11 @@ module.exports = React.createClass # rename to Classifier
       @setState
         taskKey: "completion_assessment_task"
     else
-      console.log "before commit of completeSubjectSet"
+      console.log "before commit of completeSubjectSet @state", @state
+      console.log "@state.currentSubject", @state.currentSubject
+      console.log "@state.currentSubjectSet", @state.currentSubjectSet
       @commitClassification()
-      @fetchSubjectSets(@props.workflow.id, 1)
+      @getNextSubject()
+      # @fetchSubjectSets(@props.workflow.id, 1)
 
 window.React = React

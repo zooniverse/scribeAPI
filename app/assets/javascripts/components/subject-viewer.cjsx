@@ -1,4 +1,4 @@
-# @cjsx React.DOM
+  # @cjsx React.DOM
 
 React                         = require 'react'
 {Router, Routes, Route, Link} = require 'react-router'
