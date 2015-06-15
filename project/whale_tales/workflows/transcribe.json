@@ -22,7 +22,7 @@
       "tool": "textTool",
       "tool_config": {},
       "instruction": "Transcribe this rectangle.",
-      "next_task": null,
+      "next_task": "entry_date",
       "generates_subject_type": "verify_rectangle"
 
     },
@@ -30,7 +30,7 @@
       "tool": "textTool",
       "tool_config": {},
       "instruction": "Transcribe this text row.",
-      "next_task": null,
+      "next_task": "entry_date",
       "generates_subject_type": "verify_text_row"
 
     },

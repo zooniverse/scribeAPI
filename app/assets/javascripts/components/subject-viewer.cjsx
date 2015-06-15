@@ -44,7 +44,6 @@ module.exports = React.createClass
     annotationIsComplete: false
 
   componentWillReceiveProps: ->
-    console.log "SubjectViewer# willReceiveProps"
     console.dir @props.annotation
 
   componentDidMount: ->
@@ -88,7 +87,8 @@ module.exports = React.createClass
 
   # Handle initial mousedown:
   handleInitStart: (e) ->
-    return null if ! @props.subToolIndex?
+    console.log 'handleInitStart()'
+    return null if ! @props.annotation?.subToolIndex?
     subTool = @props.task.tool_config.tools[@props.annotation.subToolIndex]
     return null if ! subTool?
 
@@ -101,6 +101,7 @@ module.exports = React.createClass
 
     # Create an initial mark instance, which will soon gather coords:
     mark = toolName: subTool.type
+    console.log "uncomitted: ", mark, subTool
 
 
     mouseCoords = @getEventOffset e
@@ -366,7 +367,7 @@ module.exports = React.createClass
         <div className="marking-surface">
           {markingSurfaceContent}
           {
-            console.log "SubjectViewer#render children: ", @props.children
+            # console.log "SubjectViewer#render children: ", @props.children
             if @props.children?
               @props.children
               cloneWithProps @props.children,

@@ -76,6 +76,7 @@ module.exports =
 
   # Advance to a named task:
   advanceToTask: (key) ->
+    console.log 'advanceToTask: key = ', key
     task = @state.workflow.tasks[ key ]
 
     tool = coreTools[task?.tool] ? transcribeTools[task?.tool]
@@ -83,8 +84,8 @@ module.exports =
       console.warn "WARN: Invalid task key: ", key
 
     else if ! tool?
-      console.log "Props", @props
-      console.log "STATE", @state
+      # console.log "Props", @props
+      # console.log "STATE", @state
       console.warn "WARN: Invalid tool specified in #{key}: #{task.tool}"
 
     else

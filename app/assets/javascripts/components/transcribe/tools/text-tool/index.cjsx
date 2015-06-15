@@ -29,14 +29,34 @@ TextTool = React.createClass
       dragged: true
 
   getInitialState: ->
-    console.log 'PROPS ', @props
+    # console.log 'TEXT-TOOL::getInitialState(), props = ', @props
+
+    # compute component location
+    {x,y} = @getPosition @props.subject.data
+
+    dx: x
+    dy: y
     viewerSize: @props.viewerSize
     annotation:
       value: ''
-    dx: @props.subject.data.x
-    dy: @props.subject.data.y
+    x: 100
+    y: 200
+
+  getPosition: (data) ->
+    switch data.toolName
+      when 'rectangleTool'
+        x = data.x
+        y = data.y + data.height
+      when 'textRowTool'
+        x = data.x
+        y = data.yLower
+      else # default for pointTool
+        x = data.x
+        y = data.y
+    return {x,y}
 
   getDefaultProps: ->
+    # console.log 'getDefaultProps()'
     annotation: {}
     task: null
     subject: null
@@ -45,12 +65,13 @@ TextTool = React.createClass
     focus: true
 
   componentWillReceiveProps: ->
-    # console.log "TextTool# willReceiveProps"
-    # console.dir @props.annotation
-    @setState
-      annotation: @props.annotation
-
     @refs.input0.getDOMNode().focus() if @props.focus
+    {x,y} = @getPosition @props.subject.data
+    @setState
+      dx: x
+      dy: y
+      annotation: @props.annotation
+      , => @forceUpdate() # updates component position on new subject
 
   componentWillMount: ->
     # console.log "TextTool# mounting"
@@ -113,8 +134,6 @@ TextTool = React.createClass
     # else if [27].indexOf(e.keyCode) >= 0 # ESC:
       # cancel ann?
 
-
-
   render: ->
     # return null unless @props.viewerSize? && @props.subject?
 
@@ -123,11 +142,16 @@ TextTool = React.createClass
       left: "#{@state.dx*@props.scale.horizontal}px"
       top: "#{@state.dy*@props.scale.vertical}px"
 
-    # console.log "TextTool# render"
-    # console.dir @state.annotation
-    val = @state.annotation[@props.annotation_key] ? ''
+    # A BUNCH OF DEBUG CODE
+    console.log 'TEXT-TOOL::render(), SUBJECT = ', @props.subject
+    # console.log 'TEXT-TOOL::render PROPS = ', @props
+    # console.log 'TEXT-TOOL::render, SCALE IS: ', @props.scale
+    # console.log 'TEXT-TOOL::render, COORDS ARE: ', @props.dx, @props.dy
+    # console.log 'TEXT-TOOL::render, STYLE IS: ', style
 
+    val = @state.annotation[@props.annotation_key] ? ''
     label = @props.task.instruction
+
     if ! @props.standalone
       label = @props.label ? ''
 
@@ -137,8 +161,9 @@ TextTool = React.createClass
         <input ref="input0" type="text" data-task_key={@props.task.key} onKeyDown={@handleKeyPress} onChange={@handleChange} value={val} />
       </div>
 
+    console.log 'SENDING COORDS TO DRAGGABLE: ', @state.dx*@props.scale.horizontal, @state.dy*@props.scale.vertical
+
     if @props.standalone
-      console.log 'STANDALONE'
       tool_content =
         <Draggable
           onStart = {@handleInitStart}
@@ -147,8 +172,7 @@ TextTool = React.createClass
           ref     = "inputWrapper0"
           x       = {@state.dx*@props.scale.horizontal}
           y       = {@state.dy*@props.scale.vertical}
-
-          >
+        >
 
           <div className="transcribe-tool" style={style}>
             <div className="left">

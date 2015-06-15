@@ -8,12 +8,14 @@ module.exports = React.createClass
 
   getInitialState: ->
     # console.log "Draggable[#{@props.inst}]#getInitialState: ", @props.x, @props.y
-    x: @props.x ? 0
-    y: @props.y ? 0
+    x: @props.x # ? 0
+    y: @props.y #? 0
 
-  # componentWillReceiveProps: ->
-    # console.log "Draggable#willreceive", @props.x
-
+  componentWillReceiveProps: ->
+    # console.log 'DRAGGABLE::componentWillReceiveProps(), props =', @props
+    @setState
+      x: @props.x
+      y: @props.y
   # shouldComponentUpdate: ->
     # console.log "Draggable#shouldComponentUpdate", @props.x
 
@@ -74,7 +76,6 @@ module.exports = React.createClass
 
     # Prefix with this class to switch from `cursor:grab` to `cursor:grabbing`.
     document.body.classList.add 'dragging'
-
     document.addEventListener 'mousemove', @handleDrag
     document.addEventListener 'mouseup', @handleEnd
 

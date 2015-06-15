@@ -31,7 +31,7 @@ module.exports =
   highlightMark: (mark, toolName) ->
     # DEBUG CODE
     # console.log 'TOOL NAME: ', toolName
-    console.log "highlightMark: ", mark
+    # console.log "highlightMark: ", mark
     highlight =
       # TODO: Note that x, y, w h aren't scaled properly:
       switch toolName

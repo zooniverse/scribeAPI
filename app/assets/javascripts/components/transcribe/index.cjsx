@@ -32,10 +32,10 @@ module.exports = React.createClass # rename to Classifier
     @beginClassification()
 
   fetchSubjectsCallback: ->
+    console.log 'fetchSubjectsCallback(), TASK KEY  = ', @state.currentSubject.type
     #TODO: We do need to account for times when there are no subjects? type won't do that. -AMS
 
-    @setState
-      taskKey: @state.currentSubject.type
+    @setState taskKey: @state.currentSubject.type
     # @advanceToTask new_key
 
   handleTaskComponentChange: (val) ->
@@ -67,13 +67,19 @@ module.exports = React.createClass # rename to Classifier
       @advanceToNextSubject()
 
   advanceToNextSubject: ->
+    console.log 'advanceToNextSubject()'
     currentIndex = (i for s, i in @state.subjects when s['id'] == @state.currentSubject['id'])[0]
     # console.log "subjects: ", @state.subjects
     if currentIndex + 1 < @state.subjects.length
       nextSubject = @state.subjects[currentIndex + 1]
-      @setState currentSubject: nextSubject, () =>
-        key = @state.workflow.first_task
-        @advanceToTask key
+      console.log 'NEXT SUBJECT: ', nextSubject
+      console.log 'NEXT TASK KEY: ', nextSubject.type
+      @setState
+        taskKey: nextSubject.type
+        currentSubject: nextSubject
+        , =>
+          key = @state.currentSubject.type
+          @advanceToTask key
     else
       console.warn "WARN: End of subjects"
       @setState noMoreSubjects: true
@@ -94,7 +100,9 @@ module.exports = React.createClass # rename to Classifier
     if @props.query.scrollX? and @props.query.scrollY?
       window.scrollTo(@props.query.scrollX,@props.query.scrollY)
 
-    console.log "Transcribe#render: state", @state
+    # console.log 'CURRENT SUBJECT: ', @state.currentSubject
+    # console.log "Transcribe#render: state", @state
+    #
     return null unless @getCurrentTask()? # @state.currentTask?
 
     # annotations = @props.annotations
@@ -106,15 +114,14 @@ module.exports = React.createClass # rename to Classifier
 
     # console.log "Transcribe#render: tool=#{@state.currentTask.tool} TaskComponent=", TaskComponent
 
-    nextTask = if @getCurrentTask().tool_config.options?[currentAnnotation.value]?
-      @getCurrentTask().tool_config.options?[currentAnnotation.value].next_task
-    else
-      @getCurrentTask().next_task
+    nextTask =
+      if @getCurrentTask().tool_config.options?[currentAnnotation.value]?
+        @getCurrentTask().tool_config.options?[currentAnnotation.value].next_task
+      else
+        @getCurrentTask().next_task
 
-    console.log "[[[[[[[[[[ CURRENT TASK: #{@state.currentTask} ]]]]]]]]]]", @state.currentTask
-
-    console.log "[[[[[[[[[[ NEXT TASK: #{nextTask} ]]]]]]]]]]", nextTask
-
+    # console.log 'NEXT TASK IS: ', nextTask
+    console.log 'TRANSCRIBE::render(), CURRENT SUBJCT = ', @state.currentSubject
     # console.log "viewer size: ", @state.viewerSize
     <div className="classifier">
       <div className="subject-area">
