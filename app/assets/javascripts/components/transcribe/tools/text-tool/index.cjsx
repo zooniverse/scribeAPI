@@ -29,14 +29,15 @@ TextTool = React.createClass
       dragged: true
 
   getInitialState: ->
-    console.log 'PROPS ', @props
+    # console.log 'TEXT-TOOL::getInitialState(), props = ', @props
     viewerSize: @props.viewerSize
     annotation:
       value: ''
-    dx: @props.subject.data.x
-    dy: @props.subject.data.y
+    dx: @props.subject.data.x# * @props.scale.horizontal
+    dy: @props.subject.data.y# * @props.scale.vertical
 
   getDefaultProps: ->
+    # console.log 'getDefaultProps()'
     annotation: {}
     task: null
     subject: null
@@ -45,11 +46,9 @@ TextTool = React.createClass
     focus: true
 
   componentWillReceiveProps: ->
-    # console.log "TextTool# willReceiveProps"
-    # console.dir @props.annotation
-    @setState
-      annotation: @props.annotation
-
+    # console.log 'TEXT-TOOL::componentWillReceiveProps(), PROPS = ', @props
+    # console.log 'TEXT-TOOL::componentWillReceiveProps(), SCALE IS: ', @props.scale
+    @setState annotation: @props.annotation
     @refs.input0.getDOMNode().focus() if @props.focus
 
   componentWillMount: ->
@@ -113,8 +112,6 @@ TextTool = React.createClass
     # else if [27].indexOf(e.keyCode) >= 0 # ESC:
       # cancel ann?
 
-
-
   render: ->
     # return null unless @props.viewerSize? && @props.subject?
 
@@ -123,11 +120,15 @@ TextTool = React.createClass
       left: "#{@state.dx*@props.scale.horizontal}px"
       top: "#{@state.dy*@props.scale.vertical}px"
 
-    # console.log "TextTool# render"
-    # console.dir @state.annotation
-    val = @state.annotation[@props.annotation_key] ? ''
+    # A BUNCH OF DEBUG CODE
+    # console.log 'TEXT-TOOL::render PROPS = ', @props
+    # console.log 'TEXT-TOOL::render, SCALE IS: ', @props.scale
+    # console.log 'TEXT-TOOL::render, COORDS ARE: ', @props.dx, @props.dy
+    # console.log 'TEXT-TOOL::render, STYLE IS: ', style
 
+    val = @state.annotation[@props.annotation_key] ? ''
     label = @props.task.instruction
+
     if ! @props.standalone
       label = @props.label ? ''
 
@@ -138,7 +139,6 @@ TextTool = React.createClass
       </div>
 
     if @props.standalone
-      console.log 'STANDALONE'
       tool_content =
         <Draggable
           onStart = {@handleInitStart}
@@ -147,8 +147,7 @@ TextTool = React.createClass
           ref     = "inputWrapper0"
           x       = {@state.dx*@props.scale.horizontal}
           y       = {@state.dy*@props.scale.vertical}
-
-          >
+        >
 
           <div className="transcribe-tool" style={style}>
             <div className="left">

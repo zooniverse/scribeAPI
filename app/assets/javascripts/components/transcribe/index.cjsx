@@ -94,7 +94,9 @@ module.exports = React.createClass # rename to Classifier
     if @props.query.scrollX? and @props.query.scrollY?
       window.scrollTo(@props.query.scrollX,@props.query.scrollY)
 
-    console.log "Transcribe#render: state", @state
+    # console.log 'CURRENT SUBJECT: ', @state.currentSubject
+    # console.log "Transcribe#render: state", @state
+    # 
     return null unless @getCurrentTask()? # @state.currentTask?
 
     # annotations = @props.annotations
@@ -110,10 +112,6 @@ module.exports = React.createClass # rename to Classifier
       @getCurrentTask().tool_config.options?[currentAnnotation.value].next_task
     else
       @getCurrentTask().next_task
-
-    console.log "[[[[[[[[[[ CURRENT TASK: #{@state.currentTask} ]]]]]]]]]]", @state.currentTask
-
-    console.log "[[[[[[[[[[ NEXT TASK: #{nextTask} ]]]]]]]]]]", nextTask
 
     # console.log "viewer size: ", @state.viewerSize
     <div className="classifier">

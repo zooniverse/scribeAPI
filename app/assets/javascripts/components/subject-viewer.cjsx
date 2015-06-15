@@ -44,7 +44,6 @@ module.exports = React.createClass
     annotationIsComplete: false
 
   componentWillReceiveProps: ->
-    console.log "SubjectViewer# willReceiveProps"
     console.dir @props.annotation
 
   componentDidMount: ->
@@ -366,7 +365,7 @@ module.exports = React.createClass
         <div className="marking-surface">
           {markingSurfaceContent}
           {
-            console.log "SubjectViewer#render children: ", @props.children
+            # console.log "SubjectViewer#render children: ", @props.children
             if @props.children?
               @props.children
               cloneWithProps @props.children,

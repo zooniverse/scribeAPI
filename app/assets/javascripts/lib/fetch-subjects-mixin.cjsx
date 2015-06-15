@@ -101,7 +101,7 @@ module.exports =
           @fetchSubjectsCallback()
 
     else
-      console.log "ELSE reguest"
+      # console.log "ELSE reguest"
       request = API.type('subjects').get
         workflow_id: workflow_id
         limit: limit
