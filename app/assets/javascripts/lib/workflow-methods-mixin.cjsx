@@ -8,6 +8,7 @@ module.exports =
 
   # Start a new classification:
   beginClassification: ->
+    console.log 'beginClassification()'
     classifications = @state.classifications
     classification = new Classification()
     classifications.push classification
@@ -16,8 +17,9 @@ module.exports =
       classificationIndex: classifications.length-1
         , =>
           window.classifications = @state.classifications # make accessible to console
-        # console.log "Begin classification: ", @state.classifications
-        console.log "  ann: ", c.annotation for c in @state.classifications
+          # console.log "Begin classification: ", @state.classifications
+          console.log "  ann: ", c.annotation for c in @state.classifications
+          @forceUpdate()
 
   # Push current classification to server:
   commitClassification: ->

@@ -88,6 +88,7 @@ module.exports = React.createClass
   # Handle initial mousedown:
   handleInitStart: (e) ->
     console.log 'handleInitStart()'
+    console.log 'SUBJECT-VIEWER::handleInitStart(), @props.annotation = ', @props.annotation
     return null if ! @props.annotation?.subToolIndex?
     subTool = @props.task.tool_config.tools[@props.annotation.subToolIndex]
     return null if ! subTool?
@@ -217,8 +218,10 @@ module.exports = React.createClass
 
     @setState
       marks: marks
-      uncommittedMark: null, => console.log '@STATE.MARKS = ', @state.marks
-
+      uncommittedMark: null
+        , =>
+          console.log '@STATE.MARKS = ', @state.marks
+          console.log 'UNCOMMITTED MARK = ', @state.uncommittedMark
   handleChange: (mark) ->
     @setState
       selectedMark: mark

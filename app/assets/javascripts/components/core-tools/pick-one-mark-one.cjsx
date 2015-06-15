@@ -127,7 +127,7 @@ module.exports = React.createClass
     <GenericTask question={@props.task.instruction} help={@props.task.help} answers={tools} />
 
   handleChange: (index, e) ->
-    console.log 'handleChange(): INDEX = ', index, @refs
+    console.log 'PICK-ONE-MARK-ONE::handleChange(), INDEX = ', index, @refs
     inp = @refs["inp-#{index}"]
     if inp.getDOMNode().checked
       # if e.target.checked
