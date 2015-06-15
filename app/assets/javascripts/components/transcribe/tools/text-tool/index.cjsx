@@ -39,6 +39,8 @@ TextTool = React.createClass
     viewerSize: @props.viewerSize
     annotation:
       value: ''
+    x: 100
+    y: 200
 
   getPosition: (data) ->
     switch data.toolName

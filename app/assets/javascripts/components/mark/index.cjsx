@@ -86,7 +86,6 @@ module.exports = React.createClass # rename to Classifier
               workflow={@props.workflow}
               task={currentTask}
               annotation={@getCurrentClassification().annotation ? {}}
-              subToolIndex={@getCurrentClassification().annotation?.subToolIndex}
               onComplete={@handleToolComplete}
               onChange={@handleDataFromTool}
               onViewSubject={@handleViewSubject}
@@ -99,7 +98,6 @@ module.exports = React.createClass # rename to Classifier
             task={currentTask}
             onChange={@handleDataFromTool}
             annotation={@getCurrentClassification().annotation ? {}}
-            subToolIndex={@getCurrentClassification().annotation?.subToolIndex}
           />
           <hr/>
           <nav className="task-nav">
@@ -139,8 +137,9 @@ module.exports = React.createClass # rename to Classifier
   handleDataFromTool: (d) ->
     classifications = @state.classifications
     classifications[@state.classificationIndex].annotation[k] = v for k, v of d
+    console.log "handleDataFromTool:"
+    console.dir d
 
-    @forceUpdate()
     @setState
       classifications: classifications
 

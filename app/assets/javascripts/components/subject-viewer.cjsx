@@ -87,7 +87,8 @@ module.exports = React.createClass
 
   # Handle initial mousedown:
   handleInitStart: (e) ->
-    return null if ! @props.subToolIndex?
+    return null if ! @props.subToolIndex? # this may not be needed anymore? --STI
+    return null if ! @props.annotation?.subToolIndex?
     subTool = @props.task.tool_config.tools[@props.annotation.subToolIndex]
     return null if ! subTool?
 
@@ -100,6 +101,7 @@ module.exports = React.createClass
 
     # Create an initial mark instance, which will soon gather coords:
     mark = toolName: subTool.type
+    console.log "uncomitted: ", mark, subTool
 
 
     mouseCoords = @getEventOffset e
