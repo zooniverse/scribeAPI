@@ -76,6 +76,7 @@ module.exports =
 
   # Advance to a named task:
   advanceToTask: (key) ->
+    console.log 'advanceToTask: key = ', key
     task = @state.workflow.tasks[ key ]
 
     tool = coreTools[task?.tool] ? transcribeTools[task?.tool]
