@@ -30,11 +30,25 @@ TextTool = React.createClass
 
   getInitialState: ->
     # console.log 'TEXT-TOOL::getInitialState(), props = ', @props
+
+    # compute component location
+    data = @props.subject.data
+    switch data.toolName
+      when 'rectangleTool'
+        x = data.x
+        y = data.y + data.height
+      when 'textRowTool'
+        x = data.x
+        y = data.yLower
+      else # default for pointTool
+        x = data.x
+        y = data.y
+    dx: x
+    dy: y
+    
     viewerSize: @props.viewerSize
     annotation:
       value: ''
-    dx: @props.subject.data.x# * @props.scale.horizontal
-    dy: @props.subject.data.y# * @props.scale.vertical
 
   getDefaultProps: ->
     # console.log 'getDefaultProps()'
@@ -114,6 +128,8 @@ TextTool = React.createClass
 
   render: ->
     # return null unless @props.viewerSize? && @props.subject?
+
+    console.log 'PROPS: ', @props
 
     # If user has set a custom position, position based on that:
     style =
