@@ -87,7 +87,7 @@ module.exports = React.createClass
 
   # Handle initial mousedown:
   handleInitStart: (e) ->
-    return null if ! @props.subToolIndex? # this may not be needed anymore? --STI
+    console.log 'handleInitStart()'
     return null if ! @props.annotation?.subToolIndex?
     subTool = @props.task.tool_config.tools[@props.annotation.subToolIndex]
     return null if ! subTool?
