@@ -103,7 +103,6 @@ module.exports = React.createClass
     mark = toolName: subTool.type
     console.log "uncomitted: ", mark, subTool
 
-
     mouseCoords = @getEventOffset e
 
     if MarkComponent.defaultValues?
@@ -208,16 +207,17 @@ module.exports = React.createClass
         selectedMark: null, => console.log 'MARKS (after): ', @state.marks
 
   # Commit mark
-  submitMark: (mark) ->
+  submitMark: ->
     mark = @state.uncommittedMark
+    console.log 'submitMark(), MARK = ', mark
+    @props.onComplete? mark
 
     marks = @state.marks
     marks.push mark
 
     @setState
-      uncommittedMark: null
-
-    @props.onComplete? mark
+      marks: marks
+      uncommittedMark: null, => console.log '@STATE.MARKS = ', @state.marks
 
   handleChange: (mark) ->
     @setState

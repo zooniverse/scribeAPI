@@ -57,11 +57,8 @@ module.exports = React.createClass # rename to Classifier
 
     @beginClassification()
 
-
   render: ->
     return null unless @state.currentSubjectSet?
-    console.log "mark/index state", @state
-    console.log "@state.currentTask", @state.currentTask
 
     # TODO: can we delete the commented out code below?
     # annotations = @props.classification.annotations
@@ -137,8 +134,7 @@ module.exports = React.createClass # rename to Classifier
   handleDataFromTool: (d) ->
     classifications = @state.classifications
     classifications[@state.classificationIndex].annotation[k] = v for k, v of d
-    console.log "handleDataFromTool:"
-    console.dir d
+    console.log "handleDataFromTool(), DATA = ", d
 
     @setState
       classifications: classifications
