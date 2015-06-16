@@ -15,7 +15,7 @@
       "tool_config": {
         "tools": {
           "em_valuation_date": {
-            "tool": "textTool",
+            "tool": "dateTool",
             "tool_config": {},
             "label": "Date"
           },
