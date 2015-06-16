@@ -17,7 +17,8 @@ module.exports = React.createClass
   getInitialState: ->
     subject_set: @props.subject_set
     tool: @props.tool
-    subject_set_index: 0
+    subject_set_index: @props.subject_set_index
+
 
   advancePrevious: ->
     @advance -1
@@ -25,13 +26,13 @@ module.exports = React.createClass
   advanceNext: ->
     @advance 1
 
-  # Advance forward/backward by count pages:
   advance: (count) ->
     new_index = @state.subject_set_index + count
     return if new_index < 0 || new_index >= @props.subject_set.subjects.length
 
     @setState subject_set_index: new_index, () =>
       @props.onViewSubject? @props.subject_set.subjects[@state.subject_set_index]
+
 
   render: ->
     <div className="subject-set-viewer">

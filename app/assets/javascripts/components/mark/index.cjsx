@@ -62,11 +62,6 @@ module.exports = React.createClass # rename to Classifier
   render: ->
     return null unless @state.currentSubjectSet?
     console.log "mark/index state", @state
-    console.log "@state.currentTask", @state.currentTask
-
-    # TODO: can we delete the commented out code below?
-    # annotations = @props.classification.annotations
-    # currentAnnotation = if annotations.length is 0 then {} else annotations[annotations.length-1]
 
     currentTask = @props.workflow.tasks[@state.taskKey] # [currentAnnotation?.task]
     TaskComponent = @getCurrentTool() # coreTools[currentTask.tool]
@@ -83,6 +78,7 @@ module.exports = React.createClass # rename to Classifier
             <p style={style}>There is nothing left to do. Thanks for your work and please check back soon!</p>
           else if @state.currentSubjectSet?
             <SubjectSetViewer
+              subject_set_index={@state.subject_set_index}
               subject_set={@state.currentSubjectSet}
               workflow={@props.workflow}
               task={currentTask}
@@ -127,10 +123,9 @@ module.exports = React.createClass # rename to Classifier
     return if new_index < 0 || new_index >= @state.currentSubjectSet.subjects.length
     console.log "NEW INDEX", new_index
 
-    @setState subject_set_index: new_index, () =>
-      @handleViewSubject @state.currentSubjectSet.subjects[@state.subject_set_index]
-      console.log "AFTER @setState", @state
-      
+    @setState subject_set_index: new_index, taskKey: @props.workflow.first_task, () =>
+      @props.onViewSubject? @props.subject_set.subjects[@state.subject_set_index]
+
   # User changed currently-viewed subject:
 
   handleViewSubject: (subject) ->
@@ -139,6 +134,7 @@ module.exports = React.createClass # rename to Classifier
     # @forceUpdate()
     @setState
       currentSubject: subject
+
 
   # User somehow indicated current task is complete; commit current classification
   handleToolComplete: (d) ->

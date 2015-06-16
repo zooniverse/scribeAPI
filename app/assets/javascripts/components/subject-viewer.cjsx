@@ -225,6 +225,7 @@ module.exports = React.createClass
         , =>
           # console.log 'SELECTED MARK: ', mark
           @props.onChange? mark
+          
   render: ->
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     # ToolComponent = @state.tool # AMS:from classification refactor.
