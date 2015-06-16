@@ -38,6 +38,7 @@ module.exports = React.createClass
     active: @props.active
 
 
+
   getDefaultProps: ->
     tool: null # Optional tool to place alongside subject (e.g. transcription tool placed alongside mark)
     onLoad: null
@@ -225,8 +226,9 @@ module.exports = React.createClass
         , =>
           # console.log 'SELECTED MARK: ', mark
           @props.onChange? mark
-          
+
   render: ->
+    console.log "SV render state", @state
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     # ToolComponent = @state.tool # AMS:from classification refactor.
     mark = @state.uncommittedMark

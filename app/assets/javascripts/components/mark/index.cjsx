@@ -118,13 +118,20 @@ module.exports = React.createClass # rename to Classifier
     </div>
 
   getNextSubject: ->
+    console.log "!!!!!!!!!!!!!!!!"
+    console.log "!!!!!!!!!!!!!!!!"
+    console.log "!!!!!!!!!!!!!!!!"
     console.log "BEFORE @setState", @state
     new_index = @state.subject_set_index + 1
+    console.log "gNT @state.currentSubjectSet.subjects", @state.currentSubjectSet.subjects
     return if new_index < 0 || new_index >= @state.currentSubjectSet.subjects.length
     console.log "NEW INDEX", new_index
 
-    @setState subject_set_index: new_index, taskKey: @props.workflow.first_task, () =>
-      @props.onViewSubject? @props.subject_set.subjects[@state.subject_set_index]
+    @setState 
+      subject_set_index: new_index 
+      taskKey: @props.workflow.first_task,
+      currentSubject: @state.currentSubjectSet.subjects[new_index], =>
+        console.log "After @state", @state
 
   # User changed currently-viewed subject:
 
