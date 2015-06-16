@@ -18,8 +18,8 @@ module.exports = React.createClass # rename to Classifier
   mixins: [FetchSubjectSetsMixin, BaseWorkflowMethods] # load subjects and set state variables: subjects, currentSubject, classification
 
   getInitialState: ->
-    currentSubjectSet:            null
-    currentSubject:               null
+    # currentSubjectSet:            null
+    # currentSubject:               null
     workflow:                     @props.workflow
     # project:        @props.project
     # currentTask:    @props.workflow.tasks[@props.workflow.first_task]
@@ -28,6 +28,7 @@ module.exports = React.createClass # rename to Classifier
     classifications:              []
     classificationIndex:          0
     subject_set_index:            0
+    subject_index:                0
 
   componentWillMount: ->
     completion_assessment_task = {
@@ -60,8 +61,8 @@ module.exports = React.createClass # rename to Classifier
 
 
   render: ->
-    return null unless @state.currentSubjectSet?
-    console.log "mark/index state", @state
+    return null unless @getCurrentSubject()? # state.currentSubjectSet?
+    # console.log "mark/index state", @state
 
     currentTask = @props.workflow.tasks[@state.taskKey] # [currentAnnotation?.task]
     TaskComponent = @getCurrentTool() # coreTools[currentTask.tool]
@@ -76,10 +77,10 @@ module.exports = React.createClass # rename to Classifier
         { if @state.noMoreSubjectSets
             style = marginTop: "50px"
             <p style={style}>There is nothing left to do. Thanks for your work and please check back soon!</p>
-          else if @state.currentSubjectSet?
+          else if @getCurrentSubjectSet()?
             <SubjectSetViewer
-              subject_set_index={@state.subject_set_index}
-              subject_set={@state.currentSubjectSet}
+              subject_set={@getCurrentSubjectSet()}
+              subject_index={@state.subject_index}
               workflow={@props.workflow}
               task={currentTask}
               annotation={@getCurrentClassification().annotation ? {}}
@@ -103,7 +104,7 @@ module.exports = React.createClass # rename to Classifier
                 <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@advanceToNextTask}>Next</button>
               else
                 if @state.taskKey == "completion_assessment_task" 
-                  <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Next SubjectSet</button>    
+                  <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Next Page</button>    
                 else
                   <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Done</button>
             }
@@ -111,42 +112,54 @@ module.exports = React.createClass # rename to Classifier
         </div>
 
         <div className="forum-holder">
-          <ForumSubjectWidget subject_set = @state.currentSubjectSet />
+          <ForumSubjectWidget subject_set = @getCurrentSubjectSet() />
         </div>
 
       </div>
     </div>
 
   getNextSubject: ->
-    console.log "!!!!!!!!!!!!!!!!"
-    console.log "!!!!!!!!!!!!!!!!"
-    console.log "!!!!!!!!!!!!!!!!"
-    console.log "BEFORE @setState", @state
-    new_index = @state.subject_set_index + 1
-    console.log "gNT @state.currentSubjectSet.subjects", @state.currentSubjectSet.subjects
-    return if new_index < 0 || new_index >= @state.currentSubjectSet.subjects.length
-    console.log "NEW INDEX", new_index
+    # console.log "BEFORE @setState", @state
 
+    new_subject_set_index = @state.subject_set_index
+    new_subject_index = @state.subject_index + 1
+
+    # If we've exhausted pages in this subject set, move to next one:
+    if new_subject_index >= @getCurrentSubjectSet().subjects.length
+      new_subject_set_index += 1
+      new_subject_index = 0
+    
+    # If we've exhausted all subject sets, collapse in shame
+    if new_subject_set_index >= @state.subjectSets.length
+      console.warn "NO MORE SUBJECT SETS"
+      return
+
+    console.log "Mark#index Advancing to subject_set_index #{new_subject_set_index} (of #{@state.subjectSets.length}), subject_index #{new_subject_index} (of #{@state.subjectSets[new_subject_set_index].subjects.length})"
+    
     @setState 
-      subject_set_index: new_index 
-      taskKey: @props.workflow.first_task,
-      currentSubject: @state.currentSubjectSet.subjects[new_index], =>
+      subject_set_index: new_subject_set_index 
+      subject_index: new_subject_index 
+      taskKey: @props.workflow.first_task, =>
         console.log "After @state", @state
+
+    # currentSubjectSet: @state.subjectSets[new_subject_set_index],
+    # currentSubject: @state.subjectSets[new_subject_set_index][new_subject_index], =>
+
 
   # User changed currently-viewed subject:
 
-  handleViewSubject: (subject) ->
-    console.log "HANDLE View Subject: subject", subject
+  handleViewSubject: (index) ->
+    # console.log "HANDLE View Subject: subject", subject
     # @state.currentSubject = subject
     # @forceUpdate()
     @setState
-      currentSubject: subject
+      subject_index: index
 
 
   # User somehow indicated current task is complete; commit current classification
   handleToolComplete: (d) ->
-    console.log 'handleToolComplete(): DATA = ', d
-    console.log 'TASK IS COMPLETE!'
+    # console.log 'handleToolComplete(): DATA = ', d
+    # console.log 'TASK IS COMPLETE!'
     @handleDataFromTool(d)
     @commitClassification()
     @beginClassification()
@@ -155,8 +168,8 @@ module.exports = React.createClass # rename to Classifier
   handleDataFromTool: (d) ->
     classifications = @state.classifications
     classifications[@state.classificationIndex].annotation[k] = v for k, v of d
-    console.log "handleDataFromTool:"
-    console.dir d
+    # console.log "handleDataFromTool:"
+    # console.dir d
 
     @setState
       classifications: classifications
@@ -173,8 +186,8 @@ module.exports = React.createClass # rename to Classifier
         taskKey: "completion_assessment_task"
     else
       console.log "before commit of completeSubjectSet @state", @state
-      console.log "@state.currentSubject", @state.currentSubject
-      console.log "@state.currentSubjectSet", @state.currentSubjectSet
+      # console.log "@state.currentSubject", @state.currentSubject
+      # console.log "@state.currentSubjectSet", @state.currentSubjectSet
       @commitClassification()
       @getNextSubject()
       # @fetchSubjectSets(@props.workflow.id, 1)

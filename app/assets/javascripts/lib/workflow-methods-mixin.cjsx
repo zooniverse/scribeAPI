@@ -24,8 +24,8 @@ module.exports =
   commitClassification: ->
     classification = @getCurrentClassification()
 
-    classification.subject_id = @state.currentSubject.id
-    classification.subject_set_id = @state.currentSubjectSet.id if @state.currentSubjectSet?
+    classification.subject_id = @getCurrentSubject()?.id
+    classification.subject_set_id = @getCurrentSubjectSet().id if @getCurrentSubjectSet()?
     classification.workflow_id = @state.workflow.id
     classification.task_key = @state.taskKey
 
@@ -94,3 +94,24 @@ module.exports =
       @setState
         taskKey: key
         # currentTool: tool
+
+  # Get currently viewed subject set
+  getCurrentSubjectSet: ->
+    @state.subjectSets?[@state.subject_set_index]
+
+  # Get currently viewed subject
+  getCurrentSubject: ->
+    subjects = null
+    # If we've viewing a subject-set (i.e. Mark) let's use that subject-set's subjects
+    if @getCurrentSubjectSet()?
+      subjects = @getCurrentSubjectSet().subjects
+
+    # Otherwise, since we're not viewing subject-sets, we must have an array of indiv subjects:
+    else
+      subjects = @state.subjects
+
+    # It's possible we have no subjects at all, in which case fail with null:
+    subjects?[@state.subject_index]
+
+
+

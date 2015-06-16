@@ -44,9 +44,6 @@ module.exports = React.createClass
     onLoad: null
     annotationIsComplete: false
 
-  componentWillReceiveProps: ->
-    console.dir @props.annotation
-
   componentDidMount: ->
     @setView 0, 0, @state.imageWidth, @state.imageHeight
     @loadImage @props.subject.location.standard
@@ -88,7 +85,6 @@ module.exports = React.createClass
 
   # Handle initial mousedown:
   handleInitStart: (e) ->
-    console.log 'handleInitStart()'
     return null if ! @props.annotation?.subToolIndex?
     subTool = @props.task.tool_config.tools[@props.annotation.subToolIndex]
     return null if ! subTool?
@@ -102,7 +98,6 @@ module.exports = React.createClass
 
     # Create an initial mark instance, which will soon gather coords:
     mark = toolName: subTool.type
-    console.log "uncomitted: ", mark, subTool
 
 
     mouseCoords = @getEventOffset e
@@ -128,7 +123,6 @@ module.exports = React.createClass
 
   # Handle mouse dragging
   handleInitDrag: (e) ->
-    console.log 'handleInitDrag()'
     return null if ! @state.uncommittedMark?
 
     mark = @state.uncommittedMark
