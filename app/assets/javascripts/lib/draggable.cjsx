@@ -55,11 +55,11 @@ module.exports = React.createClass
 
     return if e.button != 0
     # console.log "Draggable: handleStart"
-    return false if e.target.nodeName is "INPUT" or e.target.nodeName is "TEXTAREA"
+    # return false if e.target.nodeName is "INPUT" or e.target.nodeName is "TEXTAREA"
     return false if $(e.target).parents('a').length > 0
     # console.log "Draggable: handleStart ... continuing"
-    e.preventDefault()
-    e.stopPropagation()
+    # e.preventDefault() # prevents click events on composite-tool input fields
+    # e.stopPropagation() # doesn't seem to do anything for composite-tool
 
     # pos = $(this.getDOMNode()).offset()
     pos = $(this.getDOMNode()).position()
@@ -85,8 +85,8 @@ module.exports = React.createClass
       startHandler e
 
   handleDrag: (e) ->
-    # console.log "handleDrag event", e
-
+    # prevent dragging on input and textarea elements
+    return if e.target.nodeName is "INPUT" or e.target.nodeName is "TEXTAREA"
     return if ! @state.dragging
 
     x = e.pageX - this.state.rel.x

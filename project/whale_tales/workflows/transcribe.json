@@ -27,7 +27,8 @@
         },
         "generates_subject_type": "verify_point"
       },
-      "instruction": "Transcribe this point."
+      "instruction": "Transcribe this point.",
+      "next_task": "entry_date"
     },
     "transcribe_rectangle": {
       "tool": "textTool",
