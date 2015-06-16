@@ -29,7 +29,7 @@ TextTool = React.createClass
       dragged: true
 
   getInitialState: ->
-    # console.log 'TEXT-TOOL::getInitialState(), props = ', @props
+    console.log 'TEXT-TOOL::getInitialState(), props = ', @props
 
     # compute component location
     {x,y} = @getPosition @props.subject.data
@@ -135,6 +135,7 @@ TextTool = React.createClass
       # cancel ann?
 
   render: ->
+    console.log 'TEXT-TOOL::render()'
     # return null unless @props.viewerSize? && @props.subject?
 
     # If user has set a custom position, position based on that:
@@ -164,6 +165,7 @@ TextTool = React.createClass
     console.log 'SENDING COORDS TO DRAGGABLE: ', @state.dx*@props.scale.horizontal, @state.dy*@props.scale.vertical
 
     if @props.standalone
+      console.log 'STANDALONE'
       tool_content =
         <Draggable
           onStart = {@handleInitStart}

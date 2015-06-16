@@ -18,7 +18,7 @@ CompositeTool = React.createClass
     @setState preventDrag: false
     if e.target.nodeName is "INPUT" or e.target.nodeName is "TEXTAREA"
       @setState preventDrag: true
-      
+
     @setState
       xClick: e.pageX - $('.transcribe-tool').offset().left
       yClick: e.pageY - $('.transcribe-tool').offset().top
@@ -35,7 +35,7 @@ CompositeTool = React.createClass
       dx: dx
       dy: dy #, =>
       dragged: true
-  
+
   getInitialState: ->
     viewerSize: @props.viewerSize
     annotation: {}
@@ -53,7 +53,7 @@ CompositeTool = React.createClass
   # Expects size hash with:
   #   w: [viewer width]
   #   h: [viewer height]
-  #   scale: 
+  #   scale:
   #     horizontal: [horiz scaling of image to fit within above vals]
   #     vertical:   [vert scaling of image..]
   onViewerResize: (size) ->
@@ -94,7 +94,8 @@ CompositeTool = React.createClass
       onStart = {@handleInitStart}
       onDrag  = {@handleInitDrag}
       onEnd   = {@handleInitRelease}
-      ref     = "inputWrapper0">
+      ref     = "inputWrapper0"
+    >
 
       <div className="transcribe-tool composite" style={style}>
         <div className="left">
@@ -102,20 +103,26 @@ CompositeTool = React.createClass
             <label>{@props.task.instruction}</label>
             { for annotation_key, tool_config of @props.task.tool_config.tools
               # path = "../#{tool_config.tool.replace(/_/, '-')}"
-              tool_inst = @props.transcribeTools[tool_config.tool]
-              focus = annotation_key == @state.active_field_key
+              ToolComponent = @props.transcribeTools[tool_config.tool]
 
-              tool_props =
-                task: @props.task
-                subject: @props.subject
-                workflow: @props.workflow
-                label: @props.task.tool_config.tools[annotation_key].label ? ''
-                annotation_key: annotation_key
-                standalone: false
-                onComplete: @handleFieldComplete.bind(@, annotation_key)
-                focus: focus
+              focus = annotation_key == @state.active_field_key
+              <ToolComponent
+                task={@props.task}
+                subject={@props.subject}
+                workflow={@props.workflow}
+                standalone={false}
+                viewerSize={@props.viewerSize}
+                onComplete={@handleFieldComplete.bind @, annotation_key}
+                label={@props.task.tool_config.tools[annotation_key].label ? ''}
+                focus={focus}
+                scale={@props.scale}
+
+                key={annotation_key}
+                ref={annotation_key}
+                annotation={@props.annotation[annotation_key]}
+
+              />
               # onComplete={@handleTaskComplete} onBack={@makeBackHandler()}
-              <tool_inst {...tool_props} key={annotation_key} ref={annotation_key} annotation={@props.annotation[annotation_key]} />
             }
           </div>
         </div>

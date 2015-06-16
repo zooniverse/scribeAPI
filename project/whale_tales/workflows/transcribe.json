@@ -23,7 +23,8 @@
             "tool": "textTool",
             "tool_config": {},
             "label": "Amount"
-          },
+          }
+        },
         "generates_subject_type": "verify_point"
       },
       "instruction": "Transcribe this point."
