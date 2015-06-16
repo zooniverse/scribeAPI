@@ -1,0 +1,12 @@
+<ul class="breadcrumb">
+  <% links.each do |link| %>
+    <li>
+    <% if link[:url].nil? %>
+      <%= link[:label] %>
+
+    <% else %>
+      <%= link_to link[:label], link[:url] %>
+    <% end %>
+    </li>
+  <% end %>
+</ul>

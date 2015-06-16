@@ -11,8 +11,13 @@ API::Application.routes.draw do
 
   get '/workflows',                   to: 'workflow#index',       defaults: { format: 'json' }
   get '/workflows/:id',               to: 'workflow#show',        defaults: { format: 'json' }
-  get '/dashboard',                   to: 'dashboard#index'
+
+  namespace :admin do
+    resources :subjects
+  end
+
   get '/dashboard/ancestory',         to: 'dashboard#ancestory'
+  get '/dashboard',                   to: 'dashboard#index'
   
   get '/projects/stats',              to: 'projects#stats'
 

@@ -1,0 +1,36 @@
+<div class="subject-hierarchy">
+  <%
+    parents = []
+    s = subject
+    while ! (s = s.parent_subject).nil?
+      parents.unshift s
+    end
+  %>
+  <% parents.each do |sub| %> 
+    <ul>
+    <li>
+      <%= link_to admin_subject_path(sub) do %>
+        <%= sub.type %>
+      <% end %>
+
+  <% end %>
+
+  <ul>
+    <li class="this-subject">This subject
+      <% if subject.child_subjects.count >= 1 %>
+        <ul>
+        <% subject.child_subjects.each do |child| %>
+          <li>
+            <a href="<%= admin_subject_path(child) %>"><%= child.type %></a>
+          </li>
+        <% end %>
+        </ul>
+      <% end %>
+    </li>
+  </ul>
+
+  <% parents.each do |sub| %> 
+    </li></ul>
+  <% end %>
+  </ul>
+</div>
