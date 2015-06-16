@@ -235,8 +235,8 @@ module.exports = React.createClass
     scale = @getScale()
 
     if @props.workflow.name is 'transcribe'
-      yPos = @props.subject.data.y * @getScale().vertical - window.innerHeight/2
-      $('html, body').animate({scrollTop: yPos}, 300);  
+      yPos = (@props.subject.data.y - @props.subject.data.height?) * @getScale().vertical - 100
+      $('html, body').animate({scrollTop: yPos}, 300);
 
     actionButton =
       if @state.loading
