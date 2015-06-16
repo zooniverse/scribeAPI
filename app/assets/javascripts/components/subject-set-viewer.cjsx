@@ -38,8 +38,8 @@ module.exports = React.createClass
     console.log " SSV Render @state", @state
     <div className="subject-set-viewer">
       <div className="subject-set-nav">
-        <ActionButton text="Previous" onClick={@advancePrevious} className={if @props.subject_set_index == 0 then 'disabled' else ''}/>
-        <ActionButton text="Next" onClick={@advanceNext} className={if @props.subject_set_index == @props.subject_set.subjects.length-1 then 'disabled' else ''} />
+        <ActionButton text="Previous" onClick={@advancePrevious} className={if @state.subject_set_index == 0 then 'disabled' else ''}/>
+        <ActionButton text="Next" onClick={@advanceNext} className={if @state.subject_set_index == @props.subject_set.subjects.length-1 then 'disabled' else ''} />
       </div>
       { for subject, index in @props.subject_set.subjects
         console.log "SSV subject", subject
@@ -49,7 +49,7 @@ module.exports = React.createClass
           workflow={@props.workflow}
           task={@props.task}
           annotation={@props.annotation}
-          active={index == @props.subject_set_index}
+          active={index == @state.subject_set_index}
           onComplete={@props.onComplete}
           onChange={@props.onChange}
         />
