@@ -19,7 +19,6 @@ module.exports =
           window.classifications = @state.classifications # make accessible to console
           # console.log "Begin classification: ", @state.classifications
           console.log "  ann: ", c.annotation for c in @state.classifications
-          @forceUpdate()
 
   # Push current classification to server:
   commitClassification: ->

@@ -37,8 +37,28 @@ CompositeTool = React.createClass
       dragged: true
 
   getInitialState: ->
+    console.log 'TEXT-TOOL::getInitialState(), props = ', @props
+
+    # compute component location
+    {x,y} = @getPosition @props.subject.data
+
+    dx: x
+    dy: y
     viewerSize: @props.viewerSize
     annotation: {}
+
+  getPosition: (data) ->
+    switch data.toolName
+      when 'rectangleTool'
+        x = data.x
+        y = data.y + data.height
+      when 'textRowTool'
+        x = data.x
+        y = data.yLower
+      else # default for pointTool
+        x = data.x
+        y = data.y
+    return {x,y}
 
   componentWillReceiveProps: ->
     @setState
@@ -85,9 +105,11 @@ CompositeTool = React.createClass
     @props.onComplete @state.annotation
 
   render: ->
+
+    # If user has set a custom position, position based on that:
     style =
-      left: @state.dx
-      top: @state.dy
+      left: "#{@state.dx*@props.scale.horizontal}px"
+      top: "#{@state.dy*@props.scale.vertical}px"
 
     # console.log "CompositeTool#render: ", @props, @props.task, text_tool, tools, @props.transcribe_tools
     <Draggable
@@ -95,6 +117,8 @@ CompositeTool = React.createClass
       onDrag  = {@handleInitDrag}
       onEnd   = {@handleInitRelease}
       ref     = "inputWrapper0"
+      x       = {@state.dx*@props.scale.horizontal}
+      y       = {@state.dy*@props.scale.vertical}
     >
 
       <div className="transcribe-tool composite" style={style}>

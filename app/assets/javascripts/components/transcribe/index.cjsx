@@ -121,7 +121,7 @@ module.exports = React.createClass # rename to Classifier
         @getCurrentTask().next_task
 
     # console.log 'NEXT TASK IS: ', nextTask
-    console.log 'TRANSCRIBE::render(), CURRENT SUBJCT = ', @state.currentSubject
+    # console.log 'TRANSCRIBE::render(), CURRENT SUBJCT = ', @state.currentSubject
     # console.log "viewer size: ", @state.viewerSize
     <div className="classifier">
       <div className="subject-area">
