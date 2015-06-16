@@ -68,4 +68,7 @@ class Subject
     save
   end
 
+  def to_s
+    "#{workflow.name.capitalize} Subject (#{type})"
+  end
 end

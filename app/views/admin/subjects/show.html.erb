@@ -56,8 +56,14 @@
     <dt>Status</dt>
     <dd><%= @subject.status %> </dd>
 
-    <dt>Classifications</dt>
-    <dd><%= @subject.classification_count %></dd>
+    <dt>Classifications Made Upon This Subject (<%= @subject.classification_count %>)</dt>
+    <dd>
+      <ol>
+        <% @subject.classifications.each do |classification| %>
+          <li><%= link_to classification, admin_classification_path(classification) %></li>
+        <% end %>
+      </ol>
+    </dd>
 
     <dt>Child Subjects (<%= @subject.secondary_subject_count %>)<dt>
     <dd>

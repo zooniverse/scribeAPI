@@ -1,0 +1,41 @@
+
+<%= render partial: 'partials/classification_breadcrumb', locals: {classification: @classification} %>
+
+<div class="core-data">
+  <h2>Subject</h2>
+
+  <img src="<%= @classification.subject.location["standard"] %>" width="300"/>
+
+  <dl>
+
+    <dt>Type</dt>
+    <dd><%= @classification.subject.type %><% if @classification.subject.type != 'root' %> (User-defined)<% end %></dd>
+
+    <dt>Region</dt>
+    <dd>
+      <% if @classification.subject.region.nil? %>
+        &mdash;
+      <% else %>
+        <%= render partial: 'partials/data_hash', locals: {hash: @classification.subject.region} %> 
+      <% end %>
+    </dd>
+
+  </dl>
+</div>
+
+<div class="supplied-data">
+  <h2>Classification Data</h2>
+  <dl>
+
+    <dt>Annotation</dt>
+    <dd>
+      <% if @classification.annotation.nil? %>
+        &mdash;
+      <% else %>
+        <%= render partial: 'partials/data_hash', locals: {hash: @classification.annotation} %> 
+      <% end %>
+    </dd>
+
+  </dl>
+</div>
+

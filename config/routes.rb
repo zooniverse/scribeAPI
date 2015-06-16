@@ -13,7 +13,7 @@ API::Application.routes.draw do
   get '/workflows/:id',               to: 'workflow#show',        defaults: { format: 'json' }
 
   namespace :admin do
-    resources :subjects
+    resources :subjects, :classifications
   end
 
   get '/dashboard/ancestory',         to: 'dashboard#ancestory'

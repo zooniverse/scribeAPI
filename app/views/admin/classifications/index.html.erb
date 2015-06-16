@@ -12,8 +12,8 @@
 
 <% @subjects.each do |subject| %>
   <tr>
-    <td><%= link_to admin_subject_path(subject) do %><img src="<%= subject.location["thumbnail"] %>" width="100"/><% end %></td>
-    <td><%= link_to admin_subject_path(subject) do %><%= subject.status %><% end %></td>
+    <td> <a href="<%= admin_subject_path(subject) %>" ><img src="<%= subject.location["thumbnail"] %>" width="100"/></a></td>
+    <td> <%= subject.status %> </td> 
     <td> <%= subject.classification_count %> </td> 
     <td> <%= subject.secondary_subject_count %> </td> 
     <td> 

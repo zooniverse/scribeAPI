@@ -78,6 +78,8 @@ class Classification
     subject.save
   end
 
-
+  def to_s
+    "#{workflow.name.capitalize} Classification"
+  end
 
 end
