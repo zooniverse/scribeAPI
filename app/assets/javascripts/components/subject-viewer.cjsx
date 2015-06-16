@@ -234,6 +234,9 @@ module.exports = React.createClass
     mark = @state.uncommittedMark
     scale = @getScale()
 
+    if @props.workflow.name is 'transcribe'
+      window.scrollTo 0, @props.subject.data.y * @getScale().vertical - window.innerHeight/2
+
     actionButton =
       if @state.loading
         <ActionButton onAction={@nextSubject} className="disabled" text="Loading..." />
