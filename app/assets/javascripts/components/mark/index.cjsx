@@ -20,7 +20,7 @@ module.exports = React.createClass # rename to Classifier
   getInitialState: ->
     currentSubjectSet:            null
     currentSubject:               null
-    workflow:                     @props.workflow
+    workflow:                      @props.workflow
     # project:        @props.project
     # currentTask:    @props.workflow.tasks[@props.workflow.first_task]
     taskKey:                      null
@@ -120,7 +120,6 @@ module.exports = React.createClass # rename to Classifier
   getNextSubject: ->
     console.log "!!!!!!!!!!!!!!!!"
     console.log "!!!!!!!!!!!!!!!!"
-    console.log "!!!!!!!!!!!!!!!!"
     console.log "BEFORE @setState", @state
     new_index = @state.subject_set_index + 1
     console.log "gNT @state.currentSubjectSet.subjects", @state.currentSubjectSet.subjects
@@ -132,6 +131,8 @@ module.exports = React.createClass # rename to Classifier
       taskKey: @props.workflow.first_task,
       currentSubject: @state.currentSubjectSet.subjects[new_index], =>
         console.log "After @state", @state
+
+    @forceUpdate()
 
   # User changed currently-viewed subject:
 

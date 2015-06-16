@@ -228,7 +228,6 @@ module.exports = React.createClass
           @props.onChange? mark
 
   render: ->
-    console.log "SV render state", @state
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     # ToolComponent = @state.tool # AMS:from classification refactor.
     mark = @state.uncommittedMark
