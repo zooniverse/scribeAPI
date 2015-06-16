@@ -60,7 +60,7 @@
     <dd>
       <ol>
         <% @subject.classifications.each do |classification| %>
-          <li><%= link_to classification, admin_classification_path(classification) %></li>
+          <li><%= link_to "#{classification} (#{time_ago_in_words(classification.finished_at)} ago)", admin_classification_path(classification) %></li>
         <% end %>
       </ol>
     </dd>

@@ -27,6 +27,12 @@
   <h2>Classification Data</h2>
   <dl>
 
+    <dt>Task Time</dt>
+    <dd><%= distance_of_time_in_words @classification.started_at, @classification.finished_at, include_seconds: true %></dd>
+
+    <dt>Finished</dt>
+    <dd><%= @classification.finished_at %> (<%= time_ago_in_words @classification.finished_at, include_seconds: true %> ago)</dd>
+
     <dt>Annotation</dt>
     <dd>
       <% if @classification.annotation.nil? %>
