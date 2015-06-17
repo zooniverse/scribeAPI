@@ -8,17 +8,8 @@
 
   <dl>
 
-    <dt>Type</dt>
-    <dd><%= @classification.subject.type %><% if @classification.subject.type != 'root' %> (User-defined)<% end %></dd>
-
-    <dt>Region</dt>
-    <dd>
-      <% if @classification.subject.region.nil? %>
-        &mdash;
-      <% else %>
-        <%= render partial: 'partials/data_hash', locals: {hash: @classification.subject.region} %> 
-      <% end %>
-    </dd>
+    <dt>Task Key</dt>
+    <dd><%= @classification.task_key %></dd>
 
     <dt>Annotation</dt>
     <dd>
@@ -42,6 +33,9 @@
 <div class="supplied-data">
   <h2>Related</h2>
   <dl>
+    <dt>Parent Subject</dt>
+    <dd><%= link_to @classification.subject, admin_subject_path(@classification.subject) %></dd>
+
     <dt>Generated Subject</dt>
     <dd>
       <% if @classification.child_subject.nil? %>
