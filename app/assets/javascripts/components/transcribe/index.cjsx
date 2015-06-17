@@ -75,7 +75,7 @@ module.exports = React.createClass # rename to Classifier
       next_subject = @state.subjects[next_index]
       console.log 'NEXT SUBJECT: ', next_subject
       @setState
-        currentSubject: next_subject
+        # currentSubject: next_subject
         taskKey: next_subject.type
         subject_index: next_index
         , =>
@@ -127,7 +127,7 @@ module.exports = React.createClass # rename to Classifier
           else if @state.currentSubject?
             <SubjectViewer
               onLoad={@handleViewerLoad}
-              subject={@state.currentSubject}
+              subject={@getCurrentSubject()}
               active=true
               workflow={@props.workflow}
               classification={@props.classification}
