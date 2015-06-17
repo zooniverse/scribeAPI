@@ -25,18 +25,20 @@ module.exports = React.createClass # rename to Classifier
     taskKey:                      null
     classifications:              []
     classificationIndex:          0
-
     subject_index:                0
-
 
   componentWillMount: ->
     @beginClassification()
 
   fetchSubjectsCallback: ->
-    console.log 'fetchSubjectsCallback(), TASK KEY  = ', @getCurrentSubject().type
     #TODO: We do need to account for times when there are no subjects? type won't do that. -AMS
+    currentSubject = @getCurrentSubject()
 
-    @setState taskKey: @getCurrentSubject().type
+    if not currentSubject?
+      @setState noMoreSubjects: true, => @forceUpdate()
+    else
+      @setState taskKey: @getCurrentSubject().type
+
     # @advanceToTask new_key
 
   handleTaskComponentChange: (val) ->
@@ -98,26 +100,12 @@ module.exports = React.createClass # rename to Classifier
       console.log "go back"
 
   render: ->
-    return null unless @getCurrentTask()? # @state.currentTask?
-
     if @props.query.scrollX? and @props.query.scrollY?
       window.scrollTo(@props.query.scrollX,@props.query.scrollY)
 
-    console.log 'CURRENT SUBJECT: ', @state.currentSubject
-
     currentAnnotation = @getCurrentClassification().annotation
-
     TaskComponent = @getCurrentTool() # @state.currentTool
     onFirstAnnotation = currentAnnotation?.task is @props.workflow.first_task
-
-    # console.log "Transcribe#render: tool=#{@state.currentTask.tool} TaskComponent=", TaskComponent
-
-    nextTask =
-      if @getCurrentTask().tool_config.options?[currentAnnotation.value]?
-        @getCurrentTask().tool_config.options?[currentAnnotation.value].next_task
-      else
-        @getCurrentTask().next_task
-
 
     <div className="classifier">
       <div className="subject-area">
@@ -125,6 +113,7 @@ module.exports = React.createClass # rename to Classifier
             style = marginTop: "50px"
             <p style={style}>There are currently no transcription subjects. Try <a href="/#/mark">marking</a> instead!</p>
           else if @state.currentSubject?
+            console.log 'CURRENT SUBJECT: ', @state.currentSubject
             <SubjectViewer
               onLoad={@handleViewerLoad}
               subject={@state.currentSubject}
@@ -133,6 +122,7 @@ module.exports = React.createClass # rename to Classifier
               classification={@props.classification}
               annotation={currentAnnotation}
             >
+              {console.log 'FOO: ', @getCurrentTask()}
               <TaskComponent
                 ref="taskComponent"
                 viewerSize={@state.viewerSize}
@@ -147,11 +137,18 @@ module.exports = React.createClass # rename to Classifier
                 viewerSize={@state.viewerSize}
                 transcribeTools={transcribeTools}
               />
+
             </SubjectViewer>
         }
       </div>
 
-      { unless @state.noMoreSubjects
+      { if @getCurrentTask()? and not @state.noMoreSubjects
+          nextTask =
+            if @getCurrentTask().tool_config.options?[currentAnnotation.value]?
+              @getCurrentTask().tool_config.options?[currentAnnotation.value].next_task
+            else
+              @getCurrentTask().next_task
+
           <div style={display: "none"} className="task-area">
 
             <div className="task-container">
