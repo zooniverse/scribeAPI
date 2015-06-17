@@ -52,6 +52,7 @@ class Subject
 
   def increment_retire_count_by_one
     self.inc(retire_count: 1)
+    self.retire_by_vote!
   end
 
   def retire_by_vote!

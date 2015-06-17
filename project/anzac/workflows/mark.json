@@ -7,7 +7,7 @@
   "generates_subjects_after": 1,
   "generates_subjects_for": "transcribe",
   "generates_subjects_max": 1,
-  "retire_limit":2,
+  "retire_limit": 2,
 
   "first_task":"pick_page_type",
 
