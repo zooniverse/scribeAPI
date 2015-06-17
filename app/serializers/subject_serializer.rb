@@ -32,7 +32,6 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
       child_subject_info << rebuild_info
 
     end
-    child_subject_info
   end
 
 end

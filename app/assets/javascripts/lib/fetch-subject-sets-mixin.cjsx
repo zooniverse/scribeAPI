@@ -13,12 +13,14 @@ module.exports =
 
     @setState
       subjectSet: []
-      currentSubjectSet: null
+      # currentSubjectSet: null
 
     request.then (subject_set)=>
       @setState
         subjectSets: [subject_set]
-        currentSubjectSet: subject_set
+        subject_set_index: 0
+        subject_index: 0
+        # currentSubjectSet: subject_set
 
   fetchSubjectSets: (workflow_id, limit) ->
 
@@ -27,7 +29,7 @@ module.exports =
       $.getJSON @props.overrideFetchSubjectsUrl, (subject_sets) =>
         @setState
           subjectSets: subject_sets
-          currentSubjectSet: subject_sets[0]
+          # currentSubjectSet: subject_sets[0]
 
     else
       request = API.type('subject_sets').get
@@ -39,8 +41,18 @@ module.exports =
         # console.log "subject sets",  subject_sets
         @setState
           subjectSets: subject_sets
-          currentSubjectSet: subject_sets[0]
-          currentSubject: subject_sets[0].subjects[0]
+          # currentSubjectSet: subject_sets[0]
+          # currentSubject: subject_sets[0].subjects[0]
+
+  # Once we get down to subject level, the subjects need to be sorted by region.y. 
+  # 
+  # orderChildSubjectsByY: ->
+  #   for subject_set, i in subject_sets
+  #     for subject, i in subject_set
+  #       for key, value of subject
+
+
+
 
     # WHY DOES THIS BREAK?
     # request.error (xhr, status, err) =>

@@ -74,6 +74,11 @@ class Classification
 
   def increment_subject_classification_count
     subject = self.subject
+    #TODO: sometime the annonation field contain the previous annotation for completion_assessment_task -- AMS
+    #increment subject.retire_count if the completion_assement_task returns annoation 'complete_subject'
+    if self.task_key == "completion_assessment_task" && self.annotation["value"] == "complete_subject"
+      subject.increment_retire_count_by_one 
+    end
     subject.classification_count += 1 # no_annotation_values 
     subject.save
   end
