@@ -77,7 +77,7 @@ module.exports = React.createClass # rename to Classifier
       next_subject = @state.subjects[next_index]
       console.log 'NEXT SUBJECT: ', next_subject
       @setState
-        currentSubject: next_subject
+        # currentSubject: next_subject
         taskKey: next_subject.type
         subject_index: next_index
         , =>
@@ -112,11 +112,15 @@ module.exports = React.createClass # rename to Classifier
         { if @state.noMoreSubjects
             style = marginTop: "50px"
             <p style={style}>There are currently no transcription subjects. Try <a href="/#/mark">marking</a> instead!</p>
+<<<<<<< HEAD
           else if @state.currentSubject?
             console.log 'CURRENT SUBJECT: ', @state.currentSubject
+=======
+          else if @getCurrentSubject()?
+>>>>>>> origin
             <SubjectViewer
               onLoad={@handleViewerLoad}
-              subject={@state.currentSubject}
+              subject={@getCurrentSubject()}
               active=true
               workflow={@props.workflow}
               classification={@props.classification}
