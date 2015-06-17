@@ -57,17 +57,16 @@ module.exports = React.createClass # rename to Classifier
 
     @beginClassification()
 
-
   render: ->
     return null unless @state.currentSubjectSet?
-    console.log "mark/index state", @state
-    console.log "@state.currentTask", @state.currentTask
 
     # TODO: can we delete the commented out code below?
     # annotations = @props.classification.annotations
     # currentAnnotation = if annotations.length is 0 then {} else annotations[annotations.length-1]
 
     currentTask = @props.workflow.tasks[@state.taskKey] # [currentAnnotation?.task]
+
+    console.log 'CURRENT TASK : ', currentTask
     TaskComponent = @getCurrentTool() # coreTools[currentTask.tool]
     onFirstAnnotation = @state.taskKey == @props.workflow.first_task
 
@@ -135,13 +134,16 @@ module.exports = React.createClass # rename to Classifier
 
   # Handle user selecting a pick/drawing tool:
   handleDataFromTool: (d) ->
+    console.log "MARK/INDEX::handleDataFromTool()"
     classifications = @state.classifications
     classifications[@state.classificationIndex].annotation[k] = v for k, v of d
-    console.log "handleDataFromTool:"
-    console.dir d
 
     @setState
       classifications: classifications
+        , =>
+          @forceUpdate()
+          console.log "handleDataFromTool(), DATA = ", d
+
 
   destroyCurrentAnnotation: ->
     # TODO: implement mechanism for going backwards to previous classification, potentially deleting later classifications from stack:

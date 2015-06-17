@@ -88,6 +88,7 @@ module.exports = React.createClass
   # Handle initial mousedown:
   handleInitStart: (e) ->
     console.log 'handleInitStart()'
+    console.log 'SUBJECT-VIEWER::handleInitStart(), @props.annotation = ', @props.annotation
     return null if ! @props.annotation?.subToolIndex?
     subTool = @props.task.tool_config.tools[@props.annotation.subToolIndex]
     return null if ! subTool?
@@ -102,7 +103,6 @@ module.exports = React.createClass
     # Create an initial mark instance, which will soon gather coords:
     mark = toolName: subTool.type
     console.log "uncomitted: ", mark, subTool
-
 
     mouseCoords = @getEventOffset e
 
@@ -208,17 +208,20 @@ module.exports = React.createClass
         selectedMark: null, => console.log 'MARKS (after): ', @state.marks
 
   # Commit mark
-  submitMark: (mark) ->
+  submitMark: ->
     mark = @state.uncommittedMark
+    console.log 'submitMark(), MARK = ', mark
+    @props.onComplete? mark
 
     marks = @state.marks
     marks.push mark
 
     @setState
+      marks: marks
       uncommittedMark: null
-
-    @props.onComplete? mark
-
+        , =>
+          console.log '@STATE.MARKS = ', @state.marks
+          console.log 'UNCOMMITTED MARK = ', @state.uncommittedMark
   handleChange: (mark) ->
     @setState
       selectedMark: mark
@@ -230,6 +233,10 @@ module.exports = React.createClass
     # ToolComponent = @state.tool # AMS:from classification refactor.
     mark = @state.uncommittedMark
     scale = @getScale()
+
+    if @props.workflow.name is 'transcribe'
+      yPos = (@props.subject.data.y - @props.subject.data.height?) * @getScale().vertical - 100
+      $('html, body').animate({scrollTop: yPos}, 300);
 
     actionButton =
       if @state.loading
