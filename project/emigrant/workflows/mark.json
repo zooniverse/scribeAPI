@@ -32,7 +32,7 @@
       "tool_config" : {
         "tools": [
           {"type": "rectangleTool", "label": "Records (rectangle)", "color": "green", "generates_subject_type": "em_record_rect"},
-          {"type": "rectangleTool", "label": "Records (row)",       "color": "blue",  "generates_subject_type": "em_record_row_tool"}
+          {"type": "textRowTool", "label": "Records (row)",       "color": "blue",  "generates_subject_type": "em_record_row_tool"}
         ]
       },
       "next_task": null
