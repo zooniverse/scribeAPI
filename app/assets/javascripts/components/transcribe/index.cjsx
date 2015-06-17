@@ -112,12 +112,7 @@ module.exports = React.createClass # rename to Classifier
         { if @state.noMoreSubjects
             style = marginTop: "50px"
             <p style={style}>There are currently no transcription subjects. Try <a href="/#/mark">marking</a> instead!</p>
-<<<<<<< HEAD
-          else if @state.currentSubject?
-            console.log 'CURRENT SUBJECT: ', @state.currentSubject
-=======
           else if @getCurrentSubject()?
->>>>>>> origin
             <SubjectViewer
               onLoad={@handleViewerLoad}
               subject={@getCurrentSubject()}
