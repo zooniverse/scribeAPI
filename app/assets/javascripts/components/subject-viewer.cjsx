@@ -1,4 +1,4 @@
-# @cjsx React.DOM
+  # @cjsx React.DOM
 
 React                         = require 'react'
 {Router, Routes, Route, Link} = require 'react-router'
@@ -38,13 +38,11 @@ module.exports = React.createClass
     active: @props.active
 
 
+
   getDefaultProps: ->
     tool: null # Optional tool to place alongside subject (e.g. transcription tool placed alongside mark)
     onLoad: null
     annotationIsComplete: false
-
-  componentWillReceiveProps: ->
-    console.dir @props.annotation
 
   componentDidMount: ->
     @setView 0, 0, @state.imageWidth, @state.imageHeight
@@ -87,7 +85,6 @@ module.exports = React.createClass
 
   # Handle initial mousedown:
   handleInitStart: (e) ->
-    console.log 'handleInitStart()'
     return null if ! @props.annotation?.subToolIndex?
     subTool = @props.task.tool_config.tools[@props.annotation.subToolIndex]
     return null if ! subTool?
@@ -101,7 +98,6 @@ module.exports = React.createClass
 
     # Create an initial mark instance, which will soon gather coords:
     mark = toolName: subTool.type
-    console.log "uncomitted: ", mark, subTool
 
 
     mouseCoords = @getEventOffset e
@@ -127,7 +123,6 @@ module.exports = React.createClass
 
   # Handle mouse dragging
   handleInitDrag: (e) ->
-    console.log 'handleInitDrag()'
     return null if ! @state.uncommittedMark?
 
     mark = @state.uncommittedMark
@@ -225,7 +220,9 @@ module.exports = React.createClass
         , =>
           # console.log 'SELECTED MARK: ', mark
           @props.onChange? mark
+
   render: ->
+    console.log "SV render state", @state
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     # ToolComponent = @state.tool # AMS:from classification refactor.
     mark = @state.uncommittedMark

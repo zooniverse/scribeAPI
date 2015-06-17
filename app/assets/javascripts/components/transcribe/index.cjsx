@@ -18,24 +18,25 @@ API                     = require '../../lib/api'
 
 module.exports = React.createClass # rename to Classifier
   displayName: 'Transcribe'
-  mixins: [FetchSubjectsMixin, BaseWorkflowMethods] # load subjects and set state variables: subjects, currentSubject, classification
+  mixins: [FetchSubjectsMixin, BaseWorkflowMethods] # load subjects and set state variables: subjects,  classification
 
   getInitialState: ->
     workflow:                     @props.workflow
-    currentSubject:               null
     taskKey:                      null
     classifications:              []
     classificationIndex:          0
+
+    subject_index:                0
 
 
   componentWillMount: ->
     @beginClassification()
 
   fetchSubjectsCallback: ->
-    console.log 'fetchSubjectsCallback(), TASK KEY  = ', @state.currentSubject.type
+    console.log 'fetchSubjectsCallback(), TASK KEY  = ', @getCurrentSubject().type
     #TODO: We do need to account for times when there are no subjects? type won't do that. -AMS
 
-    @setState taskKey: @state.currentSubject.type
+    @setState taskKey: @getCurrentSubject().type
     # @advanceToTask new_key
 
   handleTaskComponentChange: (val) ->
@@ -68,17 +69,16 @@ module.exports = React.createClass # rename to Classifier
 
   advanceToNextSubject: ->
     console.log 'advanceToNextSubject()'
-    currentIndex = (i for s, i in @state.subjects when s['id'] == @state.currentSubject['id'])[0]
     # console.log "subjects: ", @state.subjects
-    if currentIndex + 1 < @state.subjects.length
-      nextSubject = @state.subjects[currentIndex + 1]
-      console.log 'NEXT SUBJECT: ', nextSubject
-      console.log 'NEXT TASK KEY: ', nextSubject.type
+    if @state.subject_index + 1 < @state.subjects.length
+      next_index = @state.subject_index + 1
+      next_subject = @state.subjects[next_index]
+      console.log 'NEXT SUBJECT: ', next_subject
       @setState
-        taskKey: nextSubject.type
-        currentSubject: nextSubject
+        taskKey: next_subject.type
+        subject_index: next_index
         , =>
-          key = @state.currentSubject.type
+          key = @getCurrentSubject().type
           @advanceToTask key
     else
       console.warn "WARN: End of subjects"
@@ -100,7 +100,6 @@ module.exports = React.createClass # rename to Classifier
     if @props.query.scrollX? and @props.query.scrollY?
       window.scrollTo(@props.query.scrollX,@props.query.scrollY)
 
-    # console.log 'CURRENT SUBJECT: ', @state.currentSubject
     # console.log "Transcribe#render: state", @state
     #
     return null unless @getCurrentTask()? # @state.currentTask?
@@ -121,22 +120,22 @@ module.exports = React.createClass # rename to Classifier
         @getCurrentTask().next_task
 
     # console.log 'NEXT TASK IS: ', nextTask
-    console.log 'TRANSCRIBE::render(), CURRENT SUBJCT = ', @state.currentSubject
+    console.log 'TRANSCRIBE::render(), CURRENT SUBJCT = ', @getCurrentSubject()
     # console.log "viewer size: ", @state.viewerSize
     <div className="classifier">
       <div className="subject-area">
         { if @state.noMoreSubjects
             style = marginTop: "50px"
             <p style={style}>There are currently no transcription subjects. Try <a href="/#/mark">marking</a> instead!</p>
-          else if @state.currentSubject?
-            <SubjectViewer onLoad={@handleViewerLoad} subject={@state.currentSubject} active=true workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation}>
+          else if @getCurrentSubject()?
+            <SubjectViewer onLoad={@handleViewerLoad} subject={@getCurrentSubject()} active=true workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation}>
               <TaskComponent
                 ref="taskComponent"
                 viewerSize={@state.viewerSize}
                 key={@state.taskKey}
                 task={@getCurrentTask()}
                 annotation={currentAnnotation}
-                subject={@state.currentSubject}
+                subject={@getCurrentSubject()}
                 onChange={@handleTaskComponentChange}
                 onComplete={@handleTaskComplete}
                 onBack={@makeBackHandler()}
@@ -163,7 +162,7 @@ module.exports = React.createClass # rename to Classifier
             </div>
 
             <div className="forum-holder">
-              <ForumSubjectWidget subject_set=@state.currentSubject />
+              <ForumSubjectWidget subject_set=@getCurrentSubject() />
             </div>
 
           </div>

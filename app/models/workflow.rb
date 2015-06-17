@@ -40,7 +40,7 @@ class Workflow
     end
     task = task_by_key classification.task_key
     return if task == nil # safe-guard against final_task, hopefully we can take this out at somepoint.
-      # TODO --- quietly, fail nil tasks. AMS
+
     if task.generates_subjects
       subject_type = task.subject_type classification
 

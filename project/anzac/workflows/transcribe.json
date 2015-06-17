@@ -10,11 +10,11 @@
     "generates_subjects_method": "collect-unique",
 
     "tasks": {
-        "att_transcribe_number": {
+        "att_transcribe_no": {
             "tool": "textTool",
             "tool_config": {},
             "instruction": "Enter the number",
-            "generates_subject_type": "transcribed_number"
+            "generates_subject_type": "transcdribed_number"
 
         },
         "att_textRowTool_name": {
