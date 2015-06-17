@@ -59,8 +59,7 @@ module.exports = React.createClass # rename to Classifier
     @beginClassification()
 
   render: ->
-
-    return null unless @state.currentSubjectSet?
+    return null unless @getCurrentSubject()?
 
     currentTask = @props.workflow.tasks[@state.taskKey] # [currentAnnotation?.task]
 
@@ -138,7 +137,7 @@ module.exports = React.createClass # rename to Classifier
       subject_set_index: new_subject_set_index 
       subject_index: new_subject_index 
       taskKey: @props.workflow.first_task
-      
+
   # User changed currently-viewed subject:
   handleViewSubject: (index) ->
     # console.log "HANDLE View Subject: subject", subject
