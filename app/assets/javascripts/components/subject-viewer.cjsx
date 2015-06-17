@@ -37,8 +37,6 @@ module.exports = React.createClass
 
     active: @props.active
 
-
-
   getDefaultProps: ->
     tool: null # Optional tool to place alongside subject (e.g. transcription tool placed alongside mark)
     onLoad: null

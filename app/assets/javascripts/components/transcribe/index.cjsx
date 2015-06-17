@@ -57,7 +57,7 @@ module.exports = React.createClass # rename to Classifier
       classifications: classifications
 
   handleTaskComplete: (d) ->
-    console.log 'handleTaskComplete()'
+    # console.log 'handleTaskComplete()'
     @handleDataFromTool(d)
     @commitClassification()
     @beginClassification()
@@ -70,7 +70,7 @@ module.exports = React.createClass # rename to Classifier
       @advanceToNextSubject()
 
   advanceToNextSubject: ->
-    console.log 'advanceToNextSubject()'
+    # console.log 'advanceToNextSubject()'
     # console.log "subjects: ", @state.subjects
     if @state.subject_index + 1 < @state.subjects.length
       next_index = @state.subject_index + 1
@@ -112,7 +112,7 @@ module.exports = React.createClass # rename to Classifier
         { if @state.noMoreSubjects
             style = marginTop: "50px"
             <p style={style}>There are currently no transcription subjects. Try <a href="/#/mark">marking</a> instead!</p>
-          else if @getCurrentSubject()?
+          else if @getCurrentSubject()? and @getCurrentTask()?
             <SubjectViewer
               onLoad={@handleViewerLoad}
               subject={@getCurrentSubject()}
@@ -121,9 +121,7 @@ module.exports = React.createClass # rename to Classifier
               classification={@props.classification}
               annotation={currentAnnotation}
             >
-              {console.log 'FOO: ', @getCurrentTask()}
               <TaskComponent
-                ref="taskComponent"
                 viewerSize={@state.viewerSize}
                 key={@state.taskKey}
                 task={@getCurrentTask()}
