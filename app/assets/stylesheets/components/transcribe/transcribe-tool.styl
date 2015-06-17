@@ -23,10 +23,14 @@
       display none // auto hide
       input
         // text-transform uppercase
-        width 80%
+        width 360px
+        height 40px
+        font-size 1.5em
         display block
         margin-left 10px
         margin-right 10px
+        &.input-placeholder
+          color red
       label
         display inherit
         margin-left 10px
@@ -39,15 +43,15 @@
       &.active
         display block
       textarea
-        font-family COURIER
-        font-size 1em
+        // font-family COURIER
+        font-size 1.25em
         resize none
         width 400px
         height 140px
-        background-color #000
+        background-color #fff
         padding 10px
         outline none
-        color #fff
+        color #000
         border none
         //border-top-left-radius 6px
         margin-left 10px
@@ -55,6 +59,19 @@
         opacity 0.5
         &:focus
           opacity 1.0
+        &::-webkit-input-placeholder
+          color #000
+          opacity 0.5
+        &::-moz-placeholder
+          color #000
+          opacity 0.5
+        &:-ms-input-placeholder
+          color #000
+          opacity 0.5
+        &:-o-input-placeholder
+          color #000
+          opacity 0.5
+
   &.composite
     .left
 
@@ -78,6 +95,9 @@
     border-radius 4px
     padding 5px
     margin 2px
+    padding-left 20px
+    padding-right 20px
+
     // width 140px
     width auto
     height 30px
@@ -87,8 +107,8 @@
     cursor pointer
     opacity 0.75
     &.prev
-      background-color blue
+      background-color #ff5151
     &.next
-      background-color red
+      background-color #3f5765
     &.done
-      background-color green
+      background-color #3f5765
