@@ -2,7 +2,7 @@
 <%= render partial: 'partials/classification_breadcrumb', locals: {classification: @classification} %>
 
 <div class="core-data">
-  <h2>Subject</h2>
+  <h1><%= @classification %></h2>
 
   <img src="<%= @classification.subject.location["standard"] %>" width="300"/>
 
@@ -20,19 +20,6 @@
       <% end %>
     </dd>
 
-  </dl>
-</div>
-
-<div class="supplied-data">
-  <h2>Classification Data</h2>
-  <dl>
-
-    <dt>Task Time</dt>
-    <dd><%= distance_of_time_in_words @classification.started_at, @classification.finished_at, include_seconds: true %></dd>
-
-    <dt>Finished</dt>
-    <dd><%= @classification.finished_at %> (<%= time_ago_in_words @classification.finished_at, include_seconds: true %> ago)</dd>
-
     <dt>Annotation</dt>
     <dd>
       <% if @classification.annotation.nil? %>
@@ -42,6 +29,29 @@
       <% end %>
     </dd>
 
+    <dt>Task Time</dt>
+    <dd><%= distance_of_time_in_words @classification.started_at, @classification.finished_at, include_seconds: true %></dd>
+
+    <dt>Finished</dt>
+    <dd><%= @classification.finished_at %> (<%= time_ago_in_words @classification.finished_at, include_seconds: true %> ago)</dd>
+
+
   </dl>
+</div>
+
+<div class="supplied-data">
+  <h2>Related</h2>
+  <dl>
+    <dt>Generated Subject</dt>
+    <dd>
+      <% if @classification.child_subject.nil? %>
+        &mdash;
+      <% else %>
+        <%= link_to @classification.child_subject, admin_subject_path(@classification.child_subject) %>
+      <% end %>
+    </dd>
+
+  </dl>
+
 </div>
 
