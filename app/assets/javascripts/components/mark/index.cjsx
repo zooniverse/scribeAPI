@@ -39,11 +39,11 @@ module.exports = React.createClass # rename to Classifier
         "tool_config": {
             "options": {
                 "complete_subject": {
-                    "label": "yes",
+                    "label": "no",
                     "next_task": null
                 },
                 "incomplete_subject": {
-                    "label": "no",
+                    "label": "yes",
                     "next_task": null
                 }
             }
