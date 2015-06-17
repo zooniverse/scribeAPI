@@ -75,6 +75,7 @@ module.exports = React.createClass # rename to Classifier
       next_subject = @state.subjects[next_index]
       console.log 'NEXT SUBJECT: ', next_subject
       @setState
+        currentSubject: next_subject
         taskKey: next_subject.type
         subject_index: next_index
         , =>
@@ -101,6 +102,8 @@ module.exports = React.createClass # rename to Classifier
 
     if @props.query.scrollX? and @props.query.scrollY?
       window.scrollTo(@props.query.scrollX,@props.query.scrollY)
+
+    console.log 'CURRENT SUBJECT: ', @state.currentSubject
 
     currentAnnotation = @getCurrentClassification().annotation
 
