@@ -103,8 +103,6 @@ module.exports = React.createClass # rename to Classifier
     if @props.query.scrollX? and @props.query.scrollY?
       window.scrollTo(@props.query.scrollX,@props.query.scrollY)
 
-    console.log 'CURRENT SUBJECT: ', @state.currentSubject
-
     currentAnnotation = @getCurrentClassification().annotation
 
     TaskComponent = @getCurrentTool() # @state.currentTool
@@ -124,7 +122,7 @@ module.exports = React.createClass # rename to Classifier
         { if @state.noMoreSubjects
             style = marginTop: "50px"
             <p style={style}>There are currently no transcription subjects. Try <a href="/#/mark">marking</a> instead!</p>
-          else if @state.currentSubject?
+          else if @getCurrentSubject()?
             <SubjectViewer
               onLoad={@handleViewerLoad}
               subject={@getCurrentSubject()}
