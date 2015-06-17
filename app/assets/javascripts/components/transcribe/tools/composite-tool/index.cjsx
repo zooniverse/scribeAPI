@@ -1,7 +1,8 @@
 # @cjsx React.DOM
-React           = require 'react'
-Draggable       = require '../../../../lib/draggable'
-DoneButton      = require './done-button'
+React      = require 'react'
+Draggable  = require '../../../../lib/draggable'
+DoneButton = require './done-button'
+PrevButton = require './prev-button'
 
 text_tool = require '../text-tool'
 tools = require '../'
@@ -151,6 +152,7 @@ CompositeTool = React.createClass
           </div>
         </div>
         <div className="right">
+          <PrevButton onClick={=> console.log "Prev button clicked!"} />
           <DoneButton onClick={@commitAnnotation} />
         </div>
       </div>
