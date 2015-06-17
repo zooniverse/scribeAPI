@@ -101,7 +101,6 @@ module.exports =
 
   # Get currently viewed subject
   getCurrentSubject: ->
-    subjects = null
     # If we've viewing a subject-set (i.e. Mark) let's use that subject-set's subjects
     if @getCurrentSubjectSet()?
       subjects = @getCurrentSubjectSet().subjects
@@ -111,7 +110,5 @@ module.exports =
       subjects = @state.subjects
 
     # It's possible we have no subjects at all, in which case fail with null:
-    subjects?[@state.subject_index]
-
-
-
+    return null unless subjects?
+    subjects[@state.subject_index] # otherwise, return subject

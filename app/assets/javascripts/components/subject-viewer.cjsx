@@ -25,7 +25,7 @@ module.exports = React.createClass
   mixins: [MarkDrawingMixin] # load helper methods to draw marks and highlights
 
   getInitialState: ->
-
+    console.log 'getInitialState()'
     imageWidth: @props.subject.width
     imageHeight: @props.subject.height
 
@@ -36,8 +36,6 @@ module.exports = React.createClass
     lastMarkKey: 0
 
     active: @props.active
-
-
 
   getDefaultProps: ->
     tool: null # Optional tool to place alongside subject (e.g. transcription tool placed alongside mark)
@@ -85,7 +83,7 @@ module.exports = React.createClass
 
   # Handle initial mousedown:
   handleInitStart: (e) ->
-  
+
     return null if ! @props.annotation?.subToolIndex?
     subTool = @props.task.tool_config.tools[@props.annotation.subToolIndex]
     return null if ! subTool?
@@ -225,6 +223,7 @@ module.exports = React.createClass
           @props.onChange? mark
 
   render: ->
+    console.log 'SUBJECT-VIEWER::render()'
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     # ToolComponent = @state.tool # AMS:from classification refactor.
     mark = @state.uncommittedMark
