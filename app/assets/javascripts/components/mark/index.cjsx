@@ -40,7 +40,7 @@ module.exports = React.createClass # rename to Classifier
             "options": {
                 "complete_subject": {
                     "label": "no",
-                    "next_task": null
+                    "next_task": null           
                 },
                 "incomplete_subject": {
                     "label": "yes",
