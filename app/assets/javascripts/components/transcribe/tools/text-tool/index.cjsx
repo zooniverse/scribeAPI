@@ -1,7 +1,8 @@
 # @cjsx React.DOM
-React           = require 'react'
-Draggable       = require '../../../../lib/draggable'
-DoneButton      = require './done-button'
+React      = require 'react'
+Draggable  = require '../../../../lib/draggable'
+DoneButton = require './done-button'
+PrevButton = require './prev-button'
 
 TextTool = React.createClass
   displayName: 'TextTool'
@@ -156,6 +157,7 @@ TextTool = React.createClass
               {tool_content}
             </div>
             <div className="right">
+              <PrevButton onClick={null} />
               <DoneButton onClick={@commitAnnotation} />
             </div>
           </div>

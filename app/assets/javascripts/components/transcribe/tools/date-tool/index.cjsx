@@ -1,7 +1,8 @@
 # @cjsx React.DOM
-React           = require 'react'
-Draggable       = require '../../../../lib/draggable'
-DoneButton      = require './done-button'
+React      = require 'react'
+Draggable  = require '../../../../lib/draggable'
+DoneButton = require './done-button'
+PrevButton = require './prev-button'
 
 DateTool = React.createClass
   displayName: 'DateTool'
@@ -156,6 +157,7 @@ DateTool = React.createClass
               {tool_content}
             </div>
             <div className="right">
+              <PrevButton onClick={=> console.log "Prev button clicked!"} />
               <DoneButton onClick={@commitAnnotation} />
             </div>
           </div>

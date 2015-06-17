@@ -1,8 +1,6 @@
 .transcribe-tool
   position absolute
-  width 640px
-  left 240px
-  // top 75%
+  min-width 200px
   background-color rgba(255,255,255,0.75)
   box-shadow 0 0 5px 3px rgba(0,0,0,.4)
   border-radius 6px
@@ -11,9 +9,6 @@
 
   .left
     padding-bottom 0.8em
-
-    // background-color rgb(20,100,20)
-    float left
     input
       float left
       margin-left 10px
@@ -21,30 +16,52 @@
     .input-field
       display none // auto hide
       input
-        // text-transform uppercase
+        width 360px
+        height 40px
+        font-size 1.5em
+        display block
+        margin-left 10px
+        margin-right 10px
+        &.input-placeholder
+          color red
       label
         display inherit
         margin-left 10px
+        margin-right 10px
+        margin-top 10px
+        margin-bottom 10px
         color black
         text-align left
 
       &.active
         display block
       textarea
-        font-family COURIER
-        font-size 1em
+        font-size 1.25em
         resize none
-        width 600px
+        width 400px
         height 140px
-        background-color #000
+        background-color #fff
         padding 10px
         outline none
-        color #fff
-        border none
-        border-top-left-radius 6px
+        color #000
+        margin-left 10px
+        margin-right 10px
         opacity 0.5
         &:focus
           opacity 1.0
+        &::-webkit-input-placeholder
+          color #000
+          opacity 0.5
+        &::-moz-placeholder
+          color #000
+          opacity 0.5
+        &:-ms-input-placeholder
+          color #000
+          opacity 0.5
+        &:-o-input-placeholder
+          color #000
+          opacity 0.5
+
   &.composite
     .left
 
@@ -56,8 +73,9 @@
           line-height 1.4em
 
   .right
+
     line-height 4em
-    margin-right 20px
+    margin-right 10px
     float right
 
   .button
@@ -67,18 +85,17 @@
     border-radius 4px
     padding 5px
     margin 2px
-    // width 140px
+    padding-left 20px
+    padding-right 20px
     width auto
     height 30px
     text-decoration none
     font-size 12px
-    // border 2px solid #fff
     cursor pointer
     opacity 0.75
     &.prev
-      background-color blue
+      background-color #ff5151
     &.next
-      background-color red
+      background-color #3f5765
     &.done
-      background-color green
-
+      background-color #3f5765
