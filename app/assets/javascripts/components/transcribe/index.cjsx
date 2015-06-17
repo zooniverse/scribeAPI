@@ -55,7 +55,7 @@ module.exports = React.createClass # rename to Classifier
       classifications: classifications
 
   handleTaskComplete: (d) ->
-
+    console.log 'handleTaskComplete()'
     @handleDataFromTool(d)
     @commitClassification()
     @beginClassification()
@@ -97,17 +97,13 @@ module.exports = React.createClass # rename to Classifier
       console.log "go back"
 
   render: ->
+    return null unless @getCurrentTask()? # @state.currentTask?
+
     if @props.query.scrollX? and @props.query.scrollY?
       window.scrollTo(@props.query.scrollX,@props.query.scrollY)
 
-    # console.log "Transcribe#render: state", @state
-    #
-    return null unless @getCurrentTask()? # @state.currentTask?
-
-    # annotations = @props.annotations
     currentAnnotation = @getCurrentClassification().annotation
-    # console.log "Transcribe#render: "
-    # console.dir currentAnnotation
+
     TaskComponent = @getCurrentTool() # @state.currentTool
     onFirstAnnotation = currentAnnotation?.task is @props.workflow.first_task
 
@@ -119,16 +115,21 @@ module.exports = React.createClass # rename to Classifier
       else
         @getCurrentTask().next_task
 
-    # console.log 'NEXT TASK IS: ', nextTask
-    console.log 'TRANSCRIBE::render(), CURRENT SUBJCT = ', @getCurrentSubject()
-    # console.log "viewer size: ", @state.viewerSize
+
     <div className="classifier">
       <div className="subject-area">
         { if @state.noMoreSubjects
             style = marginTop: "50px"
             <p style={style}>There are currently no transcription subjects. Try <a href="/#/mark">marking</a> instead!</p>
-          else if @getCurrentSubject()?
-            <SubjectViewer onLoad={@handleViewerLoad} subject={@getCurrentSubject()} active=true workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation}>
+          else if @state.currentSubject?
+            <SubjectViewer
+              onLoad={@handleViewerLoad}
+              subject={@state.currentSubject}
+              active=true
+              workflow={@props.workflow}
+              classification={@props.classification}
+              annotation={currentAnnotation}
+            >
               <TaskComponent
                 ref="taskComponent"
                 viewerSize={@state.viewerSize}

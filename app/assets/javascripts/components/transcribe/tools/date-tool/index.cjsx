@@ -1,47 +1,95 @@
 # @cjsx React.DOM
 React           = require 'react'
-Draggable       = require 'lib/draggable'
+Draggable       = require '../../../../lib/draggable'
 DoneButton      = require './done-button'
 
-inputComponents = require 'transcribe/input-components'
-
-TextTool = React.createClass
+DateTool = React.createClass
   displayName: 'DateTool'
 
+  handleInitStart: (e) ->
+    @setState preventDrag: false
+    if e.target.nodeName is "INPUT" or e.target.nodeName is "TEXTAREA"
+      @setState preventDrag: true
+
+    @setState
+      xClick: e.pageX - $('.transcribe-tool').offset().left
+      yClick: e.pageY - $('.transcribe-tool').offset().top
+
+  handleInitDrag: (e, delta) ->
+    return if @state.preventDrag # not too happy about this one
+
+    dx = e.pageX - @state.xClick - window.scrollX
+    dy = e.pageY - @state.yClick # + window.scrollY
+
+    @setState
+      dx: dx
+      dy: dy #, =>
+      dragged: true
+
   getInitialState: ->
+    # compute component location
+    {x,y} = @getPosition @props.subject.data
+
+    dx: x
+    dy: y
     viewerSize: @props.viewerSize
     annotation:
       value: ''
+
+  getPosition: (data) ->
+    switch data.toolName
+      when 'rectangleTool'
+        x = data.x
+        y = data.y + data.height
+      when 'textRowTool'
+        x = data.x
+        y = data.yLower
+      else # default for pointTool
+        x = data.x
+        y = data.y
+    return {x,y}
 
   getDefaultProps: ->
     annotation: {}
     task: null
     subject: null
-    clickOffsetX: 0
-    clickOffsetY: 0
+    standalone: true
+    annotation_key: 'value'
+    focus: true
 
   componentWillReceiveProps: ->
+    @refs.input0.getDOMNode().focus() if @props.focus
+    {x,y} = @getPosition @props.subject.data
     @setState
+      dx: x
+      dy: y
       annotation: @props.annotation
+      , => @forceUpdate() # updates component position on new subject
 
-  componentDidMount: -> # not sure if this does anything? --STI
+  componentWillMount: ->
+    # currently does nothing
+
+  componentWillUnmount: ->
+    if @props.task.tool_config.suggest == 'common'
+      el = $(@refs.input0.getDOMNode())
+      el.autocomplete 'destroy'
+
+  componentDidMount: ->
     @updatePosition()
+    @refs.input0.getDOMNode().focus() if @props.focus
 
-  handleInitStart: (e,d) ->
-    # prevent dragging from non-divs (a bit hacky) --STI
-    @setState preventDrag: e.target.nodeName isnt 'DIV'
-
-    @props.clickOffsetX = e.nativeEvent.offsetX + e.nativeEvent.srcElement.offsetParent.offsetLeft
-    @props.clickOffsetY = e.nativeEvent.offsetY + e.nativeEvent.srcElement.offsetParent.offsetTop
-
-  handleInitDrag: (e, d) ->
-    # console.log 'handleInitDrag()'
-    return if @state.preventDrag # not too happy about this one
-
-    dx = e.clientX - @props.clickOffsetX + window.scrollX
-    dy = e.clientY - @props.clickOffsetY + window.scrollY
-
-    @setState dragged: true, dx: dx, dy: dy
+    if @props.task.tool_config.suggest == 'common'
+      el = $(@refs.input0.getDOMNode())
+      el.autocomplete
+        source: (request, response) =>
+          $.ajax
+            url: "/classifications/terms/#{@props.workflow.id}/#{@props.key}"
+            dataType: "json"
+            data:
+              q: request.term
+            success: ( data ) =>
+              response( data )
+        minLength: 3
 
   # Expects size hash with:
   #   w: [viewer width]
@@ -55,59 +103,64 @@ TextTool = React.createClass
     @updatePosition()
 
   updatePosition: ->
-
-    # HANDLE DIFFERENT TOOLS
-    toolName = @props.subject.data.toolName
-    switch toolName
-      when 'pointTool'
-        x = @props.subject.data.x + 40
-        y = @props.subject.data.y + 40 # TODO: don't hard-wire dimensions
-      when 'rectangleTool'
-        x = @props.subject.data.x
-        y = @props.subject.data.y + @props.subject.data.height
-      when 'textRowTool'
-        x = if @state.viewerSize? then (@state.viewerSize.w-650 )/2 else 0 # TODO: don't hard-wire dimensions
-        y = @props.subject.data.yLower
-
     if @state.viewerSize? && ! @state.dragged
       @setState
-        dx: x * @state.viewerSize.scale.horizontal
-        dy: y * @state.viewerSize.scale.vertical
+        dx: @props.subject.data.x * @state.viewerSize.scale.horizontal
+        dy: (@props.subject.data.y + @props.subject.data.height) * @state.viewerSize.scale.vertical
 
   commitAnnotation: ->
     @props.onComplete @state.annotation
 
   handleChange: (e) ->
-    @state.annotation.value = e.target.value
+    @state.annotation[@props.annotation_key] = e.target.value
     @forceUpdate()
 
+  handleKeyPress: (e) ->
+    if [13].indexOf(e.keyCode) >= 0 # ENTER
+      @commitAnnotation()
+      e.preventDefault()
+
   render: ->
-    return null unless @props.viewerSize? && @props.subject?
 
-    # If user has set a custom position, position based on that:
+    # get component position
     style =
-      left: @state.dx
-      top: @state.dy
-    # console.log "TextTool#render pos", @state
+      left: "#{@state.dx*@props.scale.horizontal}px"
+      top: "#{@state.dy*@props.scale.vertical}px"
 
-    val = @state.annotation?.value ? ''
-    # console.log "TextTool#render val:", val, @state.annotation?.value
+    val = @state.annotation[@props.annotation_key] ? ''
 
-    <Draggable
-      onStart = {@handleInitStart}
-      onDrag  = {@handleInitDrag}
-      onEnd   = {@handleInitRelease}
-      ref     = "inputWrapper0">
+    unless @props.standalone
+      label = @props.label ? ''
+    else
+      label = @props.task.instruction
 
-      <div className="transcribe-tool" style={style}>
-        <InputComponent
-          key={@props.task.key}
-          instruction={@props.task.instruction}
-          handleChange={@handleChange}
-          commitAnnotation{@commitAnnotation}
-        />
-
+    # create component input field(s)
+    tool_content =
+      <div className="input-field active">
+        <label>{label}</label>
+        <input ref="input0" type="date" data-task_key={@props.task.key} onKeyDown={@handleKeyPress} onChange={@handleChange} value={val} />
       </div>
-    </Draggable>
 
-module.exports = TextTool
+    if @props.standalone # 'standalone' true if component handles own mouse events
+      tool_content =
+        <Draggable
+          onStart={@handleInitStart}
+          onDrag={@handleInitDrag}
+          onEnd={@handleInitRelease}
+          ref="inputWrapper0"
+          x={@state.dx*@props.scale.horizontal}
+          y={@state.dy*@props.scale.vertical}>
+
+          <div className="transcribe-tool" style={style}>
+            <div className="left">
+              {tool_content}
+            </div>
+            <div className="right">
+              <DoneButton onClick={@commitAnnotation} />
+            </div>
+          </div>
+
+        </Draggable>
+    else return tool_content # render input fields without Draggable
+
+module.exports = DateTool

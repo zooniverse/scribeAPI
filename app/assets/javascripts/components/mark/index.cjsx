@@ -58,12 +58,13 @@ module.exports = React.createClass # rename to Classifier
 
     @beginClassification()
 
-
   render: ->
-    return null unless @getCurrentSubject()? # state.currentSubjectSet?
-    # console.log "mark/index state", @state
+
+    return null unless @state.currentSubjectSet?
 
     currentTask = @props.workflow.tasks[@state.taskKey] # [currentAnnotation?.task]
+
+    console.log 'CURRENT TASK : ', currentTask
     TaskComponent = @getCurrentTool() # coreTools[currentTask.tool]
     onFirstAnnotation = @state.taskKey == @props.workflow.first_task
 
@@ -118,8 +119,6 @@ module.exports = React.createClass # rename to Classifier
     </div>
 
   getNextSubject: ->
-    # console.log "BEFORE @setState", @state
-
     new_subject_set_index = @state.subject_set_index
     new_subject_index = @state.subject_index + 1
 
@@ -138,15 +137,9 @@ module.exports = React.createClass # rename to Classifier
     @setState 
       subject_set_index: new_subject_set_index 
       subject_index: new_subject_index 
-      taskKey: @props.workflow.first_task, =>
-        console.log "After @state", @state
-
-    # currentSubjectSet: @state.subjectSets[new_subject_set_index],
-    # currentSubject: @state.subjectSets[new_subject_set_index][new_subject_index], =>
-
-
+      taskKey: @props.workflow.first_task
+      
   # User changed currently-viewed subject:
-
   handleViewSubject: (index) ->
     # console.log "HANDLE View Subject: subject", subject
     # @state.currentSubject = subject
@@ -165,13 +158,16 @@ module.exports = React.createClass # rename to Classifier
 
   # Handle user selecting a pick/drawing tool:
   handleDataFromTool: (d) ->
+    console.log "MARK/INDEX::handleDataFromTool()"
     classifications = @state.classifications
     classifications[@state.classificationIndex].annotation[k] = v for k, v of d
-    # console.log "handleDataFromTool:"
-    # console.dir d
 
     @setState
       classifications: classifications
+        , =>
+          @forceUpdate()
+          console.log "handleDataFromTool(), DATA = ", d
+
 
   destroyCurrentAnnotation: ->
     # TODO: implement mechanism for going backwards to previous classification, potentially deleting later classifications from stack:
@@ -179,14 +175,10 @@ module.exports = React.createClass # rename to Classifier
     # @props.classification.annotations.pop()
 
   completeSubjectSet: ->
-    console.log "currentTask from #completeSubjectSet", @state.currentTask
     if @state.taskKey != "completion_assessment_task"
       @setState
         taskKey: "completion_assessment_task"
     else
-      console.log "before commit of completeSubjectSet @state", @state
-      # console.log "@state.currentSubject", @state.currentSubject
-      # console.log "@state.currentSubjectSet", @state.currentSubjectSet
       @commitClassification()
       @getNextSubject()
       # @fetchSubjectSets(@props.workflow.id, 1)
