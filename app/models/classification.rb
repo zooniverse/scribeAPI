@@ -74,6 +74,7 @@ class Classification
 
   def increment_subject_classification_count
     subject = self.subject
+    if classification.task_key == "completion_assessment_task"
     subject.classification_count += 1 # no_annotation_values 
     subject.save
   end
