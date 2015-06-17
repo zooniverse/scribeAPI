@@ -49,12 +49,16 @@ module.exports = React.createClass # rename to Classifier
 
   # Handle user selecting a pick/drawing tool:
   handleDataFromTool: (d) ->
+    console.log "MARK/INDEX::handleDataFromTool()"
     classifications = @state.classifications
     classifications[@state.classificationIndex].annotation[k] = v for k, v of d
 
-    # @forceUpdate()
     @setState
       classifications: classifications
+        , =>
+          @forceUpdate()
+          console.log "handleDataFromTool(), DATA = ", d
+
 
   handleTaskComplete: (d) ->
     # console.log 'handleTaskComplete()'
@@ -100,10 +104,13 @@ module.exports = React.createClass # rename to Classifier
       console.log "go back"
 
   render: ->
+    console.log 'TRANSCRIBE::render(), CURRENT TASK = ', @getCurrentTask()
     if @props.query.scrollX? and @props.query.scrollY?
       window.scrollTo(@props.query.scrollX,@props.query.scrollY)
 
     currentAnnotation = @getCurrentClassification().annotation
+    console.log 'CURRENT ANNOTATION: ', currentAnnotation
+
     TaskComponent = @getCurrentTool() # @state.currentTool
     onFirstAnnotation = currentAnnotation?.task is @props.workflow.first_task
 
@@ -127,7 +134,7 @@ module.exports = React.createClass # rename to Classifier
                 task={@getCurrentTask()}
                 annotation={currentAnnotation}
                 subject={@getCurrentSubject()}
-                onChange={@handleTaskComponentChange}
+                onChange={@handleDataFromTool}
                 onComplete={@handleTaskComplete}
                 onBack={@makeBackHandler()}
                 workflow={@props.workflow}
@@ -152,7 +159,7 @@ module.exports = React.createClass # rename to Classifier
               <nav className="task-nav">
                 <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
                 { if nextTask?
-                    <button type="button" className="continue major-button" onClick={@advanceToTask.bind(@, nextTask)}>Next</button>
+                    <button type="button" className="continue major-button" onClick={@advanceToNextTask.bind(@, nextTask)}>Next</button>
                   else
                     <button type="button" className="continue major-button" onClick={@completeClassification}>Done</button>
                 }

@@ -25,16 +25,12 @@ module.exports = React.createClass
   mixins: [MarkDrawingMixin] # load helper methods to draw marks and highlights
 
   getInitialState: ->
-    console.log 'getInitialState()'
     imageWidth: @props.subject.width
     imageHeight: @props.subject.height
-
     subject: @props.subject
-
     marks: []
     selectedMark: null
     lastMarkKey: 0
-
     active: @props.active
 
   getDefaultProps: ->
@@ -223,7 +219,6 @@ module.exports = React.createClass
           @props.onChange? mark
 
   render: ->
-    console.log 'SUBJECT-VIEWER::render()'
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     # ToolComponent = @state.tool # AMS:from classification refactor.
     mark = @state.uncommittedMark
