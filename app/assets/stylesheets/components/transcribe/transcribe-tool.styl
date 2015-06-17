@@ -1,8 +1,9 @@
 .transcribe-tool
   position absolute
-  width 640px
-  left 240px
+  // width 400px
+  // left 240px
   // top 75%
+  min-width 200px
   background-color rgba(255,255,255,0.75)
   box-shadow 0 0 5px 3px rgba(0,0,0,.4)
   border-radius 6px
@@ -13,7 +14,7 @@
     padding-bottom 0.8em
 
     // background-color rgb(20,100,20)
-    float left
+    // float left
     input
       float left
       margin-left 10px
@@ -22,9 +23,16 @@
       display none // auto hide
       input
         // text-transform uppercase
+        width 80%
+        display block
+        margin-left 10px
+        margin-right 10px
       label
         display inherit
         margin-left 10px
+        margin-right 10px
+        margin-top 10px
+        margin-bottom 10px
         color black
         text-align left
 
@@ -34,14 +42,16 @@
         font-family COURIER
         font-size 1em
         resize none
-        width 600px
+        width 400px
         height 140px
         background-color #000
         padding 10px
         outline none
         color #fff
         border none
-        border-top-left-radius 6px
+        //border-top-left-radius 6px
+        margin-left 10px
+        margin-right 10px
         opacity 0.5
         &:focus
           opacity 1.0
@@ -56,8 +66,9 @@
           line-height 1.4em
 
   .right
+
     line-height 4em
-    margin-right 20px
+    margin-right 10px
     float right
 
   .button
@@ -81,4 +92,3 @@
       background-color red
     &.done
       background-color green
-
