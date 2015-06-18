@@ -56,14 +56,24 @@ class Subject
 
   def increment_retire_count_by_one
     self.inc(retire_count: 1)
+    self.retire_by_vote!
   end
 
+  # find all the classifications for subject where task_key == compleletion_assesment_task
+  # calculate the percetage vote for retirement (pvr)
+  # if pvr is equal or greater than retire_limit, set self.status == retired.
   def retire_by_vote!
-    if (self.retire_count >= self.workflow.retire_limit)
-      self.status = "retired" 
-      subject_set.subject_completed_on_workflow(workflow) if ! workflow.nil?
-      save
+    assesment_classifications = classifications.where(task_key: "completion_assessment_task").to_a
+    
+    if assesment_classifications.length > 1
+      percentage_for_retire = retire_count/assesment_classifications.length.to_f   
+      if percentage_for_retire >= workflow.retire_limit
+        self.status = "retired" 
+        subject_set.subject_completed_on_workflow(workflow) if ! workflow.nil?
+        save
+      end
     end
+
   end
 
   def activate!
