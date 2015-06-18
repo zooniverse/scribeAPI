@@ -70,6 +70,10 @@ module.exports =
     else
       @fetchSubjects @props.workflow.id, @props.workflow.subject_fetch_limit
 
+  orderSubjectsByY: (subjects) ->
+    subjects.sort (a,b) ->
+      return if a.region.y >= b.region.y then 1 else -1
+
   fetchSubject: (subject_id, workflow_id)->
     console.log 'fetchSubject()'
 
@@ -101,14 +105,13 @@ module.exports =
           @fetchSubjectsCallback()
 
     else
-      # console.log "ELSE reguest"
       request = API.type('subjects').get
         workflow_id: workflow_id
         limit: limit
         random: true
 
       request.then (subjects) =>
-        console.log 'SUBJECTS: ', subjects
+        subject = @orderSubjectsByY(subjects)
         if subjects.length is 0
           @setState noMoreSubjects: true, => console.log 'SET NO MORE SUBJECTS FLAG TO TRUE'
         else
@@ -119,3 +122,4 @@ module.exports =
         # Does including instance have a defined callback to call when new subjects received?
         if @fetchSubjectsCallback?
           @fetchSubjectsCallback()
+
