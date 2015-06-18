@@ -43,7 +43,7 @@ module.exports = React.createClass
   render: ->
     # console.log " SSV Render @props", @props
     # console.log " SSV Render @state", @state
-    console.log "...Current Classification: ", @props.annotation
+    # console.log "...Current Classification: ", @props.annotation
     <div className="subject-set-viewer">
       { if @props.subject_set.subjects.length > 1
         <div className="subject-set-nav">
