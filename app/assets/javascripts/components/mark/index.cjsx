@@ -55,14 +55,14 @@ module.exports = React.createClass # rename to Classifier
     @props.workflow.tasks["completion_assessment_task"] = completion_assessment_task
     @setState
       taskKey: @props.workflow.first_task
-    # TODO: insert the final task into workflow.tasks
 
     @beginClassification()
 
-
   render: ->
     return null unless @getCurrentSubject()? # state.currentSubjectSet?
+
     # console.log "mark/index state", @state
+    console.log "Current Classification: ", @getCurrentClassification().annotation
 
     currentTask = @props.workflow.tasks[@state.taskKey] # [currentAnnotation?.task]
     TaskComponent = @getCurrentTool() # coreTools[currentTask.tool]
@@ -104,7 +104,7 @@ module.exports = React.createClass # rename to Classifier
                 <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@advanceToNextTask}>Next</button>
               else
                 if @state.taskKey == "completion_assessment_task" 
-                  <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Next Page</button>    
+                  <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next Page</button>
                 else
                   <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Done</button>
             }
@@ -142,12 +142,7 @@ module.exports = React.createClass # rename to Classifier
       taskKey: @props.workflow.first_task, =>
         console.log "After @state", @state
 
-    # currentSubjectSet: @state.subjectSets[new_subject_set_index],
-    # currentSubject: @state.subjectSets[new_subject_set_index][new_subject_index], =>
-
-
   # User changed currently-viewed subject:
-
   handleViewSubject: (index) ->
     # console.log "HANDLE View Subject: subject", subject
     # @state.currentSubject = subject
@@ -181,15 +176,21 @@ module.exports = React.createClass # rename to Classifier
 
   completeSubjectSet: ->
     console.log "currentTask from #completeSubjectSet", @state.currentTask
-    if @state.taskKey != "completion_assessment_task"
+    @commitClassification()
+    @beginClassification()
+
+    # TODO: Should maybe make this workflow-configurable? 
+    show_subject_assessment = true
+    if show_subject_assessment
       @setState
         taskKey: "completion_assessment_task"
-    else
-      console.log "before commit of completeSubjectSet @state", @state
-      # console.log "@state.currentSubject", @state.currentSubject
-      # console.log "@state.currentSubjectSet", @state.currentSubjectSet
-      @commitClassification()
-      @getNextSubject()
-      # @fetchSubjectSets(@props.workflow.id, 1)
+
+  completeSubjectAssessment: ->
+    console.log "before commit of completeSubjectSet @state", @state
+    @commitClassification()
+    @beginClassification()
+
+    @getNextSubject()
+
 
 window.React = React

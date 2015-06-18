@@ -12,7 +12,7 @@ class SubjectSet
 
   belongs_to :group
   belongs_to :project
-  has_many :subjects, dependent: :destroy
+  has_many :subjects, dependent: :destroy, :order => [:order, :asc]
 
   # AMS: should a subject_set belong to a workflow, or do we get that throught the subject?
   # I think this is being used in the rake load_group_subjects around line133

@@ -29,10 +29,36 @@ module.exports =
     classification.workflow_id = @state.workflow.id
     classification.task_key = @state.taskKey
 
-    classification.commit()
+    # Commit classification to backend 
+    classification.commit (classification) =>
+      # Did this generate a child_subject? Update local copy:
+      if classification.child_subject
+        @appendChildSubject classification.subject_id, classification.child_subject
 
     console.log 'COMMITTED CLASSIFICATION: ', classification
     console.log '(ALL CLASSIFICATIONS): ', @state.classifications
+
+  # Update local version of a subject with a newly acquired child_subject (i.e. after submitting a subject-generating classification)
+  appendChildSubject: (subject_id, child_subject) ->
+    if (s = @subjectById(subject_id))
+      s.child_subjects.push $.extend({userCreated: true}, child_subject)
+      console.log "appended: ", s, child_subject
+
+      # We've updated an internal object in @state.subjectSets, but framework doesn't notice, so tell it to update:
+      @forceUpdate()
+
+    else
+      console.log "couldn't find subject by ", subject_id
+
+  # Get a reference to the local copy of a subject by id regardless of whether viewing subject-sets or just subjects
+  subjectById: (id) ->
+    if @state.subjectSets?
+      for set in @state.subjectSets
+        for s in set.subjects
+          return s if s.id == id
+    else
+      for s in @state.subjects
+        return s if s.id == id
 
   # Get current classification:
   getCurrentClassification: ->
