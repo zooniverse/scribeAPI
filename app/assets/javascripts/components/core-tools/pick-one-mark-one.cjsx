@@ -93,11 +93,13 @@ module.exports = React.createClass
   componentDidMount: ->
     # @setState subToolIndex: 0
     # @handleChange 0
-    @setSubToolIndex 0
+    @setSubToolIndex @props.annotation?.subToolIndex ? 0
 
   componentWillReceiveProps: (new_props) ->
-    # @setSubToolIndex 0
-    console.log "set subToolIndex to 0", new_props
+    if ! new_props.annotation?.subToolIndex
+      console.log ".. set subToolIndex to 0", @state.annotation
+      # @props.onChange? @state.annotation
+      
     # @state.annotation
     # @handleChange 0 
 
@@ -106,6 +108,8 @@ module.exports = React.createClass
     annotation: $.extend({subToolIndex: null}, @props.annotation ? {})
 
   render: ->
+    console.log "PickOneMarkOne rendering: ", @getSubToolIndex()
+
     tools = for tool, i in @props.task.tool_config.tools
       tool._key ?= Math.random()
 
@@ -148,7 +152,6 @@ module.exports = React.createClass
     annotation.subToolIndex = index
     @setState
       annotation: annotation, () =>
-        console.log "updating cnn: ", @state.annotation
         @props.onChange? @state.annotation
 
   handleChange: (index, e) ->

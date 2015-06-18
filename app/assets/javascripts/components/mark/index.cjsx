@@ -154,7 +154,7 @@ module.exports = React.createClass # rename to Classifier
 
   # Handle user selecting a pick/drawing tool:
   handleDataFromTool: (d) ->
-    console.log "MARK/INDEX::handleDataFromTool()"
+    console.log "MARK/INDEX::handleDataFromTool()", d
     classifications = @state.classifications
     classifications[@state.classificationIndex].annotation[k] = v for k, v of d
 

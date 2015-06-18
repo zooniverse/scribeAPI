@@ -41,7 +41,7 @@ TextTool = React.createClass
     switch data.toolName
       when 'rectangleTool'
         x = data.x
-        y = data.y + data.height
+        y = parseFloat(data.y) + parseFloat(data.height)
       when 'textRowTool'
         x = data.x
         y = data.yLower
@@ -127,7 +127,6 @@ TextTool = React.createClass
     style =
       left: "#{@state.dx*@props.scale.horizontal}px"
       top: "#{@state.dy*@props.scale.vertical}px"
-    console.log "positioning text tool: ", style, @state, @props.scale, @state.dy*@props.scale.vertical
 
     val = @state.annotation[@props.annotation_key] ? ''
 

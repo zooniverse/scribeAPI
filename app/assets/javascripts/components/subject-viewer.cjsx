@@ -38,7 +38,7 @@ module.exports = React.createClass
     annotationIsComplete: false
 
   componentWillReceiveProps: (new_props) ->
-    console.log "SubjectViewer#componentWillReceiveProps: ", @props, new_props
+    # console.log "SubjectViewer#componentWillReceiveProps: ", @props, new_props
     # @setUncommittedMark null if ! @state.uncommittedMark?.saving && ! new_props.annotation?.subToolIndex?
     # @setUncommittedMark null if ! new_props.annotation?.subToolIndex?
     # console.log "setting null because",new_props.task?.tool != 'pickOneMarkOne'
@@ -100,7 +100,7 @@ module.exports = React.createClass
     MarkComponent = markingTools[subTool.type] # NEEDS FIXING
 
     # Create an initial mark instance, which will soon gather coords:
-    mark = toolName: subTool.type, userCreated: true
+    mark = toolName: subTool.type, userCreated: true, subToolIndex: @state.uncommittedMark?.subToolIndex ? @props.annotation?.subToolIndex
 
     mouseCoords = @getEventOffset e
 
@@ -124,7 +124,7 @@ module.exports = React.createClass
 
   # Handle mouse dragging
   handleInitDrag: (e) ->
-    console.log "handleInitDrag: ", @state.uncommittedMark
+    # console.log "handleInitDrag: ", @state.uncommittedMark
     return null if ! @state.uncommittedMark?
 
     mark = @state.uncommittedMark
@@ -209,11 +209,6 @@ module.exports = React.createClass
   # Commit mark
   submitMark: ->
     mark = @state.uncommittedMark
-    console.log 'submitMark(), MARK = ', mark
-    @props.onComplete? mark
-
-    # marks = @state.marks
-    # marks.push mark
 
     @setUncommittedMark null
 
