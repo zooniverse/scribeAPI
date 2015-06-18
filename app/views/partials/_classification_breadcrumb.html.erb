@@ -1,0 +1,18 @@
+<%
+  links = []
+  links << {label: 'Subjects', url: admin_subjects_path}
+
+  parents = []
+  s = classification.subject
+  while ! (s = s.parent_subject).nil?
+    parents.unshift s
+  end
+
+  parents.each do |p|
+    links << {label: p, url: admin_subject_path(p)}
+  end
+
+  links << {label: classification.subject, url: admin_subject_path(classification.subject)}
+  links << {label: classification}
+%>
+<%= render partial: 'partials/breadcrumb', locals: {links: links} %>

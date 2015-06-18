@@ -10,9 +10,9 @@
     <th>Retire Count</th>
   </tr>
 
-<% @root_subjects.each do |subject| %>
+<% @subjects.each do |subject| %>
   <tr>
-    <td> <a href="/subjects/<%= subject.id %>" ><img src="<%= subject.location["thumbnail"] %>" width="100"/></a></td>
+    <td> <a href="<%= admin_subject_path(subject) %>" ><img src="<%= subject.location["thumbnail"] %>" width="100"/></a></td>
     <td> <%= subject.status %> </td> 
     <td> <%= subject.classification_count %> </td> 
     <td> <%= subject.secondary_subject_count %> </td> 

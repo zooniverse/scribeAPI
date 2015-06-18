@@ -42,6 +42,10 @@ class Subject
   after_create :update_subject_set_stats, :activate! # this method before :increment_parents_subject_count_by_one
   after_create :increment_parents_subject_count_by_one, :if => :parent_subject
 
+  def source_classifications
+    Classification.by_child_subject id
+  end
+
   def update_subject_set_stats
     subject_set.inc_subject_count_for_workflow(workflow) if ! workflow.nil?
   end
@@ -78,4 +82,7 @@ class Subject
     save
   end
 
+  def to_s
+    "#{workflow.name.capitalize} Subject (#{type})"
+  end
 end

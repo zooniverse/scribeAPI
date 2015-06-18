@@ -38,11 +38,19 @@ module.exports =
         random: true
 
       request.then (subject_sets)=>    # DEBUG CODE
-        console.log "ANDI: subject sets",  subject_sets
+
+
+        # TODO hack to ffwd to set with child subjects:
+        ind = (i for s,i in subject_sets when s.subjects[0].child_subjects?.length > 0)[0] ? 0
+        console.log "setting set index: ", (i for s,i in subject_sets when s.subjects[0].child_subjects?.length > 0)
         @setState
           subjectSets: subject_sets
+          subject_set_index: ind
+
           # currentSubjectSet: subject_sets[0]
           # currentSubject: subject_sets[0].subjects[0]
+        if @fetchSubjectsCallback?
+          @fetchSubjectsCallback()
 
 
 

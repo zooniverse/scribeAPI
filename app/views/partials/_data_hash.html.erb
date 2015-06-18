@@ -1,0 +1,21 @@
+<ul>
+<% hash.each do |(k,v)| %> 
+  <li><label><%= k %>:</label> 
+
+    <% if v.is_a? Hash %>
+      <%= render partial: 'partials/data_hash', locals: {hash: v} %> 
+
+    <% elsif v.is_a? Array %>
+      <ol>
+      <% v.each do |_v| %>
+        <li><%= render partial: 'partials/data_hash', locals: {hash: _v} %> </li>
+      <% end %>
+      </ol>
+
+    <% else %>
+      <%= v %>
+    <% end %>
+
+  </li>
+<% end %>
+</ul>

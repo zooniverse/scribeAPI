@@ -91,7 +91,19 @@ module.exports = React.createClass
     onChange: NOOP
 
   componentDidMount: ->
-    @handleChange 0
+    # @setState subToolIndex: 0
+    # @handleChange 0
+    @setSubToolIndex 0
+
+  componentWillReceiveProps: (new_props) ->
+    # @setSubToolIndex 0
+    console.log "set subToolIndex to 0", new_props
+    # @state.annotation
+    # @handleChange 0 
+
+  getInitialState: ->
+    subToolIndex: @props.annotation?.subToolIndex ? 0
+    annotation: $.extend({subToolIndex: null}, @props.annotation ? {})
 
   render: ->
     tools = for tool, i in @props.task.tool_config.tools
@@ -102,7 +114,7 @@ module.exports = React.createClass
 
       <label
         key={tool._key}
-        className="minor-button #{if i is (@props.annotation.subToolIndex ? 0) then 'active' else ''}"
+        className="minor-button #{if i is @getSubToolIndex() then 'active' else ''}"
       >
         <span
           className="drawing-tool-icon"
@@ -112,7 +124,7 @@ module.exports = React.createClass
         <input
           type="radio"
           className="drawing-tool-input"
-          checked={ i is (@props.annotation.subToolIndex ? 0) }
+          checked={ i is @getSubToolIndex() }
           ref={"inp-" + i}
           onChange={ @handleChange.bind this, i }
         />
@@ -126,14 +138,30 @@ module.exports = React.createClass
 
     <GenericTask question={@props.task.instruction} help={@props.task.help} answers={tools} />
 
+  getSubToolIndex: ->
+    @props.annotation?.subToolIndex ? 0
+
+  setSubToolIndex: (index) ->
+    annotation = @state.annotation
+    annotation.subToolIndex = index
+    annotation.toolName = @props.task.tool_config.tools[index].type
+    annotation.subToolIndex = index
+    @setState
+      annotation: annotation, () =>
+        console.log "updating cnn: ", @state.annotation
+        @props.onChange? @state.annotation
+
   handleChange: (index, e) ->
     console.log 'PICK-ONE-MARK-ONE::handleChange(), INDEX = ', index, @refs
     inp = @refs["inp-#{index}"]
     if inp.getDOMNode().checked
+      @setSubToolIndex index
+
       # if e.target.checked
-      @props.onChange? {
-        subToolIndex: index,
-        toolName: @props.task.tool_config.tools[index].type
-        generates_subject_type: @props.task.tool_config.tools[index].generates_subject_type
-      }
-      @forceUpdate()
+      # @props.onChange? {
+        # subToolIndex: index,
+        # toolName: @props.task.tool_config.tools[index].type
+        # generates_subject_type: @props.task.tool_config.tools[index].generates_subject_type
+      # }
+
+      # @forceUpdate()

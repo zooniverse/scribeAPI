@@ -97,3 +97,61 @@ html, body
   @media screen and (max-width: 800px)
     width 100%
     float none
+
+
+
+.dashboard-table
+  border-collapse collapse
+
+  tr
+    th, td
+      padding 10px
+
+    th
+      text-align left
+
+    &:hover
+      background-color #eee
+
+.core-data, .supplied-data
+  width 45%
+  float left
+  overflow hidden
+
+dl
+  dt
+    color #aaa
+
+  dd
+    padding-bottom 10px
+    margin-left 20px
+
+    ul
+      padding-left 20px
+
+      li
+        label
+          color #999
+      
+
+.breadcrumb
+  list-style none
+  padding 0
+
+  li 
+    display inline-block
+    padding 10px 0
+    font-size 1.4em
+
+    &:before
+      content "\00BB "
+
+    &:first-of-type
+      &:before
+        content none
+        
+    a
+      padding-right 10px
+
+a
+  color orange

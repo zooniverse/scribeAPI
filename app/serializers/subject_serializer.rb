@@ -5,6 +5,7 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
 
   delegate :current_user, to: :scope
 
+  has_many :child_subjects
   
   
   def id

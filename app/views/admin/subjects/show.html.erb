@@ -1,0 +1,109 @@
+
+<%= render partial: 'partials/subject_breadcrumb', locals: {subject: @subject} %>
+
+<div class="core-data">
+  <h1><%= @subject %></h1>
+  <% if ! @subject.name.nil? %>
+    <h1><%= @subject.name %></h1>
+  <% end %>
+
+  <img src="<%= @subject.location["standard"] %>" width="300"/>
+
+  <dl>
+
+    <dt>Type</dt>
+    <dd><%= @subject.type %><% if @subject.type != 'root' %> (User-defined)<% end %></dd>
+
+    <dt>Appears in Workflow:</dt>
+    <dd><%= @subject.workflow.name %></dd>
+
+    <dt>Source Size:</dt>
+    <dd><%= @subject.width %> x <%= @subject.height %></dd>
+
+    <dt>Metadata</dt>
+    <dd>
+      <% if @subject.meta_data.nil? %>
+        &mdash;
+      <% else %>
+        <%= render partial: 'partials/data_hash', locals: {hash: @subject.meta_data} %> 
+      <% end %>
+    </dd>
+
+
+    <dt>Region</dt>
+    <dd>
+      <% if @subject.region.nil? %>
+        &mdash;
+      <% else %>
+        <%= render partial: 'partials/data_hash', locals: {hash: @subject.region} %> 
+      <% end %>
+    </dd>
+
+    <dt>Data</dt>
+    <dd>
+      <% if @subject.data.nil? %>
+        &mdash;
+      <% else %>
+        <%= render partial: 'partials/data_hash', locals: {hash: @subject.data} %> 
+      <% end %>
+    </dd>
+
+    <dt>Status</dt>
+    <dd><%= @subject.status %> </dd>
+
+    <dt>Retire Count:</dt>
+    <dd> <% if @subject.retire_count.nil? %>&mdash;<% else %><% @subject.retire_count %><% end %> </dd> 
+
+    <dt>Created</dt>
+    <dd><%= @subject.created_at %> (<%= time_ago_in_words @subject.created_at, include_seconds: true %> ago)</dd>
+
+    <dt>Last Update</dt>
+    <dd><%= @subject.updated_at %> (<%= time_ago_in_words @subject.updated_at, include_seconds: true %> ago)</dd>
+
+  </dl>
+</div>
+
+<div class="supplied-data">
+  <h2>Related</h2>
+  <dl>
+    <dt>Total Classifications</dt>
+    <dd><%= @subject.classification_count %></dd>
+
+    <dt>Total Child Subjects</dt>
+    <dd><%= @subject.secondary_subject_count %></dd>
+
+    <% if ! @subject.source_classifications.empty? %>
+      <dt>Generated From These Classifications </dt>
+      <dd>
+        <ol>
+        <% @subject.source_classifications.each do |classification| %>
+          <li><%= link_to "#{classification} (#{time_ago_in_words(classification.finished_at)} ago)", admin_classification_path(classification) %></li>
+        <% end %>
+        </ol>
+      </dd>
+    <% end %>
+  </dl>
+
+  <% if @subject.classifications.having_child_subjects.count > 0 %>
+    <h3>Subject-Generating Classifications</h3>
+    <ol>
+      <% @subject.classifications.having_child_subjects.each do |classification| %>
+        <li><%= link_to "#{classification} (#{time_ago_in_words(classification.finished_at)} ago)", admin_classification_path(classification) %>
+          <br />&raquo; <%= link_to classification.child_subject, admin_subject_path(classification.child_subject) %>
+        </li>
+      <% end %>
+    </ol>
+  <% end %>
+
+  <% if @subject.classifications.not_having_child_subjects.count > 0 %>
+    <h3><% if @subject.classifications.having_child_subjects.count > 0 %>Other <% end %>Classifications</h3>
+    <ol>
+      <% @subject.classifications.not_having_child_subjects.each do |classification| %>
+        <li><%= link_to "#{classification} (#{time_ago_in_words(classification.finished_at)} ago)", admin_classification_path(classification) %>
+        </li>
+      <% end %>
+    </ol>
+  <% end %>
+  </dl>
+</div>
+

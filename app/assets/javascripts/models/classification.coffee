@@ -15,9 +15,27 @@ class Classification
     @generates_subject_type = null
     @toolName = null
 
-  commit: ->
+  commit: (callback) ->
     @metadata.finished_at = (new Date).toISOString()
 
+    data =
+      classifications:
+        annotation: @annotation
+        subject_id: @subject_id
+        subject_set_id: @subject_set_id
+        task_key: @task_key
+        metadata: @metadata
+        workflow_id: @workflow_id
+
+    $.ajax "/classifications",
+      data: data
+      method: 'post'
+      dataType: 'json'
+      complete: (resp) =>
+        callback? resp.responseJSON?.classification
+
+    """
+    rec.save()
     rec = API.type('classifications').create
       annotation: @annotation
       subject_id: @subject_id
@@ -26,5 +44,6 @@ class Classification
       metadata: @metadata
       workflow_id: @workflow_id
     rec.save()
+    """
 
 module.exports = Classification

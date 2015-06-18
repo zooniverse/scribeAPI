@@ -42,9 +42,7 @@ class Workflow
     return if task == nil # safe-guard against final_task, hopefully we can take this out at somepoint.
 
     if task.generates_subjects
-      #this is going to be in issue with transcribe, if subToolIndex is not sent on the classification.
-      tool_box = task.find_tool_box(classification.annotation["subToolIndex"])
-      subject_type = tool_box[:generates_subject_type]
+      subject_type = task.subject_type classification
 
       # If this is the mark workflow, create region:
       if classification.workflow.name == 'mark'
@@ -76,19 +74,21 @@ class Workflow
           data = {'values' => [data]}
         end
         # puts "ClassificationsController: not persisted; svaing data: #{data}"
-      classification.child_subject.update_attributes({
-        subject_set: classification.subject.subject_set,
-        location: {
-          standard: classification.subject.location[:standard]
-        },
-        data: data,
-        region: region,
-        width: classification.subject.width,
-        height: classification.subject.height
-      })
+        classification.child_subject.update_attributes({
+          subject_set: classification.subject.subject_set,
+          location: {
+            standard: classification.subject.location[:standard]
+          },
+          data: data,
+          region: region,
+          width: classification.subject.width,
+          height: classification.subject.height
+        })
 
-      #add tool_name field to classifcation, but do we need this field? --AMS
-      classification.update_attributes({tool_name: tool_box[:type], child_subject: classification.child_subject})
+        #add tool_name field to classifcation, but do we need this field? --AMS
+        # classification.update_attributes({tool_name: tool_box[:type], child_subject: classification.child_subject})
+        # PB: I think not?
+        classification.update_attributes({child_subject: classification.child_subject})
       end
       classification.child_subject
     end
