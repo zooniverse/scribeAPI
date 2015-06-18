@@ -38,18 +38,11 @@ module.exports =
         random: true
 
       request.then (subject_sets)=>    # DEBUG CODE
-        # console.log "subject sets",  subject_sets
+        console.log "ANDI: subject sets",  subject_sets
         @setState
           subjectSets: subject_sets
           # currentSubjectSet: subject_sets[0]
           # currentSubject: subject_sets[0].subjects[0]
-
-  # Once we get down to subject level, the subjects need to be sorted by region.y. 
-  # 
-  # orderChildSubjectsByY: ->
-  #   for subject_set, i in subject_sets
-  #     for subject, i in subject_set
-  #       for key, value of subject
 
 
 
