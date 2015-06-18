@@ -150,7 +150,10 @@ module.exports = React.createClass # rename to Classifier
     # console.log 'TASK IS COMPLETE!'
     @handleDataFromTool(d)
     @commitClassification()
-    @beginClassification()
+
+    # Initialize new classification with currently selected subToolIndex (so that right tool is selected in the right-col)
+    @beginClassification subToolIndex: @state.currentSubToolIndex
+
 
   # Handle user selecting a pick/drawing tool:
   handleDataFromTool: (d) ->
@@ -163,6 +166,18 @@ module.exports = React.createClass # rename to Classifier
         , =>
           @forceUpdate()
           console.log "handleDataFromTool(), DATA = ", d
+
+    # Kind of a hack: We receive annotation data from two places: 
+    #  1. tool selection widget in right-col
+    #  2. the actual draggable marking tools
+    # We want to remember the subToolIndex so that the right-col menu highlights 
+    # the correct tool after committing a mark. If incoming data has subToolIndex
+    # but no mark location information, we know this callback was called by the 
+    # right-col. So only in that case, record currentSubToolIndex, which we use
+    # to initialize marks going forward
+    if d.subToolIndex? && ! d.x? && ! d.y?
+      @setState
+        currentSubToolIndex: d.subToolIndex
 
 
   destroyCurrentAnnotation: ->

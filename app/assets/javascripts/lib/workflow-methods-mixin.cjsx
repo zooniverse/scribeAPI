@@ -6,11 +6,11 @@ transcribeTools         = require 'components/transcribe/tools'
 
 module.exports =
 
-  # Start a new classification:
-  beginClassification: ->
-    console.log 'beginClassification()'
+  # Start a new classification (optionally initialized with given annotation hash):
+  beginClassification: (annotation = {}) ->
     classifications = @state.classifications
     classification = new Classification()
+    classification.annotation[k] = v for k, v of annotation
     classifications.push classification
     @setState
       classifications: classifications
@@ -18,7 +18,7 @@ module.exports =
         , =>
           window.classifications = @state.classifications # make accessible to console
           # console.log "Begin classification: ", @state.classifications
-          console.log "  ann: ", c.annotation for c in @state.classifications
+          # console.log "  ann: ", c.annotation for c in @state.classifications
 
   # Push current classification to server:
   commitClassification: ->
@@ -42,13 +42,12 @@ module.exports =
   appendChildSubject: (subject_id, child_subject) ->
     if (s = @subjectById(subject_id))
       s.child_subjects.push $.extend({userCreated: true}, child_subject)
-      console.log "appended: ", s, child_subject
 
       # We've updated an internal object in @state.subjectSets, but framework doesn't notice, so tell it to update:
       @forceUpdate()
 
     else
-      console.log "couldn't find subject by ", subject_id
+      console.warn "WorkflowMethodsMixin#appendChildSubject: couldn't find subject by ", subject_id
 
   # Get a reference to the local copy of a subject by id regardless of whether viewing subject-sets or just subjects
   subjectById: (id) ->

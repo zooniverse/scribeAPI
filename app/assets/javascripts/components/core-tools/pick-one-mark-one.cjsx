@@ -96,8 +96,8 @@ module.exports = React.createClass
     @setSubToolIndex @props.annotation?.subToolIndex ? 0
 
   componentWillReceiveProps: (new_props) ->
-    if ! new_props.annotation?.subToolIndex
-      console.log ".. set subToolIndex to 0", @state.annotation
+    # if ! new_props.annotation?.subToolIndex
+      # console.log ".. set subToolIndex to 0", @state.annotation
       # @props.onChange? @state.annotation
       
     # @state.annotation
@@ -108,7 +108,7 @@ module.exports = React.createClass
     annotation: $.extend({subToolIndex: null}, @props.annotation ? {})
 
   render: ->
-    console.log "PickOneMarkOne rendering: ", @getSubToolIndex()
+    # console.log "PickOneMarkOne rendering: ", @getSubToolIndex()
 
     tools = for tool, i in @props.task.tool_config.tools
       tool._key ?= Math.random()
@@ -155,7 +155,7 @@ module.exports = React.createClass
         @props.onChange? @state.annotation
 
   handleChange: (index, e) ->
-    console.log 'PICK-ONE-MARK-ONE::handleChange(), INDEX = ', index, @refs
+    # console.log 'PICK-ONE-MARK-ONE::handleChange(), INDEX = ', index, @refs
     inp = @refs["inp-#{index}"]
     if inp.getDOMNode().checked
       @setSubToolIndex index
