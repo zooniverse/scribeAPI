@@ -14,6 +14,10 @@ module.exports = React.createClass
   displayName: 'SubjectSetViewer'
   resizing: false
 
+  componentDidMount: ->
+    @setState
+      subject_set_index: @props.subject_set_index
+
   getInitialState: ->
     subject_set: @props.subject_set
     tool: @props.tool
@@ -47,7 +51,6 @@ module.exports = React.createClass
         </div>
       }
       { for subject, index in @props.subject_set.subjects
-        # console.log "SSV subject", subject
         <SubjectViewer
           key={index}
           subject={subject}

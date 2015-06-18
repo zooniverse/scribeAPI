@@ -11,12 +11,24 @@
   "tasks": {
 
     "transcribe_point": {
-      "tool": "textTool",
-      "tool_config": {},
-      "instruction": "Transcribe this point." ,
-      "next_task": "entry_date",
-      "generates_subject_type": "verify_point"
-
+      "tool": "compositeTool",
+      "tool_config": {
+        "tools": {
+          "em_valuation_date": {
+            "tool": "dateTool",
+            "tool_config": {},
+            "label": "Date"
+          },
+          "em_valuation_amount": {
+            "tool": "textTool",
+            "tool_config": {},
+            "label": "Amount"
+          }
+        },
+        "generates_subject_type": "verify_point"
+      },
+      "instruction": "Transcribe this point.",
+      "next_task": "entry_date"
     },
     "transcribe_rectangle": {
       "tool": "textTool",
@@ -54,7 +66,7 @@
       "next_task": "entry_text"
     },
     "entry_text": {
-      "tool": "textTool",
+      "tool": "textAreaTool",
       "tool_config": {},
       "instruction": "Please transcribe the remainder of the highlighted entry.",
       "next_task": null

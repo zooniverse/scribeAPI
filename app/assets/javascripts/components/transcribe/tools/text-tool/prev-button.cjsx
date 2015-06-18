@@ -6,9 +6,9 @@ PrevButton = React.createClass
 
   render: ->
     classes = 'button prev'
-    classes = classes + ' disabled' unless @props.prevStepAvailable()
-      
-    <button className = {classes} onClick = {@props.prevStep} >
+    # classes = classes + ' disabled' #unless @props.prevStepAvailable()
+
+    <button className = {classes} onClick = {null} >
       &lt; Back
     </button>
 
