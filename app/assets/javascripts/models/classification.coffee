@@ -32,7 +32,6 @@ class Classification
       method: 'post'
       dataType: 'json'
       complete: (resp) =>
-        console.log "resp: ", resp
         callback? resp.responseJSON?.classification
 
     """

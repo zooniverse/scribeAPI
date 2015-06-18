@@ -59,10 +59,8 @@ module.exports = React.createClass # rename to Classifier
     @beginClassification()
 
   render: ->
-    return null unless @getCurrentSubject()? # state.currentSubjectSet?
 
-    # console.log "mark/index state", @state
-    console.log "Current Classification: ", @getCurrentClassification().annotation
+    return null unless @getCurrentSubject()?
 
     currentTask = @props.workflow.tasks[@state.taskKey] # [currentAnnotation?.task]
     TaskComponent = @getCurrentTool() # coreTools[currentTask.tool]
@@ -175,7 +173,6 @@ module.exports = React.createClass # rename to Classifier
     # @props.classification.annotations.pop()
 
   completeSubjectSet: ->
-    console.log "currentTask from #completeSubjectSet", @state.currentTask
     @commitClassification()
     @beginClassification()
 
@@ -191,6 +188,5 @@ module.exports = React.createClass # rename to Classifier
     @beginClassification()
 
     @getNextSubject()
-
 
 window.React = React

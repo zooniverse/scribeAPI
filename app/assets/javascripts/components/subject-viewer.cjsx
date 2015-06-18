@@ -33,8 +33,6 @@ module.exports = React.createClass
 
     marks: []
     selectedMark: null
-    # lastMarkKey: 0
-
     active: @props.active
 
 
@@ -92,7 +90,6 @@ module.exports = React.createClass
 
   # Handle initial mousedown:
   handleInitStart: (e) ->
-    console.log "handleInitStart", @props, @state
     return null if ! @props.annotation?.subToolIndex?
     subTool = @props.task.tool_config.tools[@props.annotation.subToolIndex]
     if ! subTool
@@ -108,7 +105,6 @@ module.exports = React.createClass
 
     # Create an initial mark instance, which will soon gather coords:
     mark = toolName: subTool.type, userCreated: true
-
 
     mouseCoords = @getEventOffset e
 
@@ -218,8 +214,8 @@ module.exports = React.createClass
   submitMark: (mark) ->
     mark = @state.uncommittedMark
 
-    marks = @state.marks
-    marks.push mark
+    # marks = @state.marks
+    # marks.push mark
 
     @setUncommittedMark null
 
@@ -307,7 +303,6 @@ module.exports = React.createClass
             marks = @getCurrentMarks()
             for mark in marks
               mark._key ?= Math.random()
-              console.log "  Displaying mark: ", mark
 
               # If mark hasn't acquired coords yet, don't draw it yet:
               continue if ! mark.x? || ! mark.y?
