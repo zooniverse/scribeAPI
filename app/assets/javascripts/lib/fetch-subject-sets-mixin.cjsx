@@ -38,7 +38,7 @@ module.exports =
         random: true
 
       request.then (subject_sets)=>    # DEBUG CODE
-        # console.log "subject sets",  subject_sets
+
 
         # TODO hack to ffwd to set with child subjects:
         ind = (i for s,i in subject_sets when s.subjects[0].child_subjects?.length > 0)[0] ? 0
@@ -51,13 +51,6 @@ module.exports =
           # currentSubject: subject_sets[0].subjects[0]
         if @fetchSubjectsCallback?
           @fetchSubjectsCallback()
-
-  # Once we get down to subject level, the subjects need to be sorted by region.y. 
-  # 
-  # orderChildSubjectsByY: ->
-  #   for subject_set, i in subject_sets
-  #     for subject, i in subject_set
-  #       for key, value of subject
 
 
 
