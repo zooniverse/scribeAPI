@@ -30,13 +30,19 @@ module.exports = React.createClass
     subject: @props.subject
     marks: []
     selectedMark: null
-    lastMarkKey: 0
     active: @props.active
 
   getDefaultProps: ->
     tool: null # Optional tool to place alongside subject (e.g. transcription tool placed alongside mark)
     onLoad: null
     annotationIsComplete: false
+
+  componentWillReceiveProps: (new_props) ->
+    console.log "SubjectViewer#componentWillReceiveProps: ", @props, new_props
+    # @setUncommittedMark null if ! @state.uncommittedMark?.saving && ! new_props.annotation?.subToolIndex?
+    # @setUncommittedMark null if ! new_props.annotation?.subToolIndex?
+    # console.log "setting null because",new_props.task?.tool != 'pickOneMarkOne'
+    @setUncommittedMark null if new_props.task?.tool != 'pickOneMarkOne'
 
   componentDidMount: ->
     @setView 0, 0, @state.imageWidth, @state.imageHeight
@@ -82,6 +88,8 @@ module.exports = React.createClass
 
     return null if ! @props.annotation?.subToolIndex?
     subTool = @props.task.tool_config.tools[@props.annotation.subToolIndex]
+    if ! subTool
+      subTool
     return null if ! subTool?
 
     # If there's a current, uncommitted mark, commit it:
@@ -92,7 +100,7 @@ module.exports = React.createClass
     MarkComponent = markingTools[subTool.type] # NEEDS FIXING
 
     # Create an initial mark instance, which will soon gather coords:
-    mark = toolName: subTool.type
+    mark = toolName: subTool.type, userCreated: true
 
     mouseCoords = @getEventOffset e
 
@@ -109,20 +117,19 @@ module.exports = React.createClass
 
     @props.onChange? mark
 
-    @setState
-      uncommittedMark: mark
-      lastMarkKey: @state.lastMarkKey + 1
+    console.log "handleInitStart: ", mark
+    @setUncommittedMark mark
 
     @selectMark mark
 
   # Handle mouse dragging
   handleInitDrag: (e) ->
+    console.log "handleInitDrag: ", @state.uncommittedMark
     return null if ! @state.uncommittedMark?
 
     mark = @state.uncommittedMark
 
     # Instantiate appropriate marking tool:
-    # AMS: MarkComponent = markingTools[task.tool_config.tools[mark._toolIndex].type]
     MarkComponent = markingTools[mark.toolName]
 
     if MarkComponent.initMove?
@@ -153,10 +160,13 @@ module.exports = React.createClass
         mark[key] = value
     if MarkComponent.initValid? and not MarkComponent.initValid mark
       @destroyMark @props.annotation, mark
+  
+    @setUncommittedMark mark
 
+  setUncommittedMark: (mark) ->
     @setState
       uncommittedMark: mark
-
+    
   setView: (viewX, viewY, viewWidth, viewHeight) ->
     @setState {viewX, viewY, viewWidth, viewHeight}
 
@@ -202,15 +212,13 @@ module.exports = React.createClass
     console.log 'submitMark(), MARK = ', mark
     @props.onComplete? mark
 
-    marks = @state.marks
-    marks.push mark
+    # marks = @state.marks
+    # marks.push mark
 
-    @setState
-      marks: marks
-      uncommittedMark: null
-        , =>
-          console.log '@STATE.MARKS = ', @state.marks
-          console.log 'UNCOMMITTED MARK = ', @state.uncommittedMark
+    @setUncommittedMark null
+
+    @props.onComplete? mark
+
   handleChange: (mark) ->
     @setState
       selectedMark: mark
@@ -218,10 +226,20 @@ module.exports = React.createClass
           # console.log 'SELECTED MARK: ', mark
           @props.onChange? mark
 
+  getCurrentMarks: ->
+    # Previous marks are really just the region hashes of all child subjects:
+    marks = (s for s in (@props.subject.child_subjects ? [] ) when s?.region?).map (m) ->
+      # {userCreated: false}.merge 
+      m?.region ? {}
+
+    # Here we append the currently-being-drawn mark to the list of marks, if there is one:
+    marks = marks.concat @state.uncommittedMark if @state.uncommittedMark?
+
+    marks
+
   render: ->
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     # ToolComponent = @state.tool # AMS:from classification refactor.
-    mark = @state.uncommittedMark
     scale = @getScale()
 
     if @props.workflow.name is 'transcribe'
@@ -259,39 +277,6 @@ module.exports = React.createClass
               height = {@state.imageHeight} />
           </MouseHandler>
 
-          { # DISPLAY PREVIOUS MARKS
-            for mark, i in @props.subject.child_subjects_info
-              toolName = mark.data.toolName
-              if toolName?
-               # = markingTools[toolName]
-                scale = @getScale()
-
-                ToolComponent = markingTools[toolName]
-
-                <ToolComponent
-                  key={i}
-                  mark={mark.region}
-                  xScale={scale.horizontal}
-                  yScale={scale.vertical}
-                  disabled={true}
-                  isPriorMark={true}
-                  selected={false}
-                  getEventOffset={@getEventOffset}
-                  ref={@refs.sizeRect}
-
-                  onChange={=> console.log 'ON CHANGE'}
-                  onSelect={=> console.log 'ON SELECT'}
-                  onDestroy={=> console.log 'ON DESTORY'}
-                />
-
-
-            # # THIS IS CAUSING PROBLEMS - STI
-            # if @props.workflow.name is 'mark'
-            #   @showPreviousMarks()
-
-              # @showTranscribeTools()
-          }
-
           { # HIGHLIGHT SUBJECT FOR TRANSCRIPTION
             # TODO: Makr sure x, y, w, h are scaled properly
             if @props.workflow.name in ['transcribe', 'verify']
@@ -315,18 +300,15 @@ module.exports = React.createClass
               </g>
           }
 
-          { # HANDLE NEW MARKS
-            # TODO: PB: Note @state.marks not currently filled with previous marks (i.e. previously genereated subjects)
-            marks = @state.marks ? []
-            # Here we append the currently-being-drawn mark to the list of marks, if it's avail:
-            marks = marks.concat @state.uncommittedMark if @state.uncommittedMark?
+          {
+            marks = @getCurrentMarks()
             for mark in marks
               mark._key ?= Math.random()
 
               # If mark hasn't acquired coords yet, don't draw it yet:
               continue if ! mark.x? || ! mark.y?
 
-              isPriorMark = false
+              isPriorMark = ! mark.userCreated
 
               <g key={mark._key} className="marks-for-annotation" data-disabled={isPriorMark or null}>
                 {
@@ -339,7 +321,7 @@ module.exports = React.createClass
                     mark={mark}
                     xScale={scale.horizontal}
                     yScale={scale.vertical}
-                    disabled={false}
+                    disabled={! mark.userCreated}
                     isPriorMark={isPriorMark}
                     selected={mark is @state.selectedMark}
                     getEventOffset={@getEventOffset}

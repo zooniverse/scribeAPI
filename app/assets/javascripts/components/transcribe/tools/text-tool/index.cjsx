@@ -127,6 +127,7 @@ TextTool = React.createClass
     style =
       left: "#{@state.dx*@props.scale.horizontal}px"
       top: "#{@state.dy*@props.scale.vertical}px"
+    console.log "positioning text tool: ", style, @state, @props.scale, @state.dy*@props.scale.vertical
 
     val = @state.annotation[@props.annotation_key] ? ''
 

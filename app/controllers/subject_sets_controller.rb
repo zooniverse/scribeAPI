@@ -3,7 +3,7 @@ class SubjectSetsController < ApplicationController
 
   def index
 
-  	workflow_id  = params["workflow_id"]
+    workflow_id  = params["workflow_id"]
     random = params["random"] || false
     limit  = params["limit"].to_i  || 10
 
@@ -19,8 +19,10 @@ class SubjectSetsController < ApplicationController
       sets = SubjectSet.where(query)
     end
 
+    # sets = sets.sort_by { |s| - s.subjects.first.secondary_subject_count }
+
     # Randomizer#random seems to want query criteria passed in under :selector key:
-  	respond_with sets, each_serializer: SubjectSetSerializer, workflow_id: workflow_id, limit: limit, random: random
+    respond_with sets, each_serializer: SubjectSetSerializer, workflow_id: workflow_id, limit: limit, random: random
   end
 
   # DOES NOT APPEAR TO BE IN USE -STI

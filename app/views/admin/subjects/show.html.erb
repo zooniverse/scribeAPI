@@ -96,7 +96,7 @@
   <% end %>
 
   <% if @subject.classifications.not_having_child_subjects.count > 0 %>
-    <h3>Other Classifications</h3>
+    <h3><% if @subject.classifications.having_child_subjects.count > 0 %>Other <% end %>Classifications</h3>
     <ol>
       <% @subject.classifications.not_having_child_subjects.each do |classification| %>
         <li><%= link_to "#{classification} (#{time_ago_in_words(classification.finished_at)} ago)", admin_classification_path(classification) %>
