@@ -56,6 +56,9 @@ class Subject
   end
 
   def retire_by_vote!
+    # find all the classifications for subject where task_key == compleletion_assesment_task
+    # calculate the percetage vote for retirement (pvr)
+    # if pvr is equal or greater than retire_limit, set self.status == retired.
     if (self.retire_count >= self.workflow.retire_limit)
       self.status = "retired" 
       subject_set.subject_completed_on_workflow(workflow) if ! workflow.nil?
