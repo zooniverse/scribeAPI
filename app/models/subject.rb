@@ -64,7 +64,6 @@ class Subject
     if assesment_classifications.length > 1
       percentage_for_retire = retire_count/assesment_classifications.length.to_f   
       if percentage_for_retire >= workflow.retire_limit
-        binding.pry
         self.status = "retired" 
         subject_set.subject_completed_on_workflow(workflow) if ! workflow.nil?
         save
