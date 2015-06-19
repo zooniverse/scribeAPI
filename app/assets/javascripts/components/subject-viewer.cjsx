@@ -160,13 +160,13 @@ module.exports = React.createClass
         mark[key] = value
     if MarkComponent.initValid? and not MarkComponent.initValid mark
       @destroyMark @props.annotation, mark
-  
+
     @setUncommittedMark mark
 
   setUncommittedMark: (mark) ->
     @setState
       uncommittedMark: mark
-    
+
   setView: (viewX, viewY, viewWidth, viewHeight) ->
     @setState {viewX, viewY, viewWidth, viewHeight}
 
@@ -223,9 +223,19 @@ module.exports = React.createClass
 
   getCurrentMarks: ->
     # Previous marks are really just the region hashes of all child subjects:
-    marks = (s for s in (@props.subject.child_subjects ? [] ) when s?.region?).map (m) ->
-      # {userCreated: false}.merge 
-      m?.region ? {}
+    console.log 'FODOIDHJSLDJ: ', @props.subject.child_subjects
+
+    marks = []
+    for child_subject, i in @props.subject.child_subjects
+      console.log 'CHILD SUBJECT: ', child_subject
+      child_subject.region.subject_id = child_subject.id # copy id field into region (not ideal)
+      marks[i] = child_subject.region
+
+    # marks = (s for s in (@props.subject.child_subjects ? [] ) when s?.region?).map (m) ->
+    #   # {userCreated: false}.merge
+    #   m?.region ? {}
+
+    console.log 'MARKS: ', marks
 
     # Here we append the currently-being-drawn mark to the list of marks, if there is one:
     marks = marks.concat @state.uncommittedMark if @state.uncommittedMark?
@@ -310,9 +320,9 @@ module.exports = React.createClass
                   # console.log 'NEW MARK: ', mark, (mark.x), (mark.y+0)
                   mark._key ?= Math.random()
                   ToolComponent = markingTools[mark.toolName]
-
                   <ToolComponent
                     key={mark._key}
+                    subject_id={mark.subject_id}
                     mark={mark}
                     xScale={scale.horizontal}
                     yScale={scale.vertical}
