@@ -63,8 +63,6 @@ module.exports = React.createClass # rename to Classifier
     TaskComponent = @getCurrentTool() # coreTools[currentTask.tool]
     onFirstAnnotation = @state.taskKey == @props.workflow.first_task
 
-    console.log 'CURRENT TASK: ', currentTask
-
     if currentTask.tool is 'pick_one'
       currentAnswer = currentTask.tool_config.options?[currentAnnotation.value]
       waitingForAnswer = not currentAnswer
