@@ -104,7 +104,6 @@ module.exports = React.createClass # rename to Classifier
       console.log "go back"
 
   render: ->
-    console.log 'TRANSCRIBE::render(), CURRENT TASK = ', @getCurrentTask()
     if @props.query.scrollX? and @props.query.scrollY?
       window.scrollTo(@props.query.scrollX,@props.query.scrollY)
 
