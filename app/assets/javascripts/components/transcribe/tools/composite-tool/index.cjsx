@@ -52,7 +52,7 @@ CompositeTool = React.createClass
     switch data.toolName
       when 'rectangleTool'
         x = data.x
-        y = data.y + data.height
+        y = parseFloat(data.y) + parseFloat(data.height)
       when 'textRowTool'
         x = data.x
         y = data.yLower
