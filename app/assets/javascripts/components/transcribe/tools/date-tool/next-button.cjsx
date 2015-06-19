@@ -6,8 +6,8 @@ NextButton = React.createClass
 
   render: ->
     classes = 'button next'
-    classes = classes + ' disabled' unless @props.nextStepAvailable()
-      
+    # classes = classes + ' disabled' unless @props.nextStepAvailable()
+
     <button className = {classes} onClick = {@props.nextStep} >
       Next &gt;
     </button>
