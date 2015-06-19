@@ -215,6 +215,7 @@ module.exports = React.createClass
         }
 
         { # REQUIRES MARK-BUTTON-MIXIN
+          console.log '<<<<<<<<<<<PROPS>>>>>>>>>>>>>', @props
           if @props.selected or @state.markStatus is 'transcribe-enabled' then @renderMarkButton()
         }
 
