@@ -16,10 +16,6 @@ module.exports = React.createClass
   displayName: 'SubjectSetViewer'
   resizing: false
 
-  componentDidMount: ->
-    @setState
-      subject_set_index: @props.subject_set_index
-
   getInitialState: ->
     subject_set: @props.subject_set
     tool: @props.tool
@@ -48,9 +44,11 @@ module.exports = React.createClass
     console.log "...Current Classification: ", @props.annotation
     <div className="subject-set-viewer">
     <div className="light-box-area">
-        <LightBox subject_set={@state.subject_set} />
+      {console.log "SubV @props", @props}
+        <LightBox subject_set={@state.subject_set} subject_index={@props.subject_index} />
+      }
     </div>
-      { if @props.subject_set.subjects.length > 1
+      { if @props.subject_set.subjects.length > 1 
         <div className="subject-set-nav">
           <ActionButton text="Previous" onClick={@advancePrevious} classes={if @props.subject_index == 0 then 'disabled' else ''}/>
           <ActionButton text="Next" onClick={@advanceNext} classes={if @props.subject_index == @props.subject_set.subjects.length-1 then 'disabled' else ''} />
