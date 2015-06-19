@@ -9,6 +9,8 @@ LoadingIndicator              = require './loading-indicator'
 SubjectMetadata               = require './subject-metadata'
 ActionButton                  = require './action-button'
 markingTools                  = require './mark/tools'
+LightBox                       = require './light-box'
+
 
 module.exports = React.createClass
   displayName: 'SubjectSetViewer'
@@ -45,6 +47,9 @@ module.exports = React.createClass
     # console.log " SSV Render @state", @state
     console.log "...Current Classification: ", @props.annotation
     <div className="subject-set-viewer">
+    <div className="light-box-area">
+        <LightBox subject_set={@state.subject_set} />
+    </div>
       { if @props.subject_set.subjects.length > 1
         <div className="subject-set-nav">
           <ActionButton text="Previous" onClick={@advancePrevious} classes={if @props.subject_index == 0 then 'disabled' else ''}/>

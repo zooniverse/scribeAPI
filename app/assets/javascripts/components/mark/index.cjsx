@@ -5,7 +5,6 @@ FetchSubjectSetsMixin   = require 'lib/fetch-subject-sets-mixin'
 BaseWorkflowMethods     = require 'lib/workflow-methods-mixin'
 JSONAPIClient           = require 'json-api-client' # use to manage data?
 ForumSubjectWidget      = require '../forum-subject-widget'
-LightBox                = require '../light-box'
 
 
 API                     = require '../../lib/api'
@@ -70,9 +69,7 @@ module.exports = React.createClass # rename to Classifier
       waitingForAnswer = not currentAnswer
 
     <div className="classifier">
-      <div className="light-box-area">
-        <LightBox subject_set={@getCurrentSubjectSet()} />
-      </div>
+
       
       <div className="subject-area">
         { if @state.noMoreSubjectSets
