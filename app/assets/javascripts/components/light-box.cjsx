@@ -1,5 +1,7 @@
 React               = require 'react'
 SVGImage            = require './svg-image'
+ActionButton                  = require './action-button'
+
 
 
 module.exports = React.createClass
@@ -8,10 +10,11 @@ module.exports = React.createClass
   propTypes:
     subject_set: React.PropTypes.object.isRequired
     subject_index: React.PropTypes.number.isRequired
+    # onSubject: React.PropTypes.func.isRequired
 
-
-  getInitialState: ->
-    subjects: @props.subject_set.subjects
+  shineSelected: (index)->
+    console.log "Shine index", index
+    @props.onSubject(index)
 
   render: ->
     console.log "lB props", @props
@@ -19,9 +22,12 @@ module.exports = React.createClass
 
     viewBox = [0, 0, 100, 100]
     <div className="carousel">
+
+      <ActionButton text="UP" onClick={console.log "move up"} classes={if @props.subject_index == 0 then 'disabled' else ''}/>
+
       <ul>
-          {for subject, index in @state.subjects
-            <li key={index} visibility = {@visibleProperty(index)}> 
+          {for subject, index in @props.subject_set.subjects
+            <li key={index} visibility = {@visibleProperty(index)} onClick={@shineSelected.bind(this, index)}> 
               <svg className="light-box-subject" width={300} height={300} viewBox={viewBox} >
                   <SVGImage
                     src = {subject.location.standard}
@@ -32,6 +38,9 @@ module.exports = React.createClass
             </li>
           }
       </ul>
+
+      <ActionButton text="DOWN" onClick={console.log "move down"} classes={if @props.subject_index == @props.subject_set.subjects.length-1 then 'disabled' else ''} />
+
     </div>
 
   visibleProperty: (index) ->
@@ -39,6 +48,7 @@ module.exports = React.createClass
       "visible"
     else
       "hidden"
+  
   seeNextSubject: ->
 
 

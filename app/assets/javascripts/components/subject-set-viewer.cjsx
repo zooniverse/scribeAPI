@@ -36,17 +36,21 @@ module.exports = React.createClass
     @props.onViewSubject? new_index # @props.subject_index
 
       # @props.onViewSubject? @props.subject_set.subjects[@state.subject_index]
+  specificSelection: (new_index) ->
+    @props.onViewSubject? new_index
 
 
   render: ->
-    # console.log " SSV Render @props", @props
+    console.log " SSV Render @props", @props
     # console.log " SSV Render @state", @state
     console.log "...Current Classification: ", @props.annotation
     <div className="subject-set-viewer">
     <div className="light-box-area">
-      {console.log "SubV @props", @props}
-        <LightBox subject_set={@state.subject_set} subject_index={@props.subject_index} />
+      {
+        subject_index = @props.subject_index
+        onViewSubject = @props.onViewSubject
       }
+        <LightBox subject_set={@state.subject_set} subject_index={subject_index} onSubject={@specificSelection}/>
     </div>
       { if @props.subject_set.subjects.length > 1 
         <div className="subject-set-nav">
