@@ -19,7 +19,7 @@ module.exports = React.createClass
   getInitialState: ->
     subject_set: @props.subject_set
     tool: @props.tool
-    # subject_index: @props.subject_index ? 0
+  # subject_index: @props.subject_index ? 
 
   advancePrevious: ->
     @advance -1

@@ -12,44 +12,84 @@ module.exports = React.createClass
     subject_index: React.PropTypes.number.isRequired
     # onSubject: React.PropTypes.func.isRequired
 
+  getInitialState:->
+    first: @props.subject_set.subjects[@props.subject_index]
+    # first: @props.subject_set.subjects[@props.subject_index]
+
+
   shineSelected: (index)->
-    console.log "Shine index", index
     @props.onSubject(index)
 
   render: ->
-    console.log "lB props", @props
-    console.log "lB state", @state
+    return null if @props.subject_set.subjects.length <= 1
+    indexOfFirst = @findSubjectIndex(@state.first)
+
+    second = @props.subject_set.subjects[indexOfFirst+1] 
+    third = @props.subject_set.subjects[indexOfFirst+2] 
+
 
     viewBox = [0, 0, 100, 100]
     <div className="carousel">
 
-      <ActionButton text="UP" onClick={console.log "move up"} classes={if @props.subject_index == 0 then 'disabled' else ''}/>
+      <ActionButton text="UP" onClick={@moveBack.bind(this, indexOfFirst)} classes={if @state.first == @props.subject_set.subjects[0] then 'disabled' else ''}/>
 
       <ul>
-          {for subject, index in @props.subject_set.subjects
-            <li key={index} visibility = {@visibleProperty(index)} onClick={@shineSelected.bind(this, index)}> 
-              <svg className="light-box-subject" width={300} height={300} viewBox={viewBox} >
-                  <SVGImage
-                    src = {subject.location.standard}
-                    width = {100}
-                    height = {100} 
-                  />
-              </svg>
-            </li>
-          }
-      </ul>
+        <li onClick={@shineSelected.bind(this, @findSubjectIndex(@state.first))}> 
+          <svg className="light-box-subject" width={300} height={300} viewBox={viewBox} >
+              <SVGImage
+                src = {@state.first.location.standard}
+                width = {100}
+                height = {100} 
+              />
+          </svg>
+        </li>
+        {if second
+          <li onClick={@shineSelected.bind(this, @findSubjectIndex(second))}> 
+            <svg className="light-box-subject" width={300} height={300} viewBox={viewBox} >
+                <SVGImage
+                  src = {second.location.standard}
+                  width = {100}
+                  height = {100} 
+                />
+            </svg>
+          </li>
+        }
 
-      <ActionButton text="DOWN" onClick={console.log "move down"} classes={if @props.subject_index == @props.subject_set.subjects.length-1 then 'disabled' else ''} />
+        {if third
+          <li onClick={@shineSelected.bind(this, @findSubjectIndex(third))}> 
+            <svg className="light-box-subject" width={300} height={300} viewBox={viewBox} >
+                <SVGImage
+                  src = {third.location.standard}
+                  width = {100}
+                  height = {100} 
+                />
+            </svg>
+          </li>
+        }
+      </ul>
+      <ActionButton text="DOWN" onClick={@moveForward.bind(this, indexOfFirst)} classes={ if third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] then 'disabled' else ''} />
 
     </div>
 
-  visibleProperty: (index) ->
-    if index == @props.subject_index
-      "visible"
-    else
-      "hidden"
   
-  seeNextSubject: ->
+  findSubjectIndex: (subject_arg)->
+    for subject, index in @props.subject_set.subjects
+      if subject.id == subject_arg.id
+        return index
+      else
+        console.log "WARN: unable to run LightBox#findSubjectIndex"
+
+  moveBack: (indexOfFirst)->
+    @setState
+      first: @props.subject_set.subjects[indexOfFirst-1]
+
+  moveForward: (indexOfFirst)->
+    @setState
+      first: @props.subject_set.subjects[indexOfFirst+1]
+    
+
+
+
 
 
 
