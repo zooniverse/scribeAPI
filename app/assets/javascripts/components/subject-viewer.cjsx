@@ -223,19 +223,14 @@ module.exports = React.createClass
 
   getCurrentMarks: ->
     # Previous marks are really just the region hashes of all child subjects:
-    console.log 'FODOIDHJSLDJ: ', @props.subject.child_subjects
-
     marks = []
     for child_subject, i in @props.subject.child_subjects
-      console.log 'CHILD SUBJECT: ', child_subject
       child_subject.region.subject_id = child_subject.id # copy id field into region (not ideal)
       marks[i] = child_subject.region
 
     # marks = (s for s in (@props.subject.child_subjects ? [] ) when s?.region?).map (m) ->
     #   # {userCreated: false}.merge
     #   m?.region ? {}
-
-    console.log 'MARKS: ', marks
 
     # Here we append the currently-being-drawn mark to the list of marks, if there is one:
     marks = marks.concat @state.uncommittedMark if @state.uncommittedMark?
@@ -246,6 +241,8 @@ module.exports = React.createClass
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     # ToolComponent = @state.tool # AMS:from classification refactor.
     scale = @getScale()
+    console.log "!!!!!!!!!!!!!!!"
+    console.log "SCALE", scale
 
     if @props.workflow.name is 'transcribe'
       yPos = (@props.subject.data.y - @props.subject.data.height?) * @getScale().vertical - 100
@@ -257,7 +254,7 @@ module.exports = React.createClass
       else
         <ActionButton onClick={@nextSubject} text="Next Page" />
 
-    if false && @state.loading
+    if @state.loading
       markingSurfaceContent = <LoadingIndicator />
     else
       markingSurfaceContent =
