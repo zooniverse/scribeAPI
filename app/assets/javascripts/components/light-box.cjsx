@@ -10,11 +10,10 @@ module.exports = React.createClass
   propTypes:
     subject_set: React.PropTypes.object.isRequired
     subject_index: React.PropTypes.number.isRequired
-    # onSubject: React.PropTypes.func.isRequired
+    onSubject: React.PropTypes.func.isRequired
 
   getInitialState:->
     first: @props.subject_set.subjects[@props.subject_index]
-    # first: @props.subject_set.subjects[@props.subject_index]
 
 
   shineSelected: (index)->
@@ -31,7 +30,7 @@ module.exports = React.createClass
     viewBox = [0, 0, 100, 100]
     <div className="carousel">
 
-      <ActionButton text="UP" onClick={@moveBack.bind(this, indexOfFirst)} classes={if @state.first == @props.subject_set.subjects[0] then 'disabled' else ''}/>
+      <ActionButton text="BACK" onClick={@moveBack.bind(this, indexOfFirst)} classes={if @state.first == @props.subject_set.subjects[0] then 'disabled' else ''} />
 
       <ul>
         <li onClick={@shineSelected.bind(this, @findSubjectIndex(@state.first))}> 
@@ -67,7 +66,7 @@ module.exports = React.createClass
           </li>
         }
       </ul>
-      <ActionButton text="DOWN" onClick={@moveForward.bind(this, indexOfFirst)} classes={ if third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] then 'disabled' else ''} />
+      <ActionButton text="FORWARD" onClick={@moveForward.bind(this, indexOfFirst)} classes={ if third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] then 'disabled' else ''} />
 
     </div>
 
@@ -80,10 +79,12 @@ module.exports = React.createClass
         console.log "WARN: unable to run LightBox#findSubjectIndex"
 
   moveBack: (indexOfFirst)->
+    return null if @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
     @setState
       first: @props.subject_set.subjects[indexOfFirst-1]
 
   moveForward: (indexOfFirst)->
+    return null if @props.subject_set.subjects[indexOfFirst+2] == @props.subject_set.subjects[@props.subject_set.subjects.length-1]
     @setState
       first: @props.subject_set.subjects[indexOfFirst+1]
     
