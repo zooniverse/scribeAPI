@@ -241,6 +241,8 @@ module.exports = React.createClass
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     # ToolComponent = @state.tool # AMS:from classification refactor.
     scale = @getScale()
+    console.log "!!!!!!!!!!!!!!!"
+    console.log "SCALE", scale
 
     if @props.workflow.name is 'transcribe'
       yPos = (@props.subject.data.y - @props.subject.data.height?) * @getScale().vertical - 100
@@ -252,7 +254,7 @@ module.exports = React.createClass
       else
         <ActionButton onClick={@nextSubject} text="Next Page" />
 
-    if false && @state.loading
+    if @state.loading
       markingSurfaceContent = <LoadingIndicator />
     else
       markingSurfaceContent =
