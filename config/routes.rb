@@ -29,11 +29,12 @@ API::Application.routes.draw do
 
   get '/workflows/:workflow_id/subjects' => 'subjects#index'
   get '/workflows/:workflow_id/subject_sets' => 'subject_sets#index'
-  get '/subjects/:subject_id',        to: 'subjects#show',         defaults: { format: 'json' }
+  get '/subjects/:subject_id',         to: 'subjects#show',        defaults: { format: 'json' }
+  get '/subject_sets/:subject_set_id', to: 'subject_sets#show',    defaults: { format: 'json' }
   resources :favourites, defaults: {format: 'json'}
 
   post   '/subjects/:id/favourite',   to: 'favourites#create',     defaults: { format: 'json' }
-  post   '/subjects/:id/unfavourite', to: 'favourites#destroy',    defaults: { format:'json' }
+  post   '/subjects/:id/unfavourite', to: 'favourites#destroy',    defaults: { format: 'json' }
 
   resources :subjects, :defaults => { :format => 'json' }
   resources :subject_sets, :defaults => { :format => 'json' }

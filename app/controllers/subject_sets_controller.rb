@@ -27,12 +27,14 @@ class SubjectSetsController < ApplicationController
 
   # DOES NOT APPEAR TO BE IN USE -STI
   def show
-    set = SubjectSet.find(params[:id])
+    limit = 1
+    # limit = params["limit"].to_i || 10
+    set = SubjectSet.where(subject_set_id: params[:subject_set_id], limit: 1)
     workflow_id  = params["workflow_id"]
 
     return render status: 404, json: {status: 404} if set.nil?
 
-    respond_with set, status: (set.nil? ? :not_found : 201), serializer: SubjectSetSerializer, workflow_id: workflow_id
+    respond_with set, status: (set.nil? ? :not_found : 201), each_serializer: SubjectSetSerializer, workflow_id: workflow_id, limit: limit
   end
 
 end

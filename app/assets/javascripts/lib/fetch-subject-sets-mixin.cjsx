@@ -7,23 +7,26 @@ module.exports =
     # console.log "Fetch Subjects Mixin: ", @
     if @props.query.subject_set_id
       console.log 'FETCHING SUBJECT SET WITH ID: ', @props.query.subject_set_id
-      @fetchSubjectSet @props.query.subject_set_id, @props.workflow.id
+      @fetchSubjectSet @props.query.subject_set_id, @props.query.subject_index, @props.workflow.id
     else
       @fetchSubjectSets @props.workflow.id, @props.workflow.subject_fetch_limit
 
-  fetchSubjectSet: (subject_set_id, workflow_id)->
+  fetchSubjectSet: (subject_set_id, subject_index, workflow_id)->
     console.log 'fetchSubjectSet()'
+    console.log 'SUBJECT INDEX: ', subject_index
     request = API.type("subject_sets").get(subject_set_id: subject_set_id, workflow_id: workflow_id)
+
 
     @setState
       subjectSet: []
       # currentSubjectSet: null
 
-    request.then (subject_set)=>
+    request.then (subject_set) =>
+      console.log 'SUBJECT SET: ', subject_set, subject_index
       @setState
         subjectSets: subject_set
         subject_set_index: 0
-        # subject_index: 0
+        subject_index: parseInt subject_index
         # currentSubjectSet: subject_set
 
   fetchSubjectSets: (workflow_id, limit) ->
