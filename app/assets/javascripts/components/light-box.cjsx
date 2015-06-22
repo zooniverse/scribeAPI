@@ -30,7 +30,7 @@ module.exports = React.createClass
     viewBox = [0, 0, 100, 100]
     <div className="carousel">
 
-      <ActionButton text="BACK" onClick={@moveBack.bind(this, indexOfFirst)} classes={if @state.first == @props.subject_set.subjects[0] then 'disabled' else ''} />
+      <ActionButton id="backward" text="BACK" onClick={@moveBack.bind(this, indexOfFirst)} classes={if @state.first == @props.subject_set.subjects[0] then 'disabled' else ''} />
 
       <ul>
         <li onClick={@shineSelected.bind(this, @findSubjectIndex(@state.first))}> 
@@ -66,7 +66,7 @@ module.exports = React.createClass
           </li>
         }
       </ul>
-      <ActionButton text="FORWARD" onClick={@moveForward.bind(this, indexOfFirst)} classes={ if third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] then 'disabled' else ''} />
+      <ActionButton id="forward" text="FORWARD" onClick={@moveForward.bind(this, indexOfFirst)} classes={ if third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] then 'disabled' else ''} />
 
     </div>
 
