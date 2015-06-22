@@ -257,7 +257,7 @@ module.exports = React.createClass
       else
         <ActionButton onClick={@nextSubject} text="Next Page" />
 
-    if false && @state.loading
+    if @state.loading
       markingSurfaceContent = <LoadingIndicator />
     else
       markingSurfaceContent =
