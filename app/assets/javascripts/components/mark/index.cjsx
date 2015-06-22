@@ -17,6 +17,8 @@ module.exports = React.createClass # rename to Classifier
   mixins: [FetchSubjectSetsMixin, BaseWorkflowMethods] # load subjects and set state variables: subjects, currentSubject, classification
 
   getInitialState: ->
+    console.log 'MARK/INDEX::getInitialState()'
+    console.log 'PROPS: ', @props
     # currentSubjectSet:            null
     # currentSubject:               null
     workflow:                     @props.workflow

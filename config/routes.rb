@@ -19,22 +19,21 @@ API::Application.routes.draw do
 
   get '/dashboard/ancestory',         to: 'dashboard#ancestory'
   get '/dashboard',                   to: 'dashboard#index'
-  
+
   get '/projects/stats',              to: 'projects#stats'
 
 
-      
+
   get '/project/style.css',           to: 'projects#project_css',  defaults: { format: 'css' }
 
 
   get '/workflows/:workflow_id/subjects' => 'subjects#index'
   get '/workflows/:workflow_id/subject_sets' => 'subject_sets#index'
-  get '/subjects/:subject_id',        to: 'subjects#show',         defaults: { format: 'json'}
-
+  get '/subjects/:subject_id',        to: 'subjects#show',         defaults: { format: 'json' }
   resources :favourites, defaults: {format: 'json'}
 
-  post   '/subjects/:id/favourite',   to: 'favourites#create',     defaults: { format: 'json'}
-  post   '/subjects/:id/unfavourite', to: 'favourites#destroy',    defaults: {format:'json'}
+  post   '/subjects/:id/favourite',   to: 'favourites#create',     defaults: { format: 'json' }
+  post   '/subjects/:id/unfavourite', to: 'favourites#destroy',    defaults: { format:'json' }
 
   resources :subjects, :defaults => { :format => 'json' }
   resources :subject_sets, :defaults => { :format => 'json' }

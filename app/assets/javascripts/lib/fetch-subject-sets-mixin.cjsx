@@ -2,14 +2,20 @@ API            = require './api'
 
 module.exports =
   componentDidMount: ->
+    console.log 'COMPONENT DID MOUNT. I THINK?'
+    console.log 'PROPS.QUERY: ', @props
     # console.log "Fetch Subjects Mixin: ", @
-    if @props.params.subject_set_id
-      @fetchSubjectSet @props.params.subject_set_id,@props.workflow.id
+    if @props.query.subject_set_id
+      console.log 'BLAH'
+      @fetchSubjectSet @props.params.subject_set_id, @props.workflow.id
     else
       @fetchSubjectSets @props.workflow.id, @props.workflow.subject_fetch_limit
 
   fetchSubjectSet: (subject_set_id, workflow_id)->
+    console.log 'fetchSubjectSet()'
     request = API.type("subject_sets").get(subject_set_id, workflow_id: workflow_id)
+
+    console.log 'REQUEST: ', request
 
     @setState
       subjectSet: []
@@ -23,6 +29,7 @@ module.exports =
         # currentSubjectSet: subject_set
 
   fetchSubjectSets: (workflow_id, limit) ->
+    console.log 'fetchSubjectSets()'
 
     if @props.overrideFetchSubjectsUrl?
       # console.log "Fetching (fake) subject sets from #{@props.overrideFetchSubjectsUrl}"

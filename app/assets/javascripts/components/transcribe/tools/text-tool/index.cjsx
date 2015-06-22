@@ -123,6 +123,10 @@ TextTool = React.createClass
 
   render: ->
 
+    console.log 'TEXT-TOOL::render()'
+    console.log 'PROPS: ', @props
+    console.log 'STATE: ', @state
+
     # get component position
     style =
       left: "#{@state.dx*@props.scale.horizontal}px"
