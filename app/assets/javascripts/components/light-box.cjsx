@@ -24,7 +24,7 @@ module.exports = React.createClass
     indexOfFirst = @findSubjectIndex(@state.first)
 
     second = @props.subject_set.subjects[indexOfFirst+1] 
-    third = @props.subject_set.subjects[indexOfFirst+2] 
+    third = @props.subject_set.subjects[indexOfFirst+2]
 
 
     viewBox = [0, 0, 100, 100]
@@ -33,7 +33,7 @@ module.exports = React.createClass
       <ActionButton id="backward" text="BACK" onClick={@moveBack.bind(this, indexOfFirst)} classes={if @state.first == @props.subject_set.subjects[0] then 'disabled' else ''} />
 
       <ul>
-        <li onClick={@shineSelected.bind(this, @findSubjectIndex(@state.first))}> 
+        <li onClick={@shineSelected.bind(this, @findSubjectIndex(@state.first))} className={"active" if @props.subject_index == @findSubjectIndex(@state.first)}> 
           <svg className="light-box-subject" width={300} height={300} viewBox={viewBox} >
               <SVGImage
                 src = {@state.first.location.standard}
@@ -43,7 +43,7 @@ module.exports = React.createClass
           </svg>
         </li>
         {if second
-          <li onClick={@shineSelected.bind(this, @findSubjectIndex(second))}> 
+          <li onClick={@shineSelected.bind(this, @findSubjectIndex(second))} className={"active" if @props.subject_index == @findSubjectIndex(second)} > 
             <svg className="light-box-subject" width={300} height={300} viewBox={viewBox} >
                 <SVGImage
                   src = {second.location.standard}
@@ -55,7 +55,7 @@ module.exports = React.createClass
         }
 
         {if third
-          <li onClick={@shineSelected.bind(this, @findSubjectIndex(third))}> 
+          <li onClick={@shineSelected.bind(this, @findSubjectIndex(third))} className={"active" if @props.subject_index == @findSubjectIndex(third)} > 
             <svg className="light-box-subject" width={300} height={300} viewBox={viewBox} >
                 <SVGImage
                   src = {third.location.standard}
