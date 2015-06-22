@@ -198,7 +198,6 @@ module.exports = React.createClass
     # return
     console.log 'destroyMark()'
     marks = @state.marks
-    console.log 'MARKS (before): ', @state.marks
 
     if mark is @state.selectedMark
       marks.splice (marks.indexOf mark), 1
@@ -223,19 +222,15 @@ module.exports = React.createClass
 
   getCurrentMarks: ->
     # Previous marks are really just the region hashes of all child subjects:
-    console.log 'FODOIDHJSLDJ: ', @props.subject.child_subjects
 
     marks = []
     for child_subject, i in @props.subject.child_subjects
-      console.log 'CHILD SUBJECT: ', child_subject
       child_subject.region.subject_id = child_subject.id # copy id field into region (not ideal)
       marks[i] = child_subject.region
 
     # marks = (s for s in (@props.subject.child_subjects ? [] ) when s?.region?).map (m) ->
     #   # {userCreated: false}.merge
     #   m?.region ? {}
-
-    console.log 'MARKS: ', marks
 
     # Here we append the currently-being-drawn mark to the list of marks, if there is one:
     marks = marks.concat @state.uncommittedMark if @state.uncommittedMark?

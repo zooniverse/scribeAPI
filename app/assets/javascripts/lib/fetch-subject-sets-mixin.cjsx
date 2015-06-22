@@ -1,28 +1,22 @@
-API            = require './api'
+API = require './api'
 
 module.exports =
   componentDidMount: ->
-    console.log 'COMPONENT DID MOUNT. I THINK?'
-    console.log 'PROPS.QUERY: ', @props
     # console.log "Fetch Subjects Mixin: ", @
     if @props.query.subject_set_id
-      console.log 'FETCHING SUBJECT SET WITH ID: ', @props.query.subject_set_id
       @fetchSubjectSet @props.query.subject_set_id, @props.query.subject_index, @props.workflow.id
     else
       @fetchSubjectSets @props.workflow.id, @props.workflow.subject_fetch_limit
 
   fetchSubjectSet: (subject_set_id, subject_index, workflow_id)->
     console.log 'fetchSubjectSet()'
-    console.log 'SUBJECT INDEX: ', subject_index
     request = API.type("subject_sets").get(subject_set_id: subject_set_id, workflow_id: workflow_id)
-
 
     @setState
       subjectSet: []
       # currentSubjectSet: null
 
     request.then (subject_set) =>
-      console.log 'SUBJECT SET: ', subject_set, subject_index
       @setState
         subjectSets: subject_set
         subject_set_index: 0
@@ -59,9 +53,6 @@ module.exports =
           # currentSubject: subject_sets[0].subjects[0]
         if @fetchSubjectsCallback?
           @fetchSubjectsCallback()
-
-
-
 
     # WHY DOES THIS BREAK?
     # request.error (xhr, status, err) =>
