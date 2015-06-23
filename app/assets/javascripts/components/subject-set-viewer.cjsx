@@ -41,9 +41,6 @@ module.exports = React.createClass
 
 
   render: ->
-    console.log " SSV Render @props", @props
-    # console.log " SSV Render @state", @state
-    console.log "...Current Classification: ", @props.annotation
     <div className="subject-set-viewer">
     <div className="light-box-area">
       {
@@ -52,7 +49,7 @@ module.exports = React.createClass
       }
         <LightBox subject_set={@state.subject_set} subject_index={subject_index} onSubject={@specificSelection}/>
     </div>
-      { if @props.subject_set.subjects.length > 1 
+      { if @props.subject_set.subjects.length > 1
         <div className="subject-set-nav">
           <ActionButton text="Previous" onClick={@advancePrevious} classes={if @props.subject_index == 0 then 'disabled' else ''}/>
           <ActionButton text="Next" onClick={@advanceNext} classes={if @props.subject_index == @props.subject_set.subjects.length-1 then 'disabled' else ''} />

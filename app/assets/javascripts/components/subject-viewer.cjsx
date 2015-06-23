@@ -198,7 +198,6 @@ module.exports = React.createClass
     # return
     console.log 'destroyMark()'
     marks = @state.marks
-    console.log 'MARKS (before): ', @state.marks
 
     if mark is @state.selectedMark
       marks.splice (marks.indexOf mark), 1
