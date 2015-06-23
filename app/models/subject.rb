@@ -5,6 +5,7 @@ class Subject
 
 
   scope :active_root, -> { where(type: 'root', status: 'active') }
+  scope :active, -> { where(status: 'active') }
 
   # This is a hash with one entry per deriv; `standard', 'thumbnail', etc
   field :location,                    type: Hash 
