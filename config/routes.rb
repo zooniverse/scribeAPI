@@ -31,10 +31,10 @@ API::Application.routes.draw do
   post   '/subjects/:id/favourite',           to: 'favourites#create',     defaults: { format: 'json' }
   post   '/subjects/:id/unfavourite',         to: 'favourites#destroy',    defaults: { format: 'json' }
 
-  resources :subjects,        :defaults, to: { :format => 'json' }
-  resources :subject_sets,    :defaults, to: { :format => 'json' }
-  resources :classifications, :defaults, to: { :format => 'json' }
-  resources :groups,          :defaults, to: { :format => 'json' }
+  resources :subjects, :defaults => { :format => 'json' }
+  resources :subject_sets, :defaults => { :format => 'json' }
+  resources :classifications, :defaults => { :format => 'json' }
+  resources :groups, :defaults => { :format => 'json' }
   resources :favourites, defaults: {format: 'json'}
   resources :favourites, only: [:index, :create, :destroy]
 

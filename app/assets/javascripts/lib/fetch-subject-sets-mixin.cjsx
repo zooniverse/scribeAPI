@@ -20,7 +20,7 @@ module.exports =
       @setState
         subjectSets: subject_set
         subject_set_index: 0
-        subject_index: parseInt subject_index
+        subject_index: parseInt(subject_index) || 0
         # currentSubjectSet: subject_set
 
   fetchSubjectSets: (workflow_id, limit) ->
