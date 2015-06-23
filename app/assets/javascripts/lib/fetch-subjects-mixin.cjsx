@@ -110,6 +110,7 @@ module.exports =
         workflow_id: workflow_id
         limit: limit
         random: true
+        scope: "active"
 
       request.then (subjects) =>
         subject = @orderSubjectsByY(subjects)
