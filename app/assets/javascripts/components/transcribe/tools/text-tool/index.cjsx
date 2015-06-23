@@ -161,8 +161,20 @@ TextTool = React.createClass
               {tool_content}
             </div>
             <div className="right">
-              <PrevButton onClick={null} />
-              <DoneButton onClick={@commitAnnotation} />
+
+              {
+                if window.location.hash is '#/transcribe' # regular transcribe, i.e. no mark transition
+                  <DoneButton onClick={@commitAnnotation} />
+                else
+                  <span>
+                    <label>Return to marking: </label>
+                    <button className='button done' onClick={=> console.log 'CLICK!'}>
+                      {'Finish'}
+                    </button>
+                  </span>
+              }
+
+
             </div>
           </div>
 
