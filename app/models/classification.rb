@@ -33,13 +33,16 @@ class Classification
     end
   end
 
-  def check_for_retirement
-    # PB: Currently this is causing the retire_count to be incremented every time a classification is saved
-    # I think we should check that the user actually told us that there's nothing more to mark before calling subject.retire_by_vote!
-
-    # AMS: Definitely.
-
-    # subject.retire_by_vote! if subject.type == "root"
+    # AMS: not sure if workflow.generates_subjects_after is the best measure.
+    # =>   In addition, we only want to call this for certain subjects (not collect unique.)
+    # =>   right now, this mainly applies to workflow.generates_subjects_method == "collect-unique".
+  def check_for_retirement_by_classification_count
+    workflow = subject.workflow
+    if workflow.generates_subjects_method == "collect-unique"
+      subject.classification_count >= workflow.generates_subjects_after
+        subject.retire!
+      end
+    end
   end  
 
   def generate_terms
