@@ -78,7 +78,7 @@
       "instruction": "Enter the barometric pressure.",
       "next_task": null
     },
-    
+
     "weather_other_description": {
       "tool": "textTool",
       "tool_config": {},
@@ -134,7 +134,7 @@
       "tool_config": {},
       "instruction": "Please transcribe the remainder of the highlighted entry.",
       "next_task": null
-    },
+    }
 
 
 
