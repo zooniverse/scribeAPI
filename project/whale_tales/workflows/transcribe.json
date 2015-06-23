@@ -29,100 +29,18 @@
       "instruction": "Transcribe this point.",
       "next_task": "entry_date"
     },
-    "transcribe_rectangle": {
-      "tool": "textTool",
-      "tool_config": {},
-      "instruction": "Transcribe this rectangle.",
-      "next_task": "entry_date"
-
-    },
-    "transcribe_text_row": {
-      "tool": "textTool",
-      "tool_config": {},
-      "instruction": "Transcribe this text row.",
-      "next_task": "entry_date"
-
-    },
-
-    "entry_date": {
-      "tool": "textTool",
-      "tool_config": {},
-      "instruction": "What is the entry date?",
-      "next_task": "page_number"
-    },
-    "page_number": {
-      "tool": "textTool",
-      "tool_config": {},
-      "instruction": "What is the page number?",
-      "next_task": "location"
-    },
-    "location": {
-      "tool": "textTool",
-      "tool_config": {},
-      "instruction": "What is the location?",
-      "next_task": "entry_text"
-    },
-    "entry_text": {
-      "tool": "textAreaTool",
-      "tool_config": {},
-      "instruction": "Please transcribe the remainder of the highlighted entry.",
-      "next_task": null
-    },
-
-
     "weather_date": {
       "tool": "dateTool",
       "tool_config": {},
       "instruction": "What is the date of this entry?",
       "next_task": null
     },
-    "weather_wind_old": {
+    "weather_wind": {
       "tool": "textTool",
       "tool_config": {},
       "instruction": "Enter the wind force/direction.",
       "next_task": null
     },
-
-    "weather_wind": {
-      "tool": "compositeTool",
-      "tool_config": {
-        "tools": {
-          "em_valuation_date": {
-            "tool": "dateTool",
-            "tool_config": {},
-            "label": "Date"
-          },
-          "em_valuation_amount": {
-            "tool": "textTool",
-            "tool_config": {},
-            "label": "Amount"
-          }
-        }
-      },
-      "instruction": "Transcribe this point.",
-      "next_task": "weather_wind_dupe"
-    },
-
-    "weather_wind_dupe": {
-      "tool": "compositeTool",
-      "tool_config": {
-        "tools": {
-          "em_valuation_date": {
-            "tool": "dateTool",
-            "tool_config": {},
-            "label": "Date"
-          },
-          "em_valuation_amount": {
-            "tool": "textTool",
-            "tool_config": {},
-            "label": "Amount"
-          }
-        }
-      },
-      "instruction": "Transcribe this point (again).",
-      "next_task": null
-    },
-
     "weather_sky": {
       "tool": "textTool",
       "tool_config": {},
@@ -163,6 +81,52 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+    "transcribe_rectangle": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Transcribe this rectangle.",
+      "next_task": "entry_date"
+    },
+    "transcribe_text_row": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Transcribe this text row.",
+      "next_task": "entry_date"
+    },
+    "entry_date": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "What is the entry date?",
+      "next_task": "page_number"
+    },
+    "page_number": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "What is the page number?",
+      "next_task": "location"
+    },
+    "location": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "What is the location?",
+      "next_task": "entry_text"
+    },
+    "entry_text": {
+      "tool": "textAreaTool",
+      "tool_config": {},
+      "instruction": "Please transcribe the remainder of the highlighted entry.",
+      "next_task": null
+    },
 
 
 
