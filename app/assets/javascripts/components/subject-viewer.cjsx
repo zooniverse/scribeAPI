@@ -222,7 +222,6 @@ module.exports = React.createClass
 
   getCurrentMarks: ->
     # Previous marks are really just the region hashes of all child subjects:
-
     marks = []
     for child_subject, i in @props.subject.child_subjects
       child_subject.region.subject_id = child_subject.id # copy id field into region (not ideal)
@@ -241,6 +240,8 @@ module.exports = React.createClass
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     # ToolComponent = @state.tool # AMS:from classification refactor.
     scale = @getScale()
+    console.log "!!!!!!!!!!!!!!!"
+    console.log "SCALE", scale
 
     if @props.workflow.name is 'transcribe'
       yPos = (@props.subject.data.y - @props.subject.data.height?) * @getScale().vertical - 100

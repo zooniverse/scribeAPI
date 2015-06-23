@@ -5,7 +5,6 @@ class Workflow
   #TODO: can we delete :key field? --AMS
   field    :key, 				                                     type: String
   field    :label,                                           type: String
-  # field    :tasks, 			      	                             type: Hash
   field    :first_task,                                      type: String
   field    :retire_limit, 		                               type: Float,   default: 0.75
   field    :subject_fetch_limit,                             type: Integer,   default: 10

@@ -22,13 +22,13 @@
             "label":"History Sheet",
             "next_task":"history_form_sticky_sheet"
           },
-          "attestation_medical_form":{
-            "label":"Attestation: Medical Form",
-            "next_task":"attestation_medical_form_task"
-          },
           "attestation_form":{
             "label":"Attestation: General Form",
             "next_task":"attestation_form_task"
+          },
+          "attestation_medical_form":{
+            "label":"Attestation: Medical Form",
+            "next_task":"attestation_medical_form_task"
           },
           "death_notification":{
             "label":"Death Notification",
@@ -47,10 +47,10 @@
       "instruction":"Draw a rectangle around each record.",
       "tool_config": {
         "tools": [
-          {"type": "textRowTool", "label": "No.", "color": "green", "generates_subject_type": "att_transcribe_no" },
-          {"type": "textRowTool", "label": "Name", "color": "green", "generates_subject_type": "att_transcribe_name" },
-          {"type": "textRowTool", "label": "Regiment/Unit", "color": "green", "generates_subject_type": "att_transcribe_regiment" },
-          {"type": "textRowTool", "label": "Question", "color": "green", "generates_subject_type": "att_textRowTool_question" }
+          {"type": "rectangleTool", "label": "No.", "color": "green", "generates_subject_type": "att_transcribe_no" },
+          {"type": "rectangleTool", "label": "Name", "color": "green", "generates_subject_type": "att_transcribe_name" },
+          {"type": "rectangleTool", "label": "Regiment/Unit", "color": "green", "generates_subject_type": "att_transcribe_regiment" },
+          {"type": "rectangleTool", "label": "Question", "color": "green", "generates_subject_type": "att_textRowTool_question" }
         ]
       },
       "next_task": null
