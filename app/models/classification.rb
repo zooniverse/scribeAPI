@@ -19,7 +19,7 @@ class Classification
   belongs_to    :child_subject, :class_name => "Subject"
   has_many      :triggered_followup_subjects, class_name: "Subject"
 
-  after_create  :increment_subject_classification_count
+  after_create  :increment_subject_classification_count, :check_for_retirement_by_classification_count
   after_create  :generate_new_subjects
   after_create  :generate_terms
 
@@ -38,8 +38,9 @@ class Classification
     # =>   right now, this mainly applies to workflow.generates_subjects_method == "collect-unique".
   def check_for_retirement_by_classification_count
     workflow = subject.workflow
+    binding.pry
     if workflow.generates_subjects_method == "collect-unique"
-      subject.classification_count >= workflow.generates_subjects_after
+      if subject.classification_count >= workflow.generates_subjects_after
         subject.retire!
       end
     end
