@@ -30,6 +30,10 @@ module.exports = React.createClass # rename to Classifier
   componentWillMount: ->
     @beginClassification()
 
+  componentDidMount: ->
+    console.log 'MOUNTED TRANSCRIBE COMPONENT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
+    console.log 'PROPS: ', @props
+
   fetchSubjectsCallback: ->
     #TODO: We do need to account for times when there are no subjects? type won't do that. -AMS
     currentSubject = @getCurrentSubject()

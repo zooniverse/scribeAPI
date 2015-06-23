@@ -3,9 +3,12 @@ React      = require 'react'
 Draggable  = require '../../../../lib/draggable'
 DoneButton = require './done-button'
 PrevButton = require './prev-button'
+ReactRouter = require 'react-router' # eventually replace with {Navigation} = require 'react-router' -- STI
 
 TextTool = React.createClass
   displayName: 'TextTool'
+
+  mixins: [ReactRouter] # NOTE: deprecated React-Router 13.3 uses Navigation minxin --STI
 
   handleInitStart: (e) ->
     @setState preventDrag: false
@@ -126,6 +129,7 @@ TextTool = React.createClass
     console.log 'TEXT-TOOL::render()'
     console.log 'PROPS: ', @props
     console.log 'STATE: ', @state
+    console.log 'THIS IS ', @
 
     # get component position
     style =
@@ -168,7 +172,7 @@ TextTool = React.createClass
                 else
                   <span>
                     <label>Return to marking: </label>
-                    <button className='button done' onClick={=> console.log 'CLICK!'}>
+                    <button className='button done' onClick={() => this.transitionTo('mark')}>
                       {'Finish'}
                     </button>
                   </span>

@@ -28,6 +28,10 @@ module.exports = React.createClass # rename to Classifier
     subject_set_index:            0
     subject_index:                0
 
+  componentDidMount: ->
+    console.log 'MOUNTED MARK COMPONENT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
+    console.log 'PROPS: ', @props
+
   componentWillMount: ->
     completion_assessment_task = {
         "generates_subject_type": null,
