@@ -34,7 +34,7 @@ module.exports = React.createClass
 
       <ul>
         <li onClick={@shineSelected.bind(this, @findSubjectIndex(@state.first))} className={"active" if @props.subject_index == @findSubjectIndex(@state.first)}> 
-          <svg className="light-box-subject" width={300} height={300} viewBox={viewBox} >
+          <svg className="light-box-subject" width={200} height={200} viewBox={viewBox} >
               <SVGImage
                 src = {@state.first.location.standard}
                 width = {100}
@@ -44,7 +44,7 @@ module.exports = React.createClass
         </li>
         {if second
           <li onClick={@shineSelected.bind(this, @findSubjectIndex(second))} className={"active" if @props.subject_index == @findSubjectIndex(second)} > 
-            <svg className="light-box-subject" width={300} height={300} viewBox={viewBox} >
+            <svg className="light-box-subject" width={200} height={200} viewBox={viewBox} >
                 <SVGImage
                   src = {second.location.standard}
                   width = {100}
@@ -56,7 +56,7 @@ module.exports = React.createClass
 
         {if third
           <li onClick={@shineSelected.bind(this, @findSubjectIndex(third))} className={"active" if @props.subject_index == @findSubjectIndex(third)} > 
-            <svg className="light-box-subject" width={300} height={300} viewBox={viewBox} >
+            <svg className="light-box-subject" width={200} height={200} viewBox={viewBox} >
                 <SVGImage
                   src = {third.location.standard}
                   width = {100}
