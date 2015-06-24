@@ -91,6 +91,8 @@ CompositeTool = React.createClass
       # console.log "TextTool#updatePosition setting state: ", @state
 
   handleFieldComplete: (key, ann) ->
+    console.log 'COMPOSITE-TOOL::handleFieldComplete() '
+    console.log 'STATE: ', @state
     inp = @refs[key]
 
     keys = (key for key, t in @props.task.tool_config.tools)
@@ -102,10 +104,17 @@ CompositeTool = React.createClass
       @setState annotation: ann, () =>
         @commitAnnotation()
 
+  handleChange: (annotation) ->
+    console.log 'COMPOSITE-TOOL::handleChange(), SOMETHING CHANGED!'
+    console.log 'ANNOTATION = ', annotation
+    @setState annotation: annotation
+
   commitAnnotation: ->
+    console.log 'commitAnnotation'
     @props.onComplete @state.annotation
 
   render: ->
+    console.log 'COMPOSITE-TOOL::render(), PROPS = ', @props
 
     # If user has set a custom position, position based on that:
     style =
@@ -117,7 +126,6 @@ CompositeTool = React.createClass
       onStart = {@handleInitStart}
       onDrag  = {@handleInitDrag}
       onEnd   = {@handleInitRelease}
-      ref     = "inputWrapper0"
       x       = {@state.dx*@props.scale.horizontal}
       y       = {@state.dy*@props.scale.vertical}
     >
@@ -127,10 +135,16 @@ CompositeTool = React.createClass
           <div className="input-field active">
             <label>{@props.task.instruction}</label>
             { for annotation_key, tool_config of @props.task.tool_config.tools
+
+              console.log 'ANNOTATION KEY: ', annotation_key
+              console.log 'TOOL CONFIG:    ', tool_config
+              console.log 'TOOL:           ', tool_config.tool
               # path = "../#{tool_config.tool.replace(/_/, '-')}"
               ToolComponent = @props.transcribeTools[tool_config.tool]
-
               focus = annotation_key == @state.active_field_key
+
+              console.log 'ANNOTATION _+_+_+_+_+_+_ : ', @props.annotation
+
               <ToolComponent
                 task={@props.task}
                 subject={@props.subject}
@@ -138,10 +152,10 @@ CompositeTool = React.createClass
                 standalone={false}
                 viewerSize={@props.viewerSize}
                 onComplete={@handleFieldComplete.bind @, annotation_key}
+                handleChange={@handleChange}
                 label={@props.task.tool_config.tools[annotation_key].label ? ''}
                 focus={focus}
                 scale={@props.scale}
-
                 key={annotation_key}
                 ref={annotation_key}
                 annotation={@props.annotation[annotation_key]}

@@ -38,8 +38,21 @@
     },
 
     "weather_wind": {
-      "tool": "textTool",
-      "tool_config": {},
+      "tool": "compositeTool",
+      "tool_config": {
+        "tools": {
+          "weather_date": {
+            "tool": "textTool",
+            "tool_config": {},
+            "label": "Wind direction/force"
+          },
+          "weather_sky": {
+            "tool": "textTool",
+            "tool_config": {},
+            "label": "Other description"
+          }
+        }
+      },
       "instruction": "Enter the wind force/direction.",
       "next_task": null
     },
@@ -52,14 +65,14 @@
     },
 
     "weather_precipitation": {
-      "tool": "textTool",
+      "tool": "dateTool",
       "tool_config": {},
       "instruction": "Enter the precipitation description.",
       "next_task": null
     },
 
     "weather_sea": {
-      "tool": "textTool",
+      "tool": "textAreaTool",
       "tool_config": {},
       "instruction": "Enter the description of the sea state.",
       "next_task": null
@@ -80,7 +93,7 @@
     },
 
     "weather_other_description": {
-      "tool": "textTool",
+      "tool": "textAreaTool",
       "tool_config": {},
       "instruction": "Enter the weather description as best you can.",
       "next_task": null

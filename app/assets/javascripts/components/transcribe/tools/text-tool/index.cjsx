@@ -58,11 +58,11 @@ TextTool = React.createClass
     task: null
     subject: null
     standalone: true
-    annotation_key: 'value'
+    key: 'value'
     focus: true
 
   componentWillReceiveProps: ->
-    @refs.input0.getDOMNode().focus() if @props.focus
+    # @refs.input0.getDOMNode().focus() if @props.focus
     {x,y} = @getPosition @props.subject.data
     @setState
       dx: x
@@ -80,7 +80,7 @@ TextTool = React.createClass
 
   componentDidMount: ->
     @updatePosition()
-    @refs.input0.getDOMNode().focus() if @props.focus
+    # @refs.input0.getDOMNode().focus() if @props.focus
 
     if @props.task.tool_config.suggest == 'common'
       el = $(@refs.input0.getDOMNode())
@@ -113,10 +113,22 @@ TextTool = React.createClass
         dy: (@props.subject.data.y + @props.subject.data.height) * @state.viewerSize.scale.vertical
 
   commitAnnotation: ->
+    console.log 'TEXT-TOOL::commitAnnotation()'
     @props.onComplete @state.annotation
 
   handleChange: (e) ->
-    @state.annotation[@props.annotation_key] = e.target.value
+    console.log 'BAKLSJDHSKDJHSLKDJHSDLKJSHDKLJSHDKLSJDHKLSJDHLKSJDHKLSJDH'
+    console.log 'PROPS: ', @props
+    console.log '@props.key = ', @props.key
+    @state.annotation[@props.key] = e.target.value
+    console.log 'ANNOTATION KEY = ', @props.key
+    console.log 'ANNOTATION: ', @state.annotation
+    console.log "TARGET VALUE ", e.target.value
+
+
+    # doesn't do anything yet
+    @props.handleChange(@state.annotation)? # if this tool is part of composite tool, send updates to parent
+
     @forceUpdate()
 
   handleKeyPress: (e) ->
@@ -136,7 +148,7 @@ TextTool = React.createClass
       left: "#{@state.dx*@props.scale.horizontal}px"
       top: "#{@state.dy*@props.scale.vertical}px"
 
-    val = @state.annotation[@props.annotation_key] ? ''
+    val = @state.annotation[@props.key] ? ''
 
     unless @props.standalone
       label = @props.label ? ''
@@ -146,8 +158,15 @@ TextTool = React.createClass
     # create component input field(s)
     tool_content =
       <div className="input-field active">
-        <label>{label}</label>
-        <input ref="input0" type="text" data-task_key={@props.task.key} onKeyDown={@handleKeyPress} onChange={@handleChange} value={val} />
+        <label>{label} {@props.ref}</label>
+        <input
+          ref={@props.ref? || "input0"}
+          type="text"
+          data-task_key={@props.task.key}
+          onKeyDown={@handleKeyPress}
+          onChange={@handleChange}
+          value={val}
+        />
       </div>
 
     if @props.standalone # 'standalone' true if component handles own mouse events
