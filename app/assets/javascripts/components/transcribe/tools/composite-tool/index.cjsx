@@ -24,9 +24,7 @@ CompositeTool = React.createClass
       xClick: e.pageX - $('.transcribe-tool').offset().left
       yClick: e.pageY - $('.transcribe-tool').offset().top
 
-
   handleInitDrag: (e, delta) ->
-
     return if @state.preventDrag # not too happy about this one
 
     dx = e.pageX - @state.xClick - window.scrollX
@@ -38,8 +36,6 @@ CompositeTool = React.createClass
       dragged: true
 
   getInitialState: ->
-    console.log 'TEXT-TOOL::getInitialState(), props = ', @props
-
     # compute component location
     {x,y} = @getPosition @props.subject.data
 
@@ -102,11 +98,13 @@ CompositeTool = React.createClass
       @setState annotation: ann, () =>
         @commitAnnotation()
 
+  handleChange: (annotation) ->
+    @setState annotation: annotation
+
   commitAnnotation: ->
     @props.onComplete @state.annotation
 
   render: ->
-
     # If user has set a custom position, position based on that:
     style =
       left: "#{@state.dx*@props.scale.horizontal}px"
@@ -117,7 +115,6 @@ CompositeTool = React.createClass
       onStart = {@handleInitStart}
       onDrag  = {@handleInitDrag}
       onEnd   = {@handleInitRelease}
-      ref     = "inputWrapper0"
       x       = {@state.dx*@props.scale.horizontal}
       y       = {@state.dy*@props.scale.vertical}
     >
@@ -127,10 +124,11 @@ CompositeTool = React.createClass
           <div className="input-field active">
             <label>{@props.task.instruction}</label>
             { for annotation_key, tool_config of @props.task.tool_config.tools
+
               # path = "../#{tool_config.tool.replace(/_/, '-')}"
               ToolComponent = @props.transcribeTools[tool_config.tool]
-
               focus = annotation_key == @state.active_field_key
+
               <ToolComponent
                 task={@props.task}
                 subject={@props.subject}
@@ -138,10 +136,10 @@ CompositeTool = React.createClass
                 standalone={false}
                 viewerSize={@props.viewerSize}
                 onComplete={@handleFieldComplete.bind @, annotation_key}
+                handleChange={@handleChange}
                 label={@props.task.tool_config.tools[annotation_key].label ? ''}
                 focus={focus}
                 scale={@props.scale}
-
                 key={annotation_key}
                 ref={annotation_key}
                 annotation={@props.annotation[annotation_key]}
