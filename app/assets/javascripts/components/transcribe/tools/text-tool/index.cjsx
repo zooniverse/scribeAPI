@@ -113,21 +113,13 @@ TextTool = React.createClass
         dy: (@props.subject.data.y + @props.subject.data.height) * @state.viewerSize.scale.vertical
 
   commitAnnotation: ->
-    console.log 'TEXT-TOOL::commitAnnotation()'
     @props.onComplete @state.annotation
 
   handleChange: (e) ->
-    console.log 'BAKLSJDHSKDJHSLKDJHSDLKJSHDKLJSHDKLSJDHKLSJDHLKSJDHKLSJDH'
-    console.log 'PROPS: ', @props
-    console.log '@props.key = ', @props.key
     @state.annotation[@props.key] = e.target.value
-    console.log 'ANNOTATION KEY = ', @props.key
-    console.log 'ANNOTATION: ', @state.annotation
-    console.log "TARGET VALUE ", e.target.value
 
-
-    # doesn't do anything yet
-    @props.handleChange(@state.annotation)? # if this tool is part of composite tool, send updates to parent
+    # if applicable, send composite tool updated annotation
+    @props.handleChange(@state.annotation)?
 
     @forceUpdate()
 
@@ -137,12 +129,6 @@ TextTool = React.createClass
       e.preventDefault()
 
   render: ->
-
-    console.log 'TEXT-TOOL::render()'
-    console.log 'PROPS: ', @props
-    console.log 'STATE: ', @state
-    console.log 'THIS IS ', @
-
     # get component position
     style =
       left: "#{@state.dx*@props.scale.horizontal}px"
@@ -158,7 +144,7 @@ TextTool = React.createClass
     # create component input field(s)
     tool_content =
       <div className="input-field active">
-        <label>{label} {@props.ref}</label>
+        <label>{label}</label>
         <input
           ref={@props.ref? || "input0"}
           type="text"
@@ -196,7 +182,6 @@ TextTool = React.createClass
                     </button>
                   </span>
               }
-
 
             </div>
           </div>

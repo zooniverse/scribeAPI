@@ -115,7 +115,6 @@ TextAreaTool = React.createClass
     @props.onComplete @state.annotation
 
   handleChange: (e) ->
-    console.log 'TEXT-AREA-TOOL::handleChange(), target = ', e.target
     @state.annotation[@props.annotation_key] = e.target.value
     @forceUpdate()
 

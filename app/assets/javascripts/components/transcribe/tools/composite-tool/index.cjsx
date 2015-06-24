@@ -24,9 +24,7 @@ CompositeTool = React.createClass
       xClick: e.pageX - $('.transcribe-tool').offset().left
       yClick: e.pageY - $('.transcribe-tool').offset().top
 
-
   handleInitDrag: (e, delta) ->
-
     return if @state.preventDrag # not too happy about this one
 
     dx = e.pageX - @state.xClick - window.scrollX
@@ -38,8 +36,6 @@ CompositeTool = React.createClass
       dragged: true
 
   getInitialState: ->
-    console.log 'TEXT-TOOL::getInitialState(), props = ', @props
-
     # compute component location
     {x,y} = @getPosition @props.subject.data
 
@@ -91,8 +87,6 @@ CompositeTool = React.createClass
       # console.log "TextTool#updatePosition setting state: ", @state
 
   handleFieldComplete: (key, ann) ->
-    console.log 'COMPOSITE-TOOL::handleFieldComplete() '
-    console.log 'STATE: ', @state
     inp = @refs[key]
 
     keys = (key for key, t in @props.task.tool_config.tools)
@@ -105,17 +99,12 @@ CompositeTool = React.createClass
         @commitAnnotation()
 
   handleChange: (annotation) ->
-    console.log 'COMPOSITE-TOOL::handleChange(), SOMETHING CHANGED!'
-    console.log 'ANNOTATION = ', annotation
     @setState annotation: annotation
 
   commitAnnotation: ->
-    console.log 'commitAnnotation'
     @props.onComplete @state.annotation
 
   render: ->
-    console.log 'COMPOSITE-TOOL::render(), PROPS = ', @props
-
     # If user has set a custom position, position based on that:
     style =
       left: "#{@state.dx*@props.scale.horizontal}px"
@@ -136,14 +125,9 @@ CompositeTool = React.createClass
             <label>{@props.task.instruction}</label>
             { for annotation_key, tool_config of @props.task.tool_config.tools
 
-              console.log 'ANNOTATION KEY: ', annotation_key
-              console.log 'TOOL CONFIG:    ', tool_config
-              console.log 'TOOL:           ', tool_config.tool
               # path = "../#{tool_config.tool.replace(/_/, '-')}"
               ToolComponent = @props.transcribeTools[tool_config.tool]
               focus = annotation_key == @state.active_field_key
-
-              console.log 'ANNOTATION _+_+_+_+_+_+_ : ', @props.annotation
 
               <ToolComponent
                 task={@props.task}
