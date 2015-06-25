@@ -33,12 +33,9 @@ TextTool = React.createClass
   getInitialState: ->
     # compute component location
     {x,y} = @getPosition @props.subject.data
-
     dx: x
     dy: y
     viewerSize: @props.viewerSize
-    annotation:
-      value: ''
 
   getPosition: (data) ->
     switch data.toolName
@@ -66,9 +63,7 @@ TextTool = React.createClass
     {x,y} = @getPosition @props.subject.data
     @setState
       dx: x
-      dy: y
-      annotation: @props.annotation
-      , => @forceUpdate() # updates component position on new subject
+      dy: y, => @forceUpdate() # updates component position on new subject
 
   componentWillMount: ->
     # currently does nothing
