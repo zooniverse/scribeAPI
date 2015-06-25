@@ -99,12 +99,15 @@ CompositeTool = React.createClass
         @commitAnnotation()
 
   handleChange: (annotation) ->
+    console.log 'COMPOSITE-TOOL::handleChange(), annotation = ', annotation
     @setState annotation: annotation
 
   commitAnnotation: ->
+    console.log 'COMPOSITE-TOOL::commitAnnotation(), @state.annotation = ', @state.annotation
     @props.onComplete @state.annotation
 
   render: ->
+    console.log 'COMPOSITE-TOOL::render(), @state.annotation = ', @state.annotation
     # If user has set a custom position, position based on that:
     style =
       left: "#{@state.dx*@props.scale.horizontal}px"
@@ -136,6 +139,7 @@ CompositeTool = React.createClass
                 standalone={false}
                 viewerSize={@props.viewerSize}
                 onComplete={@handleFieldComplete.bind @, annotation_key}
+                onChange={@props.onChange}
                 handleChange={@handleChange}
                 label={@props.task.tool_config.tools[annotation_key].label ? ''}
                 focus={focus}

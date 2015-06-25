@@ -53,7 +53,7 @@ module.exports = React.createClass # rename to Classifier
 
   # Handle user selecting a pick/drawing tool:
   handleDataFromTool: (d) ->
-    console.log "MARK/INDEX::handleDataFromTool()"
+    console.log "TRANSCRIBE/INDEX::handleDataFromTool(), DATA = ", d
     classifications = @state.classifications
     classifications[@state.classificationIndex].annotation[k] = v for k, v of d
 
@@ -61,11 +61,11 @@ module.exports = React.createClass # rename to Classifier
       classifications: classifications
         , =>
           @forceUpdate()
-          console.log "handleDataFromTool(), DATA = ", d
+          # console.log "handleDataFromTool(), DATA = ", d
 
 
   handleTaskComplete: (d) ->
-    console.log 'handleTaskComplete(), DATA = ', d
+    console.log 'TRANSCRIBE/INDEX::handleTaskComplete(), DATA = ', d
     @handleDataFromTool(d)
     @commitClassification()
     @beginClassification()
