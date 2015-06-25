@@ -86,7 +86,9 @@ CompositeTool = React.createClass
         # dy: (@props.subject.location.spec.y + @props.subject.location.spec.height) * @state.viewerSize.scale.vertical
       # console.log "TextTool#updatePosition setting state: ", @state
 
+  # this doesn't do anything?
   handleFieldComplete: (key, ann) ->
+    console.log 'COMPOSITE-TOOL::handleFieldComplete()'
     inp = @refs[key]
 
     keys = (key for key, t in @props.task.tool_config.tools)
@@ -127,6 +129,9 @@ CompositeTool = React.createClass
           <div className="input-field active">
             <label>{@props.task.instruction}</label>
             { for annotation_key, tool_config of @props.task.tool_config.tools
+
+              # console.log 'ANNOTATION_KEY: ', annotation_key
+              # console.log 'RENDERING TOOL: ', tool_config.tool
 
               # path = "../#{tool_config.tool.replace(/_/, '-')}"
               ToolComponent = @props.transcribeTools[tool_config.tool]

@@ -74,6 +74,7 @@ TextTool = React.createClass
     # currently does nothing
 
   componentWillUnmount: ->
+    console.log 'TEXT-TOOL::componentWillUnmount(), @props = ', @props
     if @props.task.tool_config.suggest == 'common'
       el = $(@refs.input0.getDOMNode())
       el.autocomplete 'destroy'
@@ -112,14 +113,18 @@ TextTool = React.createClass
         dx: @props.subject.data.x * @state.viewerSize.scale.horizontal
         dy: (@props.subject.data.y + @props.subject.data.height) * @state.viewerSize.scale.vertical
 
+  # NOTE: doesn't get called unless @props.standalone is true
   commitAnnotation: ->
-    @props.onComplete @state.annotation
+    console.log 'TEXT-TOOL::commitAnnotation()'
+    @props.onComplete @props.annotation
 
   handleChange: (e) ->
-    @state.annotation[@props.key] = e.target.value
+    console.log 'TEXT-TOOL::handleChange(), @state.annotation = ', @props.annotation
+    console.log 'E.TARGET.VALUE: ', e.target.value
+    @props.annotation[@props.key] = e.target.value
 
     # if applicable, send composite tool updated annotation
-    @props.handleChange(@state.annotation)?
+    @props.handleChange(@props.annotation)?
 
     @forceUpdate()
 
@@ -134,7 +139,7 @@ TextTool = React.createClass
       left: "#{@state.dx*@props.scale.horizontal}px"
       top: "#{@state.dy*@props.scale.vertical}px"
 
-    val = @state.annotation[@props.key] ? ''
+    val = @props.annotation[@props.key] ? ''
 
     unless @props.standalone
       label = @props.label ? ''
