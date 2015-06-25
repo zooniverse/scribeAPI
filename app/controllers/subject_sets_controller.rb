@@ -2,11 +2,11 @@ class SubjectSetsController < ApplicationController
   respond_to :json
 
   def index
-
     workflow_id  = params["workflow_id"]
     random = params["random"] || false
     limit  = params["limit"].to_i  || 10
-
+    subject_request_scope = params["subject_request_scope"]
+    
     if  workflow_id
       query = {"counts.#{workflow_id}.active_subjects" => {"$gt"=>0}}
     else
@@ -22,7 +22,7 @@ class SubjectSetsController < ApplicationController
     # sets = sets.sort_by { |s| - s.subjects.first.secondary_subject_count }
 
     # Randomizer#random seems to want query criteria passed in under :selector key:
-    respond_with sets, each_serializer: SubjectSetSerializer, workflow_id: workflow_id, limit: limit, random: random
+    respond_with sets, each_serializer: SubjectSetSerializer, workflow_id: workflow_id, limit: limit, random: random, subject_request_scope: subject_request_scope
   end
 
   # DOES NOT APPEAR TO BE IN USE -STI

@@ -6,7 +6,8 @@ module.exports =
     if @props.query.subject_set_id
       @fetchSubjectSet @props.query.subject_set_id, @props.query.subject_index, @props.workflow.id
     else
-      @fetchSubjectSets @props.workflow.id, @props.workflow.subject_fetch_limit
+      console.log " CDM @props", @props
+      @fetchSubjectSets @props.workflow.id, @props.workflow.subject_fetch_limit, @props.workflow.subject_request_scope
 
   fetchSubjectSet: (subject_set_id, subject_index, workflow_id)->
     console.log 'fetchSubjectSet()'
@@ -23,8 +24,9 @@ module.exports =
         subject_index: parseInt(subject_index) || 0
         # currentSubjectSet: subject_set
 
-  fetchSubjectSets: (workflow_id, limit) ->
+  fetchSubjectSets: (workflow_id, limit, subject_request_scope) ->
     console.log 'fetchSubjectSets()'
+    console.log "subject_request_scope", subject_request_scope
 
     if @props.overrideFetchSubjectsUrl?
       # console.log "Fetching (fake) subject sets from #{@props.overrideFetchSubjectsUrl}"
@@ -35,6 +37,7 @@ module.exports =
 
     else
       request = API.type('subject_sets').get
+        subject_request_scope: subject_request_scope
         workflow_id: workflow_id
         limit: limit
         random: true
