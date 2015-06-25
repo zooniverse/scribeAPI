@@ -2,7 +2,7 @@
   "name":"mark",
   "label":"Mark Workflow",
   "subject_fetch_limit":     10,
-
+  "subject_request_scope": "active_root",
   "generates_subjects": true,
   "generates_subjects_after": 1,
   "generates_subjects_for": "transcribe",
