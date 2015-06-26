@@ -15,6 +15,7 @@ class Workflow
   field    :generates_subjects_max,                          type: Integer
   field    :generates_subjects_method,                       type: String,    default: 'one-per-classification'
   field    :active_subjects,                                 type: Integer,   default: 0
+  field    :subject_request_scope,                           type: String,    default: "active"
 
   has_many     :subjects
   has_many     :classifications

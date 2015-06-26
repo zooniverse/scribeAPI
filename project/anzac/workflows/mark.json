@@ -1,7 +1,7 @@
 {
   "name":"mark",
   "label":"Mark Workflow",
-
+  "subject_request_scope": "active_root",
   "subject_fetch_limit":"10",
   "generates_subjects": true,
   "generates_subjects_after": 1,

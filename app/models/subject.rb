@@ -5,6 +5,7 @@ class Subject
 
 
   scope :active_root, -> { where(type: 'root', status: 'active') }
+  scope :active, -> { where(status: 'active') }
 
   # This is a hash with one entry per deriv; `standard', 'thumbnail', etc
   field :location,                    type: Hash 
@@ -68,12 +69,16 @@ class Subject
     if assesment_classifications.length > 1
       percentage_for_retire = retire_count/assesment_classifications.length.to_f   
       if percentage_for_retire >= workflow.retire_limit
-        self.status = "retired" 
-        subject_set.subject_completed_on_workflow(workflow) if ! workflow.nil?
-        save
+        self.retire!
       end
     end
 
+  end
+
+  def retire!
+    self.status = "retired" 
+    subject_set.subject_completed_on_workflow(workflow) if ! workflow.nil?
+    save
   end
 
   def activate!
