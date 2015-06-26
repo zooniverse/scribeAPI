@@ -25,8 +25,7 @@
             "tool_config": {},
             "label": "Amount"
           }
-        },
-        "generates_subject_type": "verify_point"
+        }
       },
       "instruction": "Transcribe this point.",
       "next_task": "entry_date"
@@ -35,16 +34,13 @@
       "tool": "textTool",
       "tool_config": {},
       "instruction": "Transcribe this rectangle.",
-      "next_task": "entry_date",
-      "generates_subject_type": "verify_rectangle"
-
+      "next_task": "entry_date"
     },
     "transcribe_text_row": {
       "tool": "textTool",
       "tool_config": {},
       "instruction": "Transcribe this text row.",
-      "next_task": "entry_date",
-      "generates_subject_type": "verify_text_row"
+      "next_task": "entry_date"
 
     },
 
@@ -70,6 +66,45 @@
       "tool": "textAreaTool",
       "tool_config": {},
       "instruction": "Please transcribe the remainder of the highlighted entry.",
+      "next_task": null
+    },
+
+
+    "location_name": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Enter the name of the location.",
+      "next_task": null
+    },
+    "location_coordinates": {
+      "tool": "compositeTool",
+      "tool_config": {
+        "tools": {
+          "location_lat": {
+            "tool": "textTool",
+            "tool_config": {},
+            "label": "Latitude"
+          },
+          "location_lon": {
+            "tool": "textTool",
+            "tool_config": {},
+            "label": "Longitude"
+          }
+        }
+      },
+      "instruction": "Enter the geographic coordinates.",
+      "next_task": null
+    },
+    "location_port": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Enter the name of the port.",
+      "next_task": null
+    },
+    "location_other": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Enter a brief description of the location.",
       "next_task": null
     },
 
