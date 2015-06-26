@@ -30,7 +30,7 @@ module.exports = React.createClass
     viewBox = [0, 0, 100, 100]
     <div className="carousel">
 
-      <ActionButton id="backward" text="BACK" onClick={@moveBack.bind(this, indexOfFirst)} classes={if @state.first == @props.subject_set.subjects[0] then 'disabled' else ''} />
+      <ActionButton id="backward" text="BACK" onClick={@moveBack.bind(this, indexOfFirst)} classes={@backButtonDisable()} />
 
       <ul>
         <li onClick={@shineSelected.bind(this, @findSubjectIndex(@state.first))} className={"active" if @props.subject_index == @findSubjectIndex(@state.first)}> 
@@ -66,10 +66,24 @@ module.exports = React.createClass
           </li>
         }
       </ul>
-      <ActionButton id="forward" text="FORWARD" onClick={@moveForward.bind(this, indexOfFirst)} classes={ if third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] then 'disabled' else ''} />
+      <ActionButton id="forward" text="FORWARD" onClick={@moveForward.bind(this, indexOfFirst)} classes={@forwardButtonDisable(third if third?)} />
 
     </div>
 
+  backButtonDisable: ->
+    # 1) if the subject sets list is less than two
+    if @state.first == @props.subject_set.subjects[0] || @props.subject_set.subjects.length <= 3
+      return "disabled"
+    else
+      return ""
+
+  forwardButtonDisable: (third) ->
+    console.log "T?F third == @props.subject_set.subjects[@props.subject_set.subjects.length-1]", third == @props.subject_set.subjects[@props.subject_set.subjects.length-1]
+    console.log "T?F @props.subject_set.subjects.length <= 3", @props.subject_set.subjects.length <= 3
+    if @props.subject_set.subjects.length <= 3 || third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] 
+      return "disabled" 
+    else 
+      return ""
   
   findSubjectIndex: (subject_arg)->
     for subject, index in @props.subject_set.subjects
@@ -79,12 +93,14 @@ module.exports = React.createClass
         console.log "WARN: unable to run LightBox#findSubjectIndex"
 
   moveBack: (indexOfFirst)->
-    return null if @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
+    return null if @props.subject_set.subjects.length <= 3 || @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
     @setState
       first: @props.subject_set.subjects[indexOfFirst-1]
 
   moveForward: (indexOfFirst)->
-    return null if @props.subject_set.subjects[indexOfFirst+2] == @props.subject_set.subjects[@props.subject_set.subjects.length-1]
+    console.log "T?F @props.subject_set.subjects.length <= 3", @props.subject_set.subjects.length <= 3
+    console.log "T?F @props.subject_set.subjects[indexOfFirst+2] == @props.subject_set.subjects[@props.subject_set.subjects.length-1]", @props.subject_set.subjects[indexOfFirst+2] == @props.subject_set.subjects[@props.subject_set.subjects.length-1] 
+    return null if @props.subject_set.subjects.length <= 3 || @props.subject_set.subjects[indexOfFirst+2] == @props.subject_set.subjects[@props.subject_set.subjects.length-1] 
     @setState
       first: @props.subject_set.subjects[indexOfFirst+1]
     

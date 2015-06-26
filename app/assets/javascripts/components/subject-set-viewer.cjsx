@@ -41,13 +41,14 @@ module.exports = React.createClass
 
 
   render: ->
+    console.log "WHATs UP @props", @props
     <div className="subject-set-viewer">
     <div className="light-box-area">
-      {
-        subject_index = @props.subject_index
-        onViewSubject = @props.onViewSubject
+      { if @props.subject_set.subjects.length > 1
+          subject_index = @props.subject_index
+          onViewSubject = @props.onViewSubject
+          <LightBox subject_set={@state.subject_set} subject_index={subject_index} onSubject={@specificSelection}/>
       }
-        <LightBox subject_set={@state.subject_set} subject_index={subject_index} onSubject={@specificSelection}/>
     </div>
       { if @props.subject_set.subjects.length > 1
         <div className="subject-set-nav">

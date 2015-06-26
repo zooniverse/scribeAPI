@@ -31,7 +31,7 @@ module.exports = React.createClass # rename to Classifier
 
   componentDidMount: ->
     console.log 'MOUNTED MARK COMPONENT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
-    console.log 'PROPS: ', @props
+    console.log 'mark/index PROPS: ', @props
 
   componentWillMount: ->
     completion_assessment_task = {
@@ -62,6 +62,8 @@ module.exports = React.createClass # rename to Classifier
     @beginClassification()
 
   render: ->
+    console.log "mark/index @state", @state 
+    console.log "@getCurrentSubject", @getCurrentSubject() 
     return null unless @getCurrentSubject()?
     currentTask = @props.workflow.tasks[@state.taskKey] # [currentAnnotation?.task]
     TaskComponent = @getCurrentTool() # coreTools[currentTask.tool]
