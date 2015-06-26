@@ -54,12 +54,6 @@ module.exports = React.createClass
           <LightBox subject_set={@state.subject_set} subject_index={subject_index} onSubject={@specificSelection}/>
       }
     </div>
-      { if @props.subject_set.subjects.length > 1
-        <div className="subject-set-nav">
-          <ActionButton text="Previous" onClick={@advancePrevious} classes={if @props.subject_index == 0 then 'disabled' else ''}/>
-          <ActionButton text="Next" onClick={@advanceNext} classes={if @props.subject_index == @props.subject_set.subjects.length-1 then 'disabled' else ''} />
-        </div>
-      }
       { for subject, index in @props.subject_set.subjects
         <SubjectViewer
           key={index}
