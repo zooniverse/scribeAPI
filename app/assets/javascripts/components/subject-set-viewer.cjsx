@@ -37,24 +37,23 @@ module.exports = React.createClass
 
       # @props.onViewSubject? @props.subject_set.subjects[@state.subject_index]
   specificSelection: (new_index) ->
-    @props.onViewSubject? new_index
+    # this prevents navigating away from the subject during a workflow --AMS
+    if @props.workflow.first_task == @props.task.key
+      @props.onViewSubject? new_index
+    else
+      return null
 
 
   render: ->
+    console.log "WHATs UP @props", @props
     <div className="subject-set-viewer">
     <div className="light-box-area">
-      {
-        subject_index = @props.subject_index
-        onViewSubject = @props.onViewSubject
-      }
-        <LightBox subject_set={@state.subject_set} subject_index={subject_index} onSubject={@specificSelection}/>
-    </div>
       { if @props.subject_set.subjects.length > 1
-        <div className="subject-set-nav">
-          <ActionButton text="Previous" onClick={@advancePrevious} classes={if @props.subject_index == 0 then 'disabled' else ''}/>
-          <ActionButton text="Next" onClick={@advanceNext} classes={if @props.subject_index == @props.subject_set.subjects.length-1 then 'disabled' else ''} />
-        </div>
+          subject_index = @props.subject_index
+          onViewSubject = @props.onViewSubject
+          <LightBox subject_set={@state.subject_set} subject_index={subject_index} onSubject={@specificSelection}/>
       }
+    </div>
       { for subject, index in @props.subject_set.subjects
         <SubjectViewer
           key={index}
