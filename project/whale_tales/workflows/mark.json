@@ -18,14 +18,57 @@
         "options": {
           "present": {
             "label": "Yes, sea ice present",
-            "next_task": null
+            "next_task": "sea_ice"
           },
           "mentioned": {
             "label": "No, but sea ice mentioned",
-            "next_task": null
+            "next_task": "sea_ice_mention"
           },
           "not-present": {
             "label": "No",
+            "next_task": "weather_present"
+          }
+        }
+      }
+    },
+
+    "sea_ice": {
+      "generates_subjects": true,
+      "tool":"pickOneMarkOne",
+      "instruction":"Pick a sea ice description. Draw a rectangle around the corresponding text.",
+      "tool_config": {
+        "tools": [
+          {"type": "rectangleTool", "label": "Date",                     "color": "red", "generates_subject_type": "sea_ice_date" },
+          {"type": "rectangleTool", "label": "Sea Ice Description",      "color": "red", "generates_subject_type": "sea_ice_description" },
+          {"type": "rectangleTool", "label": "Other Desciptions",        "color": "red", "generates_subject_type": "sea_ice_other_description" }
+        ]
+      },
+      "next_task": "sea_ice_present"
+    },
+
+    "sea_ice_mention": {
+      "tool": "pickOne",
+      "instruction": "Are any of the following mentions of sea ice present? If so, click on them.",
+      "tool_config": {
+        "options": {
+          "present": {
+            "label": "Ice Field",
+            "next_task": "sea_ice"
+          },
+          "mentioned": {
+            "label": "Floe",
+            "next_task": "sea_ice_mention"
+          },
+          "not-present": {
+            "label": "Drift Ice",
+            "next_task": "weather_present"
+          },
+          "not-present": {
+            "label": "Sailing Ice",
+            "next_task": "weather_present"
+          },
+          "not-present": {
+            "label": "Pack Ice",
             "next_task": "weather_present"
           }
         }

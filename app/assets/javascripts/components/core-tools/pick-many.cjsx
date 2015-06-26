@@ -28,4 +28,3 @@ module.exports = React.createClass
       @props.annotation.value = index
       @props.onChange index
       @forceUpdate() # update the radiobuttons after selection
-

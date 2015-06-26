@@ -74,6 +74,32 @@
     },
 
 
+
+
+    "sea_ice_date": {
+      "tool": "dateTool",
+      "tool_config": {},
+      "instruction": "Enter the date of the sea ice description",
+      "next_task": null
+    },
+
+    "sea_ice_description": {
+      "tool": "textAreaTool",
+      "tool_config": {},
+      "instruction": "Transcribe the description of the sea ice",
+      "next_task": null
+    },
+
+    "sea_ice_other_description": {
+      "tool": "textAreaTool",
+      "tool_config": {},
+      "instruction": "Include any additional comments regarding the sea ice.",
+      "next_task": null
+    },
+
+
+
+
     "weather_date": {
       "tool": "dateTool",
       "tool_config": {},
