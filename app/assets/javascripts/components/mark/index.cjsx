@@ -29,10 +29,6 @@ module.exports = React.createClass # rename to Classifier
     subject_set_index:            0
     subject_index:                0
 
-  componentDidMount: ->
-    console.log 'MOUNTED MARK COMPONENT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
-    console.log 'mark/index PROPS: ', @props
-
   componentWillMount: ->
     completion_assessment_task = {
         "generates_subject_type": null,
@@ -62,8 +58,6 @@ module.exports = React.createClass # rename to Classifier
     @beginClassification()
 
   render: ->
-    console.log "mark/index @state", @state 
-    console.log "@getCurrentSubject", @getCurrentSubject() 
     return null unless @getCurrentSubject()?
     currentTask = @props.workflow.tasks[@state.taskKey] # [currentAnnotation?.task]
     TaskComponent = @getCurrentTool() # coreTools[currentTask.tool]

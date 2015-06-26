@@ -8,7 +8,6 @@ module.exports =
 
   # Start a new classification:
   beginClassification: ->
-    console.log 'beginClassification()'
     classifications = @state.classifications
     classification = new Classification()
     classifications.push classification

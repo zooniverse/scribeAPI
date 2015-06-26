@@ -43,9 +43,7 @@ module.exports = React.createClass
     else
       return null
 
-
   render: ->
-    console.log "WHATs UP @props", @props
     <div className="subject-set-viewer">
     <div className="light-box-area">
       { if @props.subject_set.subjects.length > 1
