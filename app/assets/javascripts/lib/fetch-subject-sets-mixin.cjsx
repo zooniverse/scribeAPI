@@ -6,7 +6,6 @@ module.exports =
     if @props.query.subject_set_id
       @fetchSubjectSet @props.query.subject_set_id, @props.query.subject_index, @props.workflow.id
     else
-      console.log " CDM @props", @props
       @fetchSubjectSets @props.workflow.id, @props.workflow.subject_fetch_limit, @props.workflow.subject_request_scope
 
   fetchSubjectSet: (subject_set_id, subject_index, workflow_id)->
@@ -25,9 +24,6 @@ module.exports =
         # currentSubjectSet: subject_set
 
   fetchSubjectSets: (workflow_id, limit, subject_request_scope) ->
-    console.log 'fetchSubjectSets()'
-    console.log "subject_request_scope", subject_request_scope
-
     if @props.overrideFetchSubjectsUrl?
       # console.log "Fetching (fake) subject sets from #{@props.overrideFetchSubjectsUrl}"
       $.getJSON @props.overrideFetchSubjectsUrl, (subject_sets) =>
