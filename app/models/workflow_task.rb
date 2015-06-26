@@ -16,7 +16,6 @@ class WorkflowTask
   # In mark tasks, the generates_subject_type depends on the selected tool, so we need to check the classification's subToolIndex:
   def subject_type(classification=nil)
     type = generates_subject_type
-
     # If classification has subToolIndex and this task specifies a tools array, determine the tool-specific generates_subject_type
     if ! classification.nil? && ! (subToolIndex = classification.annotation["subToolIndex"]).nil?
       type = find_tool_box(subToolIndex.to_i)[:generates_subject_type]
