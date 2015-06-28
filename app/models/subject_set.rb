@@ -35,7 +35,6 @@ class SubjectSet
     self.inc("counts.#{workflow.id.to_s}.active_subjects" => -1)
   end
 
-
   # AMS: what is this for?
   def active_subjects_for_workflow(workflow)
     subject.active.for_workflow(workflow)

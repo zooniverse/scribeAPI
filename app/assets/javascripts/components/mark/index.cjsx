@@ -31,7 +31,7 @@ module.exports = React.createClass # rename to Classifier
 
   componentDidMount: ->
     console.log 'MOUNTED MARK COMPONENT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
-    console.log 'PROPS: ', @props
+    console.log 'mark/index PROPS: ', @props
 
   componentWillMount: ->
     completion_assessment_task = {
