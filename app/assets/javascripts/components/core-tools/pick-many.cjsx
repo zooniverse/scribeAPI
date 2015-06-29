@@ -98,7 +98,7 @@ module.exports = React.createClass
 
     options = for option, i in @props.task.tool_config.options
       option._key ?= Math.random()
-      isChecked = option.type in @state.annotation.responses
+      isChecked = option.value in @state.annotation.responses
 
       <label
         key={option._key}
@@ -106,7 +106,7 @@ module.exports = React.createClass
       >
         <span
           className='drawing-tool-icon'
-          style={color: option.color}>{icons[option.type]}
+          style={color: option.color}>{icons[option.value]}
         </span>{' '}
 
         <input
@@ -127,7 +127,7 @@ module.exports = React.createClass
   handleChange: (index, e) ->
     inp = @refs["inp-#{index}"]
     annotation = @state.annotation
-    annotation.toolName = @props.task.tool_config.options[index].type
+    annotation.toolName = @props.task.tool_config.options[index].value
     isChecked = annotation.responses.indexOf(annotation.toolName) >= 0
 
     # toggle checkmark

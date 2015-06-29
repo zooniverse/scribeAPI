@@ -83,11 +83,11 @@
       "instruction": "Are any of the following mentions of sea ice present? If so, click on them.",
       "tool_config": {
         "options": [
-          {"type": "ice_field",   "label": "Ice Field" },
-          {"type": "floe",        "label": "Floe" },
-          {"type": "drift_ice",   "label": "Drift Ice" },
-          {"type": "sailing_ice", "label": "Sailing Ice" },
-          {"type": "pack_ice",    "label": "Pack Ice" }
+          {"value": "ice_field",   "label": "Ice Field" },
+          {"value": "floe",        "label": "Floe" },
+          {"value": "drift_ice",   "label": "Drift Ice" },
+          {"value": "sailing_ice", "label": "Sailing Ice" },
+          {"value": "pack_ice",    "label": "Pack Ice" }
         ]
       }
     },
