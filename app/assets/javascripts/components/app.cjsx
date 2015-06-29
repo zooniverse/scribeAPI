@@ -74,7 +74,7 @@ App = React.createClass
                 handler = eval workflow.name.charAt(0).toUpperCase() + workflow.name.slice(1)
                 <Route
                   key={key}
-                  path={'/' + workflow.name + '/:subject_set_id'}
+                  path={'/' + workflow.name + '/:subject_set_id' + '/:subject_id'}
                   handler={handler}
                   name={workflow.name + '_specific'}
                   workflow={workflow} />
@@ -83,7 +83,7 @@ App = React.createClass
                 handler = eval workflow.name.charAt(0).toUpperCase() + workflow.name.slice(1)
                 <Route
                   key={key}
-                  path={'/' + workflow.name + '/:subject_id'}
+                  path={'/' + workflow.name + '/:subject_id' }
                   handler={handler}
                   name={workflow.name + '_specific'}
                   workflow={workflow} />

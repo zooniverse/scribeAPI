@@ -11,13 +11,13 @@ class SubjectsController < ApplicationController
 
     # TO DO: REFACTOR THIS UGLY CODE. -STI
     if parent_subject_id
-      respond_with Subject.where(workflow_id: workflow_id, parent_subject_id: parent_subject_id)
+      respond_with Subject.active.where(workflow_id: workflow_id, parent_subject_id: parent_subject_id)
     else
       # Randomizer#random seems to want query criteria passed in under :selector key:
     	if random
-        respond_with Subject.where(workflow_id: workflow_id).random(limit: limit)
+        respond_with Subject.active.where(workflow_id: workflow_id).random(limit: limit)
       else
-        respond_with Subject.where(workflow_id: workflow_id).limit(limit)
+        respond_with Subject.active.where(workflow_id: workflow_id).limit(limit)
       end
     end
   end

@@ -9,19 +9,17 @@ LoadingIndicator              = require './loading-indicator'
 SubjectMetadata               = require './subject-metadata'
 ActionButton                  = require './action-button'
 markingTools                  = require './mark/tools'
+LightBox                       = require './light-box'
+
 
 module.exports = React.createClass
   displayName: 'SubjectSetViewer'
   resizing: false
 
-  componentDidMount: ->
-    @setState
-      subject_set_index: @props.subject_set_index
-
   getInitialState: ->
     subject_set: @props.subject_set
     tool: @props.tool
-    # subject_index: @props.subject_index ? 0
+    # subject_index: @props.subject_index ? 0pmark
 
   advancePrevious: ->
     @advance -1
@@ -38,19 +36,22 @@ module.exports = React.createClass
     @props.onViewSubject? new_index # @props.subject_index
 
       # @props.onViewSubject? @props.subject_set.subjects[@state.subject_index]
-
+  specificSelection: (new_index) ->
+    # this prevents navigating away from the subject during a workflow --AMS
+    if @props.workflow.first_task == @props.task.key
+      @props.onViewSubject? new_index
+    else
+      return null
 
   render: ->
-    # console.log " SSV Render @props", @props
-    # console.log " SSV Render @state", @state
-    # console.log "...Current Classification: ", @props.annotation
     <div className="subject-set-viewer">
+    <div className="light-box-area">
       { if @props.subject_set.subjects.length > 1
-        <div className="subject-set-nav">
-          <ActionButton text="Previous" onClick={@advancePrevious} classes={if @props.subject_index == 0 then 'disabled' else ''}/>
-          <ActionButton text="Next" onClick={@advanceNext} classes={if @props.subject_index == @props.subject_set.subjects.length-1 then 'disabled' else ''} />
-        </div>
+          subject_index = @props.subject_index
+          onViewSubject = @props.onViewSubject
+          <LightBox subject_set={@state.subject_set} subject_index={subject_index} onSubject={@specificSelection}/>
       }
+    </div>
       { for subject, index in @props.subject_set.subjects
         <SubjectViewer
           key={index}

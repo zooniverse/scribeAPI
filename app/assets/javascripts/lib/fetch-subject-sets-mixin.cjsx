@@ -1,29 +1,29 @@
-API            = require './api'
+API = require './api'
 
 module.exports =
   componentDidMount: ->
     # console.log "Fetch Subjects Mixin: ", @
-    if @props.params.subject_set_id
-      @fetchSubjectSet @props.params.subject_set_id,@props.workflow.id
+    if @props.query.subject_set_id
+      @fetchSubjectSet @props.query.subject_set_id, @props.query.subject_index, @props.workflow.id
     else
-      @fetchSubjectSets @props.workflow.id, @props.workflow.subject_fetch_limit
+      @fetchSubjectSets @props.workflow.id, @props.workflow.subject_fetch_limit, @props.workflow.subject_request_scope
 
-  fetchSubjectSet: (subject_set_id, workflow_id)->
-    request = API.type("subject_sets").get(subject_set_id, workflow_id: workflow_id)
+  fetchSubjectSet: (subject_set_id, subject_index, workflow_id)->
+    console.log 'fetchSubjectSet()'
+    request = API.type("subject_sets").get(subject_set_id: subject_set_id, workflow_id: workflow_id)
 
     @setState
       subjectSet: []
       # currentSubjectSet: null
 
-    request.then (subject_set)=>
+    request.then (subject_set) =>
       @setState
-        subjectSets: [subject_set]
+        subjectSets: subject_set
         subject_set_index: 0
-        subject_index: 0
+        subject_index: parseInt(subject_index) || 0
         # currentSubjectSet: subject_set
 
-  fetchSubjectSets: (workflow_id, limit) ->
-
+  fetchSubjectSets: (workflow_id, limit, subject_request_scope) ->
     if @props.overrideFetchSubjectsUrl?
       # console.log "Fetching (fake) subject sets from #{@props.overrideFetchSubjectsUrl}"
       $.getJSON @props.overrideFetchSubjectsUrl, (subject_sets) =>
@@ -33,6 +33,7 @@ module.exports =
 
     else
       request = API.type('subject_sets').get
+        subject_request_scope: subject_request_scope
         workflow_id: workflow_id
         limit: limit
         random: true
@@ -52,9 +53,6 @@ module.exports =
           # currentSubject: subject_sets[0].subjects[0]
         if @fetchSubjectsCallback?
           @fetchSubjectsCallback()
-
-
-
 
     # WHY DOES THIS BREAK?
     # request.error (xhr, status, err) =>

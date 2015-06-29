@@ -4,7 +4,8 @@ class Subject
   include Randomizer
 
 
-  scope :active_root, -> { where(type: 'root', status: 'active') }
+  scope :active_root, -> { where(type: 'root', status: 'active').asc(:order) }
+  scope :active, -> { where(status: 'active').asc(:order)  }
 
   # This is a hash with one entry per deriv; `standard', 'thumbnail', etc
   field :location,                    type: Hash 
@@ -64,16 +65,19 @@ class Subject
   # if pvr is equal or greater than retire_limit, set self.status == retired.
   def retire_by_vote!
     assesment_classifications = classifications.where(task_key: "completion_assessment_task").to_a
-    
-    if assesment_classifications.length > 1
+    if assesment_classifications.length > 2
       percentage_for_retire = retire_count/assesment_classifications.length.to_f   
       if percentage_for_retire >= workflow.retire_limit
-        self.status = "retired" 
-        subject_set.subject_completed_on_workflow(workflow) if ! workflow.nil?
-        save
+        self.retire!
       end
     end
 
+  end
+
+  def retire!
+    self.status = "retired" 
+    subject_set.subject_completed_on_workflow(workflow) if ! workflow.nil?
+    save
   end
 
   def activate!

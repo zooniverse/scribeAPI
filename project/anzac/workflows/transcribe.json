@@ -1,8 +1,8 @@
-{
+    {
     "name": "transcribe",
     "label": "Transcribe Workflow",
     "retire_limit": 3,
-
+    "subject_request_scope": "active",
     "generates_subjects": true,
     "generates_subjects_for": "verify",
     "generates_subjects_after": 3,
@@ -13,14 +13,14 @@
         "att_transcribe_no": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the number",
-            "generates_subject_type": "transcdribed_number"
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "transcribed_number"
 
         },
         "att_textRowTool_name": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the name",
+            "instruction": "Enter the filled in text",
             "generates_subject_type": "transcribed_name"
         },
         "att_textRowTool_regiment": {
@@ -30,10 +30,25 @@
             "generates_subject_type": "transcribed_regiment"
         },
         "att_textRowTool_question": {
-            "tool": "textTool",
-            "tool_config": {},
-            "instruction": "Enter the question",
-            "generates_subject_type": "transcribed_question"
+          "tool": "compositeTool",
+          "tool_config": {
+
+            "tools": {
+              "att_valuation_question": {
+                "tool": "textTool",
+                "tool_config": {},
+                "label": "Tag Question"
+              },
+              
+              "att_valuation_amount": {
+                "tool": "textTool",
+                "tool_config": {},
+                "label": "Enter the filled in text"
+              }
+            },
+            "generates_subject_type": "att_transcribed_question_valuation"
+          },
+          "instruction": "Find the tag that best fits the question, then transcribe the answer."
         }
     }
 }

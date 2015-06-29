@@ -2,29 +2,105 @@
   "name":"mark",
   "label":"Mark Workflow",
   "subject_fetch_limit":     10,
-
-  "generates_subjects":  true,
+  "subject_request_scope": "active_root",
+  "generates_subjects": true,
   "generates_subjects_after": 1,
-  "generates_subjects_for":  "transcribe",
+  "generates_subjects_for": "transcribe",
 
-  "first_task":"records_present",
+  "first_task":"sea_ice_present",
 
   "tasks":{
 
-    "records_present":{
+    "sea_ice_present": {
+      "tool": "pickOne",
+      "instruction": "Is there any sea ice present?",
+      "tool_config": {
+        "options": {
+          "present": {
+            "label": "Yes, sea ice present",
+            "next_task": null
+          },
+          "mentioned": {
+            "label": "No, but sea ice mentioned",
+            "next_task": null
+          },
+          "not-present": {
+            "label": "No",
+            "next_task": "weather_present"
+          }
+        }
+      }
+    },
+
+    "weather_present": {
+      "tool": "pickOne",
+      "instruction": "Are there any descriptions of the weather?",
+      "tool_config": {
+        "options": {
+          "present": {
+            "label": "Yes",
+            "next_task": "weather"
+          },
+          "mentioned": {
+            "label": "No",
+            "next_task": null
+          }
+        }
+      }
+    },
+
+    "weather": {
+      "generates_subjects": true,
+      "tool":"pickOneMarkOne",
+      "instruction":"Pick a weather description. Draw a rectangle around the corresponding text.",
+      "tool_config": {
+        "tools": [
+          {"type": "rectangleTool", "label": "Date",                     "color": "red", "generates_subject_type": "weather_date" },
+          {"type": "rectangleTool", "label": "Wind Force/Direction",     "color": "red", "generates_subject_type": "weather_wind" },
+          {"type": "rectangleTool", "label": "Sky/Cloud Description",    "color": "red", "generates_subject_type": "weather_sky" },
+          {"type": "rectangleTool", "label": "Precipitation",            "color": "red", "generates_subject_type": "weather_precipitation" },
+          {"type": "rectangleTool", "label": "Sea State",                "color": "red", "generates_subject_type": "weather_sea" },
+          {"type": "rectangleTool", "label": "Temperature",              "color": "red", "generates_subject_type": "weather_temperature" },
+          {"type": "rectangleTool", "label": "Barometric Pressure",      "color": "red", "generates_subject_type": "weather_pressure" },
+          {"type": "rectangleTool", "label": "Other Weather Desciption", "color": "red", "generates_subject_type": "weather_other_description" }
+        ]
+      },
+      "next_task": "weather_present"
+    },
+
+    "location": {
+      "generates_subjects": true,
+      "tool":"pickOneMarkOne",
+      "instruction":"Draw a rectangle around the text that mentions the ship\'s location",
+      "tool_config": {
+        "tools": [
+          {"type": "rectangleTool", "label": "Location",            "color": "red", "generates_subject_type": "item_location" },
+          {"type": "rectangleTool", "label": "Weather Information", "color": "red", "generates_subject_type": "item_weather" },
+          {"type": "rectangleTool", "label": "Cargo",               "color": "red", "generates_subject_type": "item_cargo" },
+          {"type": "rectangleTool", "label": "Inventory",           "color": "red", "generates_subject_type": "item_inventory" },
+          {"type": "rectangleTool", "label": "Illustration/Poetry", "color": "red", "generates_subject_type": "item_illustration" },
+          {"type": "rectangleTool", "label": "Other",               "color": "red", "generates_subject_type": "item_other" }
+        ]
+      },
+      "next_task": "records_present"
+    },
+
+
+
+    "records_present": {
       "tool":"pickOne",
       "instruction":"Are there any records to transcribe in this document?",
       "tool_config": {
-        "options":{
-          "yes":{
+        "options": {
+          "yes": {
             "label":"Yes",
             "next_task":"type_of_record"
           },
-          "no":{
+          "no": {
             "label":"No",
             "next_task": null
           },
-          "debug":{
+          "debug": {
             "label":"DEBUG",
             "next_task": "mark_records_for_transcription"
           }
@@ -32,16 +108,16 @@
       }
     },
 
-    "type_of_record":{
+    "type_of_record": {
       "tool":"pickOne",
       "instruction":"What type of record are you transcribing?",
       "tool_config": {
-        "options":{
-          "event":{
+        "options": {
+          "event": {
             "label":"Event",
             "next_task":"mark_event_for_transcription"
           },
-          "item":{
+          "item": {
             "label":"Item",
             "next_task": "mark_item_for_transcription"
           }
@@ -49,7 +125,7 @@
       }
     },
 
-    "mark_item_for_transcription":{
+    "mark_item_for_transcription": {
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
       "instruction":"Pick an item and mark it on the document.",
@@ -66,7 +142,7 @@
       "next_task": "records_present"
     },
 
-    "mark_event_for_transcription":{
+    "mark_event_for_transcription": {
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
       "instruction":"Pick an event and mark it on the document.",
@@ -82,7 +158,7 @@
       "next_task": "records_present"
     },
 
-    "mark_records_for_transcription":{
+    "mark_records_for_transcription": {
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
       "instruction":"Pick a tool and mark each record:",

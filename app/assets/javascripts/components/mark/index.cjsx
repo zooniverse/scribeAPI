@@ -6,6 +6,7 @@ BaseWorkflowMethods     = require 'lib/workflow-methods-mixin'
 JSONAPIClient           = require 'json-api-client' # use to manage data?
 ForumSubjectWidget      = require '../forum-subject-widget'
 
+
 API                     = require '../../lib/api'
 
 module.exports = React.createClass # rename to Classifier
@@ -28,6 +29,10 @@ module.exports = React.createClass # rename to Classifier
     subject_set_index:            0
     subject_index:                0
 
+  componentDidMount: ->
+    console.log 'MOUNTED MARK COMPONENT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
+    console.log 'mark/index PROPS: ', @props
+
   componentWillMount: ->
     completion_assessment_task = {
         "generates_subject_type": null,
@@ -38,11 +43,11 @@ module.exports = React.createClass # rename to Classifier
         "tool_config": {
             "options": {
                 "complete_subject": {
-                    "label": "no",
+                    "label": "No",
                     "next_task": null
                 },
                 "incomplete_subject": {
-                    "label": "yes",
+                    "label": "Yes",
                     "next_task": null
                 }
             }
@@ -58,16 +63,18 @@ module.exports = React.createClass # rename to Classifier
 
   render: ->
     return null unless @getCurrentSubject()?
-
     currentTask = @props.workflow.tasks[@state.taskKey] # [currentAnnotation?.task]
     TaskComponent = @getCurrentTool() # coreTools[currentTask.tool]
     onFirstAnnotation = @state.taskKey == @props.workflow.first_task
+    
 
     if currentTask.tool is 'pick_one'
       currentAnswer = currentTask.tool_config.options?[currentAnnotation.value]
       waitingForAnswer = not currentAnswer
 
     <div className="classifier">
+
+      
       <div className="subject-area">
         { if @state.noMoreSubjectSets
             style = marginTop: "50px"
@@ -98,7 +105,7 @@ module.exports = React.createClass # rename to Classifier
             { if @getNextTask()?
                 <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@advanceToNextTask}>Next</button>
               else
-                if @state.taskKey == "completion_assessment_task" 
+                if @state.taskKey == "completion_assessment_task"
                   <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next Page</button>
                 else
                   <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Done</button>
@@ -128,10 +135,10 @@ module.exports = React.createClass # rename to Classifier
       return
 
     console.log "Mark#index Advancing to subject_set_index #{new_subject_set_index} (of #{@state.subjectSets.length}), subject_index #{new_subject_index} (of #{@state.subjectSets[new_subject_set_index].subjects.length})"
-    
-    @setState 
-      subject_set_index: new_subject_set_index 
-      subject_index: new_subject_index 
+
+    @setState
+      subject_set_index: new_subject_set_index
+      subject_index: new_subject_index
       taskKey: @props.workflow.first_task, =>
         # console.log "After @state", @state
 
@@ -189,7 +196,7 @@ module.exports = React.createClass # rename to Classifier
     @commitClassification()
     @beginClassification()
 
-    # TODO: Should maybe make this workflow-configurable? 
+    # TODO: Should maybe make this workflow-configurable?
     show_subject_assessment = true
     if show_subject_assessment
       @setState

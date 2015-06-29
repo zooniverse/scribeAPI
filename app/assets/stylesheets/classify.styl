@@ -3,6 +3,8 @@
   flex-wrap: wrap
   justify-content: center
   .subject-area
+    float: left
+    width: 75%
     align-items: center
     justify-content: center
     display: flex
@@ -54,7 +56,10 @@
       background: #f60
 
   .task-area
+    float: right
+    width: 70%
     flex: 1 0 15em
+    margin-right: 2em
     margin-bottom: 1em
     max-width: 35em
 
@@ -82,7 +87,8 @@
     margin: 0.5em 0
     text-align: left
 
-    input,
+    input
+      visibility: hidden
     .drawing-tool-icon
       flex-shrink: 0
       line-height: 1

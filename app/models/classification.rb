@@ -7,7 +7,7 @@ class Classification
   field :tool_name
 
   #TODO: don't think this is being used? AMS
-  field :triggered_followup_subject_ids, type: Array
+  field :triggered_followup_subject_ids,  type: Array
 
   field :started_at
   field :finished_at
@@ -19,7 +19,7 @@ class Classification
   belongs_to    :child_subject, :class_name => "Subject"
   has_many      :triggered_followup_subjects, class_name: "Subject"
 
-  after_create  :increment_subject_classification_count
+  after_create  :increment_subject_classification_count, :check_for_retirement_by_classification_count
   after_create  :generate_new_subjects
   after_create  :generate_terms
 
@@ -33,13 +33,16 @@ class Classification
     end
   end
 
-  def check_for_retirement
-    # PB: Currently this is causing the retire_count to be incremented every time a classification is saved
-    # I think we should check that the user actually told us that there's nothing more to mark before calling subject.retire_by_vote!
-
-    # AMS: Definitely.
-
-    # subject.retire_by_vote! if subject.type == "root"
+    # AMS: not sure if workflow.generates_subjects_after is the best measure.
+    # =>   In addition, we only want to call this for certain subjects (not collect unique.)
+    # =>   right now, this mainly applies to workflow.generates_subjects_method == "collect-unique".
+  def check_for_retirement_by_classification_count
+    workflow = subject.workflow
+    if workflow.generates_subjects_method == "collect-unique"
+      if subject.classification_count >= workflow.generates_subjects_after
+        subject.retire!
+      end
+    end
   end  
 
   def generate_terms
@@ -76,7 +79,6 @@ class Classification
 
   def increment_subject_classification_count
     subject = self.subject
-    #TODO: sometime the annonation field contain the previous annotation for completion_assessment_task -- AMS
     #increment subject.retire_count if the completion_assement_task returns annoation 'complete_subject'
     if self.task_key == "completion_assessment_task" && self.annotation["value"] == "complete_subject"
       subject.increment_retire_count_by_one 
