@@ -21,7 +21,7 @@ module.exports =
 
   # Push current classification to server:
   commitClassification: ->
-    console.log 'COMMITTING CLASSIFICATION...'
+    console.log 'COMMITTING CLASSIFICATION... current classification: ', @getCurrentClassification()
     classification = @getCurrentClassification()
     # checking for empty classification.annotation, we don't want to commit those classifications -- AMS
     console.log "Object.keys(myObject).length == 0", Object.keys(classification.annotation).length == 0
