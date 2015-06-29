@@ -82,7 +82,7 @@
       "tool": "pickMany",
       "instruction": "Are any of the following mentions of sea ice present? If so, click on them.",
       "tool_config": {
-        "tools": [
+        "options": [
           {"type": "ice_field",   "label": "Ice Field" },
           {"type": "floe",        "label": "Floe" },
           {"type": "drift_ice",   "label": "Drift Ice" },

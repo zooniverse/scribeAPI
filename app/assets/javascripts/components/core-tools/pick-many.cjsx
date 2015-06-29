@@ -96,17 +96,17 @@ module.exports = React.createClass
 
   render: ->
 
-    tools = for tool, i in @props.task.tool_config.tools
-      tool._key ?= Math.random()
-      isChecked = tool.type in @state.annotation.responses
+    options = for option, i in @props.task.tool_config.options
+      option._key ?= Math.random()
+      isChecked = option.type in @state.annotation.responses
 
       <label
-        key={tool._key}
+        key={option._key}
         className="minor-button #{if isChecked then 'active' else ''}"
       >
         <span
           className='drawing-tool-icon'
-          style={color: tool.color}>{icons[tool.type]}
+          style={color: option.color}>{icons[option.type]}
         </span>{' '}
 
         <input
@@ -117,17 +117,17 @@ module.exports = React.createClass
           onChange={ @handleChange.bind this, i }
         />
         <span>
-          {tool.label}
+          {option.label}
         </span>
 
       </label>
 
-    <GenericTask question={@props.task.instruction} help={@props.task.help} answers={tools} />
+    <GenericTask question={@props.task.instruction} help={@props.task.help} answers={options} />
 
   handleChange: (index, e) ->
     inp = @refs["inp-#{index}"]
     annotation = @state.annotation
-    annotation.toolName = @props.task.tool_config.tools[index].type
+    annotation.toolName = @props.task.tool_config.options[index].type
     isChecked = annotation.responses.indexOf(annotation.toolName) >= 0
 
     # toggle checkmark
