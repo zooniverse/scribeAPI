@@ -125,16 +125,18 @@ module.exports = React.createClass
     <GenericTask question={@props.task.instruction} help={@props.task.help} answers={options} />
 
   handleChange: (index, e) ->
+    console.log 'handleChange(), INDEX = ', index
+
     inp = @refs["inp-#{index}"]
     annotation = @state.annotation
-    annotation.toolName = @props.task.tool_config.options[index].value
-    isChecked = annotation.responses.indexOf(annotation.toolName) >= 0
+    value = @props.task.tool_config.options[index].value
+    isChecked = annotation.responses.indexOf(value) >= 0
 
     # toggle checkmark
     if isChecked
-      annotation.responses.splice(annotation.responses.indexOf(annotation.toolName), 1) # remove entry
+      annotation.responses.splice(annotation.responses.indexOf(value), 1) # remove entry
     else
-      annotation.responses.push annotation.toolName
+      annotation.responses.push value
 
     @setState
       annotation: annotation, () =>

@@ -103,6 +103,7 @@ CompositeTool = React.createClass
         @commitAnnotation()
 
   commitAnnotation: ->
+    console.log 'commitAnnotation()'
     @props.onComplete @state.annotation
 
   render: ->
