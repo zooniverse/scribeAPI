@@ -97,14 +97,8 @@
       "instruction": "Are there any descriptions of the weather?",
       "tool_config": {
         "options": {
-          "present": {
-            "label": "Yes",
-            "next_task": "weather"
-          },
-          "mentioned": {
-            "label": "No",
-            "next_task": "optional_entries"
-          }
+          "present": { "label": "Yes",  "next_task": "weather" },
+          "mentioned": { "label": "No", "next_task": "optional_entries"}
         }
       }
     },

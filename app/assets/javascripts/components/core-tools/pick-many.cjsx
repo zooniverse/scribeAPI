@@ -87,18 +87,16 @@ module.exports = React.createClass
 
   getDefaultProps: ->
     task: null
-    annotation:
-      responses: []
     onChange: NOOP
 
   getInitialState: ->
-    annotation: { responses: [] }#@props.annotation ? {}
+    annotation: [] #@props.annotation ? {}
 
   render: ->
 
     options = for option, i in @props.task.tool_config.options
       option._key ?= Math.random()
-      isChecked = option.value in @state.annotation.responses
+      isChecked = option.value in @state.annotation
 
       <label
         key={option._key}
@@ -125,19 +123,18 @@ module.exports = React.createClass
     <GenericTask question={@props.task.instruction} help={@props.task.help} answers={options} />
 
   handleChange: (index, e) ->
-    console.log 'handleChange(), INDEX = ', index
 
     inp = @refs["inp-#{index}"]
     annotation = @state.annotation
     value = @props.task.tool_config.options[index].value
-    isChecked = annotation.responses.indexOf(value) >= 0
+    isChecked = annotation.indexOf(value) >= 0
 
     # toggle checkmark
     if isChecked
-      annotation.responses.splice(annotation.responses.indexOf(value), 1) # remove entry
+      annotation.splice(annotation.indexOf(value), 1) # remove entry
     else
-      annotation.responses.push value
+      annotation.push value
 
     @setState
       annotation: annotation, () =>
-        @props.onChange? @state.annotation
+        @props.onChange? annotation
