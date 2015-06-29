@@ -171,7 +171,6 @@ module.exports = React.createClass # rename to Classifier
           @forceUpdate()
           console.log "handleDataFromTool(), DATA = ", d
 
-
   destroyCurrentAnnotation: ->
     # TODO: implement mechanism for going backwards to previous classification, potentially deleting later classifications from stack:
     console.log "WARN: destroyCurrentAnnotation not implemented"
@@ -191,7 +190,6 @@ module.exports = React.createClass # rename to Classifier
     console.log "before commit of completeSubjectSet @state", @state
     @commitClassification()
     @beginClassification()
-
     @getNextSubject()
 
 window.React = React

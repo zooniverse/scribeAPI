@@ -79,31 +79,16 @@
     },
 
     "sea_ice_mention": {
-      "tool": "pickOne",
+      "tool": "pickMany",
       "instruction": "Are any of the following mentions of sea ice present? If so, click on them.",
       "tool_config": {
-        "options": {
-          "present": {
-            "label": "Ice Field",
-            "next_task": "sea_ice"
-          },
-          "mentioned": {
-            "label": "Floe",
-            "next_task": "sea_ice_mention"
-          },
-          "not-present": {
-            "label": "Drift Ice",
-            "next_task": "weather_present"
-          },
-          "not-present": {
-            "label": "Sailing Ice",
-            "next_task": "weather_present"
-          },
-          "not-present": {
-            "label": "Pack Ice",
-            "next_task": "weather_present"
-          }
-        }
+        "tools": [
+          {"type": "ice_field",   "label": "Ice Field" },
+          {"type": "floe",        "label": "Floe" },
+          {"type": "drift_ice",   "label": "Drift Ice" },
+          {"type": "sailing_ice", "label": "Sailing Ice" },
+          {"type": "pack_ice",    "label": "Pack Ice" }
+        ]
       }
     },
 
