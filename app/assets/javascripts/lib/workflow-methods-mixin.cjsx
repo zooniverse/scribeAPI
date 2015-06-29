@@ -21,6 +21,7 @@ module.exports =
 
   # Push current classification to server:
   commitClassification: ->
+    console.log 'COMMITTING CLASSIFICATION...'
     classification = @getCurrentClassification()
     # checking for empty classification.annotation, we don't want to commit those classifications -- AMS
     console.log "Object.keys(myObject).length == 0", Object.keys(classification.annotation).length == 0
@@ -31,7 +32,7 @@ module.exports =
     classification.workflow_id = @state.workflow.id
     classification.task_key = @state.taskKey
 
-    # Commit classification to backend 
+    # Commit classification to backend
     classification.commit (classification) =>
       # Did this generate a child_subject? Update local copy:
       if classification.child_subject

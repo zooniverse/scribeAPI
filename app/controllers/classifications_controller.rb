@@ -8,16 +8,16 @@ class ClassificationsController < ApplicationController
   #   respond_with  Classification.find_by( _id: params[:subject_id] )
   # end
 
-
   def create
-
     workflow_id      = BSON::ObjectId.from_string params["classifications"]["workflow_id"]
-    task_key         = params["classifications"]["task_key"]    
+    task_key         = params["classifications"]["task_key"]
+
     annotation       = params["classifications"]["annotation"]
     started_at       = params["classifications"]["metadata"]["started_at"]
     finished_at      = params["classifications"]["metadata"]["finished_at"]
     subject_id       = params["classifications"]["subject_id"]
     user_agent       = request.headers["HTTP_USER_AGENT"]
+
     @result = Classification.create(
       workflow_id: workflow_id,
       subject_id: subject_id,
@@ -29,7 +29,7 @@ class ClassificationsController < ApplicationController
       task_key: task_key # ,
     )
 
-    respond_with @result  
+    respond_with @result
   end
 
   def terms

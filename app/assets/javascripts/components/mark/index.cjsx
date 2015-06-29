@@ -66,7 +66,7 @@ module.exports = React.createClass # rename to Classifier
     currentTask = @props.workflow.tasks[@state.taskKey] # [currentAnnotation?.task]
     TaskComponent = @getCurrentTool() # coreTools[currentTask.tool]
     onFirstAnnotation = @state.taskKey == @props.workflow.first_task
-    
+
 
     if currentTask.tool is 'pick_one'
       currentAnswer = currentTask.tool_config.options?[currentAnnotation.value]
@@ -74,7 +74,7 @@ module.exports = React.createClass # rename to Classifier
 
     <div className="classifier">
 
-      
+
       <div className="subject-area">
         { if @state.noMoreSubjectSets
             style = marginTop: "50px"
@@ -171,7 +171,6 @@ module.exports = React.createClass # rename to Classifier
           @forceUpdate()
           console.log "handleDataFromTool(), DATA = ", d
 
-
   destroyCurrentAnnotation: ->
     # TODO: implement mechanism for going backwards to previous classification, potentially deleting later classifications from stack:
     console.log "WARN: destroyCurrentAnnotation not implemented"
@@ -191,7 +190,6 @@ module.exports = React.createClass # rename to Classifier
     console.log "before commit of completeSubjectSet @state", @state
     @commitClassification()
     @beginClassification()
-
     @getNextSubject()
 
 window.React = React
