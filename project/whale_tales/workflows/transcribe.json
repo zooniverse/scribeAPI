@@ -69,7 +69,6 @@
       "next_task": null
     },
 
-
     "location_name": {
       "tool": "textTool",
       "tool_config": {},
@@ -141,52 +140,139 @@
       "instruction": "What is the date of this entry?",
       "next_task": null
     },
+
     "weather_wind": {
-      "tool": "textTool",
-      "tool_config": {},
+      "tool": "compositeTool",
+      "tool_config": {
+        "tools": {
+          "weather_date": {
+            "tool": "textTool",
+            "tool_config": {},
+            "label": "Wind direction/force"
+          },
+          "weather_sky": {
+            "tool": "textTool",
+            "tool_config": {},
+            "label": "Other description"
+          }
+        }
+      },
+      "instruction": "Enter the wind force/direction.",
+      "next_task": "weather_wind2"
+    },
+
+    "weather_wind2": {
+      "tool": "compositeTool",
+      "tool_config": {
+        "tools": {
+          "weather_date2": {
+            "tool": "textTool",
+            "tool_config": {},
+            "label": "Wind direction/force"
+          },
+          "weather_sky2": {
+            "tool": "textTool",
+            "tool_config": {},
+            "label": "Other description"
+          }
+        }
+      },
       "instruction": "Enter the wind force/direction.",
       "next_task": null
     },
+
+
     "weather_sky": {
       "tool": "textTool",
       "tool_config": {},
       "instruction": "Enter the sky/cloud description.",
       "next_task": null
     },
+
     "weather_precipitation": {
-      "tool": "textTool",
+      "tool": "dateTool",
       "tool_config": {},
       "instruction": "Enter the precipitation description.",
       "next_task": null
     },
+
     "weather_sea": {
-      "tool": "textTool",
+      "tool": "textAreaTool",
       "tool_config": {},
       "instruction": "Enter the description of the sea state.",
       "next_task": null
     },
+
     "weather_temperature": {
       "tool": "textTool",
       "tool_config": {},
       "instruction": "Enter the temperature.",
       "next_task": null
     },
+
     "weather_pressure": {
       "tool": "textTool",
       "tool_config": {},
       "instruction": "Enter the barometric pressure.",
       "next_task": null
     },
+
     "weather_other_description": {
-      "tool": "textTool",
+      "tool": "textAreaTool",
       "tool_config": {},
       "instruction": "Enter the weather description as best you can.",
       "next_task": null
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    "transcribe_rectangle": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Transcribe this rectangle.",
+      "next_task": "entry_date"
+    },
+    "transcribe_text_row": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Transcribe this text row.",
+      "next_task": "entry_date"
+    },
+    "entry_date": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "What is the entry date?",
+      "next_task": "page_number"
+    },
+    "page_number": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "What is the page number?",
+      "next_task": "location"
+    },
+    "location": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "What is the location?",
+      "next_task": "entry_text"
+    },
+    "entry_text": {
+      "tool": "textAreaTool",
+      "tool_config": {},
+      "instruction": "Please transcribe the remainder of the highlighted entry.",
+      "next_task": null
     }
-
-
-
-
 
 
 

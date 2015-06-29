@@ -24,9 +24,7 @@ CompositeTool = React.createClass
       xClick: e.pageX - $('.transcribe-tool').offset().left
       yClick: e.pageY - $('.transcribe-tool').offset().top
 
-
   handleInitDrag: (e, delta) ->
-
     return if @state.preventDrag # not too happy about this one
 
     dx = e.pageX - @state.xClick - window.scrollX
@@ -38,8 +36,6 @@ CompositeTool = React.createClass
       dragged: true
 
   getInitialState: ->
-    console.log 'TEXT-TOOL::getInitialState(), props = ', @props
-
     # compute component location
     {x,y} = @getPosition @props.subject.data
 
@@ -90,7 +86,9 @@ CompositeTool = React.createClass
         # dy: (@props.subject.location.spec.y + @props.subject.location.spec.height) * @state.viewerSize.scale.vertical
       # console.log "TextTool#updatePosition setting state: ", @state
 
+  # this doesn't do anything?
   handleFieldComplete: (key, ann) ->
+    console.log 'COMPOSITE-TOOL::handleFieldComplete()'
     inp = @refs[key]
 
     keys = (key for key, t in @props.task.tool_config.tools)
@@ -102,12 +100,15 @@ CompositeTool = React.createClass
       @setState annotation: ann, () =>
         @commitAnnotation()
 
+  handleChange: (annotation) ->
+    console.log 'COMPOSITE-TOOL::handleChange(), annotation = ', annotation
+    @setState annotation: annotation
+
   commitAnnotation: ->
-    console.log 'commitAnnotation()'
     @props.onComplete @state.annotation
 
   render: ->
-
+    console.log 'COMPOSITE-TOOL::render(), @state.annotation = ', @state.annotation
     # If user has set a custom position, position based on that:
     style =
       left: "#{@state.dx*@props.scale.horizontal}px"
@@ -118,7 +119,6 @@ CompositeTool = React.createClass
       onStart = {@handleInitStart}
       onDrag  = {@handleInitDrag}
       onEnd   = {@handleInitRelease}
-      ref     = "inputWrapper0"
       x       = {@state.dx*@props.scale.horizontal}
       y       = {@state.dy*@props.scale.vertical}
     >
@@ -128,10 +128,14 @@ CompositeTool = React.createClass
           <div className="input-field active">
             <label>{@props.task.instruction}</label>
             { for annotation_key, tool_config of @props.task.tool_config.tools
+
+              # console.log 'ANNOTATION_KEY: ', annotation_key
+              # console.log 'RENDERING TOOL: ', tool_config.tool
+
               # path = "../#{tool_config.tool.replace(/_/, '-')}"
               ToolComponent = @props.transcribeTools[tool_config.tool]
-
               focus = annotation_key == @state.active_field_key
+
               <ToolComponent
                 task={@props.task}
                 subject={@props.subject}
@@ -139,10 +143,11 @@ CompositeTool = React.createClass
                 standalone={false}
                 viewerSize={@props.viewerSize}
                 onComplete={@handleFieldComplete.bind @, annotation_key}
+                onChange={@props.onChange}
+                handleChange={@handleChange}
                 label={@props.task.tool_config.tools[annotation_key].label ? ''}
                 focus={focus}
                 scale={@props.scale}
-
                 key={annotation_key}
                 ref={annotation_key}
                 annotation={@props.annotation[annotation_key]}

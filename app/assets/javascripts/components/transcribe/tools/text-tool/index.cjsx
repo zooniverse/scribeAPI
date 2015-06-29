@@ -33,12 +33,9 @@ TextTool = React.createClass
   getInitialState: ->
     # compute component location
     {x,y} = @getPosition @props.subject.data
-
     dx: x
     dy: y
     viewerSize: @props.viewerSize
-    annotation:
-      value: ''
 
   getPosition: (data) ->
     switch data.toolName
@@ -58,29 +55,28 @@ TextTool = React.createClass
     task: null
     subject: null
     standalone: true
-    annotation_key: 'value'
+    key: 'value'
     focus: true
 
   componentWillReceiveProps: ->
-    @refs.input0.getDOMNode().focus() if @props.focus
+    # @refs.input0.getDOMNode().focus() if @props.focus
     {x,y} = @getPosition @props.subject.data
     @setState
       dx: x
-      dy: y
-      annotation: @props.annotation
-      , => @forceUpdate() # updates component position on new subject
+      dy: y, => @forceUpdate() # updates component position on new subject
 
   componentWillMount: ->
     # currently does nothing
 
   componentWillUnmount: ->
+    console.log 'TEXT-TOOL::componentWillUnmount(), @props = ', @props
     if @props.task.tool_config.suggest == 'common'
       el = $(@refs.input0.getDOMNode())
       el.autocomplete 'destroy'
 
   componentDidMount: ->
     @updatePosition()
-    @refs.input0.getDOMNode().focus() if @props.focus
+    # @refs.input0.getDOMNode().focus() if @props.focus
 
     if @props.task.tool_config.suggest == 'common'
       el = $(@refs.input0.getDOMNode())
@@ -112,11 +108,19 @@ TextTool = React.createClass
         dx: @props.subject.data.x * @state.viewerSize.scale.horizontal
         dy: (@props.subject.data.y + @props.subject.data.height) * @state.viewerSize.scale.vertical
 
+  # NOTE: doesn't get called unless @props.standalone is true
   commitAnnotation: ->
-    @props.onComplete @state.annotation
+    console.log 'TEXT-TOOL::commitAnnotation()'
+    @props.onComplete @props.annotation
 
   handleChange: (e) ->
-    @state.annotation[@props.annotation_key] = e.target.value
+    console.log 'TEXT-TOOL::handleChange(), @state.annotation = ', @props.annotation
+    console.log 'E.TARGET.VALUE: ', e.target.value
+    @props.annotation[@props.key] = e.target.value
+
+    # if applicable, send composite tool updated annotation
+    @props.handleChange(@props.annotation)?
+
     @forceUpdate()
 
   handleKeyPress: (e) ->
@@ -125,18 +129,12 @@ TextTool = React.createClass
       e.preventDefault()
 
   render: ->
-
-    console.log 'TEXT-TOOL::render()'
-    console.log 'PROPS: ', @props
-    console.log 'STATE: ', @state
-    console.log 'THIS IS ', @
-
     # get component position
     style =
       left: "#{@state.dx*@props.scale.horizontal}px"
       top: "#{@state.dy*@props.scale.vertical}px"
 
-    val = @state.annotation[@props.annotation_key] ? ''
+    val = @props.annotation[@props.key] ? ''
 
     unless @props.standalone
       label = @props.label ? ''
@@ -147,7 +145,14 @@ TextTool = React.createClass
     tool_content =
       <div className="input-field active">
         <label>{label}</label>
-        <input ref="input0" type="text" data-task_key={@props.task.key} onKeyDown={@handleKeyPress} onChange={@handleChange} value={val} />
+        <input
+          ref={@props.ref? || "input0"}
+          type="text"
+          data-task_key={@props.task.key}
+          onKeyDown={@handleKeyPress}
+          onChange={@handleChange}
+          value={val}
+        />
       </div>
 
     if @props.standalone # 'standalone' true if component handles own mouse events
@@ -177,7 +182,6 @@ TextTool = React.createClass
                     </button>
                   </span>
               }
-
 
             </div>
           </div>
