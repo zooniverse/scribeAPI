@@ -91,22 +91,7 @@ module.exports = React.createClass
       responses: []
     onChange: NOOP
 
-  componentDidMount: ->
-    # @setState subToolIndex: 0
-    # @handleChange 0
-    # @setSubToolIndex @props.annotation?.subToolIndex ? 0
-
-  componentWillReceiveProps: (new_props) ->
-    console.log 'componentWillReceiveProps(): new_props = ', new_props
-    if ! new_props.annotation?.subToolIndex
-      console.log ".. set subToolIndex to 0", @state.annotation
-      # @props.onChange? @state.annotation
-
-    # @state.annotation
-    # @handleChange 0
-
   getInitialState: ->
-    subToolIndex: @props.annotation?.subToolIndex ? 0
     annotation: { responses: [] }#@props.annotation ? {}
 
   render: ->
@@ -139,41 +124,18 @@ module.exports = React.createClass
 
     <GenericTask question={@props.task.instruction} help={@props.task.help} answers={tools} />
 
-  # getSubToolIndex: ->
-  #   @props.annotation?.subToolIndex ? 0
-
-  setSubToolIndex: (index) ->
+  handleChange: (index, e) ->
+    inp = @refs["inp-#{index}"]
     annotation = @state.annotation
-    console.log 'ANNOTATION : ', annotation
-
-    # annotation.subToolIndex = index
     annotation.toolName = @props.task.tool_config.tools[index].type
+    isChecked = annotation.responses.indexOf(annotation.toolName) >= 0
 
-    isAlreadyChecked = annotation.responses.indexOf(annotation.toolName) >= 0
-    if isAlreadyChecked
-      annotation.responses.splice(annotation.responses.indexOf(annotation.toolName), 1)
+    # toggle checkmark
+    if isChecked
+      annotation.responses.splice(annotation.responses.indexOf(annotation.toolName), 1) # remove entry
     else
       annotation.responses.push annotation.toolName
-    console.log 'RESPONSES: ', annotation.responses
-
-    # annotation.subToolIndex = index
 
     @setState
       annotation: annotation, () =>
-        console.log 'ON CHANGE!!!!!!!!!!!!!!!'
         @props.onChange? @state.annotation
-
-  handleChange: (index, e) ->
-    console.log 'PICK-ONE-MARK-ONE::handleChange(), INDEX = ', index, @refs
-    inp = @refs["inp-#{index}"]
-    # if inp.getDOMNode().checked
-    @setSubToolIndex index
-
-      # if e.target.checked
-      # @props.onChange? {
-        # subToolIndex: index,
-        # toolName: @props.task.tool_config.tools[index].type
-        # generates_subject_type: @props.task.tool_config.tools[index].generates_subject_type
-      # }
-
-      # @forceUpdate()
