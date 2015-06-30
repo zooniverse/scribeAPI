@@ -8,7 +8,6 @@ module.exports =
     constructor: (@options) ->
 
     fetchPosts: (type, id, callback) ->
-      console.log "fetch posts", type
       url = '/proxy/forum'
       url += '/search.json?search=' + id
       $.ajax

@@ -238,6 +238,8 @@ module.exports = React.createClass
     marks
 
   render: ->
+    return null if ! @props.active
+
     viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
     # ToolComponent = @state.tool # AMS:from classification refactor.
     scale = @getScale()

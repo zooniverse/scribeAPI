@@ -35,7 +35,6 @@ module.exports = React.createClass
     # @setState subject_index: new_index, () =>
     @props.onViewSubject? new_index # @props.subject_index
 
-      # @props.onViewSubject? @props.subject_set.subjects[@state.subject_index]
   specificSelection: (new_index) ->
     # this prevents navigating away from the subject during a workflow --AMS
     if @props.workflow.first_task == @props.task.key

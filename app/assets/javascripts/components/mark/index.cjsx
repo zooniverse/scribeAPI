@@ -18,23 +18,13 @@ module.exports = React.createClass # rename to Classifier
   mixins: [FetchSubjectSetsMixin, BaseWorkflowMethods] # load subjects and set state variables: subjects, currentSubject, classification
 
   getInitialState: ->
-    # currentSubjectSet:            null
-    # currentSubject:               null
     workflow:                     @props.workflow
-
     taskKey:                      null
-    # annotation: {}
     classifications:              []
     classificationIndex:          0
     subject_set_index:            0
     subject_index:                0
     currentSubToolIndex: 0
-
-
-
-  componentDidMount: ->
-    console.log 'MOUNTED MARK COMPONENT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
-    console.log 'mark/index PROPS: ', @props
 
   componentWillMount: ->
     completion_assessment_task = {
@@ -143,7 +133,8 @@ module.exports = React.createClass # rename to Classifier
     @setState
       subject_set_index: new_subject_set_index
       subject_index: new_subject_index
-      taskKey: @props.workflow.first_task, =>
+      taskKey: @props.workflow.first_task
+      currentSubToolIndex: 0, =>
         # console.log "After @state", @state
 
   # User changed currently-viewed subject:
@@ -162,7 +153,7 @@ module.exports = React.createClass # rename to Classifier
     @commitClassification()
 
     # Initialize new classification with currently selected subToolIndex (so that right tool is selected in the right-col)
-    @beginClassification # subToolIndex: @state.currentSubToolIndex
+    @beginClassification
 
 
   # Handle user selecting a pick/drawing tool:
@@ -178,12 +169,10 @@ module.exports = React.createClass # rename to Classifier
     # to initialize marks going forward
 
     if d.subToolIndex? && ! d.x? && ! d.y?
-      # console.log "setting currentSubToolIndex to ", d.subToolIndex
-
       @setState currentSubToolIndex: d.subToolIndex
 
     else
-      console.log "MARK/INDEX::handleDataFromTool()", d if JSON.stringify(d) != JSON.stringify(@getCurrentClassification()?.annotation)
+      # console.log "MARK/INDEX::handleDataFromTool()", d if JSON.stringify(d) != JSON.stringify(@getCurrentClassification()?.annotation)
       classifications = @state.classifications
       classifications[@state.classificationIndex].annotation[k] = v for k, v of d
 
