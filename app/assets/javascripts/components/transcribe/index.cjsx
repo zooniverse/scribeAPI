@@ -36,6 +36,8 @@ module.exports = React.createClass # rename to Classifier
 
   fetchSubjectsCallback: ->
     #TODO: We do need to account for times when there are no subjects? type won't do that. -AMS
+    console.log 'CURRENT SUBJECT: ', @getCurrentSubject()
+
     currentSubject = @getCurrentSubject()
 
     if not currentSubject?
