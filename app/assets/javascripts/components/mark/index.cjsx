@@ -6,7 +6,6 @@ BaseWorkflowMethods     = require 'lib/workflow-methods-mixin'
 JSONAPIClient           = require 'json-api-client' # use to manage data?
 ForumSubjectWidget      = require '../forum-subject-widget'
 
-
 API                     = require '../../lib/api'
 
 module.exports = React.createClass # rename to Classifier
@@ -30,7 +29,6 @@ module.exports = React.createClass # rename to Classifier
     subject_index:                0
 
   componentDidMount: ->
-    console.log 'MOUNTED MARK COMPONENT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
     console.log 'mark/index PROPS: ', @props
 
   componentWillMount: ->
@@ -66,7 +64,7 @@ module.exports = React.createClass # rename to Classifier
     currentTask = @props.workflow.tasks[@state.taskKey] # [currentAnnotation?.task]
     TaskComponent = @getCurrentTool() # coreTools[currentTask.tool]
     onFirstAnnotation = @state.taskKey == @props.workflow.first_task
-    
+
 
     if currentTask.tool is 'pick_one'
       currentAnswer = currentTask.tool_config.options?[currentAnnotation.value]
@@ -74,7 +72,7 @@ module.exports = React.createClass # rename to Classifier
 
     <div className="classifier">
 
-      
+
       <div className="subject-area">
         { if @state.noMoreSubjectSets
             style = marginTop: "50px"
@@ -163,14 +161,15 @@ module.exports = React.createClass # rename to Classifier
   handleDataFromTool: (d) ->
     console.log "MARK/INDEX::handleDataFromTool()", d
     classifications = @state.classifications
-    classifications[@state.classificationIndex].annotation[k] = v for k, v of d
+
+    # not clear whether we should replace annotations, or append to it --STI
+    classifications[@state.classificationIndex].annotation = d #[k] = v for k, v of d
 
     @setState
       classifications: classifications
         , =>
           @forceUpdate()
           console.log "handleDataFromTool(), DATA = ", d
-
 
   destroyCurrentAnnotation: ->
     # TODO: implement mechanism for going backwards to previous classification, potentially deleting later classifications from stack:
@@ -191,7 +190,6 @@ module.exports = React.createClass # rename to Classifier
     console.log "before commit of completeSubjectSet @state", @state
     @commitClassification()
     @beginClassification()
-
     @getNextSubject()
 
 window.React = React
