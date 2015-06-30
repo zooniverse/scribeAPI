@@ -3,10 +3,12 @@ API = require './api'
 module.exports =
   componentDidMount: ->
     # console.log "Fetch Subjects Mixin: ", @
-    if @props.query.subject_set_id
+    if @props.query.subject_set_id and !@props.query.selected_subject_id
       @fetchSubjectSet @props.query.subject_set_id, @props.query.subject_index, @props.workflow.id
+    else if @props.query.subject_set_id and @props.query.selected_subject_id
+      @fetchSubjectSetBySubjectId @props.workflow.id, @props.query.subject_set_id, @props.query.selected_subject_id
     else
-      @fetchSubjectSets @props.workflow.id, @props.workflow.subject_fetch_limit, @props.workflow.subject_request_scope
+      @fetchSubjectSets @props.workflow.id, @props.workflow.subject_fetch_limit
 
   fetchSubjectSet: (subject_set_id, subject_index, workflow_id)->
     console.log 'fetchSubjectSet()'
@@ -23,7 +25,29 @@ module.exports =
         subject_index: parseInt(subject_index) || 0
         # currentSubjectSet: subject_set
 
-  fetchSubjectSets: (workflow_id, limit, subject_request_scope) ->
+  fetchSubjectSetBySubjectId: (workflow_id, subject_set_id, selected_subject_id) ->
+    console.log 'fetchSubjectSetBySubjectId()'
+    request = API.type("workflows").get("#{workflow_id}/subject_sets/#{subject_set_id}/subjects/#{selected_subject_id}")
+    # request = API.type("subject_sets").get(subject_set_id: subject_set_id, workflow_id: workflow_id)
+
+    @setState
+      subjectSet: []
+      # currentSubjectSet: null
+
+    request.then (subject_set) =>
+      console.log 'SUBJECT SET: ', subject_set
+
+      for subject in subject_set.subjects
+        if subject.id is selected_subject_id
+          subject_index = subject_set.subjects.indexOf subject
+
+      @setState
+        subjectSets: [subject_set]
+        subject_set_index: 0
+        subject_index: subject_index || 0 #parseInt(subject_index) || 0
+        # currentSubjectSet: subject_set
+
+  fetchSubjectSets: (workflow_id, limit) ->
     if @props.overrideFetchSubjectsUrl?
       # console.log "Fetching (fake) subject sets from #{@props.overrideFetchSubjectsUrl}"
       $.getJSON @props.overrideFetchSubjectsUrl, (subject_sets) =>
@@ -33,7 +57,6 @@ module.exports =
 
     else
       request = API.type('subject_sets').get
-        subject_request_scope: subject_request_scope
         workflow_id: workflow_id
         limit: limit
         random: true
