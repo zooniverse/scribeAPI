@@ -6,7 +6,7 @@ class SubjectSetsController < ApplicationController
     random = params["random"] || false
     limit  = params["limit"].to_i  || 10
     subject_request_scope = params["subject_request_scope"]
-    
+
     if  workflow_id
       query = {"counts.#{workflow_id}.active_subjects" => {"$gt"=>0}}
     else
