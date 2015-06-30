@@ -1,4 +1,3 @@
-require 'pry'
 class SubjectSerializer < ActiveModel::MongoidSerializer
 
   attributes :id, :type, :parent_subject_id, :workflow_id, :name, :location, :data, :region, :classification_count, :child_subjects_info, :meta_data, :user_favourite 
@@ -36,12 +35,5 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
       SubjectSerializer.new(child, but_not_all_fields: true)
     end
   end
-
-  # def pagination_info
-  #   if serialization_options[:page]
-  #     binding.pry
-  #   end
-  # end
-
 
 end
