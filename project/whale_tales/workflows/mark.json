@@ -12,7 +12,7 @@
   "tasks":{
 
     "location_present": {
-      "tool": "pickOne",
+      "tool": "pickOneDropdown",
       "instruction": "Is there location/position information present?",
       "tool_config": {
         "options": {
