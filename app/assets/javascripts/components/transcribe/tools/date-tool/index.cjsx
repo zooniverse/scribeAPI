@@ -113,6 +113,7 @@ DateTool = React.createClass
     @props.onComplete @state.annotation
 
   handleChange: (e) ->
+    console.log 'DATE-TOOL::handleChange()'
     @state.annotation[@props.annotation_key] = e.target.value
     @forceUpdate()
 
