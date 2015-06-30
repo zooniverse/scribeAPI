@@ -221,6 +221,7 @@ module.exports = React.createClass
           @props.onChange? mark
 
   getCurrentMarks: ->
+    console.log "getCurrentMarks @props", @props
     # Previous marks are really just the region hashes of all child subjects:
     marks = []
     for child_subject, i in @props.subject.child_subjects
