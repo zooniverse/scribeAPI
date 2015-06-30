@@ -3,8 +3,10 @@ API = require './api'
 module.exports =
   componentDidMount: ->
     # console.log "Fetch Subjects Mixin: ", @
-    if @props.query.subject_set_id
+    if @props.query.subject_set_id and !@props.query.selected_subject_id
       @fetchSubjectSet @props.query.subject_set_id, @props.query.subject_index, @props.workflow.id
+    else if @props.query.subject_set_id and @props.query.selected_subject_id
+      @fetchSubjectSetBySubjectId @props.workflow.id, @props.query.subject_set_id, @props.query.selected_subject_id
     else
       @fetchSubjectSets @props.workflow.id, @props.workflow.subject_fetch_limit
 
@@ -21,6 +23,23 @@ module.exports =
         subjectSets: subject_set
         subject_set_index: 0
         subject_index: parseInt(subject_index) || 0
+        # currentSubjectSet: subject_set
+
+  fetchSubjectSetBySubjectId: (workflow_id, subject_set_id, selected_subject_id) ->
+    console.log 'fetchSubjectSetBySubjectId()'
+    request = API.type("workflows").get("#{workflow_id}/subject_sets/#{subject_set_id}/subjects/#{selected_subject_id}")
+    # request = API.type("subject_sets").get(subject_set_id: subject_set_id, workflow_id: workflow_id)
+
+    @setState
+      subjectSet: []
+      # currentSubjectSet: null
+
+    request.then (subject_set) =>
+      console.log 'SUBJECT SET: ', subject_set
+      @setState
+        subjectSets: [subject_set]
+        subject_set_index: 0
+        subject_index: 0 #parseInt(subject_index) || 0
         # currentSubjectSet: subject_set
 
   fetchSubjectSets: (workflow_id, limit) ->
