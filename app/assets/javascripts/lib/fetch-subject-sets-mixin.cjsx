@@ -36,10 +36,15 @@ module.exports =
 
     request.then (subject_set) =>
       console.log 'SUBJECT SET: ', subject_set
+
+      for subject in subject_set.subjects
+        if subject.id is selected_subject_id
+          subject_index = subject_set.subjects.indexOf subject
+
       @setState
         subjectSets: [subject_set]
         subject_set_index: 0
-        subject_index: 0 #parseInt(subject_index) || 0
+        subject_index: subject_index || 0 #parseInt(subject_index) || 0
         # currentSubjectSet: subject_set
 
   fetchSubjectSets: (workflow_id, limit) ->
