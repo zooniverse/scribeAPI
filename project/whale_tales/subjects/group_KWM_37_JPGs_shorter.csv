@@ -1,0 +1,11 @@
+order,file_path,thumbnail,width,height,capture_location,date,set_key
+1,http://demo.zooniverse.org/whaling-logs-test-data/KWM_37_JPGs/logbookofcaliforn00cali_0001.jpg,http://demo.zooniverse.org/whaling-logs-test-data/KWM_37_JPGs/logbookofcaliforn00cali_0001.jpg,2048,3419,n/a,n/a,n/a
+2,http://demo.zooniverse.org/whaling-logs-test-data/KWM_37_JPGs/logbookofcaliforn00cali_0002.jpg,http://demo.zooniverse.org/whaling-logs-test-data/KWM_37_JPGs/logbookofcaliforn00cali_0002.jpg,2048,3410,n/a,n/a,n/a
+3,http://demo.zooniverse.org/whaling-logs-test-data/KWM_37_JPGs/logbookofcaliforn00cali_0003.jpg,http://demo.zooniverse.org/whaling-logs-test-data/KWM_37_JPGs/logbookofcaliforn00cali_0003.jpg,2048,3410,n/a,n/a,n/a
+4,http://demo.zooniverse.org/whaling-logs-test-data/KWM_37_JPGs/logbookofcaliforn00cali_0004.jpg,http://demo.zooniverse.org/whaling-logs-test-data/KWM_37_JPGs/logbookofcaliforn00cali_0004.jpg,2048,3457,n/a,n/a,n/a
+5,http://demo.zooniverse.org/whaling-logs-test-data/KWM_37_JPGs/logbookofcaliforn00cali_0005.jpg,http://demo.zooniverse.org/whaling-logs-test-data/KWM_37_JPGs/logbookofcaliforn00cali_0005.jpg,2048,3399,n/a,n/a,n/a
+6,http://demo.zooniverse.org/whaling-logs-test-data/KWM_37_JPGs/logbookofcaliforn00cali_0006.jpg,http://demo.zooniverse.org/whaling-logs-test-data/KWM_37_JPGs/logbookofcaliforn00cali_0006.jpg,2048,3457,n/a,n/a,n/a
+7,http://demo.zooniverse.org/whaling-logs-test-data/KWM_37_JPGs/logbookofcaliforn00cali_0007.jpg,http://demo.zooniverse.org/whaling-logs-test-data/KWM_37_JPGs/logbookofcaliforn00cali_0007.jpg,2048,3399,n/a,n/a,n/a
+8,http://demo.zooniverse.org/whaling-logs-test-data/KWM_37_JPGs/logbookofcaliforn00cali_0008.jpg,http://demo.zooniverse.org/whaling-logs-test-data/KWM_37_JPGs/logbookofcaliforn00cali_0008.jpg,2048,3494,n/a,n/a,n/a
+9,http://demo.zooniverse.org/whaling-logs-test-data/KWM_37_JPGs/logbookofcaliforn00cali_0009.jpg,http://demo.zooniverse.org/whaling-logs-test-data/KWM_37_JPGs/logbookofcaliforn00cali_0009.jpg,2048,3399,n/a,n/a,n/a
+10,http://demo.zooniverse.org/whaling-logs-test-data/KWM_37_JPGs/logbookofcaliforn00cali_0010.jpg,http://demo.zooniverse.org/whaling-logs-test-data/KWM_37_JPGs/logbookofcaliforn00cali_0010.jpg,2048,3494,n/a,n/a,n/a
