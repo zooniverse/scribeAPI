@@ -61,7 +61,7 @@ module.exports = React.createClass
 
   render: ->
     answers =
-      <select onChange={@handleChange.bind this, k}>
+      <select style={fontSize: '2em'} name='select' required='true' onChange={@handleChange.bind this, k}>
         { for k, answer of @props.task.tool_config.options
             <option value={k}>{answer.label}</option>
         }
