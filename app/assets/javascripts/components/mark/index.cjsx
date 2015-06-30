@@ -28,6 +28,9 @@ module.exports = React.createClass # rename to Classifier
     classificationIndex:          0
     subject_set_index:            0
     subject_index:                0
+    currentSubToolIndex: 0
+
+
 
   componentDidMount: ->
     console.log 'MOUNTED MARK COMPONENT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
@@ -89,6 +92,7 @@ module.exports = React.createClass # rename to Classifier
               onComplete={@handleToolComplete}
               onChange={@handleDataFromTool}
               onViewSubject={@handleViewSubject}
+              subToolIndex={@state.currentSubToolIndex}
             />
         }
       </div>
@@ -96,8 +100,8 @@ module.exports = React.createClass # rename to Classifier
         <div className="task-container">
           <TaskComponent
             task={currentTask}
-            onChange={@handleDataFromTool}
             annotation={@getCurrentClassification().annotation ? {}}
+            onChange={@handleDataFromTool}
           />
           <hr/>
           <nav className="task-nav">
@@ -153,26 +157,16 @@ module.exports = React.createClass # rename to Classifier
 
   # User somehow indicated current task is complete; commit current classification
   handleToolComplete: (d) ->
-    console.log 'handleToolComplete(): DATA = ', d
     # console.log 'TASK IS COMPLETE!'
     @handleDataFromTool(d)
     @commitClassification()
 
     # Initialize new classification with currently selected subToolIndex (so that right tool is selected in the right-col)
-    @beginClassification subToolIndex: @state.currentSubToolIndex
+    @beginClassification # subToolIndex: @state.currentSubToolIndex
 
 
   # Handle user selecting a pick/drawing tool:
   handleDataFromTool: (d) ->
-    console.log "MARK/INDEX::handleDataFromTool()", d
-    classifications = @state.classifications
-    classifications[@state.classificationIndex].annotation[k] = v for k, v of d
-
-    @setState
-      classifications: classifications
-        , =>
-          @forceUpdate()
-          console.log "handleDataFromTool(), DATA = ", d
 
     # Kind of a hack: We receive annotation data from two places: 
     #  1. tool selection widget in right-col
@@ -182,9 +176,21 @@ module.exports = React.createClass # rename to Classifier
     # but no mark location information, we know this callback was called by the 
     # right-col. So only in that case, record currentSubToolIndex, which we use
     # to initialize marks going forward
+
     if d.subToolIndex? && ! d.x? && ! d.y?
+      # console.log "setting currentSubToolIndex to ", d.subToolIndex
+
+      @setState currentSubToolIndex: d.subToolIndex
+
+    else
+      console.log "MARK/INDEX::handleDataFromTool()", d if JSON.stringify(d) != JSON.stringify(@getCurrentClassification()?.annotation)
+      classifications = @state.classifications
+      classifications[@state.classificationIndex].annotation[k] = v for k, v of d
+
       @setState
-        currentSubToolIndex: d.subToolIndex
+        classifications: classifications
+          , =>
+            @forceUpdate()
 
 
   destroyCurrentAnnotation: ->
@@ -203,7 +209,6 @@ module.exports = React.createClass # rename to Classifier
         taskKey: "completion_assessment_task"
 
   completeSubjectAssessment: ->
-    console.log "before commit of completeSubjectSet @state", @state
     @commitClassification()
     @beginClassification()
 

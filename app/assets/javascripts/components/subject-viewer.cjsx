@@ -86,8 +86,9 @@ module.exports = React.createClass
   # Handle initial mousedown:
   handleInitStart: (e) ->
 
-    return null if ! @props.annotation?.subToolIndex?
-    subTool = @props.task.tool_config.tools[@props.annotation.subToolIndex]
+    subToolIndex = @props.subToolIndex
+    return null if ! subToolIndex? # @props.annotation?.subToolIndex?
+    subTool = @props.task.tool_config.tools[subToolIndex]
     if ! subTool
       subTool
     return null if ! subTool?
@@ -100,7 +101,8 @@ module.exports = React.createClass
     MarkComponent = markingTools[subTool.type] # NEEDS FIXING
 
     # Create an initial mark instance, which will soon gather coords:
-    mark = toolName: subTool.type, userCreated: true, subToolIndex: @state.uncommittedMark?.subToolIndex ? @props.annotation?.subToolIndex
+    # mark = toolName: subTool.type, userCreated: true, subToolIndex: @state.uncommittedMark?.subToolIndex ? @props.annotation?.subToolIndex
+    mark = toolName: subTool.type, userCreated: true, subToolIndex: subToolIndex # @props.annotation?.subToolIndex
 
     mouseCoords = @getEventOffset e
 
@@ -117,14 +119,12 @@ module.exports = React.createClass
 
     @props.onChange? mark
 
-    console.log "handleInitStart: ", mark
     @setUncommittedMark mark
 
     @selectMark mark
 
   # Handle mouse dragging
   handleInitDrag: (e) ->
-    # console.log "handleInitDrag: ", @state.uncommittedMark
     return null if ! @state.uncommittedMark?
 
     mark = @state.uncommittedMark
@@ -208,6 +208,7 @@ module.exports = React.createClass
   # Commit mark
   submitMark: ->
     mark = @state.uncommittedMark
+    # console.log "SubjectViewer: Submit mark: ", mark.subToolIndex, mark
 
     @setUncommittedMark null
 
@@ -252,6 +253,7 @@ module.exports = React.createClass
         <ActionButton onClick={@nextSubject} text="Next Page" />
 
     if @state.loading
+      # console.log "loading..."
       markingSurfaceContent = <LoadingIndicator />
     else
       markingSurfaceContent =

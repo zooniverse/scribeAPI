@@ -62,6 +62,7 @@ module.exports = React.createClass
           active={index == @props.subject_index}
           onComplete={@props.onComplete}
           onChange={@props.onChange}
+          subToolIndex={@props.subToolIndex}
         />
       }
     </div>

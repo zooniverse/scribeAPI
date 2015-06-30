@@ -156,9 +156,9 @@ module.exports = React.createClass # rename to Classifier
             else
               @getCurrentTask().next_task
 
-          <div style={display: "none"} className="task-area">
+          <div className="task-area">
 
-            <div className="task-container">
+            <div className="task-container" style={display: "none"} >
               <nav className="task-nav">
                 <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
                 { if nextTask?
@@ -170,7 +170,7 @@ module.exports = React.createClass # rename to Classifier
             </div>
 
             <div className="forum-holder">
-              <ForumSubjectWidget subject_set=@getCurrentSubject() />
+              <ForumSubjectWidget subject=@getCurrentSubject() />
             </div>
 
           </div>
