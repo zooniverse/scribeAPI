@@ -17,19 +17,13 @@ module.exports = React.createClass # rename to Classifier
   mixins: [FetchSubjectSetsMixin, BaseWorkflowMethods] # load subjects and set state variables: subjects, currentSubject, classification
 
   getInitialState: ->
-    # currentSubjectSet:            null
-    # currentSubject:               null
     workflow:                     @props.workflow
-
     taskKey:                      null
-    # annotation: {}
     classifications:              []
     classificationIndex:          0
     subject_set_index:            0
     subject_index:                0
-
-  componentDidMount: ->
-    console.log 'mark/index PROPS: ', @props
+    currentSubToolIndex: 0
 
   componentWillMount: ->
     completion_assessment_task = {
@@ -87,6 +81,7 @@ module.exports = React.createClass # rename to Classifier
               onComplete={@handleToolComplete}
               onChange={@handleDataFromTool}
               onViewSubject={@handleViewSubject}
+              subToolIndex={@state.currentSubToolIndex}
             />
         }
       </div>
@@ -94,8 +89,8 @@ module.exports = React.createClass # rename to Classifier
         <div className="task-container">
           <TaskComponent
             task={currentTask}
-            onChange={@handleDataFromTool}
             annotation={@getCurrentClassification().annotation ? {}}
+            onChange={@handleDataFromTool}
           />
           <hr/>
           <nav className="task-nav">
@@ -137,7 +132,8 @@ module.exports = React.createClass # rename to Classifier
     @setState
       subject_set_index: new_subject_set_index
       subject_index: new_subject_index
-      taskKey: @props.workflow.first_task, =>
+      taskKey: @props.workflow.first_task
+      currentSubToolIndex: 0, =>
         # console.log "After @state", @state
 
   # User changed currently-viewed subject:
@@ -151,28 +147,16 @@ module.exports = React.createClass # rename to Classifier
 
   # User somehow indicated current task is complete; commit current classification
   handleToolComplete: (d) ->
-    console.log 'handleToolComplete(): DATA = ', d
     # console.log 'TASK IS COMPLETE!'
     @handleDataFromTool(d)
     @commitClassification()
 
     # Initialize new classification with currently selected subToolIndex (so that right tool is selected in the right-col)
-    @beginClassification subToolIndex: @state.currentSubToolIndex
+    @beginClassification
 
 
   # Handle user selecting a pick/drawing tool:
   handleDataFromTool: (d) ->
-    console.log "MARK/INDEX::handleDataFromTool()", d
-    classifications = @state.classifications
-
-    # not clear whether we should replace annotations, or append to it --STI
-    classifications[@state.classificationIndex].annotation = d #[k] = v for k, v of d
-
-    @setState
-      classifications: classifications
-        , =>
-          @forceUpdate()
-          console.log "handleDataFromTool(), DATA = ", d
 
     # Kind of a hack: We receive annotation data from two places: 
     #  1. tool selection widget in right-col
@@ -182,9 +166,24 @@ module.exports = React.createClass # rename to Classifier
     # but no mark location information, we know this callback was called by the 
     # right-col. So only in that case, record currentSubToolIndex, which we use
     # to initialize marks going forward
+
     if d.subToolIndex? && ! d.x? && ! d.y?
+      @setState currentSubToolIndex: d.subToolIndex
+
+    else
+      # console.log "MARK/INDEX::handleDataFromTool()", d if JSON.stringify(d) != JSON.stringify(@getCurrentClassification()?.annotation)
+      classifications = @state.classifications
+      classifications[@state.classificationIndex].annotation[k] = v for k, v of d
+
+      # PB: Saving STI's notes here in case we decide tools should fully 
+      #   replace annotation hash rather than selectively update by key as above:
+      # not clear whether we should replace annotations, or append to it --STI
+      # classifications[@state.classificationIndex].annotation = d #[k] = v for k, v of d
+
       @setState
-        currentSubToolIndex: d.subToolIndex
+        classifications: classifications
+          , =>
+            @forceUpdate()
 
 
   destroyCurrentAnnotation: ->
@@ -203,7 +202,6 @@ module.exports = React.createClass # rename to Classifier
         taskKey: "completion_assessment_task"
 
   completeSubjectAssessment: ->
-    console.log "before commit of completeSubjectSet @state", @state
     @commitClassification()
     @beginClassification()
     @getNextSubject()

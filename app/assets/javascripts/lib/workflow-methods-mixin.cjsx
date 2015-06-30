@@ -25,7 +25,6 @@ module.exports =
     console.log 'COMMITTING CLASSIFICATION... current classification: ', @getCurrentClassification()
     classification = @getCurrentClassification()
     # checking for empty classification.annotation, we don't want to commit those classifications -- AMS
-    console.log "Object.keys(myObject).length == 0", Object.keys(classification.annotation).length == 0
     return if Object.keys(classification.annotation).length == 0
 
     classification.subject_id = @getCurrentSubject()?.id
@@ -105,7 +104,6 @@ module.exports =
 
   # Advance to a named task:
   advanceToTask: (key) ->
-    console.log 'advanceToTask: key = ', key
     task = @state.workflow.tasks[ key ]
 
     tool = coreTools[task?.tool] ? transcribeTools[task?.tool]
