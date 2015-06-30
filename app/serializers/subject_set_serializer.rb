@@ -14,11 +14,13 @@ class SubjectSetSerializer < ActiveModel::MongoidSerializer
 
     return nil if object.nil?
 
+    # we will have to send the page through serialization_options
     if random
       subjects = Kaminari.paginate_array(object.subjects.active_root.where(workflow_id: workflow_id).random(limit: limit)).page(serialization_options[:page])      
     else
       subjects = Kaminari.paginate_array(object.subjects.active_root.where(workflow_id: workflow_id).limit(limit)).page(serialization_options[:page])
     end
+  
   end
 
 end
