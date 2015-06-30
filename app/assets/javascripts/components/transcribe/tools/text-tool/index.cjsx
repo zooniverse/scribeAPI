@@ -173,12 +173,15 @@ TextTool = React.createClass
                   <span>
                     <label>Return to marking: </label>
                     {console.log 'PROPS: ', @props}
-                    <button className='button done' onClick={ => @transitionTo('mark', subject_set_id: @props.subject.subject_set_id, subject_id: @props.subject.id) }>
+                    <button className='button done' onClick={ =>
+                      @commitAnnotation
+                      @transitionTo('mark', subject_set_id: @props.subject.subject_set_id, subject_id: @props.subject.id)
+                      }
+                    >
                       {'Finish'}
                     </button>
                   </span>
               }
-
 
             </div>
           </div>
