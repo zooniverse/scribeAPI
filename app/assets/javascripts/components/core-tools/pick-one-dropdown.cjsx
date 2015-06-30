@@ -70,11 +70,10 @@ module.exports = React.createClass
     <GenericTask ref="inputs" question={@props.task.instruction} help={@props.task.help} answers={answers} />
 
   handleChange: (index, e) ->
-    if e.target.checked
-      checked = $(@refs.inputs.getDOMNode()).find('input[type=radio]:checked')
-      @props.onChange({
-        value: checked.val()
-      })
-      @forceUpdate() # update the radiobuttons after selection
+    value = $(@refs.inputs.getDOMNode()).find('select')[0].value
+    @props.onChange({
+      value: value
+    })
+    @forceUpdate() # update the radiobuttons after selection
 
 window.React = React

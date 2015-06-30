@@ -16,11 +16,11 @@
       "instruction": "Is there location/position information present?",
       "tool_config": {
         "options": {
-          "present": {
+          "yes": {
             "label": "Yes",
             "next_task": "location"
           },
-          "mentioned": {
+          "no": {
             "label": "No",
             "next_task": "sea_ice_present"
           }
