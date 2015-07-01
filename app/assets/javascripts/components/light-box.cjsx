@@ -11,6 +11,8 @@ module.exports = React.createClass
     subject_set: React.PropTypes.object.isRequired
     subject_index: React.PropTypes.number.isRequired
     onSubject: React.PropTypes.func.isRequired
+    nextPage: React.PropTypes.func.isRequired
+    totalSubjectPages: React.PropTypes.number.isRequired
 
   getInitialState:->
     first: @props.subject_set.subjects[@props.subject_index]
@@ -20,6 +22,8 @@ module.exports = React.createClass
     @props.onSubject(index)
 
   render: ->
+    console.log "LB @props", @props
+    console.log "LB @state", @state
     return null if @props.subject_set.subjects.length <= 1
     indexOfFirst = @findSubjectIndex(@state.first)
 
@@ -77,7 +81,7 @@ module.exports = React.createClass
       return ""
 
   forwardButtonDisable: (third) ->
-    if @props.subject_set.subjects.length <= 3 || third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] 
+    if @props.subjectCurrentPage == @props.totalSubjectPages && (@props.subject_set.subjects.length <= 3 || third == @props.subject_set.subjects[@props.subject_set.subjects.length-1]) 
       return "disabled" 
     else 
       return ""
@@ -93,10 +97,18 @@ module.exports = React.createClass
       first: @props.subject_set.subjects[indexOfFirst-1]
 
   moveForward: (indexOfFirst)->
-    return null if @props.subject_set.subjects.length <= 3 || @props.subject_set.subjects[indexOfFirst+2] == @props.subject_set.subjects[@props.subject_set.subjects.length-1] 
-    @setState
-      first: @props.subject_set.subjects[indexOfFirst+1]
-    
+    # return null if @props.subject_set.subjects.length <= 3 || @props.subject_set.subjects[indexOfFirst+2] == @props.subject_set.subjects[@props.subject_set.subjects.length-1] 
+    if @props.subjectCurrentPage == @props.totalSubjectPages
+      console.log "LB#MV 1"
+      return null
+    else if @props.subjectCurrentPage < @props.totalSubjectPages
+      console.log "LB nextPage()"
+      @props.nextPage()
+    else
+      console.log "LB#MV 3"
+      @setState
+        first: @props.subject_set.subjects[indexOfFirst+1]
+      
 
 
 

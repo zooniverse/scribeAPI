@@ -48,7 +48,14 @@ module.exports = React.createClass
         { if @props.subject_set.subjects.length > 1
             subject_index = @props.subject_index
             onViewSubject = @props.onViewSubject
-            <LightBox subject_set={@state.subject_set} subject_index={subject_index} onSubject={@specificSelection}/>
+            <LightBox 
+              subject_set={@state.subject_set} 
+              subject_index={subject_index} 
+              onSubject={@specificSelection} 
+              subjectCurrentPage={@props.subjectCurrentPage}
+              nextPage={@props.nextPage} 
+              totalSubjectPages={@props.totalSubjectPages}
+            />
         }
       </div>
       { for subject, index in @props.subject_set.subjects

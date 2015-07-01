@@ -124,12 +124,16 @@ module.exports =
 
   # Get currently viewed subject set
   getCurrentSubjectSet: ->
-    @state.subjectSets?[@state.subject_set_index]
+    if @state.subjectSets?[@state.subject_set_index]
+      @state.subjectSets?[@state.subject_set_index]
+    else @state.subjectSets #having a hard time accounting for one subject_set
 
   # Get currently viewed subject
   getCurrentSubject: ->
     # If we've viewing a subject-set (i.e. Mark) let's use that subject-set's subjects
+
     if @getCurrentSubjectSet()?
+      console.log "SUBJECT SET FOUND"
       subjects = @getCurrentSubjectSet().subjects
 
     # Otherwise, since we're not viewing subject-sets, we must have an array of indiv subjects:

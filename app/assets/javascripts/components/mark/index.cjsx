@@ -26,6 +26,7 @@ module.exports = React.createClass # rename to Classifier
     currentSubToolIndex:          0
 
   componentWillMount: ->
+    console.log "MARK WRKFLOW MOUNTING"
     completion_assessment_task = {
         "generates_subject_type": null,
         "instruction": "Is there anything left to mark?",
@@ -54,6 +55,8 @@ module.exports = React.createClass # rename to Classifier
     @beginClassification()
 
   render: ->
+    console.log "JUST RENDERING"
+    console.log "That func", @getCurrentSubject()
     return null unless @getCurrentSubject()?
     console.log "mark/index @state", @state
     currentTask = @props.workflow.tasks[@state.taskKey] # [currentAnnotation?.task]
@@ -83,6 +86,9 @@ module.exports = React.createClass # rename to Classifier
               onChange={@handleDataFromTool}
               onViewSubject={@handleViewSubject}
               subToolIndex={@state.currentSubToolIndex}
+              subjectCurrentPage={@state.subject_current_page}
+              nextPage={@nextPage}
+              totalSubjectPages={@state.total_subject_pages}
             />
         }
       </div>
@@ -207,24 +213,15 @@ module.exports = React.createClass # rename to Classifier
     @beginClassification()
     @getNextSubject()
 
-  nextPage:->
+  nextPage: ->
     new_page = @state.subject_current_page + 1
-    @setState
-      subject_current_page: new_page
-  
-  prevPage:->
-    new_page = @state.subject_current_page - 1
-    @setState
-      subject_current_page: new_page
+    subject_set = @getCurrentSubjectSet()
+    console.log "Np() subject_set", subject_set
+    # @setState
+    #   subject_current_page: new_page
+    
+    @fetchNextSubjectPage(subject_set.id, @props.workflow.id, new_page)
 
-  nextSubjectSet:->
-    new_subject_set_page = @state.subject_set_current_page + 1
-    @setState:
-      subject_set_current_page: new_subject_set_page
 
-  previousSubjectSet:->
-    new_subject_set_page = @state.subject_set_current_page - 1
-    @setState:
-      subject_set_current_page: new_subject_set_page
 
 window.React = React

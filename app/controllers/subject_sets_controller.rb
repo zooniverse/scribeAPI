@@ -33,13 +33,14 @@ class SubjectSetsController < ApplicationController
   def show
     limit = 1 # should only return one (the matched set)
     subject_id = params[:subject_id]
+    page = params[:page].to_i
     # limit = params["limit"].to_i || 10
     puts 'SUBJECT SET ID: ', params[:subject_set_id]
     set = SubjectSet.where(id: params[:subject_set_id])
     workflow_id  = params["workflow_id"]
 
     return render status: 404, json: {status: 404} if set.nil?
-    respond_with set, status: (set.nil? ? :not_found : 201), each_serializer: SubjectSetSerializer, workflow_id: workflow_id, subject_id: subject_id, limit: limit
+    respond_with set, status: (set.nil? ? :not_found : 201), each_serializer: SubjectSetSerializer, workflow_id: workflow_id, subject_id: subject_id, limit: limit, page: page
   end
 
 end
