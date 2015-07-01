@@ -39,11 +39,9 @@ module.exports =
 
       request.then (subject_sets)=>    # DEBUG CODE
 
-
         ind = 0
         # Uncomment this to ffwd to a set with child subjects:
         # ind = (i for s,i in subject_sets when s.subjects[0].child_subjects?.length > 0)[0] ? 0
-
         @setState
           subjectSets: subject_sets
           subject_set_index: ind
