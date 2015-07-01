@@ -22,7 +22,9 @@ module.exports =
             title: p.title
             url: base_url + '/t/' + p.slug
             updated_at: p.last_posted_at
-          callback subject_set: posts
+          resp = {}
+          resp[type] = posts
+          callback resp
 
         ).bind(this)
         error: ((xhr, status, err) ->

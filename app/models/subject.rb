@@ -3,7 +3,7 @@ class Subject
   include Mongoid::Timestamps
   include Randomizer
 
-  paginates_per 2
+  paginates_per 5
 
   scope :active_root, -> { where(type: 'root', status: 'active').asc(:order) }
   scope :active, -> { where(status: 'active').asc(:order)  }
@@ -43,6 +43,10 @@ class Subject
 
   after_create :update_subject_set_stats, :activate! # this method before :increment_parents_subject_count_by_one
   after_create :increment_parents_subject_count_by_one, :if => :parent_subject
+
+  def thumbnail
+    location['thumbnail'].nil? ? location['standard'] : location['thumbnail']
+  end
 
   def source_classifications
     Classification.by_child_subject id

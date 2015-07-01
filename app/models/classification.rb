@@ -88,7 +88,7 @@ class Classification
   end
 
   def to_s
-    "#{workflow.name.capitalize} Classification"
+    "#{workflow.name.capitalize}#{! annotation["toolName"].nil? ? " (#{annotation["toolName"]})" : ''} Classification"
   end
 
 end

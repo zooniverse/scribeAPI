@@ -39,14 +39,18 @@ module.exports =
         random: true
 
       request.then (subject_sets)=>    # DEBUG CODE
-
-        console.log "SUBJECTSET", subject_sets
-        # TODO hack to ffwd to set with child subjects:
-        ind = (i for s,i in subject_sets when s.subjects[0].child_subjects?.length > 0)[0] ? 0
-        console.log "setting set index: ", (i for s,i in subject_sets when s.subjects[0].child_subjects?.length > 0)
+        console.log "SUBJECTSETS", subject_sets
+        console.log "subject_sets.subject_pagination_info", subject_sets[0].subject_pagination_info
+        console.log "subject_sets.subject_pagination_info", subject_sets[0]["subject_pagination_info"]
+        ind = 0
+        # Uncomment this to ffwd to a set with child subjects:
+        # ind = (i for s,i in subject_sets when s.subjects[0].child_subjects?.length > 0)[0] ? 0
         @setState
           subjectSets: subject_sets
           subject_set_index: ind
+          subject_current_page: subject_sets[0].subject_pagination_info.current_page
+          subject_set_current_page: subject_sets[0].subject_set_pagination_info.current_page
+
 
           # currentSubjectSet: subject_sets[0]
           # currentSubject: subject_sets[0].subjects[0]
