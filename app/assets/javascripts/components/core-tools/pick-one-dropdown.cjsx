@@ -62,6 +62,7 @@ module.exports = React.createClass
   render: ->
     answers =
       <select className='pick-one-dropdown' name='select' required='true' onChange={@handleChange.bind this, k}>
+        <option value=''>Please select one</option>
         { for k, answer of @props.task.tool_config.options
             <option value={k}>{answer.label}</option>
         }
