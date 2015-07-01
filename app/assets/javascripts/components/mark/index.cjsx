@@ -207,4 +207,24 @@ module.exports = React.createClass # rename to Classifier
     @beginClassification()
     @getNextSubject()
 
+  nextPage:->
+    new_page = @state.subject_current_page + 1
+    @setState
+      subject_current_page: new_page
+  
+  prevPage:->
+    new_page = @state.subject_current_page - 1
+    @setState
+      subject_current_page: new_page
+
+  nextSubjectSet:->
+    new_subject_set_page = @state.subject_set_current_page + 1
+    @setState:
+      subject_set_current_page: new_subject_set_page
+
+  previousSubjectSet:->
+    new_subject_set_page = @state.subject_set_current_page - 1
+    @setState:
+      subject_set_current_page: new_subject_set_page
+
 window.React = React

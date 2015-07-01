@@ -30,7 +30,6 @@ class SubjectSetsController < ApplicationController
 
   end
 
-  # DOES NOT APPEAR TO BE IN USE -STI
   def show
     limit = 1 # should only return one (the matched set)
     subject_id = params[:subject_id]
