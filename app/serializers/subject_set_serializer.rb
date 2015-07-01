@@ -17,6 +17,10 @@ class SubjectSetSerializer < ActiveModel::MongoidSerializer
     serialization_options[:subject_set_pagination_info]
   end
 
+  def selected_subject_id
+    serialization_options[:subject_id] if serialization_options[:subject_id]
+  end
+
   def subjects
     workflow_id = serialization_options[:workflow_id] # I think we need to pull workflow_id from serialization_options, subject_sets don't belong to workflow.
     limit = serialization_options[:limit].to_i
@@ -40,7 +44,6 @@ class SubjectSetSerializer < ActiveModel::MongoidSerializer
         total_pages: subjects.total_pages,
       }
     }
-
   end
 
 end

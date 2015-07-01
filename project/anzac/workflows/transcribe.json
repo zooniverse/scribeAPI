@@ -2,7 +2,6 @@
     "name": "transcribe",
     "label": "Transcribe Workflow",
     "retire_limit": 3,
-    "subject_request_scope": "active",
     "generates_subjects": true,
     "generates_subjects_for": "verify",
     "generates_subjects_after": 3,
