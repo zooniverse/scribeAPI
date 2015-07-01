@@ -57,6 +57,8 @@ module.exports = React.createClass # rename to Classifier
   handleDataFromTool: (d) ->
     console.log "TRANSCRIBE/INDEX::handleDataFromTool(), DATA = ", d
     classifications = @state.classifications
+
+    # this is a source of conflict. do we copy key/value pairs, or replace the entire annotation? --STI
     classifications[@state.classificationIndex].annotation[k] = v for k, v of d
 
     @setState
@@ -119,8 +121,8 @@ module.exports = React.createClass # rename to Classifier
     TaskComponent = @getCurrentTool() # @state.currentTool
     onFirstAnnotation = currentAnnotation?.task is @props.workflow.first_task
 
-    console.log 'CURRENT TOOL: ', TaskComponent
-    
+    console.log 'CURRENT TOOL: ', @getCurrentTask()?.tool
+
     <div className="classifier">
       <div className="subject-area">
         { if @state.noMoreSubjects

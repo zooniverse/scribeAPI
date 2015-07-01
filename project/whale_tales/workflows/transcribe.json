@@ -196,25 +196,103 @@
 
 
 
-    "transcribe_point": {
+    "transcribe_point_with_text_tool": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Transcribe this point.",
+      "next_task": null
+    },
+    "transcribe_rectangle_with_text_tool": {
       "tool": "textTool",
       "tool_config": {},
       "instruction": "Transcribe this rectangle.",
       "next_task": null
     },
-    "transcribe_rectangle": {
-      "tool": "textTool",
-      "tool_config": {},
-      "instruction": "Transcribe this rectangle.",
-      "next_task": null
-    },
-    "transcribe_text_row": {
+    "transcribe_text_row_with_text_tool": {
       "tool": "textTool",
       "tool_config": {},
       "instruction": "Transcribe this text row.",
       "next_task": null
+    },
 
+    "transcribe_point_with_text_area_tool": {
+      "tool": "textAreaTool",
+      "tool_config": {},
+      "instruction": "Transcribe this point.",
+      "next_task": null
+    },
+    "transcribe_rectangle_with_text_area_tool": {
+      "tool": "textAreaTool",
+      "tool_config": {},
+      "instruction": "Transcribe this rectangle.",
+      "next_task": null
+    },
+    "transcribe_text_row_with_text_area_tool": {
+      "tool": "textAreaTool",
+      "tool_config": {},
+      "instruction": "Transcribe this text row.",
+      "next_task": null
+    },
+
+    "transcribe_point_with_composite_text_tool_and_text_area_tool": {
+      "tool": "compositeTool",
+      "tool_config": {
+        "tools": {
+          "location_lat": {
+            "tool": "textTool",
+            "tool_config": {},
+            "label": "Text Tool"
+          },
+          "location_lon": {
+            "tool": "textAreaTool",
+            "tool_config": {},
+            "label": "TextArea"
+          }
+        }
+      },
+      "instruction": "Transcribe this point.",
+      "next_task": null
+    },
+    "transcribe_rectangle_with_composite_text_tool_and_text_area_tool": {
+      "tool": "compositeTool",
+      "tool_config": {
+        "tools": {
+          "location_lat": {
+            "tool": "textTool",
+            "tool_config": {},
+            "label": "Text Tool"
+          },
+          "location_lon": {
+            "tool": "textAreaTool",
+            "tool_config": {},
+            "label": "TextArea"
+          }
+        }
+      },
+      "instruction": "Transcribe this rectangle.",
+      "next_task": null
+    },
+    "transcribe_text_row_with_composite_text_tool_and_text_area_tool": {
+      "tool": "compositeTool",
+      "tool_config": {
+        "tools": {
+          "location_lat": {
+            "tool": "textTool",
+            "tool_config": {},
+            "label": "Text Tool"
+          },
+          "location_lon": {
+            "tool": "textAreaTool",
+            "tool_config": {},
+            "label": "TextArea"
+          }
+        }
+      },
+      "instruction": "Transcribe this text row.",
+      "next_task": null
     }
+
+
 
 
   }

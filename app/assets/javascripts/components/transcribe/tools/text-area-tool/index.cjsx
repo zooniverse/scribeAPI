@@ -123,13 +123,9 @@ TextAreaTool = React.createClass
     @replaceWith("/mark?subject_set_id=#{@props.subject.subject_set_id}&selected_subject_id=#{@props.subject.parent_subject_id.$oid}" )
 
   handleChange: (e) ->
-    console.log 'TEXT-TOOL::handleChange(), @state.annotation = ', @props.annotation
-    console.log 'E.TARGET.VALUE: ', e.target.value
+    console.log "annotation[#{@props.key}] = ", e.target.value
     @props.annotation[@props.key] = e.target.value
-
-    # if applicable, send composite tool updated annotation
-    @props.handleChange(@props.annotation)?
-
+    @props.onChange(@props.annotation)? # if applicable, send composite tool updated annotation
     @forceUpdate()
 
   handleKeyPress: (e) ->

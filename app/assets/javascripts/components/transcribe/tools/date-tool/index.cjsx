@@ -128,7 +128,7 @@ DateTool = React.createClass
     @props.annotation[@props.key] = e.target.value
 
     # if applicable, send composite tool updated annotation
-    @props.handleChange(@props.annotation)?
+    @props.onChange(@props.annotation)?
 
     @forceUpdate()
 
