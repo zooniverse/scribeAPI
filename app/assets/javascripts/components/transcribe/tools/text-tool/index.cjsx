@@ -180,7 +180,12 @@ TextTool = React.createClass
                     {console.log 'PROPS: ', @props}
                     <button className='button done' onClick={ =>
                       @commitAnnotation
-                      @transitionTo('mark', subject_set_id: @props.subject.subject_set_id, subject_id: @props.subject.id)
+                      console.log 'Transitioning...'
+                      console.log 'SUBJECT SET ID:      ', @props.subject.subject_set_id
+                      console.log 'SELECTED SUBJECT ID: ', @props.subject.id
+                      console.log 'SUBJECT: ', @props.subject
+                      # window.location.replace "http://localhost:3000/#/mark?subject_set_id=#{@props.subject.subject_set_id}&selected_subject_id=#{@props.subject.parent_subject_id.$oid}"
+                      @replaceWith("/mark?subject_set_id=#{@props.subject.subject_set_id}&selected_subject_id=#{@props.subject.parent_subject_id.$oid}" )
                       }
                     >
                       {'Finish'}

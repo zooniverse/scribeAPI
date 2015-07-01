@@ -27,7 +27,8 @@ module.exports =
 
   fetchSubjectSetBySubjectId: (workflow_id, subject_set_id, selected_subject_id) ->
     console.log 'fetchSubjectSetBySubjectId()'
-    request = API.type("workflows").get("#{workflow_id}/subject_sets/#{subject_set_id}/subjects/#{selected_subject_id}")
+    console.log 'THE QUERY: ', "/workflows/#{workflow_id}/subject_sets/#{subject_set_id}/subjects/#{selected_subject_id}"
+    request = API.type('workflows').get("#{workflow_id}/subject_sets/#{subject_set_id}/subjects/#{selected_subject_id}")
     # request = API.type("subject_sets").get(subject_set_id: subject_set_id, workflow_id: workflow_id)
 
     @setState
@@ -38,7 +39,10 @@ module.exports =
       console.log 'SUBJECT SET: ', subject_set
 
       for subject in subject_set.subjects
-        if subject.id is selected_subject_id
+        console.log 'SUBJECT ID:              ', subject.id
+        if subject.id is subject_set.selected_subject_id
+          console.log 'SELECTED SUBJECT ID: ', subject_set.selected_subject_id
+          console.log 'MATCH!'
           subject_index = subject_set.subjects.indexOf subject
 
       @setState
