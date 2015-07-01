@@ -14,15 +14,20 @@ class SubjectSetsController < ApplicationController
     end
 
     if params["random"]
-      sets = Kaminari.paginate_array(SubjectSet.random(selector: query, limit: limit)).page(params[:page])
+      sets = Kaminari.paginate_array(SubjectSet.random(selector: query)).page(params[:page])
     else
-      sets = Kaminari.paginate_array(SubjectSet.where(query)).page(params[:page])
-      # sets = SubjectSet.where(query)
+      sets = SubjectSet.where(query).page(params[:page])
     end
-    # sets = sets.sort_by { |s| - s.subjects.first.secondary_subject_count }
 
-    # Randomizer#random seems to want query criteria passed in under :selector key:
-    respond_with sets, each_serializer: SubjectSetSerializer, workflow_id: workflow_id, limit: limit, random: random, subject_request_scope: subject_request_scope
+    subject_set_pagination_info = 
+        {
+        current_page: sets.current_page,
+        next_page: sets.next_page,
+        prev_page: sets.prev_page,
+        total_pages: sets.total_pages,
+      }
+
+    respond_with sets, each_serializer: SubjectSetSerializer, workflow_id: workflow_id, limit: limit, random: random, subject_set_pagination_info: subject_set_pagination_info
   end
 
   # DOES NOT APPEAR TO BE IN USE -STI
