@@ -107,6 +107,15 @@ CompositeTool = React.createClass
   commitAnnotation: ->
     @props.onComplete @state.annotation
 
+  returnToMarking: ->
+    @commitAnnotation()
+    console.log 'Transitioning...'
+    console.log 'SUBJECT SET ID:      ', @props.subject.subject_set_id
+    console.log 'SELECTED SUBJECT ID: ', @props.subject.id
+    console.log 'SUBJECT: ', @props.subject
+    # window.location.replace "http://localhost:3000/#/mark?subject_set_id=#{@props.subject.subject_set_id}&selected_subject_id=#{@props.subject.parent_subject_id.$oid}"
+    @replaceWith("/mark?subject_set_id=#{@props.subject.subject_set_id}&selected_subject_id=#{@props.subject.parent_subject_id.$oid}" )
+
   render: ->
     console.log 'COMPOSITE-TOOL::render(), @state.annotation = ', @state.annotation
     # If user has set a custom position, position based on that:
@@ -158,8 +167,18 @@ CompositeTool = React.createClass
           </div>
         </div>
         <div className="right">
-          <PrevButton onClick={=> console.log "Prev button clicked!"} />
-          <DoneButton onClick={@commitAnnotation} />
+          {
+            if window.location.hash is '#/transcribe' # regular transcribe, i.e. no mark transition
+              <DoneButton onClick={@commitAnnotation} />
+            else
+              <span>
+                <label>Return to marking: </label>
+                {console.log 'PROPS: ', @props}
+                <button className='button done' onClick={@returnToMarking}>
+                  {'Finish'}
+                </button>
+              </span>
+          }
         </div>
       </div>
     </Draggable>

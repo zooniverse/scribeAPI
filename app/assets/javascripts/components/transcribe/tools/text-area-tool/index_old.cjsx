@@ -3,12 +3,9 @@ React      = require 'react'
 Draggable  = require '../../../../lib/draggable'
 DoneButton = require './done-button'
 PrevButton = require './prev-button'
-ReactRouter = require 'react-router' # eventually replace with {Navigation} = require 'react-router' -- STI
 
-TextTool = React.createClass
-  displayName: 'TextTool'
-
-  mixins: [ReactRouter] # NOTE: deprecated React-Router 13.3 uses Navigation minxin --STI
+TextAreaTool = React.createClass
+  displayName: 'TextAreaTool'
 
   handleInitStart: (e) ->
     @setState preventDrag: false
@@ -33,9 +30,12 @@ TextTool = React.createClass
   getInitialState: ->
     # compute component location
     {x,y} = @getPosition @props.subject.data
+
     dx: x
     dy: y
     viewerSize: @props.viewerSize
+    annotation:
+      value: ''
 
   getPosition: (data) ->
     switch data.toolName
@@ -55,28 +55,29 @@ TextTool = React.createClass
     task: null
     subject: null
     standalone: true
-    key: 'value'
+    annotation_key: 'value'
     focus: true
 
   componentWillReceiveProps: ->
-    # @refs.input0.getDOMNode().focus() if @props.focus
+    @refs.input0.getDOMNode().focus() if @props.focus
     {x,y} = @getPosition @props.subject.data
     @setState
       dx: x
-      dy: y, => @forceUpdate() # updates component position on new subject
+      dy: y
+      annotation: @props.annotation
+      , => @forceUpdate() # updates component position on new subject
 
   componentWillMount: ->
     # currently does nothing
 
   componentWillUnmount: ->
-    console.log 'TEXT-TOOL::componentWillUnmount(), @props = ', @props
     if @props.task.tool_config.suggest == 'common'
       el = $(@refs.input0.getDOMNode())
       el.autocomplete 'destroy'
 
   componentDidMount: ->
     @updatePosition()
-    # @refs.input0.getDOMNode().focus() if @props.focus
+    @refs.input0.getDOMNode().focus() if @props.focus
 
     if @props.task.tool_config.suggest == 'common'
       el = $(@refs.input0.getDOMNode())
@@ -104,32 +105,17 @@ TextTool = React.createClass
 
   updatePosition: ->
     if @state.viewerSize? && ! @state.dragged
+      dy = (parseFloat(@props.subject.data.y) + parseFloat(@props.subject.data.height)) * @state.viewerSize.scale.vertical
+      console.log "text tool update pos: ", dy, @props.subject.data.y, @props.subject.data.height, @state.viewerSize.scale.vertical
       @setState
         dx: @props.subject.data.x * @state.viewerSize.scale.horizontal
-        dy: (@props.subject.data.y + @props.subject.data.height) * @state.viewerSize.scale.vertical
+        dy: dy
 
-  # NOTE: doesn't get called unless @props.standalone is true
   commitAnnotation: ->
-    console.log 'TEXT-TOOL::commitAnnotation()'
-    @props.onComplete @props.annotation
-
-  returnToMarking: ->
-    @commitAnnotation()
-    console.log 'Transitioning...'
-    console.log 'SUBJECT SET ID:      ', @props.subject.subject_set_id
-    console.log 'SELECTED SUBJECT ID: ', @props.subject.id
-    console.log 'SUBJECT: ', @props.subject
-    # window.location.replace "http://localhost:3000/#/mark?subject_set_id=#{@props.subject.subject_set_id}&selected_subject_id=#{@props.subject.parent_subject_id.$oid}"
-    @replaceWith("/mark?subject_set_id=#{@props.subject.subject_set_id}&selected_subject_id=#{@props.subject.parent_subject_id.$oid}" )
+    @props.onComplete @state.annotation
 
   handleChange: (e) ->
-    console.log 'TEXT-TOOL::handleChange(), @state.annotation = ', @props.annotation
-    console.log 'E.TARGET.VALUE: ', e.target.value
-    @props.annotation[@props.key] = e.target.value
-
-    # if applicable, send composite tool updated annotation
-    @props.handleChange(@props.annotation)?
-
+    @state.annotation[@props.annotation_key] = e.target.value
     @forceUpdate()
 
   handleKeyPress: (e) ->
@@ -138,12 +124,13 @@ TextTool = React.createClass
       e.preventDefault()
 
   render: ->
+
     # get component position
     style =
       left: "#{@state.dx*@props.scale.horizontal}px"
       top: "#{@state.dy*@props.scale.vertical}px"
 
-    val = @props.annotation[@props.key] ? ''
+    val = @state.annotation[@props.annotation_key] ? ''
 
     unless @props.standalone
       label = @props.label ? ''
@@ -154,13 +141,12 @@ TextTool = React.createClass
     tool_content =
       <div className="input-field active">
         <label>{label}</label>
-        <input
-          ref={@props.ref? || "input0"}
-          type="text"
+        <textarea
+          ref="input0"
           data-task_key={@props.task.key}
-          onKeyDown={@handleKeyPress}
           onChange={@handleChange}
           value={val}
+          placeholder={"This is some placeholder text."}
         />
       </div>
 
@@ -179,25 +165,12 @@ TextTool = React.createClass
               {tool_content}
             </div>
             <div className="right">
-
-              {
-                if window.location.hash is '#/transcribe' # regular transcribe, i.e. no mark transition
-                  <DoneButton onClick={@commitAnnotation} />
-                else
-                  <span>
-                    <label>Return to marking: </label>
-                    {console.log 'PROPS: ', @props}
-                    <button className='button done' onClick={@returnToMarking}
-                    >
-                      {'Finish'}
-                    </button>
-                  </span>
-              }
-
+              <PrevButton onClick={=> console.log "Prev button clicked!"} />
+              <DoneButton onClick={@commitAnnotation} />
             </div>
           </div>
 
         </Draggable>
     else return tool_content # render input fields without Draggable
 
-module.exports = TextTool
+module.exports = TextAreaTool

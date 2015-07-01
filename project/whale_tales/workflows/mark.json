@@ -6,7 +6,7 @@
   "generates_subjects_after": 1,
   "generates_subjects_for": "transcribe",
 
-  "first_task":"location_present",
+  "first_task":"debug",
 
   "tasks":{
 

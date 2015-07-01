@@ -119,6 +119,8 @@ module.exports = React.createClass # rename to Classifier
     TaskComponent = @getCurrentTool() # @state.currentTool
     onFirstAnnotation = currentAnnotation?.task is @props.workflow.first_task
 
+    console.log 'CURRENT TOOL: ', TaskComponent
+    
     <div className="classifier">
       <div className="subject-area">
         { if @state.noMoreSubjects
