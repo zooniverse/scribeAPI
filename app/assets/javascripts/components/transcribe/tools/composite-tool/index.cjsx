@@ -3,12 +3,15 @@ React      = require 'react'
 Draggable  = require '../../../../lib/draggable'
 DoneButton = require './done-button'
 PrevButton = require './prev-button'
+ReactRouter = require 'react-router' # eventually replace with {Navigation} = require 'react-router' -- STI
 
 text_tool = require '../text-tool'
 tools = require '../'
 
 CompositeTool = React.createClass
   displayName: 'CompositeTool'
+
+  mixins: [ReactRouter] # NOTE: deprecated React-Router 13.3 uses Navigation minxin --STI
 
   getInitialState: ->
     active_field_key: null
@@ -102,6 +105,7 @@ CompositeTool = React.createClass
 
   handleChange: (annotation) ->
     console.log 'COMPOSITE-TOOL::handleChange(), annotation = ', annotation
+    @props.onChange()
     @setState annotation: annotation
 
   commitAnnotation: ->

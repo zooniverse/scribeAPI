@@ -55,7 +55,7 @@ module.exports = React.createClass # rename to Classifier
 
   # Handle user selecting a pick/drawing tool:
   handleDataFromTool: (d) ->
-    console.log "TRANSCRIBE/INDEX::handleDataFromTool(), DATA = ", d
+    console.log ">>>>>>>>>> TRANSCRIBE/INDEX::handleDataFromTool(), DATA = ", d, ' <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<'
     classifications = @state.classifications
 
     # this is a source of conflict. do we copy key/value pairs, or replace the entire annotation? --STI
