@@ -88,6 +88,7 @@ module.exports = React.createClass # rename to Classifier
               subToolIndex={@state.currentSubToolIndex}
               subjectCurrentPage={@state.subject_current_page}
               nextPage={@nextPage}
+              prevPage={@prevPage}
               totalSubjectPages={@state.total_subject_pages}
             />
         }
@@ -222,6 +223,13 @@ module.exports = React.createClass # rename to Classifier
     
     @fetchNextSubjectPage(subject_set.id, @props.workflow.id, new_page)
 
-
+  prevPage: ->
+    new_page = @state.subject_current_page - 1
+    subject_set = @getCurrentSubjectSet()
+    console.log "Np() subject_set", subject_set
+    # @setState
+    #   subject_current_page: new_page
+    
+    @fetchNextSubjectPage(subject_set.id, @props.workflow.id, new_page)
 
 window.React = React

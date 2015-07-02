@@ -14,6 +14,11 @@ module.exports = React.createClass
     nextPage: React.PropTypes.func.isRequired
     totalSubjectPages: React.PropTypes.number.isRequired
 
+  componentWillReceiveProps:->
+    @setState
+      first: @props.subject_set.subjects[@props.subject_index]
+
+
   getInitialState:->
     first: @props.subject_set.subjects[@props.subject_index]
 
@@ -30,11 +35,10 @@ module.exports = React.createClass
     second = @props.subject_set.subjects[indexOfFirst+1] 
     third = @props.subject_set.subjects[indexOfFirst+2]
 
-
     viewBox = [0, 0, 100, 100]
     <div className="carousel">
 
-      <ActionButton id="backward" text="BACK" onClick={@moveBack.bind(this, indexOfFirst)} classes={@backButtonDisable()} />
+      <ActionButton id="backward" text="BACK" onClick={@moveBack.bind(this, indexOfFirst)} classes={@backButtonDisable(indexOfFirst)} />
 
       <ul>
         <li onClick={@shineSelected.bind(this, @findSubjectIndex(@state.first))} className={"active" if @props.subject_index == @findSubjectIndex(@state.first)}> 
@@ -70,12 +74,12 @@ module.exports = React.createClass
           </li>
         }
       </ul>
-      <ActionButton id="forward" text="FORWARD" onClick={@moveForward.bind(this, indexOfFirst)} classes={@forwardButtonDisable(third if third?)} />
+      <ActionButton id="forward" text="FORWARD" onClick={@moveForward.bind(this, indexOfFirst, third)} classes={@forwardButtonDisable(third if third?)} />
 
     </div>
 
-  backButtonDisable: ->
-    if @state.first == @props.subject_set.subjects[0] || @props.subject_set.subjects.length <= 3
+  backButtonDisable:(indexOfFirst) ->
+    if @props.subjectCurrentPage == 1 && @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
       return "disabled"
     else
       return ""
@@ -92,20 +96,22 @@ module.exports = React.createClass
         return index
 
   moveBack: (indexOfFirst)->
-    return null if @props.subject_set.subjects.length <= 3 || @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
-    @setState
-      first: @props.subject_set.subjects[indexOfFirst-1]
-
-  moveForward: (indexOfFirst)->
-    # return null if @props.subject_set.subjects.length <= 3 || @props.subject_set.subjects[indexOfFirst+2] == @props.subject_set.subjects[@props.subject_set.subjects.length-1] 
-    if @props.subjectCurrentPage == @props.totalSubjectPages
-      console.log "LB#MV 1"
+    if @props.subjectCurrentPage == 1 && @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
       return null
-    else if @props.subjectCurrentPage < @props.totalSubjectPages
-      console.log "LB nextPage()"
+    else if @props.subjectCurrentPage > 1 && @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
+      @props.prevPage()
+    else
+      @setState
+        first: @props.subject_set.subjects[indexOfFirst-1]
+
+  moveForward: (indexOfFirst, third)->
+    if @props.subjectCurrentPage == @props.totalSubjectPages && third == @props.subject_set.subjects[@props.subject_set.subjects.length-1]
+      console.log "1"
+      return null
+    else if @props.subjectCurrentPage < @props.totalSubjectPages && third == @props.subject_set.subjects[@props.subject_set.subjects.length-1]
+      console.log "2) next page please"
       @props.nextPage()
     else
-      console.log "LB#MV 3"
       @setState
         first: @props.subject_set.subjects[indexOfFirst+1]
       

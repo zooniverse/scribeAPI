@@ -1,5 +1,4 @@
  # @cjsx React.DOM
-
 React                         = require 'react'
 SubjectViewer                 = require './subject-viewer'
 {Router, Routes, Route, Link} = require 'react-router'
@@ -15,6 +14,7 @@ LightBox                       = require './light-box'
 module.exports = React.createClass
   displayName: 'SubjectSetViewer'
   resizing: false
+
 
   getInitialState: ->
     subject_set: @props.subject_set
@@ -54,6 +54,7 @@ module.exports = React.createClass
               onSubject={@specificSelection} 
               subjectCurrentPage={@props.subjectCurrentPage}
               nextPage={@props.nextPage} 
+              prevPage={@props.prevPage}
               totalSubjectPages={@props.totalSubjectPages}
             />
         }
