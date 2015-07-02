@@ -54,6 +54,8 @@ module.exports = React.createClass # rename to Classifier
     @beginClassification()
 
   render: ->
+    console.log "mark index @props", @props
+    console.log "mark index @state", @state
     return null unless @getCurrentSubject()?
     currentTask = @props.workflow.tasks[@state.taskKey] # [currentAnnotation?.task]
     TaskComponent = @getCurrentTool() # coreTools[currentTask.tool]

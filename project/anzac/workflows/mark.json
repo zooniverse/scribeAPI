@@ -21,6 +21,10 @@
             "label":"History Sheet",
             "next_task":"history_form_sticky_sheet"
           },
+          "history_sheet_conduct_sheet":{
+            "label":"Statement of Services",
+            "next_task": null
+          },           
           "attestation_form":{
             "label":"Attestation: General Form",
             "next_task":"attestation_form_task"
@@ -36,7 +40,7 @@
           "south_african_attestation":{
             "label":"South Africa Attestation",
             "next_task": null
-          }           
+          }
         }
       }
     },
@@ -62,36 +66,65 @@
         "tools": [
           {"type": "rectangleTool", "label": "Oath Year", "color": "green", "generates_subject_type": "att_transcribe_number" },
           {"type": "rectangleTool", "label": "Age", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
-          {"type": "rectangleTool", "label": "Height (ft)", "color": "green", "generates_subject_type": "att_rectangleTool_regiment" },
-          {"type": "rectangleTool", "label": "Height (in)", "color": "green", "generates_subject_type": "att_rectangleTool_question" },
-          {"type": "rectangleTool", "label": "Weight", "color": "green", "generates_subject_type": "att_rectangleTool_question" },
-          {"type": "rectangleTool", "label": "Chest Measurement", "color": "green", "generates_subject_type": "att_rectangleTool_question" },
-          {"type": "rectangleTool", "label": "Complexion", "color": "green", "generates_subject_type": "att_rectangleTool_question" },
-          {"type": "rectangleTool", "label": "Eye Color", "color": "green", "generates_subject_type": "att_rectangleTool_question" },
-          {"type": "rectangleTool", "label": "Hair Color", "color": "green", "generates_subject_type": "att_rectangleTool_question" },
-          {"type": "rectangleTool", "label": "Profession", "color": "green", "generates_subject_type": "att_rectangleTool_question" },
-          {"type": "rectangleTool", "label": "Distinctive Marks", "color": "green", "generates_subject_type": "att_rectangleTool_question" },
-          {"type": "rectangleTool", "label": "Pension", "color": "green", "generates_subject_type": "att_rectangleTool_question" },
-          {"type": "rectangleTool", "label": "Sight", "color": "green", "generates_subject_type": "att_rectangleTool_question" },
-          {"type": "rectangleTool", "label": "Hearing", "color": "green", "generates_subject_type": "att_rectangleTool_question" },
-          {"type": "rectangleTool", "label": "Color Vision", "color": "green", "generates_subject_type": "att_rectangleTool_question" },
-          {"type": "rectangleTool", "label": "Limb Formation", "color": "green", "generates_subject_type": "att_rectangleTool_question" },
-          {"type": "rectangleTool", "label": "Joints", "color": "green", "generates_subject_type": "att_rectangleTool_question" },
-          {"type": "rectangleTool", "label": "Chest", "color": "green", "generates_subject_type": "att_rectangleTool_question" },
-          {"type": "rectangleTool", "label": "Heart", "color": "green", "generates_subject_type": "att_rectangleTool_question" },
-          {"type": "rectangleTool", "label": "Lungs", "color": "green", "generates_subject_type": "att_rectangleTool_question" },
-          {"type": "rectangleTool", "label": "Teeth", "color": "green", "generates_subject_type": "att_rectangleTool_question" },
-          {"type": "rectangleTool", "label": "Illness", "color": "green", "generates_subject_type": "att_rectangleTool_question" },
-          {"type": "rectangleTool", "label": "Hernia", "color": "green", "generates_subject_type": "att_rectangleTool_question" },
-          {"type": "rectangleTool", "label": "Varicocele", "color": "green", "generates_subject_type": "att_rectangleTool_question" },
-          {"type": "rectangleTool", "label": "Varicose Veins", "color": "green", "generates_subject_type": "att_rectangleTool_question" },
-          {"type": "rectangleTool", "label": "haemorrhoids", "color": "green", "generates_subject_type": "att_rectangleTool_question" },
-          {"type": "rectangleTool", "label": "Skin", "color": "green", "generates_subject_type": "att_rectangleTool_question" },
-          {"type": "rectangleTool", "label": "Mark", "color": "green", "generates_subject_type": "att_rectangleTool_question" },
-          {"type": "rectangleTool", "label": "Experience of fits", "color": "green", "generates_subject_type": "att_rectangleTool_question" },
-          {"type": "rectangleTool", "label": "Discharged", "color": "green", "generates_subject_type": "att_rectangleTool_question" },
-          {"type": "rectangleTool", "label": "Remarks", "color": "green", "generates_subject_type": "att_rectangleTool_question" },
-          {"type": "rectangleTool", "label": "Date of Medical Exam", "color": "green", "generates_subject_type": "att_textRowTool_question" }
+          {"type": "rectangleTool", "label": "Height", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "Weight", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "Chest Measurement", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "Complexion", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "Eye Color", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "Hair Color", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "Religious Profession", "color": "green", "generates_subject_type": "att_rectangleTool_name" }
+        ]
+      },
+      "next_task": "att_medical_sight_hearing"
+    },
+    "att_medical_sight_hearing":{
+      "generates_subjects": true,
+      "tool":"pickOneMarkOne",
+      "instruction":"Draw a rectangle around each record.",
+      "tool_config": {
+        "tools": [
+          {"type": "rectangleTool", "label": "Sight", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "Hearing", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "Color Vision", "color": "green", "generates_subject_type": "att_rectangleTool_name" }
+        ]
+      },
+      "next_task": null
+    },
+    "medical_form_specific":{
+      "generates_subjects": true,
+      "tool":"pickOneMarkOne",
+      "instruction":"Draw a rectangle around each record.",
+      "tool_config": {
+        "tools": [
+          {"type": "rectangleTool", "label": "Limb Formation", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "Joints", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "Chest", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "Heart", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "Lungs", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "Teeth", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "Illness", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "Hernia", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "Varicocele", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "Varicose Veins", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "haemorrhoids", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "Skin", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "Mark", "color": "green", "generates_subject_type": "att_rectangleTool_name" }
+        ]
+      },
+      "next_task": "medical_form_general_recuitment"
+    },
+    "medical_form_general_recuitment":{
+      "generates_subjects": true,
+      "tool":"pickOneMarkOne",
+      "instruction":"Draw a rectangle around each record.",
+      "tool_config": {
+        "tools": [
+          {"type": "rectangleTool", "label": "Distinctive Marks", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "Pension", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "Experience of fits", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "Discharged", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "Remarks", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "Date of Medical Exam", "color": "green", "generates_subject_type": "att_rectangleTool_name" }
         ]
       },
       "next_task": null
@@ -99,16 +132,68 @@
     "history_form_task":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Draw a rectangle around each record.",
+      "instruction":"Draw a rectangle around each clearly visible record.",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Occupation", "color": "green", "generates_subject_type": "att_textRowTool_name" },
-          {"type": "rectangleTool", "label": "Surname", "color": "green", "generates_subject_type": "att_textRowTool_name" },
-          {"type": "rectangleTool", "label": "Christian name", "color": "green", "generates_subject_type": "att_textRowTool_name" },
+          {"type": "rectangleTool", "label": "Unit", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "Rank", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "Occupation", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "Surname", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "No.", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+          {"type": "rectangleTool", "label": "Christian name", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
+        ]
+      },
+      "next_task": "history_form_service"
+    },
+    "history_form_service":{
+      "generates_subjects": true,
+      "tool":"pickOneMarkOne",
+      "instruction":"Draw a rectangle around each recorded instance under the service category (select the whole row)",
+      "tool_config": {
+        "tools": [
+          {"type": "rectangleTool", "label": "Service", "color": "green", "generates_subject_type": "hs_rectangleTool_serivce" }
+        ]
+      },
+      "next_task": "history_form_wounds"
+    },
+   "history_form_wounds":{
+      "generates_subjects": true,
+      "tool":"pickOneMarkOne",
+      "instruction":"Draw a rectangle around each recorded instance wounds (select the whole row)",
+      "tool_config": {
+        "tools": [
           {"type": "rectangleTool", "label": "Wounds", "color": "green", "generates_subject_type": "att_textRowTool_name" }
         ]
       },
-      "next_task": null
+      "next_task": "history_form_sick"
+    },
+    "history_form_sick":{
+      "generates_subjects": true,
+      "tool":"pickOneMarkOne",
+      "instruction":"Draw a rectangle around each recorded instance sickness (select the whole row)",
+      "tool_config": {
+        "tools": [
+          {"type": "rectangleTool", "label": "Sickness", "color": "green", "generates_subject_type": "att_textRowTool_name" }
+        ]
+      },
+      "next_task": "history_form_final_questions"
+    },
+    "history_form_final_questions":{
+      "generates_subjects": true,
+      "tool":"pickOneMarkOne",
+      "instruction":"Draw a rectangle around each recorded instance sickness (select the whole row)",
+      "tool_config": {
+        "tools": [
+          {"type": "rectangleTool", "label": "Killed in action", "color": "green", "generates_subject_type": "att_textRowTool_name" },
+          {"type": "rectangleTool", "label": "Died of wounds/sickness", "color": "green", "generates_subject_type": "att_textRowTool_name" },
+          {"type": "rectangleTool", "label": "Missing", "color": "green", "generates_subject_type": "att_textRowTool_name" },
+          {"type": "rectangleTool", "label": "Prisoner", "color": "green", "generates_subject_type": "att_textRowTool_name" },
+          {"type": "rectangleTool", "label": "Injuries", "color": "green", "generates_subject_type": "att_textRowTool_name" },
+          {"type": "rectangleTool", "label": "Dischard Provisional", "color": "green", "generates_subject_type": "att_textRowTool_name" },
+          {"type": "rectangleTool", "label": "Dischard Final", "color": "green", "generates_subject_type": "att_textRowTool_name" }
+        ]
+      },
+      "next_task": "history_form_final_questions"
     },
     "history_form_sticky_sheet":{
       "tool":"pickOne",

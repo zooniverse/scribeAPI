@@ -25,8 +25,42 @@
         "att_textRowTool_regiment": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the regiment",
+            "instruction": "Enter the filled in text",
             "generates_subject_type": "transcribed_regiment"
+        },
+        "hs_rectangleTool_serivce": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the country or troopship",
+            "generates_subject_type": "transcribed_hs_service_troopship",
+            "next_task": "hs_service_date_from"
+        },
+        "hs_service_date_from": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the 'date from'",
+            "generates_subject_type": "transcribed_hs_service_date_from",
+            "next_task": "hs_service_date_to"
+        },
+        "hs_service_date_to": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the 'date to'",
+            "generates_subject_type": "hs_service_date_total_years",
+            "next_task": "hs_service_date_total_years"
+        },
+        "hs_service_date_total_years": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the total years of service",
+            "generates_subject_type": "transcribed_hs_service_total_years",
+            "next_task": "hs_service_date_total_days"
+        },
+        "hs_service_date_total_days": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the total days of service",
+            "generates_subject_type": "transcribed_service_date_total_days"
         },
         "att_textRowTool_question": {
           "tool": "compositeTool",
