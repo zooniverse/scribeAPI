@@ -9,20 +9,13 @@
   "first_task":"location_present",
 
   "tasks":{
-
     "location_present": {
-      "tool": "pickOne",
+      "tool": "pickOneDropdown",
       "instruction": "Is there location/position information present?",
       "tool_config": {
         "options": {
-          "present": {
-            "label": "Yes",
-            "next_task": "location"
-          },
-          "mentioned": {
-            "label": "No",
-            "next_task": "sea_ice_present"
-          }
+          "yes": { "label": "Yes", "next_task": "location" },
+          "no": { "label": "No", "next_task": "sea_ice_present" }
         }
       }
     },

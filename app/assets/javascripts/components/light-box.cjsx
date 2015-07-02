@@ -74,7 +74,7 @@ module.exports = React.createClass
           </li>
         }
       </ul>
-      <ActionButton id="forward" text="FORWARD" onClick={@moveForward.bind(this, indexOfFirst, third)} classes={@forwardButtonDisable(third if third?)} />
+      <ActionButton id="forward" text="FORWARD" onClick={@moveForward.bind(this, indexOfFirst, third, second)} classes={@forwardButtonDisable(third if third?)} />
 
     </div>
 
@@ -104,14 +104,15 @@ module.exports = React.createClass
       @setState
         first: @props.subject_set.subjects[indexOfFirst-1]
 
-  moveForward: (indexOfFirst, third)->
-    if @props.subjectCurrentPage == @props.totalSubjectPages && third == @props.subject_set.subjects[@props.subject_set.subjects.length-1]
+  moveForward: (indexOfFirst, third, second)->
+    if @props.subjectCurrentPage == @props.totalSubjectPages && (third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || second == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
       console.log "1"
       return null
-    else if @props.subjectCurrentPage < @props.totalSubjectPages && third == @props.subject_set.subjects[@props.subject_set.subjects.length-1]
+    else if @props.subjectCurrentPage < @props.totalSubjectPages && (third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || second == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
       console.log "2) next page please"
       @props.nextPage()
     else
+      console.log "3) next loaded"
       @setState
         first: @props.subject_set.subjects[indexOfFirst+1]
       

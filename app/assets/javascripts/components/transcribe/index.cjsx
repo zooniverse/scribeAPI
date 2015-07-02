@@ -37,10 +37,11 @@ module.exports = React.createClass # rename to Classifier
   fetchSubjectsCallback: ->
     #TODO: We do need to account for times when there are no subjects? type won't do that. -AMS
     currentSubject = @getCurrentSubject()
-
+    console.log "feCallBack currentSubject", currentSubject
     if not currentSubject?
       @setState noMoreSubjects: true, => @forceUpdate()
     else
+      console.log "currentSubject.type", @getCurrentSubject().type
       @setState taskKey: @getCurrentSubject().type
 
     # @advanceToTask new_key
@@ -108,6 +109,8 @@ module.exports = React.createClass # rename to Classifier
       console.log "go back"
 
   render: ->
+    console.log "t render @props", @props
+    console.log "t render @state", @state
     if @props.query.scrollX? and @props.query.scrollY?
       window.scrollTo(@props.query.scrollX,@props.query.scrollY)
 
@@ -115,6 +118,7 @@ module.exports = React.createClass # rename to Classifier
     console.log 'CURRENT ANNOTATION: ', currentAnnotation
 
     TaskComponent = @getCurrentTool() # @state.currentTool
+    console.log "TaskComponent", TaskComponent 
     onFirstAnnotation = currentAnnotation?.task is @props.workflow.first_task
 
     <div className="classifier">
