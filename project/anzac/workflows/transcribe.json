@@ -16,13 +16,13 @@
             "generates_subject_type": "transcribed_number"
 
         },
-        "att_textRowTool_name": {
+        "att_transcribe_name": {
             "tool": "textTool",
             "tool_config": {},
             "instruction": "Enter the filled in text",
             "generates_subject_type": "transcribed_name"
         },
-        "att_textRowTool_regiment": {
+        "att_transcribe_regiment": {
             "tool": "textTool",
             "tool_config": {},
             "instruction": "Enter the filled in text",
@@ -60,7 +60,35 @@
             "tool": "textTool",
             "tool_config": {},
             "instruction": "Enter the total days of service",
-            "generates_subject_type": "transcribed_service_date_total_days"
+            "generates_subject_type": "transcribed_service_date_total_days",
+            "next_task": null
+        },
+        "hs_rectangleTool_wounds": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the serial no.",
+            "generates_subject_type": "transcribed_hs_wounds_number",
+            "next_task": "hs_service_wounds_date"
+        },
+        "hs_service_wounds_date": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the date of the wound",
+            "generates_subject_type": "transcribed_hs_wounds_date",
+            "next_task": "hs_service_wounds_location"
+        },
+        "hs_service_wounds_location": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the location of the wound",
+            "generates_subject_type": "transcribed_hs_wounds_location",
+            "next_task": "hs_service_wounds_mssg_remarks"
+        },
+        "hs_service_wounds_mssg_remarks": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter any messages or remarks associated with the wound",
+            "generates_subject_type": "transcribed_hs_mssg_remarks"
         },
         "att_textRowTool_question": {
           "tool": "compositeTool",
