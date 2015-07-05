@@ -123,17 +123,17 @@ TextTool = React.createClass
     @replaceWith("/mark?subject_set_id=#{@props.subject.subject_set_id}&selected_subject_id=#{@props.subject.parent_subject_id.$oid}" )
 
   handleChange: (e) ->
-    # console.log 'TEXT-TOOL::handleChange(), @state.annotation = ', @props.annotation
-    # console.log 'E.TARGET.VALUE: ', e.target.value
-    # console.log 'KEY: ', @props.key
+    console.log 'TEXT-TOOL::handleChange(), KEY = ', @props.ref || 'value'
+    @props.key = @props.ref || 'value' # use 'value' key if standalone
+    newAnnotation = []
+    newAnnotation[@props.key] = e.target.value
+    console.log "newAnnotation[#{@props.key}] = ", newAnnotation[@props.key]
 
-    console.log "annotation[#{@props.key}] = ", e.target.value
-    @props.annotation[@props.key] = e.target.value
+    console.log 'ANNOTATION BEING SENT TO COMPOSITE TOOL >>>>>>>>>>>>>>>>>> ', newAnnotation
 
-    # if applicable, send composite tool updated annotation
-    @props.onChange(@props.annotation)?
-
-    @forceUpdate()
+    # if composite-tool is used, this will be a callback to CompositeTool::handleChange()
+    # otherwise, it'll be a callback to Transcribe::handleDataFromTool()
+    @props.onChange(newAnnotation) # report updated annotation to parent
 
   handleKeyPress: (e) ->
     if [13].indexOf(e.keyCode) >= 0 # ENTER
@@ -142,6 +142,7 @@ TextTool = React.createClass
 
   render: ->
     # get component position
+    console.log 'TEXT-TOOL::render(), @props.annotation[@props.key] = ', @props.annotation[@props.key]
     style =
       left: "#{@state.dx*@props.scale.horizontal}px"
       top: "#{@state.dy*@props.scale.vertical}px"

@@ -30,9 +30,9 @@ module.exports = React.createClass # rename to Classifier
   componentWillMount: ->
     @beginClassification()
 
-  componentDidMount: ->
-    console.log 'MOUNTED TRANSCRIBE COMPONENT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
-    console.log 'PROPS: ', @props
+  # componentDidMount: ->
+  #   console.log 'MOUNTED TRANSCRIBE COMPONENT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
+  #   console.log 'PROPS: ', @props
 
   fetchSubjectsCallback: ->
     #TODO: We do need to account for times when there are no subjects? type won't do that. -AMS
@@ -55,18 +55,22 @@ module.exports = React.createClass # rename to Classifier
 
   # Handle user selecting a pick/drawing tool:
   handleDataFromTool: (d) ->
-    console.log ">>>>>>>>>> TRANSCRIBE/INDEX::handleDataFromTool(), DATA = ", d, ' <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<'
+    console.log '---- HANDLE THIS --->'
+    console.log 'TRANSCRIBE/INDEX::handleDataFromTool(), DATA = ', d
+
     classifications = @state.classifications
+    currentClassification = classifications[@state.classificationIndex]
 
     # this is a source of conflict. do we copy key/value pairs, or replace the entire annotation? --STI
-    classifications[@state.classificationIndex].annotation[k] = v for k, v of d
+    currentClassification.annotation[k] = v for k, v of d
+
+    console.log 'CLASSIFICATION.ANNOTATION = ', currentClassification.annotation
 
     @setState
       classifications: classifications
         , =>
           @forceUpdate()
           # console.log "handleDataFromTool(), DATA = ", d
-
 
   handleTaskComplete: (d) ->
     console.log 'TRANSCRIBE/INDEX::handleTaskComplete(), DATA = ', d
@@ -112,16 +116,16 @@ module.exports = React.createClass # rename to Classifier
       console.log "go back"
 
   render: ->
-    if @props.query.scrollX? and @props.query.scrollY?
-      window.scrollTo(@props.query.scrollX,@props.query.scrollY)
+    # if @props.query.scrollX? and @props.query.scrollY?
+    #   window.scrollTo(@props.query.scrollX,@props.query.scrollY)
 
     currentAnnotation = @getCurrentClassification().annotation
-    console.log 'CURRENT ANNOTATION: ', currentAnnotation
+    # console.log 'CURRENT ANNOTATION: ', currentAnnotation
 
-    TaskComponent = @getCurrentTool() # @state.currentTool
+    TranscribeComponent = @getCurrentTool() # @state.currentTool
     onFirstAnnotation = currentAnnotation?.task is @props.workflow.first_task
 
-    console.log 'CURRENT TOOL: ', @getCurrentTask()?.tool
+    # console.log 'CURRENT TOOL: ', @getCurrentTask()?.tool
 
     <div className="classifier">
       <div className="subject-area">
@@ -137,7 +141,7 @@ module.exports = React.createClass # rename to Classifier
               classification={@props.classification}
               annotation={currentAnnotation}
             >
-              <TaskComponent
+              <TranscribeComponent
                 viewerSize={@state.viewerSize}
                 key={@state.taskKey}
                 task={@getCurrentTask()}

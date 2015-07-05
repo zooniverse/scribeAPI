@@ -3,15 +3,12 @@ React      = require 'react'
 Draggable  = require '../../../../lib/draggable'
 DoneButton = require './done-button'
 PrevButton = require './prev-button'
-ReactRouter = require 'react-router' # eventually replace with {Navigation} = require 'react-router' -- STI
 
 text_tool = require '../text-tool'
 tools = require '../'
 
 CompositeTool = React.createClass
   displayName: 'CompositeTool'
-
-  mixins: [ReactRouter] # NOTE: deprecated React-Router 13.3 uses Navigation minxin --STI
 
   getInitialState: ->
     active_field_key: null
@@ -105,20 +102,13 @@ CompositeTool = React.createClass
 
   handleChange: (annotation) ->
     console.log 'COMPOSITE-TOOL::handleChange(), annotation = ', annotation
-    @props.onChange()
-    @setState annotation: annotation
+    @props.onChange annotation
+    # @setState annotation: annotation
+    #   , =>
+    #     @props.onChange @state.annotation
 
   commitAnnotation: ->
     @props.onComplete @state.annotation
-
-  returnToMarking: ->
-    @commitAnnotation()
-    console.log 'Transitioning...'
-    console.log 'SUBJECT SET ID:      ', @props.subject.subject_set_id
-    console.log 'SELECTED SUBJECT ID: ', @props.subject.id
-    console.log 'SUBJECT: ', @props.subject
-    # window.location.replace "http://localhost:3000/#/mark?subject_set_id=#{@props.subject.subject_set_id}&selected_subject_id=#{@props.subject.parent_subject_id.$oid}"
-    @replaceWith("/mark?subject_set_id=#{@props.subject.subject_set_id}&selected_subject_id=#{@props.subject.parent_subject_id.$oid}" )
 
   render: ->
     console.log 'COMPOSITE-TOOL::render(), @state.annotation = ', @state.annotation
@@ -170,18 +160,8 @@ CompositeTool = React.createClass
           </div>
         </div>
         <div className="right">
-          {
-            if window.location.hash is '#/transcribe' # regular transcribe, i.e. no mark transition
-              <DoneButton onClick={@commitAnnotation} />
-            else
-              <span>
-                <label>Return to marking: </label>
-                {console.log 'PROPS: ', @props}
-                <button className='button done' onClick={@returnToMarking}>
-                  {'Finish'}
-                </button>
-              </span>
-          }
+          <PrevButton onClick={=> console.log "Prev button clicked!"} />
+          <DoneButton onClick={@commitAnnotation} />
         </div>
       </div>
     </Draggable>

@@ -263,9 +263,9 @@
             "label": "Text Tool"
           },
           "location_lon": {
-            "tool": "textAreaTool",
+            "tool": "textTool",
             "tool_config": {},
-            "label": "TextArea"
+            "label": "Text Tool"
           }
         }
       },
