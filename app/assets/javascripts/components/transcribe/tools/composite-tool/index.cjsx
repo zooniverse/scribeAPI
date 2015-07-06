@@ -139,6 +139,7 @@ CompositeTool = React.createClass
                   standalone={false}
                   viewerSize={@props.viewerSize}
                   onChange={@handleChange}
+                  onComplete={@commitAnnotation}
                   label={@props.task.tool_config.tools[annotation_key].label ? ''}
                   focus={focus}
                   scale={@props.scale}

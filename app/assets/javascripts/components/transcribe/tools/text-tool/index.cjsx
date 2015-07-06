@@ -59,7 +59,7 @@ TextTool = React.createClass
     focus: true
 
   componentWillReceiveProps: ->
-    @refs[@props.ref].getDOMNode().focus() if @props.focus
+    @refs[@props.ref || 'input0'].getDOMNode().focus() if @props.focus
 
     {x,y} = @getPosition @props.subject.data
     @setState
