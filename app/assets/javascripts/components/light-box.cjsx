@@ -15,8 +15,11 @@ module.exports = React.createClass
     totalSubjectPages: React.PropTypes.number.isRequired
 
   componentWillReceiveProps:->
+    # anytime a new subject_index is propagated or a new page is requested.
+      # new page, the subject_index is set to zero in the fetch method in index/mark
+    console.log "UPDATING"
     @setState
-      first: @props.subject_set.subjects[@props.subject_index]
+      first: @props.subject_set.subjects[0]
 
 
   getInitialState:->
@@ -27,8 +30,9 @@ module.exports = React.createClass
     @props.onSubject(index)
 
   render: ->
-    console.log "LB @props", @props
-    console.log "LB @state", @state
+    # console.log "LB @props", @props
+    # console.log "LB @state", @state
+    console.log "LB @state.first", @state.first
     return null if @props.subject_set.subjects.length <= 1
     indexOfFirst = @findSubjectIndex(@state.first)
 
@@ -42,6 +46,7 @@ module.exports = React.createClass
 
       <ul>
         <li onClick={@shineSelected.bind(this, @findSubjectIndex(@state.first))} className={"active" if @props.subject_index == @findSubjectIndex(@state.first)}> 
+          {@state.first.order}
           <svg className="light-box-subject" width={175} height={175} viewBox={viewBox} >
               <SVGImage
                 src = {@state.first.location.standard}
@@ -52,6 +57,7 @@ module.exports = React.createClass
         </li>
         {if second
           <li onClick={@shineSelected.bind(this, @findSubjectIndex(second))} className={"active" if @props.subject_index == @findSubjectIndex(second)} > 
+            {second.order}
             <svg className="light-box-subject" width={175} height={175} viewBox={viewBox} >
                 <SVGImage
                   src = {second.location.standard}
@@ -64,6 +70,7 @@ module.exports = React.createClass
 
         {if third
           <li onClick={@shineSelected.bind(this, @findSubjectIndex(third))} className={"active" if @props.subject_index == @findSubjectIndex(third)} > 
+            {third.order}
             <svg className="light-box-subject" width={175} height={175} viewBox={viewBox} >
                 <SVGImage
                   src = {third.location.standard}
@@ -105,6 +112,7 @@ module.exports = React.createClass
         first: @props.subject_set.subjects[indexOfFirst-1]
 
   moveForward: (indexOfFirst, third, second)->
+    # if the current page is the last page of the subject_set and li 2 or 3 is the last li in the subject_set
     if @props.subjectCurrentPage == @props.totalSubjectPages && (third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || second == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
       console.log "1"
       return null

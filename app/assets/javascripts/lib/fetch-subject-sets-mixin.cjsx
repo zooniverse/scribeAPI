@@ -7,7 +7,7 @@ module.exports =
     else
       @fetchSubjectSets @props.workflow.id, @props.workflow.subject_fetch_limit
 
-  fetchNextSubjectPage: (subject_set_id, workflow_id, page_number)->
+  fetchNextSubjectPage: (subject_set_id, workflow_id, page_number, subject_index)->
     console.log 'fetchNextSubjectPage()'
     request = API.type("subject_sets").get("#{subject_set_id}", page: page_number, workflow_id: workflow_id)
 

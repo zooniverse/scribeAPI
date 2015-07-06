@@ -72,7 +72,6 @@ module.exports =
 
   # Get instance of current tool:
   getCurrentTool: ->
-    console.log "current task", @getCurrentTask()
     toolKey = @getCurrentTask()?.tool
     tool = ( coreTools[toolKey] ? markTools[toolKey] ) ? transcribeTools[toolKey]
 
