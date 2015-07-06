@@ -17,7 +17,7 @@ API::Application.routes.draw do
   end
   get '/admin' => 'admin/subjects#index'
 
-  get  '/current_user',                                       to: "users#logged_in_user"
+  get '/current_user',                                       to: "users#logged_in_user"
   get '/dashboard/ancestory',                                 to: 'dashboard#ancestory'
   get '/dashboard',                                           to: 'dashboard#index'
   get '/projects/stats',                                      to: 'projects#stats'

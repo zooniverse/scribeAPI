@@ -244,9 +244,9 @@ module.exports = React.createClass
     # ToolComponent = @state.tool # AMS:from classification refactor.
     scale = @getScale()
 
-    if @props.workflow.name is 'transcribe'
-      yPos = (@props.subject.data.y - @props.subject.data.height?) * @getScale().vertical - 100
-      $('html, body').animate({scrollTop: yPos}, 300);
+    # if @props.workflow.name is 'transcribe'
+    #   yPos = (@props.subject.data.y - @props.subject.data.height?) * @getScale().vertical - 100
+    #   $('html, body').animate({scrollTop: yPos}, 300);
 
     actionButton =
       if @state.loading

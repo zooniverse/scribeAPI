@@ -62,7 +62,7 @@ module.exports = React.createClass # rename to Classifier
       subject_id: @state.currentSubject['id']
       generates_subject_type: @state.currentTask['generates_subject_type']
       metadata:
-        started_at: (new Date).toISOString() # < TODO wrong started_at time 
+        started_at: (new Date).toISOString() # < TODO wrong started_at time
         finished_at: (new Date).toISOString()
       task_key: @state.currentTask.key
 
@@ -75,7 +75,7 @@ module.exports = React.createClass # rename to Classifier
 
     else
       @advanceToNextSubject()
-    
+
   advanceToNextSubject: ->
     # console.log "next subj: ", @state.subjects, (s for s, i in @state.subjects when s['id'] == @state.currentSubject['id'])
     currentIndex = (i for s, i in @state.subjects when s['id'] == @state.currentSubject['id'])[0]
@@ -92,9 +92,9 @@ module.exports = React.createClass # rename to Classifier
 
 
   render: ->
-    if @props.query.scrollX? and @props.query.scrollY?
-      console.log 'SCROLLING...'
-      window.scrollTo(@props.query.scrollX,@props.query.scrollY)
+    # if @props.query.scrollX? and @props.query.scrollY?
+    #   console.log 'SCROLLING...'
+    #   window.scrollTo(@props.query.scrollX,@props.query.scrollY)
 
     # console.log "Verify#render: ", @state
     return null unless @state.currentTask?

@@ -2,10 +2,11 @@ class SubjectSetsController < ApplicationController
   respond_to :json
 
   def index
+    puts 'PARAMS: ', params
     workflow_id  = params["workflow_id"]
     random = params["random"] || false
     limit  = params["limit"].to_i  || 10
-    
+
     if  workflow_id
       query = {"counts.#{workflow_id}.active_subjects" => {"$gt"=>0}}
     else
@@ -26,9 +27,11 @@ class SubjectSetsController < ApplicationController
 
   # DOES NOT APPEAR TO BE IN USE -STI
   def show
-    limit = 1 # should only return one (the matched set)
+    puts 'PARAMS: ', params
+
+    # limit = 1 # should only return one (the matched set)
     subject_id = params[:subject_id]
-    # limit = params["limit"].to_i || 10
+    limit = params["limit"].to_i || 10
     puts 'SUBJECT SET ID: ', params[:subject_set_id]
     set = SubjectSet.where(id: params[:subject_set_id])
     workflow_id  = params["workflow_id"]
