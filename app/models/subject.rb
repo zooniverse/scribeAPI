@@ -43,6 +43,10 @@ class Subject
   after_create :update_subject_set_stats, :activate! # this method before :increment_parents_subject_count_by_one
   after_create :increment_parents_subject_count_by_one, :if => :parent_subject
 
+  def thumbnail
+    location['thumbnail'].nil? ? location['standard'] : location['thumbnail']
+  end
+
   def source_classifications
     Classification.by_child_subject id
   end

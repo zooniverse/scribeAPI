@@ -86,29 +86,29 @@ module.exports = React.createClass
       value: []
 
   getDefaultProps: ->
-    task: null
-    annotation: null
+    # task: null
+    # annotation: null
     onChange: NOOP
 
   componentDidMount: ->
     # @setState subToolIndex: 0
     # @handleChange 0
-    @setSubToolIndex @props.annotation?.subToolIndex ? 0
+    # @setSubToolIndex @props.annotation?.subToolIndex ? 0
 
   componentWillReceiveProps: (new_props) ->
-    if ! new_props.annotation?.subToolIndex
-      console.log ".. set subToolIndex to 0", @state.annotation
+    # if ! new_props.annotation?.subToolIndex
+      # console.log ".. set subToolIndex to 0", @state.annotation
       # @props.onChange? @state.annotation
       
     # @state.annotation
     # @handleChange 0 
 
   getInitialState: ->
-    subToolIndex: @props.annotation?.subToolIndex ? 0
-    annotation: $.extend({subToolIndex: null}, @props.annotation ? {})
+    subToolIndex: 0 # @props.annotation?.subToolIndex ? 0
+    # annotation: $.extend({subToolIndex: null}, @props.annotation ? {})
 
   render: ->
-    console.log "PickOneMarkOne rendering: ", @getSubToolIndex()
+    # console.log "PickOneMarkOne rendering: ", @getSubToolIndex()
 
     tools = for tool, i in @props.task.tool_config.tools
       tool._key ?= Math.random()
@@ -140,22 +140,27 @@ module.exports = React.createClass
 
       </label>
 
+
     <GenericTask question={@props.task.instruction} help={@props.task.help} answers={tools} />
 
   getSubToolIndex: ->
-    @props.annotation?.subToolIndex ? 0
+    # @props.annotation?.subToolIndex ? 0
+    @state.subToolIndex
 
   setSubToolIndex: (index) ->
-    annotation = @state.annotation
-    annotation.subToolIndex = index
-    annotation.toolName = @props.task.tool_config.tools[index].type
-    annotation.subToolIndex = index
-    @setState
-      annotation: annotation, () =>
-        @props.onChange? @state.annotation
+    @setState subToolIndex: index, () =>
+      @props.onChange? subToolIndex: index
+
+    # annotation = @state.annotation
+    # annotation.subToolIndex = index
+    # annotation.toolName = @props.task.tool_config.tools[index].type
+    # annotation.subToolIndex = index
+    # @setState
+     #  annotation: annotation, () =>
+      #   @props.onChange? @state.annotation
 
   handleChange: (index, e) ->
-    console.log 'PICK-ONE-MARK-ONE::handleChange(), INDEX = ', index, @refs
+    # console.log 'PICK-ONE-MARK-ONE::handleChange(), INDEX = ', index, @refs
     inp = @refs["inp-#{index}"]
     if inp.getDOMNode().checked
       @setSubToolIndex index
