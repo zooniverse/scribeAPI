@@ -258,9 +258,9 @@
       "tool_config": {
         "tools": {
           "location_lat": {
-            "tool": "textTool",
+            "tool": "textAreaTool",
             "tool_config": {},
-            "label": "Text Tool"
+            "label": "Text Area Tool"
           },
           "location_lon": {
             "tool": "textTool",
