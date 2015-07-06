@@ -103,32 +103,12 @@ CompositeTool = React.createClass
   #       @commitAnnotation()
 
   handleChange: (annotation) ->
-    console.log '>>>>>>>>>>>>>>>>>>>>>>>>>>>>> PAY ATTENTION TO ME <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<'
-    console.log "COMPOSITE-TOOL::handleChange(), key = #{key}, value = #{value}" for key, value of annotation
-
-    console.log 'annotation = ', annotation
-    @props.onChange annotation
-    @setState active_field_key: key, => console.log 'SETTING STATE: ACTIVE_FIELD_KEY: ', @state.active_field_key
-
-
-    return
-
-    @props.key = key #@props.ref || 'value' # use 'value' key if standalone
-    newAnnotation = []
-    newAnnotation[@props.key] = value
-
-    # if composite-tool is used, this will be a callback to CompositeTool::handleChange()
-    # otherwise, it'll be a callback to Transcribe::handleDataFromTool()
-    @props.onChange(newAnnotation) # report updated annotation to parent
-    # @forceUpdate()
-
-    @setState active_field_key: key, => console.log 'SETTING STATE: ACTIVE_FIELD_KEY: ', @state.active_field_key
+    @props.onChange annotation # forward annotation to parent
 
   commitAnnotation: ->
     @props.onComplete @props.annotation
 
   render: ->
-    console.log 'COMPOSITE-TOOL::render(), @props.annotation = ', @props.annotation
     # If user has set a custom position, position based on that:
     style =
       left: "#{@state.dx*@props.scale.horizontal}px"
@@ -147,36 +127,25 @@ CompositeTool = React.createClass
         <div className="left">
           <div className="input-field active">
             <label>{@props.task.instruction}</label>
-            { for annotation_key, tool_config of @props.task.tool_config.tools
+            {
+              for annotation_key, tool_config of @props.task.tool_config.tools
+                ToolComponent = @props.transcribeTools[tool_config.tool]
+                focus = annotation_key is @state.active_field_key
 
-              # console.log 'ANNOTATION_KEY: ', annotation_key
-              # console.log 'RENDERING TOOL: ', tool_config.tool
-
-              # console.log 'PROPS: ', @props
-
-              # path = "../#{tool_config.tool.replace(/_/, '-')}"
-
-              console.log 'RENDER(): ACTIVE_FIELD_KEY = ', @state.active_field_key
-              ToolComponent = @props.transcribeTools[tool_config.tool]
-              focus = annotation_key is @state.active_field_key
-
-              # console.log "[[[[[[[ ANNOTATION[#{annotation_key}] ]]]]]]] = ", @props.annotation[annotation_key], ' FOCUS = ', focus
-
-              <ToolComponent
-                task={@props.task}
-                subject={@props.subject}
-                workflow={@props.workflow}
-                standalone={false}
-                viewerSize={@props.viewerSize}
-                onChange={@handleChange}
-                label={@props.task.tool_config.tools[annotation_key].label ? ''}
-                focus={focus}
-                scale={@props.scale}
-                key={annotation_key}
-                ref={annotation_key}
-                annotation={@props.annotation}
-
-              />
+                <ToolComponent
+                  task={@props.task}
+                  subject={@props.subject}
+                  workflow={@props.workflow}
+                  standalone={false}
+                  viewerSize={@props.viewerSize}
+                  onChange={@handleChange}
+                  label={@props.task.tool_config.tools[annotation_key].label ? ''}
+                  focus={focus}
+                  scale={@props.scale}
+                  key={annotation_key}
+                  ref={annotation_key}
+                  annotation={@props.annotation}
+                />
               # onComplete={@handleTaskComplete} onBack={@makeBackHandler()}
             }
           </div>

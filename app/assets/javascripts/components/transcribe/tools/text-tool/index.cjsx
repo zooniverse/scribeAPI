@@ -59,9 +59,6 @@ TextTool = React.createClass
     focus: true
 
   componentWillReceiveProps: ->
-    # @refs.input0.getDOMNode().focus() if @props.focus
-    console.log 'PROPS.REF = ', @props.ref
-    console.log "FOCUSING ON: #{@props.ref}" if @props.focus
     @refs[@props.ref].getDOMNode().focus() if @props.focus
 
     {x,y} = @getPosition @props.subject.data
@@ -70,7 +67,6 @@ TextTool = React.createClass
       dy: y, => @forceUpdate() # updates component position on new subject
 
   componentWillUnmount: ->
-    console.log 'TEXT-TOOL::componentWillUnmount(), @props = ', @props
     if @props.task.tool_config.suggest == 'common'
       el = $(@refs.input0.getDOMNode())
       el.autocomplete 'destroy'
@@ -111,15 +107,10 @@ TextTool = React.createClass
 
   # NOTE: doesn't get called unless @props.standalone is true
   commitAnnotation: ->
-    console.log 'TEXT-TOOL::commitAnnotation()'
     @props.onComplete @props.annotation
 
   returnToMarking: ->
     @commitAnnotation()
-    console.log 'Transitioning...'
-    console.log 'SUBJECT SET ID:      ', @props.subject.subject_set_id
-    console.log 'SELECTED SUBJECT ID: ', @props.subject.id
-    console.log 'SUBJECT: ', @props.subject
     # window.location.replace "http://localhost:3000/#/mark?subject_set_id=#{@props.subject.subject_set_id}&selected_subject_id=#{@props.subject.parent_subject_id.$oid}"
     @replaceWith("/mark?subject_set_id=#{@props.subject.subject_set_id}&selected_subject_id=#{@props.subject.parent_subject_id.$oid}" )
 
@@ -132,13 +123,6 @@ TextTool = React.createClass
     newAnnotation = []
     newAnnotation[@props.key] = e.target.value
 
-    console.log 'TEXT-TOOL::handleChange(), KEY = ', @props.ref || 'value', 'VALUE = ', newAnnotation[@props.key]
-
-
-    # console.log "newAnnotation[#{@props.key}] = ", newAnnotation[@props.key]
-
-    # console.log 'ANNOTATION BEING SENT TO COMPOSITE TOOL >>>>>>>>>>>>>>>>>> ', newAnnotation
-
     # if composite-tool is used, this will be a callback to CompositeTool::handleChange()
     # otherwise, it'll be a callback to Transcribe::handleDataFromTool()
     @props.onChange(newAnnotation) # report updated annotation to parent
@@ -149,9 +133,6 @@ TextTool = React.createClass
       e.preventDefault()
 
   render: ->
-    # get component position
-    console.log 'TEXT-TOOL::render(), @props.annotation = ', @props.annotation
-
     # console.log 'TEXT-TOOL::render(), @props.annotation[@props.key] = ', @props.annotation[@props.key]
     style =
       left: "#{@state.dx*@props.scale.horizontal}px"
