@@ -65,7 +65,7 @@ module.exports = React.createClass # rename to Classifier
     currentClassification.annotation[k] = v for k, v of d
 
     console.log 'CLASSIFICATION.ANNOTATION = ', currentClassification.annotation
-
+    @forceUpdate()
     @setState
       classifications: classifications
         , =>
@@ -116,6 +116,7 @@ module.exports = React.createClass # rename to Classifier
       console.log "go back"
 
   render: ->
+    console.log 'TRANSCRIBE::render()'
     # if @props.query.scrollX? and @props.query.scrollY?
     #   window.scrollTo(@props.query.scrollX,@props.query.scrollY)
 

@@ -10,8 +10,9 @@ tools = require '../'
 CompositeTool = React.createClass
   displayName: 'CompositeTool'
 
-  getInitialState: ->
-    active_field_key: null
+  # getInitialState: ->
+  #   console.log 'BLAH', @props.task.tool_config.tools[0]
+  #   active_field_key: @props.task.tool_config.tools[0]
 
   handleInitStart: (e) ->
     # console.log 'handleInitStart() '
@@ -42,6 +43,8 @@ CompositeTool = React.createClass
     dx: x
     dy: y
     viewerSize: @props.viewerSize
+    active_field_key: (key for key, value of @props.task.tool_config.tools)[0]
+
     # annotation: {}
 
   getPosition: (data) ->
@@ -58,14 +61,12 @@ CompositeTool = React.createClass
     return {x,y}
 
   componentWillReceiveProps: ->
-    @setState
-      annotation: @props.annotation
-      active_field_key: (key for key, v of @props.task.tool_config.tools)[0]
+    @setState annotation: @props.annotation
+      # active_field_key: (key for key, v of @props.task.tool_config.tools)[0]
 
   componentDidMount: ->
     @updatePosition()
-    @setState
-      active_field_key: (key for key, v of @props.task.tool_config.tools)[0]
+    # @setState active_field_key: (key for key, v of @props.task.tool_config.tools)[0]
 
   # Expects size hash with:
   #   w: [viewer width]
@@ -73,6 +74,7 @@ CompositeTool = React.createClass
   #   scale:
   #     horizontal: [horiz scaling of image to fit within above vals]
   #     vertical:   [vert scaling of image..]
+
   onViewerResize: (size) ->
     @setState
       viewerSize: size
@@ -100,39 +102,27 @@ CompositeTool = React.createClass
   #     @setState annotation: ann, () =>
   #       @commitAnnotation()
 
+  handleChange: (annotation) ->
+    console.log '>>>>>>>>>>>>>>>>>>>>>>>>>>>>> PAY ATTENTION TO ME <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<'
+    console.log "COMPOSITE-TOOL::handleChange(), key = #{key}, value = #{value}" for key, value of annotation
+
+    console.log 'annotation = ', annotation
+    @props.onChange annotation
+    @setState active_field_key: key, => console.log 'SETTING STATE: ACTIVE_FIELD_KEY: ', @state.active_field_key
 
 
+    return
 
-
-  handleChange: (annotation, key) ->
-    console.log "key = #{key}, value = #{value}" for key, value of annotation
-
-    # console.log 'PROPS: ', @props
-    # console.log 'COMPOSITE-TOOL::handleChange(), KEY = ', @props.ref || 'value'
     @props.key = key #@props.ref || 'value' # use 'value' key if standalone
     newAnnotation = []
     newAnnotation[@props.key] = value
-    # console.log "newAnnotation[#{@props.key}] = ", newAnnotation[@props.key]
-
-    # console.log 'ANNOTATION BEING SENT TO COMPOSITE TOOL >>>>>>>>>>>>>>>>>> ', newAnnotation
 
     # if composite-tool is used, this will be a callback to CompositeTool::handleChange()
     # otherwise, it'll be a callback to Transcribe::handleDataFromTool()
     @props.onChange(newAnnotation) # report updated annotation to parent
+    # @forceUpdate()
 
-  # handleChange: (annotation) ->
-  #   console.log 'COMPOSITE-TOOL RECEIVING NEW ANNOTATION: ', annotation
-  #   console.log 'COMPOSITE-TOOL::handleChange(), annotation = ', annotation
-  #
-  #   # mergedAnnotation = @props.annotation[k] = v for k, v of d
-  #
-  #   @props.annotation = annotation
-  #   console.log '@PROPS.ANNOTATION = ', @props.annotation
-  #
-  #   @props.onChange @props.annotation
-  #   # @setState annotation: annotation
-  #   #   , =>
-  #   #     @props.onChange @props.annotation
+    @setState active_field_key: key, => console.log 'SETTING STATE: ACTIVE_FIELD_KEY: ', @state.active_field_key
 
   commitAnnotation: ->
     @props.onComplete @props.annotation
@@ -159,16 +149,18 @@ CompositeTool = React.createClass
             <label>{@props.task.instruction}</label>
             { for annotation_key, tool_config of @props.task.tool_config.tools
 
-              console.log 'ANNOTATION_KEY: ', annotation_key
+              # console.log 'ANNOTATION_KEY: ', annotation_key
               # console.log 'RENDERING TOOL: ', tool_config.tool
 
               # console.log 'PROPS: ', @props
 
               # path = "../#{tool_config.tool.replace(/_/, '-')}"
-              ToolComponent = @props.transcribeTools[tool_config.tool]
-              focus = annotation_key == @state.active_field_key
 
-              console.log "[[[[[[[ ANNOTATION[#{annotation_key}] ]]]]]]] = ", @props.annotation[annotation_key]
+              console.log 'RENDER(): ACTIVE_FIELD_KEY = ', @state.active_field_key
+              ToolComponent = @props.transcribeTools[tool_config.tool]
+              focus = annotation_key is @state.active_field_key
+
+              # console.log "[[[[[[[ ANNOTATION[#{annotation_key}] ]]]]]]] = ", @props.annotation[annotation_key], ' FOCUS = ', focus
 
               <ToolComponent
                 task={@props.task}

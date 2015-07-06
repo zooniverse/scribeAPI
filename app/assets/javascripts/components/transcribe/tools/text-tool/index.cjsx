@@ -60,13 +60,14 @@ TextTool = React.createClass
 
   componentWillReceiveProps: ->
     # @refs.input0.getDOMNode().focus() if @props.focus
+    console.log 'PROPS.REF = ', @props.ref
+    console.log "FOCUSING ON: #{@props.ref}" if @props.focus
+    @refs[@props.ref].getDOMNode().focus() if @props.focus
+
     {x,y} = @getPosition @props.subject.data
     @setState
       dx: x
       dy: y, => @forceUpdate() # updates component position on new subject
-
-  componentWillMount: ->
-    # currently does nothing
 
   componentWillUnmount: ->
     console.log 'TEXT-TOOL::componentWillUnmount(), @props = ', @props
@@ -123,6 +124,10 @@ TextTool = React.createClass
     @replaceWith("/mark?subject_set_id=#{@props.subject.subject_set_id}&selected_subject_id=#{@props.subject.parent_subject_id.$oid}" )
 
   handleChange: (e) ->
+    # console.log 'KJHSKJDHSDKJHS: REFS: ', @refs[@props.ref]
+    # console.log "FOCUSING ON: #{@props.ref}" if @props.focus
+    # @refs[@props.ref].getDOMNode().focus() if @props.focus
+
     @props.key = @props.ref || 'value' # use 'value' key if standalone
     newAnnotation = []
     newAnnotation[@props.key] = e.target.value
@@ -136,7 +141,7 @@ TextTool = React.createClass
 
     # if composite-tool is used, this will be a callback to CompositeTool::handleChange()
     # otherwise, it'll be a callback to Transcribe::handleDataFromTool()
-    @props.onChange(newAnnotation, @props.key) # report updated annotation to parent
+    @props.onChange(newAnnotation) # report updated annotation to parent
 
   handleKeyPress: (e) ->
     if [13].indexOf(e.keyCode) >= 0 # ENTER
@@ -146,6 +151,7 @@ TextTool = React.createClass
   render: ->
     # get component position
     console.log 'TEXT-TOOL::render(), @props.annotation = ', @props.annotation
+
     # console.log 'TEXT-TOOL::render(), @props.annotation[@props.key] = ', @props.annotation[@props.key]
     style =
       left: "#{@state.dx*@props.scale.horizontal}px"
@@ -158,12 +164,14 @@ TextTool = React.createClass
     else
       label = @props.task.instruction
 
+    ref = @props.ref || "input0"
+
     # create component input field(s)
     tool_content =
       <div className="input-field active">
         <label>{label}</label>
         <input
-          ref={@props.ref? || "input0"}
+          ref={ref}
           type="text"
           data-task_key={@props.task.key}
           onKeyDown={@handleKeyPress}
