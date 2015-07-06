@@ -42,7 +42,7 @@ CompositeTool = React.createClass
     dx: x
     dy: y
     viewerSize: @props.viewerSize
-    annotation: {}
+    # annotation: {}
 
   getPosition: (data) ->
     switch data.toolName
@@ -86,32 +86,59 @@ CompositeTool = React.createClass
         # dy: (@props.subject.location.spec.y + @props.subject.location.spec.height) * @state.viewerSize.scale.vertical
       # console.log "TextTool#updatePosition setting state: ", @state
 
-  # this doesn't do anything?
-  handleFieldComplete: (key, ann) ->
-    console.log 'COMPOSITE-TOOL::handleFieldComplete()'
-    inp = @refs[key]
+  # # this doesn't do anything?
+  # handleFieldComplete: (key, ann) ->
+  #   console.log 'COMPOSITE-TOOL::handleFieldComplete()'
+  #   inp = @refs[key]
+  #
+  #   keys = (key for key, t in @props.task.tool_config.tools)
+  #   next_key = keys[keys.indexOf(@state.active_field_key) + 1]
+  #   if next_key?
+  #     @setState active_field_key: next_key, () =>
+  #       @forceUpdate()
+  #   else
+  #     @setState annotation: ann, () =>
+  #       @commitAnnotation()
 
-    keys = (key for key, t in @props.task.tool_config.tools)
-    next_key = keys[keys.indexOf(@state.active_field_key) + 1]
-    if next_key?
-      @setState active_field_key: next_key, () =>
-        @forceUpdate()
-    else
-      @setState annotation: ann, () =>
-        @commitAnnotation()
 
-  handleChange: (annotation) ->
-    console.log 'COMPOSITE-TOOL::handleChange(), annotation = ', annotation
-    @props.onChange annotation
-    # @setState annotation: annotation
-    #   , =>
-    #     @props.onChange @state.annotation
+
+
+
+  handleChange: (annotation, key) ->
+    console.log "key = #{key}, value = #{value}" for key, value of annotation
+
+    # console.log 'PROPS: ', @props
+    # console.log 'COMPOSITE-TOOL::handleChange(), KEY = ', @props.ref || 'value'
+    @props.key = key #@props.ref || 'value' # use 'value' key if standalone
+    newAnnotation = []
+    newAnnotation[@props.key] = value
+    # console.log "newAnnotation[#{@props.key}] = ", newAnnotation[@props.key]
+
+    # console.log 'ANNOTATION BEING SENT TO COMPOSITE TOOL >>>>>>>>>>>>>>>>>> ', newAnnotation
+
+    # if composite-tool is used, this will be a callback to CompositeTool::handleChange()
+    # otherwise, it'll be a callback to Transcribe::handleDataFromTool()
+    @props.onChange(newAnnotation) # report updated annotation to parent
+
+  # handleChange: (annotation) ->
+  #   console.log 'COMPOSITE-TOOL RECEIVING NEW ANNOTATION: ', annotation
+  #   console.log 'COMPOSITE-TOOL::handleChange(), annotation = ', annotation
+  #
+  #   # mergedAnnotation = @props.annotation[k] = v for k, v of d
+  #
+  #   @props.annotation = annotation
+  #   console.log '@PROPS.ANNOTATION = ', @props.annotation
+  #
+  #   @props.onChange @props.annotation
+  #   # @setState annotation: annotation
+  #   #   , =>
+  #   #     @props.onChange @props.annotation
 
   commitAnnotation: ->
-    @props.onComplete @state.annotation
+    @props.onComplete @props.annotation
 
   render: ->
-    console.log 'COMPOSITE-TOOL::render(), @state.annotation = ', @state.annotation
+    console.log 'COMPOSITE-TOOL::render(), @props.annotation = ', @props.annotation
     # If user has set a custom position, position based on that:
     style =
       left: "#{@state.dx*@props.scale.horizontal}px"
@@ -132,12 +159,16 @@ CompositeTool = React.createClass
             <label>{@props.task.instruction}</label>
             { for annotation_key, tool_config of @props.task.tool_config.tools
 
-              # console.log 'ANNOTATION_KEY: ', annotation_key
+              console.log 'ANNOTATION_KEY: ', annotation_key
               # console.log 'RENDERING TOOL: ', tool_config.tool
+
+              # console.log 'PROPS: ', @props
 
               # path = "../#{tool_config.tool.replace(/_/, '-')}"
               ToolComponent = @props.transcribeTools[tool_config.tool]
               focus = annotation_key == @state.active_field_key
+
+              console.log "[[[[[[[ ANNOTATION[#{annotation_key}] ]]]]]]] = ", @props.annotation[annotation_key]
 
               <ToolComponent
                 task={@props.task}
@@ -145,14 +176,13 @@ CompositeTool = React.createClass
                 workflow={@props.workflow}
                 standalone={false}
                 viewerSize={@props.viewerSize}
-                onComplete={@handleFieldComplete.bind @, annotation_key}
                 onChange={@handleChange}
                 label={@props.task.tool_config.tools[annotation_key].label ? ''}
                 focus={focus}
                 scale={@props.scale}
                 key={annotation_key}
                 ref={annotation_key}
-                annotation={@props.annotation[annotation_key]}
+                annotation={@props.annotation}
 
               />
               # onComplete={@handleTaskComplete} onBack={@makeBackHandler()}
