@@ -10,18 +10,21 @@ module.exports =
   # this method fetches the next page of subjects in a given subject_set.
   # right now the trigger for this method is the forward or back button in the light-box
   # I am torn about whether to set the subject_index at this point? -- AMS
-  fetchNextSubjectPage: (subject_set_id, workflow_id, page_number, subject_index) ->
+  fetchNextSubjectPage: (subject_set_id, workflow_id, page_number, subject_index, callback_fn) ->
     console.log 'fetchNextSubjectPage()'
+    console.log 'QUERY: ', "subject_sets/#{subject_set_id}?page=#{page_number}&workflow_id=#{workflow_id}"
     request = API.type("subject_sets").get("#{subject_set_id}", page: page_number, workflow_id: workflow_id)
 
     @setState
       subjectSet: []
-      
+
     request.then (subject_set) =>
+      console.log 'fetchNextSubjectPage() callback!'
+      callback_fn()?
       @setState
         subjectSets: subject_set
         subject_set_index: 0
-        subject_index: 0 # not sure that subject_index should be set here.
+        subject_index: subject_index || 0 # not sure that subject_index should be set here.
         subject_current_page: subject_set.subject_pagination_info.current_page
         total_subject_pages: subject_set.subject_pagination_info.total_pages
 
@@ -47,6 +50,7 @@ module.exports =
         subject_index: parseInt(subject_index) || 0
 
   fetchSubjectSets: (workflow_id, limit) ->
+    console.log 'fetchSubjectSets()'
     if @props.overrideFetchSubjectsUrl?
       # console.log "Fetching (fake) subject sets from #{@props.overrideFetchSubjectsUrl}"
       $.getJSON @props.overrideFetchSubjectsUrl, (subject_sets) =>
@@ -75,4 +79,3 @@ module.exports =
 
         if @fetchSubjectsCallback?
           @fetchSubjectsCallback()
-

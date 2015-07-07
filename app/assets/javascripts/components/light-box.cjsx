@@ -20,16 +20,21 @@ module.exports = React.createClass
     # This allows the new page of subjects to load into the light-box.
     # I switch between setting first: @props.subject_set.subjects[0] and first: @props.subject_set.subjects[@props.subject_index].
     # The former seems appropiate when I load a new page of subjects, the seems appropiate for navigating within a current page of subjects.
-    @setState
-      first: @props.subject_set.subjects[@props.subject_index]
+
+    console.log 'LightBox::componentWillReceiveProps(), PROPS = ', @props
+    console.log 'LightBox::compo....................(), SUBJECT_INDEX = ', @props.subject_index
+    # @setState
+    #   first: @props.subject_set.subjects[@props.subject_index]
 
   getInitialState:->
     first: @props.subject_set.subjects[@props.subject_index]
 
   render: ->
+    window.subjects = @props.subject_set.subjects
+    console.log '>>>>>>>>>>>>>>>>>>> FIRST.ORDER = ', @state.first.order, ' <<<<<<<<<<<<<<<<<<<<<<<<'
     return null if @props.subject_set.subjects.length <= 1
     indexOfFirst = @findSubjectIndex(@state.first)
-    second = @props.subject_set.subjects[indexOfFirst+1] 
+    second = @props.subject_set.subjects[indexOfFirst+1]
     third = @props.subject_set.subjects[indexOfFirst+2]
 
     viewBox = [0, 0, 100, 100]
@@ -38,37 +43,37 @@ module.exports = React.createClass
       <ActionButton id="backward" text="BACK" onClick={@moveBack.bind(this, indexOfFirst)} classes={@backButtonDisable(indexOfFirst)} />
 
       <ul>
-        <li onClick={@shineSelected.bind(this, @findSubjectIndex(@state.first))} className={"active" if @props.subject_index == @findSubjectIndex(@state.first)}> 
+        <li onClick={@shineSelected.bind(this, @findSubjectIndex(@state.first))} className={"active" if @props.subject_index == @findSubjectIndex(@state.first)}>
           {@state.first.order}
           <svg className="light-box-subject" width={175} height={175} viewBox={viewBox} >
               <SVGImage
                 src = {@state.first.location.standard}
                 width = {100}
-                height = {100} 
+                height = {100}
               />
           </svg>
         </li>
         {if second
-          <li onClick={@shineSelected.bind(this, @findSubjectIndex(second))} className={"active" if @props.subject_index == @findSubjectIndex(second)} > 
+          <li onClick={@shineSelected.bind(this, @findSubjectIndex(second))} className={"active" if @props.subject_index == @findSubjectIndex(second)} >
             {second.order}
             <svg className="light-box-subject" width={175} height={175} viewBox={viewBox} >
                 <SVGImage
                   src = {second.location.standard}
                   width = {100}
-                  height = {100} 
+                  height = {100}
                 />
             </svg>
           </li>
         }
 
         {if third
-          <li onClick={@shineSelected.bind(this, @findSubjectIndex(third))} className={"active" if @props.subject_index == @findSubjectIndex(third)} > 
+          <li onClick={@shineSelected.bind(this, @findSubjectIndex(third))} className={"active" if @props.subject_index == @findSubjectIndex(third)} >
             {third.order}
             <svg className="light-box-subject" width={175} height={175} viewBox={viewBox} >
                 <SVGImage
                   src = {third.location.standard}
                   width = {100}
-                  height = {100} 
+                  height = {100}
                 />
             </svg>
           </li>
@@ -92,23 +97,24 @@ module.exports = React.createClass
 
   # determines the forward button css
   forwardButtonDisable: (third) ->
-    if @props.subjectCurrentPage == @props.totalSubjectPages && (@props.subject_set.subjects.length <= 3 || third == @props.subject_set.subjects[@props.subject_set.subjects.length-1]) 
-      return "disabled" 
-    else 
+    if @props.subjectCurrentPage == @props.totalSubjectPages && (@props.subject_set.subjects.length <= 3 || third == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
+      return "disabled"
+    else
       return ""
-  
+
   # finds the index of a given subject within the current page of the subject_set
   findSubjectIndex: (subject_arg)->
+    # return @props.subject_set.subjects.indexOf subject_arg
     for subject, index in @props.subject_set.subjects
       if subject.id == subject_arg.id
         return index
 
-  # allows user to naviagate back though a subject_set 
+  # allows user to naviagate back though a subject_set
   # # controlls navigation of current page of subjects as well as the method that pull a new page of subjects
   moveBack: (indexOfFirst)->
     # if the current page of subjects is the first page of subjects, and the first <li> is the first subject in the page of subjects.
     if @props.subjectCurrentPage == 1 && @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
-      return null 
+      return null
     else if @props.subjectCurrentPage > 1 && @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
       @props.prevPage()
     else
@@ -116,21 +122,20 @@ module.exports = React.createClass
         first: @props.subject_set.subjects[indexOfFirst-1]
 
   moveForward: (indexOfFirst, third, second)->
+    console.log 'MOVE FORWARD () >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
     # if the current page of subjects is the last page of the subject_set and the 2nd or 3rd <li> is the last <li> contain the last subjects in the subject_set
     if @props.subjectCurrentPage == @props.totalSubjectPages && (third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || second == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
-      return null
+      console.log 'IF: branch 1'
+      return #null
     # if the current page of subjects is NOT the last page of the subject_set and the 2nd or 3rd <li> is the last <li> contain the last subjects in the subject_set
     else if @props.subjectCurrentPage < @props.totalSubjectPages && (third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || second == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
-      @props.nextPage()
+      console.log 'IF: branch 2 (next page)'
+      @props.nextPage( => @setState first: @props.subject_set.subjects[0])
+      console.log 'moveForward(), SUBJECT INDEX IS : ', @props.subject_index
+      console.log 'SUBJECT_SET = ', @props.subject_set.subjects
+      # @setState first: @props.subject_set.subjects[0], => @forceUpdate()
     # there are further subjects to see in the currently loaded page
     else
+      console.log 'IF: branch 3'
       @setState
-        first: @props.subject_set.subjects[indexOfFirst+1]
-      
-
-
-
-
-
-
-
+        first: @props.subject_set.subjects[indexOfFirst+3]
