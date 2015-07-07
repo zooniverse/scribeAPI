@@ -1,6 +1,6 @@
 React               = require 'react'
 SVGImage            = require './svg-image'
-ActionButton                  = require './action-button'
+ActionButton        = require './action-button'
 
 module.exports = React.createClass
   displayName: 'LightBox'
@@ -23,6 +23,7 @@ module.exports = React.createClass
     # console.log 'LightBox::componentWillReceiveProps(), PROPS = ', @props
     # console.log 'LightBox::compo....................(), SUBJECT_INDEX = ', @props.subject_index
 
+    # STI: This was causing some of the weird behavior when clicking to view a subject
     # @setState
     #   first: @props.subject_set.subjects[@props.subject_index]
 
