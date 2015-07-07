@@ -1,6 +1,6 @@
 # @cjsx React.DOM
 React      = require 'react'
-Draggable  = require '../../../../lib/draggable'
+Draggable  = require 'lib/draggable'
 DoneButton = require './done-button'
 PrevButton = require './prev-button'
 ReactRouter = require 'react-router' # eventually replace with {Navigation} = require 'react-router' -- STI
@@ -73,7 +73,6 @@ TextTool = React.createClass
 
   componentDidMount: ->
     @updatePosition()
-    # @refs.input0.getDOMNode().focus() if @props.focus
 
     if @props.task.tool_config.suggest == 'common'
       el = $(@refs.input0.getDOMNode())
@@ -115,10 +114,6 @@ TextTool = React.createClass
     @replaceWith("/mark?subject_set_id=#{@props.subject.subject_set_id}&selected_subject_id=#{@props.subject.parent_subject_id.$oid}" )
 
   handleChange: (e) ->
-    # console.log 'KJHSKJDHSDKJHS: REFS: ', @refs[@props.ref]
-    # console.log "FOCUSING ON: #{@props.ref}" if @props.focus
-    # @refs[@props.ref].getDOMNode().focus() if @props.focus
-
     @props.key = @props.ref || 'value' # use 'value' key if standalone
     newAnnotation = []
     newAnnotation[@props.key] = e.target.value
@@ -133,7 +128,6 @@ TextTool = React.createClass
       e.preventDefault()
 
   render: ->
-    # console.log 'TEXT-TOOL::render(), @props.annotation[@props.key] = ', @props.annotation[@props.key]
     style =
       left: "#{@state.dx*@props.scale.horizontal}px"
       top: "#{@state.dy*@props.scale.vertical}px"

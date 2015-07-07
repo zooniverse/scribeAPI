@@ -65,6 +65,7 @@ module.exports = React.createClass # rename to Classifier
           # console.log "handleDataFromTool(), DATA = ", d
 
   handleTaskComplete: (d) ->
+    console.log 'handleTaskComplete(), data = ', d
     @handleDataFromTool(d)
     @commitClassification()
     @beginClassification()

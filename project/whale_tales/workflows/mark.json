@@ -190,8 +190,8 @@
       "tool_config": {
         "tools": [
           {"type": "pointTool",     "label": "Point Tool",    "color": "red",   "generates_subject_type": "transcribe_point_with_text_area_tool" },
-          {"type": "rectangleTool", "label": "Rectangle Tool",  "color": "green", "generates_subject_type": "transcribe_rectangle_text_area_tool" },
-          {"type": "textRowTool",   "label": "Text Row Tool", "color": "blue",  "generates_subject_type": "transcribe_text_row_text_area_tool" }
+          {"type": "rectangleTool", "label": "Rectangle Tool",  "color": "green", "generates_subject_type": "transcribe_rectangle_with_text_area_tool" },
+          {"type": "textRowTool",   "label": "Text Row Tool", "color": "blue",  "generates_subject_type": "transcribe_text_row_with_text_area_tool" }
         ]
       },
       "next_task": "debug_with_composite_text_tool_and_text_area_tool"
@@ -209,7 +209,6 @@
       },
       "next_task": null
     }
-
 
 
   }
