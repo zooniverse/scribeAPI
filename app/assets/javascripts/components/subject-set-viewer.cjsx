@@ -15,7 +15,6 @@ module.exports = React.createClass
   displayName: 'SubjectSetViewer'
   resizing: false
 
-
   getInitialState: ->
     subject_set: @props.subject_set
     tool: @props.tool
@@ -43,7 +42,8 @@ module.exports = React.createClass
       return null
 
   render: ->
-    console.log 'SUBJECT-SET-VIEWER::render(), subject_index = ', @props.subject_index
+    # console.log 'SUBJECT-SET-VIEWER::render(), subject_index = ', @props.subject_index
+    # NOTE: LightBox does not receive correct @props.subject_index. Why? --STI
     <div className="subject-set-viewer">
       <div className="light-box-area">
         {

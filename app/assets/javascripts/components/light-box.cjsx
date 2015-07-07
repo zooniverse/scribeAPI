@@ -2,8 +2,6 @@ React               = require 'react'
 SVGImage            = require './svg-image'
 ActionButton                  = require './action-button'
 
-
-
 module.exports = React.createClass
   displayName: 'LightBox'
 
@@ -21,8 +19,10 @@ module.exports = React.createClass
     # I switch between setting first: @props.subject_set.subjects[0] and first: @props.subject_set.subjects[@props.subject_index].
     # The former seems appropiate when I load a new page of subjects, the seems appropiate for navigating within a current page of subjects.
 
-    console.log 'LightBox::componentWillReceiveProps(), PROPS = ', @props
-    console.log 'LightBox::compo....................(), SUBJECT_INDEX = ', @props.subject_index
+    # NOTE: Received prop is not correct: @props.subject_index. Why? --STI
+    # console.log 'LightBox::componentWillReceiveProps(), PROPS = ', @props
+    # console.log 'LightBox::compo....................(), SUBJECT_INDEX = ', @props.subject_index
+
     # @setState
     #   first: @props.subject_set.subjects[@props.subject_index]
 
@@ -31,7 +31,6 @@ module.exports = React.createClass
 
   render: ->
     window.subjects = @props.subject_set.subjects
-    console.log '>>>>>>>>>>>>>>>>>>> FIRST.ORDER = ', @state.first.order, ' <<<<<<<<<<<<<<<<<<<<<<<<'
     return null if @props.subject_set.subjects.length <= 1
     indexOfFirst = @findSubjectIndex(@state.first)
     second = @props.subject_set.subjects[indexOfFirst+1]
@@ -122,20 +121,16 @@ module.exports = React.createClass
         first: @props.subject_set.subjects[indexOfFirst-1]
 
   moveForward: (indexOfFirst, third, second)->
-    console.log 'MOVE FORWARD () >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
     # if the current page of subjects is the last page of the subject_set and the 2nd or 3rd <li> is the last <li> contain the last subjects in the subject_set
     if @props.subjectCurrentPage == @props.totalSubjectPages && (third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || second == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
-      console.log 'IF: branch 1'
       return #null
     # if the current page of subjects is NOT the last page of the subject_set and the 2nd or 3rd <li> is the last <li> contain the last subjects in the subject_set
     else if @props.subjectCurrentPage < @props.totalSubjectPages && (third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || second == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
-      console.log 'IF: branch 2 (next page)'
-      @props.nextPage( => @setState first: @props.subject_set.subjects[0])
-      console.log 'moveForward(), SUBJECT INDEX IS : ', @props.subject_index
-      console.log 'SUBJECT_SET = ', @props.subject_set.subjects
+      @props.nextPage( => @setState first: @props.subject_set.subjects[0] )
+      # NOTE: for some reason, LightBox does not receive correct value for @props.subject_index, which has led to this awkard callback function above --STI
       # @setState first: @props.subject_set.subjects[0], => @forceUpdate()
+
     # there are further subjects to see in the currently loaded page
     else
-      console.log 'IF: branch 3'
       @setState
-        first: @props.subject_set.subjects[indexOfFirst+3]
+        first: @props.subject_set.subjects[indexOfFirst+1]
