@@ -115,7 +115,7 @@ module.exports = React.createClass
     if @props.subjectCurrentPage == 1 && @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
       return null
     else if @props.subjectCurrentPage > 1 && @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
-      @props.prevPage()
+      @props.prevPage( => @setState first: @props.subject_set.subjects[0] )
     else
       @setState
         first: @props.subject_set.subjects[indexOfFirst-1]

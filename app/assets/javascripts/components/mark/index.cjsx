@@ -220,10 +220,10 @@ module.exports = React.createClass # rename to Classifier
     console.log "Np() subject_set", subject_set, new_page
     @fetchNextSubjectPage(subject_set.id, @props.workflow.id, new_page, 0, callback_fn)
 
-  prevPage: ->
+  prevPage: (callback_fn) ->
     new_page = @state.subject_current_page - 1
     subject_set = @getCurrentSubjectSet()
     console.log "Np() subject_set", subject_set
-    @fetchNextSubjectPage(subject_set.id, @props.workflow.id, new_page, 0)
+    @fetchNextSubjectPage(subject_set.id, @props.workflow.id, new_page, 0, callback_fn)
 
 window.React = React
