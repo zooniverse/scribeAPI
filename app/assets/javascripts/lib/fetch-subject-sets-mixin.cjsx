@@ -7,7 +7,10 @@ module.exports =
     else
       @fetchSubjectSets @props.workflow.id, @props.workflow.subject_fetch_limit
 
-  fetchNextSubjectPage: (subject_set_id, workflow_id, page_number, subject_index)->
+  # this method fetches the next page of subjects in a given subject_set.
+  # right now the trigger for this method is the forward or back button in the light-box
+  # I am torn about whether to set the subject_index at this point? -- AMS
+  fetchNextSubjectPage: (subject_set_id, workflow_id, page_number, subject_index) ->
     console.log 'fetchNextSubjectPage()'
     request = API.type("subject_sets").get("#{subject_set_id}", page: page_number, workflow_id: workflow_id)
 
@@ -15,11 +18,10 @@ module.exports =
       subjectSet: []
       
     request.then (subject_set) =>
-      console.log "SUBJECT SET", subject_set
       @setState
         subjectSets: subject_set
         subject_set_index: 0
-        subject_index: 0
+        subject_index: 0 # not sure that subject_index should be set here.
         subject_current_page: subject_set.subject_pagination_info.current_page
         total_subject_pages: subject_set.subject_pagination_info.total_pages
 

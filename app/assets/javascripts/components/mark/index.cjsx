@@ -26,7 +26,6 @@ module.exports = React.createClass # rename to Classifier
     currentSubToolIndex:          0
 
   componentWillMount: ->
-    console.log "MARK WRKFLOW MOUNTING"
     completion_assessment_task = {
         "generates_subject_type": null,
         "instruction": "Is there anything left to mark?",
@@ -56,7 +55,7 @@ module.exports = React.createClass # rename to Classifier
 
   render: ->
     return null unless @getCurrentSubject()?
-    console.log "mark/index @state", @state
+    # console.log "mark/index @state", @state
     currentTask = @props.workflow.tasks[@state.taskKey] # [currentAnnotation?.task]
     TaskComponent = @getCurrentTool() # coreTools[currentTask.tool]
     onFirstAnnotation = @state.taskKey == @props.workflow.first_task
@@ -147,6 +146,7 @@ module.exports = React.createClass # rename to Classifier
     # console.log "HANDLE View Subject: subject", subject
     # @state.currentSubject = subject
     # @forceUpdate()
+    console.log "mark/index -->HVS index", index
     @setState
       subject_index: index
 
@@ -216,18 +216,12 @@ module.exports = React.createClass # rename to Classifier
     new_page = @state.subject_current_page + 1
     subject_set = @getCurrentSubjectSet()
     console.log "Np() subject_set", subject_set
-    # @setState
-    #   subject_current_page: new_page
-    
     @fetchNextSubjectPage(subject_set.id, @props.workflow.id, new_page)
 
   prevPage: ->
     new_page = @state.subject_current_page - 1
     subject_set = @getCurrentSubjectSet()
-    console.log "Np() subject_set", subject_set
-    # @setState
-    #   subject_current_page: new_page
-    
+    console.log "Np() subject_set", subject_set    
     @fetchNextSubjectPage(subject_set.id, @props.workflow.id, new_page)
 
 window.React = React
