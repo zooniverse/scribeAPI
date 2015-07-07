@@ -10,39 +10,6 @@
 
   "tasks": {
 
-    "transcribe_point": {
-      "tool": "compositeTool",
-      "tool_config": {
-        "tools": {
-          "em_valuation_date": {
-            "tool": "dateTool",
-            "tool_config": {},
-            "label": "Date"
-          },
-          "em_valuation_amount": {
-            "tool": "textTool",
-            "tool_config": {},
-            "label": "Amount"
-          }
-        }
-      },
-      "instruction": "Transcribe this point.",
-      "next_task": "entry_date"
-    },
-    "transcribe_rectangle": {
-      "tool": "textTool",
-      "tool_config": {},
-      "instruction": "Transcribe this rectangle.",
-      "next_task": "entry_date"
-    },
-    "transcribe_text_row": {
-      "tool": "textTool",
-      "tool_config": {},
-      "instruction": "Transcribe this text row.",
-      "next_task": "entry_date"
-
-    },
-
     "entry_date": {
       "tool": "textTool",
       "tool_config": {},
@@ -110,7 +77,7 @@
 
 
     "sea_ice_date": {
-      "tool": "dateTool",
+      "tool": "textTool",
       "tool_config": {},
       "instruction": "Enter the date of the sea ice description",
       "next_task": null
@@ -134,7 +101,7 @@
 
 
     "weather_date": {
-      "tool": "dateTool",
+      "tool": "textTool",
       "tool_config": {},
       "instruction": "What is the date of this entry?",
       "next_task": null
@@ -189,7 +156,7 @@
     },
 
     "weather_precipitation": {
-      "tool": "dateTool",
+      "tool": "textTool",
       "tool_config": {},
       "instruction": "Enter the precipitation description.",
       "next_task": null
@@ -229,49 +196,113 @@
 
 
 
-
-
-
-
-
-
-
-    "transcribe_rectangle": {
+    "transcribe_point_with_text_tool": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Transcribe this point.",
+      "next_task": null
+    },
+    "transcribe_rectangle_with_text_tool": {
       "tool": "textTool",
       "tool_config": {},
       "instruction": "Transcribe this rectangle.",
-      "next_task": "entry_date"
+      "next_task": null
     },
-    "transcribe_text_row": {
+    "transcribe_text_row_with_text_tool": {
       "tool": "textTool",
       "tool_config": {},
       "instruction": "Transcribe this text row.",
-      "next_task": "entry_date"
+      "next_task": null
     },
-    "entry_date": {
-      "tool": "textTool",
-      "tool_config": {},
-      "instruction": "What is the entry date?",
-      "next_task": "page_number"
-    },
-    "page_number": {
-      "tool": "textTool",
-      "tool_config": {},
-      "instruction": "What is the page number?",
-      "next_task": "location"
-    },
-    "location": {
-      "tool": "textTool",
-      "tool_config": {},
-      "instruction": "What is the location?",
-      "next_task": "entry_text"
-    },
-    "entry_text": {
+
+    "transcribe_point_with_text_area_tool": {
       "tool": "textAreaTool",
       "tool_config": {},
-      "instruction": "Please transcribe the remainder of the highlighted entry.",
+      "instruction": "Transcribe this point.",
+      "next_task": null
+    },
+    "transcribe_rectangle_with_text_area_tool": {
+      "tool": "textAreaTool",
+      "tool_config": {},
+      "instruction": "Transcribe this rectangle.",
+      "next_task": null
+    },
+    "transcribe_text_row_with_text_area_tool": {
+      "tool": "textAreaTool",
+      "tool_config": {},
+      "instruction": "Transcribe this text row.",
+      "next_task": null
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+    "transcribe_point_with_composite_text_tool_and_text_area_tool": {
+      "tool": "compositeTool",
+      "tool_config": {
+        "tools": {
+          "first_field": {
+            "tool": "textTool",
+            "tool_config": {},
+            "label": "Text Tool"
+          },
+          "second_field": {
+            "tool": "textAreaTool",
+            "tool_config": {},
+            "label": "TextArea"
+          }
+        }
+      },
+      "instruction": "Transcribe this point.",
+      "next_task": "transcribe_rectangle_with_composite_text_tool_and_text_area_tool"
+    },
+    "transcribe_rectangle_with_composite_text_tool_and_text_area_tool": {
+      "tool": "compositeTool",
+      "tool_config": {
+        "tools": {
+          "first_field": {
+            "tool": "textTool",
+            "tool_config": {},
+            "label": "Text Tool"
+          },
+          "second_field": {
+            "tool": "textAreaTool",
+            "tool_config": {},
+            "label": "Text Area Tool"
+          }
+        }
+      },
+      "instruction": "Transcribe this rectangle.",
+      "next_task": null
+    },
+    "transcribe_text_row_with_composite_text_tool_and_text_area_tool": {
+      "tool": "compositeTool",
+      "tool_config": {
+        "tools": {
+          "first_field": {
+            "tool": "textTool",
+            "tool_config": {},
+            "label": "Text Tool"
+          },
+          "second_field": {
+            "tool": "textAreaTool",
+            "tool_config": {},
+            "label": "TextArea"
+          }
+        }
+      },
+      "instruction": "Transcribe this text row.",
       "next_task": null
     }
+
 
 
 

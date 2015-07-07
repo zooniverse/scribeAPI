@@ -10,8 +10,9 @@ tools = require '../'
 CompositeTool = React.createClass
   displayName: 'CompositeTool'
 
-  getInitialState: ->
-    active_field_key: null
+  # getInitialState: ->
+  #   console.log 'BLAH', @props.task.tool_config.tools[0]
+  #   active_field_key: @props.task.tool_config.tools[0]
 
   handleInitStart: (e) ->
     # console.log 'handleInitStart() '
@@ -42,7 +43,9 @@ CompositeTool = React.createClass
     dx: x
     dy: y
     viewerSize: @props.viewerSize
-    annotation: {}
+    active_field_key: (key for key, value of @props.task.tool_config.tools)[0]
+
+    # annotation: {}
 
   getPosition: (data) ->
     switch data.toolName
@@ -58,14 +61,12 @@ CompositeTool = React.createClass
     return {x,y}
 
   componentWillReceiveProps: ->
-    @setState
-      annotation: @props.annotation
-      active_field_key: (key for key, v of @props.task.tool_config.tools)[0]
+    @setState annotation: @props.annotation
+      # active_field_key: (key for key, v of @props.task.tool_config.tools)[0]
 
   componentDidMount: ->
     @updatePosition()
-    @setState
-      active_field_key: (key for key, v of @props.task.tool_config.tools)[0]
+    # @setState active_field_key: (key for key, v of @props.task.tool_config.tools)[0]
 
   # Expects size hash with:
   #   w: [viewer width]
@@ -73,6 +74,7 @@ CompositeTool = React.createClass
   #   scale:
   #     horizontal: [horiz scaling of image to fit within above vals]
   #     vertical:   [vert scaling of image..]
+
   onViewerResize: (size) ->
     @setState
       viewerSize: size
@@ -86,29 +88,27 @@ CompositeTool = React.createClass
         # dy: (@props.subject.location.spec.y + @props.subject.location.spec.height) * @state.viewerSize.scale.vertical
       # console.log "TextTool#updatePosition setting state: ", @state
 
-  # this doesn't do anything?
-  handleFieldComplete: (key, ann) ->
-    console.log 'COMPOSITE-TOOL::handleFieldComplete()'
-    inp = @refs[key]
-
-    keys = (key for key, t in @props.task.tool_config.tools)
-    next_key = keys[keys.indexOf(@state.active_field_key) + 1]
-    if next_key?
-      @setState active_field_key: next_key, () =>
-        @forceUpdate()
-    else
-      @setState annotation: ann, () =>
-        @commitAnnotation()
+  # # this doesn't do anything?
+  # handleFieldComplete: (key, ann) ->
+  #   console.log 'COMPOSITE-TOOL::handleFieldComplete()'
+  #   inp = @refs[key]
+  #
+  #   keys = (key for key, t in @props.task.tool_config.tools)
+  #   next_key = keys[keys.indexOf(@state.active_field_key) + 1]
+  #   if next_key?
+  #     @setState active_field_key: next_key, () =>
+  #       @forceUpdate()
+  #   else
+  #     @setState annotation: ann, () =>
+  #       @commitAnnotation()
 
   handleChange: (annotation) ->
-    console.log 'COMPOSITE-TOOL::handleChange(), annotation = ', annotation
-    @setState annotation: annotation
+    @props.onChange annotation # forward annotation to parent
 
   commitAnnotation: ->
-    @props.onComplete @state.annotation
+    @props.onComplete @props.annotation
 
   render: ->
-    console.log 'COMPOSITE-TOOL::render(), @state.annotation = ', @state.annotation
     # If user has set a custom position, position based on that:
     style =
       left: "#{@state.dx*@props.scale.horizontal}px"
@@ -127,32 +127,26 @@ CompositeTool = React.createClass
         <div className="left">
           <div className="input-field active">
             <label>{@props.task.instruction}</label>
-            { for annotation_key, tool_config of @props.task.tool_config.tools
+            {
+              for annotation_key, tool_config of @props.task.tool_config.tools
+                ToolComponent = @props.transcribeTools[tool_config.tool]
+                focus = annotation_key is @state.active_field_key
 
-              # console.log 'ANNOTATION_KEY: ', annotation_key
-              # console.log 'RENDERING TOOL: ', tool_config.tool
-
-              # path = "../#{tool_config.tool.replace(/_/, '-')}"
-              ToolComponent = @props.transcribeTools[tool_config.tool]
-              focus = annotation_key == @state.active_field_key
-
-              <ToolComponent
-                task={@props.task}
-                subject={@props.subject}
-                workflow={@props.workflow}
-                standalone={false}
-                viewerSize={@props.viewerSize}
-                onComplete={@handleFieldComplete.bind @, annotation_key}
-                onChange={@props.onChange}
-                handleChange={@handleChange}
-                label={@props.task.tool_config.tools[annotation_key].label ? ''}
-                focus={focus}
-                scale={@props.scale}
-                key={annotation_key}
-                ref={annotation_key}
-                annotation={@props.annotation[annotation_key]}
-
-              />
+                <ToolComponent
+                  task={@props.task}
+                  subject={@props.subject}
+                  workflow={@props.workflow}
+                  standalone={false}
+                  viewerSize={@props.viewerSize}
+                  onChange={@handleChange}
+                  onComplete={@commitAnnotation}
+                  label={@props.task.tool_config.tools[annotation_key].label ? ''}
+                  focus={focus}
+                  scale={@props.scale}
+                  key={annotation_key}
+                  ref={annotation_key}
+                  annotation={@props.annotation}
+                />
               # onComplete={@handleTaskComplete} onBack={@makeBackHandler()}
             }
           </div>

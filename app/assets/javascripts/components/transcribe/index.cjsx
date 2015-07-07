@@ -30,10 +30,6 @@ module.exports = React.createClass # rename to Classifier
   componentWillMount: ->
     @beginClassification()
 
-  componentDidMount: ->
-    console.log 'MOUNTED TRANSCRIBE COMPONENT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
-    console.log 'PROPS: ', @props
-
   fetchSubjectsCallback: ->
     #TODO: We do need to account for times when there are no subjects? type won't do that. -AMS
     console.log 'CURRENT SUBJECT: ', @getCurrentSubject()
@@ -55,19 +51,21 @@ module.exports = React.createClass # rename to Classifier
 
   # Handle user selecting a pick/drawing tool:
   handleDataFromTool: (d) ->
-    console.log "TRANSCRIBE/INDEX::handleDataFromTool(), DATA = ", d
     classifications = @state.classifications
-    classifications[@state.classificationIndex].annotation[k] = v for k, v of d
+    currentClassification = classifications[@state.classificationIndex]
 
+    # this is a source of conflict. do we copy key/value pairs, or replace the entire annotation? --STI
+    currentClassification.annotation[k] = v for k, v of d
+
+    @forceUpdate()
     @setState
       classifications: classifications
         , =>
           @forceUpdate()
           # console.log "handleDataFromTool(), DATA = ", d
 
-
   handleTaskComplete: (d) ->
-    console.log 'TRANSCRIBE/INDEX::handleTaskComplete(), DATA = ', d
+    console.log 'handleTaskComplete(), data = ', d
     @handleDataFromTool(d)
     @commitClassification()
     @beginClassification()
@@ -85,7 +83,7 @@ module.exports = React.createClass # rename to Classifier
     if @state.subject_index + 1 < @state.subjects.length
       next_index = @state.subject_index + 1
       next_subject = @state.subjects[next_index]
-      console.log 'NEXT SUBJECT: ', next_subject
+      # console.log 'NEXT SUBJECT: ', next_subject
       @setState
         # currentSubject: next_subject
         taskKey: next_subject.type
@@ -110,17 +108,20 @@ module.exports = React.createClass # rename to Classifier
       console.log "go back"
 
   render: ->
-    if @props.query.scrollX? and @props.query.scrollY?
-      window.scrollTo(@props.query.scrollX,@props.query.scrollY)
+    # if @props.query.scrollX? and @props.query.scrollY?
+    #   window.scrollTo(@props.query.scrollX,@props.query.scrollY)
 
     currentAnnotation = @getCurrentClassification().annotation
-    console.log 'CURRENT ANNOTATION: ', currentAnnotation
+    # console.log 'CURRENT ANNOTATION: ', currentAnnotation
 
-    TaskComponent = @getCurrentTool() # @state.currentTool
+    TranscribeComponent = @getCurrentTool() # @state.currentTool
     onFirstAnnotation = currentAnnotation?.task is @props.workflow.first_task
+
+    # console.log 'CURRENT TOOL: ', @getCurrentTask()?.tool
 
     <div className="classifier">
       <div className="subject-area">
+
         { if @state.noMoreSubjects
             style = marginTop: "50px"
             <p style={style}>There are currently no transcription subjects. Try <a href="/#/mark">marking</a> instead!</p>
@@ -133,7 +134,7 @@ module.exports = React.createClass # rename to Classifier
               classification={@props.classification}
               annotation={currentAnnotation}
             >
-              <TaskComponent
+              <TranscribeComponent
                 viewerSize={@state.viewerSize}
                 key={@state.taskKey}
                 task={@getCurrentTask()}
