@@ -103,34 +103,32 @@ module.exports = React.createClass
 
   # finds the index of a given subject within the current page of the subject_set
   findSubjectIndex: (subject_arg)->
-    # return @props.subject_set.subjects.indexOf subject_arg
-    for subject, index in @props.subject_set.subjects
-      if subject.id == subject_arg.id
-        return index
+    return @props.subject_set.subjects.indexOf subject_arg
 
   # allows user to naviagate back though a subject_set
   # # controlls navigation of current page of subjects as well as the method that pull a new page of subjects
   moveBack: (indexOfFirst)->
     # if the current page of subjects is the first page of subjects, and the first <li> is the first subject in the page of subjects.
-    if @props.subjectCurrentPage == 1 && @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
-      return null
-    else if @props.subjectCurrentPage > 1 && @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
+    # if @props.subjectCurrentPage == 1 && @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
+    #   return #null
+    # else
+    if @props.subjectCurrentPage > 1 && @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
       @props.prevPage( => @setState first: @props.subject_set.subjects[0] )
     else
-      @setState
-        first: @props.subject_set.subjects[indexOfFirst-1]
+      @setState first: @props.subject_set.subjects[indexOfFirst-1]
 
   moveForward: (indexOfFirst, third, second)->
     # if the current page of subjects is the last page of the subject_set and the 2nd or 3rd <li> is the last <li> contain the last subjects in the subject_set
-    if @props.subjectCurrentPage == @props.totalSubjectPages && (third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || second == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
-      return #null
-    # if the current page of subjects is NOT the last page of the subject_set and the 2nd or 3rd <li> is the last <li> contain the last subjects in the subject_set
-    else if @props.subjectCurrentPage < @props.totalSubjectPages && (third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || second == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
+    # if @props.subjectCurrentPage == @props.totalSubjectPages && (third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || second == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
+    #   # this doesn't do anything?
+    #   return
+    # # if the current page of subjects is NOT the last page of the subject_set and the 2nd or 3rd <li> is the last <li> contain the last subjects in the subject_set
+    # else
+    if @props.subjectCurrentPage < @props.totalSubjectPages && (third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || second == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
       @props.nextPage( => @setState first: @props.subject_set.subjects[0] )
       # NOTE: for some reason, LightBox does not receive correct value for @props.subject_index, which has led to this awkard callback function above --STI
       # @setState first: @props.subject_set.subjects[0], => @forceUpdate()
 
     # there are further subjects to see in the currently loaded page
     else
-      @setState
-        first: @props.subject_set.subjects[indexOfFirst+1]
+      @setState first: @props.subject_set.subjects[indexOfFirst+1]
