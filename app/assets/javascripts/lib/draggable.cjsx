@@ -20,7 +20,7 @@ module.exports = React.createClass
     # console.log "Draggable#shouldComponentUpdate", @props.x
 
   propTypes:
-    children: React.PropTypes.component.isRequired
+    # children: React.PropTypes.component.isRequired
     onStart: React.PropTypes.oneOfType [
       React.PropTypes.func
       React.PropTypes.bool

@@ -5,6 +5,8 @@ HomePage = React.createClass
   displayName : "HomePage"
 
   render:->
+    console.log "render homepage"
+
     <div className="home-page">
 
       <div className="page-content">
@@ -12,9 +14,11 @@ HomePage = React.createClass
         <div dangerouslySetInnerHTML={{__html: @props.content}} />
       </div>
 
-      <div className='group-area'>
-        <GroupBrowser project={@props.project} />
-      </div>
+      { if @props.project?
+        <div className='group-area'>
+          <GroupBrowser project={@props.project} />
+        </div>
+      }
     </div>
 
 module.exports = HomePage

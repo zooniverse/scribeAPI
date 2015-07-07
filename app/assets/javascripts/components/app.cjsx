@@ -14,6 +14,9 @@ App = React.createClass
   getInitialState: ->
     project: null
 
+  contextTypes:
+    router: React.PropTypes.func
+
   componentDidMount: ->
 
     API.type('projects').get().then (result)=>
@@ -34,6 +37,10 @@ App = React.createClass
           <h1>{page.name}</h1>
           <div dangerouslySetInnerHTML={{__html: page.content}} />
         </div>
+
+  shouldComponentUpdate: ->
+    console.log "should app update?"
+    true
 
   # TODO: workflow being passed as an object in an array. why?
   render: ->
