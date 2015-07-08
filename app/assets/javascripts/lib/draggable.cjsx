@@ -1,5 +1,5 @@
 React = require 'react'
-cloneWithProps = require 'react/lib/cloneWithProps'
+# cloneWithProps = require 'react/lib/cloneWithProps'
 
 module.exports = React.createClass
   displayName: 'Draggable'
@@ -39,7 +39,7 @@ module.exports = React.createClass
         left: @state.x
         top: @state.y
       # console.log "Draggable[#{@props.inst}] render: ", style
-      cloneWithProps @props.children,
+      React.cloneElement @props.children,
         className: 'draggable'
         onMouseDown: @handleStart
         style: style

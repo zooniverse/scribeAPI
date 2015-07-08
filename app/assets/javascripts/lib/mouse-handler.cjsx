@@ -22,7 +22,7 @@ module.exports = React.createClass
     if @props.disabled
       @props.children
     else
-      cloneWithProps @props.children,
+      React.cloneElement @props.children,
         className: 'draggable'
         onMouseDown: @handleStart
 

@@ -11,13 +11,12 @@ API                     = require '../../lib/api'
 module.exports = React.createClass # rename to Classifier
   displayName: 'Mark'
 
-  propTypes:
-    workflow: React.PropTypes.object.isRequired
+  getDefaultProps: ->
+    workflowName: 'mark'
 
   mixins: [FetchSubjectSetsMixin, BaseWorkflowMethods] # load subjects and set state variables: subjects, currentSubject, classification
 
   getInitialState: ->
-    workflow:                     @props.workflow
     taskKey:                      null
     classifications:              []
     classificationIndex:          0
@@ -25,39 +24,21 @@ module.exports = React.createClass # rename to Classifier
     subject_index:                0
     currentSubToolIndex: 0
 
-  componentWillMount: ->
-    completion_assessment_task = {
-        "generates_subject_type": null,
-        "instruction": "Is there anything left to mark?",
-        "key": "completion_assessment_task",
-        "next_task": null,
-        "tool": "pickOne",
-        "tool_config": {
-            "options": {
-                "complete_subject": {
-                    "label": "No",
-                    "next_task": null
-                },
-                "incomplete_subject": {
-                    "label": "Yes",
-                    "next_task": null
-                }
-            }
-        },
-        "subToolIndex": 0
-      }
+  componentDidMount: ->
+    @getCompletionAssessmentTask()
 
-    @props.workflow.tasks["completion_assessment_task"] = completion_assessment_task
+  componentWillMount: ->
     @setState
-      taskKey: @props.workflow.first_task
+      taskKey: @activeWorkflow().first_task
 
     @beginClassification()
 
   render: ->
-    return null unless @getCurrentSubject()?
-    currentTask = @props.workflow.tasks[@state.taskKey] # [currentAnnotation?.task]
-    TaskComponent = @getCurrentTool() # coreTools[currentTask.tool]
-    onFirstAnnotation = @state.taskKey == @props.workflow.first_task
+    return null unless @getCurrentSubject()? && @activeWorkflow()?
+
+    currentTask = @getCurrentTask() # @activeWorkflow().tasks[@state.taskKey] # [currentAnnotation?.task]
+    TaskComponent = @getCurrentTool()
+    onFirstAnnotation = @state.taskKey == @activeWorkflow().first_task
 
 
     if currentTask.tool is 'pick_one'
@@ -75,7 +56,7 @@ module.exports = React.createClass # rename to Classifier
             <SubjectSetViewer
               subject_set={@getCurrentSubjectSet()}
               subject_index={@state.subject_index}
-              workflow={@props.workflow}
+              workflow={@activeWorkflow()}
               task={currentTask}
               annotation={@getCurrentClassification().annotation ? {}}
               onComplete={@handleToolComplete}
@@ -132,7 +113,7 @@ module.exports = React.createClass # rename to Classifier
     @setState
       subject_set_index: new_subject_set_index
       subject_index: new_subject_index
-      taskKey: @props.workflow.first_task
+      taskKey: @activeWorkflow().first_task
       currentSubToolIndex: 0, =>
         # console.log "After @state", @state
 

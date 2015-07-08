@@ -1,11 +1,11 @@
 {
   "name": "scribeAPI",
   "devDependencies" : {
-    "browserify": "~9.0.8",
-    "browserify-incremental": "^3.0.0",
-    "react": "0.13.3",
-    "react-router": "1.0.0-beta1",
-    "reactify": "^1.1.0"
+    "browserify": "~10.2.4",
+    "browserify-incremental": "^3.0.1",
+    "react": "^0.13.3",
+    "react-router": "^0.13.3",
+    "coffee-reactify": "^4.0.0"
   },
   "license": "MIT",
   "engines": {
