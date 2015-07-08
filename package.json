@@ -2,15 +2,30 @@
   "name": "something",
   "devDependencies": {
     "browserify": "^5.12.1",
-    "coffee-reactify": "^1.0.2"
+    "coffee-reactify": "^1.0.2",
+    "coffee-script": "^1.9.3"
+  },
+  "scripts": {
+    "test": "node ./node_modules/jest-cli/bin/jest.js"
   },
   "jest": {
     "rootDir": "./app/assets/javascripts",
-      "scriptPreprocessor": "<rootDir>/__tests__/preprocessor.js",
-      "scriptPreprocessor": "preprocessor.js",
-      "testFileExtensions": ["coffee", "litcoffee", "coffee.md", "js"],
-      "moduleFileExtensions": ["coffee", "litcoffee", "coffee.md", "js"]
-    },
+    "scriptPreprocessor": "<rootDir>/__tests__/preprocessor.js",
+    "testFileExtensions": [
+      "coffee",
+      "cjsx",
+      "litcoffee",
+      "coffee.md",
+      "js"
+    ],
+    "moduleFileExtensions": [
+      "coffee",
+      "cjsx",
+      "litcoffee",
+      "coffee.md",
+      "js"
+    ]
+  },
   "dependencies": {
     "react": "^0.11.2",
     "react-router": "^0.7.0",
