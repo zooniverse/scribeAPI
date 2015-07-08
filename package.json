@@ -4,6 +4,13 @@
     "browserify": "^5.12.1",
     "coffee-reactify": "^1.0.2"
   },
+  "jest": {
+    "rootDir": "./app/assets/javascripts",
+      "scriptPreprocessor": "<rootDir>/__tests__/preprocessor.js",
+      "scriptPreprocessor": "preprocessor.js",
+      "testFileExtensions": ["coffee", "litcoffee", "coffee.md", "js"],
+      "moduleFileExtensions": ["coffee", "litcoffee", "coffee.md", "js"]
+    },
   "dependencies": {
     "react": "^0.11.2",
     "react-router": "^0.7.0",
