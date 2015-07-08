@@ -1,5 +1,4 @@
  # @cjsx React.DOM
-
 React                         = require 'react'
 SubjectViewer                 = require './subject-viewer'
 {Router, Routes, Route, Link} = require 'react-router'
@@ -35,7 +34,7 @@ module.exports = React.createClass
     # @setState subject_index: new_index, () =>
     @props.onViewSubject? new_index # @props.subject_index
 
-  specificSelection: (new_index) ->
+  specificSelection: (blah, new_index) ->
     # this prevents navigating away from the subject during a workflow --AMS
     if @props.workflow.first_task == @props.task.key
       @props.onViewSubject? new_index
@@ -43,14 +42,24 @@ module.exports = React.createClass
       return null
 
   render: ->
+    # console.log 'SUBJECT-SET-VIEWER::render(), subject_index = ', @props.subject_index
+    # NOTE: LightBox does not receive correct @props.subject_index. Why? --STI
     <div className="subject-set-viewer">
-    <div className="light-box-area">
-      { if @props.subject_set.subjects.length > 1
-          subject_index = @props.subject_index
-          onViewSubject = @props.onViewSubject
-          <LightBox subject_set={@state.subject_set} subject_index={subject_index} onSubject={@specificSelection}/>
-      }
-    </div>
+      <div className="light-box-area">
+        {
+          if @props.subject_set.subjects.length > 1
+            <LightBox
+              subject_set={@state.subject_set}
+              subject_index={@props.subject_index}
+
+              onSubject={@specificSelection.bind this, @props.subject_index}
+              subjectCurrentPage={@props.subjectCurrentPage}
+              nextPage={@props.nextPage}
+              prevPage={@props.prevPage}
+              totalSubjectPages={@props.totalSubjectPages}
+            />
+        }
+      </div>
       { for subject, index in @props.subject_set.subjects
         <SubjectViewer
           key={index}

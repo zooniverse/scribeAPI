@@ -35,10 +35,11 @@ module.exports = React.createClass # rename to Classifier
     console.log 'CURRENT SUBJECT: ', @getCurrentSubject()
 
     currentSubject = @getCurrentSubject()
-
+    console.log "feCallBack currentSubject", currentSubject
     if not currentSubject?
       @setState noMoreSubjects: true, => @forceUpdate()
     else
+      console.log "currentSubject.type", @getCurrentSubject().type
       @setState taskKey: @getCurrentSubject().type
 
     # @advanceToTask new_key
@@ -108,16 +109,13 @@ module.exports = React.createClass # rename to Classifier
       console.log "go back"
 
   render: ->
+    # DISABLE ANIMATED SCROLLING FOR NOW
     # if @props.query.scrollX? and @props.query.scrollY?
     #   window.scrollTo(@props.query.scrollX,@props.query.scrollY)
 
     currentAnnotation = @getCurrentClassification().annotation
-    # console.log 'CURRENT ANNOTATION: ', currentAnnotation
-
     TranscribeComponent = @getCurrentTool() # @state.currentTool
     onFirstAnnotation = currentAnnotation?.task is @props.workflow.first_task
-
-    # console.log 'CURRENT TOOL: ', @getCurrentTask()?.tool
 
     <div className="classifier">
       <div className="subject-area">

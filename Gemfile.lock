@@ -137,6 +137,9 @@ GEM
       thor (>= 0.14, < 2.0)
     json (1.8.2)
     jwt (1.4.1)
+    kaminari (0.16.3)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
     launchy (2.4.3)
       addressable (~> 2.3)
     mail (2.5.4)
@@ -277,10 +280,6 @@ GEM
       json (>= 1.8.0)
     warden (1.2.3)
       rack (>= 1.0)
-    will_paginate (3.0.7)
-    will_paginate_mongoid (2.0.1)
-      mongoid
-      will_paginate (~> 3.0)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
@@ -304,6 +303,7 @@ DEPENDENCIES
   fastimage (= 1.7.0)
   jbuilder (~> 1.2)
   jquery-rails
+  kaminari
   launchy
   mongoid!
   mongoid-rspec (>= 1.6.0)!
@@ -326,4 +326,3 @@ DEPENDENCIES
   stylus (~> 1.0.1)
   turbolinks
   uglifier (>= 1.3.0)
-  will_paginate_mongoid (= 2.0.1)
