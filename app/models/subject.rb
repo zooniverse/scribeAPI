@@ -3,13 +3,13 @@ class Subject
   include Mongoid::Timestamps
   include Randomizer
 
-  paginates_per 5
+  paginates_per 3
 
   scope :active_root, -> { where(type: 'root', status: 'active').asc(:order) }
   scope :active, -> { where(status: 'active').asc(:order)  }
 
   # This is a hash with one entry per deriv; `standard', 'thumbnail', etc
-  field :location,                    type: Hash 
+  field :location,                    type: Hash
   field :type,                        type: String,  default: "root" #options: "root", "secondary"
   field :status,                      type: String,  default: "active" #options: "active", "inactive", "retired", "complete", "contentious"
 
@@ -34,7 +34,7 @@ class Subject
   field :region,                      type: Hash
 
   belongs_to :workflow
-  belongs_to :parent_subject, :class_name => "Subject", :foreign_key => "parent_subject_id"  
+  belongs_to :parent_subject, :class_name => "Subject", :foreign_key => "parent_subject_id"
   belongs_to :subject_set, :class_name => "SubjectSet", :foreign_key => "subject_set_id"
 
   has_many :child_subjects, :class_name => "Subject"
@@ -71,7 +71,7 @@ class Subject
   def retire_by_vote!
     assesment_classifications = classifications.where(task_key: "completion_assessment_task").to_a
     if assesment_classifications.length > 2
-      percentage_for_retire = retire_count/assesment_classifications.length.to_f   
+      percentage_for_retire = retire_count/assesment_classifications.length.to_f
       if percentage_for_retire >= workflow.retire_limit
         self.retire!
       end
@@ -80,7 +80,7 @@ class Subject
   end
 
   def retire!
-    self.status = "retired" 
+    self.status = "retired"
     subject_set.subject_completed_on_workflow(workflow) if ! workflow.nil?
     save
   end
