@@ -23,7 +23,7 @@ module.exports = React.createClass # rename to Classifier
     classificationIndex:          0
     subject_set_index:            0
     subject_index:                0
-    currentSubToolIndex: 0
+    currentSubToolIndex:          0
 
   componentWillMount: ->
     completion_assessment_task = {
@@ -54,7 +54,9 @@ module.exports = React.createClass # rename to Classifier
     @beginClassification()
 
   render: ->
+    console.log 'CURRENT PAGE = ', @state.subject_current_page
     return null unless @getCurrentSubject()?
+    # console.log "mark/index @state", @state
     currentTask = @props.workflow.tasks[@state.taskKey] # [currentAnnotation?.task]
     TaskComponent = @getCurrentTool() # coreTools[currentTask.tool]
     onFirstAnnotation = @state.taskKey == @props.workflow.first_task
@@ -82,6 +84,10 @@ module.exports = React.createClass # rename to Classifier
               onChange={@handleDataFromTool}
               onViewSubject={@handleViewSubject}
               subToolIndex={@state.currentSubToolIndex}
+              subjectCurrentPage={@state.subject_current_page}
+              nextPage={@nextPage}
+              prevPage={@prevPage}
+              totalSubjectPages={@state.total_subject_pages}
             />
         }
       </div>
@@ -114,6 +120,7 @@ module.exports = React.createClass # rename to Classifier
     </div>
 
   getNextSubject: ->
+    console.log 'getNextSubject()'
     new_subject_set_index = @state.subject_set_index
     new_subject_index = @state.subject_index + 1
 
@@ -141,8 +148,8 @@ module.exports = React.createClass # rename to Classifier
     # console.log "HANDLE View Subject: subject", subject
     # @state.currentSubject = subject
     # @forceUpdate()
-    @setState
-      subject_index: index
+    console.log "mark/index -->HVS index", index
+    @setState subject_index: index, => @forceUpdate()
 
 
   # User somehow indicated current task is complete; commit current classification
@@ -158,12 +165,12 @@ module.exports = React.createClass # rename to Classifier
   # Handle user selecting a pick/drawing tool:
   handleDataFromTool: (d) ->
 
-    # Kind of a hack: We receive annotation data from two places: 
+    # Kind of a hack: We receive annotation data from two places:
     #  1. tool selection widget in right-col
     #  2. the actual draggable marking tools
-    # We want to remember the subToolIndex so that the right-col menu highlights 
+    # We want to remember the subToolIndex so that the right-col menu highlights
     # the correct tool after committing a mark. If incoming data has subToolIndex
-    # but no mark location information, we know this callback was called by the 
+    # but no mark location information, we know this callback was called by the
     # right-col. So only in that case, record currentSubToolIndex, which we use
     # to initialize marks going forward
 
@@ -175,7 +182,7 @@ module.exports = React.createClass # rename to Classifier
       classifications = @state.classifications
       classifications[@state.classificationIndex].annotation[k] = v for k, v of d
 
-      # PB: Saving STI's notes here in case we decide tools should fully 
+      # PB: Saving STI's notes here in case we decide tools should fully
       #   replace annotation hash rather than selectively update by key as above:
       # not clear whether we should replace annotations, or append to it --STI
       # classifications[@state.classificationIndex].annotation = d #[k] = v for k, v of d
@@ -205,5 +212,18 @@ module.exports = React.createClass # rename to Classifier
     @commitClassification()
     @beginClassification()
     @getNextSubject()
+
+  nextPage: (callback_fn)->
+    console.log 'nextPage()'
+    new_page = @state.subject_current_page + 1
+    subject_set = @getCurrentSubjectSet()
+    console.log "Np() subject_set", subject_set, new_page
+    @fetchNextSubjectPage(subject_set.id, @props.workflow.id, new_page, 0, callback_fn)
+
+  prevPage: (callback_fn) ->
+    new_page = @state.subject_current_page - 1
+    subject_set = @getCurrentSubjectSet()
+    console.log "Np() subject_set", subject_set
+    @fetchNextSubjectPage(subject_set.id, @props.workflow.id, new_page, 0, callback_fn)
 
 window.React = React

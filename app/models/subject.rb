@@ -3,6 +3,7 @@ class Subject
   include Mongoid::Timestamps
   include Randomizer
 
+  paginates_per 5
 
   scope :active_root, -> { where(type: 'root', status: 'active').asc(:order) }
   scope :active, -> { where(status: 'active').asc(:order)  }
