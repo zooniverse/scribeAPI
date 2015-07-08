@@ -4,6 +4,8 @@ module.exports =
   componentDidMount: ->
     if @props.query.subject_set_id
       @fetchSubjectSet @props.query.subject_set_id, @props.query.subject_index, @props.workflow.id
+    else if @props.query.subject_set_id and @props.query.selected_subject_id
+      @fetchSubjectSetBySubjectId @props.workflow.id, @props.query.subject_set_id, @props.query.selected_subject_id
     else
       @fetchSubjectSets @props.workflow.id, @props.workflow.subject_fetch_limit
 
@@ -34,7 +36,6 @@ module.exports =
         return if a.order >= b.order then 1 else -1
     subject_sets
 
-
   fetchSubjectSet: (subject_set_id, subject_index, workflow_id)->
     console.log 'fetchSubjectSet()'
     request = API.type("subject_sets").get(subject_set_id: subject_set_id, workflow_id: workflow_id)
@@ -48,6 +49,32 @@ module.exports =
         subjectSets: subject_set
         subject_set_index: 0
         subject_index: parseInt(subject_index) || 0
+
+  fetchSubjectSetBySubjectId: (workflow_id, subject_set_id, selected_subject_id) ->
+    console.log 'fetchSubjectSetBySubjectId()'
+    console.log 'THE QUERY: ', "/workflows/#{workflow_id}/subject_sets/#{subject_set_id}/subjects/#{selected_subject_id}"
+    request = API.type('workflows').get("#{workflow_id}/subject_sets/#{subject_set_id}/subjects/#{selected_subject_id}")
+    # request = API.type("subject_sets").get(subject_set_id: subject_set_id, workflow_id: workflow_id)
+
+    @setState
+      subjectSet: []
+      # currentSubjectSet: null
+
+    request.then (subject_set) =>
+      console.log 'SUBJECT SET: ', subject_set
+
+      for subject in subject_set.subjects
+        console.log 'SUBJECT ID:              ', subject.id
+        if subject.id is subject_set.selected_subject_id
+          console.log 'SELECTED SUBJECT ID: ', subject_set.selected_subject_id
+          console.log 'MATCH!'
+          subject_index = subject_set.subjects.indexOf subject
+
+      @setState
+        subjectSets: [subject_set]
+        subject_set_index: 0
+        subject_index: subject_index || 0 #parseInt(subject_index) || 0
+        # currentSubjectSet: subject_set
 
   fetchSubjectSets: (workflow_id, limit) ->
     console.log 'fetchSubjectSets()'

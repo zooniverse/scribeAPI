@@ -25,11 +25,10 @@ class SubjectSetSerializer < ActiveModel::MongoidSerializer
     workflow_id = serialization_options[:workflow_id] # I think we need to pull workflow_id from serialization_options, subject_sets don't belong to workflow.
     limit = serialization_options[:limit].to_i
     random = serialization_options[:random]
-
     return nil if object.nil?
 
     if random
-      subjects = object.subjects.active_root.where(workflow_id: workflow_id).page(serialization_options[:page])     
+      subjects = object.subjects.active_root.where(workflow_id: workflow_id).page(serialization_options[:page])
     else
       subjects = object.subjects.active_root.where(workflow_id: workflow_id).page(serialization_options[:page])
     end
@@ -42,7 +41,7 @@ class SubjectSetSerializer < ActiveModel::MongoidSerializer
         total_pages: subjects.total_pages,
       }
     subjects = {
-      subjects: subjects.to_a, 
+      subjects: subjects.to_a,
       subject_pagination_info: subject_pagination
     }
   end

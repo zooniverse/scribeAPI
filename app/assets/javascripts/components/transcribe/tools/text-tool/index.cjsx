@@ -1,6 +1,6 @@
 # @cjsx React.DOM
 React      = require 'react'
-Draggable  = require '../../../../lib/draggable'
+Draggable  = require 'lib/draggable'
 DoneButton = require './done-button'
 PrevButton = require './prev-button'
 ReactRouter = require 'react-router' # eventually replace with {Navigation} = require 'react-router' -- STI
@@ -59,24 +59,20 @@ TextTool = React.createClass
     focus: true
 
   componentWillReceiveProps: ->
-    # @refs.input0.getDOMNode().focus() if @props.focus
+    @refs[@props.ref || 'input0'].getDOMNode().focus() if @props.focus
+
     {x,y} = @getPosition @props.subject.data
     @setState
       dx: x
       dy: y, => @forceUpdate() # updates component position on new subject
 
-  componentWillMount: ->
-    # currently does nothing
-
   componentWillUnmount: ->
-    console.log 'TEXT-TOOL::componentWillUnmount(), @props = ', @props
     if @props.task.tool_config.suggest == 'common'
       el = $(@refs.input0.getDOMNode())
       el.autocomplete 'destroy'
 
   componentDidMount: ->
     @updatePosition()
-    # @refs.input0.getDOMNode().focus() if @props.focus
 
     if @props.task.tool_config.suggest == 'common'
       el = $(@refs.input0.getDOMNode())
@@ -110,18 +106,21 @@ TextTool = React.createClass
 
   # NOTE: doesn't get called unless @props.standalone is true
   commitAnnotation: ->
-    console.log 'TEXT-TOOL::commitAnnotation()'
     @props.onComplete @props.annotation
 
+  returnToMarking: ->
+    @commitAnnotation()
+    # window.location.replace "http://localhost:3000/#/mark?subject_set_id=#{@props.subject.subject_set_id}&selected_subject_id=#{@props.subject.parent_subject_id.$oid}"
+    @replaceWith("/mark?subject_set_id=#{@props.subject.subject_set_id}&selected_subject_id=#{@props.subject.parent_subject_id.$oid}" )
+
   handleChange: (e) ->
-    console.log 'TEXT-TOOL::handleChange(), @state.annotation = ', @props.annotation
-    console.log 'E.TARGET.VALUE: ', e.target.value
-    @props.annotation[@props.key] = e.target.value
+    @props.key = @props.ref || 'value' # use 'value' key if standalone
+    newAnnotation = []
+    newAnnotation[@props.key] = e.target.value
 
-    # if applicable, send composite tool updated annotation
-    @props.handleChange(@props.annotation)?
-
-    @forceUpdate()
+    # if composite-tool is used, this will be a callback to CompositeTool::handleChange()
+    # otherwise, it'll be a callback to Transcribe::handleDataFromTool()
+    @props.onChange(newAnnotation) # report updated annotation to parent
 
   handleKeyPress: (e) ->
     if [13].indexOf(e.keyCode) >= 0 # ENTER
@@ -129,24 +128,25 @@ TextTool = React.createClass
       e.preventDefault()
 
   render: ->
-    # get component position
     style =
       left: "#{@state.dx*@props.scale.horizontal}px"
       top: "#{@state.dy*@props.scale.vertical}px"
 
-    val = @props.annotation[@props.key] ? ''
+    val = @props.annotation[@props.key]
 
     unless @props.standalone
       label = @props.label ? ''
     else
       label = @props.task.instruction
 
+    ref = @props.ref || "input0"
+
     # create component input field(s)
     tool_content =
       <div className="input-field active">
         <label>{label}</label>
         <input
-          ref={@props.ref? || "input0"}
+          ref={ref}
           type="text"
           data-task_key={@props.task.key}
           onKeyDown={@handleKeyPress}
@@ -177,7 +177,9 @@ TextTool = React.createClass
                 else
                   <span>
                     <label>Return to marking: </label>
-                    <button className='button done' onClick={ => @transitionTo('mark') }>
+                    {console.log 'PROPS: ', @props}
+                    <button className='button done' onClick={@returnToMarking}
+                    >
                       {'Finish'}
                     </button>
                   </span>

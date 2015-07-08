@@ -2,10 +2,11 @@ class SubjectSetsController < ApplicationController
   respond_to :json
 
   def index
+    # puts 'PARAMS: ', params
     workflow_id  = params["workflow_id"]
     random = params["random"] || false
     limit  = params["limit"].to_i  || 10
-    
+
     if  workflow_id
       query = {"counts.#{workflow_id}.active_subjects" => {"$gt"=>0}}
     else
@@ -18,7 +19,7 @@ class SubjectSetsController < ApplicationController
       sets = SubjectSet.where(query).page(params[:page])
     end
 
-    subject_set_pagination_info = 
+    subject_set_pagination_info =
         {
         current_page: sets.current_page,
         next_page: sets.next_page,
@@ -31,11 +32,12 @@ class SubjectSetsController < ApplicationController
   end
 
   def show
-    limit = 1 # should only return one (the matched set)
+    # puts 'PARAMS: ', params
+    # limit = 1 # should only return one (the matched set)
     subject_id = params[:subject_id]
     page = params[:page].to_i
     # limit = params["limit"].to_i || 10
-    puts 'SUBJECT SET ID: ', params[:subject_set_id]
+    # puts 'SUBJECT SET ID: ', params[:subject_set_id]
     set = SubjectSet.where(id: params[:subject_set_id])
     workflow_id  = params["workflow_id"]
 
