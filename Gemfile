@@ -27,7 +27,7 @@ gem 'react-rails', '~> 1.0.0.pre', github: 'reactjs/react-rails'
 # gem 'rails_12factor'
 
 gem 'rack-streaming-proxy', '~> 2.0.1'
-gem 'will_paginate_mongoid', '2.0.1'
+gem 'kaminari'
 gem 'fastimage', '1.7.0'
 
 

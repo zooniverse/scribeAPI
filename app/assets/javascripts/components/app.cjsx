@@ -15,6 +15,7 @@ App = React.createClass
     project: null
 
   componentDidMount: ->
+    console.log "Mounting APP and router"
 
     API.type('projects').get().then (result)=>
 

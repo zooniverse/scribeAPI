@@ -3,6 +3,8 @@ class SubjectSet
   include Mongoid::Timestamps
   include Randomizer
 
+  paginates_per 2
+
   field :name,                   type: String
   field :random_no ,             type: Float
   field :state ,                 type: String, default: "active"
