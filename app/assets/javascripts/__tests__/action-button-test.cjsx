@@ -1,4 +1,4 @@
-jest.dontMock '../components/action-button-test'
+jest.dontMock '../components/action-button'
 
 describe 'ActionButton', ->
   React = require 'react/addons'
@@ -6,7 +6,3 @@ describe 'ActionButton', ->
 
   ActionButton = renderIntoDocument(<ActionButton/>)
 
-  describe 'onClick' ->
-    Simulate.onClick
-      # with a generic button like this not sure what to test at this point
-      # however starting to see how this works.
