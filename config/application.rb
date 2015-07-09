@@ -31,11 +31,13 @@ module API
           '.html', '.erb', '.haml',                 # Templates
           '.png',  '.gif', '.jpg', '.jpeg',         # Images
           '.eot',  '.otf', '.svc', '.woff', '.ttf', # Fonts
+          '.cjsx'
         ]
       end)
     end
 
-    config.browserify_rails.commandline_options = "-t  coffee-reactify --extension=\".cjsx\" "
+    config.browserify_rails.commandline_options = "-t coffee-reactify --extension=\".cjsx\" "
+    # config.browserify_rails.commandline_options = "-t reactify --extension=\".js.jsx\""
 
     config.middleware.use Rack::Cors do
       allow do

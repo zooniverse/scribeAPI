@@ -123,5 +123,18 @@ desc 'creates a poject object from the project directory'
       end
     end
 
+    # Order workflows such that each appears before any workflows it generates subjects for
+    project.workflows.each do |w|
+      w.update_attribute :order, project.workflows.size - num_downstream_workflows(w) - 1
+    end
+
     puts "  WARN: No mark workflow found" if project.workflows.find_by(name: 'mark').nil?
+  end
+
+  def num_downstream_workflows(w, prev_count=0)
+    if w.next_workflow.nil?
+      prev_count
+    else
+      num_downstream_workflows(w.next_workflow, prev_count + 1)
+    end
   end

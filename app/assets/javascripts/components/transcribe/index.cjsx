@@ -21,11 +21,13 @@ module.exports = React.createClass # rename to Classifier
   mixins: [FetchSubjectsMixin, BaseWorkflowMethods] # load subjects and set state variables: subjects,  classification
 
   getInitialState: ->
-    workflow:                     @props.workflow
     taskKey:                      null
     classifications:              []
     classificationIndex:          0
     subject_index:                0
+
+  getDefaultProps: ->
+    workflowName: 'transcribe'
 
   componentWillMount: ->
     @beginClassification()
@@ -115,7 +117,7 @@ module.exports = React.createClass # rename to Classifier
 
     currentAnnotation = @getCurrentClassification().annotation
     TranscribeComponent = @getCurrentTool() # @state.currentTool
-    onFirstAnnotation = currentAnnotation?.task is @props.workflow.first_task
+    onFirstAnnotation = currentAnnotation?.task is @activeWorkflow().first_task
 
     <div className="classifier">
       <div className="subject-area">
@@ -128,7 +130,7 @@ module.exports = React.createClass # rename to Classifier
               onLoad={@handleViewerLoad}
               subject={@getCurrentSubject()}
               active=true
-              workflow={@props.workflow}
+              workflow={@activeWorkflow()}
               classification={@props.classification}
               annotation={currentAnnotation}
             >
@@ -141,7 +143,7 @@ module.exports = React.createClass # rename to Classifier
                 onChange={@handleDataFromTool}
                 onComplete={@handleTaskComplete}
                 onBack={@makeBackHandler()}
-                workflow={@props.workflow}
+                workflow={@activeWorkflow()}
                 viewerSize={@state.viewerSize}
                 transcribeTools={transcribeTools}
               />

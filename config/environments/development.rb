@@ -37,4 +37,7 @@ API::Application.configure do
   # Send email in development mode.
   config.action_mailer.perform_deliveries = true
 
+  # React:
+  config.react.variant = :development
+  config.react.addons = true
 end

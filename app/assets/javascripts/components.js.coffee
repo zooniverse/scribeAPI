@@ -1,5 +1,5 @@
-# App = require("react")
-App = require("./components/app")
+AppRouter = require 'components/app-router'
 
 $(document).ready ->
-  React.renderComponent(App(null), document.body)
+  new AppRouter()
+ 

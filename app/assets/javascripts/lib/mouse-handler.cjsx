@@ -1,5 +1,5 @@
 React = require 'react'
-cloneWithProps = require 'react/lib/cloneWithProps'
+# cloneWithProps = require 'react/lib/cloneWithProps'
 
 module.exports = React.createClass
   displayName: 'MouseHandler'
@@ -7,7 +7,7 @@ module.exports = React.createClass
   _previousEventCoords: null
 
   propTypes:
-    children: React.PropTypes.component.isRequired
+    # children: React.PropTypes.component.isRequired
     onStart: React.PropTypes.oneOfType [
       React.PropTypes.func
       React.PropTypes.bool
@@ -22,8 +22,8 @@ module.exports = React.createClass
     if @props.disabled
       @props.children
     else
-      cloneWithProps @props.children,
-        className: 'draggable'
+      React.cloneElement @props.children,
+        className: "#{@props.children.props.className} draggable"
         onMouseDown: @handleStart
 
   _rememberCoords: (e) ->

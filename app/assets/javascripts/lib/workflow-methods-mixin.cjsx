@@ -6,6 +6,14 @@ transcribeTools         = require 'components/transcribe/tools'
 
 module.exports =
 
+  # Convenience method for selecting currently active workflow based on active controller
+  activeWorkflow: ->
+    return null if ! @props.project
+
+    k = (k for w,k in @props.project.workflows when w.name == @props.workflowName)
+    return null if k?.length != 1
+    @props.project.workflows[k[0]]
+  
   # Start a new classification (optionally initialized with given annotation hash):
   beginClassification: (annotation = {}) ->
     classifications = @state.classifications
@@ -29,7 +37,7 @@ module.exports =
 
     classification.subject_id = @getCurrentSubject()?.id
     classification.subject_set_id = @getCurrentSubjectSet().id if @getCurrentSubjectSet()?
-    classification.workflow_id = @state.workflow.id
+    classification.workflow_id = @activeWorkflow().id
     classification.task_key = @state.taskKey
 
     # Commit classification to backend
@@ -68,7 +76,12 @@ module.exports =
 
   # Get current task:
   getCurrentTask: ->
-    @props.workflow.tasks[@state.taskKey] # [currentAnnotation?.task]
+
+    @getTasks()[@state.taskKey]
+
+  getTasks: ->
+    # Add completion_assessment_task to list of tasks dynamically:
+    $.extend @activeWorkflow().tasks, completion_assessment_task: @getCompletionAssessmentTask()
 
   # Get instance of current tool:
   getCurrentTool: ->
@@ -93,18 +106,18 @@ module.exports =
 
   # Get next logical task
   getNextTask: ->
-    task = @props.workflow.tasks[@state.taskKey]
+    task = @getTasks()[@state.taskKey]
     # console.log "looking up next task based on current ann: ", task, task.tool_config?.options, @getCurrentClassification().annotation?.value
     if task.tool_config?.options?[@getCurrentClassification().annotation?.value]?.next_task?
       nextKey = task.tool_config.options[@getCurrentClassification().annotation.value].next_task
     else
-      nextKey = @props.workflow.tasks[@state.taskKey].next_task
+      nextKey = @getTasks()[@state.taskKey].next_task
 
-    @props.workflow.tasks[nextKey]
+    @getTasks()[nextKey]
 
   # Advance to a named task:
   advanceToTask: (key) ->
-    task = @state.workflow.tasks[ key ]
+    task = @getTasks()[ key ]
 
     tool = coreTools[task?.tool] ? transcribeTools[task?.tool]
     if ! task?
@@ -143,3 +156,24 @@ module.exports =
     # It's possible we have no subjects at all, in which case fail with null:
     return null unless subjects?
     subjects[@state.subject_index] # otherwise, return subject
+
+  getCompletionAssessmentTask: ->
+    generates_subject_type: null
+    instruction: "Is there anything left to #{@props.workflowName}?"
+    key: "completion_assessment_task"
+    next_task: null
+    tool: "pickOne"
+    tool_config: {
+        "options": {
+            "complete_subject": {
+                "label": "No",
+                "next_task": null
+            },
+            "incomplete_subject": {
+                "label": "Yes",
+                "next_task": null
+            }
+        }
+    }
+    subToolIndex: 0
+

@@ -1,5 +1,5 @@
 #= require jquery
 #= require 'lib/jquery-ui.min'
-#= require_tree .
+#= require 'components'
 #= stub dashboard/d3.min
 #= stub dashboard/stats
