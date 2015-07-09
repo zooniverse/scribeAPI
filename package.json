@@ -7,7 +7,7 @@
     "coffee-reactify": "^4.0.0",
     "coffee-script": "^1.9.3",
     "jest-cli": "^0.4.15",
-    "json-api-client": "^0.4.4",
+    "json-api-client": "^0.2.3",
     "react": "^0.13.3",
     "react-router": "^0.13.3"
   },

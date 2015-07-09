@@ -192,8 +192,8 @@
           {"type": "rectangleTool", "label": "Dischard Provisional", "color": "green", "generates_subject_type": "att_rectangleTool_name" },
           {"type": "rectangleTool", "label": "Dischard Final", "color": "green", "generates_subject_type": "att_rectangleTool_name" }
         ]
-      },
-      "next_task": "history_form_final_questions"
+    },
+      "next_task": null
     },
     "history_form_sticky_sheet":{
       "tool":"pickOne",

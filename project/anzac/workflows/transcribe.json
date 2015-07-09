@@ -88,7 +88,7 @@
             "tool": "textTool",
             "tool_config": {},
             "instruction": "Enter any messages or remarks associated with the wound",
-            "generates_subject_type": "transcribed_hs_mssg_remarks"
+            "generates_subject_type": null
         },
         "att_textRowTool_question": {
           "tool": "compositeTool",
