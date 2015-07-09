@@ -3,11 +3,11 @@ API = require './api'
 module.exports =
   componentDidMount: ->
     if @props.query.subject_set_id
-      @fetchSubjectSet @props.query.subject_set_id, @props.query.subject_index, @props.workflow.id
+      @fetchSubjectSet @props.query.subject_set_id, @props.query.subject_index, @activeWorkflow().id
     else if @props.query.subject_set_id and @props.query.selected_subject_id
       @fetchSubjectSetBySubjectId @props.workflow.id, @props.query.subject_set_id, @props.query.selected_subject_id
     else
-      @fetchSubjectSets @props.workflow.id, @props.workflow.subject_fetch_limit
+      @fetchSubjectSets @activeWorkflow().id, @activeWorkflow().subject_fetch_limit
 
   # this method fetches the next page of subjects in a given subject_set.
   # right now the trigger for this method is the forward or back button in the light-box
@@ -37,7 +37,6 @@ module.exports =
     subject_sets
 
   fetchSubjectSet: (subject_set_id, subject_index, workflow_id)->
-    console.log 'fetchSubjectSet()'
     request = API.type("subject_sets").get(subject_set_id: subject_set_id, workflow_id: workflow_id)
 
     @setState
@@ -79,7 +78,6 @@ module.exports =
   fetchSubjectSets: (workflow_id, limit) ->
     console.log 'fetchSubjectSets()'
     if @props.overrideFetchSubjectsUrl?
-      # console.log "Fetching (fake) subject sets from #{@props.overrideFetchSubjectsUrl}"
       $.getJSON @props.overrideFetchSubjectsUrl, (subject_sets) =>
         @setState
           subjectSets: subject_sets

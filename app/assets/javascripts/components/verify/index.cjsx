@@ -17,15 +17,8 @@ module.exports = React.createClass # rename to Classifier
   displayName: 'Verify'
   mixins: [FetchSubjectsMixin] # load subjects and set state variables: subjects, currentSubject, classification
 
-  getInitialState: ->
-    workflow: @props.workflow
-
   getDefaultProps: ->
-    classification: API.type('classifications').create
-      name: 'Classification'
-      annotations: []
-      metadata: {}
-    # overrideFetchSubjectsUrl: '/fake-transcription-subjects.json'
+    workflowName: 'verify'
 
   fetchSubjectsCallback: ->
     new_key = @state.workflow.first_task ? (k for k, v of @state.workflow.tasks)[0]
@@ -105,7 +98,7 @@ module.exports = React.createClass # rename to Classifier
     # annotations = @props.annotations
     currentAnnotation = (@props.classification.annotations[@state.currentTaskKey] ||= {})
     TaskComponent = @state.currentTool
-    onFirstAnnotation = currentAnnotation?.task is @props.workflow.first_task
+    onFirstAnnotation = currentAnnotation?.task is @activeWorkflow().first_task
     console.log "Verify#render: ..", currentAnnotation, @state
 
     # console.log "Transcribe#render: tool=#{@state.currentTask.tool} TaskComponent=", TaskComponent
@@ -122,7 +115,7 @@ module.exports = React.createClass # rename to Classifier
             style = marginTop: "50px"
             <p style={style}>There are currently no transcription subjects. Try <a href="/#/mark">marking</a> instead!</p>
           else if @state.currentSubject?
-            <SubjectViewer onLoad={@handleViewerLoad} subject={@state.currentSubject} active=true workflow={@props.workflow} classification={@props.classification} annotation={currentAnnotation}>
+            <SubjectViewer onLoad={@handleViewerLoad} subject={@state.currentSubject} active=true workflow={@activeWorkflow()} classification={@props.classification} annotation={currentAnnotation}>
               <TaskComponent
                 ref="taskComponent"
                 viewerSize={@state.viewerSize}
@@ -132,7 +125,7 @@ module.exports = React.createClass # rename to Classifier
                 subject={@state.currentSubject}
                 onChange={@handleTaskComponentChange}
                 onComplete={@handleTaskComplete}
-                workflow={@props.workflow}
+                workflow={@activeWorkflow()}
                 verifyTools={verifyTools} />
             </SubjectViewer>
         }

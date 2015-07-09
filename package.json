@@ -1,21 +1,19 @@
 {
-  "name": "something",
+  "name": "scribeAPI",
   "devDependencies": {
-    "browserify": "^5.12.1",
+    "browserify": "~10.2.4",
+    "browserify-incremental": "^3.0.1",
     "coffee-react-transform": "^3.2.0",
-    "coffee-reactify": "^1.0.2",
+    "coffee-reactify": "^4.0.0",
     "coffee-script": "^1.9.3",
-    "jest-cli": "^0.4.15"
-  },
-  "dependencies": {
-    "react": "^0.11.2",
-    "react-router": "^0.7.0",
-    "json-api-client": "~0.2.3"
+    "jest-cli": "^0.4.15",
+    "json-api-client": "^0.4.4",
+    "react": "^0.13.3",
+    "react-router": "^0.13.3"
   },
   "license": "MIT",
   "engines": {
-    "node": ">= 0.10",
-    "coffeeify": "~> 0.6"
+    "node": ">= 0.10"
   },
   "scripts": {
     "test": "node ./node_modules/jest-cli/bin/jest.js"
@@ -30,10 +28,12 @@
       "coffee.md",
       "js"
     ],
-    "testPathIgnorePatterns": [ "preprocessor.js" ],
+    "testPathIgnorePatterns": [
+      "preprocessor.js"
+    ],
     "unmockedModulePathPatterns": [
-        "react"
-      ],
+      "react"
+    ],
     "moduleFileExtensions": [
       "coffee",
       "cjsx",

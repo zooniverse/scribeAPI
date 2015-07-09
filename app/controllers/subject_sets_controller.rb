@@ -36,7 +36,7 @@ class SubjectSetsController < ApplicationController
     # limit = 1 # should only return one (the matched set)
     subject_id = params[:subject_id]
     page = params[:page].to_i
-    # limit = params["limit"].to_i || 10
+    limit = params["limit"].to_i || 10
     # puts 'SUBJECT SET ID: ', params[:subject_set_id]
     set = SubjectSet.where(id: params[:subject_set_id])
     workflow_id  = params["workflow_id"]

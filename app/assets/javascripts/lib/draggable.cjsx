@@ -1,5 +1,5 @@
 React = require 'react'
-cloneWithProps = require 'react/lib/cloneWithProps'
+# cloneWithProps = require 'react/lib/cloneWithProps'
 
 module.exports = React.createClass
   displayName: 'Draggable'
@@ -20,7 +20,7 @@ module.exports = React.createClass
     # console.log "Draggable#shouldComponentUpdate", @props.x
 
   propTypes:
-    children: React.PropTypes.component.isRequired
+    # children: React.PropTypes.component.isRequired
     onStart: React.PropTypes.oneOfType [
       React.PropTypes.func
       React.PropTypes.bool
@@ -39,8 +39,8 @@ module.exports = React.createClass
         left: @state.x
         top: @state.y
       # console.log "Draggable[#{@props.inst}] render: ", style
-      cloneWithProps @props.children,
-        className: 'draggable'
+      React.cloneElement @props.children,
+        className: "#{@props.children.props.className} draggable"
         onMouseDown: @handleStart
         style: style
 

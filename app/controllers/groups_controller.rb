@@ -9,7 +9,6 @@ class GroupsController < ApplicationController
     if ! (project_id = get_objectid(:project_id)).nil?
       @groups = @groups.by_project project_id
     end
-    respond_with Kaminari.paginate_array(Subject.active.where(workflow_id: workflow_id).limit(limit)).page(params[:page])
     @groups.page params[:page]
     respond_with @groups
   end
