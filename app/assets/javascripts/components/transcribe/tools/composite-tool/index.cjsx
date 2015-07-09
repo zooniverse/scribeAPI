@@ -131,6 +131,7 @@ CompositeTool = React.createClass
               for annotation_key, tool_config of @props.task.tool_config.tools
                 ToolComponent = @props.transcribeTools[tool_config.tool]
                 focus = annotation_key is @state.active_field_key
+                console.log "composite field: ", annotation_key
 
                 <ToolComponent
                   task={@props.task}
@@ -143,7 +144,7 @@ CompositeTool = React.createClass
                   label={@props.task.tool_config.tools[annotation_key].label ? ''}
                   focus={focus}
                   scale={@props.scale}
-                  key={annotation_key}
+                  annotation_key={annotation_key}
                   ref={annotation_key}
                   annotation={@props.annotation}
                 />

@@ -14,7 +14,7 @@ class SubjectSetsController < ApplicationController
     end
 
     if params["random"]
-      sets = Kaminari.paginate_array(SubjectSet.random(selector: query)).page(params[:page])
+      sets = Kaminari.paginate_array(SubjectSet.random(selector: query, limit: limit)).page(params[:page])
     else
       sets = SubjectSet.where(query).page(params[:page])
     end

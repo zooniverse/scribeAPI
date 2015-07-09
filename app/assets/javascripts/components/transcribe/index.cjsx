@@ -71,14 +71,13 @@ module.exports = React.createClass # rename to Classifier
     console.log 'handleTaskComplete(), data = ', d
     @handleDataFromTool(d)
     @commitClassification()
-    @beginClassification()
+    @beginClassification {}, () =>
+      if @getCurrentTask().next_task?
+        # console.log "advance to next task...", @state.currentTask['next_task']
+        @advanceToTask @getCurrentTask().next_task
 
-    if @getCurrentTask().next_task?
-      # console.log "advance to next task...", @state.currentTask['next_task']
-      @advanceToTask @getCurrentTask().next_task
-
-    else
-      @advanceToNextSubject()
+      else
+        @advanceToNextSubject()
 
   advanceToNextSubject: ->
     # console.log 'advanceToNextSubject()'
@@ -136,7 +135,7 @@ module.exports = React.createClass # rename to Classifier
             >
               <TranscribeComponent
                 viewerSize={@state.viewerSize}
-                key={@state.taskKey}
+                annotation_key={@state.taskKey}
                 task={@getCurrentTask()}
                 annotation={currentAnnotation}
                 subject={@getCurrentSubject()}

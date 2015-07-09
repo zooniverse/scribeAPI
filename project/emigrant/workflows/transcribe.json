@@ -12,7 +12,9 @@
 
     "em_record_rect": {
       "tool": "textTool",
-      "tool_config": {},
+      "tool_config": {
+        "suggest": "common"
+      },
       "instruction": "Enter the record date",
       "next_task": "em_transcribe_mortgager",
       "generates_subject_type": "em_transcribed_date"
@@ -39,11 +41,10 @@
     "em_transcribe_valuation": {
       "tool": "compositeTool",
       "tool_config": {
-
         "tools": {
           "em_valuation_date": {
             "tool": "textTool",
-            "tool_config": {},
+            "tool_config": {"suggest": "common"},
             "label": "Date"
           },
           "em_valuation_amount": {
@@ -51,9 +52,9 @@
             "tool_config": {},
             "label": "Amount"
           }
-        },
-        "generates_subject_type": "em_transcribed_valuation"
+        }
       },
+      "generates_subject_type": "em_transcribed_valuation",
       "instruction": "Enter any dated property valuations that were recorded"
     }
   }
