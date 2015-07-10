@@ -1,9 +1,12 @@
-jest.dontMock '../components/action-button'
+jest
+  .dontMock '../components/action-button'
+  
+  describe 'ActionButton', ->
+    React = require 'react/addons'
+    {renderIntoDocument, Simulate} = React.addons.TestUtils
+    {ActionButton} = require '../components/action-button'
+    it 'should grab the action-button code', ->
+      expect(ActionButton).toBeTruthy()
 
-describe 'ActionButton', ->
-  React = require 'react/addons'
-  {findRenderedDOMComponentWithTag, scryRenderedComponentsWithType, findRenderedComponentWithType, findRenderedDOMComponentWithClass, renderIntoDocument, Simulate} = React.addons.TestUtils
-
-  ActionButton = renderIntoDocument(<ActionButton/>)
-  describe 'onSubmit' ->
+    # actionButton = renderIntoDocument(<ActionButton/>)
     
