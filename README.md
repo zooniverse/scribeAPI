@@ -33,6 +33,8 @@ $ git push heroku master
 
 Make sure you have a MongoDB instance running, e.g. by adding MongoLab to your Heroku app, before loading the project with the provided rake task: `$ heroku run rake project_load[%PROJECT_KEY%]`
 
+<h1>Tests</h1>
+`npm test` to run the Jest test suite
 
 <h1>Background</h1>
 
