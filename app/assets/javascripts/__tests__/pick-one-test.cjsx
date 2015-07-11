@@ -14,17 +14,17 @@ jest
     
     task_object = {
       generates_subject_type: null, 
-      instruction: "How are you today?",
+      instruction: "Do you have a favorite ice cream flavour",
       key: "pick_page_type",
       next_task: null,
       tool: "pickOne"
       tool_config: {
-        good: {
-          label: "Good, thanks!",
+        yes: {
+          label: "yes",
           next_task: null
           },
-        alright: {
-          label: "I'm doing ok, thanks.",
+        no: {
+          label: "no",
           next_task: null
         }
       }
