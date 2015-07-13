@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   # protect_from_forgery with: :exception
 
+  serialization_scope :params
+
   def parse_pagination
     @page = get_int :page, 1
     @per_page = get_int :per_page, 20, (1..100)
