@@ -25,7 +25,10 @@ module Randomizer
 
       criteria = where(opts[:selector]).desc(:random_no).limit(opts[:limit])
       criteria = criteria.limit(opts[:limit] - result.length)
-      result += criteria.where(:random_no.lt => number).all if result.length < opts[:limit]
+
+      # PB: No, we're not doing this. It converts the result to an array, preventing further chaining:
+      # result += criteria.where(:random_no.lt => number).all if result.length < opts[:limit]
+
       result
     end
   end

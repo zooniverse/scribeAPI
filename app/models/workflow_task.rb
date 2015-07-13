@@ -24,6 +24,17 @@ class WorkflowTask
     type
   end
 
+  # Get tool_config hash for this task
+  # If given field name matches a sub-tool, returns that tools config
+  def tool_config_for_field(field_name)
+    # If field name matches an entry in tool_config.tools, return the nested tool-config
+    if ! tool_config.nil? && ! tool_config['tools'].nil? && tool_config['tools'].is_a?(Hash) && ! tool_config['tools'][field_name].nil?
+      tool_config['tools'][field_name]["tool_config"]
+    else
+      tool_config
+    end
+  end
+
 
   private
 

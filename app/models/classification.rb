@@ -45,35 +45,32 @@ class Classification
     end
   end  
 
+  def workflow_task
+    workflow.task_by_key task_key
+  end
+
   def generate_terms
-    # TODO: update this to work with annotation; previously written for annotations
-    return 
-    annotations.each do |ann|
-      puts " considering: #{ann.inspect}"
-      anns = [{val: ann['value'], key: ann['key']}]
-      if anns.first[:val].is_a? Hash
-        anns = ann['value'].map { |(k, v)| {val: v, key: k} }
-      end
-      puts "got anns: #{anns.inspect}"
+    # Just don't even if can't find current task (i.e. completion_assessment task)
+    return if workflow_task.nil?
 
-      anns.each do |sub_ann|
-        next if sub_ann[:val].nil? || sub_ann[:val].size < 3
+    annotation.each do |(k,v)|
 
-        # Get tool_config from workflow task config to determine if suggest='common'
-        task = workflow.tasks.select { |(key, task)| key == ann['key'] }.map { |p| p[1]}.first
-        puts " index? #{task.inspect}.... #{sub_ann[:key]}"
-        next if task.nil?
-        # tool_config = task[ann['key']]['tool_config']
-        tool_config = task['tool_config']
+      # Require a min length of 2 to index:
+      next if v.nil? || v.size < 2
 
-        puts " index? ", tool_config
-        index_term = ! tool_config['suggest'].nil? && tool_config['suggest'] == 'common'
-        puts " index? ", index_term
-        next if ! index_term
+      tool_config = workflow_task.tool_config_for_field k
 
-        puts "Term.index_term! #{workflow_id}, #{sub_ann[:key]}, #{sub_ann[:val]}"
-        Term.index_term! workflow_id, sub_ann[:key], sub_ann[:val] 
-      end
+      # Is field configured to be indexed for "common" autocomplete?
+      index_term = ! tool_config['suggest'].nil? && tool_config['suggest'] == 'common'
+      next if ! index_term
+
+      # Front- and back-end expect fields to be identifiable by workflow_id 
+      # and an annotation_key built from the task_key and field key
+      #   e.g. "enter_building_address:value"
+      key = "#{task_key}:#{k}"
+
+      # puts "Term.index_term! #{workflow_id}, #{key}, #{v}"
+      Term.index_term! workflow.id, key, v
     end
   end
 

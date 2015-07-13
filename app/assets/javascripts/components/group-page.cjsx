@@ -15,6 +15,7 @@ GroupPage = React.createClass
     @setState
       loading: true
 
+    console.log "props: ", @props
     API.type("groups").get(@props.params.group_id).then (group)=>
       console.log "GROUP ", group
       @setState

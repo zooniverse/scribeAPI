@@ -109,6 +109,7 @@ module.exports = React.createClass # rename to Classifier
       new_subject_index = 0
 
     # If we've exhausted all subject sets, collapse in shame
+    console.log "if new_subject_set_index..", @state.subjectSets.length
     if new_subject_set_index >= @state.subjectSets.length
       console.warn "NO MORE SUBJECT SETS"
       return

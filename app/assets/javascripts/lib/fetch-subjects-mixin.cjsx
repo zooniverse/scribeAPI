@@ -4,8 +4,8 @@ module.exports =
   componentDidMount: ->
     if @activeWorkflow().name is 'transcribe' and @props.params.subject_id
       @fetchSubject @props.params.subject_id,@activeWorkflow().id
-    else if @activeWorkflow().name is "mark"
-        @fetchSubjectSets @activeWorkflow().id, @activeWorkflow().subject_fetch_limit
+    # else if @activeWorkflow().name is "mark"
+        # @fetchSubjectSets @activeWorkflow().id, @activeWorkflow().subject_fetch_limit
     else
       @fetchSubjects @activeWorkflow().id, @activeWorkflow().subject_fetch_limit
 
