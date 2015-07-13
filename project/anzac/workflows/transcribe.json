@@ -1,4 +1,4 @@
-    {
+{
     "name": "transcribe",
     "label": "Transcribe Workflow",
     "retire_limit": 3,
@@ -7,81 +7,406 @@
     "generates_subjects_after": 3,
     "generates_subjects_max": 10,
     "generates_subjects_method": "collect-unique",
-
     "tasks": {
-        "att_transcribe_no": {
+        "att_transcribe_header": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the filled in text",
-            "generates_subject_type": "transcribed_number"
-
+            "instruction": "Transcribe the serial number.",
+            "generates_subject_type": "transcribed_number",
+            "next_task": "att_transcribe_serial_number"
         },
         "att_transcribe_name": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the filled in text",
-            "generates_subject_type": "transcribed_name"
+            "instruction": "Transcribe the name",
+            "generates_subject_type": "transcribed_name",
+            "next_task": "att_transcribe_regiment"
         },
         "att_transcribe_regiment": {
             "tool": "textTool",
             "tool_config": {},
+            "instruction": "Transcribe the regiment",
+            "generates_subject_type": "att_transcribed_regiment",
+            "next_task": null
+        },
+        "att_transcribe_oath_year": {
+            "tool": "textTool",
+            "tool_config": {},
             "instruction": "Enter the filled in text",
-            "generates_subject_type": "transcribed_regiment"
+            "generates_subject_type": "att_transcribed_oath_year",
+            "next_task": null
+        },
+        "att_transcribe_age": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_age",
+            "next_task": null
+        },
+        "att_transcribe_height": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_height",
+            "next_task": null
+        },
+        "att_transcribe_weight": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_weight",
+            "next_task": null
+        },
+        "att_transcribe_chest_measurement": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_chest_measurement",
+            "next_task": null
+        },
+        "att_transcribe_complexion": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_complexion",
+            "next_task": null
+        },
+        "att_transcribe_eye_color": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_eye_color",
+            "next_task": null
+        },
+        "att_transcribe_hair_color": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_hair_color",
+            "next_task": null
+        },
+        "att_transcribe_religious_profession": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_religious_profession",
+            "next_task": null
+        },
+        "att_transcribe_sight": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_sight",
+            "next_task": null
+        },
+        "att_transcribe_hearing": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_hearing",
+            "next_task": null
+        },
+        "att_transcribe_color_vision": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_color_vision",
+            "next_task": null
+        },
+        "att_transcribe_limb_formation": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_limb_formation",
+            "next_task": null
+        },
+        "att_transcribe_joints": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_transcribe_joints",
+            "next_task": null
+        },
+        "att_transcribe_chest": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_chest",
+            "next_task": null
+        },
+        "att_transcribe_heart": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_heart",
+            "next_task": null
+        },
+        "att_transcribe_lungs": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_lungs",
+            "next_task": null
+        },
+        "att_transcribe_teeth": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_teeth",
+            "next_task": null
+        },
+        "att_transcribe_illness": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_illness",
+            "next_task": null
+        },
+        "att_transcribe_hernia": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_hernia",
+            "next_task": null
+        },
+        "att_transcribe_varicocele": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_varicocele",
+            "next_task": null
+        },
+        "att_transcribe_varicose_veins": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_varicose_veins",
+            "next_task": null
+        },
+        "att_transcribe_haemorrhoids": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_haemorrhoids",
+            "next_task": null
+        },
+        "att_transcribe_skin": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_skin",
+            "next_task": null
+        },
+        "att_transcribe_mark": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_mark",
+            "next_task": null
+        },
+        "att_transcribe_distinctive_marks": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_distinctive_marks",
+            "next_task": null
+        },
+        "att_transcribe_pension": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_pension",
+            "next_task": null
+        },
+        "att_transcribe_fits": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_fits",
+            "next_task": null
+        },
+        "att_transcribe_discharged": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_discharged",
+            "next_task": null
+        },
+        "att_transcribe_remarks": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_remarks",
+            "next_task": null
+        },
+        "att_transcribe_date_medical_exam": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the filled in text",
+            "generates_subject_type": "att_transcribed_date_medical_exam",
+            "next_task": null
+        },
+        "att_transcribe_question": {
+            "tool": "textTool",
+            "tool_config": {
+                "suggest": "common"
+            },
+            "generates_subject_type": "att_transcribed_answer",
+            "instruction": "Please transcribe the questions.",
+            "next_task": "att_transcribe_answer"
+        },
+        "att_transcribe_answer": {
+            "tool": "textTool",
+            "tool_config": {},
+            "generates_subject_type": "att_transcribed_answer",
+            "instruction": "Please transcribe the response to the question.",
+            "next_task": null
+        },
+        "hs_transcribe_unit": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the response",
+            "generates_subject_type": "hs_transcribed_unit",
+            "next_task": null
+        },
+        "hs_transcribe_rank": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the response",
+            "generates_subject_type": "hs_transcribed_rank",
+            "next_task": null
+        },
+        "hs_transcribe_occupation": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the response",
+            "generates_subject_type": "hs_transcribed_occupation",
+            "next_task": null
+        },
+        "hs_transcribe_surname": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the response",
+            "generates_subject_type": "hs_transcribed_surname",
+            "next_task": null
+        },
+        "hs_transcribe_no": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the response",
+            "generates_subject_type": "hs_transcribed_no",
+            "next_task": null
+        },
+        "hs_transcribe_christian_name": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the response",
+            "generates_subject_type": "hs_transcribed_christian_name",
+            "next_task": null
+        },
+        "hs_rectangleTool_kia": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the response",
+            "generates_subject_type": "hs_transcribed_kia",
+            "next_task": null
+        },
+        "hs_rectangleTool_died_ws": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the response",
+            "generates_subject_type": "hs_transcribed_died_ws",
+            "next_task": null
+        },
+        "hs_rectangleTool_missing": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the response",
+            "generates_subject_type": "hs_transcribed_missing",
+            "next_task": null
+        },
+        "hs_rectangleTool_prisoner": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the response",
+            "generates_subject_type": "hs_transcribed_prisoner",
+            "next_task": null
+        },
+        "hs_rectangleTool_injuries": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "EEnter the responseEnter the response",
+            "generates_subject_type": "hs_transcribed_injuries",
+            "next_task": null
+        },
+        "hs_rectangleTool_discharge_provisional": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the response",
+            "generates_subject_type": "hs_transcribed_discharge_provisional",
+            "next_task": null
+        },
+        "hs_rectangleTool_discharge_final": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the response",
+            "generates_subject_type": "hs_transcribed_discharge_final",
+            "next_task": null
         },
         "hs_rectangleTool_serivce": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the country or troopship",
-            "generates_subject_type": "transcribed_hs_service_troopship",
+            "instruction": "Enter the response",
+            "generates_subject_type": "hs_transcribed_serivce",
             "next_task": "hs_service_date_from"
         },
         "hs_service_date_from": {
             "tool": "textTool",
             "tool_config": {},
             "instruction": "Enter the 'date from'",
-            "generates_subject_type": "transcribed_hs_service_date_from",
+            "generates_subject_type": "hs_transcribed_service_date_from",
             "next_task": "hs_service_date_to"
         },
         "hs_service_date_to": {
             "tool": "textTool",
             "tool_config": {},
             "instruction": "Enter the 'date to'",
-            "generates_subject_type": "hs_service_date_total_years",
+            "generates_subject_type": "hs_transcribed_service_date_to",
             "next_task": "hs_service_date_total_years"
         },
         "hs_service_date_total_years": {
             "tool": "textTool",
             "tool_config": {},
             "instruction": "Enter the total years of service",
-            "generates_subject_type": "transcribed_hs_service_total_years",
+            "generates_subject_type": "hs_transcribed_service_date_total_years",
             "next_task": "hs_service_date_total_days"
         },
         "hs_service_date_total_days": {
             "tool": "textTool",
             "tool_config": {},
             "instruction": "Enter the total days of service",
-            "generates_subject_type": "transcribed_service_date_total_days",
+            "generates_subject_type": "hs_transcribed_service_date_total_days",
             "next_task": null
         },
         "hs_rectangleTool_wounds": {
             "tool": "textTool",
             "tool_config": {},
             "instruction": "Enter the serial no.",
-            "generates_subject_type": "transcribed_hs_wounds_number",
+            "generates_subject_type": "hs_transcribed_wounds",
             "next_task": "hs_service_wounds_date"
         },
         "hs_service_wounds_date": {
             "tool": "textTool",
             "tool_config": {},
             "instruction": "Enter the date of the wound",
-            "generates_subject_type": "transcribed_hs_wounds_date",
+            "generates_subject_type": "hs_transcribed_wounds_date",
             "next_task": "hs_service_wounds_location"
         },
         "hs_service_wounds_location": {
             "tool": "textTool",
             "tool_config": {},
             "instruction": "Enter the location of the wound",
-            "generates_subject_type": "transcribed_hs_wounds_location",
+            "generates_subject_type": "hs_transcribed_wounds_location",
             "next_task": "hs_service_wounds_mssg_remarks"
         },
         "hs_service_wounds_mssg_remarks": {
@@ -89,27 +414,6 @@
             "tool_config": {},
             "instruction": "Enter any messages or remarks associated with the wound",
             "generates_subject_type": null
-        },
-        "att_textRowTool_question": {
-          "tool": "compositeTool",
-          "tool_config": {
-
-            "tools": {
-              "att_valuation_question": {
-                "tool": "textTool",
-                "tool_config": {},
-                "label": "Tag Question"
-              },
-              
-              "att_valuation_amount": {
-                "tool": "textTool",
-                "tool_config": {},
-                "label": "Enter the filled in text"
-              }
-            },
-            "generates_subject_type": "att_transcribed_question_valuation"
-          },
-          "instruction": "Find the tag that best fits the question, then transcribe the answer."
         }
     }
 }
