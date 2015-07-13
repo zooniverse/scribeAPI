@@ -65,9 +65,8 @@ module.exports = React.createClass
     onChange: React.PropTypes.func.isRequired
 
   render: ->
-    console.log "Pick One @props", @props
     answers = for k, answer of @props.task.tool_config.options
-
+      console.log "answer", answer
       answer._key ?= Math.random()
       checked = k is @props.annotation.value
 
