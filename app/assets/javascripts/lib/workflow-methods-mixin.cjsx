@@ -62,10 +62,10 @@ module.exports =
   # Get a reference to the local copy of a subject by id regardless of whether viewing subject-sets or just subjects
   subjectById: (id) ->
     if @state.subjectSets?
-      for set in @state.subjectSets
-        for s in set.subjects
-          return s if s.id == id
+      for s in @getCurrentSubjectSet().subjects
+        return s if s.id == id
     else
+      console.log 'BLAH'
       for s in @state.subjects
         return s if s.id == id
 
