@@ -15,7 +15,7 @@ module.exports =
     @props.project.workflows[k[0]]
   
   # Start a new classification (optionally initialized with given annotation hash):
-  beginClassification: (annotation = {}) ->
+  beginClassification: (annotation = {}, callback) ->
     classifications = @state.classifications
     classification = new Classification()
     classification.annotation[k] = v for k, v of annotation
@@ -25,8 +25,7 @@ module.exports =
       classificationIndex: classifications.length-1
         , =>
           window.classifications = @state.classifications # make accessible to console
-          # console.log "Begin classification: ", @state.classifications
-          # console.log "  ann: ", c.annotation for c in @state.classifications
+          callback() if callback?
 
   # Push current classification to server:
   commitClassification: ->

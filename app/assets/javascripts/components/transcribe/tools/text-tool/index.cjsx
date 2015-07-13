@@ -78,8 +78,9 @@ TextTool = React.createClass
       el = $(@refs.input0.getDOMNode())
       el.autocomplete
         source: (request, response) =>
+          field = "#{@props.task.key}:#{@fieldKey()}"
           $.ajax
-            url: "/classifications/terms/#{@props.workflow.id}/#{@props.key}"
+            url: "/classifications/terms/#{@props.workflow.id}/#{field}"
             dataType: "json"
             data:
               q: request.term
@@ -113,10 +114,16 @@ TextTool = React.createClass
     # window.location.replace "http://localhost:3000/#/mark?subject_set_id=#{@props.subject.subject_set_id}&selected_subject_id=#{@props.subject.parent_subject_id.$oid}"
     @replaceWith("/mark?subject_set_id=#{@props.subject.subject_set_id}&selected_subject_id=#{@props.subject.parent_subject_id.$oid}" )
 
+  # Get key to use in annotations hash (i.e. typically 'value', unless included in composite tool)
+  fieldKey: ->
+    if @props.standalone
+      'value'
+    else
+      @props.annotation_key
+
   handleChange: (e) ->
-    @props.key = @props.ref || 'value' # use 'value' key if standalone
     newAnnotation = []
-    newAnnotation[@props.key] = e.target.value
+    newAnnotation[@fieldKey()] = e.target.value
 
     # if composite-tool is used, this will be a callback to CompositeTool::handleChange()
     # otherwise, it'll be a callback to Transcribe::handleDataFromTool()
@@ -132,7 +139,8 @@ TextTool = React.createClass
       left: "#{@state.dx*@props.scale.horizontal}px"
       top: "#{@state.dy*@props.scale.vertical}px"
 
-    val = @props.annotation[@props.key]
+    val = @props.annotation[@fieldKey()]
+    val = '' if ! val?
 
     unless @props.standalone
       label = @props.label ? ''
@@ -145,14 +153,20 @@ TextTool = React.createClass
     tool_content =
       <div className="input-field active">
         <label>{label}</label>
-        <input
-          ref={ref}
-          type="text"
-          data-task_key={@props.task.key}
-          onKeyDown={@handleKeyPress}
-          onChange={@handleChange}
-          value={val}
-        />
+        {
+          atts =
+            ref: ref
+            "data-task_key": @props.task.key
+            onKeyDown: @handleKeyPress
+            onChange: @handleChange
+            value: val
+        
+          if @props.textarea
+            <textarea key={@props.task.key} value={val} {...atts} />
+
+          else
+            <input type="text" value={val} {...atts} />
+        }
       </div>
 
     if @props.standalone # 'standalone' true if component handles own mouse events
@@ -177,7 +191,6 @@ TextTool = React.createClass
                 else
                   <span>
                     <label>Return to marking: </label>
-                    {console.log 'PROPS: ', @props}
                     <button className='button done' onClick={@returnToMarking}
                     >
                       {'Finish'}
