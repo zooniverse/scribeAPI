@@ -140,6 +140,7 @@ module.exports = React.createClass # rename to Classifier
                 annotation={currentAnnotation}
                 subject={@getCurrentSubject()}
                 onChange={@handleDataFromTool}
+                subjectCurrentPage={@props.query.page}
                 onComplete={@handleTaskComplete}
                 onBack={@makeBackHandler()}
                 workflow={@getActiveWorkflow()}

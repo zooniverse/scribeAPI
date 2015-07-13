@@ -42,6 +42,7 @@ module.exports = React.createClass
       return null
 
   render: ->
+    console.log 'SUBJECT CURRENT PAGE: ', @props.subjectCurrentPage
     # console.log 'SUBJECT-SET-VIEWER::render(), subject_index = ', @props.subject_index
     # NOTE: LightBox does not receive correct @props.subject_index. Why? --STI
     <div className="subject-set-viewer">
@@ -66,6 +67,7 @@ module.exports = React.createClass
           subject={subject}
           workflow={@props.workflow}
           task={@props.task}
+          subjectCurrentPage={@props.subjectCurrentPage}
           annotation={@props.annotation}
           active={index == @props.subject_index}
           onComplete={@props.onComplete}

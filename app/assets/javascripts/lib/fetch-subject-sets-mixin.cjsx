@@ -2,10 +2,11 @@ API = require './api'
 
 module.exports =
   componentDidMount: ->
-    if @props.query.subject_set_id
-      @fetchSubjectSet @props.query.subject_set_id, @props.query.subject_index, @getActiveWorkflow().id
+    console.log 'QUERY PARAMS: ', @props.query
+    # if @props.query.subject_set_id
+    #   @fetchSubjectSet @props.query.subject_set_id, @props.query.subject_index, @getActiveWorkflow().id
     if @props.query.subject_set_id and @props.query.selected_subject_id
-      @fetchSubjectSetBySubjectId @getActiveWorkflow().id, @props.query.subject_set_id, @props.query.selected_subject_id
+      @fetchSubjectSetBySubjectId @getActiveWorkflow().id, @props.query.subject_set_id, @props.query.selected_subject_id, @props.query.page
     else
       @fetchSubjectSets @getActiveWorkflow().id, @getActiveWorkflow().subject_fetch_limit
 
@@ -30,10 +31,10 @@ module.exports =
         subject_current_page: subject_set.subject_pagination_info.current_page
         total_subject_pages: subject_set.subject_pagination_info.total_pages
 
-  fetchSubjectSetBySubjectId: (workflow_id, subject_set_id, selected_subject_id) ->
+  fetchSubjectSetBySubjectId: (workflow_id, subject_set_id, selected_subject_id, page) ->
     console.log 'fetchSubjectSetBySubjectId()'
     console.log 'THE QUERY: ', "/workflows/#{workflow_id}/subject_sets/#{subject_set_id}/subjects/#{selected_subject_id}"
-    request = API.type('workflows').get("#{workflow_id}/subject_sets/#{subject_set_id}/subjects/#{selected_subject_id}")
+    request = API.type('workflows').get("#{workflow_id}/subject_sets/#{subject_set_id}/subjects/#{selected_subject_id}?page=#{page}")
     # request = API.type("subject_sets").get(subject_set_id: subject_set_id, workflow_id: workflow_id)
 
     @setState
@@ -56,6 +57,9 @@ module.exports =
         subjectSets: subject_set
         subject_set_index: 0
         subject_index: subject_index || 0 #parseInt(subject_index) || 0
+
+        subject_current_page: subject_set.subject_pagination_info.current_page
+        total_subject_pages: subject_set.subject_pagination_info.total_pages
         # currentSubjectSet: subject_set
 
   orderSubjectsByOrder: (subject_sets) ->
@@ -65,6 +69,7 @@ module.exports =
     subject_sets
 
   fetchSubjectSet: (subject_set_id, subject_index, workflow_id)->
+    console.log 'fetchSubjectSet()'
     request = API.type("subject_sets").get(subject_set_id: subject_set_id, workflow_id: workflow_id)
 
     @setState
