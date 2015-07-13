@@ -1,6 +1,6 @@
 class SubjectSetSerializer < ActiveModel::MongoidSerializer
 
-  attributes :id, :name, :thumbnail, :meta_data, :subjects, :state, :counts, :group_id, :subject_set_pagination_info
+  attributes :id, :selected_subject_id, :name, :thumbnail, :meta_data, :subjects, :state, :counts, :group_id, :subject_set_pagination_info
 
   def attributes
     data = super

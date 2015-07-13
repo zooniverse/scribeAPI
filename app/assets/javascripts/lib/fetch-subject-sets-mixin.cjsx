@@ -30,6 +30,34 @@ module.exports =
         subject_current_page: subject_set.subject_pagination_info.current_page
         total_subject_pages: subject_set.subject_pagination_info.total_pages
 
+  fetchSubjectSetBySubjectId: (workflow_id, subject_set_id, selected_subject_id) ->
+    console.log 'fetchSubjectSetBySubjectId()'
+    console.log 'THE QUERY: ', "/workflows/#{workflow_id}/subject_sets/#{subject_set_id}/subjects/#{selected_subject_id}"
+    request = API.type('workflows').get("#{workflow_id}/subject_sets/#{subject_set_id}/subjects/#{selected_subject_id}")
+    # request = API.type("subject_sets").get(subject_set_id: subject_set_id, workflow_id: workflow_id)
+
+    @setState
+      subjectSet: []
+      # currentSubjectSet: null
+
+    request.then (subject_set) =>
+      console.log 'SUBJECT SET: ', subject_set
+
+      for subject in subject_set.subjects
+        console.log 'SUBJECT ID:              ', subject.id
+        console.log 'SUBJECT SET: ', subject_set
+        console.log 'SUBJECT ID SEARCH QUERY: ', subject_set.selected_subject_id
+        if subject.id is subject_set.selected_subject_id
+          console.log 'SELECTED SUBJECT ID: ', subject_set.selected_subject_id
+          console.log 'MATCH!'
+          subject_index = subject_set.subjects.indexOf subject
+
+      @setState
+        subjectSets: subject_set
+        subject_set_index: 0
+        subject_index: subject_index || 0 #parseInt(subject_index) || 0
+        # currentSubjectSet: subject_set
+
   orderSubjectsByOrder: (subject_sets) ->
     for subject_set in subject_sets
       subject_set.subjects = subject_set.subjects.sort (a,b) ->
@@ -48,32 +76,6 @@ module.exports =
         subjectSets: subject_set
         subject_set_index: 0
         subject_index: parseInt(subject_index) || 0
-
-  fetchSubjectSetBySubjectId: (workflow_id, subject_set_id, selected_subject_id) ->
-    console.log 'fetchSubjectSetBySubjectId()'
-    console.log 'THE QUERY: ', "/workflows/#{workflow_id}/subject_sets/#{subject_set_id}/subjects/#{selected_subject_id}"
-    request = API.type('workflows').get("#{workflow_id}/subject_sets/#{subject_set_id}/subjects/#{selected_subject_id}")
-    # request = API.type("subject_sets").get(subject_set_id: subject_set_id, workflow_id: workflow_id)
-
-    @setState
-      subjectSet: []
-      # currentSubjectSet: null
-
-    request.then (subject_set) =>
-      console.log 'SUBJECT SET: ', subject_set
-
-      for subject in subject_set.subjects
-        console.log 'SUBJECT ID:              ', subject.id
-        if subject.id is subject_set.selected_subject_id
-          console.log 'SELECTED SUBJECT ID: ', subject_set.selected_subject_id
-          console.log 'MATCH!'
-          subject_index = subject_set.subjects.indexOf subject
-
-      @setState
-        subjectSets: [subject_set]
-        subject_set_index: 0
-        subject_index: subject_index || 0 #parseInt(subject_index) || 0
-        # currentSubjectSet: subject_set
 
   fetchSubjectSets: (workflow_id, limit) ->
     console.log 'fetchSubjectSets()'

@@ -50,7 +50,7 @@ module.exports =
 
   # Update local version of a subject with a newly acquired child_subject (i.e. after submitting a subject-generating classification)
   appendChildSubject: (subject_id, child_subject) ->
-    if (s = @subjectById(subject_id))
+    if (s = @getSubjectById(subject_id))
       s.child_subjects.push $.extend({userCreated: true}, child_subject)
 
       # We've updated an internal object in @state.subjectSets, but framework doesn't notice, so tell it to update:
@@ -60,12 +60,11 @@ module.exports =
       console.warn "WorkflowMethodsMixin#appendChildSubject: couldn't find subject by ", subject_id
 
   # Get a reference to the local copy of a subject by id regardless of whether viewing subject-sets or just subjects
-  subjectById: (id) ->
+  getSubjectById: (id) ->
     if @state.subjectSets?
       for s in @getCurrentSubjectSet().subjects
         return s if s.id == id
     else
-      console.log 'BLAH'
       for s in @state.subjects
         return s if s.id == id
 

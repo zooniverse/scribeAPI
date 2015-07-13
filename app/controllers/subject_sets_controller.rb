@@ -2,7 +2,6 @@ class SubjectSetsController < ApplicationController
   respond_to :json
 
   def index
-    # puts 'PARAMS: ', params
     workflow_id  = params["workflow_id"]
     random = params["random"] || false
     limit  = params["limit"].to_i  || 10
