@@ -98,7 +98,7 @@ module.exports = React.createClass # rename to Classifier
     # annotations = @props.annotations
     currentAnnotation = (@props.classification.annotations[@state.currentTaskKey] ||= {})
     TaskComponent = @state.currentTool
-    onFirstAnnotation = currentAnnotation?.task is @activeWorkflow().first_task
+    onFirstAnnotation = currentAnnotation?.task is @getActiveWorkflow().first_task
     console.log "Verify#render: ..", currentAnnotation, @state
 
     # console.log "Transcribe#render: tool=#{@state.currentTask.tool} TaskComponent=", TaskComponent
@@ -115,7 +115,7 @@ module.exports = React.createClass # rename to Classifier
             style = marginTop: "50px"
             <p style={style}>There are currently no transcription subjects. Try <a href="/#/mark">marking</a> instead!</p>
           else if @state.currentSubject?
-            <SubjectViewer onLoad={@handleViewerLoad} subject={@state.currentSubject} active=true workflow={@activeWorkflow()} classification={@props.classification} annotation={currentAnnotation}>
+            <SubjectViewer onLoad={@handleViewerLoad} subject={@state.currentSubject} active=true workflow={@getActiveWorkflow()} classification={@props.classification} annotation={currentAnnotation}>
               <TaskComponent
                 ref="taskComponent"
                 viewerSize={@state.viewerSize}
@@ -125,7 +125,7 @@ module.exports = React.createClass # rename to Classifier
                 subject={@state.currentSubject}
                 onChange={@handleTaskComponentChange}
                 onComplete={@handleTaskComplete}
-                workflow={@activeWorkflow()}
+                workflow={@getActiveWorkflow()}
                 verifyTools={verifyTools} />
             </SubjectViewer>
         }

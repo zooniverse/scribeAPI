@@ -7,13 +7,13 @@ transcribeTools         = require 'components/transcribe/tools'
 module.exports =
 
   # Convenience method for selecting currently active workflow based on active controller
-  activeWorkflow: ->
+  getActiveWorkflow: ->
     return null if ! @props.project
 
     k = (k for w,k in @props.project.workflows when w.name == @props.workflowName)
     return null if k?.length != 1
     @props.project.workflows[k[0]]
-  
+
   # Start a new classification (optionally initialized with given annotation hash):
   beginClassification: (annotation = {}, callback) ->
     classifications = @state.classifications
@@ -36,7 +36,7 @@ module.exports =
 
     classification.subject_id = @getCurrentSubject()?.id
     classification.subject_set_id = @getCurrentSubjectSet().id if @getCurrentSubjectSet()?
-    classification.workflow_id = @activeWorkflow().id
+    classification.workflow_id = @getActiveWorkflow().id
     classification.task_key = @state.taskKey
 
     # Commit classification to backend
@@ -80,7 +80,7 @@ module.exports =
 
   getTasks: ->
     # Add completion_assessment_task to list of tasks dynamically:
-    $.extend @activeWorkflow().tasks, completion_assessment_task: @getCompletionAssessmentTask()
+    $.extend @getActiveWorkflow().tasks, completion_assessment_task: @getCompletionAssessmentTask()
 
   # Get instance of current tool:
   getCurrentTool: ->
@@ -175,4 +175,3 @@ module.exports =
         }
     }
     subToolIndex: 0
-

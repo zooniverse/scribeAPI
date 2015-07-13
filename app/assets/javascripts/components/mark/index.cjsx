@@ -29,16 +29,16 @@ module.exports = React.createClass # rename to Classifier
 
   componentWillMount: ->
     @setState
-      taskKey: @activeWorkflow().first_task
+      taskKey: @getActiveWorkflow().first_task
 
     @beginClassification()
 
   render: ->
     console.log 'CURRENT PAGE = ', @state.subject_current_page
-    return null unless @getCurrentSubject()? && @activeWorkflow()?
+    return null unless @getCurrentSubject()? && @getActiveWorkflow()?
     currentTask = @getCurrentTask()
     TaskComponent = @getCurrentTool()
-    onFirstAnnotation = @state.taskKey == @activeWorkflow().first_task
+    onFirstAnnotation = @state.taskKey == @getActiveWorkflow().first_task
 
 
     if currentTask.tool is 'pick_one'
@@ -56,7 +56,7 @@ module.exports = React.createClass # rename to Classifier
             <SubjectSetViewer
               subject_set={@getCurrentSubjectSet()}
               subject_index={@state.subject_index}
-              workflow={@activeWorkflow()}
+              workflow={@getActiveWorkflow()}
               task={currentTask}
               annotation={@getCurrentClassification().annotation ? {}}
               onComplete={@handleToolComplete}
@@ -119,7 +119,7 @@ module.exports = React.createClass # rename to Classifier
     @setState
       subject_set_index: new_subject_set_index
       subject_index: new_subject_index
-      taskKey: @activeWorkflow().first_task
+      taskKey: @getActiveWorkflow().first_task
       currentSubToolIndex: 0, =>
         # console.log "After @state", @state
 

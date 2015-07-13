@@ -3,11 +3,11 @@ API = require './api'
 module.exports =
   componentDidMount: ->
     if @props.query.subject_set_id
-      @fetchSubjectSet @props.query.subject_set_id, @props.query.subject_index, @activeWorkflow().id
+      @fetchSubjectSet @props.query.subject_set_id, @props.query.subject_index, @getActiveWorkflow().id
     if @props.query.subject_set_id and @props.query.selected_subject_id
-      @fetchSubjectSetBySubjectId @activeWorkflow().id, @props.query.subject_set_id, @props.query.selected_subject_id
+      @fetchSubjectSetBySubjectId @getActiveWorkflow().id, @props.query.subject_set_id, @props.query.selected_subject_id
     else
-      @fetchSubjectSets @activeWorkflow().id, @activeWorkflow().subject_fetch_limit
+      @fetchSubjectSets @getActiveWorkflow().id, @getActiveWorkflow().subject_fetch_limit
 
   # this method fetches the next page of subjects in a given subject_set.
   # right now the trigger for this method is the forward or back button in the light-box

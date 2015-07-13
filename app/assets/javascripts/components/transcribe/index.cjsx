@@ -116,7 +116,7 @@ module.exports = React.createClass # rename to Classifier
 
     currentAnnotation = @getCurrentClassification().annotation
     TranscribeComponent = @getCurrentTool() # @state.currentTool
-    onFirstAnnotation = currentAnnotation?.task is @activeWorkflow().first_task
+    onFirstAnnotation = currentAnnotation?.task is @getActiveWorkflow().first_task
 
     <div className="classifier">
       <div className="subject-area">
@@ -129,7 +129,7 @@ module.exports = React.createClass # rename to Classifier
               onLoad={@handleViewerLoad}
               subject={@getCurrentSubject()}
               active=true
-              workflow={@activeWorkflow()}
+              workflow={@getActiveWorkflow()}
               classification={@props.classification}
               annotation={currentAnnotation}
             >
@@ -142,7 +142,7 @@ module.exports = React.createClass # rename to Classifier
                 onChange={@handleDataFromTool}
                 onComplete={@handleTaskComplete}
                 onBack={@makeBackHandler()}
-                workflow={@activeWorkflow()}
+                workflow={@getActiveWorkflow()}
                 viewerSize={@state.viewerSize}
                 transcribeTools={transcribeTools}
               />
