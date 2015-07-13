@@ -34,7 +34,6 @@ module.exports = React.createClass # rename to Classifier
     @beginClassification()
 
   render: ->
-    console.log 'CURRENT PAGE = ', @state.subject_current_page
     return null unless @getCurrentSubject()? && @getActiveWorkflow()?
     currentTask = @getCurrentTask()
     TaskComponent = @getCurrentTool()

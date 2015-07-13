@@ -111,10 +111,6 @@ TextTool = React.createClass
     @props.onComplete @props.annotation
 
   returnToMarking: ->
-    console.log 'returnToMarking() >>>>>>>>>>>>>>>>>>'
-    console.log 'PROPS: ', @props
-    console.log 'STATE: ', @state
-
     @commitAnnotation()
     # window.location.replace "http://localhost:3000/#/mark?subject_set_id=#{@props.subject.subject_set_id}&selected_subject_id=#{@props.subject.parent_subject_id.$oid}"
     @replaceWith("/mark?subject_set_id=#{@props.subject.subject_set_id}&selected_subject_id=#{@props.subject.parent_subject_id.$oid}&page=#{@props.subjectCurrentPage}" )
@@ -140,7 +136,6 @@ TextTool = React.createClass
       e.preventDefault()
 
   render: ->
-    console.log 'PAGE NUMBER: ', @props.subjectCurrentPage
     style =
       left: "#{@state.dx*@props.scale.horizontal}px"
       top: "#{@state.dy*@props.scale.vertical}px"

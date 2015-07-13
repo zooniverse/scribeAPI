@@ -50,7 +50,7 @@ module.exports =
         console.log 'SUBJECT ID SEARCH QUERY: ', subject_set.selected_subject_id
         if subject.id is subject_set.selected_subject_id
           console.log 'SELECTED SUBJECT ID: ', subject_set.selected_subject_id
-          console.log 'MATCH!'
+          console.log 'SUBJECT MATCH!'
           subject_index = subject_set.subjects.indexOf subject
 
       @setState
