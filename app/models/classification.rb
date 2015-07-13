@@ -50,6 +50,9 @@ class Classification
   end
 
   def generate_terms
+    # Just don't even if can't find current task (i.e. completion_assessment task)
+    return if workflow_task.nil?
+
     annotation.each do |(k,v)|
 
       # Require a min length of 2 to index:
