@@ -3,12 +3,12 @@ React      = require 'react'
 Draggable  = require 'lib/draggable'
 DoneButton = require './done-button'
 PrevButton = require './prev-button'
-ReactRouter = require 'react-router' # eventually replace with {Navigation} = require 'react-router' -- STI
+{Navigation} = require 'react-router' # eventually replace with {Navigation} = require 'react-router' -- STI
 
 TextTool = React.createClass
   displayName: 'TextTool'
 
-  mixins: [ReactRouter] # NOTE: deprecated React-Router 13.3 uses Navigation minxin --STI
+  mixins: [Navigation] # NOTE: deprecated React-Router 13.3 uses Navigation minxin --STI
 
   handleInitStart: (e) ->
     @setState preventDrag: false
@@ -59,6 +59,7 @@ TextTool = React.createClass
     focus: true
 
   componentWillReceiveProps: ->
+    console.log 'PROPS: ', @props
     @refs[@props.ref || 'input0'].getDOMNode().focus() if @props.focus
 
     {x,y} = @getPosition @props.subject.data
@@ -110,6 +111,7 @@ TextTool = React.createClass
     @props.onComplete @props.annotation
 
   returnToMarking: ->
+    console.log 'returnToMarking() >>>>>>>>>>>>>>>>>>'
     @commitAnnotation()
     # window.location.replace "http://localhost:3000/#/mark?subject_set_id=#{@props.subject.subject_set_id}&selected_subject_id=#{@props.subject.parent_subject_id.$oid}"
     @replaceWith("/mark?subject_set_id=#{@props.subject.subject_set_id}&selected_subject_id=#{@props.subject.parent_subject_id.$oid}" )
@@ -160,7 +162,7 @@ TextTool = React.createClass
             onKeyDown: @handleKeyPress
             onChange: @handleChange
             value: val
-        
+
           if @props.textarea
             <textarea key={@props.task.key} value={val} {...atts} />
 

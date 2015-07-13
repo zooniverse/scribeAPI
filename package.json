@@ -1,6 +1,6 @@
 {
   "name": "scribeAPI",
-  "devDependencies" : {
+  "devDependencies": {
     "browserify": "~10.2.4",
     "browserify-incremental": "^3.0.1",
     "react": "^0.13.3",
@@ -10,5 +10,8 @@
   "license": "MIT",
   "engines": {
     "node": ">= 0.10"
+  },
+  "dependencies": {
+    "json-api-client": "^0.4.4"
   }
 }

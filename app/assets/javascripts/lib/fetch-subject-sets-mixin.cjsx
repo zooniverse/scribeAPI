@@ -4,8 +4,8 @@ module.exports =
   componentDidMount: ->
     if @props.query.subject_set_id
       @fetchSubjectSet @props.query.subject_set_id, @props.query.subject_index, @activeWorkflow().id
-    else if @props.query.subject_set_id and @props.query.selected_subject_id
-      @fetchSubjectSetBySubjectId @props.workflow.id, @props.query.subject_set_id, @props.query.selected_subject_id
+    if @props.query.subject_set_id and @props.query.selected_subject_id
+      @fetchSubjectSetBySubjectId @activeWorkflow().id, @props.query.subject_set_id, @props.query.selected_subject_id
     else
       @fetchSubjectSets @activeWorkflow().id, @activeWorkflow().subject_fetch_limit
 
