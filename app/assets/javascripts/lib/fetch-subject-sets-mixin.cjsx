@@ -104,6 +104,7 @@ module.exports =
       request.then (subject_sets)=>    # DEBUG CODE
         meta = subject_sets[0].getMeta
         subject_sets = @orderSubjectsByOrder(subject_sets)
+        console.log "subject_sets", subject_sets
         ind = 0
         # Uncomment this to ffwd to a set with child subjects:
         # ind = (i for s,i in subject_sets when s.subjects[0].child_subjects?.length > 0)[0] ? 0
