@@ -15,6 +15,7 @@ API::Application.routes.draw do
   namespace :admin do
     resources :subjects, :classifications
   end
+  
   get '/admin' => 'admin/subjects#index'
 
   get '/current_user',                                       to: "users#logged_in_user"

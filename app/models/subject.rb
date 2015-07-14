@@ -30,7 +30,7 @@ class Subject
   field :height
 
   # SECONDARY SUBJECT concerns:
-  field :data,                        type: Hash
+  field :data,                        type: Hashsubjec
   field :region,                      type: Hash
 
   belongs_to :workflow
