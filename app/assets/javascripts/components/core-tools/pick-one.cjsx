@@ -66,10 +66,9 @@ module.exports = React.createClass
 
   render: ->
     answers = for k, answer of @props.task.tool_config.options
-      console.log "answer", answer
+
       answer._key ?= Math.random()
       checked = k is @props.annotation.value
-
       classes = ['minor-button']
       classes.push 'active' if checked
       classes = classes.join ' '
@@ -83,9 +82,8 @@ module.exports = React.createClass
 
   handleChange: (index, e) ->
     if e.target.checked
-      checked = $(@refs.inputs.getDOMNode()).find('input[type=radio]:checked')
       @props.onChange({
-        value: checked.val()
+        value: e.target.value
       })
       @forceUpdate() # update the radiobuttons after selection
 

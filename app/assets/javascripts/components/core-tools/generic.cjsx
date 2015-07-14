@@ -16,7 +16,6 @@ module.exports = React.createClass
     helping: false
 
   render: ->
-    console.log "PROPS FOR GENERIC", @props
     <div className="workflow-task">
       <span>{@props.question}</span>
       <div className="answers">
