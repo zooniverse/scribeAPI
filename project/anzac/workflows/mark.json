@@ -40,6 +40,10 @@
           "sfatt":{
             "label":"South Africa Attestation",
             "next_task": null
+          },
+          "other_page_type":{
+            "label":"Other",
+            "next_task": null
           }
         }
       }
@@ -154,8 +158,8 @@
           {"type": "rectangleTool", "label": "Rank", "color": "green", "generates_subject_type": "hs_transcribe_rank" },
           {"type": "rectangleTool", "label": "Occupation", "color": "green", "generates_subject_type": "hs_transcribe_occupation" },
           {"type": "rectangleTool", "label": "Surname", "color": "green", "generates_subject_type": "hs_transcribe_surname" },
-          {"type": "rectangleTool", "label": "No.", "color": "green", "generates_subject_type": "hs_transcribe_no" },
-          {"type": "rectangleTool", "label": "Christian name", "color": "green", "generates_subject_type": "hs_transcribe_christian_name" }
+          {"type": "rectangleTool", "label": "Christian name", "color": "green", "generates_subject_type": "hs_transcribe_christian_name" },
+          {"type": "rectangleTool", "label": "No.", "color": "green", "generates_subject_type": "hs_transcribe_no" }
         ]
       },
       "next_task": "hs_service"
@@ -166,7 +170,7 @@
       "instruction":"Draw a rectangle around each recorded instance under the service category (select the whole row)",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Service", "color": "green", "generates_subject_type": "hs_rectangleTool_serivce" }
+          {"type": "rectangleTool", "label": "Service", "color": "green", "generates_subject_type": "hs_transcribe_service" }
         ]
       },
       "next_task": "hs_wounds"

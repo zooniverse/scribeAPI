@@ -22,6 +22,7 @@ module.exports =
       currentSubject: null
 
     request.then (subject)=>
+      console.log "FOUND SUBJECTS:", subjects
       @setState
         subjects: [subject]
         currentSubject: subject,

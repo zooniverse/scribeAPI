@@ -37,14 +37,18 @@ module.exports = React.createClass
     onLoad: null
     annotationIsComplete: false
 
-  componentWillReceiveProps: (new_props) ->
-    # console.log "SubjectViewer#componentWillReceiveProps: ", @props, new_props
+  componentWillReceiveProps: (new_props) ->    
+    console.log "SubjectViewer#componentWillReceiveProps: ", @props, new_props
     # @setUncommittedMark null if ! @state.uncommittedMark?.saving && ! new_props.annotation?.subToolIndex?
     # @setUncommittedMark null if ! new_props.annotation?.subToolIndex?
     # console.log "setting null because",new_props.task?.tool != 'pickOneMarkOne'
     @setUncommittedMark null if new_props.task?.tool != 'pickOneMarkOne'
 
   componentDidMount: ->
+    console.log "____>>componen DID mount"
+    console.log "____>>componen DID mount"
+    console.log "____>>componen DID mount"
+    console.log "____>>componen DID mount"
     @setView 0, 0, @state.imageWidth, @state.imageHeight
     @loadImage @props.subject.location.standard
     window.addEventListener "resize", this.updateDimensions

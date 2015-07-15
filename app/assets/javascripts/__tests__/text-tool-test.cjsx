@@ -3,5 +3,10 @@ jest
 
   TextTool = require "../components/transcribe/tools/text-tool/index"
 
-  it "should load the TextTool module", ->
-    expect(TextTool).toBeTruthy()
+  describe 'text-tool index', ->
+    React = require 'react/addons'
+
+    it "should load the TextTool module", ->
+      expect(TextTool).toBeTruthy()
+
+    
