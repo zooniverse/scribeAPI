@@ -37,10 +37,10 @@
             "next_task": null
         },
         "att_transcribe_age": {
-            "tool": "textTool",
+            "tool": "compositeTool",
             "tool_config": {
                 "tools": {
-                  "att_transcribe_age_yr": {
+                  "att_transcribe_ageribe_age_yr": {
                     "tool": "textTool",
                     "tool_config": {},
                     "label": "Years",
@@ -353,6 +353,20 @@
             "tool_config": {},
             "instruction": "Enter the response",
             "generates_subject_type": "hs_transcribed_surname",
+            "next_task": null
+        },
+        "hs_transcribe_employer": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the response",
+            "generates_subject_type": "hs_transcribed_employer",
+            "next_task": null
+        },
+        "hs_transcribe_kin": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the response",
+            "generates_subject_type": "hs_transcribed_kin",
             "next_task": null
         },
         "hs_transcribe_no": {
