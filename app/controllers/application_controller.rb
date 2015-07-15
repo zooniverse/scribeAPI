@@ -26,5 +26,12 @@ class ApplicationController < ActionController::Base
     params[key]
   end
 
+  # Parse bool out of GET
+  def get_bool(key, default=nil)
+    return default if params[key].nil? || params[key].class != String
+    return true if (/^(1|true|t|on|yes)$/ === params[key])
+    return false if (/^(0|false|f|off|no|)$/ === params[key])
+    return default
+  end
 
 end

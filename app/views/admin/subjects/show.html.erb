@@ -14,8 +14,24 @@
     <dt>Type</dt>
     <dd><%= @subject.type %><% if @subject.type != 'root' %> (User-defined)<% end %></dd>
 
+    <dt>Status</dt>
+    <dd><%= @subject.status %> 
+      <% if @subject.parent_subject.workflow.generates_subjects_method == 'collect-unique'  %>
+        <br />(Has <%= @subject.parent_classifications.count %> classifications. <%= @subject.parent_subject.workflow.generates_subjects_after %> total required to activate.)
+      <% end %>
+      <% if @subject.parent_subject.workflow.generates_subjects_method == 'most-popular'  %>
+        <br />(<%= @subject.parent_classifications.count %> parent classification(s) have <%= (100 * @subject.calculate_most_popular_parent_classification[:percentage]).to_i %>% agreement. At least <%= @subject.parent_subject.workflow.generates_subjects_after %> parent classifications with <%= (100 * @subject.parent_subject.workflow.generates_subjects_agreement).to_i %>% agreement required to activate.)
+      <% end %>
+    </dd>
+
     <dt>Appears in Workflow:</dt>
-    <dd><%= @subject.workflow.name %></dd>
+    <dd>
+      <% if @subject.workflow.nil? %>
+        &mdash;
+      <% else %>
+        <%= @subject.workflow.name %>
+      <% end %>
+    </dd>
 
     <dt>Source Size:</dt>
     <dd><%= @subject.width %> x <%= @subject.height %></dd>
@@ -48,9 +64,6 @@
       <% end %>
     </dd>
 
-    <dt>Status</dt>
-    <dd><%= @subject.status %> </dd>
-
     <dt>Retire Count:</dt>
     <dd> <% if @subject.retire_count.nil? %>&mdash;<% else %><% @subject.retire_count %><% end %> </dd> 
 
@@ -65,12 +78,11 @@
 
 <div class="supplied-data">
   <h2>Related</h2>
-  <dl>
-    <dt>Total Classifications</dt>
-    <dd><%= @subject.classification_count %></dd>
 
-    <dt>Total Child Subjects</dt>
-    <dd><%= @subject.secondary_subject_count %></dd>
+  <% if ! @subject.source_classifications.empty? %>
+    
+    <h3>Upstream</h3>
+    <dl>
 
     <% if ! @subject.source_classifications.empty? %>
       <dt>Generated From These Classifications </dt>
@@ -82,28 +94,43 @@
         </ol>
       </dd>
     <% end %>
-  </dl>
 
-  <% if @subject.classifications.having_child_subjects.count > 0 %>
-    <h3>Subject-Generating Classifications</h3>
-    <ol>
-      <% @subject.classifications.having_child_subjects.each do |classification| %>
-        <li><%= link_to "#{classification} (#{time_ago_in_words(classification.finished_at)} ago)", admin_classification_path(classification) %>
-          <br />&raquo; <%= link_to classification.child_subject, admin_subject_path(classification.child_subject) %>
-        </li>
-      <% end %>
-    </ol>
-  <% end %>
+    </dl>
 
-  <% if @subject.classifications.not_having_child_subjects.count > 0 %>
-    <h3><% if @subject.classifications.having_child_subjects.count > 0 %>Other <% end %>Classifications</h3>
-    <ol>
-      <% @subject.classifications.not_having_child_subjects.each do |classification| %>
-        <li><%= link_to "#{classification} (#{time_ago_in_words(classification.finished_at)} ago)", admin_classification_path(classification) %>
-        </li>
-      <% end %>
-    </ol>
   <% end %>
+  
+  <h3>Downstream</h3>
+  <dl>
+    <dt>Total Classifications</dt>
+    <dd><%= @subject.classification_count %></dd>
+
+    <dt>Total Child Subjects</dt>
+    <dd><%= @subject.secondary_subject_count %></dd>
+
+    <% if @subject.classifications.having_child_subjects.count > 0 %>
+      <dt>Subject-Generating Classifications</dt>
+      <dd>
+        <ol>
+        <% @subject.classifications.having_child_subjects.each do |classification| %>
+          <li><%= link_to "#{classification} (#{time_ago_in_words(classification.finished_at)} ago)", admin_classification_path(classification) %>
+            <br />&raquo; <%= link_to classification.child_subject, admin_subject_path(classification.child_subject) %>
+          </li>
+        <% end %>
+        </ol>
+      </dd>
+    <% end %>
+
+    <% if @subject.classifications.not_having_child_subjects.count > 0 %>
+      <dt><% if @subject.classifications.having_child_subjects.count > 0 %>Other <% end %>Classifications</dt>
+      <dd>
+        <ol>
+        <% @subject.classifications.not_having_child_subjects.each do |classification| %>
+          <li><%= link_to "#{classification} (#{time_ago_in_words(classification.finished_at)} ago)", admin_classification_path(classification) %>
+          </li>
+        <% end %>
+        </ol>
+      </dd>
+    <% end %>
   </dl>
 </div>
 

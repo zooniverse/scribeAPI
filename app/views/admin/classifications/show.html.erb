@@ -32,10 +32,15 @@
 
 <div class="supplied-data">
   <h2>Related</h2>
+
+  <h3>Upstream</h3>
   <dl>
     <dt>Parent Subject</dt>
     <dd><%= link_to @classification.subject, admin_subject_path(@classification.subject) %></dd>
+  </dl>
 
+  <h3>Downstream</h3>
+  <dl>
     <dt>Generated Subject</dt>
     <dd>
       <% if @classification.child_subject.nil? %>
