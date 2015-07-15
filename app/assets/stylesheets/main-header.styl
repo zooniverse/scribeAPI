@@ -1,8 +1,9 @@
 .main-header
-  display: flex
-  flex-wrap: wrap
-  justify-content: space-between
+  // display: flex
+  // flex-wrap: wrap
+  // justify-content: space-between
   height 40px
+  max-height 40px
 
 .main-header-group
   position: fixed
@@ -50,6 +51,8 @@
     letter-spacing: 0.05em
     line-height: 1
     text-transform: uppercase
+    &:hover
+      background black
 
   &.selected
     background: rgba(MEDIUM_GRAY, 0.5)
