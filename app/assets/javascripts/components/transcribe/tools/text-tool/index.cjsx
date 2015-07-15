@@ -185,20 +185,24 @@ TextTool = React.createClass
               {tool_content}
             </div>
             <div className="right">
-
-              {
+              { # THIS CAN PROBABLY BE REFACTORED --STI
                 if window.location.hash is '#/transcribe' # regular transcribe, i.e. no mark transition
                   <DoneButton onClick={@commitAnnotation} />
                 else
-                  <span>
-                    <label>Return to marking: </label>
-                    <button className='button done' onClick={@returnToMarking}
-                    >
-                      {'Finish'}
-                    </button>
-                  </span>
+                  if @props.task.next_task?
+                    <span>
+                      <button className='button done' onClick={@commitAnnotation}>
+                        {'Next'}
+                      </button>
+                    </span>
+                  else
+                    <span>
+                      <label>Return to marking: </label>
+                      <button className='button done' onClick={@returnToMarking}>
+                        {'Finish'}
+                      </button>
+                    </span>
               }
-
             </div>
           </div>
 
