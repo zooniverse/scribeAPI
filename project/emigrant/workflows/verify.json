@@ -4,14 +4,38 @@
   "retire_limit": 3,
   "generates_subjects": true,
   "generates_subjects_method": "most-popular",
+  "generates_subjects_after": 3,
+  "generates_subjects_max": 10,
+  "generates_subjects_agreement": 0.75,
 
   "tasks": {
 
-    "em_verify_all_values": {
+    "em_transcribed_date": {
       "instruction": "Choose the best transcription!",
       "tool": "verifyTool",
       "tool_config": {},
-      "generates_subject_type": "consensus"
+      "generates_subject_type": "consensus_date"
+    },
+
+    "em_transcribed_mortgager": {
+      "instruction": "Choose the best transcription!",
+      "tool": "verifyTool",
+      "tool_config": {},
+      "generates_subject_type": "consensus_mortgager"
+    },
+
+    "em_transcribed_address": {
+      "instruction": "Choose the best transcription!",
+      "tool": "verifyTool",
+      "tool_config": {},
+      "generates_subject_type": "consensus_address"
+    },
+
+    "em_transcribed_valuation": {
+      "instruction": "Choose the best transcription!",
+      "tool": "verifyTool",
+      "tool_config": {},
+      "generates_subject_type": "consensus_valuation"
     }
   }
 }

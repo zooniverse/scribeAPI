@@ -126,6 +126,7 @@ require 'active_support'
             height: height,
             order: order
           })
+          s.activate!
           puts "        - Saved subject: #{s.location[:standard]}"
         end
 
