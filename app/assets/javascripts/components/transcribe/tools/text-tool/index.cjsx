@@ -3,12 +3,12 @@ React      = require 'react'
 Draggable  = require 'lib/draggable'
 DoneButton = require './done-button'
 PrevButton = require './prev-button'
-{Navigation} = require 'react-router' # eventually replace with {Navigation} = require 'react-router' -- STI
+{Navigation} = require 'react-router'
 
 TextTool = React.createClass
   displayName: 'TextTool'
 
-  mixins: [Navigation] # NOTE: deprecated React-Router 13.3 uses Navigation minxin --STI
+  mixins: [Navigation]
 
   handleInitStart: (e) ->
     @setState preventDrag: false
@@ -37,6 +37,7 @@ TextTool = React.createClass
     dy: y
     viewerSize: @props.viewerSize
 
+  # this can go into a mixin? (common across all transcribe tools)
   getPosition: (data) ->
     switch data.toolName
       when 'rectangleTool'
@@ -106,10 +107,12 @@ TextTool = React.createClass
         dx: @props.subject.data.x * @state.viewerSize.scale.horizontal
         dy: (@props.subject.data.y + @props.subject.data.height) * @state.viewerSize.scale.vertical
 
+  # this can go into a mixin? (common across all transcribe tools)
   # NOTE: doesn't get called unless @props.standalone is true
   commitAnnotation: ->
     @props.onComplete @props.annotation
 
+  # this can go into a mixin? (common across all transcribe tools)
   returnToMarking: ->
     @commitAnnotation()
 
