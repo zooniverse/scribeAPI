@@ -112,8 +112,12 @@ TextTool = React.createClass
 
   returnToMarking: ->
     @commitAnnotation()
-    # window.location.replace "http://localhost:3000/#/mark?subject_set_id=#{@props.subject.subject_set_id}&selected_subject_id=#{@props.subject.parent_subject_id.$oid}"
-    @replaceWith("/mark?subject_set_id=#{@props.subject.subject_set_id}&selected_subject_id=#{@props.subject.parent_subject_id.$oid}&page=#{@props.subjectCurrentPage}" )
+
+    # transition back to mark
+    @replaceWith 'mark', {},
+      subject_set_id: @props.subject.subject_set_id
+      selected_subject_id: @props.subject.parent_subject_id.$oid
+      page: @props.subjectCurrentPage
 
   # Get key to use in annotations hash (i.e. typically 'value', unless included in composite tool)
   fieldKey: ->
