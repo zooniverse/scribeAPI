@@ -84,7 +84,7 @@
             "next_task": null
         },
         "att_transcribe_chest_measurement": {
-            "tool": "textTool",
+            "tool": "compositeTool",
             "tool_config": {
                 "tools": {
                   "att_transcribe_chest_min": {
@@ -132,7 +132,7 @@
             "next_task": null
         },
         "att_transcribe_sight": {
-            "tool": "textTool",
+            "tool": "compositeTool",
             "tool_config": {
                 "tools": {
                   "att_transcribe_sight_l": {
@@ -152,7 +152,7 @@
             "next_task": null
         },
         "att_transcribe_hearing": {
-            "tool": "textTool",
+            "tool": "compositeTool",
             "tool_config": {
                 "tools": {
                   "att_transcribe_hearing_l": {
@@ -316,16 +316,9 @@
             "tool_config": {
                 "suggest": "common"
             },
-            "generates_subject_type": "att_transcribed_answer",
-            "instruction": "Please transcribe the response.",
+        "generates_subject_type": "att_transcribed_answer",
+            "instruction": "Please transcribe the questions.",
             "next_task": "att_transcribe_answer"
-        },
-        "att_transcribe_answer": {
-            "tool": "textTool",
-            "tool_config": {},
-            "generates_subject_type": "att_transcribed_answer",
-            "instruction": "Please transcribe the response to the question.",
-            "next_task": null
         },
         "hs_transcribe_unit": {
             "tool": "textTool",

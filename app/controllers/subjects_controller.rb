@@ -2,6 +2,10 @@ class SubjectsController < ApplicationController
   respond_to :json
 
   def index
+    puts "SUBJECT CONTROLLLER"
+    puts "SUBJECT CONTROLLLER"
+    puts "SUBJECT CONTROLLLER"
+    puts "SUBJECT CONTROLLLER"
     # @users = User.order(:name).page params[:page]
 
     workflow_id  = params["workflow_id"]
@@ -26,9 +30,14 @@ class SubjectsController < ApplicationController
         # respond_with Subject.active.where(workflow_id: workflow_id).limit(limit).page params[:page]
       end
     end
+    puts "@subject: #{@subject}"
   end
 
   def show
+    puts "SUBJECT CONTROLLLER"
+    puts "SUBJECT CONTROLLLER"
+    puts "SUBJECT CONTROLLLER"
+    puts "SUBJECT CONTROLLLER"
     subject_id  = params["subject_id"]
     @subject = Subject.find_by( _id: params[:subject_id] )
     respond_with  @subject

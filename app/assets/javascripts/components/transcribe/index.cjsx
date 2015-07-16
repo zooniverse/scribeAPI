@@ -82,6 +82,7 @@ module.exports = React.createClass # rename to Classifier
   advanceToNextSubject: ->
     # console.log 'advanceToNextSubject()'
     # console.log "subjects: ", @state.subjects
+    console.log "@state.subject_index", @state.subject_index
     if @state.subject_index + 1 < @state.subjects.length
       next_index = @state.subject_index + 1
       next_subject = @state.subjects[next_index]
@@ -113,7 +114,8 @@ module.exports = React.createClass # rename to Classifier
     # DISABLE ANIMATED SCROLLING FOR NOW
     # if @props.query.scrollX? and @props.query.scrollY?
     #   window.scrollTo(@props.query.scrollX,@props.query.scrollY)
-
+    console.log "transcribe#index @props", @props 
+    console.log "transcribe#index @state", @state 
     currentAnnotation = @getCurrentClassification().annotation
     TranscribeComponent = @getCurrentTool() # @state.currentTool
     onFirstAnnotation = currentAnnotation?.task is @activeWorkflow().first_task

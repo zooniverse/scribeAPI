@@ -14,6 +14,7 @@ module.exports =
       return if a.region.y >= b.region.y then 1 else -1
 
   fetchSubject: (subject_id, workflow_id)->
+    console.log "~~~~~~~~~~~~~~~fetchSubjecT"
 
     request = API.type("subjects").get(subject_id, workflow_id: workflow_id)
 
@@ -31,6 +32,7 @@ module.exports =
             @fetchSubjectsCallback()
 
   fetchSubjects: (workflow_id, limit) ->
+    console.log "~~~~~~~~~~~~~~~fetchSubjects"
     if @props.overrideFetchSubjectsUrl?
       console.log "Fetching (fake) subject sets from #{@props.overrideFetchSubjectsUrl}"
       $.getJSON @props.overrideFetchSubjectsUrl, (subjects) =>
