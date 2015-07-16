@@ -2,16 +2,26 @@ class SubjectSetsController < ApplicationController
   respond_to :json
 
   def index
-    workflow_id  = params["workflow_id"]
+    # workflow_id  = params["workflow_id"]
+    workflow_id = get_objectid :workflow_id
+
     random = params["random"] || false
     limit  = params["limit"].to_i  || 10
 
-    if  workflow_id
+    subject_set_id              = get_objectid :subject_set_id
+    subject_sets_limit          = get_int :limit, 10
+    subject_sets_page           = get_int :page, 1
+    subjects_limit              = get_int :subjects_limit, 100
+    subjects_page               = get_int :subjects_page, 1
+
+    # Filter out sets not apprpriate for workflow?
+    if workflow_id
       query = {"counts.#{workflow_id}.active_subjects" => {"$gt"=>0}}
     else
       query = {}
     end
 
+    #### >>> THIS BLOCK IS DIFFERNET
     if params["random"]
       sets = Kaminari.paginate_array(SubjectSet.random(selector: query, limit: limit)).page(params[:page])
     else
@@ -30,6 +40,9 @@ class SubjectSetsController < ApplicationController
 
   end
 
+  #### <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+  # THIS APPEARS TO BE THE SAME IN BOTH VERSIONS
   def show
     # puts 'PARAMS: ', params
     # limit = 1 # should only return one (the matched set)

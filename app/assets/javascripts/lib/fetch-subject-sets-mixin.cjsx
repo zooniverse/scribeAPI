@@ -10,6 +10,7 @@ module.exports =
     else
       @fetchSubjectSets @getActiveWorkflow().id, @getActiveWorkflow().subject_fetch_limit
 
+
   # this method fetches the next page of subjects in a given subject_set.
   # right now the trigger for this method is the forward or back button in the light-box
   # I am torn about whether to set the subject_index at this point? -- AMS
@@ -82,6 +83,7 @@ module.exports =
         subject_set_index: 0
         subject_index: parseInt(subject_index) || 0
 
+  # OLD
   fetchSubjectSets: (workflow_id, limit) ->
     console.log 'fetchSubjectSets()'
     if @props.overrideFetchSubjectsUrl?
@@ -94,9 +96,11 @@ module.exports =
       request = API.type('subject_sets').get
         workflow_id: workflow_id
         limit: limit
-        random: true
+        # random: true
 
       request.then (subject_sets)=>    # DEBUG CODE
+        # NEW CODE
+        # meta = subject_sets[0].getMeta
 
         subject_sets = @orderSubjectsByOrder(subject_sets)
         ind = 0
@@ -105,9 +109,73 @@ module.exports =
         @setState
           subjectSets: subject_sets
           subject_set_index: ind
+
+          # NEW CODE
+          # subject_current_page: subject_sets[0].getMeta("current_page")
+          # subject_set_current_page: subject_sets[0].getMeta("current_page")
+          # total_subject_pages: subject_sets[0].getMeta("total_pages")
+
           subject_current_page: subject_sets[0].subject_pagination_info.current_page
           subject_set_current_page: subject_sets[0].subject_set_pagination_info.current_page
           total_subject_pages: subject_sets[0].subject_pagination_info.total_pages
 
         if @fetchSubjectsCallback?
           @fetchSubjectsCallback()
+
+
+  #     request.then (subject_sets)=>    # DEBUG CODE
+  #       meta = subject_sets[0].getMeta
+  #       subject_sets = @orderSubjectsByOrder(subject_sets)
+  #       console.log "subject_sets", subject_sets
+  #       ind = 0
+  #       # Uncomment this to ffwd to a set with child subjects:
+  #       # ind = (i for s,i in subject_sets when s.subjects[0].child_subjects?.length > 0)[0] ? 0
+  #
+  #       callback_fn?() # fixes weird pagination bugs; not too happy about this one --STI
+  #       @setState
+  #         subjectSets: subject_sets
+  #         subject_set_index: ind
+  #         subject_current_page: subject_sets[0].getMeta("current_page")
+  #         subject_set_current_page: subject_sets[0].getMeta("current_page")
+  #         total_subject_pages: subject_sets[0].getMeta("total_pages")
+  #
+  #       if @fetchSubjectsCallback?
+  #         @fetchSubjectsCallback()
+
+  # fetchSubjectSets: (workflow_id, opts={}, callback_fn=null) ->
+  #   opts = $.extend({
+  #     limit: 10
+  #   }, opts)
+  #
+  #   if @props.overrideFetchSubjectsUrl?
+  #     $.getJSON @props.overrideFetchSubjectsUrl, (subject_sets) =>
+  #       @setState
+  #         subjectSets: subject_sets
+  #         # currentSubjectSet: subject_sets[0]
+  #
+  #   else
+  #     request = API.type('subject_sets').get
+  #       workflow_id: workflow_id
+  #       limit: opts.limit
+  #
+  #     # Randomization is incompatible with pagination; Let's disable randomization for now:
+  #       # random: true
+  #
+  #     request.then (subject_sets)=>    # DEBUG CODE
+  #       meta = subject_sets[0].getMeta
+  #       subject_sets = @orderSubjectsByOrder(subject_sets)
+  #       console.log "subject_sets", subject_sets
+  #       ind = 0
+  #       # Uncomment this to ffwd to a set with child subjects:
+  #       # ind = (i for s,i in subject_sets when s.subjects[0].child_subjects?.length > 0)[0] ? 0
+  #
+  #       callback_fn?() # fixes weird pagination bugs; not too happy about this one --STI
+  #       @setState
+  #         subjectSets: subject_sets
+  #         subject_set_index: ind
+  #         subject_current_page: subject_sets[0].getMeta("current_page")
+  #         subject_set_current_page: subject_sets[0].getMeta("current_page")
+  #         total_subject_pages: subject_sets[0].getMeta("total_pages")
+  #
+  #       if @fetchSubjectsCallback?
+  #         @fetchSubjectsCallback()
