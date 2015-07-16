@@ -2,12 +2,12 @@ React      = require 'react'
 Draggable  = require 'lib/draggable'
 DoneButton = require './done-button'
 PrevButton = require './prev-button'
-ReactRouter = require 'react-router' # eventually replace with {Navigation} = require 'react-router' -- STI
+{Navigation} = require 'react-router'
 
 TextTool = React.createClass
   displayName: 'TextTool'
 
-  mixins: [ReactRouter] # NOTE: deprecated React-Router 13.3 uses Navigation minxin --STI
+  mixins: [Navigation]
 
   handleInitStart: (e) ->
     @setState preventDrag: false
@@ -36,6 +36,7 @@ TextTool = React.createClass
     dy: y
     viewerSize: @props.viewerSize
 
+  # this can go into a mixin? (common across all transcribe tools)
   getPosition: (data) ->
     switch data.toolName
       when 'rectangleTool'
@@ -58,6 +59,7 @@ TextTool = React.createClass
     focus: true
 
   componentWillReceiveProps: ->
+    console.log 'PROPS: ', @props
     @refs[@props.ref || 'input0'].getDOMNode().focus() if @props.focus
 
     {x,y} = @getPosition @props.subject.data
@@ -109,14 +111,22 @@ TextTool = React.createClass
         dx: @props.subject.data.x * @state.viewerSize.scale.horizontal
         dy: (@props.subject.data.y + @props.subject.data.height) * @state.viewerSize.scale.vertical
 
+  # this can go into a mixin? (common across all transcribe tools)
   # NOTE: doesn't get called unless @props.standalone is true
   commitAnnotation: ->
     @props.onComplete @props.annotation
 
+  # this can go into a mixin? (common across all transcribe tools)
   returnToMarking: ->
     @commitAnnotation()
-    # window.location.replace "http://localhost:3000/#/mark?subject_set_id=#{@props.subject.subject_set_id}&selected_subject_id=#{@props.subject.parent_subject_id.$oid}"
-    @replaceWith("/mark?subject_set_id=#{@props.subject.subject_set_id}&selected_subject_id=#{@props.subject.parent_subject_id.$oid}" )
+
+    console.log 'PROPS:SJKDHKLJSDHSKLJDHKJSLDH ', @props
+
+    # transition back to mark
+    @replaceWith 'mark', {},
+      subject_set_id: @props.subject.subject_set_id
+      selected_subject_id: @props.subject.parent_subject_id
+      page: @props.subjectCurrentPage
 
   # Get key to use in annotations hash (i.e. typically 'value', unless included in composite tool)
   fieldKey: ->
@@ -164,7 +174,7 @@ TextTool = React.createClass
             onKeyDown: @handleKeyPress
             onChange: @handleChange
             value: val
-        
+
           if @props.textarea
             <textarea key={@props.task.key} value={val} {...atts} />
 
@@ -188,20 +198,24 @@ TextTool = React.createClass
               {tool_content}
             </div>
             <div className="right">
-
-              {
+              { # THIS CAN PROBABLY BE REFACTORED --STI
                 if window.location.hash is '#/transcribe' # regular transcribe, i.e. no mark transition
                   <DoneButton onClick={@commitAnnotation} />
                 else
-                  <span>
-                    <label>Return to marking: </label>
-                    <button className='button done' onClick={@returnToMarking}
-                    >
-                      {'Finish'}
-                    </button>
-                  </span>
+                  if @props.task.next_task?
+                    <span>
+                      <button className='button done' onClick={@commitAnnotation}>
+                        {'Next'}
+                      </button>
+                    </span>
+                  else
+                    <span>
+                      <label>Return to marking: </label>
+                      <button className='button done' onClick={@returnToMarking}>
+                        {'Finish'}
+                      </button>
+                    </span>
               }
-
             </div>
           </div>
 

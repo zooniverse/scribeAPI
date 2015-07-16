@@ -3,12 +3,15 @@ React      = require 'react'
 Draggable  = require '../../../../lib/draggable'
 DoneButton = require './done-button'
 PrevButton = require './prev-button'
+{Navigation} = require 'react-router'
 
 text_tool = require '../text-tool'
 tools = require '../'
 
 CompositeTool = React.createClass
   displayName: 'CompositeTool'
+
+  mixins: [Navigation] 
 
   # getInitialState: ->
   #   console.log 'BLAH', @props.task.tool_config.tools[0]
@@ -47,6 +50,7 @@ CompositeTool = React.createClass
 
     # annotation: {}
 
+  # this can go into a mixin? (common across all transcribe tools)
   getPosition: (data) ->
     switch data.toolName
       when 'rectangleTool'
@@ -105,8 +109,19 @@ CompositeTool = React.createClass
   handleChange: (annotation) ->
     @props.onChange annotation # forward annotation to parent
 
+  # this can go into a mixin? (common across all transcribe tools)
   commitAnnotation: ->
     @props.onComplete @props.annotation
+
+  # this can go into a mixin? (common across all transcribe tools)
+  returnToMarking: ->
+    @commitAnnotation()
+
+    # transition back to mark
+    @replaceWith 'mark', {},
+      subject_set_id: @props.subject.subject_set_id
+      selected_subject_id: @props.subject.parent_subject_id.$oid
+      page: @props.subjectCurrentPage
 
   render: ->
     # If user has set a custom position, position based on that:
@@ -153,8 +168,24 @@ CompositeTool = React.createClass
           </div>
         </div>
         <div className="right">
-          <PrevButton onClick={=> console.log "Prev button clicked!"} />
-          <DoneButton onClick={@commitAnnotation} />
+          { # THIS CAN PROBABLY BE REFACTORED --STI
+            if window.location.hash is '#/transcribe' # regular transcribe, i.e. no mark transition
+              <DoneButton onClick={@commitAnnotation} />
+            else
+              if @props.task.next_task?
+                <span>
+                  <button className='button done' onClick={@commitAnnotation}>
+                    {'Next'}
+                  </button>
+                </span>
+              else
+                <span>
+                  <label>Return to marking: </label>
+                  <button className='button done' onClick={@returnToMarking}>
+                    {'Finish'}
+                  </button>
+                </span>
+          }
         </div>
       </div>
     </Draggable>

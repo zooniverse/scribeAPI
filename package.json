@@ -15,6 +15,9 @@
   "engines": {
     "node": ">= 0.10"
   },
+  "dependencies": {
+    "json-api-client": "^0.4.4"
+  },
   "scripts": {
     "test": "node ./node_modules/jest-cli/bin/jest.js"
   },

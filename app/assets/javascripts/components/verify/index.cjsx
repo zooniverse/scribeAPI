@@ -51,19 +51,21 @@ module.exports = React.createClass # rename to Classifier
   render: ->
     currentAnnotation = @getCurrentClassification().annotation
 
-    onFirstAnnotation = currentAnnotation?.task is @activeWorkflow().first_task
+
+    onFirstAnnotation = currentAnnotation?.task is @getActiveWorkflow().first_task
 
     # console.log "viewer size: ", @state.viewerSize
     <div className="classifier">
       <div className="subject-area">
         { if ! @getCurrentSubject()?
             style = marginTop: "50px"
+
             <p style={style}>There are currently no {@props.workflowName} subjects. Try <a href="/#/mark">marking</a> instead!</p>
 
           else if @getCurrentSubject()?
-            <SubjectViewer onLoad={@handleViewerLoad} subject={@getCurrentSubject()} active=true workflow={@activeWorkflow()} classification={@props.classification} annotation={currentAnnotation}>
+            <SubjectViewer onLoad={@handleViewerLoad} subject={@getCurrentSubject()} active=true workflow={@getActiveWorkflow()} classification={@props.classification} annotation={currentAnnotation}>
               { if ( VerifyComponent = @getCurrentTool() )?
-                
+
                 <VerifyComponent
                   viewerSize={@state.viewerSize}
                   task={@getCurrentTask()}
@@ -71,7 +73,7 @@ module.exports = React.createClass # rename to Classifier
                   subject={@getCurrentSubject()}
                   onChange={@handleTaskComponentChange}
                   onComplete={@handleTaskComplete}
-                  workflow={@activeWorkflow()}
+                  workflow={@getActiveWorkflow()}
                 />
               }
             </SubjectViewer>

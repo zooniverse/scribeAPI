@@ -324,6 +324,7 @@ module.exports = React.createClass
                     yScale={scale.vertical}
                     disabled={! mark.userCreated}
                     isPriorMark={isPriorMark}
+                    subjectCurrentPage={@props.subjectCurrentPage}
                     selected={mark is @state.selectedMark}
                     getEventOffset={@getEventOffset}
                     submitMark={@submitMark}

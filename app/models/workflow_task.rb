@@ -11,7 +11,7 @@ class WorkflowTask
 
   embedded_in :workflow
 
-  # Returns generates_subject_type for transcribe/verify tasks; 
+  # Returns generates_subject_type for transcribe/verify tasks;
   # In mark tasks, the generates_subject_type depends on the selected tool, so we need to check the classification's subToolIndex:
   def subject_type(classification=nil)
     type = generates_subject_type
@@ -27,6 +27,7 @@ class WorkflowTask
   # If given field name matches a sub-tool, returns that tools config
   def tool_config_for_field(field_name)
     # If field name matches an entry in tool_config.tools, return the nested tool-config
+    puts "::::#{field_name}", tool_config['tools'].inspect
     if ! tool_config.nil? && ! tool_config['tools'].nil? && tool_config['tools'].is_a?(Hash) && ! tool_config['tools'][field_name].nil?
       tool_config['tools'][field_name]["tool_config"]
     else
@@ -50,5 +51,5 @@ class WorkflowTask
   def find_tool_box(subToolIndex)
     tool_config["tools"][subToolIndex] if tool_config["tools"]
   end
-  
+
 end

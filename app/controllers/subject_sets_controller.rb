@@ -21,11 +21,11 @@ class SubjectSetsController < ApplicationController
 
     # Get random set of subject-sets?
     if params["random"]
-      # TODO: should randomizer really require a limit be passed? Currently seems required by selection method, but ideally shouldn't 
+      # TODO: should randomizer really require a limit be passed? Currently seems required by selection method, but ideally shouldn't
       sets = SubjectSet.random(selector: query, limit: subject_sets_limit)
 
     # Selecting a specific subject_set?
-    elsif ! subject_set_id.nil? 
+    elsif ! subject_set_id.nil?
       sets = SubjectSet.where(id: subject_set_id)
 
     # Probably just selecting by workflow:

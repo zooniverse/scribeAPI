@@ -67,6 +67,7 @@ module.exports = React.createClass
           subject={subject}
           workflow={@props.workflow}
           task={@props.task}
+          subjectCurrentPage={@props.subjectCurrentPage}
           annotation={@props.annotation}
           active={index == @props.subject_index}
           onComplete={@props.onComplete}
