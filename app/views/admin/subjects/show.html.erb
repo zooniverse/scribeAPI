@@ -85,11 +85,11 @@
     <h3>Upstream</h3>
     <dl>
 
-    <% if ! @subject.source_classifications.empty? %>
+    <% if ! @subject.parent_classifications.empty? %>
       <dt>Generated From These Classifications </dt>
       <dd>
         <ol>
-        <% @subject.source_classifications.each do |classification| %>
+        <% @subject.parent_classifications.each do |classification| %>
           <li><%= link_to "#{classification} (#{time_ago_in_words(classification.finished_at)} ago)", admin_classification_path(classification) %></li>
         <% end %>
         </ol>
