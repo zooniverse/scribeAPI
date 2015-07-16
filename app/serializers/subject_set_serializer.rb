@@ -10,7 +10,6 @@ class SubjectSetSerializer < ActiveModel::MongoidSerializer
     super object
   end
 
-
   def type
     "subject_sets"
   end

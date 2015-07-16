@@ -31,8 +31,8 @@ module.exports =
           if @fetchSubjectsCallback?
             @fetchSubjectsCallback()
 
-  fetchSubjects: (workflow_id, limit) ->
-    console.log "~~~~~~~~~~~~~~~fetchSubjects"
+
+  fetchSubjects: (workflow_id, limit, page=1) ->
     if @props.overrideFetchSubjectsUrl?
       console.log "Fetching (fake) subject sets from #{@props.overrideFetchSubjectsUrl}"
       $.getJSON @props.overrideFetchSubjectsUrl, (subjects) =>
@@ -47,17 +47,20 @@ module.exports =
       request = API.type('subjects').get
         workflow_id: workflow_id
         limit: limit
-        random: true
+        page: page
         scope: "active"
+        # random: true
 
+      console.log "Fetching subjects: "
       request.then (subjects) =>
         subject = @orderSubjectsByY(subjects)
         if subjects.length is 0
           @setState noMoreSubjects: true, => console.log 'SET NO MORE SUBJECTS FLAG TO TRUE'
         else
           @setState
+            subject_index: 0
             subjects: subjects
-            currentSubject: subjects[0], => console.log 'STATE: ', @state
+            subjects_next_page: subjects[0].getMeta("next_page")
 
         # Does including instance have a defined callback to call when new subjects received?
         if @fetchSubjectsCallback?

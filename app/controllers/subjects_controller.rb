@@ -8,29 +8,30 @@ class SubjectsController < ApplicationController
     puts "SUBJECT CONTROLLLER"
     # @users = User.order(:name).page params[:page]
 
-    workflow_id  = params["workflow_id"]
-    parent_subject_id = params["parent_subject_id"]
-    random = params["random"] || false
-    limit = params["limit"].to_i || 10
+    workflow_id           = get_objectid :workflow_id
+    parent_subject_id     = get_objectid :parent_subject_id
+    random                = get_bool :random, false
+    limit                 = get_int :limit, 10
+    page                  = get_int :page, 1
+    puts "parse page: #{page}"
 
-    # TO DO: REFACTOR THIS UGLY CODE. -STI
-    if parent_subject_id
-      @subject = Kaminari.paginate_array(Subject.active.where(workflow_id: workflow_id, parent_subject_id: parent_subject_id)).page(params[:page])
-      respond_with @subject
-      # respond_with Subject.active.where(workflow_id: workflow_id, parent_subject_id: parent_subject_id).page params[:page]
-    else
-      # Randomizer#random seems to want query criteria passed in under :selector key:
-    	if random
-        @subject = Kaminari.paginate_array(Subject.active.where(workflow_id: workflow_id).random(limit: limit)).page(params[:page])
-        respond_with @subject
-        # respond_with Subject.active.where(workflow_id: workflow_id).random(limit: limit).page params[:page]
-      else
-        @subject = Kaminari.paginate_array(Subject.active.where(workflow_id: workflow_id).limit(limit)).page(params[:page])
-        respond_with @subject 
-        # respond_with Subject.active.where(workflow_id: workflow_id).limit(limit).page params[:page]
-      end
-    end
-    puts "@subject: #{@subject}"
+    @subjects = Subject.by_workflow(workflow_id).active
+
+    @subjects = @subjects.by_parent_subject(parent_subject_id) if parent_subject_id
+    
+    @subjects = @subjects.random(limit: limit) if random
+
+    @subjects = @subjects.page(page).per(limit)
+
+    links = {
+      "next" => {
+        href: @subjects.next_page.nil? ? nil : url_for(controller: 'subjects', page: @subjects.next_page),
+      },
+      "prev" => {
+        href: @subjects.prev_page.nil? ? nil : url_for(controller: 'subjects', page: @subjects.prev_page)
+      }
+    }
+    respond_with SubjectResultSerializer.new(@subjects), workflow_id: workflow_id, links: links
   end
 
   def show

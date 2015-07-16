@@ -1,0 +1,40 @@
+<div class="core-data">
+  <h1><%= @user %></h1>
+
+  <dl>
+
+    <dt>Provider</dt>
+    <dd><% if @user.guest %>(Guest)<% else %><%= @user.provider %><% end %></dd>
+
+    <dt>Status</dt>
+    <dd><%= @user.status %></dd>
+    
+    <dt>Email</dt>
+    <dd><%= @user.email %></dd>
+
+    <dt>Role</dt>
+    <dd><%= @user.role %></dd>
+
+    <dt>Sign Ins</dt>
+    <dd><%= @user.sign_in_count %>. Last sign-in: <%= @user.last_sign_in_at %></dd>
+
+  </dl>
+</div>
+
+<div class="supplied-data">
+  <h2>Related</h2>
+
+  <% if @user.classifications.count > 0 %>
+    
+    <h3>Classifications</h3>
+
+    <ol>
+    <% @user.classifications.limit(100).each do |c| %>
+      <li><%= link_to "#{c} (#{time_ago_in_words(c.finished_at)} ago)", admin_classification_path(c) %></li>
+    <% end %>
+    </ol>
+
+  <% end %>
+
+</div>
+

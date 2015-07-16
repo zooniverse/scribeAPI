@@ -1,6 +1,4 @@
-  # @cjsx React.DOM
-
-React                         = require 'react'
+React                         = require 'react/addons'
 {Router, Routes, Route, Link} = require 'react-router'
 SVGImage                      = require './svg-image'
 Draggable                     = require '../lib/draggable'

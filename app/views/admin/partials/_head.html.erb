@@ -1,0 +1,16 @@
+<div id="admin-header">
+  <ul class="header-tabs">
+  <% { 
+
+      "Dashboard" => admin_dashboard_path,
+      "Subjects" => admin_subjects_path,
+      "Users" => admin_users_path,
+      "Data" => admin_data_path
+
+    }.each do |(label, path)| 
+      active = request.original_url.include?(path)
+  %>
+    <li><%= link_to label, path, class: (active ? 'active' : '') %></li>
+  <% end %>
+  </ul>
+</div>

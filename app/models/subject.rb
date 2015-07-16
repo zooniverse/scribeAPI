@@ -7,6 +7,9 @@ class Subject
 
   scope :active_root, -> { where(type: 'root', status: 'active').asc(:order) }
   scope :active, -> { where(status: 'active').asc(:order)  }
+  scope :complete, -> { where(status: 'complete').asc(:order)  }
+  scope :by_workflow, -> (workflow_id) { where(workflow_id: workflow_id)  }
+  scope :by_parent_subject_set, -> (parent_subject_set_id) { where(parent_subject_set_id: parent_subject_set_id)  }
 
   # This is a hash with one entry per deriv; `standard', 'thumbnail', etc
   field :location,                    type: Hash
@@ -38,18 +41,17 @@ class Subject
   belongs_to :subject_set, :class_name => "SubjectSet", :foreign_key => "subject_set_id"
 
   has_many :child_subjects, :class_name => "Subject"
-  has_many :classifications
+  has_many :classifications, inverse_of: :subject
   has_many :favourites
 
-  after_create :update_subject_set_stats, :activate! # this method before :increment_parents_subject_count_by_one
+  # Classifications that generated this subject:
+  has_many :parent_classifications, class_name: 'Classification', inverse_of: :child_subject
+
+  after_create :update_subject_set_stats
   after_create :increment_parents_subject_count_by_one, :if => :parent_subject
 
   def thumbnail
     location['thumbnail'].nil? ? location['standard'] : location['thumbnail']
-  end
-
-  def source_classifications
-    Classification.by_child_subject id
   end
 
   def update_subject_set_stats
@@ -65,6 +67,13 @@ class Subject
     self.retire_by_vote!
   end
 
+  # Get the workflow task that generated this subject, if any
+  def parent_workflow_task
+    if ! (_classifications = parent_classifications.limit(1)).empty?
+      _classifications.first.workflow_task
+    end
+  end
+
   # find all the classifications for subject where task_key == compleletion_assesment_task
   # calculate the percetage vote for retirement (pvr)
   # if pvr is equal or greater than retire_limit, set self.status == retired.
@@ -73,6 +82,7 @@ class Subject
     if assesment_classifications.length > 2
       percentage_for_retire = retire_count/assesment_classifications.length.to_f
       if percentage_for_retire >= workflow.retire_limit
+        puts "Retiring subject because percentage met"
         self.retire!
       end
     end
@@ -91,7 +101,19 @@ class Subject
     save
   end
 
+  def calculate_most_popular_parent_classification
+    annotations = parent_classifications.map { |c| c.annotation }
+    buckets = annotations.inject({}) do |h, ann|
+      h[ann] ||= 0
+      h[ann] += 1
+      h
+    end
+    buckets = buckets.sort_by { |(k,v)| - v }
+    buckets.map { |(k,v)| {ann: k, percentage: v.to_f / parent_classifications.count } }.first
+  end
+
+
   def to_s
-    "#{workflow.name.capitalize} Subject (#{type})"
+    "#{status == 'inactive' ? '[Inactive] ' : ''}#{workflow.nil? ? 'Final' : workflow.name.capitalize} Subject (#{type})"
   end
 end
