@@ -14,8 +14,6 @@ module.exports =
       return if a.region.y >= b.region.y then 1 else -1
 
   fetchSubject: (subject_id, workflow_id)->
-    console.log "~~~~~~~~~~~~~~~fetchSubjecT"
-
     request = API.type("subjects").get(subject_id, workflow_id: workflow_id)
 
     @setState
@@ -23,7 +21,6 @@ module.exports =
       currentSubject: null
 
     request.then (subject)=>
-      console.log "FOUND SUBJECTS:", subjects
       @setState
         subjects: [subject]
         currentSubject: subject,

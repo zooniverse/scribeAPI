@@ -2,10 +2,6 @@ class SubjectsController < ApplicationController
   respond_to :json
 
   def index
-    puts "SUBJECT CONTROLLLER"
-    puts "SUBJECT CONTROLLLER"
-    puts "SUBJECT CONTROLLLER"
-    puts "SUBJECT CONTROLLLER"
     # @users = User.order(:name).page params[:page]
 
     workflow_id           = get_objectid :workflow_id
@@ -35,10 +31,6 @@ class SubjectsController < ApplicationController
   end
 
   def show
-    puts "SUBJECT CONTROLLLER"
-    puts "SUBJECT CONTROLLLER"
-    puts "SUBJECT CONTROLLLER"
-    puts "SUBJECT CONTROLLLER"
     subject_id  = params["subject_id"]
     @subject = Subject.find_by( _id: params[:subject_id] )
     respond_with  @subject
