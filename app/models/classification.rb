@@ -43,7 +43,7 @@ class Classification
         subject.retire!
       end
     end
-  end  
+  end
 
   def workflow_task
     workflow.task_by_key task_key
@@ -61,7 +61,7 @@ class Classification
       index_term = ! tool_config['suggest'].nil? && tool_config['suggest'] == 'common'
       next if ! index_term
 
-      # Front- and back-end expect fields to be identifiable by workflow_id 
+      # Front- and back-end expect fields to be identifiable by workflow_id
       # and an annotation_key built from the task_key and field key
       #   e.g. "enter_building_address:value"
       key = "#{task_key}:#{k}"
@@ -75,9 +75,9 @@ class Classification
     subject = self.subject
     #increment subject.retire_count if the completion_assement_task returns annoation 'complete_subject'
     if self.task_key == "completion_assessment_task" && self.annotation["value"] == "complete_subject"
-      subject.increment_retire_count_by_one 
+      subject.increment_retire_count_by_one
     end
-    subject.classification_count += 1 # no_annotation_values 
+    subject.classification_count += 1 # no_annotation_values
     subject.save
   end
 

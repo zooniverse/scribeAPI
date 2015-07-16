@@ -49,8 +49,9 @@ module.exports = React.createClass
         {
           if @props.subject_set.subjects.length > 1
             <LightBox
-              subject_set={@state.subject_set}
+              subject_set={@props.subject_set}
               subject_index={@props.subject_index}
+              key={@props.subject_set.subjects[0].id}
 
               onSubject={@specificSelection.bind this, @props.subject_index}
               subjectCurrentPage={@props.subjectCurrentPage}

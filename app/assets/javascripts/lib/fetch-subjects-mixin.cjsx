@@ -59,4 +59,3 @@ module.exports =
         # Does including instance have a defined callback to call when new subjects received?
         if @fetchSubjectsCallback?
           @fetchSubjectsCallback()
-

@@ -10,6 +10,7 @@ Verify                        = require './verify'
 
 # TODO Group routes currently not implemented
 GroupPage                     = require './group-page'
+GroupBrowser                  = require './group-browser'
 
 class AppRouter
   constructor: ->
@@ -26,38 +27,61 @@ class AppRouter
             handler = eval workflow.name.charAt(0).toUpperCase() + workflow.name.slice(1)
             <Route
               key={key}
-              path={'/' + workflow.name}
+              path={workflow.name}
               handler={handler}
               name={workflow.name}
-              workflow={workflow} />
+            />
         }
 
         { (w for w, i in project.workflows when w.name in ['mark']).map (workflow, key) =>
             handler = eval workflow.name.charAt(0).toUpperCase() + workflow.name.slice(1)
             <Route
               key={key}
-              path={'/' + workflow.name + '/:subject_set_id' + '/:selected_subject_id'}
+              path={workflow.name + '/:subject_set_id' + '/:subject_id'}
               handler={handler}
-              name={workflow.name + '_specific'}
-              workflow={workflow} />
+              name={workflow.name + '_specific_subject'}
+            />
+        }
+        { (w for w, i in project.workflows when w.name in ['mark']).map (workflow, key) =>
+            handler = eval workflow.name.charAt(0).toUpperCase() + workflow.name.slice(1)
+            <Route
+              key={key}
+              path={workflow.name + '/:subject_set_id'}
+              handler={handler}
+              name={workflow.name + '_specific_set'}
+            />
         }
         { (w for w, i in project.workflows when w.name in ['transcribe','verify']).map (workflow, key) =>
             handler = eval workflow.name.charAt(0).toUpperCase() + workflow.name.slice(1)
             <Route
               key={key}
-              path={'/' + workflow.name + '/:subject_id' }
+              path={workflow.name + '/:subject_id' }
               handler={handler}
               name={workflow.name + '_specific'}
-              workflow={workflow} />
+            />
         }
-        { project.pages?.map (page, key) =>
+
+        { # Project-configured pages:
+          project.pages?.map (page, key) =>
             <Route
               key={key}
-              path={'/'+page.name}
+              path={page.name}
               handler={@controllerForPage(page)}
               name={page.name}
             />
         }
+
+        <Route
+          path='groups'
+          handler={GroupBrowser}
+          name='groups'
+        />
+        <Route
+          path='groups/:group_id'
+          handler={GroupPage}
+          name='group_show'
+        />
+
 
         <DefaultRoute name="home-default" handler={HomePage} />
       </Route>

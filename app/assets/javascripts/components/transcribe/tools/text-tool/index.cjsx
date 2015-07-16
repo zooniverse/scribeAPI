@@ -119,7 +119,7 @@ TextTool = React.createClass
     # transition back to mark
     @replaceWith 'mark', {},
       subject_set_id: @props.subject.subject_set_id
-      selected_subject_id: @props.subject.parent_subject_id.$oid
+      selected_subject_id: @props.subject.parent_subject_id
       page: @props.subjectCurrentPage
 
   # Get key to use in annotations hash (i.e. typically 'value', unless included in composite tool)
