@@ -1,0 +1,20 @@
+<h1>All Users</h1>
+
+<table class="dashboard-table" id="subjects-table" width="100%">
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Classifications</th>
+    <th>Provider</th>
+  </tr>
+
+<% @users.each do |user| %>
+  <tr>
+    <td><%= link_to user.name, admin_user_path(user) %></td>
+    <td><%= link_to user.email, admin_user_path(user) %></td>
+    <td><%= link_to user.classifications.count, admin_user_path(user) %></td>
+    <td><% if user.provider %><%= link_to user.provider, admin_user_path(user) %><% end %></td>
+  </tr>
+<% end %>
+</table>
+

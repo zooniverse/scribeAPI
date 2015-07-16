@@ -5,14 +5,13 @@ class WorkflowTask
   field    :tool,                                    type: String
   field    :instruction,                             type: String
   field    :help,                                    type: String
-  field    :generates_subjects,                      type: Boolean
   field    :generates_subject_type,                  type: String
   field    :tool_config,                             type: Hash
   field    :next_task,                               type: String
 
   embedded_in :workflow
 
-  # Returns generates_subject_type for transcribe/verify tasks; 
+  # Returns generates_subject_type for transcribe/verify tasks;
   # In mark tasks, the generates_subject_type depends on the selected tool, so we need to check the classification's subToolIndex:
   def subject_type(classification=nil)
     type = generates_subject_type
@@ -36,11 +35,21 @@ class WorkflowTask
     end
   end
 
+  def generates_subjects?
+    subtool_generates_subjects = ! (c = tool_config).nil? && ! (c = c['tools']).nil? && ! c.select { |c| ! c['generates_subject_type'].nil? }.empty?
+    ! generates_subject_type.nil? || subtool_generates_subjects || ! has_next_task?
+  end
+
+  def has_next_task?
+    suboption_has_next_task = ! tool_config.nil? && ! (c = tool_config['options']).nil? && ! c.select { |k,h| puts "inspecting #{h.inspect}"; ! h['next_task'].nil? }.empty?
+    ! next_task.nil? || suboption_has_next_task
+  end
+
 
   private
 
   def find_tool_box(subToolIndex)
     tool_config["tools"][subToolIndex] if tool_config["tools"]
   end
-  
+
 end

@@ -9,6 +9,8 @@ class ClassificationsController < ApplicationController
   # end
 
   def create
+    user = require_user!
+
     workflow_id      = BSON::ObjectId.from_string params["classifications"]["workflow_id"]
     task_key         = params["classifications"]["task_key"]
 
@@ -18,6 +20,7 @@ class ClassificationsController < ApplicationController
     subject_id       = params["classifications"]["subject_id"]
     user_agent       = request.headers["HTTP_USER_AGENT"]
 
+    puts "saving user: #{user.inspect}"
     @result = Classification.create(
       workflow_id: workflow_id,
       subject_id: subject_id,
@@ -26,7 +29,8 @@ class ClassificationsController < ApplicationController
       started_at: started_at,
       finished_at: finished_at,
       user_agent: user_agent,
-      task_key: task_key # ,
+      task_key: task_key,
+      user: user
     )
 
     respond_with @result

@@ -3,11 +3,11 @@ class Classification
 
   field :location
   field :task_key,                        type: String
-  field :annotation #, type: Array
+  field :annotation,                      type: Hash
   field :tool_name
 
   #TODO: don't think this is being used? AMS
-  field :triggered_followup_subject_ids,  type: Array
+  # field :triggered_followup_subject_ids,  type: Array
 
   field :started_at
   field :finished_at
@@ -15,9 +15,9 @@ class Classification
 
   belongs_to    :workflow, :foreign_key => "workflow_id"
   belongs_to    :user
-  belongs_to    :subject, :foreign_key => "subject_id"
-  belongs_to    :child_subject, :class_name => "Subject"
-  has_many      :triggered_followup_subjects, class_name: "Subject"
+  belongs_to    :subject, foreign_key: "subject_id", inverse_of: :classifications
+  belongs_to    :child_subject, class_name: "Subject", inverse_of: :parent_classifications
+  # has_many      :triggered_followup_subjects, class_name: "Subject"
 
   after_create  :increment_subject_classification_count, :check_for_retirement_by_classification_count
   after_create  :generate_new_subjects
@@ -29,7 +29,7 @@ class Classification
 
   def generate_new_subjects
     if workflow.generates_subjects
-      triggered_followup_subject_ids = workflow.create_secondary_subjects(self)
+      workflow.create_secondary_subjects(self)
     end
   end
 
@@ -37,13 +37,17 @@ class Classification
     # =>   In addition, we only want to call this for certain subjects (not collect unique.)
     # =>   right now, this mainly applies to workflow.generates_subjects_method == "collect-unique".
   def check_for_retirement_by_classification_count
+    # PB: This isn't quite right.. Retires the *parent* subject rather than the subject generated..
+    return nil
+
     workflow = subject.workflow
     if workflow.generates_subjects_method == "collect-unique"
       if subject.classification_count >= workflow.generates_subjects_after
+        puts "retiring because clasification count > ..."
         subject.retire!
       end
     end
-  end  
+  end
 
   def workflow_task
     workflow.task_by_key task_key
@@ -61,7 +65,7 @@ class Classification
       index_term = ! tool_config['suggest'].nil? && tool_config['suggest'] == 'common'
       next if ! index_term
 
-      # Front- and back-end expect fields to be identifiable by workflow_id 
+      # Front- and back-end expect fields to be identifiable by workflow_id
       # and an annotation_key built from the task_key and field key
       #   e.g. "enter_building_address:value"
       key = "#{task_key}:#{k}"
@@ -75,14 +79,17 @@ class Classification
     subject = self.subject
     #increment subject.retire_count if the completion_assement_task returns annoation 'complete_subject'
     if self.task_key == "completion_assessment_task" && self.annotation["value"] == "complete_subject"
-      subject.increment_retire_count_by_one 
+      subject.increment_retire_count_by_one
     end
-    subject.classification_count += 1 # no_annotation_values 
+    subject.classification_count += 1 # no_annotation_values
     subject.save
   end
 
   def to_s
-    "#{workflow.name.capitalize}#{! annotation["toolName"].nil? ? " (#{annotation["toolName"]})" : ''} Classification"
+    ann = annotation.values.select { |v| v.match /[a-zA-Z]/ }.map { |v| "\"#{v}\"" }.join ', '
+    ann = ann.truncate 40
+    # {! annotation["toolName"].nil? ? " (#{annotation["toolName"]})" : ''}
+    "#{workflow.name.capitalize} Classification (#{ann})"
   end
 
 end

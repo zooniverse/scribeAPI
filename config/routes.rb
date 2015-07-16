@@ -12,14 +12,7 @@ API::Application.routes.draw do
   get '/workflows',                    to: 'workflow#index',       defaults: { format: 'json' }
   get '/workflows/:id',                to: 'workflow#show',        defaults: { format: 'json' }
 
-  namespace :admin do
-    resources :subjects, :classifications
-  end
-  get '/admin' => 'admin/subjects#index'
-
   get '/current_user',                                       to: "users#logged_in_user"
-  get '/dashboard/ancestory',                                 to: 'dashboard#ancestory'
-  get '/dashboard',                                           to: 'dashboard#index'
   get '/projects/stats',                                      to: 'projects#stats'
   get '/project/style.css',                                   to: 'projects#project_css',  defaults: { format: 'css' }
   get '/workflows/:workflow_id/subjects',                     to: 'subjects#index'
@@ -39,5 +32,12 @@ API::Application.routes.draw do
   resources :favourites, defaults: {format: 'json'}
   resources :favourites, only: [:index, :create, :destroy]
 
+  namespace :admin do
+    resources :subjects, :classifications, :users
+    get 'dashboard' => 'dashboard#index'
+    get 'data' => 'data#index'
+    get 'data/download' => 'data#download'
+  end
+  get 'admin' => 'admin/dashboard#index'
 
 end

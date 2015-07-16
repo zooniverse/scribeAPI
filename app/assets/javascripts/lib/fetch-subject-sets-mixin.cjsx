@@ -10,6 +10,7 @@ module.exports =
     else
       @fetchSubjectSets @getActiveWorkflow().id, @getActiveWorkflow().subject_fetch_limit
 
+
   # this method fetches the next page of subjects in a given subject_set.
   # right now the trigger for this method is the forward or back button in the light-box
   # I am torn about whether to set the subject_index at this point? -- AMS
@@ -42,25 +43,17 @@ module.exports =
       # currentSubjectSet: null
 
     request.then (subject_set) =>
-      console.log 'SUBJECT SET: ', subject_set
-
       for subject in subject_set.subjects
-        console.log 'SUBJECT ID:              ', subject.id
-        console.log 'SUBJECT SET: ', subject_set
-        console.log 'SUBJECT ID SEARCH QUERY: ', subject_set.selected_subject_id
         if subject.id is subject_set.selected_subject_id
-          console.log 'SELECTED SUBJECT ID: ', subject_set.selected_subject_id
-          console.log 'SUBJECT MATCH!'
           subject_index = subject_set.subjects.indexOf subject
 
       @setState
         subjectSets: subject_set
         subject_set_index: 0
         subject_index: subject_index || 0 #parseInt(subject_index) || 0
-
-        subject_current_page: subject_set.subject_pagination_info.current_page
-        total_subject_pages: subject_set.subject_pagination_info.total_pages
-        # currentSubjectSet: subject_set
+        subject_current_page: subject_set.subjects_pagination_info.current_page
+        total_subject_pages: subject_set.subjects_pagination_info.total_pages
+        currentSubjectSet: subject_set
 
   orderSubjectsByOrder: (subject_sets) ->
     for subject_set in subject_sets
@@ -94,9 +87,9 @@ module.exports =
       request = API.type('subject_sets').get
         workflow_id: workflow_id
         limit: limit
-        random: true
 
       request.then (subject_sets)=>    # DEBUG CODE
+        meta = subject_sets[0].getMeta
 
         subject_sets = @orderSubjectsByOrder(subject_sets)
         ind = 0
@@ -105,9 +98,9 @@ module.exports =
         @setState
           subjectSets: subject_sets
           subject_set_index: ind
-          subject_current_page: subject_sets[0].subject_pagination_info.current_page
-          subject_set_current_page: subject_sets[0].subject_set_pagination_info.current_page
-          total_subject_pages: subject_sets[0].subject_pagination_info.total_pages
+          subject_current_page: subject_sets[0].getMeta("current_page")
+          subject_set_current_page: subject_sets[0].getMeta("current_page")
+          total_subject_pages: subject_sets[0].getMeta("total_pages")
 
         if @fetchSubjectsCallback?
           @fetchSubjectsCallback()

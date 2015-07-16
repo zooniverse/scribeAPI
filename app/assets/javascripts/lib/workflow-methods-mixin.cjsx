@@ -3,6 +3,7 @@ Classification          = require 'models/classification.coffee'
 coreTools               = require 'components/core-tools'
 markTools               = require 'components/mark/tools'
 transcribeTools         = require 'components/transcribe/tools'
+verifyTools             = require 'components/verify/tools'
 
 module.exports =
 
@@ -74,17 +75,28 @@ module.exports =
 
   # Get current task:
   getCurrentTask: ->
-
+    return null if ! @state.taskKey?
+    console.warn "TaskKey invalid: #{@state.taskKey}. Should be: #{(k for k,v of @getTasks())}" if ! @getTasks()[@state.taskKey]?
     @getTasks()[@state.taskKey]
 
   getTasks: ->
     # Add completion_assessment_task to list of tasks dynamically:
+# <<<<<<< HEAD
     $.extend @getActiveWorkflow().tasks, completion_assessment_task: @getCompletionAssessmentTask()
+# =======
+#     tasks = @getActiveWorkflow().tasks
+#     if @props.workflowName == 'mark'
+#       tasks = $.extend tasks, completion_assessment_task: @getCompletionAssessmentTask()
+#     tasks
+# >>>>>>> master
 
   # Get instance of current tool:
   getCurrentTool: ->
     toolKey = @getCurrentTask()?.tool
-    tool = ( coreTools[toolKey] ? markTools[toolKey] ) ? transcribeTools[toolKey]
+    tool = @toolByKey toolKey
+
+  toolByKey: (toolKey) ->
+    ( ( coreTools[toolKey] ? markTools[toolKey] ) ? transcribeTools[toolKey] ) ? verifyTools[toolKey]
 
   # Load next logical task
   advanceToNextTask: () ->
@@ -117,7 +129,7 @@ module.exports =
   advanceToTask: (key) ->
     task = @getTasks()[ key ]
 
-    tool = coreTools[task?.tool] ? transcribeTools[task?.tool]
+    tool = @toolByKey task?.tool
     if ! task?
       console.warn "WARN: Invalid task key: ", key
 
@@ -174,3 +186,32 @@ module.exports =
         }
     }
     subToolIndex: 0
+
+  advanceToNextSubject: ->
+    if @state.subject_index + 1 < @state.subjects.length
+      next_index = @state.subject_index + 1
+      next_subject = @state.subjects[next_index]
+      @setState
+        taskKey: next_subject.type
+        subject_index: next_index, =>
+          key = @getCurrentSubject().type
+          @advanceToTask key
+
+    # Haz more pages of subjects?
+    else if @state.subjects_next_page?
+      @fetchSubjects @getActiveWorkflow().id, @getActiveWorkflow().subject_fetch_limit, @state.subjects_next_page
+
+    else
+      @setState
+        subject_index: null
+        noMoreSubjects: true
+
+  commitClassificationAndContinue: (d) ->
+    @commitClassification()
+    @beginClassification {}, () =>
+      if @getCurrentTask().next_task?
+        # console.log "advance to next task...", @state.currentTask['next_task']
+        @advanceToTask @getCurrentTask().next_task
+
+      else
+        @advanceToNextSubject()
