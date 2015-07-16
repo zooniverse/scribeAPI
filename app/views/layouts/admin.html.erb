@@ -2,13 +2,17 @@
 <html>
 <head>
   <title>Dashboard</title>
-  <%= stylesheet_link_tag    "dashboard", media: "all" %>
+  <%= stylesheet_link_tag    "admin", media: "all" %>
   <%= javascript_include_tag "dashboard" %>
   <%= csrf_meta_tags %>
 </head>
 <body>
 
-<%= yield %>
+<%= render 'admin/partials/head.html.erb' %>
+
+<div id="admin-content">
+  <%= yield %>
+</div>
 
 </body>
 </html>

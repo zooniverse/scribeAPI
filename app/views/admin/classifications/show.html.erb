@@ -33,6 +33,11 @@
 <div class="supplied-data">
   <h2>Related</h2>
 
+  <dl>
+    <dt>User</dt>
+    <dd><%= link_to @classification.user, admin_user_path(@classification.user) %></dd>
+  </dl>
+
   <h3>Upstream</h3>
   <dl>
     <dt>Parent Subject</dt>

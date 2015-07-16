@@ -7,6 +7,7 @@ class Subject
 
   scope :active_root, -> { where(type: 'root', status: 'active').asc(:order) }
   scope :active, -> { where(status: 'active').asc(:order)  }
+  scope :complete, -> { where(status: 'complete').asc(:order)  }
   scope :by_workflow, -> (workflow_id) { where(workflow_id: workflow_id)  }
   scope :by_parent_subject_set, -> (parent_subject_set_id) { where(parent_subject_set_id: parent_subject_set_id)  }
 
@@ -53,10 +54,6 @@ class Subject
     location['thumbnail'].nil? ? location['standard'] : location['thumbnail']
   end
 
-  def source_classifications
-    Classification.by_child_subject id
-  end
-
   def update_subject_set_stats
     subject_set.inc_subject_count_for_workflow(workflow) if ! workflow.nil?
   end
@@ -68,6 +65,13 @@ class Subject
   def increment_retire_count_by_one
     self.inc(retire_count: 1)
     self.retire_by_vote!
+  end
+
+  # Get the workflow task that generated this subject, if any
+  def parent_workflow_task
+    if ! (_classifications = parent_classifications.limit(1)).empty?
+      _classifications.first.workflow_task
+    end
   end
 
   # find all the classifications for subject where task_key == compleletion_assesment_task

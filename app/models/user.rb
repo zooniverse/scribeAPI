@@ -23,7 +23,6 @@ class User
 
   ## Trackable
   field :name,               :type => String
-  field :admin,              :type => Boolean 
   field :sign_in_count,      :type => Integer, :default => 0
   field :current_sign_in_at, :type => Time
   field :last_sign_in_at,    :type => Time
@@ -31,7 +30,11 @@ class User
   field :last_sign_in_ip,    :type => String
 
   field :uid,                :type => String
-  field :provider,           :type => String
+  field :provider,           :type => String    # e.g. 'facebook', 'google_oauth2', 'zooniverse'
+  
+  field :status,             :type => String, :default => 'active'
+  field :role,               :type => String, :default => 'user'  # user, admin
+  field :guest,              :type => Boolean, :default => false
 
   has_many :favourites
   has_many :classifications
@@ -59,6 +62,10 @@ class User
     recents(limit).where(workflow_id: workflow.id)
   end
 
+  def to_s
+    name
+  end
+
 
   def self.find_for_oauth(access_token, signed_in_resource=nil)
 
@@ -72,14 +79,14 @@ class User
   end
 
   def self.details_from_oauth(provider,access_token)
-      case provider.to_s
-      when "facebook"
-        details_from_fb(access_token)
-      when "google"
-        details_from_google(access_token)
-      when "zooniverse"
-        details_from_zooniverse(access_token)
-      end
+    case provider.to_s
+    when "facebook"
+      details_from_fb(access_token)
+    when "google","google_oauth2"
+      details_from_google(access_token)
+    when "zooniverse"
+      details_from_zooniverse(access_token)
+    end
   end
 
   def self.details_from_fb(access_token)
@@ -93,8 +100,9 @@ class User
   end
 
   def self.details_from_google(access_token)
+    extra = access_token[:extra][:raw_info]
     {
-      name: "#{extra[:first_name]} #{extra[:last_name]}",
+      name: "#{extra[:name]}",
       email: extra[:email],
       uid: access_token[:uid],
       provider: access_token[:provider]
@@ -110,4 +118,17 @@ class User
       provider: access_token["provider"]
     }
   end
+  
+  def self.create_guest_user
+    u = create({
+      name: 'Guest',
+      guest: true,
+      role: 'user'
+    })
+    u.save!(:validate => false)
+    puts "User#create_guest_user: #{u.inspect}"
+    u
+  end
+
+
 end

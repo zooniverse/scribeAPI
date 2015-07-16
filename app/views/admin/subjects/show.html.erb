@@ -1,4 +1,3 @@
-
 <%= render partial: 'partials/subject_breadcrumb', locals: {subject: @subject} %>
 
 <div class="core-data">
@@ -16,11 +15,13 @@
 
     <dt>Status</dt>
     <dd><%= @subject.status %> 
-      <% if @subject.parent_subject.workflow.generates_subjects_method == 'collect-unique'  %>
-        <br />(Has <%= @subject.parent_classifications.count %> classifications. <%= @subject.parent_subject.workflow.generates_subjects_after %> total required to activate.)
-      <% end %>
-      <% if @subject.parent_subject.workflow.generates_subjects_method == 'most-popular'  %>
-        <br />(<%= @subject.parent_classifications.count %> parent classification(s) have <%= (100 * @subject.calculate_most_popular_parent_classification[:percentage]).to_i %>% agreement. At least <%= @subject.parent_subject.workflow.generates_subjects_after %> parent classifications with <%= (100 * @subject.parent_subject.workflow.generates_subjects_agreement).to_i %>% agreement required to activate.)
+      <% if ! @subject.parent_subject.nil? %>
+        <% if @subject.parent_subject.workflow.generates_subjects_method == 'collect-unique'  %>
+          <br />(Has <%= @subject.parent_classifications.count %> classifications. <%= @subject.parent_subject.workflow.generates_subjects_after %> total required to activate.)
+        <% end %>
+        <% if @subject.parent_subject.workflow.generates_subjects_method == 'most-popular'  %>
+          <br />(<%= @subject.parent_classifications.count %> parent classification(s) have <%= (100 * @subject.calculate_most_popular_parent_classification[:percentage]).to_i %>% agreement. At least <%= @subject.parent_subject.workflow.generates_subjects_after %> parent classifications with <%= (100 * @subject.parent_subject.workflow.generates_subjects_agreement).to_i %>% agreement required to activate.)
+        <% end %>
       <% end %>
     </dd>
 
@@ -79,7 +80,7 @@
 <div class="supplied-data">
   <h2>Related</h2>
 
-  <% if ! @subject.source_classifications.empty? %>
+  <% if ! @subject.parent_classifications.empty? %>
     
     <h3>Upstream</h3>
     <dl>

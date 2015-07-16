@@ -2,6 +2,11 @@ class SessionsController < ApplicationController
   respond_to :json, :html
 
   def new
+    puts "user: ", user_signed_in?
+    respond_to do |format|
+      format.json{render json: current_user}
+      format.html{redirect_to root_url, :notice => "Signed in!"}
+    end
   end
 
   def create
