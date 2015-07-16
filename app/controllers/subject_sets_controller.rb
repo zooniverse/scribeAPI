@@ -2,15 +2,13 @@ class SubjectSetsController < ApplicationController
   respond_to :json
 
   def index
-    # workflow_id  = params["workflow_id"]
-    workflow_id = get_objectid :workflow_id
-
-    random = params["random"] || false
-    limit  = params["limit"].to_i  || 10
-
+    workflow_id                 = get_objectid :workflow_id
+    random                      = params["random"] || false
     subject_set_id              = get_objectid :subject_set_id
+
     subject_sets_limit          = get_int :limit, 10
     subject_sets_page           = get_int :page, 1
+
     subjects_limit              = get_int :subjects_limit, 100
     subjects_page               = get_int :subjects_page, 1
 
@@ -21,28 +19,35 @@ class SubjectSetsController < ApplicationController
       query = {}
     end
 
-    #### >>> THIS BLOCK IS DIFFERNET
+    # Get random set of subject-sets?
     if params["random"]
-      sets = Kaminari.paginate_array(SubjectSet.random(selector: query, limit: limit)).page(params[:page])
+      # TODO: should randomizer really require a limit be passed? Currently seems required by selection method, but ideally shouldn't
+      sets = SubjectSet.random(selector: query, limit: subject_sets_limit)
+
+    # Selecting a specific subject_set?
+    elsif ! subject_set_id.nil?
+      sets = SubjectSet.where(id: subject_set_id)
+
+    # Probably just selecting by workflow:
     else
-      sets = SubjectSet.where(query).page(params[:page])
+      sets = SubjectSet.where(query)
     end
 
-    subject_set_pagination_info =
-        {
-        current_page: sets.current_page,
-        next_page: sets.next_page,
-        prev_page: sets.prev_page,
-        total_pages: sets.total_pages,
+    # Apply pagination:
+    sets = sets.page(subject_sets_page).per(subject_sets_limit)
+
+    links = {
+      "next" => {
+        href: sets.next_page.nil? ? nil : url_for(controller: 'subject_sets', page: sets.next_page),
+      },
+      "prev" => {
+        href: sets.prev_page.nil? ? nil : url_for(controller: 'subject_sets', page: sets.prev_page)
       }
+    }
 
-    respond_with sets, each_serializer: SubjectSetSerializer, workflow_id: workflow_id, limit: limit, random: random, subject_set_pagination_info: subject_set_pagination_info
-
+    respond_with SubjectSetResultSerializer.new(sets), workflow_id: workflow_id, subjects_limit: subjects_limit, subjects_page: subjects_page, links: links
   end
 
-  #### <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-  # THIS APPEARS TO BE THE SAME IN BOTH VERSIONS
   def show
     # puts 'PARAMS: ', params
     # limit = 1 # should only return one (the matched set)

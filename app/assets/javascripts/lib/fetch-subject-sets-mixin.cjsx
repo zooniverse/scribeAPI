@@ -43,25 +43,17 @@ module.exports =
       # currentSubjectSet: null
 
     request.then (subject_set) =>
-      console.log 'SUBJECT SET: ', subject_set
-
       for subject in subject_set.subjects
-        console.log 'SUBJECT ID:              ', subject.id
-        console.log 'SUBJECT SET: ', subject_set
-        console.log 'SUBJECT ID SEARCH QUERY: ', subject_set.selected_subject_id
         if subject.id is subject_set.selected_subject_id
-          console.log 'SELECTED SUBJECT ID: ', subject_set.selected_subject_id
-          console.log 'SUBJECT MATCH!'
           subject_index = subject_set.subjects.indexOf subject
 
       @setState
         subjectSets: subject_set
         subject_set_index: 0
         subject_index: subject_index || 0 #parseInt(subject_index) || 0
-
-        subject_current_page: subject_set.subject_pagination_info.current_page
-        total_subject_pages: subject_set.subject_pagination_info.total_pages
-        # currentSubjectSet: subject_set
+        subject_current_page: subject_set.subjects_pagination_info.current_page
+        total_subject_pages: subject_set.subjects_pagination_info.total_pages
+        currentSubjectSet: subject_set
 
   orderSubjectsByOrder: (subject_sets) ->
     for subject_set in subject_sets
@@ -83,7 +75,6 @@ module.exports =
         subject_set_index: 0
         subject_index: parseInt(subject_index) || 0
 
-  # OLD
   fetchSubjectSets: (workflow_id, limit) ->
     console.log 'fetchSubjectSets()'
     if @props.overrideFetchSubjectsUrl?
@@ -96,11 +87,9 @@ module.exports =
       request = API.type('subject_sets').get
         workflow_id: workflow_id
         limit: limit
-        # random: true
 
       request.then (subject_sets)=>    # DEBUG CODE
-        # NEW CODE
-        # meta = subject_sets[0].getMeta
+        meta = subject_sets[0].getMeta
 
         subject_sets = @orderSubjectsByOrder(subject_sets)
         ind = 0
@@ -109,73 +98,9 @@ module.exports =
         @setState
           subjectSets: subject_sets
           subject_set_index: ind
-
-          # NEW CODE
-          # subject_current_page: subject_sets[0].getMeta("current_page")
-          # subject_set_current_page: subject_sets[0].getMeta("current_page")
-          # total_subject_pages: subject_sets[0].getMeta("total_pages")
-
-          subject_current_page: subject_sets[0].subject_pagination_info.current_page
-          subject_set_current_page: subject_sets[0].subject_set_pagination_info.current_page
-          total_subject_pages: subject_sets[0].subject_pagination_info.total_pages
+          subject_current_page: subject_sets[0].getMeta("current_page")
+          subject_set_current_page: subject_sets[0].getMeta("current_page")
+          total_subject_pages: subject_sets[0].getMeta("total_pages")
 
         if @fetchSubjectsCallback?
           @fetchSubjectsCallback()
-
-
-  #     request.then (subject_sets)=>    # DEBUG CODE
-  #       meta = subject_sets[0].getMeta
-  #       subject_sets = @orderSubjectsByOrder(subject_sets)
-  #       console.log "subject_sets", subject_sets
-  #       ind = 0
-  #       # Uncomment this to ffwd to a set with child subjects:
-  #       # ind = (i for s,i in subject_sets when s.subjects[0].child_subjects?.length > 0)[0] ? 0
-  #
-  #       callback_fn?() # fixes weird pagination bugs; not too happy about this one --STI
-  #       @setState
-  #         subjectSets: subject_sets
-  #         subject_set_index: ind
-  #         subject_current_page: subject_sets[0].getMeta("current_page")
-  #         subject_set_current_page: subject_sets[0].getMeta("current_page")
-  #         total_subject_pages: subject_sets[0].getMeta("total_pages")
-  #
-  #       if @fetchSubjectsCallback?
-  #         @fetchSubjectsCallback()
-
-  # fetchSubjectSets: (workflow_id, opts={}, callback_fn=null) ->
-  #   opts = $.extend({
-  #     limit: 10
-  #   }, opts)
-  #
-  #   if @props.overrideFetchSubjectsUrl?
-  #     $.getJSON @props.overrideFetchSubjectsUrl, (subject_sets) =>
-  #       @setState
-  #         subjectSets: subject_sets
-  #         # currentSubjectSet: subject_sets[0]
-  #
-  #   else
-  #     request = API.type('subject_sets').get
-  #       workflow_id: workflow_id
-  #       limit: opts.limit
-  #
-  #     # Randomization is incompatible with pagination; Let's disable randomization for now:
-  #       # random: true
-  #
-  #     request.then (subject_sets)=>    # DEBUG CODE
-  #       meta = subject_sets[0].getMeta
-  #       subject_sets = @orderSubjectsByOrder(subject_sets)
-  #       console.log "subject_sets", subject_sets
-  #       ind = 0
-  #       # Uncomment this to ffwd to a set with child subjects:
-  #       # ind = (i for s,i in subject_sets when s.subjects[0].child_subjects?.length > 0)[0] ? 0
-  #
-  #       callback_fn?() # fixes weird pagination bugs; not too happy about this one --STI
-  #       @setState
-  #         subjectSets: subject_sets
-  #         subject_set_index: ind
-  #         subject_current_page: subject_sets[0].getMeta("current_page")
-  #         subject_set_current_page: subject_sets[0].getMeta("current_page")
-  #         total_subject_pages: subject_sets[0].getMeta("total_pages")
-  #
-  #       if @fetchSubjectsCallback?
-  #         @fetchSubjectsCallback()
