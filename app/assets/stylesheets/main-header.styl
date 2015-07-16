@@ -1,8 +1,9 @@
 .main-header
-  display: flex
-  flex-wrap: wrap
-  justify-content: space-between
+  // display: flex
+  // flex-wrap: wrap
+  // justify-content: space-between
   height 40px
+  max-height 40px
 
 .main-header-group
   position: fixed
@@ -31,6 +32,7 @@
 
 .main-header-item
   @extends $reset-button
+  outline none
   align-items: center
   background: rgba(MAIN_HIGHLIGHT, 0)
   color: MAIN_HIGHLIGHT
@@ -38,21 +40,39 @@
   display: flex
   padding: 0.5rem 1.5vw 0.2em
   white-space: nowrap
+  border 1px solid rgba(0,0,0,0)
   border-right: 1px solid rgba(FOREGROUND, 1.0)
+  transition border 0.3s, background-color 0.3s
   // &:not(:last-child)
   //   border-right: 1px solid rgba(FOREGROUND, 0.85)
 
   &:hover
-    background: rgba(MEDIUM_GRAY, 0.5)
+    background: rgba(MEDIUM_GRAY, 0.3)
+    border 1px solid MEDIUM_GRAY
+    transition border 0.3s, background-color 0.3s
+
 
   &.logo
     font-size: 1.3em
     letter-spacing: 0.05em
     line-height: 1
     text-transform: uppercase
+    background black
+    &:hover
+      background black
+      border 1px solid black
+      // border-right: 1px solid rgba(FOREGROUND, 1.0)
+    &.selected
+      background black
+      border 1px solid black
+      border-top 1px solid red
+      // border-right: 1px solid rgba(FOREGROUND, 1.0)
+
 
   &.selected
     background: rgba(MEDIUM_GRAY, 0.5)
+    transition border 0.3s, background-color 0.3s
+
 
   > a
     color: inherit
