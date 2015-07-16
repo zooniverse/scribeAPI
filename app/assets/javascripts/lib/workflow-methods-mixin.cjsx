@@ -8,13 +8,13 @@ verifyTools             = require 'components/verify/tools'
 module.exports =
 
   # Convenience method for selecting currently active workflow based on active controller
-  activeWorkflow: ->
+  getActiveWorkflow: ->
     return null if ! @props.project
 
     k = (k for w,k in @props.project.workflows when w.name == @props.workflowName)
     return null if k?.length != 1
     @props.project.workflows[k[0]]
-  
+
   # Start a new classification (optionally initialized with given annotation hash):
   beginClassification: (annotation = {}, callback) ->
     classifications = @state.classifications
@@ -37,7 +37,7 @@ module.exports =
 
     classification.subject_id = @getCurrentSubject()?.id
     classification.subject_set_id = @getCurrentSubjectSet().id if @getCurrentSubjectSet()?
-    classification.workflow_id = @activeWorkflow().id
+    classification.workflow_id = @getActiveWorkflow().id
     classification.task_key = @state.taskKey
 
     # Commit classification to backend
@@ -51,7 +51,7 @@ module.exports =
 
   # Update local version of a subject with a newly acquired child_subject (i.e. after submitting a subject-generating classification)
   appendChildSubject: (subject_id, child_subject) ->
-    if (s = @subjectById(subject_id))
+    if (s = @getSubjectById(subject_id))
       s.child_subjects.push $.extend({userCreated: true}, child_subject)
 
       # We've updated an internal object in @state.subjectSets, but framework doesn't notice, so tell it to update:
@@ -61,11 +61,10 @@ module.exports =
       console.warn "WorkflowMethodsMixin#appendChildSubject: couldn't find subject by ", subject_id
 
   # Get a reference to the local copy of a subject by id regardless of whether viewing subject-sets or just subjects
-  subjectById: (id) ->
+  getSubjectById: (id) ->
     if @state.subjectSets?
-      for set in @state.subjectSets
-        for s in set.subjects
-          return s if s.id == id
+      for s in @getCurrentSubjectSet().subjects
+        return s if s.id == id
     else
       for s in @state.subjects
         return s if s.id == id
@@ -82,10 +81,14 @@ module.exports =
 
   getTasks: ->
     # Add completion_assessment_task to list of tasks dynamically:
-    tasks = @activeWorkflow().tasks
-    if @props.workflowName == 'mark'
-      tasks = $.extend tasks, completion_assessment_task: @getCompletionAssessmentTask()
-    tasks
+# <<<<<<< HEAD
+    $.extend @getActiveWorkflow().tasks, completion_assessment_task: @getCompletionAssessmentTask()
+# =======
+#     tasks = @getActiveWorkflow().tasks
+#     if @props.workflowName == 'mark'
+#       tasks = $.extend tasks, completion_assessment_task: @getCompletionAssessmentTask()
+#     tasks
+# >>>>>>> master
 
   # Get instance of current tool:
   getCurrentTool: ->
@@ -196,7 +199,7 @@ module.exports =
 
     # Haz more pages of subjects?
     else if @state.subjects_next_page?
-      @fetchSubjects @activeWorkflow().id, @activeWorkflow().subject_fetch_limit, @state.subjects_next_page
+      @fetchSubjects @getActiveWorkflow().id, @getActiveWorkflow().subject_fetch_limit, @state.subjects_next_page
 
     else
       @setState

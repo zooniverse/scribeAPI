@@ -1,9 +1,9 @@
 class SubjectSetSerializer < ActiveModel::MongoidSerializer
 
 
-  attributes :id, :type, :name, :thumbnail, :meta_data, :subjects, :state, :counts, :group_id, :subjects_pagination_info
+  attributes :id, :selected_subject_id, :type, :name, :thumbnail, :meta_data, :subjects, :state, :counts, :group_id, :subjects_pagination_info
 
-  # PB: Can't seem to get serialization_options set correctly when instantiated by 
+  # PB: Can't seem to get serialization_options set correctly when instantiated by
   # another serializer unless I declare constructor thusly:
   def initialize(object, options={})
     @_serialization_options = options

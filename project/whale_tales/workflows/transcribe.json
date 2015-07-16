@@ -206,7 +206,7 @@
       "tool": "textTool",
       "tool_config": {},
       "instruction": "Transcribe this rectangle.",
-      "next_task": null
+      "next_task": "entry_date"
     },
     "transcribe_text_row_with_text_tool": {
       "tool": "textTool",
@@ -281,7 +281,7 @@
         }
       },
       "instruction": "Transcribe this rectangle.",
-      "next_task": null
+      "next_task": "transcribe_text_row_with_composite_text_tool_and_text_area_tool"
     },
     "transcribe_text_row_with_composite_text_tool_and_text_area_tool": {
       "tool": "compositeTool",

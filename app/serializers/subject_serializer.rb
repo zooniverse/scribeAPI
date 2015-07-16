@@ -1,7 +1,11 @@
 class SubjectSerializer < ActiveModel::MongoidSerializer
 
+  # attributes :id, :type, :parent_subject_id, :workflow_id, :name, :location, :data, :region, :classification_count, :child_subjects_info, :order, :meta_data, :user_favourite # , :key #PB deprecating this; unused
+  # attributes :width, :height, :region, :subject_set_id
+
   attributes :id, :type, :parent_subject_id, :workflow_id, :name, :location, :data, :region, :classification_count, :order, :meta_data, :user_favourite
-  attributes :width, :height, :region
+  attributes :width, :height, :region, :subject_set_id
+
   delegate :current_user, to: :scope
   has_many :child_subjects
 
@@ -30,10 +34,6 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
 
   def parent_subject_id
     object.parent_subject_id.to_s
-  end
-
-  def subject_set_id
-    object.subject_set_id.to_s
   end
 
   def subject_set_id

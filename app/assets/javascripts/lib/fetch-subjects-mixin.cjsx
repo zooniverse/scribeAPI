@@ -2,12 +2,12 @@ API            = require './api'
 
 module.exports =
   componentDidMount: ->
-    if @activeWorkflow().name is 'transcribe' and @props.params.subject_id
-      @fetchSubject @props.params.subject_id,@activeWorkflow().id
-    # else if @activeWorkflow().name is "mark"
-        # @fetchSubjectSets @activeWorkflow().id, @activeWorkflow().subject_fetch_limit
+    if @getActiveWorkflow().name is 'transcribe' and @props.params.subject_id
+      @fetchSubject @props.params.subject_id,@getActiveWorkflow().id
+    else if @getActiveWorkflow().name is "mark"
+        @fetchSubjectSets @getActiveWorkflow().id, @getActiveWorkflow().subject_fetch_limit
     else
-      @fetchSubjects @activeWorkflow().id, @activeWorkflow().subject_fetch_limit
+      @fetchSubjects @getActiveWorkflow().id, @getActiveWorkflow().subject_fetch_limit
 
   orderSubjectsByY: (subjects) ->
     subjects.sort (a,b) ->
@@ -65,4 +65,3 @@ module.exports =
         # Does including instance have a defined callback to call when new subjects received?
         if @fetchSubjectsCallback?
           @fetchSubjectsCallback()
-

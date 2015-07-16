@@ -16,7 +16,7 @@ class AppRouter
   constructor: ->
     API.type('projects').get().then (result)=>
       @runRoutes result[0]
-          
+
   runRoutes: (project) ->
     routes =
       <Route name="root" path="/" handler={App}>
@@ -81,7 +81,7 @@ class AppRouter
           handler={GroupPage}
           name='group_show'
         />
-        
+
 
         <DefaultRoute name="home-default" handler={HomePage} />
       </Route>
