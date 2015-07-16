@@ -316,9 +316,16 @@
             "tool_config": {
                 "suggest": "common"
             },
-        "generates_subject_type": "att_transcribed_answer",
-            "instruction": "Please transcribe the questions.",
+            "generates_subject_type": "att_transcribed_question",
+            "instruction": "Please transcribe the questions being asked.",
             "next_task": "att_transcribe_answer"
+        },
+        "att_transcribe_answer": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the response",
+            "generates_subject_type": "att_transcribed_answer",
+            "next_task": null
         },
         "hs_transcribe_unit": {
             "tool": "textTool",
