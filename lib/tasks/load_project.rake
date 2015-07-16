@@ -102,10 +102,8 @@ desc 'creates a poject object from the project directory'
         if tasks.is_a? Hash
           tasks = tasks.inject([]) do |a, (task_key, task_config)|
             task_config[:key] = task_key.to_s
-            # PB Hack to auto-set generates_subjects for a given task automatically based on presence of generates_subject_type
-            #   should probably deprecate config
-            task_config[:generates_subjects] = ! task_config[:generates_subject_type].nil? || ! (c = task_config[:tool_config]).nil? && ! (c = c[:tools]).nil? && ! c.select { |c| ! c['generates_subject_type'].nil? }.empty?
-            # task_config[:tool_name] = task_config.delete :tool
+            # Remove any config params not officially declared as fields of WorkflowTask:
+            task_config = task_config.inject({}) { |h, (k,v)| h[k] = v if WorkflowTask.fields.keys.include?(k.to_s); h }
             a << task_config
           end
         end

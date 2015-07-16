@@ -1,4 +1,3 @@
-# @cjsx React.DOM
 React      = require 'react'
 Draggable  = require 'lib/draggable'
 DoneButton = require './done-button'
@@ -69,14 +68,19 @@ TextTool = React.createClass
       dy: y, => @forceUpdate() # updates component position on new subject
 
   componentWillUnmount: ->
-    if @props.task.tool_config.suggest == 'common'
+    tool_config = @toolConfig()
+    if tool_config.suggest == 'common'
       el = $(@refs.input0.getDOMNode())
       el.autocomplete 'destroy'
+
+  toolConfig: ->
+    @props.tool_config ? @props.task.tool_config
 
   componentDidMount: ->
     @updatePosition()
 
-    if @props.task.tool_config.suggest == 'common'
+    tool_config = @toolConfig()
+    if tool_config.suggest == 'common'
       el = $(@refs.input0.getDOMNode())
       el.autocomplete
         source: (request, response) =>
@@ -115,6 +119,8 @@ TextTool = React.createClass
   # this can go into a mixin? (common across all transcribe tools)
   returnToMarking: ->
     @commitAnnotation()
+
+    console.log 'PROPS:SJKDHKLJSDHSKLJDHKJSLDH ', @props
 
     # transition back to mark
     @replaceWith 'mark', {},

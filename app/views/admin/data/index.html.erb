@@ -1,0 +1,21 @@
+<h1>Data</h1>
+
+<form method="get" action="<%= admin_data_download_path %>" target="_blank">
+
+<h3>Format</h3>
+<% {  "JSON" => 'json',
+      "CSV" =>  'csv'
+   }.each do |(label, key)|
+     input_id = "download_format_#{key}"
+%>
+  <div>
+    <input type="radio" id="<%= input_id %>" name="download_format" value="<%= key %>"<%= key == 'json' ? ' checked="checked"' : '' %> />
+    <label for="<%= input_id %>"><%= label %></label>
+  </div>
+<% end %>
+
+<h3>Download</h3>
+
+<input type="submit" value="Download" />
+
+</form>

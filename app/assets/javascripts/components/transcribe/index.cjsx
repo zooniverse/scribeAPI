@@ -33,18 +33,7 @@ module.exports = React.createClass # rename to Classifier
     @beginClassification()
 
   fetchSubjectsCallback: ->
-    #TODO: We do need to account for times when there are no subjects? type won't do that. -AMS
-    console.log 'CURRENT SUBJECT: ', @getCurrentSubject()
-
-    currentSubject = @getCurrentSubject()
-    console.log "feCallBack currentSubject", currentSubject
-    if not currentSubject?
-      @setState noMoreSubjects: true, => @forceUpdate()
-    else
-      console.log "currentSubject.type", @getCurrentSubject().type
-      @setState taskKey: @getCurrentSubject().type
-
-    # @advanceToTask new_key
+    @setState taskKey: @getCurrentSubject().type if @getCurrentSubject()?
 
   handleTaskComponentChange: (val) ->
     # console.log "handleTaskComponentChange val", val
@@ -62,40 +51,13 @@ module.exports = React.createClass # rename to Classifier
 
     @forceUpdate()
     @setState
-      classifications: classifications
-        , =>
-          @forceUpdate()
-          # console.log "handleDataFromTool(), DATA = ", d
+      classifications: classifications,
+        => @forceUpdate()
 
   handleTaskComplete: (d) ->
-    console.log 'handleTaskComplete(), data = ', d
     @handleDataFromTool(d)
-    @commitClassification()
-    @beginClassification {}, () =>
-      if @getCurrentTask().next_task?
-        # console.log "advance to next task...", @state.currentTask['next_task']
-        @advanceToTask @getCurrentTask().next_task
+    @commitClassificationAndContinue d
 
-      else
-        @advanceToNextSubject()
-
-  advanceToNextSubject: ->
-    # console.log 'advanceToNextSubject()'
-    # console.log "subjects: ", @state.subjects
-    if @state.subject_index + 1 < @state.subjects.length
-      next_index = @state.subject_index + 1
-      next_subject = @state.subjects[next_index]
-      # console.log 'NEXT SUBJECT: ', next_subject
-      @setState
-        # currentSubject: next_subject
-        taskKey: next_subject.type
-        subject_index: next_index
-        , =>
-          key = @getCurrentSubject().type
-          @advanceToTask key
-    else
-      console.warn "WARN: End of subjects"
-      @setState noMoreSubjects: true
 
   handleViewerLoad: (props) ->
     # console.log "Transcribe#handleViewerLoad: setting size: ", props
@@ -121,9 +83,14 @@ module.exports = React.createClass # rename to Classifier
     <div className="classifier">
       <div className="subject-area">
 
-        { if @state.noMoreSubjects
-            style = marginTop: "50px"
-            <p style={style}>There are currently no transcription subjects. Try <a href="/#/mark">marking</a> instead!</p>
+        { if ! @getCurrentSubject()
+            <div className="workflow-nothing-more">
+              { if @state.noMoreSubjects
+                <h1>You transcribed them all!</h1>
+              }
+              <p>There are currently no transcription subjects. Try <a href="/#/mark">marking</a> instead!</p>
+            </div>
+
           else if @getCurrentSubject()? and @getCurrentTask()?
             <SubjectViewer
               onLoad={@handleViewerLoad}
@@ -152,7 +119,7 @@ module.exports = React.createClass # rename to Classifier
         }
       </div>
 
-      { if @getCurrentTask()? and not @state.noMoreSubjects
+      { if @getCurrentTask()? and @getCurrentSubject()
           nextTask =
             if @getCurrentTask().tool_config.options?[currentAnnotation.value]?
               @getCurrentTask().tool_config.options?[currentAnnotation.value].next_task

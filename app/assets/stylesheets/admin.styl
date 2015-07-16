@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu:400,700')
+
+@import './common.styl'
+@import './admin-dashboard.styl'
+@import './admin-browse.styl'
+
+#admin-header
+  ul
+    margin 0
+    background-color #111
+    width 100%
+    list-style none
+    padding 0
+
+    li
+      display inline-block
+      padding 0
+      
+      a
+        text-decoration none
+        font-weight bold
+        font-size 16px
+        padding 1em
+        display inline-block
+
+        &:hover, &.active
+          background-color #444
+
+#admin-content
+  padding 1em
