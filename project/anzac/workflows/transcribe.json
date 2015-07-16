@@ -13,7 +13,7 @@
             "tool_config": {},
             "instruction": "Transcribe the serial number.",
             "generates_subject_type": "transcribed_number",
-            "next_task": "att_transcribe_serial_number"
+            "next_task": "att_transcribe_name"
         },
         "att_transcribe_name": {
             "tool": "textTool",
@@ -37,17 +37,43 @@
             "next_task": null
         },
         "att_transcribe_age": {
-            "tool": "textTool",
-            "tool_config": {},
-            "instruction": "Enter the filled in text",
-            "generates_subject_type": "att_transcribed_age",
+            "tool": "compositeTool",
+            "tool_config": {
+                "tools": {
+                  "att_transcribe_ageribe_age_yr": {
+                    "tool": "textTool",
+                    "tool_config": {},
+                    "label": "Years",
+                    "generates_subject_type": "att_transcribed_age_yr"
+                  },
+                  "att_transcribe_age_months": {
+                    "tool": "textTool",
+                    "tool_config": {},
+                    "label": "Months",
+                    "generates_subject_type": "att_transcribed_age_months"
+                  }
+                }
+            },
             "next_task": null
         },
         "att_transcribe_height": {
-            "tool": "textTool",
-            "tool_config": {},
-            "instruction": "Enter the filled in text",
-            "generates_subject_type": "att_transcribed_height",
+            "tool": "compositeTool",
+            "tool_config": {
+                "tools": {
+                  "att_transcribe_height_ft": {
+                    "tool": "textTool",
+                    "tool_config": {},
+                    "label": "Feet",
+                    "generates_subject_type": "att_transcribed_height_ft"
+                  },
+                  "att_transcribe_height_in": {
+                    "tool": "textTool",
+                    "tool_config": {},
+                    "label": "Inches",
+                    "generates_subject_type": "att_transcribed_height_in"
+                   }
+                }
+            },
             "next_task": null
         },
         "att_transcribe_weight": {
@@ -58,10 +84,23 @@
             "next_task": null
         },
         "att_transcribe_chest_measurement": {
-            "tool": "textTool",
-            "tool_config": {},
-            "instruction": "Enter the filled in text",
-            "generates_subject_type": "att_transcribed_chest_measurement",
+            "tool": "compositeTool",
+            "tool_config": {
+                "tools": {
+                  "att_transcribe_chest_min": {
+                    "tool": "textTool",
+                    "tool_config": {},
+                    "label": "Minimum",
+                    "generates_subject_type": "att_transcribed_chest_min"
+                  },
+                  "att_transcribe_chest_max": {
+                    "tool": "textTool",
+                    "tool_config": {},
+                    "label": "Maximum",
+                    "generates_subject_type": "att_transcribed_chest_max"
+                   }
+                }
+            },
             "next_task": null
         },
         "att_transcribe_complexion": {
@@ -93,17 +132,43 @@
             "next_task": null
         },
         "att_transcribe_sight": {
-            "tool": "textTool",
-            "tool_config": {},
-            "instruction": "Enter the filled in text",
-            "generates_subject_type": "att_transcribed_sight",
+            "tool": "compositeTool",
+            "tool_config": {
+                "tools": {
+                  "att_transcribe_sight_l": {
+                    "tool": "textTool",
+                    "tool_config": {},
+                    "label": "Left",
+                    "generates_subject_type": "att_transcribed_sight_l"
+                  },
+                  "att_transcribe_sight_r": {
+                    "tool": "textTool",
+                    "tool_config": {},
+                    "label": "Right",
+                    "generates_subject_type": "att_transcribed_sight_r"
+                   }
+                }
+            },
             "next_task": null
         },
         "att_transcribe_hearing": {
-            "tool": "textTool",
-            "tool_config": {},
-            "instruction": "Enter the filled in text",
-            "generates_subject_type": "att_transcribed_hearing",
+            "tool": "compositeTool",
+            "tool_config": {
+                "tools": {
+                  "att_transcribe_hearing_l": {
+                    "tool": "textTool",
+                    "tool_config": {},
+                    "label": "Left",
+                    "generates_subject_type": "att_transcribed_hearing_l"
+                  },
+                  "att_transcribe_hearing_r": {
+                    "tool": "textTool",
+                    "tool_config": {},
+                    "label": "Right",
+                    "generates_subject_type": "att_transcribed_hearing_r"
+                   }
+                }
+            },
             "next_task": null
         },
         "att_transcribe_color_vision": {
@@ -251,15 +316,15 @@
             "tool_config": {
                 "suggest": "common"
             },
-            "generates_subject_type": "att_transcribed_answer",
-            "instruction": "Please transcribe the questions.",
+            "generates_subject_type": "att_transcribed_question",
+            "instruction": "Please transcribe the questions being asked.",
             "next_task": "att_transcribe_answer"
         },
         "att_transcribe_answer": {
             "tool": "textTool",
             "tool_config": {},
+            "instruction": "Enter the response",
             "generates_subject_type": "att_transcribed_answer",
-            "instruction": "Please transcribe the response to the question.",
             "next_task": null
         },
         "hs_transcribe_unit": {
@@ -288,6 +353,20 @@
             "tool_config": {},
             "instruction": "Enter the response",
             "generates_subject_type": "hs_transcribed_surname",
+            "next_task": null
+        },
+        "hs_transcribe_employer": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the response",
+            "generates_subject_type": "hs_transcribed_employer",
+            "next_task": null
+        },
+        "hs_transcribe_kin": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the response",
+            "generates_subject_type": "hs_transcribed_kin",
             "next_task": null
         },
         "hs_transcribe_no": {
@@ -353,7 +432,7 @@
             "generates_subject_type": "hs_transcribed_discharge_final",
             "next_task": null
         },
-        "hs_rectangleTool_serivce": {
+        "hs_transcribe_service": {
             "tool": "textTool",
             "tool_config": {},
             "instruction": "Enter the response",

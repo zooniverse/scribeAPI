@@ -14,7 +14,6 @@ module.exports =
       return if a.region.y >= b.region.y then 1 else -1
 
   fetchSubject: (subject_id, workflow_id)->
-
     request = API.type("subjects").get(subject_id, workflow_id: workflow_id)
 
     @setState
@@ -28,6 +27,7 @@ module.exports =
         () =>
           if @fetchSubjectsCallback?
             @fetchSubjectsCallback()
+
 
   fetchSubjects: (workflow_id, limit, page=1) ->
     if @props.overrideFetchSubjectsUrl?

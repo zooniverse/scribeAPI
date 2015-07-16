@@ -28,7 +28,6 @@ class SubjectsController < ApplicationController
       }
     }
     respond_with SubjectResultSerializer.new(@subjects), workflow_id: workflow_id, links: links
-
   end
 
   def show

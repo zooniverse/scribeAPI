@@ -38,8 +38,6 @@ jest
 
     # mock of the props.onChange from subject-viewer
     clickRecord = jest.genMockFunction()
-    # mockReturnThis(@props.annotation.value = "")
-
 
     PickOne = require '../components/core-tools/pick-one'
     GenericTask = require '../components/core-tools/generic'
@@ -69,13 +67,13 @@ jest
       expect(labels[0].props.className).not.toContain("active")
       expect(labels[1].props.className).not.toContain("active")
 
-    it "when a label is clicked the class should contain the word 'active' ", ->
+    it "when a label is clicked the class @handleChange shoudle be called & label should contain the word 'active' ", ->
       DOM = renderIntoDocument(<PickOne annotation={value: "yes"} task={task_object} onChange={clickRecord} />)
       labels = scryRenderedDOMComponentsWithTag(DOM, 'label')
       inputs = scryRenderedDOMComponentsWithTag(DOM, 'input')
 
       Simulate.change(inputs[0], target: {checked:true})
-      expect(clickRecord).toBeCalled()
+      expect(clickRecord).toBeCalled() #the mock func stands in for the subject-viewer's @handleChange()
       expect(labels[0].props.className).toContain("active")
 
 

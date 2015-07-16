@@ -58,7 +58,6 @@ module.exports = React.createClass # rename to Classifier
     @handleDataFromTool(d)
     @commitClassificationAndContinue d
 
-
   handleViewerLoad: (props) ->
     # console.log "Transcribe#handleViewerLoad: setting size: ", props
     @setState
@@ -75,7 +74,8 @@ module.exports = React.createClass # rename to Classifier
     # DISABLE ANIMATED SCROLLING FOR NOW
     # if @props.query.scrollX? and @props.query.scrollY?
     #   window.scrollTo(@props.query.scrollX,@props.query.scrollY)
-
+    console.log "transcribe#index @props", @props 
+    console.log "transcribe#index @state", @state 
     currentAnnotation = @getCurrentClassification().annotation
     TranscribeComponent = @getCurrentTool() # @state.currentTool
     onFirstAnnotation = currentAnnotation?.task is @getActiveWorkflow().first_task

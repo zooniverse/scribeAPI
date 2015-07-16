@@ -35,7 +35,7 @@ module.exports = React.createClass
     onLoad: null
     annotationIsComplete: false
 
-  componentWillReceiveProps: (new_props) ->
+  componentWillReceiveProps: (new_props) ->    
     # console.log "SubjectViewer#componentWillReceiveProps: ", @props, new_props
     # @setUncommittedMark null if ! @state.uncommittedMark?.saving && ! new_props.annotation?.subToolIndex?
     # @setUncommittedMark null if ! new_props.annotation?.subToolIndex?
@@ -43,6 +43,7 @@ module.exports = React.createClass
     @setUncommittedMark null if new_props.task?.tool != 'pickOneMarkOne'
 
   componentDidMount: ->
+    console.log "____>>componen DID mount"
     @setView 0, 0, @state.imageWidth, @state.imageHeight
     @loadImage @props.subject.location.standard
     window.addEventListener "resize", this.updateDimensions
@@ -170,6 +171,7 @@ module.exports = React.createClass
 
   # PB This is not returning anything but 0, 0 for me; Seems like @refs.sizeRect is empty when evaluated (though nonempty later)
   getScale: ->
+    console.log "getScale()"
     rect = @refs.sizeRect?.getDOMNode().getBoundingClientRect()
     return {horizontal: 1, vertical: 1} if ! rect? || ! rect.width?
     rect ?= width: 0, height: 0
