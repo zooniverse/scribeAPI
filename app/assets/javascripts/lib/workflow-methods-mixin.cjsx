@@ -34,7 +34,7 @@ module.exports =
     classification = @getCurrentClassification()
     # checking for empty classification.annotation, we don't want to commit those classifications -- AMS
     return if Object.keys(classification.annotation).length == 0
-
+    console.log 
     classification.subject_id = @getCurrentSubject()?.id
     classification.subject_set_id = @getCurrentSubjectSet().id if @getCurrentSubjectSet()?
     classification.workflow_id = @getActiveWorkflow().id
@@ -48,6 +48,7 @@ module.exports =
 
     console.log 'COMMITTED CLASSIFICATION: ', classification
     console.log '(ALL CLASSIFICATIONS): ', @state.classifications
+    @beginClassification() #creating a new classification allows not keep commiting previously commited classifications. --AMS
 
   # Update local version of a subject with a newly acquired child_subject (i.e. after submitting a subject-generating classification)
   appendChildSubject: (subject_id, child_subject) ->
