@@ -44,7 +44,7 @@ module.exports = React.createClass
 
   componentDidMount: ->
     console.log "____>>componen DID mount"
-    @setView 0, 0, @state.imageWidth, @state.imageHeight
+    @setView 0, 0, @props.subject.width, @props.subject.height
     @loadImage @props.subject.location.standard
     window.addEventListener "resize", this.updateDimensions
 
@@ -60,8 +60,8 @@ module.exports = React.createClass
       scale = @getScale()
       props =
         size:
-          w: scale.horizontal * @state.imageWidth
-          h: scale.vertical * @state.imageHeight
+          w: scale.horizontal * @props.subject.width
+          h: scale.vertical * @props.subject.height
           scale: scale
 
       @props.onLoad props
@@ -171,12 +171,12 @@ module.exports = React.createClass
 
   # PB This is not returning anything but 0, 0 for me; Seems like @refs.sizeRect is empty when evaluated (though nonempty later)
   getScale: ->
-    console.log "getScale()"
+    console.log "getScale() is being called"
     rect = @refs.sizeRect?.getDOMNode().getBoundingClientRect()
     return {horizontal: 1, vertical: 1} if ! rect? || ! rect.width?
     rect ?= width: 0, height: 0
-    horizontal = rect.width / @state.imageWidth
-    vertical = rect.height / @state.imageHeight
+    horizontal = rect.width / @props.subject.width
+    vertical = rect.height / @props.subject.height
     # TODO hack fallback:
     return {horizontal, vertical}
 
@@ -239,9 +239,7 @@ module.exports = React.createClass
 
   render: ->
     return null if ! @props.active
-
-    viewBox = [0, 0, @state.imageWidth, @state.imageHeight]
-    # ToolComponent = @state.tool # AMS:from classification refactor.
+    viewBox = [0, 0, @props.subject.width, @props.subject.height]
     scale = @getScale()
 
     # if @props.workflow.name is 'transcribe'
@@ -255,20 +253,19 @@ module.exports = React.createClass
         <ActionButton onClick={@nextSubject} text="Next Page" />
 
     if @state.loading
-      # console.log "loading..."
       markingSurfaceContent = <LoadingIndicator />
     else
       markingSurfaceContent =
         <svg
           className = "subject-viewer-svg"
-          width = {@state.imageWidth}
-          height = {@state.imageHeight}
+          width = {@props.subject.width}
+          height = {@props.subject.height}
           viewBox = {viewBox}
           data-tool = {@props.selectedDrawingTool?.type} >
           <rect
             ref = "sizeRect"
-            width = {@state.imageWidth}
-            height = {@state.imageHeight} />
+            width = {@props.subject.width}
+            height = {@props.subject.height} />
           <MouseHandler
             onStart = {@handleInitStart}
             onDrag  = {@handleInitDrag}
@@ -276,8 +273,8 @@ module.exports = React.createClass
             inst    = "marking surface">
             <SVGImage
               src = {@props.subject.location.standard}
-              width = {@state.imageWidth}
-              height = {@state.imageHeight} />
+              width = {@props.subject.width}
+              height = {@props.subject.height} />
           </MouseHandler>
 
           { # HIGHLIGHT SUBJECT FOR TRANSCRIPTION
