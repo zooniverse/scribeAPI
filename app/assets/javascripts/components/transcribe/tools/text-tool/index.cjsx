@@ -14,26 +14,34 @@ TextTool = React.createClass
     if e.target.nodeName is "INPUT" or e.target.nodeName is "TEXTAREA"
       @setState preventDrag: true
 
-    @setState
-      xClick: e.pageX - $('.transcribe-tool').offset().left
-      yClick: e.pageY - $('.transcribe-tool').offset().top
+    # console.log 'e: ', e
+    # @setState
+    #   x: e.pageX - $('.transcribe-tool').offset().left
+    #   y: e.pageY - $('.transcribe-tool').offset().top
 
   handleInitDrag: (e, delta) ->
+    console.log 'E: ', e
     return if @state.preventDrag # not too happy about this one
 
-    dx = e.pageX - @state.xClick - window.scrollX
-    dy = e.pageY - @state.yClick # + window.scrollY
+    dx = e.pageX - @state.x #Click# - window.scrollX
+    dy = e.pageY - @state.y #Click # + window.scrollY
+
+    console.log """
+      state.xClick = #{@state.xClick}
+      e.pageX = #{e.pageX}
+      delta = #{delta.x}
+    """
 
     @setState
-      dx: dx
-      dy: dy #, =>
-      dragged: true
+      x: dx
+      y: dy #, =>
+      dragged: true, => console.log "(x,y)=(#{@state.x},#{@state.y})"
 
   getInitialState: ->
     # compute component location
     {x,y} = @getPosition @props.subject.data
-    dx: x
-    dy: y
+    x: x
+    y: y
     viewerSize: @props.viewerSize
 
   # this can go into a mixin? (common across all transcribe tools)
@@ -64,8 +72,8 @@ TextTool = React.createClass
 
     {x,y} = @getPosition @props.subject.data
     @setState
-      dx: x
-      dy: y, => @forceUpdate() # updates component position on new subject
+      x: x
+      y: y, => @forceUpdate() # updates component position on new subject
 
   componentWillUnmount: ->
     tool_config = @toolConfig()
@@ -77,7 +85,7 @@ TextTool = React.createClass
     @props.tool_config ? @props.task.tool_config
 
   componentDidMount: ->
-    @updatePosition()
+    # @updatePosition()
 
     tool_config = @toolConfig()
     if tool_config.suggest == 'common'
@@ -108,8 +116,8 @@ TextTool = React.createClass
   updatePosition: ->
     if @state.viewerSize? && ! @state.dragged
       @setState
-        dx: @props.subject.data.x * @state.viewerSize.scale.horizontal
-        dy: (@props.subject.data.y + @props.subject.data.height) * @state.viewerSize.scale.vertical
+        x: @props.subject.data.x * @state.viewerSize.scale.horizontal
+        y: (@props.subject.data.y + @props.subject.data.height) * @state.viewerSize.scale.vertical
 
   # this can go into a mixin? (common across all transcribe tools)
   # NOTE: doesn't get called unless @props.standalone is true
@@ -148,8 +156,8 @@ TextTool = React.createClass
 
   render: ->
     style =
-      left: "#{@state.dx*@props.scale.horizontal}px"
-      top: "#{@state.dy*@props.scale.vertical}px"
+      left: "#{@state.x*@props.scale.horizontal}px"
+      top: "#{@state.y*@props.scale.vertical}px"
 
     val = @props.annotation[@fieldKey()]
     val = '' if ! val?
@@ -188,8 +196,8 @@ TextTool = React.createClass
           onDrag={@handleInitDrag}
           onEnd={@handleInitRelease}
           ref="inputWrapper0"
-          x={@state.dx*@props.scale.horizontal}
-          y={@state.dy*@props.scale.vertical}>
+          x={@state.x*@props.scale.horizontal}
+          y={@state.y*@props.scale.vertical}>
 
           <div className="transcribe-tool" style={style}>
             <div className="left">
