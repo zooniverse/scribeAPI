@@ -120,8 +120,6 @@ TextTool = React.createClass
   returnToMarking: ->
     @commitAnnotation()
 
-    console.log 'PROPS:SJKDHKLJSDHSKLJDHKJSLDH ', @props
-
     # transition back to mark
     @replaceWith 'mark', {},
       subject_set_id: @props.subject.subject_set_id
