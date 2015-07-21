@@ -150,6 +150,10 @@ TextTool = React.createClass
       @commitAnnotation()
       e.preventDefault()
 
+  handleBadMark: ()->
+    newAnnotation = []
+    newAnnotation["low_quality_subject"]
+
   render: ->
     return null if @props.loading # hide transcribe tool while loading image
     style =

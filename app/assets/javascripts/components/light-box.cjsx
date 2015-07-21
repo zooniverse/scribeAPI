@@ -31,7 +31,6 @@ module.exports = React.createClass
     first: @props.subject_set.subjects[0]
 
   render: ->
-    console.log 'LIGHT-BOX::render(), state: ', @state, ' props: ', @props
     window.subjects = @props.subject_set.subjects
     return null if @props.subject_set.subjects.length <= 1
     indexOfFirst = @findSubjectIndex(@state.first)
