@@ -68,7 +68,7 @@ TextTool = React.createClass
 
   componentWillUpdate: ->
     # autofocus text input element
-    @refs[@props.ref || 'input0'].getDOMNode().focus() if @props.focus
+    @refs[@props.ref || 'input0']?.getDOMNode().focus() if @props.focus
 
   componentWillUnmount: ->
     tool_config = @toolConfig()
@@ -151,6 +151,7 @@ TextTool = React.createClass
       e.preventDefault()
 
   render: ->
+    return null if @props.loading # hide transcribe tool while loading image
     style =
       left: "#{@state.x*@props.scale.horizontal}px"
       top: "#{@state.y*@props.scale.vertical}px"
