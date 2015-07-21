@@ -9,21 +9,10 @@
 
   .left
     padding-bottom 0.8em
-    input
-      float left
-      margin-left 10px
-      outline none
     .input-field
       display none // auto hide
-      input
-        width 360px
-        height 40px
-        font-size 1.5em
+      &.active
         display block
-        margin-left 10px
-        margin-right 10px
-        &.input-placeholder
-          color red
       label
         display inherit
         margin-left 10px
@@ -32,10 +21,18 @@
         margin-bottom 10px
         color black
         text-align left
-
-      &.active
+      input
+        outline none
+        width 360px
+        height 40px
+        font-size 1.5em
         display block
+        margin-left 10px
+        margin-right 10px
+        &.input-placeholder
+          color red
       textarea
+        outline none
         font-size 1.25em
         resize none
         width 400px
