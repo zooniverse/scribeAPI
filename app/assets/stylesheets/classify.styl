@@ -148,22 +148,35 @@
 .draggable-modal
   position absolute
   min-width 200px
-  background-color rgba(255,255,255,0.75)
+  max-width 800px
+  background-color rgb(236, 236, 236)
+  color black
   box-shadow 0 0 5px 3px rgba(0,0,0,.4)
   border-radius 6px
   line-height 2em
   cursor move
+  z-index 10
+  text-align left
 
   .modal-header, .modal-body, .modal-buttons
-    padding 0 20px
+    padding 20px 20px 0
 
   .modal-header
-    padding-top 5px
-    font-size 2em
+    font-size 1.6em
 
   .modal-body
-    // padding 0 10px
+    overflow hidden
 
   .modal-buttons
     text-align right
     padding-bottom 20px
+
+    .help-button
+      float left
+
+ 
+.help-modal
+  width 500px
+
+  .modal-body
+    font-size 1.3em

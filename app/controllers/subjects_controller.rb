@@ -2,22 +2,24 @@ class SubjectsController < ApplicationController
   respond_to :json
 
   def index
-    # @users = User.order(:name).page params[:page]
+    user = current_or_guest_user
 
     workflow_id           = get_objectid :workflow_id
     parent_subject_id     = get_objectid :parent_subject_id
     random                = get_bool :random, false
     limit                 = get_int :limit, 10
     page                  = get_int :page, 1
-    puts "parse page: #{page}"
 
-    @subjects = Subject.by_workflow(workflow_id).active
+    @subjects = Subject.by_workflow(workflow_id).active.page(page).per(limit)
 
+    # Filter by subject set?
     @subjects = @subjects.by_parent_subject(parent_subject_id) if parent_subject_id
     
+    # Randomize?
     @subjects = @subjects.random(limit: limit) if random
 
-    @subjects = @subjects.page(page).per(limit)
+    # If user/guest active, filter out anything already classified:
+    @subjects = @subjects.user_has_not_classified user.id if ! user.nil?
 
     links = {
       "next" => {

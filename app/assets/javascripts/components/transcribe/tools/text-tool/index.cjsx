@@ -1,39 +1,13 @@
-React      = require 'react'
-Draggable  = require 'lib/draggable'
-DoneButton = require './done-button'
-PrevButton = require './prev-button'
-ReactRouter = require 'react-router' # eventually replace with {Navigation} = require 'react-router' -- STI
+React           = require 'react'
+DraggableModal  = require 'components/draggable-modal'
+DoneButton      = require './done-button'
+PrevButton      = require './prev-button'
 
 TextTool = React.createClass
   displayName: 'TextTool'
 
-  mixins: [ReactRouter] # NOTE: deprecated React-Router 13.3 uses Navigation minxin --STI
-
-  handleInitStart: (e) ->
-    @setState preventDrag: false
-    if e.target.nodeName is "INPUT" or e.target.nodeName is "TEXTAREA"
-      @setState preventDrag: true
-
-    @setState
-      xClick: e.pageX - $('.transcribe-tool').offset().left
-      yClick: e.pageY - $('.transcribe-tool').offset().top
-
-  handleInitDrag: (e, delta) ->
-    return if @state.preventDrag # not too happy about this one
-
-    dx = e.pageX - @state.xClick - window.scrollX
-    dy = e.pageY - @state.yClick # + window.scrollY
-
-    @setState
-      dx: dx
-      dy: dy #, =>
-      dragged: true
-
   getInitialState: ->
-    # compute component location
-    {x,y} = @getPosition @props.subject.data
-    dx: x
-    dy: y
+    annotation: @props.annotation ? {}
     viewerSize: @props.viewerSize
 
   getPosition: (data) ->
@@ -51,19 +25,12 @@ TextTool = React.createClass
 
   getDefaultProps: ->
     annotation: {}
+    annotation_key: null
     task: null
     subject: null
     standalone: true
-    key: 'value'
     focus: true
-
-  componentWillReceiveProps: ->
-    @refs[@props.ref || 'input0'].getDOMNode().focus() if @props.focus
-
-    {x,y} = @getPosition @props.subject.data
-    @setState
-      dx: x
-      dy: y, => @forceUpdate() # updates component position on new subject
+    inputType: 'text'
 
   componentWillUnmount: ->
     tool_config = @toolConfig()
@@ -74,8 +41,21 @@ TextTool = React.createClass
   toolConfig: ->
     @props.tool_config ? @props.task.tool_config
 
+  # Set focus on input:
+  focus: ->
+    el = $(@refs.input0?.getDOMNode())
+    if el? && el.length
+      el.focus()
+
+  componentWillReceiveProps: (new_props) ->
+    # PB: Note this func is defined principally to allow a parent composite-tool 
+    # to set focus on a child tool via props but this consistently fails to
+    # actually set focus - probably because the el.focus() call is made right
+    # before an onkeyup event or something, which quietly reverses it.
+    if new_props.focus
+      @focus()
+    
   componentDidMount: ->
-    @updatePosition()
 
     tool_config = @toolConfig()
     if tool_config.suggest == 'common'
@@ -92,6 +72,8 @@ TextTool = React.createClass
               response( data )
         minLength: 3
 
+    @focus() if @props.focus
+
   # Expects size hash with:
   #   w: [viewer width]
   #   h: [viewer height]
@@ -101,17 +83,11 @@ TextTool = React.createClass
   onViewerResize: (size) ->
     @setState
       viewerSize: size
-    @updatePosition()
-
-  updatePosition: ->
-    if @state.viewerSize? && ! @state.dragged
-      @setState
-        dx: @props.subject.data.x * @state.viewerSize.scale.horizontal
-        dy: (@props.subject.data.y + @props.subject.data.height) * @state.viewerSize.scale.vertical
 
   # NOTE: doesn't get called unless @props.standalone is true
   commitAnnotation: ->
-    @props.onComplete @props.annotation
+    ann = @state.annotation
+    @props.onComplete ann
 
   returnToMarking: ->
     @commitAnnotation()
@@ -126,7 +102,7 @@ TextTool = React.createClass
       @props.annotation_key
 
   handleChange: (e) ->
-    newAnnotation = []
+    newAnnotation = @state.annotation
     newAnnotation[@fieldKey()] = e.target.value
 
     # if composite-tool is used, this will be a callback to CompositeTool::handleChange()
@@ -139,11 +115,8 @@ TextTool = React.createClass
       e.preventDefault()
 
   render: ->
-    style =
-      left: "#{@state.dx*@props.scale.horizontal}px"
-      top: "#{@state.dy*@props.scale.vertical}px"
-
-    val = @props.annotation[@fieldKey()]
+    val = @state.annotation[@fieldKey()]
+    
     val = '' if ! val?
 
     unless @props.standalone
@@ -156,56 +129,70 @@ TextTool = React.createClass
     # create component input field(s)
     tool_content =
       <div className="input-field active">
+
         <label>{label}</label>
         {
           atts =
             ref: ref
+            key: "#{@props.task.key}.#{@props.annotation_key}"
             "data-task_key": @props.task.key
             onKeyDown: @handleKeyPress
             onChange: @handleChange
+            onFocus: ( () => @props.onInputFocus? @props.annotation_key )
             value: val
         
-          if @props.textarea
+          if @props.inputType == "text"
+            <input type="text" value={val} {...atts} />
+
+          else if @props.inputType == "textarea"
             <textarea key={@props.task.key} value={val} {...atts} />
 
-          else
+          else if @props.inputType == "number"
+            # Let's not make it input[type=number] because we don't want the browser to absolutely *force* numeric; We should coerce numerics without obliging
             <input type="text" value={val} {...atts} />
+
+          else if @props.inputType == "date"
+            <input type="date" value={val} {...atts} />
+
+          else console.warn "Invalid inputType specified: #{@props.inputType}"
+
         }
       </div>
 
     if @props.standalone # 'standalone' true if component handles own mouse events
-      tool_content =
-        <Draggable
-          onStart={@handleInitStart}
-          onDrag={@handleInitDrag}
-          onEnd={@handleInitRelease}
-          ref="inputWrapper0"
-          x={@state.dx*@props.scale.horizontal}
-          y={@state.dy*@props.scale.vertical}>
 
-          <div className="transcribe-tool" style={style}>
-            <div className="left">
-              {tool_content}
-            </div>
-            <div className="right">
+      buttons = []
 
-              {
-                if window.location.hash is '#/transcribe' # regular transcribe, i.e. no mark transition
-                  <DoneButton onClick={@commitAnnotation} />
-                else
-                  <span>
-                    <label>Return to marking: </label>
-                    <button className='button done' onClick={@returnToMarking}
-                    >
-                      {'Finish'}
-                    </button>
-                  </span>
-              }
+      if @props.onShowHelp?
+        buttons.push(<button key="help-button" type="button" className="pill-button help-button" onClick={@props.onShowHelp}>
+          Need some help?
+        </button>)
 
-            </div>
-          </div>
+      if window.location.hash is '#/transcribe' # regular transcribe, i.e. no mark transition
+        buttons.push <DoneButton key="done-button" onClick={@commitAnnotation} />
+      else
+        buttons.push(<span key="return-to-marking">
+            <label>Return to marking: </label>
+            <button className='button done' onClick={@returnToMarking}>
+              {'Finish'}
+            </button>
+          </span>)
 
-        </Draggable>
-    else return tool_content # render input fields without Draggable
+      {x,y} = @getPosition @props.subject.region
+
+      tool_content = <DraggableModal
+        x={x*@props.scale.horizontal}
+        y={y*@props.scale.vertical}
+        buttons={buttons}
+        classes="transcribe-tool"
+        >
+
+          {tool_content}
+
+      </DraggableModal>
+
+    <div>
+      {tool_content}
+    </div>
 
 module.exports = TextTool

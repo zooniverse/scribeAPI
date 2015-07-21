@@ -16,6 +16,8 @@ transcribeTools         = require './tools'
 RowFocusTool            = require '../row-focus-tool'
 API                     = require '../../lib/api'
 
+HelpModal               = require 'components/help-modal'
+
 module.exports = React.createClass # rename to Classifier
   displayName: 'Transcribe'
   mixins: [FetchSubjectsMixin, BaseWorkflowMethods] # load subjects and set state variables: subjects,  classification
@@ -25,6 +27,7 @@ module.exports = React.createClass # rename to Classifier
     classifications:              []
     classificationIndex:          0
     subject_index:                0
+    helping:                      false
 
   getDefaultProps: ->
     workflowName: 'transcribe'
@@ -49,7 +52,6 @@ module.exports = React.createClass # rename to Classifier
     # this is a source of conflict. do we copy key/value pairs, or replace the entire annotation? --STI
     currentClassification.annotation[k] = v for k, v of d
 
-    @forceUpdate()
     @setState
       classifications: classifications,
         => @forceUpdate()
@@ -60,7 +62,6 @@ module.exports = React.createClass # rename to Classifier
 
 
   handleViewerLoad: (props) ->
-    # console.log "Transcribe#handleViewerLoad: setting size: ", props
     @setState
       viewerSize: props.size
 
@@ -70,6 +71,9 @@ module.exports = React.createClass # rename to Classifier
   makeBackHandler: ->
     () =>
       console.log "go back"
+
+  toggleHelp: ->
+    @setState helping: not @state.helping
 
   render: ->
     # DISABLE ANIMATED SCROLLING FOR NOW
@@ -103,6 +107,7 @@ module.exports = React.createClass # rename to Classifier
               <TranscribeComponent
                 viewerSize={@state.viewerSize}
                 annotation_key={@state.taskKey}
+                key={@getCurrentTask().key}
                 task={@getCurrentTask()}
                 annotation={currentAnnotation}
                 subject={@getCurrentSubject()}
@@ -112,6 +117,7 @@ module.exports = React.createClass # rename to Classifier
                 workflow={@activeWorkflow()}
                 viewerSize={@state.viewerSize}
                 transcribeTools={transcribeTools}
+                onShowHelp={@toggleHelp if @getCurrentTask().help?}
               />
 
             </SubjectViewer>
@@ -142,6 +148,9 @@ module.exports = React.createClass # rename to Classifier
               <ForumSubjectWidget subject=@getCurrentSubject() />
             </div>
 
+            { if @state.helping
+              <HelpModal help={@getCurrentTask().help} onDone={=> @setState helping: false } />
+            }
           </div>
       }
     </div>

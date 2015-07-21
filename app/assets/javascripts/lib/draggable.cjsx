@@ -40,7 +40,7 @@ module.exports = React.createClass
         top: @state.y
       # console.log "Draggable[#{@props.inst}] render: ", style
       React.cloneElement @props.children,
-        className: "#{@props.children.props.className} draggable"
+        className: "#{@props.children.props?.className} draggable"
         onMouseDown: @handleStart
         style: style
 

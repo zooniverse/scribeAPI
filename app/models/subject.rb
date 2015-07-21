@@ -6,10 +6,12 @@ class Subject
   paginates_per 3
 
   scope :active_root, -> { where(type: 'root', status: 'active').asc(:order) }
+  scope :active_non_root, -> { where(:type.ne => 'root', :status => 'active') }
   scope :active, -> { where(status: 'active').asc(:order)  }
   scope :complete, -> { where(status: 'complete').asc(:order)  }
   scope :by_workflow, -> (workflow_id) { where(workflow_id: workflow_id)  }
   scope :by_parent_subject_set, -> (parent_subject_set_id) { where(parent_subject_set_id: parent_subject_set_id)  }
+  scope :user_has_not_classified, -> (user_id) { where(:classifying_user_ids.ne => user_id)  }
 
   # This is a hash with one entry per deriv; `standard', 'thumbnail', etc
   field :location,                    type: Hash

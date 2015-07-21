@@ -15,7 +15,11 @@
       "tool_config": {
         "suggest": "common"
       },
-      "instruction": "Enter the record date",
+      "instruction": "Enter the record year",
+      "help": {
+        "title": "Record Date",
+        "body": "The record date can generally be found in the upper left hand corner of the record."
+      },
       "next_task": "em_transcribe_mortgager",
       "generates_subject_type": "em_transcribed_date"
     },
@@ -54,8 +58,36 @@
           }
         }
       },
+
       "generates_subject_type": "em_transcribed_valuation",
-      "instruction": "Enter any dated property valuations that were recorded"
+      "instruction": "Enter any dated property valuations that were recorded",
+      "next_task": "em_transcribe_valuation2"
+    },
+
+    "em_transcribe_valuation2": {
+      "tool": "compositeTool",
+      "tool_config": {
+        "tools": {
+          "em_valuation_date": {
+            "tool": "dateTool",
+            "tool_config": {"suggest": "common"},
+            "label": "Date"
+          },
+          "em_valuation_amount": {
+            "tool": "numberTool",
+            "tool_config": {},
+            "label": "Amount"
+          }
+        }
+      },
+
+      "help": {
+        "title": "This is help for a big composite tool",
+        "body": "The composite tool blah blah blah"
+      },
+
+      "generates_subject_type": "em_transcribed_valuation2",
+      "instruction": "Enter another dated property valuations that were recorded"
     }
   }
 }

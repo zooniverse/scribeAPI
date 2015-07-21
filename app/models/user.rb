@@ -66,6 +66,19 @@ class User
     name
   end
 
+  # Steal all the contributions of the given user (e.g. visitor made some 
+  # contribs as a guest, then logged in with a real acct and we want to 
+  # transfer the guest contribs to the real acct
+  def steal_contributions(other_user)
+    [:classifications, :favourites].each do |relation|
+      rels = other_user.send relation
+      rels.each do |rel|
+        rel.user = self
+        rel.save!
+      end
+    end
+  end
+
 
   def self.find_for_oauth(access_token, signed_in_resource=nil)
 

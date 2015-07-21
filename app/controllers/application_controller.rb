@@ -16,6 +16,7 @@ class ApplicationController < ActionController::Base
         guest_user_logging_in
         guest_user(create_if_missing = false).try(:destroy)
         session[:guest_user_id] = nil
+        puts "destroy guest sess: #{session[:guest_user_id]}"
       end
       current_user
     else
@@ -35,16 +36,9 @@ class ApplicationController < ActionController::Base
 
   private
 
-  # called (once) when the user logs in, insert any code your application needs
-  # to hand off from guest_user to current_user.
+  # Called when guest user logs in: Handle transfering contribs to real user:
   def guest_user_logging_in
-    puts "convert guest user to reg user"
-    # For example:
-    # guest_comments = guest_user.comments.all
-    # guest_comments.each do |comment|
-      # comment.user_id = current_user.id
-      # comment.save!
-    # end
+    current_user.steal_contributions guest_user
   end
 
 

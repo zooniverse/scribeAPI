@@ -346,13 +346,9 @@ module.exports = React.createClass
       <div className="subject-container">
         <div className="marking-surface">
           {markingSurfaceContent}
-          {
-            # console.log "SubjectViewer#render children: ", @props.children
-            if @props.children?
-              @props.children
-              cloneWithProps @props.children,
+          { if @props.children?
+              React.cloneElement @props.children,
                 scale: scale # pass scale down to children (for transcribe tools)
-               #  subject: @props.subject
           }
         </div>
       </div>

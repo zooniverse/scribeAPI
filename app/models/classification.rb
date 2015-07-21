@@ -6,9 +6,6 @@ class Classification
   field :annotation,                      type: Hash
   field :tool_name
 
-  #TODO: don't think this is being used? AMS
-  # field :triggered_followup_subject_ids,  type: Array
-
   field :started_at
   field :finished_at
   field :user_agent
@@ -17,7 +14,6 @@ class Classification
   belongs_to    :user
   belongs_to    :subject, foreign_key: "subject_id", inverse_of: :classifications
   belongs_to    :child_subject, class_name: "Subject", inverse_of: :parent_classifications
-  # has_many      :triggered_followup_subjects, class_name: "Subject"
 
   after_create  :increment_subject_classification_count, :check_for_retirement_by_classification_count
   after_create  :generate_new_subjects
@@ -79,13 +75,13 @@ class Classification
   end
 
   def increment_subject_classification_count
-    subject = self.subject
-    #increment subject.retire_count if the completion_assement_task returns annoation 'complete_subject'
     if self.task_key == "completion_assessment_task" && self.annotation["value"] == "complete_subject"
       subject.increment_retire_count_by_one 
     end
-    subject.classification_count += 1 # no_annotation_values 
-    subject.save
+    subject.inc classification_count: 1
+
+    # Push user_id onto Subject.user_ids using mongo's fast addToSet feature, which ensures uniqueness
+    Subject.where({id: subject.id}).find_and_modify({"$addToSet" => {classifying_user_ids: user_id}})
   end
 
   def to_s

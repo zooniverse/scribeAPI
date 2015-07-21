@@ -5,10 +5,26 @@ DoneButton    = require './buttons/done-button'
 module.exports = React.createClass
   displayName: 'DraggableModal'
 
-  render: ->
-    <Draggable x={@props.x} y={@props.y} >
+  getDefaultProps: ->
+    classes: ''
+    doneButtonLabel: 'Okay'
 
-      <div className="draggable-modal">
+  render: ->
+    onDone = @props.onDone
+    if ! onDone?
+      onDone = =>
+        @setState closed: true
+
+    # Position roughly in center of screen unless explicit x,y given:
+    width = @props.width ? 400
+    x = @props.x ? (( $(window).width() - width ) / 2 )
+    y = @props.y ? (( $(window).height() - 300) / 2 ) + $(window).scrollTop()
+    y = Math.max y, 100
+    x = Math.max x, 100
+
+    <Draggable x={x} y={y}>
+
+      <div className="draggable-modal #{@props.classes}">
         { if @props.header?
           <div className="modal-header">
             { @props.header }
@@ -20,8 +36,11 @@ module.exports = React.createClass
         </div>
 
         <div className="modal-buttons">
-          { if @props.onDone?
-            <DoneButton onClick={@props.onDone} />
+          { if @props.buttons?
+              @props.buttons
+
+            else if onDone?
+              <DoneButton label={@props.doneButtonLabel} onClick={onDone} />
           }
         </div>
 
