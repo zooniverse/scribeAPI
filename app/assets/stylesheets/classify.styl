@@ -1,14 +1,15 @@
 .classifier
-  display: flex
-  flex-wrap: wrap
-  justify-content: center
+  // display: flex
+  // flex-wrap: wrap
+  // justify-content: center
   .subject-area
     float: left
     width: 75%
     align-items: center
     justify-content: center
     display: flex
-    margin: 0 1.5vw 1em 0
+    margin-top 20px
+    // margin: 0 1.5vw 1em 0
 
   .subject-container
     color: gray
@@ -56,81 +57,76 @@
       background: #f60
 
   .task-area
-    float: right
-    width: 70%
-    flex: 1 0 15em
-    margin-right: 2em
-    margin-bottom: 1em
-    max-width: 35em
+    position fixed
+    width 250px
+    right 20px
+    // float: right
+    // width: 70%
+    // flex: 1 0 15em
+    // margin-right: 2em
+    // margin-bottom: 1em
+    // max-width: 35em
+    //
+    // & > div:first-of-type
+    //   margin-top 60px
 
-    & > div:first-of-type
-      margin-top 60px
+    .workflow-task
+      margin-top 80px
+      .pick-one-dropdown
+        font-size 1.5em
+        transition opacity 0.250s
+        background-color #ececec
+        opacity 0.75
+        outline none
+        &:hover
+          opacity 1.0
+          transition opacity 0.250s
+        border-radius 5px
+        padding 12px 20px
+        height 40px
+        width 300px
+        border 2px solid transparent
+        cursor pointer
+        opacity 0.75
 
-  .task-nav
-    display: flex
-    margin-top: 1em
+      .answer
+        align-items: center
+        display: flex
+        margin: 0.5em 0
+        text-align: left
+        input
+          visibility: hidden
+        .drawing-tool-icon
+          flex-shrink: 0
+          line-height: 1
+          margin-right: 0.5em
+        .markdown > p:first-child:last-child
+          margin: 0
+        .tool-count
+          margin-left: 0.5em
+          opacity: 0.7
 
-    .back
-      flex: 1 0
-
-    .talk
-      flex: 2 0
-
-    .continue
-      flex: 3 0
-
-    :not(:first-child)
-      margin-left: 0.5em
+    .task-nav
+      display: flex
+      margin-top: 1em
+      .back
+        flex: 1 0
+      .talk
+        flex: 2 0
+      .continue
+        flex: 3 0
+      :not(:first-child)
+        margin-left: 0.5em
 
 .workflow-task
   margin-top 100px
-
-  .pick-one-dropdown
-    font-size 1.5em
-    transition opacity 0.250s
-    background-color #ececec
-    opacity 0.75
-    outline none
-    &:hover
-      opacity 1.0
-      transition opacity 0.250s
-    border-radius 5px
-    padding 12px 20px
-    height 40px
-    width 300px
-    border 2px solid transparent
-    cursor pointer
-    opacity 0.75
-
-  .answer
-    align-items: center
-    display: flex
-    margin: 0.5em 0
-    text-align: left
-
-    input
-      visibility: hidden
-    .drawing-tool-icon
-      flex-shrink: 0
-      line-height: 1
-      margin-right: 0.5em
-
-    .markdown > p:first-child:last-child
-      margin: 0
-
-    .tool-count
-      margin-left: 0.5em
-      opacity: 0.7
-
   .drawing-tool-icon > svg
     fill-opacity: 0.1
     height: 1.5em
     stroke: currentColor
     stroke-width: 5
-
   .drawing-tool-input
     display: none
-
   & + .workflow-task
     margin-top: 2em
 

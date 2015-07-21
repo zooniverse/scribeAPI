@@ -35,7 +35,7 @@ module.exports = React.createClass
     onLoad: null
     annotationIsComplete: false
 
-  componentWillReceiveProps: (new_props) ->    
+  componentWillReceiveProps: (new_props) ->
     # console.log "SubjectViewer#componentWillReceiveProps: ", @props, new_props
     # @setUncommittedMark null if ! @state.uncommittedMark?.saving && ! new_props.annotation?.subToolIndex?
     # @setUncommittedMark null if ! new_props.annotation?.subToolIndex?
@@ -43,7 +43,6 @@ module.exports = React.createClass
     @setUncommittedMark null if new_props.task?.tool != 'pickOneMarkOne'
 
   componentDidMount: ->
-    console.log "____>>componen DID mount"
     @setView 0, 0, @props.subject.width, @props.subject.height
     @loadImage @props.subject.location.standard
     window.addEventListener "resize", this.updateDimensions
@@ -202,7 +201,7 @@ module.exports = React.createClass
       marks.splice (marks.indexOf mark), 1
       @setState
         marks: marks
-        selectedMark: null, => console.log 'MARKS (after): ', @state.marks
+        selectedMark: null #, => console.log 'MARKS (after): ', @state.marks
 
   # Commit mark
   submitMark: ->
@@ -350,7 +349,8 @@ module.exports = React.createClass
             if @props.children?
               @props.children
               cloneWithProps @props.children,
-                scale: scale # pass scale down to children (for transcribe tools)
+                loading: @state.loading       # pass loading state to current transcribe tool
+                scale: scale                  # pass scale down to children (for transcribe tools)
                #  subject: @props.subject
           }
         </div>

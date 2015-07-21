@@ -25,7 +25,7 @@ module.exports = React.createClass
     <header classNameim="main-header">
 
       <nav className="main-nav main-header-group">
-        <Link to="/" activeClassName="selected" className="main-header-item">{@props.short_title}</Link>
+        <Link to="/" activeClassName="selected" className="main-header-item logo">{@props.short_title}</Link>
 
         {
           # Workflows tabs:
@@ -40,7 +40,7 @@ module.exports = React.createClass
           @props.pages?.map (page, key) =>
             <Link key={key} to="/#{page.name.toLowerCase()}" activeClassName="selected" className="main-header-item">{page.name}</Link>
         }
-        
+
         <Login />
       </nav>
 
