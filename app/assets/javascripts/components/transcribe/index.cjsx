@@ -74,10 +74,11 @@ module.exports = React.createClass # rename to Classifier
     # DISABLE ANIMATED SCROLLING FOR NOW
     # if @props.query.scrollX? and @props.query.scrollY?
     #   window.scrollTo(@props.query.scrollX,@props.query.scrollY)
-    console.log "transcribe#index @props", @props 
-    console.log "transcribe#index @state", @state 
+    # console.log "transcribe#index @props", @props 
+    # console.log "transcribe#index @state", @state 
     currentAnnotation = @getCurrentClassification().annotation
     TranscribeComponent = @getCurrentTool() # @state.currentTool
+    console.log "TranscribeComponent", TranscribeComponent
     onFirstAnnotation = currentAnnotation?.task is @getActiveWorkflow().first_task
 
     <div className="classifier">

@@ -59,7 +59,6 @@ TextTool = React.createClass
     focus: true
 
   componentWillReceiveProps: ->
-    console.log 'PROPS: ', @props
     @refs[@props.ref || 'input0'].getDOMNode().focus() if @props.focus
 
     {x,y} = @getPosition @props.subject.data
@@ -149,6 +148,8 @@ TextTool = React.createClass
       e.preventDefault()
 
   render: ->
+
+    console.log "TEXT TOOL PROPS", @props
     style =
       left: "#{@state.dx*@props.scale.horizontal}px"
       top: "#{@state.dy*@props.scale.vertical}px"

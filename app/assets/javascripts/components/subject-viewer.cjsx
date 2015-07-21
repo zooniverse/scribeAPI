@@ -171,7 +171,6 @@ module.exports = React.createClass
 
   # PB This is not returning anything but 0, 0 for me; Seems like @refs.sizeRect is empty when evaluated (though nonempty later)
   getScale: ->
-    console.log "getScale() is being called"
     rect = @refs.sizeRect?.getDOMNode().getBoundingClientRect()
     return {horizontal: 1, vertical: 1} if ! rect? || ! rect.width?
     rect ?= width: 0, height: 0
