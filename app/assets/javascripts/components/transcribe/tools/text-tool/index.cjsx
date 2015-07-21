@@ -147,6 +147,10 @@ TextTool = React.createClass
       @commitAnnotation()
       e.preventDefault()
 
+  handleBadMark: ()->
+    newAnnotation = []
+    newAnnotation["low_quality_subject"]
+
   render: ->
 
     console.log "TEXT TOOL PROPS", @props
