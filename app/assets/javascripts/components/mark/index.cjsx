@@ -116,7 +116,6 @@ module.exports = React.createClass # rename to Classifier
     console.log "if new_subject_set_index..", @state.subjectSets.length
     if new_subject_set_index >= @state.subjectSets.length
       console.warn "NO MORE SUBJECT SETS"
-      @fetchSubjectSets @getActiveWorkflow().id, @getActiveWorkflow().subject_fetch_limit
       return
 
     console.log "Mark#index Advancing to subject_set_index #{new_subject_set_index} (of #{@state.subjectSets.length}), subject_index #{new_subject_index} (of #{@state.subjectSets[new_subject_set_index].subjects.length})"
