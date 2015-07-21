@@ -26,12 +26,6 @@ TextTool = React.createClass
     dx = e.pageX - @state.x #Click# - window.scrollX
     dy = e.pageY - @state.y #Click # + window.scrollY
 
-    console.log """
-      state.xClick = #{@state.xClick}
-      e.pageX = #{e.pageX}
-      delta = #{delta.x}
-    """
-
     @setState
       x: dx
       y: dy #, =>
@@ -67,13 +61,14 @@ TextTool = React.createClass
     focus: true
 
   componentWillReceiveProps: ->
-    console.log 'PROPS: ', @props
-    @refs[@props.ref || 'input0'].getDOMNode().focus() if @props.focus
-
     {x,y} = @getPosition @props.subject.data
     @setState
       x: x
       y: y, => @forceUpdate() # updates component position on new subject
+
+  componentWillUpdate: ->
+    # autofocus text input element
+    @refs[@props.ref || 'input0'].getDOMNode().focus() if @props.focus
 
   componentWillUnmount: ->
     tool_config = @toolConfig()
@@ -85,7 +80,8 @@ TextTool = React.createClass
     @props.tool_config ? @props.task.tool_config
 
   componentDidMount: ->
-    # @updatePosition()
+    # autofocus text input element (first time)
+    @refs[@props.ref || 'input0'].getDOMNode().focus() if @props.focus
 
     tool_config = @toolConfig()
     if tool_config.suggest == 'common'
