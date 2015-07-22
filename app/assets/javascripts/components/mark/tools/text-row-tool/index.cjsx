@@ -62,19 +62,24 @@ module.exports = React.createClass
       yLower: y + DEFAULT_HEIGHT/2
 
   getDeleteButtonPosition: ->
+    # console.log 'getDeleteButtonPositio()'
     x: 100
     y: (@props.mark.yLower-@props.mark.yUpper)/2
 
   getUpperHandlePosition: ->
-    x: @props.ref?.props.width/2
+    # console.log 'getUpperHandlePosition()'
+    x: @props.sizeRect?.props.width/2
     y: @props.mark.yUpper - @props.mark.y
 
   getLowerHandlePosition: ->
-    x: @props.ref?.props.width/2
+    # console.log 'getLowerHandlePosition()'
+    x: @props.sizeRect?.props.width/2
     y: @props.mark.yLower - @props.mark.y
 
   getMarkButtonPosition: ->
-    x: @props.ref?.props.width - 100
+    # console.log 'getMarkButtonPosition()'
+    # NOTE: this somehow doesn't receive props in the first couple renders and produces an error --STI
+    x: @props.sizeRect?.props.width - 100
     y: (@props.mark.yLower-@props.mark.yUpper)/2
 
   render: ->
@@ -171,7 +176,6 @@ module.exports = React.createClass
     </g>
 
   handleDrag: (e, d) ->
-    console.log 'handleDrag: ', 'disabled: ', @props.disabled, ' locked: ', @state.locked
     return if @state.locked
     return if @props.disabled
     @props.mark.y += d.y / @props.yScale
