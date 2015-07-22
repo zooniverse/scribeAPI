@@ -14,10 +14,11 @@ class SubjectSetResultSerializer < ActiveModel::MongoidSerializer
       next_page: object.next_page,
       prev_page: object.prev_page,
       total_pages: object.total_pages,
+      total: object.count
     }
   end
 
   def links
-    return serialization_options[:links]
+    serialization_options[:links]
   end
 end

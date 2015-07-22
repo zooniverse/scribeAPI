@@ -43,7 +43,9 @@ group :development, :production do
   gem 'pry'
 end
 
-
+group :assets do
+  gem 'jquery-ui-sass-rails'
+end
 
 group :test do
   gem 'capybara'

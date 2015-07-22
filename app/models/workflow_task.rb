@@ -8,6 +8,7 @@ class WorkflowTask
   field    :generates_subject_type,                  type: String
   field    :tool_config,                             type: Hash
   field    :next_task,                               type: String
+  field    :help,                                    type: Hash
 
   embedded_in :workflow
 

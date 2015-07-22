@@ -2,6 +2,7 @@
 
 <table class="dashboard-table" id="subjects-table" width="100%">
   <tr>
+    <th></th>
     <th>Name</th>
     <th>Email</th>
     <th>Classifications</th>
@@ -10,6 +11,10 @@
 
 <% @users.each do |user| %>
   <tr>
+    <td><% if user.avatar %>
+        <%= link_to admin_user_path(user) do %><img src="<%= user.avatar %>" /><% end %></td>
+      <% end %>
+    </td>
     <td><%= link_to user.name, admin_user_path(user) %></td>
     <td><%= link_to user.email, admin_user_path(user) %></td>
     <td><%= link_to user.classifications.count, admin_user_path(user) %></td>

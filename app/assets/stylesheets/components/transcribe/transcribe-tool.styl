@@ -7,28 +7,34 @@
   line-height 2em
   cursor move
 
-  .left
-    padding-bottom 0.8em
+  .modal-body
+    input
+      float left
+      outline none
+      
     .input-field
       display none // auto hide
       &.active
         display block
+        opacity 0.7
+
+        &.input-placeholder
+          color red
+        &:focus
+          opacity 1
+
       label
         display inherit
-        margin-left 10px
-        margin-right 10px
-        margin-top 10px
-        margin-bottom 10px
         color black
         text-align left
+        cursor move
+
       input
         outline none
         width 360px
         height 40px
         font-size 1.5em
         display block
-        margin-left 10px
-        margin-right 10px
         &.input-placeholder
           color red
       textarea
@@ -41,8 +47,6 @@
         padding 10px
         outline none
         color #000
-        margin-left 10px
-        margin-right 10px
         opacity 0.5
         &:focus
           opacity 1.0
@@ -60,7 +64,7 @@
           opacity 0.5
 
   &.composite
-    .left
+    .modal-body
 
       .input-field
         label
@@ -68,12 +72,6 @@
           clear left
           padding-top 0.8em
           line-height 1.4em
-
-  .right
-
-    line-height 4em
-    margin-right 10px
-    float right
 
   .button
     outline none

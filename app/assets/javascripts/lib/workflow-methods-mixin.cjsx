@@ -110,9 +110,9 @@ module.exports =
     # Commit whatever current classification is:
     @commitClassification()
     # start a new one:
-    @beginClassification()
+    @beginClassification {}
 
-    # record where we are in workflow:
+    # After classification ready with empty annotation, proceed to next task:
     @advanceToTask nextTaskKey
 
   # Get next logical task
@@ -135,8 +135,6 @@ module.exports =
       console.warn "WARN: Invalid task key: ", key
 
     else if ! tool?
-      # console.log "Props", @props
-      # console.log "STATE", @state
       console.warn "WARN: Invalid tool specified in #{key}: #{task.tool}"
 
     else
@@ -144,7 +142,6 @@ module.exports =
 
       @setState
         taskKey: key
-        # currentTool: tool
 
   # Get currently viewed subject set
   getCurrentSubjectSet: ->
@@ -157,7 +154,6 @@ module.exports =
     # If we've viewing a subject-set (i.e. Mark) let's use that subject-set's subjects
 
     if @getCurrentSubjectSet()?
-      console.log "SUBJECT SET FOUND"
       subjects = @getCurrentSubjectSet().subjects
 
     # Otherwise, since we're not viewing subject-sets, we must have an array of indiv subjects:
@@ -211,7 +207,7 @@ module.exports =
     @commitClassification()
     @beginClassification {}, () =>
       if @getCurrentTask().next_task?
-        # console.log "advance to next task...", @state.currentTask['next_task']
+        console.log "advance to next task ann cleared: ", @getCurrentClassification().annotation, @state.classifications
         @advanceToTask @getCurrentTask().next_task
 
       else

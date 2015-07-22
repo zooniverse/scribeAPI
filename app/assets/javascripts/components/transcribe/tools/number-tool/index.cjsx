@@ -2,7 +2,7 @@ React             = require 'react'
 TextTool          = require '../text-tool'
 
 module.exports = React.createClass
-  displayName: 'DateTool'
+  displayName: 'NumberTool'
 
   render: ->
-    <TextTool {...@props} inputType='date'/>
+    <TextTool {...@props} inputType='number'/>

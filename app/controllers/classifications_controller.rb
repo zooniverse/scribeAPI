@@ -20,7 +20,6 @@ class ClassificationsController < ApplicationController
     subject_id       = params["classifications"]["subject_id"]
     user_agent       = request.headers["HTTP_USER_AGENT"]
 
-    puts "saving user: #{user.inspect}"
     @result = Classification.create(
       workflow_id: workflow_id,
       subject_id: subject_id,

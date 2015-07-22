@@ -1,56 +1,26 @@
-# @cjsx React.DOM
-React      = require 'react'
-Draggable  = require '../../../../lib/draggable'
-DoneButton = require './done-button'
-PrevButton = require './prev-button'
-{Navigation} = require 'react-router'
-
-text_tool = require '../text-tool'
-tools = require '../'
+React           = require 'react'
+DraggableModal  = require 'components/draggable-modal'
+DoneButton      = require './done-button'
+PrevButton      = require './prev-button'
 
 CompositeTool = React.createClass
   displayName: 'CompositeTool'
 
-  mixins: [Navigation] 
-
-  # getInitialState: ->
-  #   console.log 'BLAH', @props.task.tool_config.tools[0]
-  #   active_field_key: @props.task.tool_config.tools[0]
-
-  handleInitStart: (e) ->
-    # console.log 'handleInitStart() '
-
-    @setState preventDrag: false
-    if e.target.nodeName is "INPUT" or e.target.nodeName is "TEXTAREA"
-      @setState preventDrag: true
-
-    @setState
-      xClick: e.pageX - $('.transcribe-tool').offset().left
-      yClick: e.pageY - $('.transcribe-tool').offset().top
-
-  handleInitDrag: (e, delta) ->
-    return if @state.preventDrag # not too happy about this one
-
-    dx = e.pageX - @state.xClick - window.scrollX
-    dy = e.pageY - @state.yClick # + window.scrollY
-
-    @setState
-      dx: dx
-      dy: dy #, =>
-      dragged: true
-
   getInitialState: ->
-    # compute component location
-    {x,y} = @getPosition @props.subject.data
-
-    dx: x
-    dy: y
+    annotation: @props.annotation ? {}
     viewerSize: @props.viewerSize
     active_field_key: (key for key, value of @props.task.tool_config.tools)[0]
 
-    # annotation: {}
+  getDefaultProps: ->
+    annotation: {}
+    task: null
+    subject: null
+
+  # componentWillReceiveProps: (new_props) ->
+  #   @setState annotation: new_props
 
   # this can go into a mixin? (common across all transcribe tools)
+  # DUPE in text-tool:
   getPosition: (data) ->
     switch data.toolName
       when 'rectangleTool'
@@ -64,54 +34,38 @@ CompositeTool = React.createClass
         y = data.y
     return {x,y}
 
-  componentWillReceiveProps: ->
-    @setState annotation: @props.annotation
-      # active_field_key: (key for key, v of @props.task.tool_config.tools)[0]
-
-  componentDidMount: ->
-    @updatePosition()
-    # @setState active_field_key: (key for key, v of @props.task.tool_config.tools)[0]
-
-  # Expects size hash with:
-  #   w: [viewer width]
-  #   h: [viewer height]
-  #   scale:
-  #     horizontal: [horiz scaling of image to fit within above vals]
-  #     vertical:   [vert scaling of image..]
-
   onViewerResize: (size) ->
     @setState
       viewerSize: size
-    @updatePosition()
-
-  updatePosition: ->
-    # TODO: PB: Sascha is working on positioning; disabling this dep code for now:
-    # if @state.viewerSize? && ! @state.dragged
-      # @setState
-        # dx: @props.subject.location.spec.x * @state.viewerSize.scale.horizontal
-        # dy: (@props.subject.location.spec.y + @props.subject.location.spec.height) * @state.viewerSize.scale.vertical
-      # console.log "TextTool#updatePosition setting state: ", @state
-
-  # # this doesn't do anything?
-  # handleFieldComplete: (key, ann) ->
-  #   console.log 'COMPOSITE-TOOL::handleFieldComplete()'
-  #   inp = @refs[key]
-  #
-  #   keys = (key for key, t in @props.task.tool_config.tools)
-  #   next_key = keys[keys.indexOf(@state.active_field_key) + 1]
-  #   if next_key?
-  #     @setState active_field_key: next_key, () =>
-  #       @forceUpdate()
-  #   else
-  #     @setState annotation: ann, () =>
-  #       @commitAnnotation()
 
   handleChange: (annotation) ->
+    @setState annotation: annotation
+    
     @props.onChange annotation # forward annotation to parent
+
+  # Fires when user hits <enter> in an input
+  # If there are more inputs, move focus to next input
+  # Otherwise commit annotation (which is default behavior when there's only one input
+  handleCompletedField: ->
+    field_keys = (annotation_key for annotation_key, tool_config of @props.task.tool_config.tools)
+    next_field_key = field_keys[ field_keys.indexOf(@state.active_field_key) + 1 ]
+
+    if next_field_key?
+      @setState active_field_key: next_field_key
+
+    else
+      @commitAnnotation()
+
+  # User moved focus to an input:
+  handleFieldFocus: (annotation_key) ->
+    @setState active_field_key: annotation_key
 
   # this can go into a mixin? (common across all transcribe tools)
   commitAnnotation: ->
-    @props.onComplete @props.annotation
+    # Clear current annotation so that it doesn't carry over into next task if next task uses same tool
+    ann = @state.annotation
+    @setState annotation: {}, () =>
+      @props.onComplete ann
 
   # this can go into a mixin? (common across all transcribe tools)
   returnToMarking: ->
@@ -124,70 +78,49 @@ CompositeTool = React.createClass
       page: @props.subjectCurrentPage
 
   render: ->
-    # If user has set a custom position, position based on that:
-    style =
-      left: "#{@state.dx*@props.scale.horizontal}px"
-      top: "#{@state.dy*@props.scale.vertical}px"
 
-    # console.log "CompositeTool#render: ", @props, @props.task, text_tool, tools, @props.transcribe_tools
-    <Draggable
-      onStart = {@handleInitStart}
-      onDrag  = {@handleInitDrag}
-      onEnd   = {@handleInitRelease}
-      x       = {@state.dx*@props.scale.horizontal}
-      y       = {@state.dy*@props.scale.vertical}
-    >
+    buttons = []
+    # TK: buttons.push <PrevButton onClick={=> console.log "Prev button clicked!"} />
+    buttons.push <DoneButton onClick={@commitAnnotation} />
 
-      <div className="transcribe-tool composite" style={style}>
-        <div className="left">
-          <div className="input-field active">
-            <label>{@props.task.instruction}</label>
-            {
-              for annotation_key, tool_config of @props.task.tool_config.tools
-                ToolComponent = @props.transcribeTools[tool_config.tool]
-                focus = annotation_key is @state.active_field_key
+    if @props.onShowHelp?
+      buttons.push(<button key="help-button" type="button" className="pill-button help-button" onClick={@props.onShowHelp}>
+        Need some help?
+      </button>)
 
-                <ToolComponent
-                  task={@props.task}
-                  tool_config={@props.task.tool_config.tools[annotation_key].tool_config}
-                  subject={@props.subject}
-                  workflow={@props.workflow}
-                  standalone={false}
-                  viewerSize={@props.viewerSize}
-                  onChange={@handleChange}
-                  onComplete={@commitAnnotation}
-                  label={@props.task.tool_config.tools[annotation_key].label ? ''}
-                  focus={focus}
-                  scale={@props.scale}
-                  annotation_key={annotation_key}
-                  ref={annotation_key}
-                  annotation={@props.annotation}
-                />
-              # onComplete={@handleTaskComplete} onBack={@makeBackHandler()}
-            }
-          </div>
-        </div>
-        <div className="right">
-          { # THIS CAN PROBABLY BE REFACTORED --STI
-            if window.location.hash is '#/transcribe' # regular transcribe, i.e. no mark transition
-              <DoneButton onClick={@commitAnnotation} />
-            else
-              if @props.task.next_task?
-                <span>
-                  <button className='button done' onClick={@commitAnnotation}>
-                    {'Next'}
-                  </button>
-                </span>
-              else
-                <span>
-                  <label>Return to marking: </label>
-                  <button className='button done' onClick={@returnToMarking}>
-                    {'Finish'}
-                  </button>
-                </span>
-          }
-        </div>
-      </div>
-    </Draggable>
+    {x,y} = @getPosition @props.subject.region
+
+    <DraggableModal
+      x={x*@props.scale.horizontal}
+      y={y*@props.scale.vertical}
+      buttons={buttons}
+      classes="transcribe-tool composite"
+      >
+
+      <label>{@props.task.instruction}</label>
+      {
+        for annotation_key, tool_config of @props.task.tool_config.tools
+          ToolComponent = @props.transcribeTools[tool_config.tool]
+          focus = annotation_key is @state.active_field_key
+
+          <ToolComponent
+            task={@props.task}
+            tool_config={@props.task.tool_config.tools[annotation_key].tool_config}
+            subject={@props.subject}
+            workflow={@props.workflow}
+            standalone={false}
+            viewerSize={@props.viewerSize}
+            onChange={@handleChange}
+            onComplete={@handleCompletedField}
+            onInputFocus={@handleFieldFocus}
+            label={@props.task.tool_config.tools[annotation_key].label ? ''}
+            focus={focus}
+            scale={@props.scale}
+            annotation_key={annotation_key}
+            annotation={@state.annotation}
+          />
+      }
+          
+    </DraggableModal>
 
 module.exports = CompositeTool

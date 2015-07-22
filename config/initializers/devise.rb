@@ -258,6 +258,9 @@ Devise.setup do |config|
 
   config.omniauth :zooniverse, providers["zooniverse"]["id"], providers["zooniverse"]["secret"] if providers["zooniverse"]
   config.omniauth :google_oauth2, providers["google"]["id"], providers["google"]["secret"] if providers["google"]
-  config.omniauth :facebook, providers["facebook"]["id"], providers["facebook"]["secret"]  if providers["facebook"]
+  if providers["facebook"]
+    # FB seems to require explicit info_fields w/email or else doesn't return email:
+    config.omniauth :facebook, providers["facebook"]["id"], providers["facebook"]["secret"], info_fields: 'name,email'  
+  end
 
 end
