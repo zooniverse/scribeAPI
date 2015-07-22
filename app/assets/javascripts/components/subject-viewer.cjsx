@@ -194,7 +194,8 @@ module.exports = React.createClass
   # Destroy mark:
   destroyMark: (mark) ->
     # return
-    console.log 'destroyMark()'
+    console.log 'destroyMark(): ', mark
+
     marks = @state.marks
 
     if mark is @state.selectedMark
@@ -202,6 +203,7 @@ module.exports = React.createClass
       @setState
         marks: marks
         selectedMark: null #, => console.log 'MARKS (after): ', @state.marks
+        uncommittedMark: null
 
   # Commit mark
   submitMark: ->
@@ -239,6 +241,8 @@ module.exports = React.createClass
     return null if ! @props.active
     viewBox = [0, 0, @props.subject.width, @props.subject.height]
     scale = @getScale()
+
+    console.log 'UNCOMITTED MARK: ', @state.uncommittedMark
 
     # if @props.workflow.name is 'transcribe'
     #   yPos = (@props.subject.data.y - @props.subject.data.height?) * @getScale().vertical - 100

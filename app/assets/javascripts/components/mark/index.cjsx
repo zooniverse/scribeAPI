@@ -158,6 +158,8 @@ module.exports = React.createClass # rename to Classifier
     # right-col. So only in that case, record currentSubToolIndex, which we use
     # to initialize marks going forward
 
+    console.log 'CLASSIFICATIONS.ANNOTATION: ', @getCurrentClassification().annotation
+
     if d.subToolIndex? && ! d.x? && ! d.y?
       @setState currentSubToolIndex: d.subToolIndex
 
