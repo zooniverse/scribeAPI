@@ -38,8 +38,9 @@ desc 'creates a poject object from the project directory'
     Dir.foreach(content_path).each do |file|
       path = Rails.root.join content_path, file
       next if File.directory? path
+      next if ! ['.html','.erb','.md'].include? path.extname
 
-      ext = file[(0...file.index('.'))]
+      ext = path.extname
       page_key = file.split('.').first
       name = page_key.capitalize
       content = File.read path

@@ -97,7 +97,7 @@ class AppRouter
       render: ->
         <div className="page-content">
           <h1>{page.name}</h1>
-          <div dangerouslySetInnerHTML={{__html: page.content}} />
+          <div dangerouslySetInnerHTML={{__html: marked(page.content)}} />
         </div>
 
 module.exports = AppRouter
