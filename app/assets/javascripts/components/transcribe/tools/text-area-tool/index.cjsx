@@ -6,6 +6,6 @@ TextAreaTool = React.createClass
 
   render: ->
     # Everything about a textarea-tool is identical in text-tool, so let's parameterize text-tool
-    <TextTool {...@props} textarea=true />
+    <TextTool {...@props} inputType='textarea'/>
 
 module.exports = TextAreaTool

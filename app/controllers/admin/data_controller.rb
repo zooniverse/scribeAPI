@@ -1,6 +1,8 @@
 class Admin::DataController < Admin::AdminBaseController
 
   def index
+    @num_complete = Subject.complete.count
+    @num_non_root = Subject.active_non_root.count
   end 
   
   def download

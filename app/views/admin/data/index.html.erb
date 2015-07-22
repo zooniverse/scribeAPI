@@ -2,6 +2,8 @@
 
 <form method="get" action="<%= admin_data_download_path %>" target="_blank">
 
+<p><%= @num_complete %> complete subject(s) ready for export (<%= @num_non_root %> pending).</p>
+
 <h3>Format</h3>
 <% {  "JSON" => 'json',
       "CSV" =>  'csv'

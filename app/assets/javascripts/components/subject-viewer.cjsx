@@ -14,8 +14,6 @@ MarkDrawingMixin              = require 'lib/mark-drawing-mixin'
 
 API = require "lib/api"
 
-cloneWithProps = require 'react/lib/cloneWithProps'
-
 module.exports = React.createClass
   displayName: 'SubjectViewer'
   resizing: false
@@ -85,10 +83,8 @@ module.exports = React.createClass
   handleInitStart: (e) ->
 
     subToolIndex = @props.subToolIndex
-    return null if ! subToolIndex? # @props.annotation?.subToolIndex?
-    subTool = @props.task.tool_config.tools[subToolIndex]
-    if ! subTool
-      subTool
+    return null if ! subToolIndex?
+    subTool = @props.task.tool_config?.tools?[subToolIndex]
     return null if ! subTool?
 
     # If there's a current, uncommitted mark, commit it:
@@ -348,14 +344,10 @@ module.exports = React.createClass
       <div className="subject-container">
         <div className="marking-surface">
           {markingSurfaceContent}
-          {
-            # console.log "SubjectViewer#render children: ", @props.children
-            if @props.children?
-              @props.children
-              cloneWithProps @props.children,
+          { if @props.children?
+              React.cloneElement @props.children,
                 loading: @state.loading       # pass loading state to current transcribe tool
                 scale: scale                  # pass scale down to children (for transcribe tools)
-               #  subject: @props.subject
           }
         </div>
       </div>

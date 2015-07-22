@@ -11,6 +11,10 @@
     "determine_has_records":{
       "tool":"pickOne",
       "instruction":"Does this page have records?",
+      "help": {
+        "title": "Determining whether or not a page has records",
+        "body": "Your first task is to determine whether or not the page you're looking at has any bank records at all.\nDo you see one or more filled-out \"Bond and Mortgage\" forms?"
+      },
       "tool_config" : {
         "options":{
           "yes":{

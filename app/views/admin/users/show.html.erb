@@ -1,5 +1,10 @@
 <div class="core-data">
-  <h1><%= @user %></h1>
+  <h1>
+    <% if @user.avatar %>
+      <img src="<%= @user.avatar %>" />
+    <% end %>
+    <%= @user %>
+  </h1>
 
   <dl>
 
@@ -11,6 +16,9 @@
     
     <dt>Email</dt>
     <dd><%= @user.email %></dd>
+ 
+    <dt>Profile URL</dt>
+    <dd><a href="<%= @user.profile_url %>" target="_blank"><%= @user.profile_url %></a></dd>
 
     <dt>Role</dt>
     <dd><%= @user.role %></dd>

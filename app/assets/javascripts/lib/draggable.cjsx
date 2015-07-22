@@ -6,18 +6,19 @@ module.exports = React.createClass
 
   _previousEventCoords: null
 
+  getDefaultProps: ->
+    disableDragIn:    ["INPUT","TEXTAREA","A","BUTTON"]
+
   getInitialState: ->
-    # console.log "Draggable[#{@props.inst}]#getInitialState: ", @props.x, @props.y
     x: @props.x # ? 0
     y: @props.y #? 0
+    dragged: false
 
   componentWillReceiveProps: ->
-    # console.log 'DRAGGABLE::componentWillReceiveProps(), props =', @props
-    @setState
-      x: @props.x
-      y: @props.y
-  # shouldComponentUpdate: ->
-    # console.log "Draggable#shouldComponentUpdate", @props.x
+    if ! @state.dragged
+      @setState
+        x: @props.x
+        y: @props.y
 
   propTypes:
     # children: React.PropTypes.component.isRequired
@@ -40,7 +41,7 @@ module.exports = React.createClass
         top: @state.y
       # console.log "Draggable[#{@props.inst}] render: ", style
       React.cloneElement @props.children,
-        className: "#{@props.children.props.className} draggable"
+        className: "#{@props.children.props?.className} draggable"
         onMouseDown: @handleStart
         style: style
 
@@ -54,17 +55,14 @@ module.exports = React.createClass
   handleStart: (e) ->
 
     return if e.button != 0
-    # console.log "Draggable: handleStart"
-    # return false if e.target.nodeName is "INPUT" or e.target.nodeName is "TEXTAREA"
-    return false if $(e.target).parents('a').length > 0
-    # console.log "Draggable: handleStart ... continuing"
-    # e.preventDefault() # prevents click events on composite-tool input fields
-    # e.stopPropagation() # doesn't seem to do anything for composite-tool
+    console.log "Draggable: handleStart", @props.disableDragIn.indexOf(e.target.nodeName), e.target.nodeName
 
-    # pos = $(this.getDOMNode()).offset()
+    return if @props.disableDragIn.indexOf(e.target.nodeName) >= 0
+    return if $(e.target).parents('a').length > 0
+    console.log "handleStart"
+
     pos = $(this.getDOMNode()).position()
 
-    # console.log "Draggable#handleStart: ", e.pageX, pos.left
     @setState
       dragging: true,
       rel:
@@ -94,6 +92,7 @@ module.exports = React.createClass
     @setState
       x: x
       y: y
+      dragged: true
 
     d =
       x: e.pageX - @_previousEventCoords.x

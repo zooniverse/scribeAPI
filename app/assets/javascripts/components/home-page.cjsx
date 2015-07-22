@@ -11,25 +11,22 @@ HomePage = React.createClass
     return if ! @isMounted()
 
     if ! @state.project
-      console.log "fetch projects"
       API.type('projects').get().then (result)=>
         console.log "got projects"
         project = result[0]
         @setState project: project
 
   render:->
-    console.log "render homepage: ", @state.project
-
     <div className="home-page">
+      { if @state.project?.home_page_content?
 
-      <div className="page-content">
-        <h1>{@state.project?.title}</h1>
-        <div dangerouslySetInnerHTML={{__html: @state.project?.home_page_content}} />
-      </div>
+        <div className="page-content">
+          <h1>{@state.project?.title}</h1>
+          <div dangerouslySetInnerHTML={{ __html: marked(@state.project.home_page_content) }} />
 
-      { if @props.project?
-        <div className='group-area'>
-          <GroupBrowser project={@props.project} />
+          <div className='group-area'>
+            <GroupBrowser project={@props.project} />
+          </div>
         </div>
       }
     </div>

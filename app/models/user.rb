@@ -1,4 +1,4 @@
-class User
+class User 
   include Mongoid::Document
   include Mongoid::Timestamps
   # Include default devise modules. Others available are:
@@ -31,6 +31,9 @@ class User
 
   field :uid,                :type => String
   field :provider,           :type => String    # e.g. 'facebook', 'google_oauth2', 'zooniverse'
+
+  field :avatar,             :type => String    # URI of image if any
+  field :profile_url,        :type => String    # URI of user profile, if any
   
   field :status,             :type => String, :default => 'active'
   field :role,               :type => String, :default => 'user'  # user, admin
@@ -66,6 +69,19 @@ class User
     name
   end
 
+  # Steal all the contributions of the given user (e.g. visitor made some 
+  # contribs as a guest, then logged in with a real acct and we want to 
+  # transfer the guest contribs to the real acct
+  def steal_contributions(other_user)
+    [:classifications, :favourites].each do |relation|
+      rels = other_user.send relation
+      rels.each do |rel|
+        rel.user = self
+        rel.save!
+      end
+    end
+  end
+
 
   def self.find_for_oauth(access_token, signed_in_resource=nil)
 
@@ -74,6 +90,7 @@ class User
     else # Create a user with a stub password.
       details = details_from_oauth access_token[:provider], access_token
       tmp_pass = Devise.friendly_token[0,20]
+      puts "User#create #{details.merge(password: tmp_pass, password_confirmation: tmp_pass).inspect}"
       self.create details.merge(password: tmp_pass, password_confirmation: tmp_pass)
     end
   end
@@ -91,21 +108,27 @@ class User
 
   def self.details_from_fb(access_token)
     extra = access_token[:extra][:raw_info]
+    info = access_token[:info]
+    puts "facebook login: #{access_token.inspect}"
     {
-      name: "#{extra[:first_name]} #{extra[:last_name]}",
+      name: extra[:name],
       email: extra[:email],
       uid: access_token[:uid],
-      provider: access_token[:provider]
+      provider: access_token[:provider],
+      avatar: info[:image]
     }
   end
 
   def self.details_from_google(access_token)
     extra = access_token[:extra][:raw_info]
+    puts "goog login: #{access_token.inspect}"
     {
       name: "#{extra[:name]}",
       email: extra[:email],
       uid: access_token[:uid],
-      provider: access_token[:provider]
+      provider: access_token[:provider],
+      avatar: extra[:picture],
+      profile_url: extra[:profile]
     }
   end
 

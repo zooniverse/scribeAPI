@@ -1,8 +1,6 @@
-React = require 'react'
-cloneWithProps = require 'react/lib/cloneWithProps'
-# alert = require '../../lib/alert'
-# Markdown = require '../../components/markdown'
-# Tooltip = require '../../components/tooltip'
+React               = require 'react'
+cloneWithProps      = require 'react/lib/cloneWithProps'
+HelpModal           = require '../help-modal'
 
 module.exports = React.createClass
   displayName: 'GenericTask'
@@ -27,7 +25,11 @@ module.exports = React.createClass
           <button type="button" className="pill-button" onClick={@toggleHelp}>
             Need some help?
           </button>
-        </p>}
+        </p>
+      }
+      {if @state.helping
+        <HelpModal help={@props.help} onDone={=> @setState helping: false } />
+      }
     </div>
 
   toggleHelp: ->

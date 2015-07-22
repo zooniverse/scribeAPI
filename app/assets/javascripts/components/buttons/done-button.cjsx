@@ -8,5 +8,5 @@ module.exports = React.createClass
     label: 'Done'
 
   render: ->
-    <GenericButton label={@props.label} onClick={@props.onClick} className='next'/>
+    <GenericButton label={@props.label} onClick={@props.onClick} className='done'/>
      

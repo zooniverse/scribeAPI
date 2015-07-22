@@ -1,7 +1,7 @@
 React = require("react")
 App         = require './app'
 Router      = require 'react-router'
-{Handler, Root, RouteHandler, Route, DefaultRoute, Navigation, Link} = Router
+{Handler, Root, RouteHandler, Route, DefaultRoute, Redirect, Navigation, Link} = Router
 
 HomePage                      = require './home-page'
 Mark                          = require './mark'
@@ -20,6 +20,8 @@ class AppRouter
   runRoutes: (project) ->
     routes =
       <Route name="root" path="/" handler={App}>
+
+        <Redirect from="_=_" to="/" />
 
         <Route name="home" path="/home" handler={HomePage} />
 
@@ -95,7 +97,7 @@ class AppRouter
       render: ->
         <div className="page-content">
           <h1>{page.name}</h1>
-          <div dangerouslySetInnerHTML={{__html: page.content}} />
+          <div dangerouslySetInnerHTML={{__html: marked(page.content)}} />
         </div>
 
 module.exports = AppRouter
