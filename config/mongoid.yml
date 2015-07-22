@@ -47,7 +47,7 @@ production:
         # about a node. Default is 300 seconds (5 minutes).
         refresh_interval: 10
 
-        # raise_not_found_error: false
+        raise_not_found_error: false
 
 development:
   # Configure available database sessions. (required)
