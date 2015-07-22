@@ -325,7 +325,7 @@ module.exports = React.createClass
                     selected={mark is @state.selectedMark}
                     getEventOffset={@getEventOffset}
                     submitMark={@submitMark}
-                    ref={@refs.sizeRect}
+                    sizeRect={@refs.sizeRect}
 
                     onSelect={@selectMark.bind this, mark}
                     onChange={@handleChange.bind this, mark}

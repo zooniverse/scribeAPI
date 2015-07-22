@@ -66,15 +66,16 @@ module.exports = React.createClass
     y: (@props.mark.yLower-@props.mark.yUpper)/2
 
   getUpperHandlePosition: ->
-    x: @props.ref?.props.width/2
+    console.log 'REF: ', @props
+    x: @props.sizeRect?.props.width/2
     y: @props.mark.yUpper - @props.mark.y
 
   getLowerHandlePosition: ->
-    x: @props.ref?.props.width/2
+    x: @props.sizeRect?.props.width/2
     y: @props.mark.yLower - @props.mark.y
 
   getMarkButtonPosition: ->
-    x: @props.ref?.props.width - 100
+    x: @props.sizeRect?.props.width - 100
     y: (@props.mark.yLower-@props.mark.yUpper)/2
 
   render: ->
