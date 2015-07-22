@@ -40,9 +40,12 @@
      "logo": "http://umn.edu/logo.png"
     }
   ],
-  
+
   "forum": {
     "type": "discourse",
     "base_url": "http://scribe-forum.nypl-labs.biz"
-  }
+  },
+
+  "feedback_form_url": "http://goo.gl/forms/rrSAue1uuG"
+
 }

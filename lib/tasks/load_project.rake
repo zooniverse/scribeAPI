@@ -17,6 +17,7 @@ desc 'creates a poject object from the project directory'
       background: project_hash['background'],
       team: project_hash['team'],
       forum: project_hash['forum'],
+      feedback_form_url: project_hash['feedback_form_url'],
       pages: []
     })
 
@@ -72,7 +73,7 @@ desc 'creates a poject object from the project directory'
 
       puts "Done loading \"#{project.title}\" with #{project.workflows.count} workflow(s), #{project.subject_sets.count} subject sets."
 
-    # rescue Exception => e  
+    # rescue Exception => e
       # If a workflow json can't be parsed, halt:
       puts ""
       # puts "ERROR: #{e.inspect}"
