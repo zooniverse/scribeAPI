@@ -38,11 +38,12 @@ module.exports = React.createClass
         }
         { # Page tabs:
           @props.pages?.map (page, key) =>
-            console.log 'page:', page
-            if page.key is 'feedback'
-              <a href="http://goo.gl/forms/rrSAue1uuG" className="main-header-item">{page.name}</a>
-            else
-              <Link key={key} to="/#{page.name.toLowerCase()}" activeClassName="selected" className="main-header-item">{page.name}</Link>
+            <Link key={key} to="/#{page.name.toLowerCase()}" activeClassName="selected" className="main-header-item">{page.name}</Link>
+        }
+
+        { # include feedback tab if defined
+          if @props.feedbackFormUrl?
+            <a className="main-header-item" href={@props.feedbackFormUrl}>Feedback</a>
         }
 
         <Login />
