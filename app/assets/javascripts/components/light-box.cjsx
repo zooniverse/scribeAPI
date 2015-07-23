@@ -114,7 +114,7 @@ module.exports = React.createClass
     else if @props.subjectCurrentPage > 1 && @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
       @props.prevPage( => @setState first: @props.subject_set.subjects[0] )
     else
-      @setState first: @props.subject_set.subjects[indexOfFirst-1]
+      @setState first: @props.subject_set.subjects[indexOfFirst-3]
 
   moveForward: (indexOfFirst, third, second)->
     # if the current page of subjects is the last page of the subject_set and the 2nd or 3rd <li> is the last <li> contain the last subjects in the subject_set

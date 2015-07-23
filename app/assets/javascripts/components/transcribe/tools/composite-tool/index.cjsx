@@ -81,7 +81,6 @@ CompositeTool = React.createClass
       page: @props.subjectCurrentPage
 
   render: ->
-    console.log 'F:KLJHDLKJSHDKJLSDHKJSDHSKLJH'
     buttons = []
     # TK: buttons.push <PrevButton onClick={=> console.log "Prev button clicked!"} />
 
