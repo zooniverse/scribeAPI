@@ -39,6 +39,9 @@ module.exports = React.createClass
     # @setUncommittedMark null if ! new_props.annotation?.subToolIndex?
     # console.log "setting null because",new_props.task?.tool != 'pickOneMarkOne'
     @setUncommittedMark null if new_props.task?.tool != 'pickOneMarkOne'
+    if Object.keys(@props.annotation).length == 0 #prevents back-to-back mark tasks, displaying a duplicate mark from previous tasks.
+      @setUncommittedMark null 
+
 
   componentDidMount: ->
     @setView 0, 0, @props.subject.width, @props.subject.height
@@ -235,10 +238,10 @@ module.exports = React.createClass
 
   render: ->
     return null if ! @props.active
+
     viewBox = [0, 0, @props.subject.width, @props.subject.height]
     scale = @getScale()
 
-    console.log 'UNCOMITTED MARK: ', @state.uncommittedMark
 
     # if @props.workflow.name is 'transcribe'
     #   yPos = (@props.subject.data.y - @props.subject.data.height?) * @getScale().vertical - 100
