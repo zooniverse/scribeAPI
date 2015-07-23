@@ -1,6 +1,6 @@
 {
   "name": "scribeAPI",
-  "devDependencies": {
+  "dependencies": {
     "browserify": "~10.2.4",
     "browserify-incremental": "^3.0.1",
     "coffee-react-transform": "^3.2.0",
@@ -9,14 +9,12 @@
     "jest-cli": "^0.4.0",
     "json-api-client": "^0.2.3",
     "react": "^0.13.3",
-    "react-router": "^0.13.3"
+    "react-router": "^0.13.3",
+    "json-api-client": "^0.4.4"
   },
   "license": "MIT",
   "engines": {
     "node": ">= 0.10"
-  },
-  "dependencies": {
-    "json-api-client": "^0.4.4"
   },
   "scripts": {
     "test": "node ./node_modules/jest-cli/bin/jest.js"
