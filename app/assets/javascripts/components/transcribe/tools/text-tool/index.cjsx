@@ -6,7 +6,6 @@ PrevButton      = require './prev-button'
 
 TextTool = React.createClass
   displayName: 'TextTool'
-
   mixins: [Navigation]
 
   getInitialState: ->
