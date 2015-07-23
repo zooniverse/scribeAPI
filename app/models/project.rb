@@ -25,7 +25,7 @@ class Project
 
 	has_many :groups
 	has_many :subject_sets
-	has_many :workflows, dependent: :destroy
+	has_many :workflows, dependent: :destroy, order: "order ASC"
 	has_many :subjects
 
   scope :most_recent, -> { order(updated_at: -1) }
