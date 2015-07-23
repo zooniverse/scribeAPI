@@ -5,8 +5,8 @@ FetchSubjectSetsMixin   = require 'lib/fetch-subject-sets-mixin'
 BaseWorkflowMethods     = require 'lib/workflow-methods-mixin'
 JSONAPIClient           = require 'json-api-client' # use to manage data?
 ForumSubjectWidget      = require '../forum-subject-widget'
-
 API                     = require '../../lib/api'
+HelpModal               = require 'components/help-modal'
 
 module.exports = React.createClass # rename to Classifier
   displayName: 'Mark'
@@ -23,6 +23,7 @@ module.exports = React.createClass # rename to Classifier
     subject_set_index:            0
     subject_index:                0
     currentSubToolIndex:          0
+    helping:                      false
 
   componentDidMount: ->
     @getCompletionAssessmentTask()
@@ -32,6 +33,9 @@ module.exports = React.createClass # rename to Classifier
       taskKey: @getActiveWorkflow().first_task
 
     @beginClassification()
+
+  toggleHelp: ->
+    @setState helping: not @state.helping
 
   render: ->
     return null unless @getCurrentSubject()? && @getActiveWorkflow()?
@@ -75,6 +79,7 @@ module.exports = React.createClass # rename to Classifier
             task={currentTask}
             annotation={@getCurrentClassification().annotation ? {}}
             onChange={@handleDataFromTool}
+            onShowHelp={@toggleHelp if @getCurrentTask().help?}
           />
           <hr/>
           <nav className="task-nav">
@@ -100,6 +105,10 @@ module.exports = React.createClass # rename to Classifier
         </div>
 
       </div>
+
+      { if @state.helping
+        <HelpModal help={@getCurrentTask().help} onDone={=> @setState helping: false } />
+      }
     </div>
 
   getNextSubject: ->

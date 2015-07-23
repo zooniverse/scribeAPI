@@ -10,27 +10,20 @@ module.exports = React.createClass
     help: ''
     answers: ''
 
-  getInitialState: ->
-    helping: false
-
   render: ->
+    console.log "show help? ", @props
     <div className="workflow-task">
       <span>{@props.question}</span>
       <div className="answers">
         {React.Children.map @props.answers, (answer) ->
           cloneWithProps answer,  className: 'answer'}
       </div>
-      {if @props.help
+      {if @props.onShowHelp?
         <p className="help">
-          <button type="button" className="pill-button" onClick={@toggleHelp}>
+          <button type="button" className="pill-button" onClick={@props.onShowHelp}>
             Need some help?
           </button>
         </p>
       }
-      {if @state.helping
-        <HelpModal help={@props.help} onDone={=> @setState helping: false } />
-      }
     </div>
 
-  toggleHelp: ->
-    @setState helping: not @state.helping

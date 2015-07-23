@@ -32,6 +32,10 @@
       "tool": "pickOneMarkOne",
       "instruction": "Pick a field and mark it with the corresponding marking tool.",
       "generates_subjects": true,
+      "help": {
+        "title": "Drawing boxes",
+        "body": "Draw boxes around the indicated areas of the document"
+      },
       "tool_config" : {
         "tools": [
           {"type": "rectangleTool", "label": "Records (rectangle)", "color": "green", "generates_subject_type": "em_record_rect"},

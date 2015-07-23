@@ -99,7 +99,7 @@ module.exports = React.createClass
       </label>
 
 
-    <GenericTask question={@props.task.instruction} help={@props.task.help} answers={tools} />
+    <GenericTask question={@props.task.instruction} onShowHelp={@props.onShowHelp} answers={tools} />
 
   getSubToolIndex: ->
     @state.subToolIndex

@@ -120,7 +120,7 @@ module.exports = React.createClass
 
       </label>
 
-    <GenericTask question={@props.task.instruction} help={@props.task.help} answers={options} />
+    <GenericTask question={@props.task.instruction} onShowHelp={@props.onShowHelp} answers={options} />
 
   handleChange: (index, e) ->
 
