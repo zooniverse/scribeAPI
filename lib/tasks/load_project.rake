@@ -1,4 +1,4 @@
-
+require 'fileutils'
 
 desc 'creates a poject object from the project directory'
 
@@ -22,14 +22,15 @@ desc 'creates a poject object from the project directory'
     })
 
     # copy background image to assets directory
-    background_file_path = Dir.glob("#{project_dir}/#{project.background}")
-    background_file_dest = Rails.root.join("public")
+    # puts "Loading background file from ", "#{project_dir}#{project.background}"
+    background_file_path = Dir.glob("#{project_dir}#{project.background}")
+    background_file_dest = Rails.root.join("app/assets/images")
 
     if project.background.nil?
       puts "WARN: No background image found. Using example_project default."
     end
 
-    copy(background_file_path, background_file_dest, verbose: false)
+    cp(background_file_path, background_file_dest)
 
     puts "Project: Created '#{project.title}'"
 

@@ -2,7 +2,7 @@
   "title": "The New Bedford Whaling Logs",
   "short_title": "The Whaling Logs",
   "summary": "We want to see if (yes obviously) cats are better than animals",
-  "background": "background.jpg",
+  "background": "/assets/background.jpg",
   "team": [
     {
       "name": "Stuart Lynn",
