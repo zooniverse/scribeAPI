@@ -42,7 +42,8 @@ module.exports = React.createClass
         }
 
         { # include feedback tab if defined
-          if @props.feedbackFormUrl?
+          showFeedbackTab = false
+          if @props.feedbackFormUrl? and showFeedbackTab
             <a className="main-header-item" href={@props.feedbackFormUrl}>Feedback</a>
         }
 
