@@ -112,6 +112,7 @@ module.exports =
     # start a new one:
     @beginClassification {}
 
+
     # After classification ready with empty annotation, proceed to next task:
     @advanceToTask nextTaskKey
 
@@ -142,6 +143,7 @@ module.exports =
 
       @setState
         taskKey: key
+       
 
   # Get currently viewed subject set
   getCurrentSubjectSet: ->
