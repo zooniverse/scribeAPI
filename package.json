@@ -2,7 +2,8 @@
   "name": "scribeAPI",
   "devDependencies": {
     "coffee-react-transform": "^3.2.0",
-    "jest-cli": "^0.4.0"
+    "jest-cli": "^0.4.0",
+    "json-api-client": "^0.2.3"
   },
   "license": "MIT",
   "engines": {
@@ -46,4 +47,3 @@
     ]
   }
 }
-
