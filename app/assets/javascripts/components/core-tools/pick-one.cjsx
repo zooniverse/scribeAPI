@@ -78,7 +78,7 @@ module.exports = React.createClass
         <span>{answer.label}</span>
       </label>
 
-    <GenericTask ref="inputs" question={@props.task.instruction} help={@props.task.help} answers={answers} />
+    <GenericTask ref="inputs" question={@props.task.instruction} onShowHelp={@props.onShowHelp} answers={answers} />
 
   handleChange: (index, e) ->
     if e.target.checked

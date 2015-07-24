@@ -72,7 +72,6 @@ module.exports = React.createClass # rename to Classifier
       console.log "go back"
 
   toggleHelp: ->
-    console.log "helping"
     @setState helping: not @state.helping
 
   render: ->
@@ -83,7 +82,6 @@ module.exports = React.createClass # rename to Classifier
     # console.log "transcribe#index @state", @state 
     currentAnnotation = @getCurrentClassification().annotation
     TranscribeComponent = @getCurrentTool() # @state.currentTool
-    console.log "TranscribeComponent", TranscribeComponent, "helping=#{@state.helping}"
     onFirstAnnotation = currentAnnotation?.task is @getActiveWorkflow().first_task
 
     <div className="classifier">
