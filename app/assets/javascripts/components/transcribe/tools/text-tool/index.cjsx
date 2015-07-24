@@ -12,6 +12,7 @@ TextTool = React.createClass
   getInitialState: ->
     annotation: @props.annotation ? {}
     viewerSize: @props.viewerSize
+    autocompleting: false
 
   # this can go into a mixin? (common across all transcribe tools)
   getPosition: (data) ->
@@ -71,6 +72,9 @@ TextTool = React.createClass
     if @isMounted() && @toolConfig().suggest == 'common'
       el = $(@refs.input0?.getDOMNode())
       el.autocomplete
+        open: ( => @setState autocompleting: true )
+        close: => setTimeout( (=> @setState(autocompleting: false)), 1000)
+        select: (e, ui) => @updateValue(ui.item.value)
         source: (request, response) =>
           field = "#{@props.task.key}:#{@fieldKey()}"
           $.ajax
@@ -115,18 +119,22 @@ TextTool = React.createClass
     else
       @props.annotation_key
 
-  handleChange: (e) ->
+  updateValue: (val) ->
+    console.log "updated val: ", val
     newAnnotation = @state.annotation
-    newAnnotation[@fieldKey()] = e.target.value
+    newAnnotation[@fieldKey()] = val
 
     # if composite-tool is used, this will be a callback to CompositeTool::handleChange()
     # otherwise, it'll be a callback to Transcribe::handleDataFromTool()
     @props.onChange(newAnnotation) # report updated annotation to parent
 
+  handleChange: (e) ->
+    @updateValue e.target.value
+
   handleKeyPress: (e) ->
-    if [13].indexOf(e.keyCode) >= 0 # ENTER
+    if ! @state.autocompleting && [13].indexOf(e.keyCode) >= 0 # ENTER
       @commitAnnotation()
-      e.preventDefault()
+      # e.preventDefault()
 
   handleBadMark: ()->
     newAnnotation = []
