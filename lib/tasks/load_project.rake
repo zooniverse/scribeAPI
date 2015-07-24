@@ -21,18 +21,18 @@ desc 'creates a poject object from the project directory'
       pages: []
     })
 
-    # copy background image to assets directory
-    # puts "Loading background file from ", "#{project_dir}#{project.background}"
-    background_file_path = Dir.glob("#{project_dir}#{project.background}")
-    background_file_dest = Rails.root.join("app/assets/images")
-
     if project.background.nil?
-      puts "WARN: No background image found. Using example_project default."
+      puts "WARN: No background image found."
     end
 
-    cp(background_file_path, background_file_dest)
+    # copy background image to assets directory
+    print 'Loading background file...'
+    background_file_path = "#{project_dir}/#{File.basename(project.background)}"
+    background_file_dest = Rails.root.join("app/assets/images")
+    cp(background_file_path, background_file_dest, verbose: false)
+    puts 'Done.'
 
-    puts "Project: Created '#{project.title}'"
+    puts "Created project: #{project.title}"
 
     # Load pages from content/*:
     content_path = Rails.root.join('project', args[:project_key], 'content')
