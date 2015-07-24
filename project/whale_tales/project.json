@@ -1,8 +1,8 @@
 {
   "title": "The New Bedford Whaling Logs",
-  "short_title": "Whale Tales",
+  "short_title": "The Whaling Logs",
   "summary": "We want to see if (yes obviously) cats are better than animals",
-  "background": "background.jpg",
+  "background": "/assets/background.jpg",
   "team": [
     {
       "name": "Stuart Lynn",
@@ -40,9 +40,12 @@
      "logo": "http://umn.edu/logo.png"
     }
   ],
-  
+
   "forum": {
     "type": "discourse",
     "base_url": "http://scribe-forum.nypl-labs.biz"
-  }
+  },
+
+  "feedback_form_url": "http://goo.gl/forms/rrSAue1uuG"
+
 }

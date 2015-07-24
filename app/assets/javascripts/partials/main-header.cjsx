@@ -41,6 +41,12 @@ module.exports = React.createClass
             <Link key={key} to="/#{page.name.toLowerCase()}" activeClassName="selected" className="main-header-item">{page.name}</Link>
         }
 
+        { # include feedback tab if defined
+          showFeedbackTab = false
+          if @props.feedbackFormUrl? and showFeedbackTab
+            <a className="main-header-item" href={@props.feedbackFormUrl}>Feedback</a>
+        }
+
         <Login />
       </nav>
 

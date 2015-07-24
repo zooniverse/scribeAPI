@@ -1,12 +1,11 @@
 React           = require 'react'
-{Navigation}    = React
+{Navigation}    = require 'react-router'
 DraggableModal  = require 'components/draggable-modal'
 DoneButton      = require './done-button'
 PrevButton      = require './prev-button'
 
 TextTool = React.createClass
   displayName: 'TextTool'
-
   mixins: [Navigation]
 
   getInitialState: ->
@@ -52,7 +51,7 @@ TextTool = React.createClass
       el.focus()
 
   componentWillReceiveProps: (new_props) ->
-    # PB: Note this func is defined principally to allow a parent composite-tool 
+    # PB: Note this func is defined principally to allow a parent composite-tool
     # to set focus on a child tool via props but this consistently fails to
     # actually set focus - probably because the el.focus() call is made right
     # before an onkeyup event or something, which quietly reverses it.
@@ -60,7 +59,7 @@ TextTool = React.createClass
       @focus()
 
     @applyAutoComplete()
-    
+
   componentDidMount: ->
 
     @applyAutoComplete()
@@ -100,10 +99,11 @@ TextTool = React.createClass
 
   # this can go into a mixin? (common across all transcribe tools)
   returnToMarking: ->
+    console.log 'returnToMarking()'
     @commitAnnotation()
 
     # transition back to mark
-    @replaceWith 'mark', {},
+    @transitionTo 'mark', {},
       subject_set_id: @props.subject.subject_set_id
       selected_subject_id: @props.subject.parent_subject_id
       page: @props.subjectCurrentPage
@@ -125,7 +125,10 @@ TextTool = React.createClass
 
   handleKeyPress: (e) ->
     if [13].indexOf(e.keyCode) >= 0 # ENTER
-      @commitAnnotation()
+      if window.location.hash is '#/transcribe' || @props.task.next_task? # regular transcribe, i.e. no mark transition
+        @commitAnnotation()
+      else
+        @returnToMarking()
       e.preventDefault()
 
   handleBadMark: ()->
@@ -134,9 +137,9 @@ TextTool = React.createClass
 
   render: ->
     return null if @props.loading # hide transcribe tool while loading image
-    
+
     val = @state.annotation[@fieldKey()]
-    
+
     val = '' if ! val?
 
     unless @props.standalone
@@ -160,7 +163,7 @@ TextTool = React.createClass
             onChange: @handleChange
             onFocus: ( () => @props.onInputFocus? @props.annotation_key )
             value: val
-        
+
           if @props.inputType == "text"
             <input type="text" value={val} {...atts} />
 

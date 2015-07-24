@@ -1,5 +1,5 @@
 class ProjectSerializer < ActiveModel::MongoidSerializer
-  attributes :id, :title, :short_title, :summary, :home_page_content, :organizations , :team, :pages, :background, :workflows, :forum
+  attributes :id, :title, :short_title, :summary, :home_page_content, :organizations , :team, :pages, :background, :workflows, :forum, :feedback_form_url
   has_many :workflows
 
   def id

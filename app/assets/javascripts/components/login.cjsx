@@ -38,8 +38,6 @@ Login = React.createClass
 
   render:->
     <div className='login'>
-      {@renderError() if @state.error}
-
       {@renderLoggedIn() if @state.user && ! @state.user.guest }
       {@renderLoggedInAsGuest() if @state.user && @state.user.guest }
       {@renderLoginOptions() if !@state.user }
