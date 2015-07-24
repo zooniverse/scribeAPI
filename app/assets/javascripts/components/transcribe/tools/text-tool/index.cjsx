@@ -61,9 +61,10 @@ TextTool = React.createClass
     @applyAutoComplete()
 
   componentDidMount: ->
-
     @applyAutoComplete()
+    @focus() if @props.focus
 
+  componentDidUpdate: ->
     @focus() if @props.focus
 
   applyAutoComplete: ->
@@ -125,7 +126,10 @@ TextTool = React.createClass
 
   handleKeyPress: (e) ->
     if [13].indexOf(e.keyCode) >= 0 # ENTER
-      @commitAnnotation()
+      if window.location.hash is '#/transcribe' || @props.task.next_task? # regular transcribe, i.e. no mark transition
+        @commitAnnotation()
+      else
+        @returnToMarking()
       e.preventDefault()
 
   handleBadMark: ()->
