@@ -74,6 +74,7 @@ module.exports = React.createClass # rename to Classifier
   toggleHelp: ->
     @setState helping: not @state.helping
 
+
   render: ->
     # DISABLE ANIMATED SCROLLING FOR NOW
     # if @props.query.scrollX? and @props.query.scrollY?
@@ -119,6 +120,8 @@ module.exports = React.createClass # rename to Classifier
                 viewerSize={@state.viewerSize}
                 transcribeTools={transcribeTools}
                 onShowHelp={@toggleHelp if @getCurrentTask().help?}
+                badSubject={@state.badSubject}
+                onBadSubject={@toggleBadSubject}
               />
 
             </SubjectViewer>

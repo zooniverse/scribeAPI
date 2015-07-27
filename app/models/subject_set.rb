@@ -28,8 +28,16 @@ class SubjectSet
     self.inc("counts.#{workflow.id.to_s}.total_subjects" => 1)
   end
 
+  def subject_deactivated_on_workflow(workflow)
+    inc_subjects_on_workflow(workflow, -1)
+  end
+
   def subject_activated_on_workflow(workflow)
-    self.inc("counts.#{workflow.id.to_s}.active_subjects" => 1)
+    inc_subjects_on_workflow(workflow, 1)
+  end
+
+  def inc_subjects_on_workflow(workflow, inc)
+    self.inc("counts.#{workflow.id.to_s}.active_subjects" => inc)
   end
 
   def subject_completed_on_workflow(workflow)

@@ -28,23 +28,39 @@ module.exports =
           window.classifications = @state.classifications # make accessible to console
           callback() if callback?
 
+  toggleBadSubject: (callback) ->
+    @setState badSubject: not @state.badSubject, =>
+      callback?()
+    
   # Push current classification to server:
   commitClassification: ->
     console.log 'COMMITTING CLASSIFICATION... current classification: ', @getCurrentClassification()
     classification = @getCurrentClassification()
     # checking for empty classification.annotation, we don't want to commit those classifications -- AMS
-    return if Object.keys(classification.annotation).length == 0
-    console.log 
+
     classification.subject_id = @getCurrentSubject()?.id
     classification.subject_set_id = @getCurrentSubjectSet().id if @getCurrentSubjectSet()?
     classification.workflow_id = @getActiveWorkflow().id
-    classification.task_key = @state.taskKey
+
+    # If user activated 'Bad Subject' button, override task:
+    if @state.badSubject
+      classification.task_key = 'flag_bad_subject_task'
+
+    # Otherwise, classification is for active task:
+    else
+      classification.task_key = @state.taskKey
+      return if Object.keys(classification.annotation).length == 0
 
     # Commit classification to backend
     classification.commit (classification) =>
       # Did this generate a child_subject? Update local copy:
       if classification.child_subject
         @appendChildSubject classification.subject_id, classification.child_subject
+
+      if @state.badSubject
+        @toggleBadSubject =>
+          console.log "advancing to next", @
+          @advanceToNextSubject()
 
     console.log 'COMMITTED CLASSIFICATION: ', classification
     console.log '(ALL CLASSIFICATIONS): ', @state.classifications
@@ -186,7 +202,15 @@ module.exports =
     }
     subToolIndex: 0
 
+  # Regardless of what workflow we're in, call this to display next subject (if any avail)
   advanceToNextSubject: ->
+    if @state.subjects?
+      @_advanceToNextSubjectInSubjects()
+    else
+      @_advanceToNextSubjectInSubjectSets()
+    
+  # This is the version of advanceToNextSubject for workflows that consume subjects (transcribe,verify)
+  _advanceToNextSubjectInSubjects: ->
     if @state.subject_index + 1 < @state.subjects.length
       next_index = @state.subject_index + 1
       next_subject = @state.subjects[next_index]
@@ -204,6 +228,32 @@ module.exports =
       @setState
         subject_index: null
         noMoreSubjects: true
+  
+  # This is the version of advanceToNextSubject for workflows that consume subject sets (mark)
+  _advanceToNextSubjectInSubjectSets: ->
+    new_subject_set_index = @state.subject_set_index
+    new_subject_index = @state.subject_index + 1
+
+    # If we've exhausted pages in this subject set, move to next one:
+    if new_subject_index >= @getCurrentSubjectSet().subjects.length
+      new_subject_set_index += 1
+      new_subject_index = 0
+
+    # If we've exhausted all subject sets, collapse in shame
+    console.log "if new_subject_set_index..", @state.subjectSets.length
+    if new_subject_set_index >= @state.subjectSets.length
+      console.warn "NO MORE SUBJECT SETS"
+      return
+
+    console.log "Mark#index Advancing to subject_set_index #{new_subject_set_index} (of #{@state.subjectSets.length}), subject_index #{new_subject_index} (of #{@state.subjectSets[new_subject_set_index].subjects.length})"
+
+    @setState
+      subject_set_index: new_subject_set_index
+      subject_index: new_subject_index
+      taskKey: @getActiveWorkflow().first_task
+      currentSubToolIndex: 0, =>
+        # console.log "After @state", @state
+
 
   commitClassificationAndContinue: (d) ->
     @commitClassification()

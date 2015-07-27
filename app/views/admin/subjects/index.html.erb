@@ -4,10 +4,10 @@
   <tr>
     <th></th> 
     <th>Status</th>
-    <th>Classification Count</th>
-    <th>Secondary Subject</th>
-    <th>Child_Subjects</th>
+    <th>Classifications</th>
+    <th>2nd Subjects</th>
     <th>Retire Count</th>
+    <th>Bad Count</th>
   </tr>
 
 <% @subjects.each do |subject| %>
@@ -15,8 +15,8 @@
     <td><%= link_to admin_subject_path(subject) do %><img src="<%= subject.thumbnail %>" width="100"/><% end %></td>
     <td><%= link_to admin_subject_path(subject) do %><%= subject.status %><% end %></td>
     <td> <%= subject.classification_count %> </td> 
-    <td> <%= subject.secondary_subject_count %> </td> 
     <td> 
+      <%= subject.secondary_subject_count %>
       <ul>
       <% if ! subject.child_subjects.empty? %>
         <% show_max = 5 %>
@@ -29,6 +29,7 @@
       <% end %>
       </ul>
     <td> <%= subject.retire_count %> </td> 
+    <td> <%= subject.flagged_bad_count %> </td> 
   </tr>
 <% end %>
 </table>

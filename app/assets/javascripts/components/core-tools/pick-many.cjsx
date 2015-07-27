@@ -100,7 +100,7 @@ module.exports = React.createClass
 
       <label
         key={option._key}
-        className="minor-button #{if isChecked then 'active' else ''}"
+        className="answer minor-button #{if isChecked then 'active' else ''}"
       >
         <span
           className='drawing-tool-icon'

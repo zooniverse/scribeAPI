@@ -118,6 +118,10 @@
         flex: 3 0
       :not(:first-child)
         margin-left: 0.5em
+    
+    .bad-subject
+      color white
+      border-color white
 
 .workflow-task
   margin-top 100px
@@ -168,8 +172,21 @@
     text-align right
     padding-bottom 20px
 
-    .help-button
+    .help-button, .bad-subject
       float left
+
+
+.bad-subject
+  border-color darkred
+  color darkred
+  margin-left 10px
+
+  &.marked-bad
+    background-color darkred
+    color white
+  
+  &.marked-bad:before
+    content '\2713   '
 
  
 .help-modal

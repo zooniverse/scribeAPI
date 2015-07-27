@@ -1,5 +1,7 @@
-React = require 'react'
-GenericTask = require './generic'
+React                   = require 'react'
+GenericTask             = require './generic'
+LabeledRadioButton      = require 'components/buttons/labeled-radio-button'
+
 # Markdown = require '../../components/markdown'
 
 NOOP = Function.prototype
@@ -71,14 +73,10 @@ module.exports = React.createClass
       checked = k is @props.annotation.value
       classes = ['minor-button']
       classes.push 'active' if checked
-      classes = classes.join ' '
 
-      <label key={answer._key} className={classes}>
-        <input type="radio" name="input0" value={k} checked={checked} onChange={@handleChange.bind this, k} />
-        <span>{answer.label}</span>
-      </label>
+      <LabeledRadioButton key={answer._key} classes={classes.join ' '} value={k} checked={checked} onChange={@handleChange.bind this, k} label={answer.label} />
 
-    <GenericTask ref="inputs" question={@props.task.instruction} onShowHelp={@props.onShowHelp} answers={answers} />
+    <GenericTask ref="inputs" {...@props} question={@props.task.instruction} answers={answers} />
 
   handleChange: (index, e) ->
     if e.target.checked
