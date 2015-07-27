@@ -5,7 +5,7 @@ Draggable                     = require '../lib/draggable'
 MouseHandler                  = require '../lib/mouse-handler'
 LoadingIndicator              = require './loading-indicator'
 SubjectMetadata               = require './subject-metadata'
-ActionButton                  = require './action-button'
+NextButton                    = require './action-button'
 markingTools                  = require './mark/tools'
 
 RowFocusTool                  = require 'components/row-focus-tool'
@@ -249,9 +249,9 @@ module.exports = React.createClass
 
     actionButton =
       if @state.loading
-        <ActionButton onAction={@nextSubject} className="disabled" text="Loading..." />
+        <NextButton onClick={@nextSubject} disabled=true label="Loading..." />
       else
-        <ActionButton onClick={@nextSubject} text="Next Page" />
+        <NextButton onClick={@nextSubject} label="Next Page" />
 
     if @state.loading
       markingSurfaceContent = <LoadingIndicator />

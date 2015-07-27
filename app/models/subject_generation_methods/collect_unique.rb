@@ -24,6 +24,7 @@ module SubjectGenerationMethods
       else
         atts[:data] = {'values' => [ann]}
       end
+      atts[:data][:task_prompt] = classification.workflow_task.instruction
 
       # Don't update attributes already saved/initialized in subject:
       atts = atts.except(:workflow, :parent_subject, :type)

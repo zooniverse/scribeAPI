@@ -5,11 +5,23 @@ module.exports = React.createClass
 
   getDefaultProps: ->
     label: 'Okay'
+    disabled: false
+    className: ''
+    major: false
 
   render: ->
-    classes = ''
-    classes += " #{@props.className}" if @props.className?
+    classes = @props.className.split /\s+/
+    classes.push (if @props.major then "major-button" else "minor-button")
+    classes.push "disabled" if @props.disabled
+
+    onClick = @props.onClick
+
+    if @props.href
+      c = @props.onClick
+      onClick = () =>
+        c?()
+        window.location.href = @props.href
       
-    <button className = {classes} onClick={@props.onClick} >
+    <button className={classes.join " "} onClick={onClick} disabled={if @props.disabled then 'disabled'}>
       { @props.label }
     </button>

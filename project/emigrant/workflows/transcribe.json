@@ -18,7 +18,7 @@
       "instruction": "Enter the record year",
       "help": {
         "title": "Record Date",
-        "body": "The record date can generally be found in the upper left hand corner of the record."
+        "body": "The record date can generally be found in the upper left hand corner of the record. Enter it as written, e.g. \"1867 May 11\""
       },
       "next_task": "em_transcribe_mortgager",
       "generates_subject_type": "em_transcribed_date"
@@ -29,9 +29,13 @@
       "tool_config": {
         "suggest": "common"
       },
-      "instruction": "Enter the mortgager",
+      "instruction": "Enter the mortgager's name",
       "next_task": "em_transcribe_address",
-      "generates_subject_type": "em_transcribed_mortgager"
+      "generates_subject_type": "em_transcribed_mortgager",
+      "help": {
+        "title": "Mortgager Name",
+        "body": "The Mortgager is often found at the top of the list of hand-entered data. The mortgager tends to be a single person's name. If multiple names are given, enter them all separated by semi-colons."
+      }
     },
 
     "em_transcribe_address": {
@@ -39,7 +43,11 @@
       "tool_config": {},
       "instruction": "Enter the street address",
       "next_task": "em_transcribe_valuation",
-      "generates_subject_type": "em_transcribed_address"
+      "generates_subject_type": "em_transcribed_address",
+      "help": {
+        "title": "Street Address",
+        "body": "The building address is sometimes labeled \"No. of Street or Avenue\". When possible, try to interpret the address given using contemporary address conventions. For example, for \"No. 39 Mott St\" enter \"39 Mott St\""
+      }
     },
 
     "em_transcribe_valuation": {
@@ -59,35 +67,24 @@
         }
       },
 
+      "help": {
+        "title": "Valuatation",
+        "body": "Sometimes records include individual, dated Valuations of the property and/or building. If any exist in this record, note the most recent."
+      },
       "generates_subject_type": "em_transcribed_valuation",
-      "instruction": "Enter any dated property valuations that were recorded",
-      "next_task": "em_transcribe_valuation2"
+      "instruction": "Enter the last property valuation that was recorded, if any",
+      "next_task": "em_transcribe_amount_loaned"
     },
 
-    "em_transcribe_valuation2": {
-      "tool": "compositeTool",
-      "tool_config": {
-        "tools": {
-          "em_valuation_date": {
-            "tool": "dateTool",
-            "tool_config": {"suggest": "common"},
-            "label": "Date"
-          },
-          "em_valuation_amount": {
-            "tool": "numberTool",
-            "tool_config": {},
-            "label": "Amount"
-          }
-        }
-      },
-
+    "em_transcribe_amount_loaned": {
+      "tool": "numberTool",
+      "tool_config": {},
+      "instruction": "Enter the Amount Loaned",
+      "generates_subject_type": "em_transcribed_amount_loaned",
       "help": {
-        "title": "This is help for a big composite tool",
-        "body": "The composite tool blah blah blah"
-      },
-
-      "generates_subject_type": "em_transcribed_valuation2",
-      "instruction": "Enter another dated property valuations that were recorded"
+        "title": "Amount Loaned",
+        "body": "The Amount Loaned is typically found at or near the bottom of the record. For example, for \"Amoun Loaned: $4,500.\", enter \"4500\"."
+      }
     }
   }
 }
