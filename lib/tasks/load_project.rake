@@ -1,4 +1,4 @@
-
+require 'fileutils'
 
 desc 'creates a poject object from the project directory'
 
@@ -17,20 +17,22 @@ desc 'creates a poject object from the project directory'
       background: project_hash['background'],
       team: project_hash['team'],
       forum: project_hash['forum'],
+      feedback_form_url: project_hash['feedback_form_url'],
       pages: []
     })
 
-    # copy background image to assets directory
-    background_file_path = Dir.glob("#{project_dir}/#{project.background}")
-    background_file_dest = Rails.root.join("public")
-
     if project.background.nil?
-      puts "WARN: No background image found. Using example_project default."
+      puts "WARN: No background image found."
     end
 
-    copy(background_file_path, background_file_dest, verbose: false)
+    # copy background image to assets directory
+    print 'Loading background file...'
+    background_file_path = "#{project_dir}/#{File.basename(project.background)}"
+    background_file_dest = Rails.root.join("app/assets/images")
+    cp(background_file_path, background_file_dest, verbose: false)
+    puts 'Done.'
 
-    puts "Project: Created '#{project.title}'"
+    puts "Created project: #{project.title}"
 
     # Load pages from content/*:
     content_path = Rails.root.join('project', args[:project_key], 'content')
@@ -73,7 +75,7 @@ desc 'creates a poject object from the project directory'
 
       puts "Done loading \"#{project.title}\" with #{project.workflows.count} workflow(s), #{project.subject_sets.count} subject sets."
 
-    # rescue Exception => e  
+    # rescue Exception => e
       # If a workflow json can't be parsed, halt:
       puts ""
       # puts "ERROR: #{e.inspect}"

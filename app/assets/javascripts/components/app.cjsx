@@ -33,12 +33,12 @@ App = React.createClass
       </div>
       <div className="panoptes-main">
 
-        <MainHeader workflows={@state.project.workflows} pages={@state.project.pages} short_title={@state.project.short_title} />
+        <MainHeader workflows={@state.project.workflows} feedbackFormUrl={@state.project.feedback_form_url} pages={@state.project.pages} short_title={@state.project.short_title} />
 
         <div className="main-content">
           <RouteHandler hash={window.location.hash} project={@state.project} />
         </div>
       </div>
     </div>
-   
+
 module.exports = App

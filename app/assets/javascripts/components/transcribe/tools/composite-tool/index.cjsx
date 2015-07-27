@@ -1,10 +1,12 @@
 React           = require 'react'
+{Navigation}    = require 'react-router'
 DraggableModal  = require 'components/draggable-modal'
 DoneButton      = require './done-button'
 PrevButton      = require './prev-button'
 
 CompositeTool = React.createClass
   displayName: 'CompositeTool'
+  mixins: [Navigation]
 
   getInitialState: ->
     annotation: @props.annotation ? {}
@@ -40,7 +42,7 @@ CompositeTool = React.createClass
 
   handleChange: (annotation) ->
     @setState annotation: annotation
-    
+
     @props.onChange annotation # forward annotation to parent
 
   # Fires when user hits <enter> in an input
@@ -69,19 +71,23 @@ CompositeTool = React.createClass
 
   # this can go into a mixin? (common across all transcribe tools)
   returnToMarking: ->
+    console.log 'returnToMarking()'
     @commitAnnotation()
 
     # transition back to mark
-    @replaceWith 'mark', {},
+    @transitionTo 'mark', {},
       subject_set_id: @props.subject.subject_set_id
-      selected_subject_id: @props.subject.parent_subject_id.$oid
+      selected_subject_id: @props.subject.parent_subject_id
       page: @props.subjectCurrentPage
 
   render: ->
-
     buttons = []
     # TK: buttons.push <PrevButton onClick={=> console.log "Prev button clicked!"} />
-    buttons.push <DoneButton onClick={@commitAnnotation} />
+
+    if window.location.hash is '#/transcribe' || @props.task.next_task? # regular transcribe, i.e. no mark transition
+      buttons.push <DoneButton label={if @props.task.next_task? then 'Next' else 'Done'} key="done-button" onClick={@commitAnnotation} />
+    else
+      buttons.push <DoneButton label='Finish' key="done-button" onClick={@returnToMarking} />
 
     if @props.onShowHelp?
       buttons.push(<button key="help-button" type="button" className="pill-button help-button" onClick={@props.onShowHelp}>
@@ -120,7 +126,7 @@ CompositeTool = React.createClass
             annotation={@state.annotation}
           />
       }
-          
+
     </DraggableModal>
 
 module.exports = CompositeTool

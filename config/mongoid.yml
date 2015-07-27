@@ -3,7 +3,11 @@
 # As discussed in: http://blog.mongolab.com/2014/02/mongodb-driver-tips-tricks-mongoid-3
 #
 production:
+  options:
 
+    # Raise an error when performing a #find and the document is not found.
+    # (default: true)
+    raise_not_found_error: false
 
   sessions:
     default:
@@ -48,10 +52,6 @@ production:
         # refresh_interval specifies the number of seconds to cache information
         # about a node. Default is 300 seconds (5 minutes).
         refresh_interval: 10
-
-  options:
-    raise_not_found_error: false
-
 
 development:
   # Configure available database sessions. (required)
