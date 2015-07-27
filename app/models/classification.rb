@@ -3,7 +3,7 @@ class Classification
 
   field :location
   field :task_key,                        type: String
-  field :annotation,                      type: Hash
+  field :annotation,                      type: Hash, default: {}
   field :tool_name
 
   field :started_at
@@ -50,12 +50,16 @@ class Classification
   end
 
   def generate_terms
+    return if annotation.nil?
     annotation.each do |(k,v)|
 
       # Require a min length of 2 to index:
       next if v.nil? || v.size < 2
+      # If task doesn't exist (i.e. completion_assessment_task, flag_bad_subject_task), skip:
+      next if workflow_task.nil?
 
       tool_config = workflow_task.tool_config_for_field k
+      next if tool_config.nil?
 
       # Is field configured to be indexed for "common" autocomplete?
       index_term = ! tool_config['suggest'].nil? && tool_config['suggest'] == 'common'
@@ -72,8 +76,13 @@ class Classification
   end
 
   def increment_subject_classification_count
+    # TODO: Probably wrong place to be reacting to completion_assessment_task & flag_bad_subject_task
+    # tasks; Should perhaps generalize and place elsewhere
     if self.task_key == "completion_assessment_task" && self.annotation["value"] == "complete_subject"
       subject.increment_retire_count_by_one
+    end
+    if self.task_key == "flag_bad_subject_task"
+      subject.increment_flagged_bad_count_by_one
     end
     subject.inc classification_count: 1
 
@@ -85,7 +94,7 @@ class Classification
     ann = annotation.values.select { |v| v.match /[a-zA-Z]/ }.map { |v| "\"#{v}\"" }.join ', '
     ann = ann.truncate 40
     # {! annotation["toolName"].nil? ? " (#{annotation["toolName"]})" : ''}
-    "#{workflow.name.capitalize} Classification (#{ann})"
+    "#{workflow.name.capitalize} Classification (#{ ann.blank? ? task_key : ann})"
   end
 
 end

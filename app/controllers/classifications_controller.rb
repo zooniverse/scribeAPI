@@ -15,6 +15,7 @@ class ClassificationsController < ApplicationController
     task_key         = params["classifications"]["task_key"]
 
     annotation       = params["classifications"]["annotation"]
+    annotation       = {} if annotation.nil?
     started_at       = params["classifications"]["metadata"]["started_at"]
     finished_at      = params["classifications"]["metadata"]["finished_at"]
     subject_id       = params["classifications"]["subject_id"]

@@ -7,7 +7,7 @@ module.exports = React.createClass
     label: 'Okay'
 
   render: ->
-    classes = 'major-button'
+    classes = ''
     classes += " #{@props.className}" if @props.className?
       
     <button className = {classes} onClick={@props.onClick} >

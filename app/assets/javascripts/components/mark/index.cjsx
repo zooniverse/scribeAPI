@@ -80,6 +80,8 @@ module.exports = React.createClass # rename to Classifier
             annotation={@getCurrentClassification().annotation ? {}}
             onChange={@handleDataFromTool}
             onShowHelp={@toggleHelp if @getCurrentTask().help?}
+            badSubject={@state.badSubject}
+            onBadSubject={@toggleBadSubject}
           />
           <hr/>
           <nav className="task-nav">
@@ -110,31 +112,6 @@ module.exports = React.createClass # rename to Classifier
         <HelpModal help={@getCurrentTask().help} onDone={=> @setState helping: false } />
       }
     </div>
-
-  getNextSubject: ->
-    console.log 'getNextSubject()'
-    new_subject_set_index = @state.subject_set_index
-    new_subject_index = @state.subject_index + 1
-
-    # If we've exhausted pages in this subject set, move to next one:
-    if new_subject_index >= @getCurrentSubjectSet().subjects.length
-      new_subject_set_index += 1
-      new_subject_index = 0
-
-    # If we've exhausted all subject sets, collapse in shame
-    console.log "if new_subject_set_index..", @state.subjectSets.length
-    if new_subject_set_index >= @state.subjectSets.length
-      console.warn "NO MORE SUBJECT SETS"
-      return
-
-    console.log "Mark#index Advancing to subject_set_index #{new_subject_set_index} (of #{@state.subjectSets.length}), subject_index #{new_subject_index} (of #{@state.subjectSets[new_subject_set_index].subjects.length})"
-
-    @setState
-      subject_set_index: new_subject_set_index
-      subject_index: new_subject_index
-      taskKey: @getActiveWorkflow().first_task
-      currentSubToolIndex: 0, =>
-        # console.log "After @state", @state
 
   # User changed currently-viewed subject:
   handleViewSubject: (index) ->
@@ -206,7 +183,7 @@ module.exports = React.createClass # rename to Classifier
   completeSubjectAssessment: ->
     @commitClassification()
     @beginClassification()
-    @getNextSubject()
+    @advanceToNextSubject()
 
   nextPage: (callback_fn)->
     console.log 'nextPage()'

@@ -3,6 +3,7 @@ React           = require 'react'
 DraggableModal  = require 'components/draggable-modal'
 DoneButton      = require './done-button'
 PrevButton      = require './prev-button'
+BadSubjectButton    = require 'components/buttons/bad-subject-button'
 
 TextTool = React.createClass
   displayName: 'TextTool'
@@ -168,6 +169,7 @@ TextTool = React.createClass
             onChange: @handleChange
             onFocus: ( () => @props.onInputFocus? @props.annotation_key )
             value: val
+            disabled: @props.badSubject
         
           if @props.inputType == "text"
             <input type="text" value={val} {...atts} />
@@ -195,6 +197,9 @@ TextTool = React.createClass
         buttons.push(<button key="help-button" type="button" className="pill-button help-button" onClick={@props.onShowHelp}>
           Need some help?
         </button>)
+
+      if @props.onBadSubject?
+        buttons.push <BadSubjectButton active={@props.badSubject} onClick={@props.onBadSubject} />
 
       if window.location.hash is '#/transcribe' || @props.task.next_task? # regular transcribe, i.e. no mark transition
         buttons.push <DoneButton label={if @props.task.next_task? then 'Next' else 'Done'} key="done-button" onClick={@commitAnnotation} />

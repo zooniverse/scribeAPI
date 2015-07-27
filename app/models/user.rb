@@ -90,7 +90,6 @@ class User
     else # Create a user with a stub password.
       details = details_from_oauth access_token[:provider], access_token
       tmp_pass = Devise.friendly_token[0,20]
-      puts "User#create #{details.merge(password: tmp_pass, password_confirmation: tmp_pass).inspect}"
       self.create details.merge(password: tmp_pass, password_confirmation: tmp_pass)
     end
   end
@@ -109,7 +108,6 @@ class User
   def self.details_from_fb(access_token)
     extra = access_token[:extra][:raw_info]
     info = access_token[:info]
-    puts "facebook login: #{access_token.inspect}"
     {
       name: extra[:name],
       email: extra[:email],
@@ -121,7 +119,6 @@ class User
 
   def self.details_from_google(access_token)
     extra = access_token[:extra][:raw_info]
-    puts "goog login: #{access_token.inspect}"
     {
       name: "#{extra[:name]}",
       email: extra[:email],
@@ -149,7 +146,6 @@ class User
       role: 'user'
     })
     u.save!(:validate => false)
-    puts "User#create_guest_user: #{u.inspect}"
     u
   end
 
