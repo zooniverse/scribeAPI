@@ -1,6 +1,6 @@
 React         = require("react")
 GroupBrowser  = require('./group-browser')
-ActionButton  = require('./action-button')
+SmallButton   = require('components/buttons/small-button')
 API           = require('../lib/api')
 
 GroupPage = React.createClass
@@ -29,15 +29,18 @@ GroupPage = React.createClass
         <h2>Loading...</h2>
       </div>
     else if @state.group
-      <div className='main-content'>
+      <div className='page-content'>
         <div className="group-page">
+
+          <img className="group-image" src={@state.group.cover_image_url}></img>
+
           <h1>{@state.group.name}</h1>
           <p>{@state.group.description}</p>
 
           <dl className="metadata-list">
             { for k,v of @state.group.meta_data when ['key','description','cover_image_url','external_url','retire_count'].indexOf(k) < 0
                 # Is there another way to return both dt and dd elements without wrapping?
-                <span>
+                <span key={k}>
                   <dt>{k.replace(/_/g, ' ')}</dt>
                   <dd>{v}</dd>
                 </span>
@@ -50,31 +53,23 @@ GroupPage = React.createClass
             }
           </dl>
 
-          <img src={@state.group.cover_image_url}></img>
-
-          {@state.group.image}
-
           <div className='subject_sets'>
-            {@renderSubjectSets()}
+            { for set, i in @state.group.subject_sets
+                <div key={i} className="subject_set">
+
+                  <img src={set.thumbnail} />
+                  <div className="mark-transcribe-buttons">
+                    <SmallButton label="Mark" href={"#/mark/#{set.id}"} />
+                    <SmallButton label="Transcribe" href={"#/transcribe/#{set.id}"} />
+                  </div>
+                </div>
+            }
           </div>
 
         </div>
       </div>
     else
       <h2>Something went wrong</h2>
-
-  renderSubjectSets:->
-    [@renderSubjectSet(subject_set) for subject_set in @state.group.subject_sets]
-
-  renderSubjectSet:(set)->
-    <div className="subject_set">
-
-      <img src={set.thumbnail} />
-      <div className="mark-transcribe-buttons">
-        <ActionButton text="Mark" href={"#/mark/#{set.id}"} />
-        <ActionButton text="Transcribe" href={"#/transcribe/#{set.id}"} />
-      </div>
-    </div>
 
 
 module.exports = GroupPage

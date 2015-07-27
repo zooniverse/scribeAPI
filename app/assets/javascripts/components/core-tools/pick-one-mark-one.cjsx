@@ -76,7 +76,7 @@ module.exports = React.createClass
 
       <label
         key={tool._key}
-        className="answer minor-button #{if i is @getSubToolIndex() then 'active' else ''}"
+        className="answer #{if i is @getSubToolIndex() then 'active' else ''}"
       >
         <span
           className="drawing-tool-icon"

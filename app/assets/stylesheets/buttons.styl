@@ -3,7 +3,6 @@
 
 .standard-button
   @extends $reset-button
-  background: MAIN_HIGHLIGHT
   border-radius: 3px
   color: white
   padding: 0.4em 1.4em
@@ -24,8 +23,9 @@
 
 .major-button
   @extends .standard-button
-  background: SECOND_HIGHLIGHT
+  background: MAIN_HIGHLIGHT
   font-weight: bold
+  text-transform: uppercase;
 
   &:hover
     background: lighten(SECOND_HIGHLIGHT, 20%)
@@ -34,12 +34,17 @@
   @extends .standard-button
   color: FOREGROUND
   background: lighten(#424242, 90%)
+  text-transform: uppercase;
 
   &:hover
     background: lighten(#424242, 95%)
 
   &.active
     @extends .standard-button
+
+.small-button
+  font-size 11px
+  padding: 0.3em 1em
 
 .pill-button
   @extends $reset-button

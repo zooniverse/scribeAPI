@@ -91,10 +91,16 @@
         opacity 0.75
 
       .answer
+        @extends .standard-button
+        background-color #ddd
+        color #333
+        font-size 12px
+
         align-items: center
         display: flex
         margin: 0.5em 0
         text-align: left
+
         input
           visibility: hidden
         .drawing-tool-icon
@@ -106,6 +112,10 @@
         .tool-count
           margin-left: 0.5em
           opacity: 0.7
+
+        &:hover, &.active
+          background-color MAIN_HIGHLIGHT
+          color white
 
     .task-nav
       display: flex

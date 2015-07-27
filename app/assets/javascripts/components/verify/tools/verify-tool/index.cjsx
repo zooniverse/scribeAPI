@@ -74,6 +74,9 @@ VerifyTool = React.createClass
       onDone  = {@commitAnnotation} >
 
       <div className="verify-tool-choices">
+        { if @props.subject.data.task_prompt?
+          <span>Original prmpt: <em>{ @props.subject.data.task_prompt }</em></span>
+        }
         <ul>
         { for data,i in @props.subject.data['values']
             <li key={i}>
