@@ -1,5 +1,5 @@
 React         = require 'react'
-GenericButton = require './generic-button'
+SmallButton   = require './small-button'
 
 module.exports = React.createClass
   displayName: 'BadSubjectButton'
@@ -7,5 +7,5 @@ module.exports = React.createClass
   render: ->
     label = if @props.active then 'Bad Subject' else 'Bad Subject?'
 
-    <GenericButton label={label} onClick={@props.onClick} className="pill-button bad-subject #{'marked-bad' if @props.active}"/>
+    <SmallButton label={label} onClick={@props.onClick} className="ghost bad-subject #{'marked-bad' if @props.active}" />
      

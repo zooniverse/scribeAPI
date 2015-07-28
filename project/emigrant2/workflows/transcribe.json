@@ -1,0 +1,62 @@
+{
+  "name": "transcribe",
+  "label": "Transcribe Workflow",
+  "retire_limit": 3,
+  "generates_subjects": true,
+  "generates_subjects_for": "verify",
+  "generates_subjects_after": 3,
+  "generates_subjects_max": 10,
+  "generates_subjects_method": "collect-unique",
+
+  "tasks": {
+
+
+    "em_record_rect_date": {
+      "tool": "textTool",
+      "tool_config": {
+        "suggest": "common"
+      },
+      "instruction": "Enter the record date",
+      "help": {
+        "title": "Record Date",
+        "body": "The record date can generally be found in the upper left hand corner of the record. Enter it as written, e.g. \"1867 May 11\""
+      },
+      "generates_subject_type": "em_transcribed_date"
+    },
+
+    "em_record_mortgager": {
+      "tool": "textTool",
+      "tool_config": {
+        "suggest": "common"
+      },
+      "instruction": "Enter the mortgager's name",
+      "generates_subject_type": "em_transcribed_mortgager",
+      "help": {
+        "title": "Mortgager Name",
+        "body": "The Mortgager is often found at the top of the list of hand-entered data. The mortgager tends to be a single person's name. If multiple names are given, enter them all separated by semi-colons."
+      }
+    },
+
+    "em_record_street_address": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Enter the street address",
+      "generates_subject_type": "em_transcribed_address",
+      "help": {
+        "title": "Street Address",
+        "body": "The building address is sometimes labeled \"No. of Street or Avenue\". When possible, try to interpret the address given using contemporary address conventions. For example, for \"No. 39 Mott St\" enter \"39 Mott St\""
+      }
+    },
+
+    "em_record_amount_loaned": {
+      "tool": "numberTool",
+      "tool_config": {},
+      "instruction": "Enter the Amount Loaned",
+      "generates_subject_type": "em_transcribed_amount_loaned",
+      "help": {
+        "title": "Amount Loaned",
+        "body": "The Amount Loaned is typically found at or near the bottom of the record. For example, for \"Amoun Loaned: $4,500.\", enter \"4500\"."
+      }
+    }
+  }
+}

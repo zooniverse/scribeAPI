@@ -1,8 +1,7 @@
 React           = require 'react'
 {Navigation}    = require 'react-router'
 DraggableModal  = require 'components/draggable-modal'
-DoneButton      = require './done-button'
-PrevButton      = require './prev-button'
+SmallButton     = require 'components/buttons/small-button'
 BadSubjectButton    = require 'components/buttons/bad-subject-button'
 
 TextTool = React.createClass
@@ -196,17 +195,15 @@ TextTool = React.createClass
       buttons = []
 
       if @props.onShowHelp?
-        buttons.push(<button key="help-button" type="button" className="pill-button help-button" onClick={@props.onShowHelp}>
-          Need some help?
-        </button>)
+        buttons.push <SmallButton label="Need some help?" onClick={@props.onShowHelp} className="help-button ghost"/>
 
       if @props.onBadSubject?
         buttons.push <BadSubjectButton active={@props.badSubject} onClick={@props.onBadSubject} />
 
       if window.location.hash is '#/transcribe' || @props.task.next_task? # regular transcribe, i.e. no mark transition
-        buttons.push <DoneButton label={if @props.task.next_task? then 'Next' else 'Done'} key="done-button" onClick={@commitAnnotation} />
+        buttons.push <SmallButton label={if @props.task.next_task? then 'Next' else 'Done'} key="done-button" onClick={@commitAnnotation} />
       else
-        buttons.push <DoneButton label='Finish' key="done-button" onClick={@returnToMarking} />
+        buttons.push <SmallButton label='Finish' key="done-button" onClick={@returnToMarking} />
 
       {x,y} = @getPosition @props.subject.region
 

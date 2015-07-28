@@ -7,15 +7,13 @@
   color: white
   padding: 0.4em 1.4em
   text-align: center
-
-  &:hover
-    background: lighten(MAIN_HIGHLIGHT, 20%)
+  font-weight bold
 
   &:disabled
     pointer-events: none
 
   &.disabled
-    opacity 0.5
+    background-color PRIMARY_NORMAL
 
   &.full
     display: block
@@ -23,28 +21,31 @@
 
 .major-button
   @extends .standard-button
-  background: MAIN_HIGHLIGHT
+  background: PRIMARY_NORMAL
   font-weight: bold
   text-transform: uppercase;
 
   &:hover
-    background: lighten(SECOND_HIGHLIGHT, 20%)
+    background: PRIMARY_HOVER
 
 .minor-button
   @extends .standard-button
-  color: FOREGROUND
-  background: lighten(#424242, 90%)
+  color: white
+  background: SECONDARY_NORMAL
   text-transform: uppercase;
 
   &:hover
-    background: lighten(#424242, 95%)
-
-  &.active
-    @extends .standard-button
-
+    background: SECONDARY_HOVER
+  
+  &.ghost
+    border: solid SECONDARY_NORMAL 2px
+    background: transparent
+    color SECONDARY_NORMAL
+    
+  
 .small-button
   font-size 11px
-  padding: 0.3em 1em
+  padding: 0.2em 1em
 
 .pill-button
   @extends $reset-button

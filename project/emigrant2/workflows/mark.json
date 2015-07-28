@@ -1,0 +1,30 @@
+{
+  "name":"mark",
+  "label":"Mark Workflow",
+  "subject_fetch_limit":"10",
+  "generates_subjects": true,
+  "generates_subjects_for": "transcribe",
+
+  "first_task":"identify_records",
+
+  "tasks": {
+    "identify_records": {
+      "tool": "pickOneMarkOne",
+      "instruction": "Draw boxes around each of the fields below.",
+      "generates_subjects": true,
+      "help": {
+        "title": "Drawing boxes",
+        "body": "Draw a box around each of the fields. "
+      },
+      "tool_config" : {
+        "tools": [
+          {"type": "rectangleTool", "label": "Record Date", "color": "green", "generates_subject_type": "em_record_rect_date"},
+          {"type": "rectangleTool", "label": "Mortgager Name", "color": "green", "generates_subject_type": "em_record_mortgager"},
+          {"type": "rectangleTool", "label": "Street Address", "color": "green", "generates_subject_type": "em_record_street_address"},
+          {"type": "rectangleTool", "label": "Amount Loaned", "color": "green", "generates_subject_type": "em_record_amount_loaned"}
+        ]
+      },
+      "next_task": null
+    }
+  }
+}

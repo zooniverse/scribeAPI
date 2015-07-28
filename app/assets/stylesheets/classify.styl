@@ -61,18 +61,18 @@
     width 250px
     right 20px
     top 100px
-    // float: right
-    // width: 70%
-    // flex: 1 0 15em
-    // margin-right: 2em
-    // margin-bottom: 1em
-    // max-width: 35em
-    //
-    // & > div:first-of-type
-    //   margin-top 60px
+    background-color #EFEFEF
+    color SECONDARY_NORMAL
+    padding 20px
+    border-radius 5px
+
+    & > div:nth-child(2)
+      margin-top 20px
+      padding-top 20px
+      border-top solid #999 1px
 
     .workflow-task
-      margin-top 80px
+      margin-bottom 10px
       .pick-one-dropdown
         font-size 1.5em
         transition opacity 0.250s
@@ -114,8 +114,11 @@
           opacity: 0.7
 
         &:hover, &.active
-          background-color MAIN_HIGHLIGHT
           color white
+        &.active
+          background-color SECONDARY_NORMAL
+        &:hover
+          background-color SECONDARY_HOVER
 
     .task-nav
       display: flex
@@ -134,7 +137,6 @@
       border-color white
 
 .workflow-task
-  margin-top 100px
   .drawing-tool-icon > svg
     fill-opacity: 0.1
     height: 1.5em
@@ -187,11 +189,12 @@
 
 
 .bad-subject
-  border-color darkred
-  color darkred
   margin-left 10px
+  color TERTIARY_NORMAL
+  border-color TERTIARY_NORMAL
 
   &.marked-bad
+    border none
     background-color darkred
     color white
   
