@@ -221,6 +221,14 @@
     },
 
 
+    "sea_ice_other_description": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Enter the sea ice description.",
+      "next_task": null
+    },
+
+
 
 
 

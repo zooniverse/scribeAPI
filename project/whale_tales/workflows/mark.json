@@ -37,18 +37,14 @@
 
     "sea_ice_present": {
       "tool": "pickOne",
-      "instruction": "Is there any sea ice present?",
+      "instruction": "Are there any mentions of sea ice?",
       "tool_config": {
         "options": {
-          "present": {
-            "label": "Yes, sea ice present",
+          "yes": {
+            "label": "Yes",
             "next_task": "sea_ice"
           },
-          "mentioned": {
-            "label": "No, but sea ice mentioned",
-            "next_task": "sea_ice_mention"
-          },
-          "not-present": {
+          "no": {
             "label": "No",
             "next_task": "weather_present"
           }
@@ -57,34 +53,68 @@
     },
 
     "sea_ice": {
-      "generates_subjects": true,
-      "tool":"pickOneMarkOne",
-      "instruction":"Pick a sea ice description. Draw a rectangle around the corresponding text.",
+      "tool": "pickOne",
+      "instruction": "Is there any (other) description of the sea ice?",
       "tool_config": {
-        "tools": [
-          {"type": "rectangleTool", "label": "Date",                     "color": "red", "generates_subject_type": "sea_ice_date" },
-          {"type": "rectangleTool", "label": "Sea Ice Description",      "color": "red", "generates_subject_type": "sea_ice_description" },
-          {"type": "rectangleTool", "label": "Other Desciptions",        "color": "red", "generates_subject_type": "sea_ice_other_description" }
+        "options": [
+          {"value": "sea_ice_concentration", "label": "Concentration Description", "next_task": "sea_ice_concentration" },
+          {"value": "sea_ice_thickness",     "label": "Thickness Description",     "next_task": "sea_ice_thickness" },
+          {"value": "sea_ice_special",       "label":  "Special Features",         "next_task": "sea_ice_special" },
+          {"value": "sea_ice_undescribed",   "label": "No",                        "next_task": "weather_present" }
         ]
-      },
-      "next_task": "sea_ice_present"
+      }
     },
 
-    "sea_ice_mention": {
+    "sea_ice_concentration": {
       "tool": "pickMany",
-      "instruction": "Are any of the following mentions of sea ice present? If so, click on them.",
+      "instruction": "Select all sea ice descriptions that apply.",
       "tool_config": {
         "options": [
           {"value": "ice_field",   "label": "Ice Field" },
           {"value": "floe",        "label": "Floe" },
           {"value": "drift_ice",   "label": "Drift Ice" },
           {"value": "sailing_ice", "label": "Sailing Ice" },
-          {"value": "pack_ice",    "label": "Pack Ice" },
-          {"value": "other",    "label": "Other" }
+          {"value": "pack_ice",    "label": "Pack Ice" }
         ]
       },
-      "next_task": "weather_present"
+      "next_task": "sea_ice"
     },
+
+
+  "sea_ice_thickness": {
+    "tool": "pickMany",
+    "instruction": "Select all sea ice descriptions that apply.",
+    "tool_config": {
+      "options": [
+        {"value": "baby_ice",  "label": "Baby Ice" },
+        {"value": "sludge",    "label": "Sludge" },
+        {"value": "brash",     "label": "Brash" },
+        {"value": "light_ice", "label": "Light Ice" },
+        {"value": "heavy_ice", "label": "Heavy Ice" },
+        {"value": "hummock",   "label": "Hummock" }
+
+      ]
+    },
+    "next_task": "sea_ice"
+  },
+
+  "sea_ice_special": {
+    "tool": "pickMany",
+    "instruction": "Select all sea ice descriptions that apply.",
+    "tool_config": {
+      "options": [
+        {"value": "melt_ponds",      "label": "Melt Ponds" },
+        {"value": "snow_on_sea_ice", "label": "Snow On Sea Ice" },
+        {"value": "land_ice",        "label": "Land Ice" },
+        {"value": "floeberg",        "label": "Floeberg" },
+        {"value": "iceberg",         "label": "Iceberg" }
+      ]
+    },
+    "next_task": "sea_ice"
+  },
+
+
+
 
     "weather_present": {
       "tool": "pickOne",
