@@ -191,6 +191,29 @@
     },
 
 
+    "event_whaling_activity": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Briefly describe the whaling activity.",
+      "next_task": null
+    },
+
+    "event_ship_interaction": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Briefly describe the ship interaction.",
+      "next_task": null
+    },
+
+    "event_native_interaction": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Briefly describe the interaction with natives.",
+      "next_task": null
+    },
+
+
+
 
 
 
