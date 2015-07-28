@@ -57,10 +57,10 @@
       "instruction": "Is there any (other) description of the sea ice?",
       "tool_config": {
         "options": [
-          {"value": "sea_ice_concentration", "label": "Concentration Description", "next_task": "sea_ice_concentration" },
-          {"value": "sea_ice_thickness",     "label": "Thickness Description",     "next_task": "sea_ice_thickness" },
-          {"value": "sea_ice_special",       "label":  "Special Features",         "next_task": "sea_ice_special" },
-          {"value": "sea_ice_undescribed",   "label": "No",                        "next_task": "weather_present" }
+          {"value": "sea_ice_concentration",  "label": "Concentration Description", "next_task": "sea_ice_concentration" },
+          {"value": "sea_ice_thickness",      "label": "Thickness Description",     "next_task": "sea_ice_thickness" },
+          {"value": "sea_ice_special",        "label": "Special Features",         "next_task": "sea_ice_special" },
+          {"value": "sea_ice_no_description", "label": "No",                        "next_task": "weather_present" }
         ]
       }
     },
@@ -92,7 +92,6 @@
         {"value": "light_ice", "label": "Light Ice" },
         {"value": "heavy_ice", "label": "Heavy Ice" },
         {"value": "hummock",   "label": "Hummock" }
-
       ]
     },
     "next_task": "sea_ice"
