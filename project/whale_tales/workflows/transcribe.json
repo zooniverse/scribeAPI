@@ -227,7 +227,9 @@
     },
     "transcribe_rectangle_with_text_tool": {
       "tool": "textTool",
-      "tool_config": {},
+      "tool_config": {
+          "suggest": "common"
+      },
       "instruction": "Transcribe this rectangle.",
       "next_task": "entry_date"
     },
@@ -293,7 +295,9 @@
         "tools": {
           "first_field": {
             "tool": "textTool",
-            "tool_config": {},
+            "tool_config": {
+                "suggest": "common"
+            },
             "label": "Text Tool"
           },
           "second_field": {

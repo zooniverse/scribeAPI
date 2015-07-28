@@ -49,17 +49,21 @@ CompositeTool = React.createClass
   # If there are more inputs, move focus to next input
   # Otherwise commit annotation (which is default behavior when there's only one input
   handleCompletedField: ->
+    console.log 'handleCompletedField()'
     field_keys = (annotation_key for annotation_key, tool_config of @props.task.tool_config.tools)
     next_field_key = field_keys[ field_keys.indexOf(@state.active_field_key) + 1 ]
 
     if next_field_key?
       @setState active_field_key: next_field_key
-
+        , =>
+          console.log '@state.active_field_key = ', @state.active_field_key
+          @forceUpdate()
     else
       @commitAnnotation()
 
   # User moved focus to an input:
   handleFieldFocus: (annotation_key) ->
+    console.log 'handleFieldFocus()'
     @setState active_field_key: annotation_key
 
   # this can go into a mixin? (common across all transcribe tools)
@@ -81,6 +85,7 @@ CompositeTool = React.createClass
       page: @props.subjectCurrentPage
 
   render: ->
+    console.log 'render()'
     buttons = []
     # TK: buttons.push <PrevButton onClick={=> console.log "Prev button clicked!"} />
 
@@ -108,6 +113,8 @@ CompositeTool = React.createClass
         for annotation_key, tool_config of @props.task.tool_config.tools
           ToolComponent = @props.transcribeTools[tool_config.tool]
           focus = annotation_key is @state.active_field_key
+
+          console.log 'render::focus = ', focus, ' ', annotation_key
 
           <ToolComponent
             task={@props.task}

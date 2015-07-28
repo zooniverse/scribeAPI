@@ -61,9 +61,11 @@ TextTool = React.createClass
     @applyAutoComplete()
 
   componentDidMount: ->
-
     @applyAutoComplete()
+    @focus() if @props.focus
 
+  componentDidUpdate: ->
+    @applyAutoComplete()
     @focus() if @props.focus
 
   applyAutoComplete: ->
@@ -123,14 +125,14 @@ TextTool = React.createClass
     # otherwise, it'll be a callback to Transcribe::handleDataFromTool()
     @props.onChange(newAnnotation) # report updated annotation to parent
 
-  handleKeyPress: (e) ->
+  handleKeyDown: (e) ->
+    @handleChange(e) # updates any autocomplete values
     if [13].indexOf(e.keyCode) >= 0 # ENTER
+      # submit transcription
       if window.location.hash is '#/transcribe' || @props.task.next_task? # regular transcribe, i.e. no mark transition
         @commitAnnotation()
       else
         @returnToMarking()
-      e.preventDefault()
-
   handleBadMark: ()->
     newAnnotation = []
     newAnnotation["low_quality_subject"]
@@ -139,7 +141,6 @@ TextTool = React.createClass
     return null if @props.loading # hide transcribe tool while loading image
 
     val = @state.annotation[@fieldKey()]
-
     val = '' if ! val?
 
     unless @props.standalone
@@ -159,7 +160,7 @@ TextTool = React.createClass
             ref: ref
             key: "#{@props.task.key}.#{@props.annotation_key}"
             "data-task_key": @props.task.key
-            onKeyDown: @handleKeyPress
+            onKeyDown: @handleKeyDown
             onChange: @handleChange
             onFocus: ( () => @props.onInputFocus? @props.annotation_key )
             value: val
