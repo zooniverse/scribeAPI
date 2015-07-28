@@ -12,7 +12,9 @@
 
     "entry_date": {
       "tool": "textTool",
-      "tool_config": {},
+      "tool_config": {
+        "suggest": "common"
+      },
       "instruction": "What is the entry date?",
       "next_task": "page_number"
     },
@@ -24,7 +26,9 @@
     },
     "location": {
       "tool": "textTool",
-      "tool_config": {},
+      "tool_config": {
+        "suggest": "common"
+      },
       "instruction": "What is the location?",
       "next_task": "entry_text"
     },
@@ -37,7 +41,9 @@
 
     "location_name": {
       "tool": "textTool",
-      "tool_config": {},
+      "tool_config": {
+        "suggest": "common"
+      },
       "instruction": "Enter the name of the location.",
       "next_task": null
     },
@@ -62,7 +68,9 @@
     },
     "location_port": {
       "tool": "textTool",
-      "tool_config": {},
+      "tool_config": {
+        "suggest": "common"
+      },
       "instruction": "Enter the name of the port.",
       "next_task": null
     },
