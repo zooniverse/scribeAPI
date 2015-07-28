@@ -2,6 +2,16 @@ require 'fileutils'
 
 desc 'creates a poject object from the project directory'
 
+  task :project_drop, [:project_key] => :environment do |task, args|
+    
+    project = Project.find_by key: args[:project_key]
+    puts "Delete project: #{args[:project_key]}"
+    if ! project.nil?
+      project.destroy
+    end
+
+  end
+
   task :project_load, [:project_key] => :environment do |task, args|
     project_dir = Rails.root.join('project', args[:project_key])
     project_file_path = "#{project_dir}/project.json"
