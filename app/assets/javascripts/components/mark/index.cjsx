@@ -7,6 +7,8 @@ JSONAPIClient           = require 'json-api-client' # use to manage data?
 ForumSubjectWidget      = require '../forum-subject-widget'
 API                     = require '../../lib/api'
 HelpModal               = require 'components/help-modal'
+HelpButton              = require 'components/buttons/help-button'
+BadSubjectButton        = require 'components/buttons/bad-subject-button'
 
 module.exports = React.createClass # rename to Classifier
   displayName: 'Mark'
@@ -42,6 +44,7 @@ module.exports = React.createClass # rename to Classifier
     currentTask = @getCurrentTask()
     TaskComponent = @getCurrentTool()
     onFirstAnnotation = @state.taskKey == @getActiveWorkflow().first_task
+    console.log "on first: ", @state.taskKey, @getActiveWorkflow().first_task, onFirstAnnotation
 
 
     if currentTask.tool is 'pick_one'
@@ -49,7 +52,6 @@ module.exports = React.createClass # rename to Classifier
       waitingForAnswer = not currentAnswer
 
     <div className="classifier">
-
 
       <div className="subject-area">
         { if @state.noMoreSubjectSets
@@ -79,20 +81,28 @@ module.exports = React.createClass # rename to Classifier
             task={currentTask}
             annotation={@getCurrentClassification().annotation ? {}}
             onChange={@handleDataFromTool}
-            onShowHelp={@toggleHelp if @getCurrentTask().help?}
-            badSubject={@state.badSubject}
-            onBadSubject={@toggleBadSubject}
           />
+          <div className="help-bad-subject-holder">
+            { if @getCurrentTask().help?
+              <HelpButton onClick={@toggleHelp} />
+            }
+            { if onFirstAnnotation
+              <BadSubjectButton active={@state.badSubject} onClick={@toggleBadSubject} />
+            }
+            { if @state.badSubject
+              <p>You&#39;ve marked this subject as BAD. Thanks for flagging the issue!</p>
+            }
+          </div>
           <nav className="task-nav">
-            <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
+            { if false
+              <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
+            }
             { if @getNextTask()?
                 <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@advanceToNextTask}>Next</button>
               else
                 if @state.taskKey == "completion_assessment_task"
-                  console.log "LAST TASK:"
-                  console.log @getCurrentSubject() == @getCurrentSubjectSet().subjects[@getCurrentSubjectSet().subjects.length-1]
                   if @getCurrentSubject() == @getCurrentSubjectSet().subjects[@getCurrentSubjectSet().subjects.length-1]
-                    <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next SubjectSet</button>
+                    <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next</button>
                   else
                     <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next Page</button>
                 else

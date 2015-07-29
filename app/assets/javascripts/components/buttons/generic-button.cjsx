@@ -1,4 +1,4 @@
-React = require 'react'
+React             = require 'react'
 
 module.exports = React.createClass
   displayName: 'GenericButton'
@@ -8,6 +8,8 @@ module.exports = React.createClass
     disabled: false
     className: ''
     major: false
+    onClick: null
+    href: null
 
   render: ->
     classes = @props.className.split /\s+/

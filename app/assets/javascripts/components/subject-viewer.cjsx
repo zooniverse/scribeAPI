@@ -40,7 +40,7 @@ module.exports = React.createClass
     # console.log "setting null because",new_props.task?.tool != 'pickOneMarkOne'
     @setUncommittedMark null if new_props.task?.tool != 'pickOneMarkOne'
     if Object.keys(@props.annotation).length == 0 #prevents back-to-back mark tasks, displaying a duplicate mark from previous tasks.
-      @setUncommittedMark null 
+      @setUncommittedMark null
 
 
   componentDidMount: ->

@@ -15,16 +15,17 @@ TextTool = React.createClass
 
   # this can go into a mixin? (common across all transcribe tools)
   getPosition: (data) ->
+    yPad = 20
     switch data.toolName
       when 'rectangleTool'
         x = data.x
-        y = parseFloat(data.y) + parseFloat(data.height)
+        y = parseFloat(data.y) + parseFloat(data.height) + yPad
       when 'textRowTool'
         x = data.x
-        y = data.yLower
+        y = data.yLower + yPad
       else # default for pointTool
         x = data.x
-        y = data.y
+        y = data.y + yPad
     return {x,y}
 
   getDefaultProps: ->
@@ -61,6 +62,15 @@ TextTool = React.createClass
 
     @applyAutoComplete()
 
+    # Required to ensure tool has cleared annotation even if tool doesn't unmount between tasks:
+    @setState
+      annotation: new_props.annotation ? {}
+      viewerSize: new_props.viewerSize
+
+  shouldComponentUpdate: ->
+    console.log "should update? ", @props, @state
+    true
+    
   componentDidMount: ->
 
     @applyAutoComplete()
