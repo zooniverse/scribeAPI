@@ -42,14 +42,25 @@ VerifyTool = React.createClass
       @commitAnnotation()
     )
 
+  # this can go into a mixin? (common across all transcribe tools)
+  getPosition: (data) ->
+    yPad = 20
+    switch data.toolName
+      when 'rectangleTool'
+        x = data.x
+        y = parseFloat(data.y) + parseFloat(data.height) + yPad
+      when 'textRowTool'
+        x = data.x
+        y = data.yLower + yPad
+      else # default for pointTool
+        x = data.x
+        y = data.y + yPad
+    return {x,y}
+
   render: ->
     # return null unless @props.viewerSize? && @props.subject?
-    return null if ! @props.scale? || ! @props.scale.horizontal?
-
-    # console.log "VerifyTool#render ", @props.scale.horizontal
-
-    # If user has set a custom position, position based on that:
-    # console.log "TextTool#render pos", @state
+    # return null if ! @props.scale? || ! @props.scale.horizontal?
+    return null if @props.loading # hide verify tool while loading image
 
     val = @state.annotation[@props.annotation_key] ? ''
 
@@ -57,25 +68,18 @@ VerifyTool = React.createClass
     if ! @props.standalone
       label = @props.label ? ''
 
-    transX = parseFloat(@props.subject.region.x) * parseFloat(@props.scale.horizontal)
-    # console.log "translating x,y: ", (@props.subject.region.x + 0), (@props.scale.horizontal + 0), transX
-    transY = Math.round @props.subject.region.y * @props.scale.vertical
-    # console.log " ...translating x,y: ", (@props.subject.region.y + 0), (@props.scale.vertical + 0), transY
-
-    style =
-      left: "#{@state.dx*@props.scale.horizontal}px"
-      top: "#{@state.dy*@props.scale.vertical}px"
-
+    {x,y} = @getPosition @props.subject.region
+    console.log "verify tool rendering with scale: ", @props.scale, x, x*@props.scale.horizontal, y, y*@props.scale.vertical
     <DraggableModal
       
       header  = {label}
-      x       = {transX}
-      y       = {transY}
+      x={x*@props.scale.horizontal}
+      y={y*@props.scale.vertical}
       onDone  = {@commitAnnotation} >
 
       <div className="verify-tool-choices">
         { if @props.subject.data.task_prompt?
-          <span>Original prmpt: <em>{ @props.subject.data.task_prompt }</em></span>
+          <span>Original prompt: <em>{ @props.subject.data.task_prompt }</em></span>
         }
         <ul>
         { for data,i in @props.subject.data['values']

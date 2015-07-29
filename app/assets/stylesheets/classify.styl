@@ -66,6 +66,12 @@
     padding 20px
     border-radius 5px
 
+    .help-bad-subject-holder
+      padding: 10px 0
+
+      button
+        margin 10px 10px 0 0
+
     & > div:nth-child(2)
       margin-top 20px
       padding-top 20px
@@ -131,10 +137,6 @@
         flex: 3 0
       :not(:first-child)
         margin-left: 0.5em
-    
-    .bad-subject
-      color white
-      border-color white
 
 .workflow-task
   .drawing-tool-icon > svg
@@ -187,9 +189,11 @@
     .help-button, .bad-subject
       float left
 
+      &:last
+        margin-left 10px
+
 
 .bad-subject
-  margin-left 10px
   color TERTIARY_NORMAL
   border-color TERTIARY_NORMAL
 

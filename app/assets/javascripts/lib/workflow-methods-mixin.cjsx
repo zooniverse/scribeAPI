@@ -64,7 +64,8 @@ module.exports =
 
     console.log 'COMMITTED CLASSIFICATION: ', classification
     console.log '(ALL CLASSIFICATIONS): ', @state.classifications
-    @beginClassification() #creating a new classification allows not keep commiting previously commited classifications. --AMS
+    # PB: Commenting this out because was generating duplicate empty classifications. We should figure out where/why commitClassification is being called twice.
+    # @beginClassification() #creating a new classification allows not keep commiting previously commited classifications. --AMS
 
   # Update local version of a subject with a newly acquired child_subject (i.e. after submitting a subject-generating classification)
   appendChildSubject: (subject_id, child_subject) ->
@@ -227,7 +228,7 @@ module.exports =
     else
       @setState
         subject_index: null
-        noMoreSubjects: true
+        userClassifiedAll: @state.subjects.length > 0
   
   # This is the version of advanceToNextSubject for workflows that consume subject sets (mark)
   _advanceToNextSubjectInSubjectSets: ->
@@ -240,7 +241,7 @@ module.exports =
       new_subject_index = 0
 
     # If we've exhausted all subject sets, collapse in shame
-    console.log "if new_subject_set_index..", @state.subjectSets.length
+    console.log "if new_subject_set_index..", @state.subjectSets
     if new_subject_set_index >= @state.subjectSets.length
       console.warn "NO MORE SUBJECT SETS"
       return
@@ -263,4 +264,5 @@ module.exports =
         @advanceToTask @getCurrentTask().next_task
 
       else
+        console.log "advance to next subject, ann cleared: ", @getCurrentClassification().annotation, @state.classifications
         @advanceToNextSubject()

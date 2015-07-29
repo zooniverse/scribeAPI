@@ -98,9 +98,9 @@ module.exports = React.createClass
 
       </label>
 
-    tools = null if tools.length == 1
+    # tools = null if tools.length == 1
 
-    <GenericTask question={@props.task.instruction} onShowHelp={@props.onShowHelp} answers={tools} />
+    <GenericTask question={@props.task.instruction} onBadSubject={@props.onBadSubject} onShowHelp={@props.onShowHelp} answers={tools} />
 
   getSubToolIndex: ->
     @state.subToolIndex

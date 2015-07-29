@@ -17,6 +17,14 @@
       "generates_subject_type": "consensus_date"
     },
 
+    "em_transcribed_record_number": {
+      "instruction": "Choose the best transcription!",
+      "tool": "verifyTool",
+      "tool_config": {},
+      "generates_subject_type": "consensus_record_number"
+    },
+
+
     "em_transcribed_mortgager": {
       "instruction": "Choose the best transcription!",
       "tool": "verifyTool",
@@ -29,6 +37,13 @@
       "tool": "verifyTool",
       "tool_config": {},
       "generates_subject_type": "consensus_address"
+    },
+
+    "em_transcribed_amount_loaned": {
+      "instruction": "Choose the best transcription!",
+      "tool": "verifyTool",
+      "tool_config": {},
+      "generates_subject_type": "consensus_amount_loaned"
     },
 
     "em_transcribed_valuation": {

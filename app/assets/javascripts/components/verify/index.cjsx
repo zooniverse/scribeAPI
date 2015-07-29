@@ -7,6 +7,9 @@ ForumSubjectWidget = require '../forum-subject-widget'
 
 BaseWorkflowMethods     = require 'lib/workflow-methods-mixin'
 
+DraggableModal          = require 'components/draggable-modal'
+GenericButton           = require 'components/buttons/generic-button'
+
 # Hash of core tools:
 coreTools          = require 'components/core-tools'
 
@@ -58,9 +61,13 @@ module.exports = React.createClass # rename to Classifier
     <div className="classifier">
       <div className="subject-area">
         { if ! @getCurrentSubject()?
-            style = marginTop: "50px"
 
-            <p style={style}>There are currently no {@props.workflowName} subjects. Try <a href="/#/mark">marking</a> instead!</p>
+            <DraggableModal
+              header          = { if @state.userClassifiedAll then "You verified them all!" else "Nothing to verify" }
+              buttons         = {<GenericButton label='Continue' href='/#/mark' />}
+            >
+                There are currently no {@props.workflowName} subjects. Try <a href="/#/mark">marking</a> instead!
+            </DraggableModal>
 
           else if @getCurrentSubject()?
             <SubjectViewer onLoad={@handleViewerLoad} subject={@getCurrentSubject()} active=true workflow={@getActiveWorkflow()} classification={@props.classification} annotation={currentAnnotation}>

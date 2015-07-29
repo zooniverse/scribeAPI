@@ -17,6 +17,8 @@ RowFocusTool            = require '../row-focus-tool'
 API                     = require '../../lib/api'
 
 HelpModal               = require 'components/help-modal'
+DraggableModal          = require 'components/draggable-modal'
+GenericButton           = require 'components/buttons/generic-button'
 
 module.exports = React.createClass # rename to Classifier
   displayName: 'Transcribe'
@@ -89,14 +91,15 @@ module.exports = React.createClass # rename to Classifier
       <div className="subject-area">
 
         { if ! @getCurrentSubject()
-            <div className="workflow-nothing-more">
-              { if @state.noMoreSubjects
-                <h1>You transcribed them all!</h1>
-              }
-              <p>There are currently no transcription subjects. Try <a href="/#/mark">marking</a> instead!</p>
-            </div>
+            <DraggableModal
+              header          = { if @state.userClassifiedAll then "You transcribed them all!" else "Nothing to transcribe" }
+              buttons         = {<GenericButton label='Continue' href='/#/mark' />}
+            >
+                There are currently no {@props.workflowName} subjects. Try <a href="/#/mark">marking</a> instead!
+            </DraggableModal>
 
           else if @getCurrentSubject()? and @getCurrentTask()?
+            console.log "rendering text tool: ", "#{@state.taskKey}.#{@getCurrentSubject().id}", currentAnnotation
             <SubjectViewer
               onLoad={@handleViewerLoad}
               subject={@getCurrentSubject()}
@@ -107,7 +110,7 @@ module.exports = React.createClass # rename to Classifier
             >
               <TranscribeComponent
                 viewerSize={@state.viewerSize}
-                annotation_key={@state.taskKey}
+                annotation_key={"#{@state.taskKey}.#{@getCurrentSubject().id}"}
                 key={@getCurrentTask().key}
                 task={@getCurrentTask()}
                 annotation={currentAnnotation}
