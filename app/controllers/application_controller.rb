@@ -41,6 +41,9 @@ class ApplicationController < ActionController::Base
     current_user.steal_contributions guest_user
   end
 
+  def admin_user_signed_in?
+    ! current_user.nil? && current_user.admin?
+  end
 
 
   def parse_pagination

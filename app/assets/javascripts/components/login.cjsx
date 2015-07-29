@@ -79,14 +79,10 @@ Login = React.createClass
 
 
   renderLoginOptions: (label) ->
-    links = []
-    if @state.providers.indexOf('facebook') >= 0
-      links.push <a key="login-link-fb" href='/users/auth/facebook' title="Log in using Facebook"><i className="fa fa-facebook fa-2" /></a>
-    if @state.providers.indexOf('google') >= 0
-      links.push <a key="login-link-google" href='/users/auth/google_oauth2' title="Log in using Google+"><i className="fa fa-google-plus fa-2" /></a>
-    if @state.providers.indexOf('zooniverse') >= 0
-      links.push <a key="login-link-zoonivers" href='/users/auth/zooniverse' title="Log in using Zooniverse"><i className="fa fa-dot-circle-o fa-2" /></a>
-
+    links = @state.providers.map (link) ->
+      icon_id = if link.id == 'zooniverse' then 'dot-circle-o' else link.id
+      <a key="login-link-#{link.id}" href={link.path} title="Log in using #{link.name}"><i className="fa fa-#{icon_id} fa-2" /></a>
+      
     <span>
       { label || "Log In:" }
       <div className='options'>

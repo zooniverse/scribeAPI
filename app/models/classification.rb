@@ -94,7 +94,8 @@ class Classification
     ann = annotation.values.select { |v| v.match /[a-zA-Z]/ }.map { |v| "\"#{v}\"" }.join ', '
     ann = ann.truncate 40
     # {! annotation["toolName"].nil? ? " (#{annotation["toolName"]})" : ''}
-    "#{workflow.name.capitalize} Classification (#{ ann.blank? ? task_key : ann})"
+    workflow_name = workflow.nil? ? '[Orphaned] ' : workflow.name.capitalize
+    "#{workflow_name} Classification (#{ ann.blank? ? task_key : ann})"
   end
 
 end

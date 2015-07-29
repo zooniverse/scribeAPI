@@ -8,7 +8,9 @@
 </head>
 <body>
 
-<%= render 'admin/partials/head.html.erb' %>
+<% if current_user && current_user.admin? %>
+  <%= render 'admin/partials/head.html.erb' %>
+<% end %>
 
 <div id="admin-content">
   <%= yield %>

@@ -1,33 +1,34 @@
 
 class Project
-	include Mongoid::Document
-	include Mongoid::Timestamps
+  include Mongoid::Document
+  include Mongoid::Timestamps
 
-	field  :key , 		         type: String # unique key identifying project (subfolder under /projects holding project jsons)
-	field  :producer , 		     type: String, default: "Adler"
-	field  :title , 		       type: String, default: "ZooZoo"
-	field  :short_title, 	     type: String, default: "Scribe 2.0"
-	field	 :team,					     type: Array
-	field  :summary , 		     type: String, default: "Classify pictures of zoo's"
-	field  :description, 	     type: String, default: "We need your help to understand zoo's better"
-	field  :home_page_content, type: String, default: "<p>Page content goes here</p>"
-	field  :organizations,     type: Array,  default: [{name: "zooniverse", location: "Chicago IL", description: "blah balh", url:["https://www.zooniverse.org/"]}]
-	field  :scientists, 	     type: Array,  default: [{name: "Stuart Lynn", location: "Chicago, IL", description: "me", url:["https://github.com/brian-c"]}]
-	field  :developers, 	     type: Array,  default: [{name: "Stuart Lynn", location: "Chicago, IL", description: "me", url:["https://github.com/brian-c"]}]
-	field  :pages,             type: Array,  default: []
-	field  :background,        type: String
-	field  :forum,             type: Hash
-	field  :feedback_form_url, type: String
-	field  :styles,            type: String
+  field  :key ,              type: String # unique key identifying project (subfolder under /projects holding project jsons)
+  field  :producer ,         type: String, default: "Adler"
+  field  :title ,            type: String, default: "ZooZoo"
+  field  :short_title,       type: String, default: "Scribe 2.0"
+  field  :team,              type: Array
+  field  :summary ,          type: String, default: "Classify pictures of zoo's"
+  field  :description,       type: String, default: "We need your help to understand zoo's better"
+  field  :home_page_content, type: String, default: "<p>Page content goes here</p>"
+  field  :organizations,     type: Array,  default: [{name: "zooniverse", location: "Chicago IL", description: "blah balh", url:["https://www.zooniverse.org/"]}]
+  field  :scientists,        type: Array,  default: [{name: "Stuart Lynn", location: "Chicago, IL", description: "me", url:["https://github.com/brian-c"]}]
+  field  :developers,        type: Array,  default: [{name: "Stuart Lynn", location: "Chicago, IL", description: "me", url:["https://github.com/brian-c"]}]
+  field  :pages,             type: Array,  default: []
+  field  :background,        type: String
+  field  :forum,             type: Hash
+  field  :feedback_form_url, type: String
+  field  :styles,            type: String
+  field  :admin_email,       type: String
 
-	include CachedStats
+  include CachedStats
 
-	update_interval 10
+  update_interval 10
 
   has_many :groups, dependent: :destroy
-	has_many :subject_sets
-	has_many :workflows, dependent: :destroy, order: "order ASC"
-	has_many :subjects
+  has_many :subject_sets
+  has_many :workflows, dependent: :destroy, order: "order ASC"
+  has_many :subjects
 
   scope :most_recent, -> { order(updated_at: -1) }
 
@@ -36,7 +37,7 @@ class Project
     most_recent.first
   end
 
-	def calc_stats
+  def calc_stats
     # amount of days to calculate statistics for
     range_in_days = 60
     datetime_format = "%Y-%m-%d %H:00"

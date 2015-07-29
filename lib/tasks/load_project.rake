@@ -19,17 +19,10 @@ desc 'creates a poject object from the project directory'
 
     # load project_file_path
     project = Project.find_or_create_by key: args[:project_key]
-    project.update({
-      title: project_hash['title'],
-      short_title: project_hash['short_title'],
-      summary: project_hash['summary'],
-      organizations: project_hash['organizations'],
-      background: project_hash['background'],
-      team: project_hash['team'],
-      forum: project_hash['forum'],
-      feedback_form_url: project_hash['feedback_form_url'],
-      pages: []
-    })
+
+    # Set all valid fields from hash:
+    project_hash = project_hash.inject({}) { |h, (k,v)| h[k] = v if Project.fields.keys.include?(k.to_s); h }
+    project.update project_hash
 
     if project.background.nil?
       puts "WARN: No background image found."

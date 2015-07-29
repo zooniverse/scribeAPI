@@ -42,6 +42,9 @@ class User
   has_many :favourites
   has_many :classifications
 
+  after_create :apply_configured_admin_role
+
+
   ## Confirmable
   # field :confirmation_token,   :type => String
   # field :confirmed_at,         :type => Time
@@ -80,6 +83,18 @@ class User
         rel.save!
       end
     end
+  end
+
+  # Called after_create, assigns role=admin if email matches admin_email in project.json
+  def apply_configured_admin_role
+    puts "if #{email} == #{Project.current.admin_email}"
+    if email == Project.current.admin_email
+      update_attribute :role, 'admin'
+    end
+  end
+
+  def admin?
+    role == 'admin'
   end
 
 
@@ -147,6 +162,21 @@ class User
     })
     u.save!(:validate => false)
     u
+  end
+
+  def self.auth_providers
+    providers = API::Application.config.auth_providers
+
+    providers.map do |p|
+      case p
+      when 'facebook'
+        { id: p, path: '/users/auth/facebook', name: 'Facebook' }
+      when 'google'
+        { id: p, path: '/users/auth/google_oauth2', name: 'Google' }
+      when 'zooniverse'
+        { id: p, path: '/users/auth/zooniverse', name: 'Zooniverse' }
+      end
+    end
   end
 
 
