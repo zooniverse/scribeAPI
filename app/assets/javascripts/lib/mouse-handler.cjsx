@@ -27,21 +27,16 @@ module.exports = React.createClass
         onMouseDown: @handleStart
 
   _rememberCoords: (e) ->
-    # console.log "remCoord event", e
-    # console.log "e.pageX", e.pageX
     @_previousEventCoords =
       x: e.pageX
       y: e.pageY
 
   handleStart: (e) ->
-    # console.log "Draggable: handleStart"
     return false if e.target.nodeName is "INPUT" or e.target.nodeName is "TEXTAREA"
     return false if $(e.target).parents('a').length > 0
-    # console.log "Draggable: handleStart ... continuing"
     e.preventDefault()
 
     @_rememberCoords e
-    # console.log "previous coords", @_previousEventCoords
 
     # Prefix with this class to switch from `cursor:grab` to `cursor:grabbing`.
     document.body.classList.add 'dragging'
@@ -55,7 +50,6 @@ module.exports = React.createClass
       startHandler e
 
   handleDrag: (e) ->
-    # console.log "handleDrag event", e
     d =
       x: e.pageX - @_previousEventCoords.x
       y: e.pageY - @_previousEventCoords.y

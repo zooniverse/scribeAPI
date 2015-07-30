@@ -47,4 +47,8 @@ class Workflow
     end
   end
 
+  def to_s
+    name.capitalize
+  end
+
 end

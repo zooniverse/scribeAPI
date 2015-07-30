@@ -5,6 +5,7 @@ class Subject
 
   paginates_per 3
 
+  scope :root, -> { where(type: 'root').asc(:order) }
   scope :active_root, -> { where(type: 'root', status: 'active').asc(:order) }
   scope :active_non_root, -> { where(:type.ne => 'root', :status => 'active') }
   scope :active, -> { where(status: 'active').asc(:order)  }

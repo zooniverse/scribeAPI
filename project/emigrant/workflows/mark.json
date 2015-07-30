@@ -30,8 +30,7 @@
       "instruction": "Great! Now, click on the image to place a marker next to each of the following.",
       "generates_subjects": true,
       "help": {
-        "title": "Mark secondary fields",
-        "body": "Place a point on the image by single-clicking with your mouse or tapping once on device."
+        "file": "mark_secondary"
       },
       "tool_config" : {
         "tools": [
@@ -48,8 +47,7 @@
       "instruction": "Great! Place a point next to each of the valuation dates. Valuations occur toward the bottom of the form and include an assessment date and dollar value.",
       "generates_subjects": true,
       "help": {
-        "title": "Valuations",
-        "body": "Place a point on the image next to the date of any valuations that are recorded at the bottom of the form. Valuations consist of a date and a dollar amount. For example: \"1879 November Valuation of premises $1200\"."
+        "file": "marking_valuations"
       },
       "tool_config" : {
         "tools": [

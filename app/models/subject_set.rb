@@ -50,4 +50,15 @@ class SubjectSet
     subject.active.for_workflow(workflow)
   end
 
+  def workflows
+    counts.map do |k,v|
+      workflow = Workflow.find k
+      v.merge workflow: workflow
+    end
+  end
+
+  def to_s
+    "#{state == 'inactive' ? '[Inactive] ' : ''}Subject Set"
+  end
+
 end

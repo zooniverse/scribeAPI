@@ -40,6 +40,10 @@ desc 'creates a poject object from the project directory'
     # Load pages from content/*:
     content_path = Rails.root.join('project', args[:project_key], 'content')
     puts "Loading pages from #{content_path}:"
+
+    prev_pages = project.pages
+    project.pages = []
+
     Dir.foreach(content_path).each do |file|
       path = Rails.root.join content_path, file
       next if File.directory? path
@@ -55,10 +59,20 @@ desc 'creates a poject object from the project directory'
         project.home_page_content = content
 
       else
+        # Set updated at if content changed:
+        updated_at = Time.now
+        if ! prev_pages.nil? && ! prev_pages.empty? 
+          previous_page = prev_pages.select { |p| p[:key] == page_key }
+          if ! previous_page.empty? && (previous_page = previous_page.first)
+            updated_at = ! previous_page[:updated_at].nil? && previous_page[:content] == content ? previous_page[:updated_at] : Time.now
+          end
+        end
+
         project.pages << {
           key: page_key,
           name: name,
-          content: content
+          content: content,
+          updated_at: updated_at
         }
       end
     end
@@ -102,6 +116,9 @@ desc 'creates a poject object from the project directory'
 
         workflow_hash = JSON.parse content
         workflow_hash.deep_symbolize_keys!
+
+        puts "  Loading '#{workflow_hash[:name]}' workflow"
+
         workflow_hash[:project] = project
 
         tasks = workflow_hash.delete :tasks
@@ -115,8 +132,10 @@ desc 'creates a poject object from the project directory'
         end
         workflow_hash[:tasks] = tasks
 
+        workflow_hash = load_help_text workflow_hash, args[:project_key]
+
         workflow = Workflow.create workflow_hash
-        puts "  Loaded '#{workflow.name}' workflow with #{workflow.tasks.count} task(s)"
+        puts "    Loaded #{workflow.tasks.count} task(s)"
 
         if workflow.generates_subjects && ! workflow.generates_subjects_for
           puts "    WARN: #{workflow.name} generates subjects, but generates_subjects_for not set"
@@ -133,6 +152,42 @@ desc 'creates a poject object from the project directory'
     end
 
     puts "  WARN: No mark workflow found" if project.workflows.find_by(name: 'mark').nil?
+  end
+
+  def load_help_text(h, project_key)
+    if h.respond_to? :each
+      if h.is_a? Hash
+        h.keys.each do |k,v|
+          if k == :help && h[k].is_a?(Hash) && ! h[k][:file].nil? 
+            help_file_path = Rails.root.join('project', project_key, 'content', 'help', h[k][:file] + ".md")
+            if File.exist? help_file_path
+              content = File.read(help_file_path)
+              # Look for #Title defined in md
+              title_reg = /^# ?(.+)/
+              # If title found, set title and remove it from body
+              if ! (title = content.match(title_reg)).nil?
+                h[k][:title] = title[1]
+                content.sub! title_reg, ''
+                content.sub! /^\n+/, ''
+              end
+              h[k][:body] = content
+              puts "    Loaded help file: #{h[k][:file]}"
+
+            else  
+              puts "    WARN: Couldn't find #{help_file_path}"
+            end
+
+          else
+            h[k] = load_help_text h[k], project_key
+          end
+        end
+      else
+        h.each_with_index do |v, k|
+          h[k] = load_help_text h[k], project_key
+        end
+      end
+    end
+    h
   end
 
   def num_downstream_workflows(w, prev_count=0)
