@@ -18,13 +18,13 @@ NameSearch = React.createClass
       term = e.target.value
       el = $(React.findDOMNode(this))
       el.autocomplete
-        source: (request, response, @transitionTo)->
+        source: (request, response)=>
           $.ajax
             url: "/subject_sets/terms/#{term}"
             dataType: "json"
             data:
               q: request.term
-            success: ( data ) ->
+            success: ( data ) =>
               names = []
               for n in data
                 unit = {}
@@ -32,16 +32,18 @@ NameSearch = React.createClass
                 unit["value"] = n
                 names.push unit
               response( names )
-            error: (xhr, thrownError)->
+            error: (xhr, thrownError)=>
               console.log xhr.status, thrownError
-        select: (event, ui, @transitionTo) ->
-          console.log $(this)
-          console.log "EVENT:", event
+        focus: (e,ui)=>
+          e.preventDefault()
+
+        select: (e, ui) =>
+          console.log "select event", event
+          console.log "this", $("this")
           console.log "UI", ui
           @transitionTo 'mark', {},
             subject_set_id: ui.item.value.id
             page: 1
-
 
   handleChange:(e) ->
 

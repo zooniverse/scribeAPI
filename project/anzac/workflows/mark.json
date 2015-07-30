@@ -15,7 +15,7 @@
       "tool":"pickOne",
       "help": {
         "title": "Determine the Page Type",
-        "body": "#Personnel Files <p>Personnel files provide a thorough description of an individual’s military service from enlistment, through wartime, and beyond. The archival copies of personnel files reflect their working origins in multiple locations and compilation into one file at various points during and after the war. Thus, the order of documents within the files varies and a key part of this project is identifying what documents are present for any individual."
+        "body": "Personnel files provide a thorough description of an individual’s military service from enlistment, through wartime, and beyond. \n \n The archival copies of personnel files reflect their working origins in multiple locations and compilation into one file at various points during and after the war. Thus, the order of documents within the files varies and a key part of this project is identifying what documents are present for any individual."
       },
       "instruction":"What kind of page is this?",
       "next_task": null,
