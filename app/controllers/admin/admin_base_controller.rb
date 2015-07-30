@@ -8,8 +8,7 @@ class Admin::AdminBaseController < ApplicationController
   end
 
   def check_admin_user
-    if current_user.nil? || ! current_user.admin?
-      puts "REDIR to admin signin: "
+    if current_user.nil? || ! current_user.can_view_admin?
       redirect_to admin_signin_path
     end
   end

@@ -58,7 +58,7 @@ module.exports = React.createClass
     console.log "Draggable: handleStart", @props.disableDragIn.indexOf(e.target.nodeName), e.target.nodeName
 
     return if @props.disableDragIn.indexOf(e.target.nodeName) >= 0
-    return if $(e.target).parents('a').length > 0
+    return if $(e.target).parents(@props.disableDragIn.join(',')).length > 0
     console.log "handleStart"
 
     pos = $(this.getDOMNode()).position()

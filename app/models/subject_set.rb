@@ -55,4 +55,15 @@ class SubjectSet
     where( :"meta_data.name" => reg)
   end
 
+  def workflows
+    counts.map do |k,v|
+      workflow = Workflow.find k
+      v.merge workflow: workflow
+    end
+  end
+
+  def to_s
+    "#{state == 'inactive' ? '[Inactive] ' : ''}Subject Set"
+  end
+
 end

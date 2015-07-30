@@ -4,6 +4,10 @@
   "summary": "Emmmmigrannnnnt Savinnnnnnnngs Baaaaannk",
   "background": "background.jpg",
   "admin_email": "paulbeaudoin@nypl.org",
+  "team_emails": [
+    "brianfoo@nypl.org",
+    "contact@paulbeaudoin.com"
+  ],
   "team": [
     {
       "name": "Brian Foo",

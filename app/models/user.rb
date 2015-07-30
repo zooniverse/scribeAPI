@@ -36,13 +36,13 @@ class User
   field :profile_url,        :type => String    # URI of user profile, if any
   
   field :status,             :type => String, :default => 'active'
-  field :role,               :type => String, :default => 'user'  # user, admin
+  field :role,               :type => String, :default => 'user'  # user, admin, team
   field :guest,              :type => Boolean, :default => false
 
   has_many :favourites
   has_many :classifications
 
-  after_create :apply_configured_admin_role
+  after_create :apply_configured_user_role
 
 
   ## Confirmable
@@ -86,11 +86,24 @@ class User
   end
 
   # Called after_create, assigns role=admin if email matches admin_email in project.json
-  def apply_configured_admin_role
-    puts "if #{email} == #{Project.current.admin_email}"
+  # Assigns role=team if email is in team_emails
+  def apply_configured_user_role
+    # Make admin?
     if email == Project.current.admin_email
       update_attribute :role, 'admin'
+
+    # Make the team?
+    elsif Project.current.team_emails.include? email
+      update_attribute :role, 'team'
     end
+  end
+
+  def can_view_admin?
+    admin? || team?
+  end
+
+  def team?
+    role == 'team'
   end
 
   def admin?

@@ -53,8 +53,7 @@ class SubjectSetSerializer < ActiveModel::MongoidSerializer
       subjects_page = options[:subjects_page] || 1
       # return nil if object.nil?
 
-      # .where(workflow_id: workflow_id)
-      subjs = object.subjects.active_root.page(subjects_page).limit(subjects_limit)
+      subjs = object.subjects.root.page(subjects_page).limit(subjects_limit)
     )
   end
 

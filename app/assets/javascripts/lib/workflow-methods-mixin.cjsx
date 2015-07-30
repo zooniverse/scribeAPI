@@ -59,7 +59,6 @@ module.exports =
 
       if @state.badSubject
         @toggleBadSubject =>
-          console.log "advancing to next", @
           @advanceToNextSubject()
 
     console.log 'COMMITTED CLASSIFICATION: ', classification
@@ -136,7 +135,6 @@ module.exports =
   # Get next logical task
   getNextTask: ->
     task = @getTasks()[@state.taskKey]
-    # console.log "looking up next task based on current ann: ", task, task.tool_config?.options, @getCurrentClassification().annotation?.value
     if task.tool_config?.options?[@getCurrentClassification().annotation?.value]?.next_task?
       nextKey = task.tool_config.options[@getCurrentClassification().annotation.value].next_task
     else
@@ -241,7 +239,6 @@ module.exports =
       new_subject_index = 0
 
     # If we've exhausted all subject sets, collapse in shame
-    console.log "if new_subject_set_index..", @state.subjectSets
     if new_subject_set_index >= @state.subjectSets.length
       console.warn "NO MORE SUBJECT SETS"
       return
@@ -252,17 +249,14 @@ module.exports =
       subject_set_index: new_subject_set_index
       subject_index: new_subject_index
       taskKey: @getActiveWorkflow().first_task
-      currentSubToolIndex: 0, =>
-        # console.log "After @state", @state
+      currentSubToolIndex: 0
 
 
   commitClassificationAndContinue: (d) ->
     @commitClassification()
     @beginClassification {}, () =>
       if @getCurrentTask().next_task?
-        console.log "advance to next task ann cleared: ", @getCurrentClassification().annotation, @state.classifications
         @advanceToTask @getCurrentTask().next_task
 
       else
-        console.log "advance to next subject, ann cleared: ", @getCurrentClassification().annotation, @state.classifications
         @advanceToNextSubject()

@@ -1,9 +1,9 @@
 <div class="core-data">
   <h1>
-    <% if @user.avatar %>
+    <% if current_user.admin? && @user.avatar %>
       <img src="<%= @user.avatar %>" />
     <% end %>
-    <%= @user %>
+    <%= admin_obf @user.to_s %>
   </h1>
 
   <dl>
@@ -15,10 +15,16 @@
     <dd><%= @user.status %></dd>
     
     <dt>Email</dt>
-    <dd><%= @user.email %></dd>
+    <dd><%= admin_obf @user.email %></dd>
  
     <dt>Profile URL</dt>
-    <dd><a href="<%= @user.profile_url %>" target="_blank"><%= @user.profile_url %></a></dd>
+    <dd>
+      <% if current_user.admin? %>
+        <a href="<%= @user.profile_url %>" target="_blank"><%= @user.profile_url %></a>
+      <% else %>
+        <%= admin_obf @user.profile_url %>
+      <% end %>
+    </dd>
 
     <dt>Role</dt>
     <dd><%= @user.role %></dd>

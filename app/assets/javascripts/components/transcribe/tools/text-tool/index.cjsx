@@ -1,8 +1,9 @@
-React           = require 'react'
-{Navigation}    = require 'react-router'
-DraggableModal  = require 'components/draggable-modal'
-SmallButton     = require 'components/buttons/small-button'
-BadSubjectButton    = require 'components/buttons/bad-subject-button'
+React             = require 'react'
+{Navigation}      = require 'react-router'
+DraggableModal    = require 'components/draggable-modal'
+SmallButton       = require 'components/buttons/small-button'
+HelpButton        = require 'components/buttons/help-button'
+BadSubjectButton  = require 'components/buttons/bad-subject-button'
 
 TextTool = React.createClass
   displayName: 'TextTool'
@@ -205,7 +206,7 @@ TextTool = React.createClass
       buttons = []
 
       if @props.onShowHelp?
-        buttons.push <SmallButton label="Need some help?" onClick={@props.onShowHelp} className="help-button ghost"/>
+        buttons.push <HelpButton onClick={@props.onShowHelp}/>
 
       if @props.onBadSubject?
         buttons.push <BadSubjectButton active={@props.badSubject} onClick={@props.onBadSubject} />

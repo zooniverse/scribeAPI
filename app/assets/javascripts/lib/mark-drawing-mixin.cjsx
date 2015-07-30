@@ -2,28 +2,28 @@ markingTools = require 'components/mark/tools'
 
 module.exports =
 
-  showPreviousMarks: ->
-    console.log 'showPreviousMarks()'
-    # console.log 'PREVIOUS MARKS FROM SERVER: ', @props.subject.child_subjects_info
-    previousMarks =
-      for mark, i in @props.subject.child_subjects_info
-        toolName = mark.data.toolName
-        ToolComponent = markingTools[toolName]
-        scale = @getScale()
-
-        <ToolComponent
-          key={mark._key}
-          mark={mark.data}
-          xScale={scale.horizontal}
-          yScale={scale.vertical}
-          disabled={true}
-          isPriorMark={true}
-          selected={true}
-          getEventOffset={@getEventOffset}
-          ref={@refs.sizeRect}
-        />
-
-    return <g>{previousMarks}</g>
+#   PB: This appears unused. DEP
+#   showPreviousMarks: ->
+#     # console.log 'PREVIOUS MARKS FROM SERVER: ', @props.subject.child_subjects_info
+#     previousMarks =
+#       for mark, i in @props.subject.child_subjects_info
+#         toolName = mark.data.toolName
+#         ToolComponent = markingTools[toolName]
+#         scale = @getScale()
+# 
+#         <ToolComponent
+#           key={mark._key}
+#           mark={mark.data}
+#           xScale={scale.horizontal}
+#           yScale={scale.vertical}
+#           disabled={true}
+#           isPriorMark={true}
+#           selected={true}
+#           getEventOffset={@getEventOffset}
+#           ref={@refs.sizeRect}
+#         />
+# 
+#     return <g>{previousMarks}</g>
 
   highlightMark: (mark, toolName) ->
     # DEBUG CODE

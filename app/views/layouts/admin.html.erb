@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<% if current_user && current_user.admin? %>
+<% if current_user && current_user.can_view_admin? %>
   <%= render 'admin/partials/head.html.erb' %>
 <% end %>
 

@@ -20,6 +20,7 @@ class Project
   field  :feedback_form_url, type: String
   field  :styles,            type: String
   field  :admin_email,       type: String
+  field  :team_emails,       type: Array
 
   include CachedStats
 

@@ -1,0 +1,51 @@
+<%= render partial: 'partials/subject_breadcrumb', locals: {subject_set: @subject_set} %>
+
+<div class="core-data">
+  <h1><%= @subject_set %></h1>
+  <% if ! @subject_set.name.nil? %>
+    <h1><%= @subject_set.name %></h1>
+  <% end %>
+
+  <img src="<%= @subject_set.thumbnail %>" width="300"/>
+
+  <ol>
+  <% @subject_set.subjects.root.each do |subject| %>
+    <li><%= link_to admin_subject_path(subject) do %><img src="<%= subject.thumbnail %>" width="100"/><% end %></li>
+  <% end %>
+  </ol>
+
+  <dl>
+
+    <dt>State</dt>
+    <dd><%= @subject_set.state %> </dd>
+
+    <dt>Appears in Workflows:</dt>
+    <dd><ul>
+      <% @subject_set.workflows.each do |w| %>
+        <li><%= w[:workflow] %>
+          <ul>
+            <li>Active Subjects: <%= w[:active_subjects] %></li>
+            <li>Total Subjects: <%= w[:total_subjects] %></li>
+          </ul>
+        </li>
+      <% end %>
+      </ul>
+    </dd>
+
+    <dt>Metadata</dt>
+    <dd>
+      <% if @subject_set.meta_data.nil? %>
+        &mdash;
+      <% else %>
+        <%= render partial: 'partials/data_hash', locals: {hash: @subject_set.meta_data} %> 
+      <% end %>
+    </dd>
+
+  </dl>
+</div>
+
+<div class="supplied-data">
+  <h2>Related</h2>
+
+</div>
+
