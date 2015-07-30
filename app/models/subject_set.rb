@@ -50,4 +50,9 @@ class SubjectSet
     subject.active.for_workflow(workflow)
   end
 
+  def self.autocomplete_name(letters)
+    reg = /#{Regexp.escape(letters)}/i
+    where( :"meta_data.name" => reg)
+  end
+
 end

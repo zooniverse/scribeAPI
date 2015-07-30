@@ -21,7 +21,7 @@ API::Application.routes.draw do
   get '/subject_sets/:subject_set_id',                        to: 'subject_sets#show',     defaults: { format: 'json' }
   get '/workflows/:workflow_id/subject_sets/:subject_set_id/subjects/:subject_id',    to: 'subject_sets#show',     defaults: { format: 'json' }
   get '/classifications/terms/:workflow_id/:annotation_key',  to: 'classifications#terms'
-  get '/subject_sets/terms/:annotation_key',                      to: 'subject_sets#name_search'
+  get '/subject_sets/terms/:annotation_key',                  to: 'subject_sets#name_search'
 
 
   post   '/subjects/:id/favourite',           to: 'favourites#create',     defaults: { format: 'json' }

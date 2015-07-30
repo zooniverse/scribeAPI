@@ -1,5 +1,6 @@
-React = require("react")
+React         = require("react")
 GroupBrowser  = require('./group-browser')
+NameSearch    = require('./name-search')
 
 HomePage = React.createClass
   displayName : "HomePage"
@@ -23,7 +24,7 @@ HomePage = React.createClass
         <div className="page-content">
           <h1>{@state.project?.title}</h1>
           <div dangerouslySetInnerHTML={{ __html: marked(@state.project.home_page_content) }} />
-
+          <NameSearch />
           <div className='group-area'>
             <GroupBrowser project={@props.project} />
           </div>
