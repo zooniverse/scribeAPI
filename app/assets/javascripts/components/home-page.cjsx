@@ -24,12 +24,15 @@ HomePage = React.createClass
         <div className="page-content">
           <h1>{@state.project?.title}</h1>
           <div dangerouslySetInnerHTML={{ __html: marked(@state.project.home_page_content) }} />
-          <p> Search for a Person </p> 
           <br/>
+          <h2> Search for a Person </h2> 
           <NameSearch />
+          <br/> 
+          <br/>
           <div className='group-area'>
             <GroupBrowser project={@props.project} />
           </div>
+
         </div>
       }
     </div>

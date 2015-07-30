@@ -38,18 +38,10 @@ NameSearch = React.createClass
           e.preventDefault()
 
         select: (e, ui) =>
-          console.log "select event", event
-          console.log "this", $("this")
-          console.log "UI", ui
+          e.target.value
           @transitionTo 'mark', {},
             subject_set_id: ui.item.value.id
             page: 1
-
-  handleChange:(e) ->
-
-
-
-
 
   render: ->
     <input id="name-search" type="text" onKeyDown={@handleKeyPress} onChange={@handleChange} />
