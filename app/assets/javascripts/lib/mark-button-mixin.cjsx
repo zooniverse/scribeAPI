@@ -12,6 +12,7 @@ MARK_STATES = [
 module.exports =
 
   getInitialState: ->
+    console.log "MarkButtonMixin @props:", @props 
     if @props.isPriorMark
       markStatus = 'transcribe-enabled'
     else
@@ -19,7 +20,12 @@ module.exports =
     markStatus: markStatus
     locked: ''
 
+  checkLocation: ()->
+    pattern = new RegExp('^(#\/transcribe)')
+    pattern.test("#{window.location.hash}")
+    
   renderMarkButton: ->
+    return null if @checkLocation() 
     <MarkButton
       tool={this}
       onDrag={@onClickMarkButton}

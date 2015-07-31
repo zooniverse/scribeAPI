@@ -9,7 +9,7 @@
   position: fixed
   top 0px
   width 100%
-  background: rgba(0,0,0,0.75)
+  background: transparent
 
   display: flex
   flex-direction: row
@@ -35,7 +35,7 @@
   outline none
   align-items: center
   background: rgba(MAIN_HIGHLIGHT, 0)
-  color: TERTIARY_NORMAL
+  color: white
   cursor: normal
   display: flex
   padding: 0.5rem 1.5vw 0.2em
@@ -57,20 +57,18 @@
     letter-spacing: 0.05em
     line-height: 1
     text-transform: capitalize
-    background black
+    background: transparent
     &:hover
-      background black
+      background: transparent
       border 1px solid black
-      // border-right: 1px solid rgba(FOREGROUND, 1.0)
     &.selected
-      background black
-      border 1px solid black
-      border-top 1px solid red
-      // border-right: 1px solid rgba(FOREGROUND, 1.0)
+      background: transparent
 
 
-  &.selected
-    background: rgba(MEDIUM_GRAY, 0.5)
+
+  &.selected background: transparent
+
+    background: trn
     transition border 0.3s, background-color 0.3s
 
 
@@ -117,6 +115,7 @@ a.main-header-item
 
     a
       margin-right 5px
+      text-transform capitalize
       display inline-block
       width 18px
       height 18px

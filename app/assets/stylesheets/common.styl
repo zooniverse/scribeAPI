@@ -12,9 +12,13 @@ SECONDARY_HOVER=#667983
 TERTIARY_NORMAL=#FC5424
 DISABLED_GRAY=#CDCDCD
 
-SANS_SERIF = Montserrat, "Gill Sans", Arial, sans-serif
+SANS_SERIF = OpenSans, Montserrat, "Gill Sans", Arial, sans-serif
 SERIF = "Playfair Display", Georgia, serif
 COURIER = "Courier New", Courier, monospace
+
+@font-face 
+  font-family: "museo",'ProximaNovaBold', serif;
+  src: url('<%= font_path('.tk-proxima-nova') %>');
 
 html
   background: MEDIUM_GRAY
@@ -65,9 +69,6 @@ a
     opacity: 1
 
 .readymade-site-background-effect
-  background:
-    radial-gradient(rgba(MEDIUM_GRAY, 0), black),
-    url("black-pixel-screen.png")
   bottom: 0
   left: 0
   opacity: 1
