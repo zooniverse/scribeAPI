@@ -3,7 +3,8 @@
   "short_title": "The ANZACs",
   "summary": "Transcription of New Zealand World War I Personnel Files",
   "background": "background.jpg",
-
+  "admin_email": "andrea@zooniverse.org",
+    "team_emails": [ "andrea@zooniverse.org" ],
   "team": [
     {
       "name": "Andrea Simenstad",

@@ -312,19 +312,24 @@
             "next_task": null
         },
         "att_transcribe_question": {
-            "tool": "textTool",
+            "tool": "compositeTool",
             "tool_config": {
-                "suggest": "common"
+                "tools": {
+                    "att_transcribe_question_form": {
+                        "tool": "textTool",
+                        "tool_config": {
+                            "suggest": "common"
+                        },
+                        "label": "Please transcribe the question on the form:"
+                    },
+                    "att_transcribe_answer": {
+                        "tool": "textTool",
+                        "tool_config": {},
+                        "label": "Enter the response:"
+                    }
+                }
             },
-            "generates_subject_type": "att_transcribed_question",
-            "instruction": "Please transcribe the questions being asked.",
-            "next_task": "att_transcribe_answer"
-        },
-        "att_transcribe_answer": {
-            "tool": "textTool",
-            "tool_config": {},
-            "instruction": "Enter the response",
-            "generates_subject_type": "att_transcribed_answer",
+            "generates_subject_type": "att_transcribed_question_form",
             "next_task": null
         },
         "hs_transcribe_unit": {
@@ -493,6 +498,41 @@
             "tool_config": {},
             "instruction": "Enter any messages or remarks associated with the wound",
             "generates_subject_type": null
+        },
+        "hs_transcribe_transfer_table": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Regiment or Corps",
+            "generates_subject_type": "hs_transcribed_transfer_table",
+            "next_task": "hs_transcribe_transfer_events"
+        },
+        "hs_transcribe_transfer_events": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Promotions, Reductions, Casualties, &c.",
+            "generates_subject_type": "hs_transcribed_transfer_events",
+            "next_task": "hs_transcribe_transfer_rank"
+        },
+        "hs_transcribe_transfer_rank": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Rank",
+            "generates_subject_type": "hs_transcribed_transfer_rank",
+            "next_task": "hs_transcribe_transfer_date"
+        },
+        "hs_transcribe_transfer_date": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Date",
+            "generates_subject_type": "hs_transcribed_transfer_date",
+            "next_task": "hs_transcribe_transfer_auth"
+        },
+        "hs_transcribe_transfer_auth": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Authority for Entry",
+            "generates_subject_type": "hs_transcribed_transfer_auth",
+            "next_task": null
         }
     }
 }

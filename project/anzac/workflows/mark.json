@@ -27,7 +27,7 @@
           },
           "hs_conduct_sheet":{
             "label":"Statement of Services",
-            "next_task": null
+            "next_task": "hs_transfer_table"
           },           
           "att_form":{
             "label":"Attestation: General Form",
@@ -134,6 +134,17 @@
         ]
       },
       "next_task": null
+    },
+    "hs_transfer_table":{
+      "generates_subjects": true,
+      "tool":"pickOneMarkOne",
+      "instruction":"Draw a rectangle around each row describing a transfer:",
+      "tool_config": {
+        "tools": [
+          {"type": "rectangleTool", "label": "Transfer", "color": "green", "generates_subject_type": "hs_transcribe_transfer_table" }
+        ]
+      },
+      "next_task": "hs_wounds"
     },
     "hs_sticky_sheet":{
       "tool":"pickOne",
