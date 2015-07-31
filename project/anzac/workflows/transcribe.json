@@ -367,6 +367,20 @@
             "generates_subject_type": "hs_transcribed_employer",
             "next_task": null
         },
+        "hs_transcribe_religion": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the response",
+            "generates_subject_type": "hs_transcribed_religion",
+            "next_task": null
+        },
+        "hs_transcribe_nzaddress": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Enter the response",
+            "generates_subject_type": "hs_transcribed_nzaddress",
+            "next_task": null
+        },
         "hs_transcribe_kin": {
             "tool": "textTool",
             "tool_config": {},

@@ -173,6 +173,8 @@
           {"type": "rectangleTool", "label": "Rank", "color": "green", "generates_subject_type": "hs_transcribe_rank" },
           {"type": "rectangleTool", "label": "Occupation", "color": "green", "generates_subject_type": "hs_transcribe_occupation" },
           {"type": "rectangleTool", "label": "Last Employer", "color": "green", "generates_subject_type": "hs_transcribe_employer" },
+          {"type": "rectangleTool", "label": "Religion", "color": "green", "generates_subject_type": "hs_transcribe_religion" },
+          {"type": "rectangleTool", "label": "Last New Zealand Address", "color": "green", "generates_subject_type": "hs_transcribe_nzaddress" },
           {"type": "rectangleTool", "label": "Surname", "color": "green", "generates_subject_type": "hs_transcribe_surname" },
           {"type": "rectangleTool", "label": "Christian name", "color": "green", "generates_subject_type": "hs_transcribe_christian_name" },
           {"type": "rectangleTool", "label": "No.", "color": "green", "generates_subject_type": "hs_transcribe_no" },
