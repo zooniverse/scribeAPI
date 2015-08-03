@@ -99,7 +99,11 @@ module.exports = React.createClass
 
     # Create an initial mark instance, which will soon gather coords:
     # mark = toolName: subTool.type, userCreated: true, subToolIndex: @state.uncommittedMark?.subToolIndex ? @props.annotation?.subToolIndex
-    mark = toolName: subTool.type, userCreated: true, subToolIndex: subToolIndex # @props.annotation?.subToolIndex
+    mark =
+      toolName: subTool.type
+      userCreated: true
+      subToolIndex: subToolIndex
+      isTranscribable: true # @props.annotation?.subToolIndex
 
     mouseCoords = @getEventOffset e
 
@@ -224,8 +228,10 @@ module.exports = React.createClass
     # Previous marks are really just the region hashes of all child subjects:
     marks = []
     for child_subject, i in @props.subject.child_subjects
+      console.log 'CHILD SUBJECT: ', child_subject
       child_subject.region.subject_id = child_subject.id # copy id field into region (not ideal)
       marks[i] = child_subject.region
+      marks[i].isTranscribable = !child_subject.user_has_classified
 
     # marks = (s for s in (@props.subject.child_subjects ? [] ) when s?.region?).map (m) ->
     #   # {userCreated: false}.merge
@@ -323,6 +329,7 @@ module.exports = React.createClass
                     xScale={scale.horizontal}
                     yScale={scale.vertical}
                     disabled={! mark.userCreated}
+                    isTranscribable={mark.isTranscribable}
                     isPriorMark={isPriorMark}
                     subjectCurrentPage={@props.subjectCurrentPage}
                     selected={mark is @state.selectedMark}
