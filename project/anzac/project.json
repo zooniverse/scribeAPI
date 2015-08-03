@@ -27,5 +27,9 @@
      "title": "UofM",
      "url": "http://umn.edu"
     }
-  ]
+  ],
+  "forum": {
+    "type": "discourse",
+    "base_url": "http://scribe-forum.nypl-labs.biz"
+  }
 }
