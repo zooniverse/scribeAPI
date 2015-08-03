@@ -44,6 +44,6 @@ NameSearch = React.createClass
             page: 1
 
   render: ->
-    <input id="name-search" type="text" onKeyDown={@handleKeyPress} onChange={@handleChange} />
+    <input id="name-search" type="text" placeholder={"Search Records by Name"} onKeyDown={@handleKeyPress} />
 
 module.exports = NameSearch

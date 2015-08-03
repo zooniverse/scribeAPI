@@ -15,8 +15,6 @@
   flex-direction: row
   flex-wrap: wrap
   border: 0 solid rgba(FOREGROUND, 0.5)
-  border-bottom-width: 1px
-  border-right-width: 1px
   z-index 100
 
   &:empty
@@ -33,34 +31,32 @@
 .main-header-item
   @extends $reset-button
   outline none
+  overflow: hidden
   align-items: center
   background: rgba(MAIN_HIGHLIGHT, 0)
+  border-radius: 2
   color: white
   cursor: normal
   display: flex
   padding: 0.5rem 1.5vw 0.2em
   white-space: nowrap
-  border 1px solid rgba(0,0,0,0)
-  border-right: 1px solid rgba(FOREGROUND, 1.0)
-  transition border 0.3s, background-color 0.3s
-  // &:not(:last-child)
-  //   border-right: 1px solid rgba(FOREGROUND, 0.85)
+
 
   &:hover
-    background: rgba(MEDIUM_GRAY, 0.3)
-    border 1px solid MEDIUM_GRAY
-    transition border 0.3s, background-color 0.3s
-
+    background: rgba(MEDIUM_GRAY, 0.5)
 
   &.logo
-    font-size: 1.3em
-    letter-spacing: 0.05em
-    line-height: 1
-    text-transform: capitalize
-    background: transparent
+    color:  #efefef;
+    font-size: 24px;/* Approximation due to font substitution */
+    font-weight: 700;
+    font-style: italic;
+    line-height: 36px;/* Approximation due to font substitution */
+    text-align: center;
+    transform: rotate(-11.719deg);/* width and height properties ommitted due to transform */
+
+    
     &:hover
       background: transparent
-      border 1px solid black
     &.selected
       background: transparent
 
@@ -79,7 +75,9 @@
 a.main-header-item
   box-shadow: 0 0 0 inset
   transition: box-shadow 0.2s
-  text-transform: capitalize
+  text-transform: uppercase
+  letter-spacing: .2em
+
 
   &[data-active]
     box-shadow: 0 -3px 0 inset
@@ -92,6 +90,7 @@ a.main-header-item
   width: 3rem
 
 .login
+  line-height: 4
   padding: 0.5rem 1.5vw 0.2em
   color rgba(255, 255, 255, 0.4)
 
