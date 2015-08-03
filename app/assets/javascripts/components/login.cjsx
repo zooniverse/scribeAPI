@@ -23,7 +23,7 @@ Login = React.createClass
       if result?.data
         @setState
           user: result.data
-          loading: false, => window.current_user = @state.user
+          loading: false
       else
         @setState
           loading: false
