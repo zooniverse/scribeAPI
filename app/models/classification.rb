@@ -88,6 +88,9 @@ class Classification
 
     # Push user_id onto Subject.user_ids using mongo's fast addToSet feature, which ensures uniqueness
     Subject.where({id: subject.id}).find_and_modify({"$addToSet" => {classifying_user_ids: user_id}})
+    subject[:user_has_classified] = true
+    subject.write_attribute(:user_has_classified, true)
+    subject.save
   end
 
   def to_s
