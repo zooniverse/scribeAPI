@@ -48,6 +48,11 @@ module.exports = React.createClass
     @loadImage @props.subject.location.standard
     window.addEventListener "resize", this.updateDimensions
 
+    # scroll to mark when transcribing
+    if @props.workflow.name is 'transcribe'
+      yPos = (@props.subject.data.y - @props.subject.data.height?) * @getScale().vertical - 100
+      $('html, body').animate({scrollTop: yPos}, 500);
+
   componentWillUnmount: ->
     window.removeEventListener "resize", this.updateDimensions
 
@@ -247,11 +252,6 @@ module.exports = React.createClass
 
     viewBox = [0, 0, @props.subject.width, @props.subject.height]
     scale = @getScale()
-
-
-    # if @props.workflow.name is 'transcribe'
-    #   yPos = (@props.subject.data.y - @props.subject.data.height?) * @getScale().vertical - 100
-    #   $('html, body').animate({scrollTop: yPos}, 300);
 
     actionButton =
       if @state.loading
