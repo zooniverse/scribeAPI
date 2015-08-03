@@ -39,10 +39,10 @@ NameSearch = React.createClass
 
         select: (e, ui) =>
           e.target.value
-          console.log "select ui", ui
+          console.log "ui.item.value.id", ui.item.value.id
           @transitionTo 'mark', {},
             subject_set_id: ui.item.value.id
-            page: 1
+           
 
   render: ->
     <input id="name-search" type="text" placeholder={"Search Records by Name"} onKeyDown={@handleKeyPress} />

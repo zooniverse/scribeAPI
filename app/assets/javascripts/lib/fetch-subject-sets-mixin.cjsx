@@ -3,14 +3,20 @@ API = require './api'
 module.exports =
   componentDidMount: ->
     console.log 'QUERY PARAMS: ', @props.query
+    console.log @props.params.subject_set_id
+    console.log @props.query.subject_set_id
+
     # if @props.query.subject_set_id
     #   @fetchSubjectSet @props.query.subject_set_id, @props.query.subject_index, @getActiveWorkflow().id
     if @props.query.subject_set_id and @props.query.selected_subject_id
-      console.log 'Fetching subject set by subject ID and specific subject ID...'
+      console.log 'Fetching subject set by subject set ID and specific subject ID...'
       @fetchSubjectSetBySubjectId @getActiveWorkflow().id, @props.query.subject_set_id, @props.query.selected_subject_id, @props.query.page
     else if @props.params.subject_set_id
-      console.log 'Fetching subject set just by subject ID'
+      console.log 'Fetching subject set just by subject set ID'
       @fetchSubjectSet @props.params.subject_set_id, @getActiveWorkflow().id
+    else if @props.query.subject_set_id
+      console.log 'Fetching subject set just by subject set ID'
+      @fetchSubjectSet @props.query.subject_set_id, @getActiveWorkflow().id
     else
       console.log 'Fetching some subject set...'
       @fetchSubjectSets @getActiveWorkflow().id, @getActiveWorkflow().subject_fetch_limit
