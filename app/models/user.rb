@@ -60,6 +60,10 @@ class User
     favourites.where( subject_id: subject.id ).exists?
   end
 
+  def has_classified?(subject)
+    subject.classifying_user_ids and subject.classifying_user_ids.include? id
+  end
+
   def recents(limit=10)
     classifications.order_by(created_at: 1).limit(limit)
   end

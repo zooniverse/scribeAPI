@@ -40,6 +40,9 @@ class Subject
   field :data,                        type: Hash
   field :region,                      type: Hash
 
+  # Denormalized array of user ids that have classified this subject for quick filtering
+  field :classifying_user_ids,        type: Array, default: []
+
   belongs_to :workflow
   belongs_to :parent_subject, :class_name => "Subject", :foreign_key => "parent_subject_id"
   belongs_to :subject_set, :class_name => "SubjectSet", :foreign_key => "subject_set_id"
