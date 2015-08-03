@@ -12,7 +12,6 @@ MARK_STATES = [
 module.exports =
 
   getInitialState: ->
-    console.log "MarkButtonMixin @props:", @props 
     if @props.isPriorMark
       markStatus = 'transcribe-enabled'
     else

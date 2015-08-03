@@ -78,6 +78,7 @@ module.exports = React.createClass # rename to Classifier
       <div className="task-area">
         <div className="task-container">
           <TaskComponent
+            key={@getCurrentTask().key}
             task={currentTask}
             annotation={@getCurrentClassification().annotation ? {}}
             onChange={@handleDataFromTool}
