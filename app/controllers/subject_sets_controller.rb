@@ -45,7 +45,6 @@ class SubjectSetsController < ApplicationController
       }
     }
 
-    puts " scope==== #{self.view_context.inspect}"
     respond_with SubjectSetResultSerializer.new(sets, scope: self.view_context), workflow_id: workflow_id, subjects_limit: subjects_limit, subjects_page: subjects_page, links: links
   end
 

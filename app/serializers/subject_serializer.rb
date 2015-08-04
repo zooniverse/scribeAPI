@@ -40,12 +40,12 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
   end
 
   def user_favourite
-    user = current_or_guest_user
+    user = scope.nil? ? nil : current_or_guest_user
     user and user.has_favourite?(object)
   end
 
   def user_has_classified
-    user = current_or_guest_user
+    user = scope.nil? ? nil : current_or_guest_user
     user and user.has_classified?(object)
   end
 
