@@ -183,7 +183,7 @@ module.exports =
 
   getCompletionAssessmentTask: ->
     generates_subject_type: null
-    instruction: "Is there anything left to #{@props.workflowName}?"
+    instruction: "Thanks for all your work! Is there anything left to #{@props.workflowName}?"
     key: "completion_assessment_task"
     next_task: null
     tool: "pickOne"

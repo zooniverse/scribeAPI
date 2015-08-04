@@ -19,7 +19,12 @@ module.exports =
     markStatus: markStatus
     locked: ''
 
+  checkLocation: ()->
+    pattern = new RegExp('^(#\/transcribe)')
+    pattern.test("#{window.location.hash}")
+    
   renderMarkButton: ->
+    return null if @checkLocation() 
     <MarkButton
       tool={this}
       onDrag={@onClickMarkButton}
@@ -84,3 +89,11 @@ module.exports =
       else
         # @setState locked: true
         console.log 'WARNING: Unknown state in respondToMarkState()'
+
+  getMarkStyle: (mark, selected, is_prior_mark) ->
+    atts =
+      strokeWidth: if selected then 3 else 2
+      strokeColor: if mark.color then mark.color else '#43bbfd'
+    atts
+
+

@@ -1,7 +1,6 @@
 React                         = require 'react/addons'
 {Router, Routes, Route, Link} = require 'react-router'
 SVGImage                      = require './svg-image'
-Draggable                     = require '../lib/draggable'
 MouseHandler                  = require '../lib/mouse-handler'
 LoadingIndicator              = require './loading-indicator'
 SubjectMetadata               = require './subject-metadata'
@@ -99,7 +98,7 @@ module.exports = React.createClass
 
     # Create an initial mark instance, which will soon gather coords:
     # mark = toolName: subTool.type, userCreated: true, subToolIndex: @state.uncommittedMark?.subToolIndex ? @props.annotation?.subToolIndex
-    mark = toolName: subTool.type, userCreated: true, subToolIndex: subToolIndex # @props.annotation?.subToolIndex
+    mark = toolName: subTool.type, userCreated: true, subToolIndex: subToolIndex, color: subTool.color # @props.annotation?.subToolIndex
 
     mouseCoords = @getEventOffset e
 

@@ -1,12 +1,6 @@
 require 'pry'
 class ClassificationsController < ApplicationController
   respond_to :json
-  # EARLY CODE TO FAKE SECONDARY SUBJECTS -STI
-  # def show
-  #   puts 'SHOW: ', params["subject_id"]
-  #   subject_id  = params["subject_id"]
-  #   respond_with  Classification.find_by( _id: params[:subject_id] )
-  # end
 
   def create
     user = require_user!

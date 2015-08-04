@@ -45,7 +45,6 @@ module.exports = React.createClass # rename to Classifier
     currentTask = @getCurrentTask()
     TaskComponent = @getCurrentTool()
     onFirstAnnotation = @state.taskKey == @getActiveWorkflow().first_task
-    console.log "on first: ", @state.taskKey, @getActiveWorkflow().first_task, onFirstAnnotation
 
 
     if currentTask.tool is 'pick_one'
@@ -83,6 +82,7 @@ module.exports = React.createClass # rename to Classifier
       <div className="task-area">
         <div className="task-container">
           <TaskComponent
+            key={@getCurrentTask().key}
             task={currentTask}
             annotation={@getCurrentClassification().annotation ? {}}
             onChange={@handleDataFromTool}

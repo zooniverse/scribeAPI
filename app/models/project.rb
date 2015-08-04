@@ -21,6 +21,7 @@ class Project
   field  :styles,            type: String
   field  :admin_email,       type: String
   field  :team_emails,       type: Array
+  field  :metadata_search,   type: Hash
 
   include CachedStats
 

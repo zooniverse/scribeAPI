@@ -63,4 +63,9 @@ class SubjectSetsController < ApplicationController
     respond_with set, status: (set.nil? ? :not_found : 201), each_serializer: SubjectSetSerializer, workflow_id: workflow_id, subject_id: subject_id, limit: limit, page: page
   end
 
+  def name_search
+    @names = SubjectSet.autocomplete_name(params[:field], params[:q])
+    respond_with @names
+  end
+
 end

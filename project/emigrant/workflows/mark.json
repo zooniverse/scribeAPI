@@ -19,7 +19,7 @@
       "tool_config" : {
         "tools": [
           {"type": "rectangleTool", "label": "Record Date", "color": "purple", "generates_subject_type": "em_record_date"},
-          {"type": "rectangleTool", "label": "Record Number", "color": "orange", "generates_subject_type": "em_record_number"}
+          {"type": "rectangleTool", "label": "Record Number", "color": "#FE5409", "generates_subject_type": "em_record_number"}
         ]
       },
       "next_task": "mark_secondary"

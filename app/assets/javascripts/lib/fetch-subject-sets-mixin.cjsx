@@ -8,8 +8,10 @@ module.exports =
       if @props.params.selected_subject_id
         @fetchSubjectSetBySubjectId @getActiveWorkflow().id, @props.params.subject_set_id, @props.params.selected_subject_id, @props.params.page ? 1
       else
-        @fetchSubjectSet @props.params.subject_set_id, 0, @getActiveWorkflow().id
+        @fetchSubjectSet @props.params.subject_set_id, @getActiveWorkflow().id
+
     else
+      console.log 'Fetching some subject set...'
       @fetchSubjectSets @getActiveWorkflow().id, @getActiveWorkflow().subject_fetch_limit
 
 
@@ -63,7 +65,7 @@ module.exports =
         return if a.order >= b.order then 1 else -1
     subject_sets
 
-  fetchSubjectSet: (subject_set_id, subject_index, workflow_id)->
+  fetchSubjectSet: (subject_set_id, workflow_id)->
     console.log 'fetchSubjectSet()'
     request = API.type("subject_sets").get(subject_set_id: subject_set_id, workflow_id: workflow_id)
 
@@ -73,9 +75,11 @@ module.exports =
 
     request.then (subject_set) =>
       @setState
+        subjectSet: subject_set
         subjectSets: subject_set
         subject_set_index: 0
-        subject_index: parseInt(subject_index) || 0
+        subject_index: 0 #parseInt(subject_index) || 0
+          , => console.log 'STATE: ', @state
 
   fetchSubjectSets: (workflow_id, limit) ->
     console.log 'fetchSubjectSets()'
