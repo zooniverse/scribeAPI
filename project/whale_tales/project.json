@@ -8,6 +8,11 @@
     "cs@zooniverse.org"
   ],
   "background": "/assets/background.jpg",
+  "admin_email": "sascha@zooniverse.org",
+  "team_emails": [
+    "sascha@zooniverse.org",
+    "cs@zooniverse.org"
+  ],
   "team": [
     {
       "name": "Stuart Lynn",
