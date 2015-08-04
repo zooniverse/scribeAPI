@@ -7,6 +7,8 @@ module.exports =
     if @props.params.subject_set_id
       if @props.params.selected_subject_id
         @fetchSubjectSetBySubjectId @getActiveWorkflow().id, @props.params.subject_set_id, @props.params.selected_subject_id, @props.params.page ? 1
+      else if @props.query.selected_subject_id
+        @fetchSubjectSet @props.query.selected_subject_id, @getActiveWorkflow().id
       else
         @fetchSubjectSet @props.params.subject_set_id, @getActiveWorkflow().id
 
