@@ -25,6 +25,12 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
     object.workflow_id.to_s
   end
 
+  def user_has_classified
+    object.user_has_classified
+    # binding.pry
+    # object.classifying_user_ids?.include?(current_or_guest_user.id.to_s) # how do I get current user id in here? --STI
+  end
+
   def id
     object._id.to_s
   end
