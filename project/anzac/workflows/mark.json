@@ -55,11 +55,13 @@
     "att_form_task":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Draw a rectangle around each record.",
+      "instruction":"Select the whole area for each of the following:",
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Header", "color": "red", "generates_subject_type": "att_transcribe_header" },
-          {"type": "rectangleTool", "label": "Question", "color": "red", "generates_subject_type": "att_transcribe_question" }
+          {"type": "rectangleTool", "label": "One-Part Question", "color": "red", "generates_subject_type": "att_transcribe_question" },
+          {"type": "rectangleTool", "label": "Two-Part Question", "color": "red", "generates_subject_type": "att_transcribe_two_question" },
+          {"type": "rectangleTool", "label": "Three-Part Question", "color": "red", "generates_subject_type": "att_transcribe_three_question" }
         ]
       },
       "next_task": null
