@@ -55,7 +55,7 @@
     "att_form_task":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Select the whole area for each of the following:",
+      "instruction":"Select the area for each occurrence of the following:",
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Header", "color": "red", "generates_subject_type": "att_transcribe_header" },
@@ -64,12 +64,15 @@
           {"type": "rectangleTool", "label": "Three-Part Question", "color": "red", "generates_subject_type": "att_transcribe_three_question" }
         ]
       },
+      "help": {
+        "file": "mark_att_two_part"
+      },
       "next_task": null
     },
     "att_medical_form_task":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Draw a rectangle around each record.",
+      "instruction":"Select the area for each occurrence of the following:",
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Oath Year", "color": "red", "generates_subject_type": "att_transcribe_oath_year" },
@@ -88,7 +91,7 @@
     "att_medical_sight_hearing":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Draw a rectangle around each record.",
+      "instruction":"Select the area for each occurrence of the following:",
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Sight", "color": "green", "generates_subject_type": "att_transcribe_sight" },
