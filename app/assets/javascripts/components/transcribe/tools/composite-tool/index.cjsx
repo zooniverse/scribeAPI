@@ -1,8 +1,10 @@
-React           = require 'react'
-{Navigation}    = require 'react-router'
-DraggableModal  = require 'components/draggable-modal'
-DoneButton      = require './done-button'
-PrevButton      = require './prev-button'
+React             = require 'react'
+{Navigation}      = require 'react-router'
+DraggableModal    = require 'components/draggable-modal'
+DoneButton        = require './done-button'
+PrevButton        = require './prev-button'
+HelpButton        = require 'components/buttons/help-button'
+BadSubjectButton  = require 'components/buttons/bad-subject-button'
 
 CompositeTool = React.createClass
   displayName: 'CompositeTool'
@@ -95,9 +97,10 @@ CompositeTool = React.createClass
       buttons.push <DoneButton label='Finish' key="done-button" onClick={@returnToMarking} />
 
     if @props.onShowHelp?
-      buttons.push(<button key="help-button" type="button" className="pill-button help-button" onClick={@props.onShowHelp}>
-        Need some help?
-      </button>)
+      buttons.push <HelpButton onClick={@props.onShowHelp}/>
+
+    if @props.onBadSubject?
+      buttons.push <BadSubjectButton active={@props.badSubject} onClick={@props.onBadSubject} />
 
     {x,y} = @getPosition @props.subject.region
 

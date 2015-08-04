@@ -98,6 +98,7 @@ class AppRouter
         <div className="page-content">
           <h1>{page.name}</h1>
           <div dangerouslySetInnerHTML={{__html: marked(page.content)}} />
+          <div className="updated-at">Last Update {page.updated_at}</div>
         </div>
 
 module.exports = AppRouter

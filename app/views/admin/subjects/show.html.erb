@@ -23,6 +23,12 @@
           <br />(<%= @subject.parent_classifications.count %> parent classification(s) have <%= (100 * @subject.calculate_most_popular_parent_classification[:percentage]).to_i %>% agreement. At least <%= @subject.parent_subject.workflow.generates_subjects_after %> parent classifications with <%= (100 * @subject.parent_subject.workflow.generates_subjects_agreement).to_i %>% agreement required to activate.)
         <% end %>
       <% end %>
+      <% if @subject.flagged_bad_count %>
+        <br />(<%= @subject.flagged_bad_count %> "Bad Subject" votes)
+      <% end %> 
+      <% if @subject.retire_count %>
+        <br />(<%= @subject.retire_count %> Retire votes)
+      <% end %> 
     </dd>
 
     <dt>Appears in Workflow:</dt>
@@ -66,7 +72,7 @@
     </dd>
 
     <dt>Retire Count:</dt>
-    <dd> <% if @subject.retire_count.nil? %>&mdash;<% else %><% @subject.retire_count %><% end %> </dd> 
+    <dd> <% if @subject.retire_count.nil? %>&mdash;<% else %><%= @subject.retire_count %><% end %> </dd> 
 
     <dt>Created</dt>
     <dd><%= @subject.created_at %> (<%= time_ago_in_words @subject.created_at, include_seconds: true %> ago)</dd>

@@ -1,0 +1,21 @@
+<h1>All Subject Sets</h1>
+
+<table class="dashboard-table" id="subject-sets-table" width="100%">
+  <tr>
+    <th></th> 
+    <th>Status</th>
+    <th>Subjects</th>
+    <th>2nd Subjects</th>
+    <th>Retire Count</th>
+    <th>Bad Count</th>
+  </tr>
+
+<% @subject_sets.each do |set| %>
+  <tr>
+    <td><%= link_to admin_subject_set_path(set) do %><img src="<%= set.thumbnail %>" width="100"/><% end %></td>
+    <td><%= link_to admin_subject_set_path(set) do %><%= set.state %><% end %></td>
+    <td> <%= set.subjects.root.count %> </td> 
+  </tr>
+<% end %>
+</table>
+

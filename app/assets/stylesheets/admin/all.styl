@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=Ubuntu:400,700')
 
-@import './common.styl'
-@import './admin-dashboard.styl'
-@import './admin-browse.styl'
+@import 'common.styl'
+@import 'admin/dashboard.styl'
+@import 'admin/browse.styl'
 
 #admin-header
   ul
@@ -26,5 +26,18 @@
         &:hover, &.active
           background-color #444
 
+    &.account-tabs
+      width auto
+      float right
+
+      color white
+
 #admin-content
   padding 1em
+
+.admin-signin
+  width 400px
+  margin 300px auto
+
+  ul
+    padding 12px

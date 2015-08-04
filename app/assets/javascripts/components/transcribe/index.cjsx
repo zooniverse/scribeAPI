@@ -17,6 +17,8 @@ RowFocusTool            = require '../row-focus-tool'
 API                     = require '../../lib/api'
 
 HelpModal               = require 'components/help-modal'
+DraggableModal          = require 'components/draggable-modal'
+GenericButton           = require 'components/buttons/generic-button'
 
 module.exports = React.createClass # rename to Classifier
   displayName: 'Transcribe'
@@ -74,6 +76,7 @@ module.exports = React.createClass # rename to Classifier
   toggleHelp: ->
     @setState helping: not @state.helping
 
+
   render: ->
     # DISABLE ANIMATED SCROLLING FOR NOW
     # if @props.query.scrollX? and @props.query.scrollY?
@@ -88,14 +91,15 @@ module.exports = React.createClass # rename to Classifier
       <div className="subject-area">
 
         { if ! @getCurrentSubject()
-            <div className="workflow-nothing-more">
-              { if @state.noMoreSubjects
-                <h1>You transcribed them all!</h1>
-              }
-              <p>There are currently no transcription subjects. Try <a href="/#/mark">marking</a> instead!</p>
-            </div>
+            <DraggableModal
+              header          = { if @state.userClassifiedAll then "You transcribed them all!" else "Nothing to transcribe" }
+              buttons         = {<GenericButton label='Continue' href='/#/mark' />}
+            >
+                There are currently no {@props.workflowName} subjects. Try <a href="/#/mark">marking</a> instead!
+            </DraggableModal>
 
           else if @getCurrentSubject()? and @getCurrentTask()?
+            console.log "rendering text tool: ", "#{@state.taskKey}.#{@getCurrentSubject().id}", currentAnnotation
             <SubjectViewer
               onLoad={@handleViewerLoad}
               subject={@getCurrentSubject()}
@@ -106,7 +110,7 @@ module.exports = React.createClass # rename to Classifier
             >
               <TranscribeComponent
                 viewerSize={@state.viewerSize}
-                annotation_key={@state.taskKey}
+                annotation_key={"#{@state.taskKey}.#{@getCurrentSubject().id}"}
                 key={@getCurrentTask().key}
                 task={@getCurrentTask()}
                 annotation={currentAnnotation}
@@ -119,6 +123,8 @@ module.exports = React.createClass # rename to Classifier
                 viewerSize={@state.viewerSize}
                 transcribeTools={transcribeTools}
                 onShowHelp={@toggleHelp if @getCurrentTask().help?}
+                badSubject={@state.badSubject}
+                onBadSubject={@toggleBadSubject}
               />
 
             </SubjectViewer>
@@ -133,17 +139,6 @@ module.exports = React.createClass # rename to Classifier
               @getCurrentTask().next_task
 
           <div className="task-area">
-
-            <div className="task-container" style={display: "none"} >
-              <nav className="task-nav">
-                <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
-                { if nextTask?
-                    <button type="button" className="continue major-button" onClick={@advanceToNextTask.bind(@, nextTask)}>Next</button>
-                  else
-                    <button type="button" className="continue major-button" onClick={@completeClassification}>Done</button>
-                }
-              </nav>
-            </div>
 
             <div className="forum-holder">
               <ForumSubjectWidget subject=@getCurrentSubject() />

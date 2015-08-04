@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Dashboard</title>
-  <%= stylesheet_link_tag    "admin", media: "all" %>
-  <%= javascript_include_tag "dashboard" %>
+  <title>Scribe Admin</title>
+  <%= stylesheet_link_tag    "admin/all", media: "all" %>
+  <%= javascript_include_tag "admin/all" %>
   <%= csrf_meta_tags %>
 </head>
 <body>
 
-<%= render 'admin/partials/head.html.erb' %>
+<% if current_user && current_user.can_view_admin? %>
+  <%= render 'admin/partials/head.html.erb' %>
+<% end %>
 
 <div id="admin-content">
   <%= yield %>

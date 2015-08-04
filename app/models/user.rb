@@ -36,11 +36,14 @@ class User
   field :profile_url,        :type => String    # URI of user profile, if any
   
   field :status,             :type => String, :default => 'active'
-  field :role,               :type => String, :default => 'user'  # user, admin
+  field :role,               :type => String, :default => 'user'  # user, admin, team
   field :guest,              :type => Boolean, :default => false
 
   has_many :favourites
   has_many :classifications
+
+  after_create :apply_configured_user_role
+
 
   ## Confirmable
   # field :confirmation_token,   :type => String
@@ -82,6 +85,31 @@ class User
     end
   end
 
+  # Called after_create, assigns role=admin if email matches admin_email in project.json
+  # Assigns role=team if email is in team_emails
+  def apply_configured_user_role
+    # Make admin?
+    if email == Project.current.admin_email
+      update_attribute :role, 'admin'
+
+    # Make the team?
+    elsif Project.current.team_emails.include? email
+      update_attribute :role, 'team'
+    end
+  end
+
+  def can_view_admin?
+    admin? || team?
+  end
+
+  def team?
+    role == 'team'
+  end
+
+  def admin?
+    role == 'admin'
+  end
+
 
   def self.find_for_oauth(access_token, signed_in_resource=nil)
 
@@ -90,7 +118,6 @@ class User
     else # Create a user with a stub password.
       details = details_from_oauth access_token[:provider], access_token
       tmp_pass = Devise.friendly_token[0,20]
-      puts "User#create #{details.merge(password: tmp_pass, password_confirmation: tmp_pass).inspect}"
       self.create details.merge(password: tmp_pass, password_confirmation: tmp_pass)
     end
   end
@@ -109,7 +136,6 @@ class User
   def self.details_from_fb(access_token)
     extra = access_token[:extra][:raw_info]
     info = access_token[:info]
-    puts "facebook login: #{access_token.inspect}"
     {
       name: extra[:name],
       email: extra[:email],
@@ -121,7 +147,6 @@ class User
 
   def self.details_from_google(access_token)
     extra = access_token[:extra][:raw_info]
-    puts "goog login: #{access_token.inspect}"
     {
       name: "#{extra[:name]}",
       email: extra[:email],
@@ -149,8 +174,22 @@ class User
       role: 'user'
     })
     u.save!(:validate => false)
-    puts "User#create_guest_user: #{u.inspect}"
     u
+  end
+
+  def self.auth_providers
+    providers = API::Application.config.auth_providers
+
+    providers.map do |p|
+      case p
+      when 'facebook'
+        { id: p, path: '/users/auth/facebook', name: 'Facebook' }
+      when 'google'
+        { id: p, path: '/users/auth/google_oauth2', name: 'Google' }
+      when 'zooniverse'
+        { id: p, path: '/users/auth/zooniverse', name: 'Zooniverse' }
+      end
+    end
   end
 
 

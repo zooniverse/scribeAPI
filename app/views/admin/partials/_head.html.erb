@@ -1,9 +1,14 @@
 <div id="admin-header">
+
+  <ul class="account-tabs">
+    <li>Hi, <%= current_user.name %> (<%= current_user.role.capitalize %>) <%= link_to "Sign out", destroy_user_session_path, :method => :delete %></li>
+  </ul>
+
   <ul class="header-tabs">
   <% { 
 
       "Dashboard" => admin_dashboard_path,
-      "Subjects" => admin_subjects_path,
+      "Subject Sets" => admin_subject_sets_path,
       "Users" => admin_users_path,
       "Data" => admin_data_path
 

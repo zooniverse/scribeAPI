@@ -3,7 +3,8 @@
   "short_title": "The ANZACs",
   "summary": "Transcription of New Zealand World War I Personnel Files",
   "background": "background.jpg",
-
+  "admin_email": "andrea@zooniverse.org",
+    "team_emails": [ "andrea@zooniverse.org" ],
   "team": [
     {
       "name": "Andrea Simenstad",
@@ -26,5 +27,9 @@
      "title": "UofM",
      "url": "http://umn.edu"
     }
-  ]
+  ],
+  "forum": {
+    "type": "discourse",
+    "base_url": "http://scribe-forum.nypl-labs.biz"
+  }
 }

@@ -7,6 +7,8 @@ JSONAPIClient           = require 'json-api-client' # use to manage data?
 ForumSubjectWidget      = require '../forum-subject-widget'
 API                     = require '../../lib/api'
 HelpModal               = require 'components/help-modal'
+HelpButton              = require 'components/buttons/help-button'
+BadSubjectButton        = require 'components/buttons/bad-subject-button'
 
 module.exports = React.createClass # rename to Classifier
   displayName: 'Mark'
@@ -42,6 +44,7 @@ module.exports = React.createClass # rename to Classifier
     currentTask = @getCurrentTask()
     TaskComponent = @getCurrentTool()
     onFirstAnnotation = @state.taskKey == @getActiveWorkflow().first_task
+    console.log "on first: ", @state.taskKey, @getActiveWorkflow().first_task, onFirstAnnotation
 
 
     if currentTask.tool is 'pick_one'
@@ -49,7 +52,6 @@ module.exports = React.createClass # rename to Classifier
       waitingForAnswer = not currentAnswer
 
     <div className="classifier">
-
 
       <div className="subject-area">
         { if @state.noMoreSubjectSets
@@ -79,19 +81,28 @@ module.exports = React.createClass # rename to Classifier
             task={currentTask}
             annotation={@getCurrentClassification().annotation ? {}}
             onChange={@handleDataFromTool}
-            onShowHelp={@toggleHelp if @getCurrentTask().help?}
           />
-          <hr/>
+          <div className="help-bad-subject-holder">
+            { if @getCurrentTask().help?
+              <HelpButton onClick={@toggleHelp} />
+            }
+            { if onFirstAnnotation
+              <BadSubjectButton active={@state.badSubject} onClick={@toggleBadSubject} />
+            }
+            { if @state.badSubject
+              <p>You&#39;ve marked this subject as BAD. Thanks for flagging the issue!</p>
+            }
+          </div>
           <nav className="task-nav">
-            <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
+            { if false
+              <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
+            }
             { if @getNextTask()?
                 <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@advanceToNextTask}>Next</button>
               else
                 if @state.taskKey == "completion_assessment_task"
-                  console.log "LAST TASK:"
-                  console.log @getCurrentSubject() == @getCurrentSubjectSet().subjects[@getCurrentSubjectSet().subjects.length-1]
                   if @getCurrentSubject() == @getCurrentSubjectSet().subjects[@getCurrentSubjectSet().subjects.length-1]
-                    <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next SubjectSet</button>
+                    <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next</button>
                   else
                     <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next Page</button>
                 else
@@ -110,31 +121,6 @@ module.exports = React.createClass # rename to Classifier
         <HelpModal help={@getCurrentTask().help} onDone={=> @setState helping: false } />
       }
     </div>
-
-  getNextSubject: ->
-    console.log 'getNextSubject()'
-    new_subject_set_index = @state.subject_set_index
-    new_subject_index = @state.subject_index + 1
-
-    # If we've exhausted pages in this subject set, move to next one:
-    if new_subject_index >= @getCurrentSubjectSet().subjects.length
-      new_subject_set_index += 1
-      new_subject_index = 0
-
-    # If we've exhausted all subject sets, collapse in shame
-    console.log "if new_subject_set_index..", @state.subjectSets.length
-    if new_subject_set_index >= @state.subjectSets.length
-      console.warn "NO MORE SUBJECT SETS"
-      return
-
-    console.log "Mark#index Advancing to subject_set_index #{new_subject_set_index} (of #{@state.subjectSets.length}), subject_index #{new_subject_index} (of #{@state.subjectSets[new_subject_set_index].subjects.length})"
-
-    @setState
-      subject_set_index: new_subject_set_index
-      subject_index: new_subject_index
-      taskKey: @getActiveWorkflow().first_task
-      currentSubToolIndex: 0, =>
-        # console.log "After @state", @state
 
   # User changed currently-viewed subject:
   handleViewSubject: (index) ->
@@ -206,7 +192,7 @@ module.exports = React.createClass # rename to Classifier
   completeSubjectAssessment: ->
     @commitClassification()
     @beginClassification()
-    @getNextSubject()
+    @advanceToNextSubject()
 
   nextPage: (callback_fn)->
     console.log 'nextPage()'

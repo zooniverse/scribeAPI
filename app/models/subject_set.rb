@@ -28,8 +28,16 @@ class SubjectSet
     self.inc("counts.#{workflow.id.to_s}.total_subjects" => 1)
   end
 
+  def subject_deactivated_on_workflow(workflow)
+    inc_subjects_on_workflow(workflow, -1)
+  end
+
   def subject_activated_on_workflow(workflow)
-    self.inc("counts.#{workflow.id.to_s}.active_subjects" => 1)
+    inc_subjects_on_workflow(workflow, 1)
+  end
+
+  def inc_subjects_on_workflow(workflow, inc)
+    self.inc("counts.#{workflow.id.to_s}.active_subjects" => inc)
   end
 
   def subject_completed_on_workflow(workflow)
@@ -40,6 +48,22 @@ class SubjectSet
   # AMS: what is this for?
   def active_subjects_for_workflow(workflow)
     subject.active.for_workflow(workflow)
+  end
+
+  def self.autocomplete_name(letters)
+    reg = /#{Regexp.escape(letters)}/i
+    where( :"meta_data.name" => reg)
+  end
+
+  def workflows
+    counts.map do |k,v|
+      workflow = Workflow.find k
+      v.merge workflow: workflow
+    end
+  end
+
+  def to_s
+    "#{state == 'inactive' ? '[Inactive] ' : ''}Subject Set"
   end
 
 end

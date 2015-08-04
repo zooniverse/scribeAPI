@@ -1,0 +1,13 @@
+<div class="admin-signin">
+
+  <h1>Woah there.</h1>
+
+  <p>Sign In.</p>
+
+  <ul>
+  <% @providers.each do |provider| %>
+    <li><%= link_to provider[:name], provider[:path] %></li>
+  <% end %>
+  </ul
+  
+</div>

@@ -76,7 +76,7 @@ module.exports = React.createClass
 
       <label
         key={tool._key}
-        className="minor-button #{if i is @getSubToolIndex() then 'active' else ''}"
+        className="answer #{if i is @getSubToolIndex() then 'active' else ''}"
       >
         <span
           className="drawing-tool-icon"
@@ -98,8 +98,9 @@ module.exports = React.createClass
 
       </label>
 
+    # tools = null if tools.length == 1
 
-    <GenericTask question={@props.task.instruction} onShowHelp={@props.onShowHelp} answers={tools} />
+    <GenericTask question={@props.task.instruction} onBadSubject={@props.onBadSubject} onShowHelp={@props.onShowHelp} answers={tools} />
 
   getSubToolIndex: ->
     @state.subToolIndex

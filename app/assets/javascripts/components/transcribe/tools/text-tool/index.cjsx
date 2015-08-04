@@ -1,8 +1,9 @@
-React           = require 'react'
-{Navigation}    = require 'react-router'
-DraggableModal  = require 'components/draggable-modal'
-DoneButton      = require './done-button'
-PrevButton      = require './prev-button'
+React             = require 'react'
+{Navigation}      = require 'react-router'
+DraggableModal    = require 'components/draggable-modal'
+SmallButton       = require 'components/buttons/small-button'
+HelpButton        = require 'components/buttons/help-button'
+BadSubjectButton  = require 'components/buttons/bad-subject-button'
 
 TextTool = React.createClass
   displayName: 'TextTool'
@@ -11,19 +12,21 @@ TextTool = React.createClass
   getInitialState: ->
     annotation: @props.annotation ? {}
     viewerSize: @props.viewerSize
+    autocompleting: false
 
   # this can go into a mixin? (common across all transcribe tools)
   getPosition: (data) ->
+    yPad = 20
     switch data.toolName
       when 'rectangleTool'
         x = data.x
-        y = parseFloat(data.y) + parseFloat(data.height)
+        y = parseFloat(data.y) + parseFloat(data.height) + yPad
       when 'textRowTool'
         x = data.x
-        y = data.yLower
+        y = data.yLower + yPad
       else # default for pointTool
         x = data.x
-        y = data.y
+        y = data.y + yPad
     return {x,y}
 
   getDefaultProps: ->
@@ -60,6 +63,15 @@ TextTool = React.createClass
 
     @applyAutoComplete()
 
+    # Required to ensure tool has cleared annotation even if tool doesn't unmount between tasks:
+    @setState
+      annotation: new_props.annotation ? {}
+      viewerSize: new_props.viewerSize
+
+  shouldComponentUpdate: ->
+    console.log "should update? ", @props, @state
+    true
+
   componentDidMount: ->
     @applyAutoComplete()
     @focus() if @props.focus
@@ -72,6 +84,9 @@ TextTool = React.createClass
     if @isMounted() && @toolConfig().suggest == 'common'
       el = $(@refs.input0?.getDOMNode())
       el.autocomplete
+        open: ( => @setState autocompleting: true )
+        close: => setTimeout( (=> @setState(autocompleting: false)), 1000)
+        select: (e, ui) => @updateValue(ui.item.value)
         source: (request, response) =>
           field = "#{@props.task.key}:#{@fieldKey()}"
           $.ajax
@@ -117,22 +132,32 @@ TextTool = React.createClass
     else
       @props.annotation_key
 
-  handleChange: (e) ->
+  updateValue: (val) ->
+    console.log "updated val: ", val
     newAnnotation = @state.annotation
-    newAnnotation[@fieldKey()] = e.target.value
+    newAnnotation[@fieldKey()] = val
 
     # if composite-tool is used, this will be a callback to CompositeTool::handleChange()
     # otherwise, it'll be a callback to Transcribe::handleDataFromTool()
     @props.onChange(newAnnotation) # report updated annotation to parent
+#
+# <<<<<<< HEAD
+#   handleKeyDown: (e) ->
+#     @handleChange(e) # updates any autocomplete values
+#     if [13].indexOf(e.keyCode) >= 0 # ENTER
+#       # submit transcription
+# =======
+  handleChange: (e) ->
+    @updateValue e.target.value
 
-  handleKeyDown: (e) ->
-    @handleChange(e) # updates any autocomplete values
-    if [13].indexOf(e.keyCode) >= 0 # ENTER
-      # submit transcription
+  handleKeyPress: (e) ->
+    if ! @state.autocompleting && [13].indexOf(e.keyCode) >= 0 # ENTER
+# >>>>>>> master
       if window.location.hash is '#/transcribe' || @props.task.next_task? # regular transcribe, i.e. no mark transition
         @commitAnnotation()
       else
         @returnToMarking()
+
   handleBadMark: ()->
     newAnnotation = []
     newAnnotation["low_quality_subject"]
@@ -164,6 +189,7 @@ TextTool = React.createClass
             onChange: @handleChange
             onFocus: ( () => @props.onInputFocus? @props.annotation_key )
             value: val
+            disabled: @props.badSubject
 
           if @props.inputType == "text"
             <input type="text" value={val} {...atts} />
@@ -188,14 +214,15 @@ TextTool = React.createClass
       buttons = []
 
       if @props.onShowHelp?
-        buttons.push(<button key="help-button" type="button" className="pill-button help-button" onClick={@props.onShowHelp}>
-          Need some help?
-        </button>)
+        buttons.push <HelpButton onClick={@props.onShowHelp}/>
+
+      if @props.onBadSubject?
+        buttons.push <BadSubjectButton active={@props.badSubject} onClick={@props.onBadSubject} />
 
       if window.location.hash is '#/transcribe' || @props.task.next_task? # regular transcribe, i.e. no mark transition
-        buttons.push <DoneButton label={if @props.task.next_task? then 'Next' else 'Done'} key="done-button" onClick={@commitAnnotation} />
+        buttons.push <SmallButton label={if @props.task.next_task? then 'Next' else 'Done'} key="done-button" onClick={@commitAnnotation} />
       else
-        buttons.push <DoneButton label='Finish' key="done-button" onClick={@returnToMarking} />
+        buttons.push <SmallButton label='Finish' key="done-button" onClick={@returnToMarking} />
 
       {x,y} = @getPosition @props.subject.region
 

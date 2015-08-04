@@ -28,17 +28,28 @@ module.exports =
           window.classifications = @state.classifications # make accessible to console
           callback() if callback?
 
+  toggleBadSubject: (callback) ->
+    @setState badSubject: not @state.badSubject, =>
+      callback?()
+    
   # Push current classification to server:
   commitClassification: ->
     console.log 'COMMITTING CLASSIFICATION... current classification: ', @getCurrentClassification()
     classification = @getCurrentClassification()
     # checking for empty classification.annotation, we don't want to commit those classifications -- AMS
-    return if Object.keys(classification.annotation).length == 0
-    console.log 
+
     classification.subject_id = @getCurrentSubject()?.id
     classification.subject_set_id = @getCurrentSubjectSet().id if @getCurrentSubjectSet()?
     classification.workflow_id = @getActiveWorkflow().id
-    classification.task_key = @state.taskKey
+
+    # If user activated 'Bad Subject' button, override task:
+    if @state.badSubject
+      classification.task_key = 'flag_bad_subject_task'
+
+    # Otherwise, classification is for active task:
+    else
+      classification.task_key = @state.taskKey
+      return if Object.keys(classification.annotation).length == 0
 
     # Commit classification to backend
     classification.commit (classification) =>
@@ -46,9 +57,14 @@ module.exports =
       if classification.child_subject
         @appendChildSubject classification.subject_id, classification.child_subject
 
+      if @state.badSubject
+        @toggleBadSubject =>
+          @advanceToNextSubject()
+
     console.log 'COMMITTED CLASSIFICATION: ', classification
     console.log '(ALL CLASSIFICATIONS): ', @state.classifications
-    @beginClassification() #creating a new classification allows not keep commiting previously commited classifications. --AMS
+    # PB: Commenting this out because was generating duplicate empty classifications. We should figure out where/why commitClassification is being called twice.
+    # @beginClassification() #creating a new classification allows not keep commiting previously commited classifications. --AMS
 
   # Update local version of a subject with a newly acquired child_subject (i.e. after submitting a subject-generating classification)
   appendChildSubject: (subject_id, child_subject) ->
@@ -119,7 +135,6 @@ module.exports =
   # Get next logical task
   getNextTask: ->
     task = @getTasks()[@state.taskKey]
-    # console.log "looking up next task based on current ann: ", task, task.tool_config?.options, @getCurrentClassification().annotation?.value
     if task.tool_config?.options?[@getCurrentClassification().annotation?.value]?.next_task?
       nextKey = task.tool_config.options[@getCurrentClassification().annotation.value].next_task
     else
@@ -168,7 +183,7 @@ module.exports =
 
   getCompletionAssessmentTask: ->
     generates_subject_type: null
-    instruction: "Is there anything left to #{@props.workflowName}?"
+    instruction: "Thanks for all your work! Is there anything left to #{@props.workflowName}?"
     key: "completion_assessment_task"
     next_task: null
     tool: "pickOne"
@@ -186,7 +201,15 @@ module.exports =
     }
     subToolIndex: 0
 
+  # Regardless of what workflow we're in, call this to display next subject (if any avail)
   advanceToNextSubject: ->
+    if @state.subjects?
+      @_advanceToNextSubjectInSubjects()
+    else
+      @_advanceToNextSubjectInSubjectSets()
+    
+  # This is the version of advanceToNextSubject for workflows that consume subjects (transcribe,verify)
+  _advanceToNextSubjectInSubjects: ->
     if @state.subject_index + 1 < @state.subjects.length
       next_index = @state.subject_index + 1
       next_subject = @state.subjects[next_index]
@@ -203,13 +226,36 @@ module.exports =
     else
       @setState
         subject_index: null
-        noMoreSubjects: true
+        userClassifiedAll: @state.subjects.length > 0
+  
+  # This is the version of advanceToNextSubject for workflows that consume subject sets (mark)
+  _advanceToNextSubjectInSubjectSets: ->
+    new_subject_set_index = @state.subject_set_index
+    new_subject_index = @state.subject_index + 1
+
+    # If we've exhausted pages in this subject set, move to next one:
+    if new_subject_index >= @getCurrentSubjectSet().subjects.length
+      new_subject_set_index += 1
+      new_subject_index = 0
+
+    # If we've exhausted all subject sets, collapse in shame
+    if new_subject_set_index >= @state.subjectSets.length
+      console.warn "NO MORE SUBJECT SETS"
+      return
+
+    console.log "Mark#index Advancing to subject_set_index #{new_subject_set_index} (of #{@state.subjectSets.length}), subject_index #{new_subject_index} (of #{@state.subjectSets[new_subject_set_index].subjects.length})"
+
+    @setState
+      subject_set_index: new_subject_set_index
+      subject_index: new_subject_index
+      taskKey: @getActiveWorkflow().first_task
+      currentSubToolIndex: 0
+
 
   commitClassificationAndContinue: (d) ->
     @commitClassification()
     @beginClassification {}, () =>
       if @getCurrentTask().next_task?
-        console.log "advance to next task ann cleared: ", @getCurrentClassification().annotation, @state.classifications
         @advanceToTask @getCurrentTask().next_task
 
       else

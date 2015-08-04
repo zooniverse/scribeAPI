@@ -1,7 +1,16 @@
 BACKGROUND = white
 FOREGROUND = #333
-MAIN_HIGHLIGHT = #f60
+MAIN_HIGHLIGHT = #91BF8F
 MEDIUM_GRAY = #555
+
+PRIMARY_NORMAL=#8cbc8c
+PRIMARY_HOVER=#A4C8A4
+
+SECONDARY_NORMAL=#3f5765
+SECONDARY_HOVER=#667983
+
+TERTIARY_NORMAL=#FC5424
+DISABLED_GRAY=#CDCDCD
 
 SANS_SERIF = Montserrat, "Gill Sans", Arial, sans-serif
 SERIF = "Playfair Display", Georgia, serif
@@ -36,7 +45,7 @@ hr
   color: inherit
 
 a
-  color: lime
+  color: TERTIARY_NORMAL
 
 .readymade-site-background
   //background-image: url("background.jpg")
@@ -113,8 +122,7 @@ h1
   font-size 3em
 
 .page-content
-  background-color #000
-  opacity 0.7
+  background-color rgba(0,0,0,0.6)
   margin 100px 100px
   border-radius 12px
   padding 20px
@@ -126,6 +134,10 @@ h1
 
   h2
     font-size 25px
+
+  .updated-at
+    text-align right
+    color gray
 
 
 $button

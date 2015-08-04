@@ -1,17 +1,28 @@
 <%
+  subject = defined?(subject) ? subject : nil
+  subject_set = defined?(subject_set) ? subject_set : nil
+
   links = []
-  links << {label: 'Subjects', url: admin_subjects_path}
+  links << {label: 'Subject Sets', url: admin_subject_sets_path}
 
-  parents = []
-  s = subject
-  while ! (s = s.parent_subject).nil?
-    parents.unshift s
+  if ! subject_set.nil?
+    links << {label: subject_set}
+  else
+    links << {label: subject.subject_set, url: admin_subject_set_path(subject.subject_set)}
   end
 
-  parents.each do |p|
-    links << {label: p, url: admin_subject_path(p)}
-  end
+  if ! subject.nil?
+    parents = []
+    s = subject
+    while ! (s = s.parent_subject).nil?
+      parents.unshift s
+    end
 
-  links << {label: subject}
+    parents.each do |p|
+      links << {label: p, url: admin_subject_path(p)}
+    end
+
+    links << {label: subject}
+  end
 %>
 <%= render partial: 'partials/breadcrumb', locals: {links: links} %>
