@@ -46,7 +46,7 @@ module.exports =
         limit: limit
         page: page
         scope: "active"
-        # random: true
+        random: true
 
       console.log "Fetching subjects: "
       request.then (subjects) =>

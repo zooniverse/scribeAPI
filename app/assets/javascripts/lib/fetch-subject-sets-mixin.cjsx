@@ -82,7 +82,6 @@ module.exports =
           , => console.log 'STATE: ', @state
 
   fetchSubjectSets: (workflow_id, limit) ->
-    console.log 'fetchSubjectSets()'
     if @props.overrideFetchSubjectsUrl?
       $.getJSON @props.overrideFetchSubjectsUrl, (subject_sets) =>
         @setState
@@ -93,6 +92,7 @@ module.exports =
       request = API.type('subject_sets').get
         workflow_id: workflow_id
         limit: limit
+        random: true
 
       request.then (subject_sets)=>    # DEBUG CODE
         meta = subject_sets[0].getMeta
