@@ -141,7 +141,7 @@ module.exports = React.createClass
       title={@props.mark.label}
     >
       <g
-        className="rectangle-tool"
+        className='rectangle-tool'
         onMouseDown={@props.onSelect unless @props.disabled}
       >
 
@@ -160,11 +160,9 @@ module.exports = React.createClass
                 </filter>
 
                 <polyline
-                  class=\"#{classes.join ' '}\"
                   points=\"#{points}\"
                   filter=\"#{if @props.selected then 'url(#dropShadow)' else 'none'}\"
                 />
-
               "
             }
           />

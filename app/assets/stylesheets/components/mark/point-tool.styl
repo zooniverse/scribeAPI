@@ -1,42 +1,36 @@
-// PB: This isn't included anywhere...
-
 .point-tool
-  cursor grab
-  cursor -webkit-grab
-  &.locked
-    &:active
-      cursor not-allowed
-  &:active
-    cursor grabbing
-    cursor -webkit-grabbing
 
-  .resize-button
-    cursor grab
-    cursor -webkit-grab
-    &:active
-      cursor grabbing
-      cursor -webkit-grabbing
-
+  // BUTTON STYLES
   .delete-button
     cursor pointer
 
   .mark-button
     cursor pointer
-    &.disabled
-      cursor wait
-      opacity 0.2
-      &:active
-        cursor wait
-        pointer-events none
-    .checkbox
-      transition 0.25s
-      opacity 0.6
-      &:hover
-        opacity 1.0
 
-  polyline
+  // SHAPE STYLES
+  .crosshairs
+    stroke rgba(200,200,0,0.30)
+
+  .tool-shape
     cursor grab
     cursor -webkit-grab
+
+    stroke-width 5
+    stroke rgba(200,200,0,0.30)
+    fill transparent
+
     &:active
       cursor grabbing
       cursor -webkit-grabbing
+
+    // mark has not yet been transcribed
+    &.transcribable
+      stroke rgb(67, 187, 253)
+
+    // mark is committed and uneditable
+    &.committed
+      cursor default
+
+    // mark has not yet been committed
+    &.uncommitted
+      stroke #fc5424
