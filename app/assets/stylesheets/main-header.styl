@@ -3,12 +3,11 @@
   // display: flex
   // flex-wrap: wrap
   // justify-content: space-between
-  height: 25%
   background: rgba(0, 0, 0, 0.18);
 
 .main-header-group
   background: rgba(0, 0, 0, 0.18);
-  height: 25%
+  max-heigth: 50px
   position: fixed
   top 0px
   width 100%
@@ -89,13 +88,15 @@ a.main-header-item
   width: 3rem
 
 .login
-  color rgba(255, 255, 255, 0.4)
-  padding-top: 1%;
-  cursor: normal
-  white-space: nowrap
+  @extends $reset-button
   float: right
-  text-transform: uppercase
+  padding: 0.5rem 1.5vw 0.2em
+  color rgba(255, 255, 255, 0.4)
+  overflow: hidden
   align-items: center
+  display: flex
+  text-transform: uppercase
+  line-height 4.5em
 
   img
     max-height 20px
