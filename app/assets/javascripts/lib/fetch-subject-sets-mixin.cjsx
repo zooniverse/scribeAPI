@@ -4,16 +4,26 @@ API = require './api'
 
 module.exports =
   componentDidMount: ->
+    # can anyone figure out how to simplify? --STI
+    # console.log '@PROPS.PARAMS: ', @props.params
+    # console.log '@PROPS.QUERY : ', @props.query
     if @props.params.subject_set_id
-      if @props.params.selected_subject_id
-        @fetchSubjectSetBySubjectId @getActiveWorkflow().id, @props.params.subject_set_id, @props.params.selected_subject_id, @props.params.page ? 1
-      else
-        @fetchSubjectSet @props.params.subject_set_id, @getActiveWorkflow().id
+        # console.log '>>>>>>>>>>>>>>>>>>>>>>>>>>>> A <<<<<<<<<<<<<<<<<<<<<<<<<<<<'
+        # Used for directly accessing a subject set
+        @fetchSubjectSet @props.params.subject_set_id, @getActiveWorkflow().id # fetch specific subject set
     else if @props.query.subject_set_id
-      @fetchSubjectSet @props.query.subject_set_id, @getActiveWorkflow().id
+
+      if @props.query.selected_subject_id and @props.query.selected_subject_id
+        # console.log '>>>>>>>>>>>>>>>>>>>>>>>>>>>> B <<<<<<<<<<<<<<<<<<<<<<<<<<<<'
+        # Used to transition from Transcribe to Mark
+        @fetchSubjectSetBySubjectId @getActiveWorkflow().id, @props.query.subject_set_id, @props.query.selected_subject_id #, @props.query.page ? 1 # Forget why I decided to pass page number? --STI
+      else
+        # console.log '>>>>>>>>>>>>>>>>>>>>>>>>>>>> C <<<<<<<<<<<<<<<<<<<<<<<<<<<<'
+        @fetchSubjectSet @props.query.subject_set_id, @getActiveWorkflow().id # fetch specific subject set
     else
-      console.log 'Fetching some subject set...'
-      @fetchSubjectSets @getActiveWorkflow().id, @getActiveWorkflow().subject_fetch_limit
+      # console.log 'Fetching some subject set...'
+      # console.log '>>>>>>>>>>>>>>>>>>>>>>>>>>>> D <<<<<<<<<<<<<<<<<<<<<<<<<<<<'
+      @fetchSubjectSets @getActiveWorkflow().id, @getActiveWorkflow().subject_fetch_limit # fetch random subject sets, given limit
 
 
   # this method fetches the next page of subjects in a given subject_set.
@@ -37,10 +47,11 @@ module.exports =
         subject_current_page: subject_set.subject_pagination_info.current_page
         total_subject_pages: subject_set.subject_pagination_info.total_pages
 
-  fetchSubjectSetBySubjectId: (workflow_id, subject_set_id, selected_subject_id, page) ->
+  fetchSubjectSetBySubjectId: (workflow_id, subject_set_id, selected_subject_id) ->
+  # fetchSubjectSetBySubjectId: (workflow_id, subject_set_id, selected_subject_id, page) -> # why page number? --STI
     console.log 'fetchSubjectSetBySubjectId()'
     console.log 'THE QUERY: ', "/workflows/#{workflow_id}/subject_sets/#{subject_set_id}/subjects/#{selected_subject_id}"
-    request = API.type('workflows').get("#{workflow_id}/subject_sets/#{subject_set_id}/subjects/#{selected_subject_id}?page=#{page}")
+    request = API.type('workflows').get("#{workflow_id}/subject_sets/#{subject_set_id}/subjects/#{selected_subject_id}") #?page=#{page}")
     # request = API.type("subject_sets").get(subject_set_id: subject_set_id, workflow_id: workflow_id)
 
     @setState
