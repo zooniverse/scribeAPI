@@ -40,7 +40,6 @@ HomePage = React.createClass
             if @state.project?.metadata_search?.feature_on_homepage
               for field in @state.project.metadata_search.fields
                 <div className="metadata-search">
-                  <h2>Search for a {field.label}</h2>
                   <NameSearch field={field.field} />
                 </div>
           }

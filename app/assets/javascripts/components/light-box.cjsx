@@ -40,7 +40,6 @@ module.exports = React.createClass
     viewBox = [0, 0, 100, 100]
     <div className="carousel">
 
-      <ActionButton id="backward" text="BACK" onClick={@moveBack.bind(this, indexOfFirst)} classes={@backButtonDisable(indexOfFirst)} />
 
       <ul>
         <li onClick={@shineSelected.bind(this, @findSubjectIndex(@state.first))} className={"active" if @props.subject_index == @findSubjectIndex(@state.first)}>
@@ -79,7 +78,8 @@ module.exports = React.createClass
           </li>
         }
       </ul>
-      <ActionButton id="forward" text="FORWARD" onClick={@moveForward.bind(this, indexOfFirst, third, second)} classes={@forwardButtonDisable(third if third?)} />
+      <ActionButton id="backward" text="BACK" onClick={@moveBack.bind(this, indexOfFirst)} classes={@backButtonDisable(indexOfFirst)} />
+      <ActionButton id="forward" text="NEXT" onClick={@moveForward.bind(this, indexOfFirst, third, second)} classes={@forwardButtonDisable(third if third?)} />
 
     </div>
 
