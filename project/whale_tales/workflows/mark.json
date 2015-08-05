@@ -18,7 +18,7 @@
       "tool_config": {
         "options": {
           "yes": { "label": "Yes", "next_task": "location" },
-          "no": { "label": "No" }
+          "no": { "label": "No"}
         }
       },
       "next_task": "sea_ice_present"
@@ -186,7 +186,7 @@
 
         ]
       },
-      "next_task": "records_present"
+      "next_task": "optional_entries"
     },
 
     "art": {
@@ -202,7 +202,7 @@
           {"type": "rectangleTool", "label": "Other",                    "color": "red", "generates_subject_type": "art_other" }
         ]
       },
-      "next_task": "records_present"
+      "next_task": "optional_entries"
     },
 
 
