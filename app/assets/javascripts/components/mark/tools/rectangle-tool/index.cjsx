@@ -9,31 +9,6 @@ MINIMUM_SIZE = 5
 DELETE_BUTTON_ANGLE = 45
 DELETE_BUTTON_DISTANCE = 9 / 10
 DEBUG = false
-#
-# markStyles =
-#   prior:
-#     strokeColor:         'pink' # rgba(90,200,90,0.5)'
-#     strokeWidth:         2.0
-#     hoverFill:           'rgba(100,100,0,0.5)'
-#     disabledStrokeColor: 'rgba(90,200,90,0.5)'
-#     disabledStrokeWidth: 2.0
-#     disabledHoverFill:   'transparent'
-#
-#   selected:
-#     strokeColor:         '#43bbfd'
-#     strokeWidth:         2.5
-#     hoverFill:           'transparent'
-#     disabledStrokeColor: '#43bbfd'
-#     disabledStrokeWidth: 2.0
-#     disabledHoverFill:   'transparent'
-#
-#   regular:
-#     strokeColor:         'pink' #rgba(100,100,0,0.5)'
-#     strokeWidth:         2.0
-#     hoverFill:           'transparent'
-#     disabledStrokeColor: 'rgba(100,100,0,0.5)'
-#     disabledStrokeWidth: 2.0
-#     disabledHoverFill:   'transparent'
 
 module.exports = React.createClass
   displayName: 'RectangleTool'
@@ -172,7 +147,7 @@ module.exports = React.createClass
 
         <Draggable onDrag = {@handleMainDrag} >
           <g
-            className="rectangle-tool-shape #{classes.join ' '}"
+            className="tool-shape #{classes.join ' '}"
             dangerouslySetInnerHTML={
               __html: "
                 <filter id=\"dropShadow\">

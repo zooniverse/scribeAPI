@@ -1,19 +1,6 @@
 .rectangle-tool
-  cursor grab
-  cursor -webkit-grab
-  pointer-events all
-  &.locked
-    cursor default
-    polyline
-      cursor default
-    &:active
-      cursor not-allowed
-  &:active
-    cursor grabbing
-    cursor -webkit-grabbing
-  &:hover
-    background-color rbg(0,0,255,0.2)
 
+  // BUTTON STYLES
   .resize-button
     cursor grab
     cursor -webkit-grab
@@ -26,36 +13,28 @@
 
   .mark-button
     cursor pointer
-    &.disabled
-      cursor wait
-      opacity 0.2
-      &:active
-        cursor wait
-        pointer-events none
-    .checkbox
-      transition 0.25s
-      opacity 0.6
-      &:hover
-        opacity 1.0
 
-  polyline
+  // SHAPE STYLES
+  .tool-shape
     cursor grab
     cursor -webkit-grab
 
     stroke-width 5
     stroke rgba(200,200,0,0.30)
     fill transparent
-    // transition fill 0.2s // currently nothing to transition
 
     &:active
       cursor grabbing
       cursor -webkit-grabbing
 
+    // mark has not yet been transcribed
     &.transcribable
       stroke rgb(67, 187, 253)
 
+    // mark is committed and uneditable
     &.committed
       cursor default
 
+    // mark has not yet been committed
     &.uncommitted
       stroke #fc5424
