@@ -41,6 +41,21 @@
   polyline
     cursor grab
     cursor -webkit-grab
+
+    stroke-width 5
+    stroke rgba(200,200,0,0.30)
+    fill transparent
+    // transition fill 0.2s // currently nothing to transition
+
     &:active
       cursor grabbing
       cursor -webkit-grabbing
+
+    &.transcribable
+      stroke rgb(67, 187, 253)
+
+    &.committed
+      cursor default
+
+    &.uncommitted
+      stroke #fc5424

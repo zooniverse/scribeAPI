@@ -9,32 +9,31 @@ MINIMUM_SIZE = 5
 DELETE_BUTTON_ANGLE = 45
 DELETE_BUTTON_DISTANCE = 9 / 10
 DEBUG = false
-
-markStyles =
-
-  prior:
-    strokeColor:         'pink' # rgba(90,200,90,0.5)'
-    strokeWidth:         2.0
-    hoverFill:           'rgba(100,100,0,0.5)'
-    disabledStrokeColor: 'rgba(90,200,90,0.5)'
-    disabledStrokeWidth: 2.0
-    disabledHoverFill:   'transparent'
-
-  selected:
-    strokeColor:         '#43bbfd'
-    strokeWidth:         2.5
-    hoverFill:           'transparent'
-    disabledStrokeColor: '#43bbfd'
-    disabledStrokeWidth: 2.0
-    disabledHoverFill:   'transparent'
-
-  regular:
-    strokeColor:         'pink' #rgba(100,100,0,0.5)'
-    strokeWidth:         2.0
-    hoverFill:           'transparent'
-    disabledStrokeColor: 'rgba(100,100,0,0.5)'
-    disabledStrokeWidth: 2.0
-    disabledHoverFill:   'transparent'
+#
+# markStyles =
+#   prior:
+#     strokeColor:         'pink' # rgba(90,200,90,0.5)'
+#     strokeWidth:         2.0
+#     hoverFill:           'rgba(100,100,0,0.5)'
+#     disabledStrokeColor: 'rgba(90,200,90,0.5)'
+#     disabledStrokeWidth: 2.0
+#     disabledHoverFill:   'transparent'
+#
+#   selected:
+#     strokeColor:         '#43bbfd'
+#     strokeWidth:         2.5
+#     hoverFill:           'transparent'
+#     disabledStrokeColor: '#43bbfd'
+#     disabledStrokeWidth: 2.0
+#     disabledHoverFill:   'transparent'
+#
+#   regular:
+#     strokeColor:         'pink' #rgba(100,100,0,0.5)'
+#     strokeWidth:         2.0
+#     hoverFill:           'transparent'
+#     disabledStrokeColor: 'rgba(100,100,0,0.5)'
+#     disabledStrokeWidth: 2.0
+#     disabledHoverFill:   'transparent'
 
 module.exports = React.createClass
   displayName: 'RectangleTool'
@@ -138,6 +137,10 @@ module.exports = React.createClass
     @props.onSelect @props.mark
 
   render: ->
+    classes = []
+    classes.push 'transcribable' if @props.isTranscribable
+    classes.push if @props.disabled then 'committed' else 'uncommitted'
+
     x1 = @props.mark.x
     width = @props.mark.width
     x2 = x1 + width
@@ -147,7 +150,7 @@ module.exports = React.createClass
 
     scale = (@props.xScale + @props.yScale) / 2
 
-    markStyle = @getMarkStyle @props.mark, @props.selected, @props.isPriorMark
+    # markStyle = @getMarkStyle @props.mark, @props.selected, @props.isPriorMark
 
     points = [
       [x1, y1].join ','
@@ -163,14 +166,13 @@ module.exports = React.createClass
       title={@props.mark.label}
     >
       <g
-        className="rectangle-tool#{if @props.disabled then ' locked' else ''}"
+        className="rectangle-tool"
         onMouseDown={@props.onSelect unless @props.disabled}
-        stroke={markStyle.strokeColor}
-        strokeWidth={markStyle.strokeWidth/scale}
       >
 
         <Draggable onDrag = {@handleMainDrag} >
           <g
+            className="rectangle-tool-shape #{classes.join ' '}"
             dangerouslySetInnerHTML={
               __html: "
                 <filter id=\"dropShadow\">
@@ -183,8 +185,8 @@ module.exports = React.createClass
                 </filter>
 
                 <polyline
+                  class=\"#{classes.join ' '}\"
                   points=\"#{points}\"
-                  fill=\"transparent\"
                   filter=\"#{if @props.selected then 'url(#dropShadow)' else 'none'}\"
                 />
 
