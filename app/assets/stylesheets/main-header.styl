@@ -1,15 +1,17 @@
+
 .main-header
   // display: flex
   // flex-wrap: wrap
   // justify-content: space-between
-  height 40px
-  max-height 40px
+  height: 25%
+  background: rgba(0, 0, 0, 0.18);
 
 .main-header-group
+  background: rgba(0, 0, 0, 0.18);
+  height: 25%
   position: fixed
   top 0px
   width 100%
-  background: rgba(0, 0, 0, 0.18);
 
   display: flex
   flex-direction: row
@@ -47,12 +49,12 @@
 
   &.logo
     color:  #efefef;
-    font-size: 24px;/* Approximation due to font substitution */
+    font-size: 24px;
     font-weight: 700;
     font-style: italic;
-    line-height: 36px;/* Approximation due to font substitution */
+    line-height: 36px;
     text-align: center;
-    transform: rotate(-11.719deg);/* width and height properties ommitted due to transform */
+    transform: rotate(-11.719deg)
 
     
     &:hover
@@ -87,9 +89,13 @@ a.main-header-item
   width: 3rem
 
 .login
-  line-height: 4
-  padding: 0.5rem 1.5vw 0.2em
   color rgba(255, 255, 255, 0.4)
+  padding-top: 1%;
+  cursor: normal
+  white-space: nowrap
+  float: right
+  text-transform: uppercase
+  align-items: center
 
   img
     max-height 20px
@@ -102,7 +108,7 @@ a.main-header-item
     padding-left 6px
 
   &:hover
-    color #fff
+    color white
 
   .options
     width 100px

@@ -47,8 +47,7 @@ module.exports = React.createClass
             <a className="main-header-item" href={@props.feedbackFormUrl}>Feedback</a>
         }
 
-        <Login />
       </nav>
+      <Login />
 
-      <div className="main-header-group"></div>
     </header>
