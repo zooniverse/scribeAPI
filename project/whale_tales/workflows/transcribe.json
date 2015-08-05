@@ -235,6 +235,15 @@
 
 
 
+
+
+
+
+
+
+
+
+
     "transcribe_point_with_text_tool": {
       "tool": "textTool",
       "tool_config": {},
@@ -247,7 +256,7 @@
           "suggest": "common"
       },
       "instruction": "Transcribe this rectangle.",
-      "next_task": "entry_date"
+      "next_task": null
     },
     "transcribe_text_row_with_text_tool": {
       "tool": "textTool",
