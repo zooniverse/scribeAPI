@@ -5,41 +5,12 @@ DeleteButton     = require './delete-button'
 DragHandle       = require './drag-handle'
 MarkButtonMixin  = require 'lib/mark-button-mixin'
 
-
-# HANDLE STYLES
-
+# DEFAULT SETTINGS
 RADIUS = 10
 SELECTED_RADIUS = 20
 CROSSHAIR_SPACE = 0.2
 CROSSHAIR_WIDTH = 1
 DELETE_BUTTON_ANGLE = 45
-
-markStyles =
-
-  prior:
-    strokeColor:         'rgba(90,200,90,0.5)'
-    strokeWidth:         2.0
-    hoverFill:           'rgba(100,100,0,0.5)'
-    disabledStrokeColor: 'rgba(90,200,90,0.5)'
-    disabledStrokeWidth: 2.0
-    disabledHoverFill:   'transparent'
-
-  selected:
-    strokeColor:         '#43bbfd'
-    strokeWidth:         2.5
-    hoverFill:           'transparent'
-    disabledStrokeColor: '#43bbfd'
-    disabledStrokeWidth: 2.0
-    disabledHoverFill:   'transparent'
-
-  regular:
-    strokeColor:         'rgba(100,100,0,0.5)'
-    strokeWidth:         2.0
-    hoverFill:           'transparent'
-    disabledStrokeColor: 'rgba(100,100,0,0.5)'
-    disabledStrokeWidth: 2.0
-    disabledHoverFill:   'transparent'
-
 DEFAULT_HEIGHT = 100
 MINIMUM_HEIGHT = 25
 
@@ -87,6 +58,10 @@ module.exports = React.createClass
       isPriorMark = true
       @props.disabled = true
 
+    classes = []
+    classes.push 'transcribable' if @props.isTranscribable
+    classes.push if @props.disabled then 'committed' else 'uncommitted'
+
     averageScale = (@props.xScale + @props.yScale) / 2
     crosshairSpace = CROSSHAIR_SPACE / averageScale
     crosshairWidth = CROSSHAIR_WIDTH / averageScale
@@ -98,44 +73,19 @@ module.exports = React.createClass
 
     scale = (@props.xScale + @props.yScale) / 2
 
-    # DETERMINE MARK STYLE
-    if isPriorMark
-      markStyle = markStyles.prior
-    else if @props.selected
-      markStyle = markStyles.selected
-    else
-      markStyle = markStyles.regular
-
     <g
       tool={this}
       transform="translate(0, #{@props.mark.y})"
       onMouseDown={@handleMouseDown}
+      title={@props.mark.label}
     >
       <g
-        className="mark-tool text-row-tool"
-
-        fill='transparent'
-
-        stroke={
-           if @props.disabled
-             markStyle.disabledStrokeColor
-           else
-             markStyle.strokeColor
-         }
-
-        strokeWidth={
-          if @props.disabled
-            markStyle.disabledStrokeWidth/scale
-          else
-            markStyle.strokeWidth/scale
-        }
-
+        className="text-row-tool"
         onMouseDown={@props.onSelect unless @props.disabled}
       >
         <Draggable onDrag={@handleDrag}>
-
-
           <g
+            className="tool-shape #{classes.join ' '}"
             dangerouslySetInnerHTML={
               __html: "
                 <filter id=\"dropShadow\">
@@ -146,6 +96,7 @@ module.exports = React.createClass
                     <feMergeNode in=\"SourceGraphic\" />
                   </feMerge>
                 </filter>
+
                 <rect
                   x=\"0\"
                   y=\"0\"
@@ -196,4 +147,4 @@ module.exports = React.createClass
 
   handleMouseDown: ->
     console.log 'handleMouseDown()'
-    @props.onSelect @props.mark # unless @props.disabled
+    # @props.onSelect @props.mark # unless @props.disabled

@@ -4,37 +4,12 @@ Draggable       = require 'lib/draggable'
 DeleteButton    = require './delete-button'
 MarkButtonMixin = require 'lib/mark-button-mixin'
 
+# DEFAULT SETTINGS
 RADIUS = 10
 SELECTED_RADIUS = 20
 CROSSHAIR_SPACE = 0.2
 CROSSHAIR_WIDTH = 1
 DELETE_BUTTON_ANGLE = 45
-
-# markStyles =
-#
-#   prior:
-#     strokeColor:         'rgba(90,200,90,0.5)'
-#     strokeWidth:         2.0
-#     hoverFill:           'rgba(100,100,0,0.5)'
-#     disabledStrokeColor: 'rgba(90,200,90,0.5)'
-#     disabledStrokeWidth: 2.0
-#     disabledHoverFill:   'transparent'
-#
-#   selected:
-#     strokeColor:         '#43bbfd'
-#     strokeWidth:         2.5
-#     hoverFill:           'transparent'
-#     disabledStrokeColor: '#43bbfd'
-#     disabledStrokeWidth: 2.0
-#     disabledHoverFill:   'transparent'
-#
-#   regular:
-#     strokeColor:         'rgba(100,100,0,0.5)'
-#     strokeWidth:         2.0
-#     hoverFill:           'transparent'
-#     disabledStrokeColor: 'rgba(100,100,0,0.5)'
-#     disabledStrokeWidth: 2.0
-#     disabledHoverFill:   'transparent'
 
 module.exports = React.createClass
   displayName: 'PointTool'
@@ -90,9 +65,6 @@ module.exports = React.createClass
       RADIUS / averageScale
 
     scale = (@props.xScale + @props.yScale) / 2
-
-    # # DETERMINE MARK STYLE
-    # markStyle = @getMarkStyle @props.mark, @props.selected, isPriorMark
 
     <g
       tool={this}

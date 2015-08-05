@@ -125,8 +125,6 @@ module.exports = React.createClass
 
     scale = (@props.xScale + @props.yScale) / 2
 
-    # markStyle = @getMarkStyle @props.mark, @props.selected, @props.isPriorMark
-
     points = [
       [x1, y1].join ','
       [x2, y1].join ','
