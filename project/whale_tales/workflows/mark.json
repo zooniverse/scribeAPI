@@ -1,9 +1,8 @@
 {
   "name":"mark",
   "label":"Mark Workflow",
-  "subject_fetch_limit":     10,
+  "subject_fetch_limit": "10",
   "generates_subjects": true,
-  "generates_subjects_after": 1,
   "generates_subjects_for": "transcribe",
 
   "first_task":"location_present",
@@ -201,7 +200,7 @@
 
 
 
-    "debug_with_text_tool": {
+    "debug": {
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
       "instruction":"Generates textTool transcribe subjects:",
