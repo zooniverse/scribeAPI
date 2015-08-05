@@ -78,7 +78,7 @@ module.exports = React.createClass
           </li>
         }
       </ul>
-      <ActionButton id="backward" text="BACK" onClick={@moveBack.bind(this, indexOfFirst)} classes={@backButtonDisable(indexOfFirst)} />
+      <ActionButton id="backward" text="BACK" type={"back" } onClick={@moveBack.bind(this, indexOfFirst)} classes={@backButtonDisable(indexOfFirst)} />
       <ActionButton id="forward" text="NEXT" onClick={@moveForward.bind(this, indexOfFirst, third, second)} classes={@forwardButtonDisable(third if third?)} />
 
     </div>
