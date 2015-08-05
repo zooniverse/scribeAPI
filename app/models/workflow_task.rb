@@ -12,16 +12,33 @@ class WorkflowTask
 
   embedded_in :workflow
 
+  # Get the tool label that the user was responding to:
+  def tool_label(classification=nil)
+    config = sub_tool_config classification
+    # If this task specifies an array of tools, look for tool-specific subject type:
+    if config
+      config[:label]
+    end
+  end
+
   # Returns generates_subject_type for transcribe/verify tasks;
   # In mark tasks, the generates_subject_type depends on the selected tool, so we need to check the classification's subToolIndex:
   def subject_type(classification=nil)
     type = generates_subject_type
-    # If classification has subToolIndex and this task specifies a tools array, determine the tool-specific generates_subject_type
-    if ! classification.nil? && ! (subToolIndex = classification.annotation["subToolIndex"]).nil?
-      type = find_tool_box(subToolIndex.to_i)[:generates_subject_type]
+    config = sub_tool_config classification
+    # If this task specifies an array of tools, look for tool-specific subject type:
+    if config
+      type = config[:generates_subject_type]
     end
 
     type
+  end
+
+  # If classification has subToolIndex and this task specifies a tools array, determine the tool-specific generates_subject_type
+  def sub_tool_config(classification=nil)
+    if ! classification.nil? && ! (subToolIndex = classification.annotation["subToolIndex"]).nil?
+      find_tool_box(subToolIndex.to_i)
+    end
   end
 
   # Get tool_config hash for this task

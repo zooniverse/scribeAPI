@@ -40,7 +40,8 @@ class SubjectSetSerializer < ActiveModel::MongoidSerializer
   end
 
   def subjects
-    _subjects.map { |s| SubjectSerializer.new s, root: false }
+    scope = scope ? scope : @_serialization_options[:scope]
+    _subjects.map { |s| SubjectSerializer.new s, root: false, scope: scope }
   end
 
   def _subjects

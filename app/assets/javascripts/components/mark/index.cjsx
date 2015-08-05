@@ -9,6 +9,7 @@ API                     = require '../../lib/api'
 HelpModal               = require 'components/help-modal'
 HelpButton              = require 'components/buttons/help-button'
 BadSubjectButton        = require 'components/buttons/bad-subject-button'
+DraggableModal          = require 'components/draggable-modal'
 
 module.exports = React.createClass # rename to Classifier
   displayName: 'Mark'
@@ -44,7 +45,6 @@ module.exports = React.createClass # rename to Classifier
     currentTask = @getCurrentTask()
     TaskComponent = @getCurrentTool()
     onFirstAnnotation = @state.taskKey == @getActiveWorkflow().first_task
-    console.log "on first: ", @state.taskKey, @getActiveWorkflow().first_task, onFirstAnnotation
 
 
     if currentTask.tool is 'pick_one'
@@ -57,6 +57,10 @@ module.exports = React.createClass # rename to Classifier
         { if @state.noMoreSubjectSets
             style = marginTop: "50px"
             <p style={style}>There is nothing left to do. Thanks for your work and please check back soon!</p>
+
+          else if @state.notice
+            <DraggableModal header={@state.notice.header} onDone={@state.notice.onClick}>{@state.notice.message}</DraggableModal>
+
           else if @getCurrentSubjectSet()?
             <SubjectSetViewer
               subject_set={@getCurrentSubjectSet()}
@@ -82,6 +86,7 @@ module.exports = React.createClass # rename to Classifier
             task={currentTask}
             annotation={@getCurrentClassification().annotation ? {}}
             onChange={@handleDataFromTool}
+            subject={@getCurrentSubject()}
           />
           <div className="help-bad-subject-holder">
             { if @getCurrentTask().help?

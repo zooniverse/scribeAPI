@@ -3,7 +3,7 @@ class SubjectSetsController < ApplicationController
 
   def index
     workflow_id                 = get_objectid :workflow_id
-    random                      = params["random"] || false
+    random                      = get_bool :random, false
     subject_set_id              = get_objectid :subject_set_id
 
     subject_sets_limit          = get_int :limit, 10
@@ -20,7 +20,7 @@ class SubjectSetsController < ApplicationController
     end
 
     # Get random set of subject-sets?
-    if params["random"]
+    if random
       # TODO: should randomizer really require a limit be passed? Currently seems required by selection method, but ideally shouldn't
       sets = SubjectSet.random(selector: query, limit: subject_sets_limit)
 
@@ -45,7 +45,7 @@ class SubjectSetsController < ApplicationController
       }
     }
 
-    respond_with SubjectSetResultSerializer.new(sets), workflow_id: workflow_id, subjects_limit: subjects_limit, subjects_page: subjects_page, links: links
+    respond_with SubjectSetResultSerializer.new(sets, scope: self.view_context), workflow_id: workflow_id, subjects_limit: subjects_limit, subjects_page: subjects_page, links: links
   end
 
   def show
@@ -63,7 +63,7 @@ class SubjectSetsController < ApplicationController
   end
 
   def name_search
-    @names = SubjectSet.autocomplete_name(params[:annotation_key])
+    @names = SubjectSet.autocomplete_name(params[:field], params[:q])
     respond_with @names
   end
 

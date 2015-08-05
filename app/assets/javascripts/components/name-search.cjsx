@@ -11,16 +11,15 @@ NameSearch = React.createClass
   #   else
   #     @props.annotation_key
 
-  handleKeyPress: (e) -> 
+  handleKeyPress: (e) ->
 
-    console.log "e.target.value", e.target.value
     if @isMounted()
       term = e.target.value
       el = $(React.findDOMNode(this))
       el.autocomplete
         source: (request, response)=>
           $.ajax
-            url: "/subject_sets/terms/#{term}"
+            url: "/subject_sets/terms/#{@props.field}"
             dataType: "json"
             data:
               q: request.term

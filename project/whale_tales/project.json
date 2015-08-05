@@ -3,6 +3,11 @@
   "short_title": "The Whaling Logs",
   "summary": "We want to see if (yes obviously) cats are better than animals",
   "background": "/assets/background.jpg",
+  "admin_email": "sascha@zooniverse.org",
+  "team_emails": [
+    "sascha@zooniverse.org",
+    "cs@zooniverse.org"
+  ],
   "team": [
     {
       "name": "Stuart Lynn",

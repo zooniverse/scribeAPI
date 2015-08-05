@@ -15,7 +15,7 @@ class Classification
   belongs_to    :subject, foreign_key: "subject_id", inverse_of: :classifications
   belongs_to    :child_subject, class_name: "Subject", inverse_of: :parent_classifications
 
-  after_create  :increment_subject_classification_count, :check_for_retirement_by_classification_count
+  after_create  :increment_subject_classification_count, :increment_subject_set_classification_count, :check_for_retirement_by_classification_count
   after_create  :generate_new_subjects
   after_create  :generate_terms
 
@@ -73,6 +73,10 @@ class Classification
       # puts "Term.index_term! #{workflow_id}, #{key}, #{v}"
       Term.index_term! workflow.id, key, v
     end
+  end
+
+  def increment_subject_set_classification_count
+    subject.subject_set.inc classification_count: 1
   end
 
   def increment_subject_classification_count

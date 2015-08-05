@@ -13,7 +13,7 @@ DEBUG = false
 markStyles =
 
   prior:
-    strokeColor:         'rgba(90,200,90,0.5)'
+    strokeColor:         'pink' # rgba(90,200,90,0.5)'
     strokeWidth:         2.0
     hoverFill:           'rgba(100,100,0,0.5)'
     disabledStrokeColor: 'rgba(90,200,90,0.5)'
@@ -29,7 +29,7 @@ markStyles =
     disabledHoverFill:   'transparent'
 
   regular:
-    strokeColor:         'rgba(100,100,0,0.5)'
+    strokeColor:         'pink' #rgba(100,100,0,0.5)'
     strokeWidth:         2.0
     hoverFill:           'transparent'
     disabledStrokeColor: 'rgba(100,100,0,0.5)'
@@ -138,10 +138,6 @@ module.exports = React.createClass
     @props.onSelect @props.mark
 
   render: ->
-    if @state.markStatus is 'mark-committed'
-      isPriorMark = true
-      @props.disabled = true
-
     x1 = @props.mark.x
     width = @props.mark.width
     x2 = x1 + width
@@ -151,13 +147,7 @@ module.exports = React.createClass
 
     scale = (@props.xScale + @props.yScale) / 2
 
-    # DETERMINE MARK STYLE
-    if isPriorMark
-      markStyle = markStyles.prior
-    else if @props.selected
-      markStyle = markStyles.selected
-    else
-      markStyle = markStyles.regular
+    markStyle = @getMarkStyle @props.mark, @props.selected, @props.isPriorMark
 
     points = [
       [x1, y1].join ','
@@ -168,12 +158,12 @@ module.exports = React.createClass
     ].join '\n'
 
     <g
-      className='rectangle-tool'
       tool={this}
       onMouseDown={@props.onSelect unless @props.disabled}
+      title={@props.mark.label}
     >
       <g
-        className='rectangle-tool'
+        className="rectangle-tool#{if @props.disabled then ' locked' else ''}"
         onMouseDown={@props.onSelect unless @props.disabled}
         stroke={markStyle.strokeColor}
         strokeWidth={markStyle.strokeWidth/scale}

@@ -6,11 +6,11 @@
   "generates_subjects_after": 1,
   "generates_subjects_for": "transcribe",
 
-  "first_task":"debug_with_text_tool",
+  "first_task":"location_present",
 
   "tasks":{
     "location_present": {
-      "tool": "pickOneDropdown",
+      "tool": "pickOne",
       "instruction": "Is there location/position information present?",
       "tool_config": {
         "options": {
@@ -37,18 +37,14 @@
 
     "sea_ice_present": {
       "tool": "pickOne",
-      "instruction": "Is there any sea ice present?",
+      "instruction": "Are there any mentions of sea ice?",
       "tool_config": {
         "options": {
-          "present": {
-            "label": "Yes, sea ice present",
+          "yes": {
+            "label": "Yes",
             "next_task": "sea_ice"
           },
-          "mentioned": {
-            "label": "No, but sea ice mentioned",
-            "next_task": "sea_ice_mention"
-          },
-          "not-present": {
+          "no": {
             "label": "No",
             "next_task": "weather_present"
           }
@@ -57,22 +53,21 @@
     },
 
     "sea_ice": {
-      "generates_subjects": true,
-      "tool":"pickOneMarkOne",
-      "instruction":"Pick a sea ice description. Draw a rectangle around the corresponding text.",
+      "tool": "pickOne",
+      "instruction": "Is there any (other) description of the sea ice?",
       "tool_config": {
-        "tools": [
-          {"type": "rectangleTool", "label": "Date",                     "color": "red", "generates_subject_type": "sea_ice_date" },
-          {"type": "rectangleTool", "label": "Sea Ice Description",      "color": "red", "generates_subject_type": "sea_ice_description" },
-          {"type": "rectangleTool", "label": "Other Desciptions",        "color": "red", "generates_subject_type": "sea_ice_other_description" }
+        "options": [
+          {"value": "sea_ice_concentration",  "label": "Concentration Description", "next_task": "sea_ice_concentration" },
+          {"value": "sea_ice_thickness",      "label": "Thickness Description",     "next_task": "sea_ice_thickness" },
+          {"value": "sea_ice_special",        "label": "Special Features",         "next_task": "sea_ice_special" },
+          {"value": "sea_ice_no_description", "label": "No",                        "next_task": "weather_present" }
         ]
-      },
-      "next_task": "sea_ice_present"
+      }
     },
 
-    "sea_ice_mention": {
+    "sea_ice_concentration": {
       "tool": "pickMany",
-      "instruction": "Are any of the following mentions of sea ice present? If so, click on them.",
+      "instruction": "Select all sea ice descriptions that apply.",
       "tool_config": {
         "options": [
           {"value": "ice_field",   "label": "Ice Field" },
@@ -81,8 +76,44 @@
           {"value": "sailing_ice", "label": "Sailing Ice" },
           {"value": "pack_ice",    "label": "Pack Ice" }
         ]
-      }
+      },
+      "next_task": "sea_ice"
     },
+
+
+  "sea_ice_thickness": {
+    "tool": "pickMany",
+    "instruction": "Select all sea ice descriptions that apply.",
+    "tool_config": {
+      "options": [
+        {"value": "baby_ice",  "label": "Baby Ice" },
+        {"value": "sludge",    "label": "Sludge" },
+        {"value": "brash",     "label": "Brash" },
+        {"value": "light_ice", "label": "Light Ice" },
+        {"value": "heavy_ice", "label": "Heavy Ice" },
+        {"value": "hummock",   "label": "Hummock" }
+      ]
+    },
+    "next_task": "sea_ice"
+  },
+
+  "sea_ice_special": {
+    "tool": "pickMany",
+    "instruction": "Select all sea ice descriptions that apply.",
+    "tool_config": {
+      "options": [
+        {"value": "melt_ponds",      "label": "Melt Ponds" },
+        {"value": "snow_on_sea_ice", "label": "Snow On Sea Ice" },
+        {"value": "land_ice",        "label": "Land Ice" },
+        {"value": "floeberg",        "label": "Floeberg" },
+        {"value": "iceberg",         "label": "Iceberg" }
+      ]
+    },
+    "next_task": "sea_ice"
+  },
+
+
+
 
     "weather_present": {
       "tool": "pickOne",
@@ -119,21 +150,13 @@
       "instruction": "Select any additional items that are present/mentioned.",
       "tool_config": {
         "options": {
-          "present": {
+          "event": {
             "label": "Event",
             "next_task": "events"
           },
-          "mentioned": {
+          "art": {
             "label": "Art",
             "next_task": "art"
-          },
-          "not-present": {
-            "label": "Whale(s)",
-            "next_task": "whale"
-          },
-          "not-present": {
-            "label": "People/Social",
-            "next_task": "people"
           }
         }
       }
@@ -147,8 +170,10 @@
         "tools": [
           {"type": "rectangleTool", "label": "Whaling Activity",         "color": "red", "generates_subject_type": "event_whaling_activity" },
           {"type": "rectangleTool", "label": "Ship Interaction",         "color": "red", "generates_subject_type": "event_ship_interaction" },
-          {"type": "rectangleTool", "label": "Interaction with Natives", "color": "red", "generates_subject_type": "event_natie_interaction" },
-          {"type": "rectangleTool", "label": "Social",                   "color": "red", "generates_subject_type": "event_unusual_occurrence" }
+          {"type": "rectangleTool", "label": "Interaction with Natives", "color": "red", "generates_subject_type": "event_native_interaction" },
+          {"type": "rectangleTool", "label": "Social",                   "color": "red", "generates_subject_type": "event_social" },
+          {"type": "rectangleTool", "label": "Other",                    "color": "red", "generates_subject_type": "event_other" }
+
         ]
       },
       "next_task": "records_present"
@@ -160,15 +185,21 @@
       "instruction":"Pick an event and mark it on the document.",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Illustration",             "color": "red", "generates_subject_type": "event_whaling_activity" },
-          {"type": "rectangleTool", "label": "Poem",                     "color": "red", "generates_subject_type": "event_ship_interaction" },
-          {"type": "rectangleTool", "label": "Clipping",                 "color": "red", "generates_subject_type": "event_natie_interaction" },
-          {"type": "rectangleTool", "label": "Whale/Stamp",              "color": "red", "generates_subject_type": "event_unusual_occurrence" },
-          {"type": "rectangleTool", "label": "Other",                    "color": "red", "generates_subject_type": "event_unusual_occurrence" }
+          {"type": "rectangleTool", "label": "Illustration",             "color": "red", "generates_subject_type": "art_illustration" },
+          {"type": "rectangleTool", "label": "Poem",                     "color": "red", "generates_subject_type": "art_poem" },
+          {"type": "rectangleTool", "label": "Clipping",                 "color": "red", "generates_subject_type": "art_clipping" },
+          {"type": "rectangleTool", "label": "Whale/Stamp",              "color": "red", "generates_subject_type": "art_whale_stamp" },
+          {"type": "rectangleTool", "label": "Other",                    "color": "red", "generates_subject_type": "art_other" }
         ]
       },
       "next_task": "records_present"
     },
+
+
+
+
+
+
 
     "debug_with_text_tool": {
       "generates_subjects": true,

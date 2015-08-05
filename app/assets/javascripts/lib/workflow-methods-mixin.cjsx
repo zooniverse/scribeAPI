@@ -241,6 +241,11 @@ module.exports =
 
     # If we've exhausted all subject sets, collapse in shame
     if new_subject_set_index >= @state.subjectSets.length
+      @setState
+        notice:
+          header: "All Done!"
+          message: "There's nothing more to #{@props.workflowName} here."
+          onClick: "/#/mark"
       console.warn "NO MORE SUBJECT SETS"
       return
 
