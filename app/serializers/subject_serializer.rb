@@ -47,12 +47,6 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
   def user_has_classified
     user = scope.nil? ? nil : current_or_guest_user
     # user and user.has_classified?(object)
-
-    # puts 'USER ID >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ', user
-    # puts 'CLASSIFYING USER IDS: ', object.classifying_user_ids
-    #
-    # binding.pry
-
     unless user == nil
       return object.classifying_user_ids.include?(user.id.to_s) # Alternate method? --STI
     end

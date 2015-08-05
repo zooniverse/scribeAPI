@@ -234,7 +234,6 @@ module.exports = React.createClass
     # Previous marks are really just the region hashes of all child subjects:
     marks = []
     for child_subject, i in @props.subject.child_subjects
-      console.log 'CHILD SUBJECT: ', child_subject
       child_subject.region.subject_id = child_subject.id # copy id field into region (not ideal)
       marks[i] = child_subject.region
       marks[i].isTranscribable = !child_subject.user_has_classified
