@@ -31,7 +31,7 @@ module.exports =
   toggleBadSubject: (callback) ->
     @setState badSubject: not @state.badSubject, =>
       callback?()
-    
+
   # Push current classification to server:
   commitClassification: ->
     console.log 'COMMITTING CLASSIFICATION... current classification: ', @getCurrentClassification()
@@ -158,7 +158,7 @@ module.exports =
 
       @setState
         taskKey: key
-       
+
 
   # Get currently viewed subject set
   getCurrentSubjectSet: ->
@@ -187,6 +187,10 @@ module.exports =
     key: "completion_assessment_task"
     next_task: null
     tool: "pickOne"
+    help: {
+      title: "Completion Assessment",
+      body: "You do not have to complete every page, but it helps us to know, before you move on to another task, if there is any work left to do. Thanks again!"
+    },
     tool_config: {
         "options": {
             "complete_subject": {
@@ -207,7 +211,7 @@ module.exports =
       @_advanceToNextSubjectInSubjects()
     else
       @_advanceToNextSubjectInSubjectSets()
-    
+
   # This is the version of advanceToNextSubject for workflows that consume subjects (transcribe,verify)
   _advanceToNextSubjectInSubjects: ->
     if @state.subject_index + 1 < @state.subjects.length
@@ -227,7 +231,7 @@ module.exports =
       @setState
         subject_index: null
         userClassifiedAll: @state.subjects.length > 0
-  
+
   # This is the version of advanceToNextSubject for workflows that consume subject sets (mark)
   _advanceToNextSubjectInSubjectSets: ->
     new_subject_set_index = @state.subject_set_index
