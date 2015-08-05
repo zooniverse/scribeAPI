@@ -217,9 +217,9 @@
       "instruction":"Generates textTool transcribe subjects:",
       "tool_config": {
         "tools": [
-          {"type": "pointTool",     "label": "Point Tool",      "color": null,   "generates_subject_type": "transcribe_point_with_text_tool" },
-          {"type": "rectangleTool", "label": "Rectangle Tool",  "color": null, "generates_subject_type": "transcribe_rectangle_with_text_tool" },
-          {"type": "textRowTool",   "label": "Text Row Tool",   "color": null,  "generates_subject_type": "transcribe_text_row_with_text_tool" }
+          {"type": "pointTool",     "label": "Point Tool",      "color": "pink",   "generates_subject_type": "transcribe_point_with_text_tool" },
+          {"type": "rectangleTool", "label": "Rectangle Tool",  "color": "brown", "generates_subject_type": "transcribe_rectangle_with_text_tool" },
+          {"type": "textRowTool",   "label": "Text Row Tool",   "color": "magenta",  "generates_subject_type": "transcribe_text_row_with_text_tool" }
         ]
       },
       "next_task": "debug_with_text_area_tool"

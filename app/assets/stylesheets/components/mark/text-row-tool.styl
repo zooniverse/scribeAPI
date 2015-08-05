@@ -21,19 +21,24 @@
 
     stroke-width 5
     stroke rgba(100,100,0,0.3)
+    stroke-opacity 0.3
     fill transparent
+    transition stroke-opacity 0.2s ease
 
     &:active
       cursor grabbing
       cursor -webkit-grabbing
 
-    // mark has not yet been transcribed
     &.transcribable
       stroke rgb(67, 187, 253)
+      stroke-opacity 1
 
     // mark is committed and uneditable
     &.committed
       cursor default
+      &:hover
+        stroke-opacity 1
+        transition-delay 0.5s // too distracting when immediate
 
     // mark has not yet been committed
     &.uncommitted
