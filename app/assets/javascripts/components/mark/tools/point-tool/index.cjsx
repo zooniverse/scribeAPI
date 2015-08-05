@@ -99,6 +99,7 @@ module.exports = React.createClass
                 </filter>
 
                 <circle
+                  #{if @props.mark.color? then "stroke=\"#{@props.mark.color}\""}
                   r=\"#{radius}\"
                   filter=\"#{if @props.selected then 'url(#dropShadow)' else 'none'}\"
                 />

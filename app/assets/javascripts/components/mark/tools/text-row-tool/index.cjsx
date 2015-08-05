@@ -98,6 +98,7 @@ module.exports = React.createClass
                 </filter>
 
                 <rect
+                  #{if @props.mark.color? then "stroke=\"#{@props.mark.color}\""}
                   x=\"0\"
                   y=\"0\"
                   width=\"100%\"
