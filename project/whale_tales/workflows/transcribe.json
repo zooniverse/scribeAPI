@@ -220,6 +220,41 @@
       "next_task": null
     },
 
+    "art_illustration": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Include additional comments or hit <ENTER> to leave blank.",
+      "next_task": null
+    },
+
+    "art_poem": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Include additional comments or hit <ENTER> to leave blank.",
+      "next_task": null
+    },
+
+    "art_clipping": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Include additional comments or hit <ENTER> to leave blank.",
+      "next_task": null
+    },
+
+    "art_whale_stamp": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Include additional comments or hit <ENTER> to leave blank.",
+      "next_task": null
+    },
+
+    "art_other": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Describe this artwork or transcribe any notable text.",
+      "next_task": null
+    },
+
 
     "sea_ice_other_description": {
       "tool": "textTool",
@@ -227,6 +262,7 @@
       "instruction": "Enter the sea ice description.",
       "next_task": null
     },
+
 
 
 
