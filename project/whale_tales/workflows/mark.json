@@ -11,12 +11,17 @@
     "location_present": {
       "tool": "pickOne",
       "instruction": "Is there location/position information present?",
+      "help": {
+        "title": "Ship Location and Position",
+        "body": "This can be anything from the name of a port to the exact geographical coordinates."
+      },
       "tool_config": {
         "options": {
           "yes": { "label": "Yes", "next_task": "location" },
-          "no": { "label": "No", "next_task": "sea_ice_present" }
+          "no": { "label": "No" }
         }
-      }
+      },
+      "next_task": "sea_ice_present"
     },
 
     "location": {
@@ -37,6 +42,7 @@
     "sea_ice_present": {
       "tool": "pickOne",
       "instruction": "Are there any mentions of sea ice?",
+      "next_task": "weather_present",
       "tool_config": {
         "options": {
           "yes": {
@@ -44,8 +50,7 @@
             "next_task": "sea_ice"
           },
           "no": {
-            "label": "No",
-            "next_task": "weather_present"
+            "label": "No"
           }
         }
       }
@@ -117,10 +122,11 @@
     "weather_present": {
       "tool": "pickOne",
       "instruction": "Are there any descriptions of the weather?",
+      "next_task": "optional_entries",
       "tool_config": {
         "options": {
           "present": { "label": "Yes",  "next_task": "weather" },
-          "mentioned": { "label": "No", "next_task": "optional_entries"}
+          "mentioned": { "label": "No" }
         }
       }
     },
@@ -147,6 +153,7 @@
     "optional_entries": {
       "tool": "pickOne",
       "instruction": "Select any additional items that are present/mentioned.",
+      "next_task": null,
       "tool_config": {
         "options": {
           "event": {
