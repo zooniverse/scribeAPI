@@ -77,13 +77,6 @@ module.exports = React.createClass
         onMouseDown={@handleMouseDown}
       >
 
-        <g className="tool-shape #{classes.join ' '}">
-          <line x1="0" y1={-1 * crosshairSpace * selectedRadius} x2="0" y2={-1 * selectedRadius} strokeWidth={crosshairWidth} />
-          <line x1={-1 * crosshairSpace * selectedRadius} y1="0" x2={-1 * selectedRadius} y2="0" strokeWidth={crosshairWidth} />
-          <line x1="0" y1={crosshairSpace * selectedRadius} x2="0" y2={selectedRadius} strokeWidth={crosshairWidth} />
-          <line x1={crosshairSpace * selectedRadius} y1="0" x2={selectedRadius} y2="0" strokeWidth={crosshairWidth} />
-        </g>
-
         <Draggable onDrag={@handleDrag}>
           <g
             className="tool-shape #{classes.join ' '}"
@@ -97,6 +90,13 @@ module.exports = React.createClass
                     <feMergeNode in=\"SourceGraphic\" />
                   </feMerge>
                 </filter>
+
+                <g #{if @props.mark.color? then "stroke=\"#{@props.mark.color}\""} >
+                  <line x1=\"0\" y1=\"#{-1 * crosshairSpace * selectedRadius}\" x2=\"0\" y2=\"#{-1 * selectedRadius}\" strokeWidth=\"#{crosshairWidth}\" />
+                  <line x1=\"#{-1 * crosshairSpace * selectedRadius}\" y1=\"0\" x2=\"#{-1 * selectedRadius}\" y2=\"0\" strokeWidth=\"#{crosshairWidth}\" />
+                  <line x1=\"0\" y1=\"#{crosshairSpace * selectedRadius}\" x2=\"0\" y2=\"#{selectedRadius}\" strokeWidth=\"#{crosshairWidth}\" />
+                  <line x1=\"#{crosshairSpace * selectedRadius}\" y1=\"0\" x2=\"#{selectedRadius}\" y2=\"0\" strokeWidth=\"#{crosshairWidth}\" />
+                </g>
 
                 <circle
                   #{if @props.mark.color? then "stroke=\"#{@props.mark.color}\""}
