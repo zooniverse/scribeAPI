@@ -1,8 +1,10 @@
 class SubjectSerializer < ActiveModel::MongoidSerializer
 
-  attributes :id, :type, :parent_subject_id, :workflow_id, :name, :location, :data, :region, :classification_count, :order, :meta_data, :user_favourite
-  attributes :width, :height, :region, :subject_set_id, :status, :user_has_classified
+  attributes :id, :type, :parent_subject_id, :workflow_id, :name, :location, :data, :region, :classification_count, :order, :meta_data
+  attributes :width, :height, :region, :subject_set_id, :status
+  attributes :user_favourite, :user_has_classified, :classifying_user_ids
 
+  delegate :current_or_guest_user, to: :scope
   delegate :current_user, to: :scope
   has_many :child_subjects
 
@@ -25,12 +27,6 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
     object.workflow_id.to_s
   end
 
-  def user_has_classified
-    object.user_has_classified
-    # binding.pry
-    # object.classifying_user_ids?.include?(current_or_guest_user.id.to_s) # how do I get current user id in here? --STI
-  end
-
   def id
     object._id.to_s
   end
@@ -44,7 +40,23 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
   end
 
   def user_favourite
-    (scope and scope.has_favourite?(object))
+    user = scope.nil? ? nil : current_or_guest_user
+    user and user.has_favourite?(object)
+  end
+
+  def user_has_classified
+    user = scope.nil? ? nil : current_or_guest_user
+    # user and user.has_classified?(object)
+
+    # puts 'USER ID >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ', user
+    # puts 'CLASSIFYING USER IDS: ', object.classifying_user_ids
+    #
+    # binding.pry
+
+    unless user == nil
+      return object.classifying_user_ids.include?(user.id.to_s) # Alternate method? --STI
+    end
+
   end
 
 end

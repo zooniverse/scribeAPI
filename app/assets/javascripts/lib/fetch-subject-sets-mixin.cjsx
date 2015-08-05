@@ -1,16 +1,15 @@
 API = require './api'
 
+# TODO PB: There are like sixteen different ways to do the same thing in here; Should simplify
+
 module.exports =
   componentDidMount: ->
-    console.log 'QUERY PARAMS: ', @props.query
-    # if @props.query.subject_set_id
-    #   @fetchSubjectSet @props.query.subject_set_id, @props.query.subject_index, @getActiveWorkflow().id
-    if @props.query.subject_set_id and @props.query.selected_subject_id
-      console.log 'Fetching subject set by subject ID and specific subject ID...'
-      @fetchSubjectSetBySubjectId @getActiveWorkflow().id, @props.query.subject_set_id, @props.query.selected_subject_id, @props.query.page
-    else if @props.params.subject_set_id
-      console.log 'Fetching subject set just by subject ID'
-      @fetchSubjectSet @props.params.subject_set_id, @getActiveWorkflow().id
+    if @props.params.subject_set_id
+      if @props.params.selected_subject_id
+        @fetchSubjectSetBySubjectId @getActiveWorkflow().id, @props.params.subject_set_id, @props.params.selected_subject_id, @props.params.page ? 1
+      else
+        @fetchSubjectSet @props.params.subject_set_id, @getActiveWorkflow().id
+
     else
       console.log 'Fetching some subject set...'
       @fetchSubjectSets @getActiveWorkflow().id, @getActiveWorkflow().subject_fetch_limit
@@ -83,7 +82,6 @@ module.exports =
           , => console.log 'STATE: ', @state
 
   fetchSubjectSets: (workflow_id, limit) ->
-    console.log 'fetchSubjectSets()'
     if @props.overrideFetchSubjectsUrl?
       $.getJSON @props.overrideFetchSubjectsUrl, (subject_sets) =>
         @setState
@@ -94,6 +92,7 @@ module.exports =
       request = API.type('subject_sets').get
         workflow_id: workflow_id
         limit: limit
+        random: true
 
       request.then (subject_sets)=>    # DEBUG CODE
         meta = subject_sets[0].getMeta

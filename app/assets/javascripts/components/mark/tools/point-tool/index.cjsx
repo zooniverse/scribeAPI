@@ -65,8 +65,7 @@ module.exports = React.createClass
     @props.onChange e
 
   handleMouseDown: ->
-    console.log 'handleMouseDown()'
-    @props.onSelect @props.mark # unless @props.disabled
+    @props.onSelect @props.mark unless @props.disabled
 
   render: ->
     if @state.markStatus is 'mark-committed'
@@ -86,24 +85,20 @@ module.exports = React.createClass
     scale = (@props.xScale + @props.yScale) / 2
 
     # DETERMINE MARK STYLE
-    if isPriorMark
-      markStyle = markStyles.prior
-    else if @props.selected
-      markStyle = markStyles.selected
-    else
-      markStyle = markStyles.regular
+    markStyle = @getMarkStyle @props.mark, @props.selected, isPriorMark
 
     <g
       tool={this}
       transform="translate(#{@props.mark.x}, #{@props.mark.y})"
       onMouseDown={@handleMouseDown}
+      title={@props.mark.label}
     >
       <g
-        className='mark-tool point-tool'
+        className="mark-tool point-tool#{if @props.disabled then ' locked' else ''}"
         fill='transparent'
         stroke={markStyle.strokeColor}
         strokeWidth={markStyle.strokeWidth/scale}
-        onMouseDown={@props.onSelect unless @props.disabled}
+        onMouseDown={@handleMouseDown}
       >
 
         <line x1="0" y1={-1 * crosshairSpace * selectedRadius} x2="0" y2={-1 * selectedRadius} strokeWidth={crosshairWidth} />

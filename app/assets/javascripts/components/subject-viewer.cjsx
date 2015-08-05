@@ -1,7 +1,6 @@
 React                         = require 'react/addons'
 {Router, Routes, Route, Link} = require 'react-router'
 SVGImage                      = require './svg-image'
-Draggable                     = require '../lib/draggable'
 MouseHandler                  = require '../lib/mouse-handler'
 LoadingIndicator              = require './loading-indicator'
 SubjectMetadata               = require './subject-metadata'
@@ -108,7 +107,9 @@ module.exports = React.createClass
       toolName: subTool.type
       userCreated: true
       subToolIndex: subToolIndex
+      color: subTool.color # @props.annotation?.subToolIndex
       isTranscribable: true # @props.annotation?.subToolIndex
+
 
     mouseCoords = @getEventOffset e
 

@@ -24,6 +24,7 @@ class Subject
   field :classification_count,        type: Integer, default: 0
   field :random_no,                   type: Float
   field :secondary_subject_count,     type: Integer, default: 0
+  field :classifying_user_ids,        type: Array
   field :user_has_classified,         type: Boolean, default: false
 
   # Need to sort out relationship between these two fields. Are these two fields Is this :shj
@@ -40,6 +41,9 @@ class Subject
   # SECONDARY SUBJECT concerns:
   field :data,                        type: Hash
   field :region,                      type: Hash
+
+  # Denormalized array of user ids that have classified this subject for quick filtering
+  field :classifying_user_ids,        type: Array, default: []
 
   belongs_to :workflow
   belongs_to :parent_subject, :class_name => "Subject", :foreign_key => "parent_subject_id"

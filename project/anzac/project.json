@@ -31,5 +31,15 @@
   "forum": {
     "type": "discourse",
     "base_url": "http://scribe-forum.nypl-labs.biz"
+  },
+
+  "metadata_search": {
+    "fields": [
+      {
+        "label": "Person",
+        "field": "name"
+      }
+    ],
+    "feature_on_homepage": true
   }
 }

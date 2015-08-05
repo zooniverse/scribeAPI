@@ -5,7 +5,7 @@ class SubjectResultSerializer < ActiveModel::MongoidSerializer
 
   def data
     options = serialization_options.merge({root: false})
-    object.map { |s| SubjectSerializer.new(s, root: false) }
+    object.map { |s| SubjectSerializer.new(s, root: false, scope: scope) }
   end
 
   def meta

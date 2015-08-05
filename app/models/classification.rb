@@ -15,7 +15,7 @@ class Classification
   belongs_to    :subject, foreign_key: "subject_id", inverse_of: :classifications
   belongs_to    :child_subject, class_name: "Subject", inverse_of: :parent_classifications
 
-  after_create  :increment_subject_classification_count, :check_for_retirement_by_classification_count
+  after_create  :increment_subject_classification_count, :increment_subject_set_classification_count, :check_for_retirement_by_classification_count
   after_create  :generate_new_subjects
   after_create  :generate_terms
 
@@ -75,6 +75,10 @@ class Classification
     end
   end
 
+  def increment_subject_set_classification_count
+    subject.subject_set.inc classification_count: 1
+  end
+
   def increment_subject_classification_count
     # TODO: Probably wrong place to be reacting to completion_assessment_task & flag_bad_subject_task
     # tasks; Should perhaps generalize and place elsewhere
@@ -89,10 +93,10 @@ class Classification
     # Push user_id onto Subject.user_ids using mongo's fast addToSet feature, which ensures uniqueness
     Subject.where({id: subject.id}).find_and_modify({"$addToSet" => {classifying_user_ids: user_id.to_s}})
 
-    # user has now classified this subject (this should be done in the subject serializer) --STI
-    subject[:user_has_classified] = true
-    subject.write_attribute(:user_has_classified, true)
-    subject.save
+    # # user has now classified this subject (this should be done in the subject serializer) --STI
+    # subject[:user_has_classified] = true
+    # subject.write_attribute(:user_has_classified, true)
+    # subject.save
   end
 
   def to_s

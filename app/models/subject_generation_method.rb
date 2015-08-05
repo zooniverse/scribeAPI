@@ -35,6 +35,7 @@ class SubjectGenerationMethod
       # Otherwise, it's a later workflow and we should copy `region` from parent subject
       region = classification.subject.region
     end
+    region[:label] = task.tool_label classification
 
     {
       parent_subject: classification.subject,
@@ -52,7 +53,7 @@ class SubjectGenerationMethod
   
   def build_mark_region(classification)
     region = classification.annotation.inject({}) do |h, (k,v)|
-      h[k] = v if ['toolName'].include? k
+      h[k] = v if ['toolName','color'].include? k
       h[k] = v.to_f if ['x','y','width','height','yUpper','yLower'].include? k
       h
     end
