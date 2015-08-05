@@ -5,7 +5,7 @@
   "generates_subjects": true,
   "generates_subjects_for": "transcribe",
 
-  "first_task":"location_present",
+  "first_task":"debug",
 
   "tasks":{
     "location_present": {
@@ -200,7 +200,7 @@
 
 
 
-    "debug_with_text_tool": {
+    "debug": {
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
       "instruction":"Generates textTool transcribe subjects:",
