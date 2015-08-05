@@ -5,7 +5,7 @@
   "generates_subjects": true,
   "generates_subjects_for": "transcribe",
 
-  "first_task":"location_present",
+  "first_task": "location_present",
 
   "tasks":{
     "location_present": {
@@ -18,7 +18,7 @@
       "tool_config": {
         "options": {
           "yes": { "label": "Yes", "next_task": "location" },
-          "no": { "label": "No" }
+          "no": { "label": "No"}
         }
       },
       "next_task": "sea_ice_present"
@@ -30,10 +30,10 @@
       "instruction":"Pick a position/location option. Draw a rectangle around the corresponding text.",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Name of Location",         "color": "red", "generates_subject_type": "location_name" },
-          {"type": "rectangleTool", "label": "Geographic Coordinates",   "color": "red", "generates_subject_type": "location_coordinates" },
-          {"type": "rectangleTool", "label": "Port",                     "color": "red", "generates_subject_type": "location_port" },
-          {"type": "rectangleTool", "label": "Other",                    "color": "red", "generates_subject_type": "location_other" }
+          {"type": "rectangleTool", "label": "Name of Location",         "color": null, "generates_subject_type": "location_name" },
+          {"type": "rectangleTool", "label": "Geographic Coordinates",   "color": null, "generates_subject_type": "location_coordinates" },
+          {"type": "rectangleTool", "label": "Port",                     "color": null, "generates_subject_type": "location_port" },
+          {"type": "rectangleTool", "label": "Other",                    "color": null, "generates_subject_type": "location_other" }
         ]
       },
       "next_task": "sea_ice_present"
@@ -67,7 +67,7 @@
         "options": [
           {"value": "sea_ice_concentration",  "label": "Concentration Description", "next_task": "sea_ice_concentration" },
           {"value": "sea_ice_thickness",      "label": "Thickness Description",     "next_task": "sea_ice_thickness" },
-          {"value": "sea_ice_special",        "label": "Special Features",         "next_task": "sea_ice_special" },
+          {"value": "sea_ice_special",        "label": "Special Features",          "next_task": "sea_ice_special" },
           {"value": "sea_ice_no_description", "label": "No",                        "next_task": "weather_present" }
         ]
       }
@@ -141,14 +141,14 @@
       "instruction":"Pick a weather description. Draw a rectangle around the corresponding text.",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Date",                     "color": "red", "generates_subject_type": "weather_date" },
-          {"type": "rectangleTool", "label": "Wind Force/Direction",     "color": "red", "generates_subject_type": "weather_wind" },
-          {"type": "rectangleTool", "label": "Sky/Cloud Description",    "color": "red", "generates_subject_type": "weather_sky" },
-          {"type": "rectangleTool", "label": "Precipitation",            "color": "red", "generates_subject_type": "weather_precipitation" },
-          {"type": "rectangleTool", "label": "Sea State",                "color": "red", "generates_subject_type": "weather_sea" },
-          {"type": "rectangleTool", "label": "Temperature",              "color": "red", "generates_subject_type": "weather_temperature" },
-          {"type": "rectangleTool", "label": "Barometric Pressure",      "color": "red", "generates_subject_type": "weather_pressure" },
-          {"type": "rectangleTool", "label": "Other Weather Desciption", "color": "red", "generates_subject_type": "weather_other_description" }
+          {"type": "rectangleTool", "label": "Date",                     "color": null, "generates_subject_type": "weather_date" },
+          {"type": "rectangleTool", "label": "Wind Force/Direction",     "color": null, "generates_subject_type": "weather_wind" },
+          {"type": "rectangleTool", "label": "Sky/Cloud Description",    "color": null, "generates_subject_type": "weather_sky" },
+          {"type": "rectangleTool", "label": "Precipitation",            "color": null, "generates_subject_type": "weather_precipitation" },
+          {"type": "rectangleTool", "label": "Sea State",                "color": null, "generates_subject_type": "weather_sea" },
+          {"type": "rectangleTool", "label": "Temperature",              "color": null, "generates_subject_type": "weather_temperature" },
+          {"type": "rectangleTool", "label": "Barometric Pressure",      "color": null, "generates_subject_type": "weather_pressure" },
+          {"type": "rectangleTool", "label": "Other Weather Desciption", "color": null, "generates_subject_type": "weather_other_description" }
         ]
       },
       "next_task": "optional_entries"
@@ -178,15 +178,15 @@
       "instruction":"Pick an event and mark it on the document.",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Whaling Activity",         "color": "red", "generates_subject_type": "event_whaling_activity" },
-          {"type": "rectangleTool", "label": "Ship Interaction",         "color": "red", "generates_subject_type": "event_ship_interaction" },
-          {"type": "rectangleTool", "label": "Interaction with Natives", "color": "red", "generates_subject_type": "event_native_interaction" },
-          {"type": "rectangleTool", "label": "Social",                   "color": "red", "generates_subject_type": "event_social" },
-          {"type": "rectangleTool", "label": "Other",                    "color": "red", "generates_subject_type": "event_other" }
+          {"type": "rectangleTool", "label": "Whaling Activity",         "color": null, "generates_subject_type": "event_whaling_activity" },
+          {"type": "rectangleTool", "label": "Ship Interaction",         "color": null, "generates_subject_type": "event_ship_interaction" },
+          {"type": "rectangleTool", "label": "Interaction with Natives", "color": null, "generates_subject_type": "event_native_interaction" },
+          {"type": "rectangleTool", "label": "Social",                   "color": null, "generates_subject_type": "event_social" },
+          {"type": "rectangleTool", "label": "Other",                    "color": null, "generates_subject_type": "event_other" }
 
         ]
       },
-      "next_task": "records_present"
+      "next_task": "optional_entries"
     },
 
     "art": {
@@ -195,14 +195,14 @@
       "instruction":"Pick an event and mark it on the document.",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Illustration",             "color": "red", "generates_subject_type": "art_illustration" },
-          {"type": "rectangleTool", "label": "Poem",                     "color": "red", "generates_subject_type": "art_poem" },
-          {"type": "rectangleTool", "label": "Clipping",                 "color": "red", "generates_subject_type": "art_clipping" },
-          {"type": "rectangleTool", "label": "Whale/Stamp",              "color": "red", "generates_subject_type": "art_whale_stamp" },
-          {"type": "rectangleTool", "label": "Other",                    "color": "red", "generates_subject_type": "art_other" }
+          {"type": "rectangleTool", "label": "Illustration", "color": null, "generates_subject_type": "art_illustration" },
+          {"type": "rectangleTool", "label": "Poem",         "color": null, "generates_subject_type": "art_poem" },
+          {"type": "rectangleTool", "label": "Clipping",     "color": null, "generates_subject_type": "art_clipping" },
+          {"type": "rectangleTool", "label": "Whale/Stamp",  "color": null, "generates_subject_type": "art_whale_stamp" },
+          {"type": "rectangleTool", "label": "Other",        "color": null, "generates_subject_type": "art_other" }
         ]
       },
-      "next_task": "records_present"
+      "next_task": "optional_entries"
     },
 
 
@@ -217,9 +217,9 @@
       "instruction":"Generates textTool transcribe subjects:",
       "tool_config": {
         "tools": [
-          {"type": "pointTool",     "label": "Point Tool",    "color": "red",   "generates_subject_type": "transcribe_point_with_text_tool" },
-          {"type": "rectangleTool", "label": "Rectangle Tool",  "color": "green", "generates_subject_type": "transcribe_rectangle_with_text_tool" },
-          {"type": "textRowTool",   "label": "Text Row Tool", "color": "blue",  "generates_subject_type": "transcribe_text_row_with_text_tool" }
+          {"type": "pointTool",     "label": "Point Tool",      "color": "pink",   "generates_subject_type": "transcribe_point_with_text_tool" },
+          {"type": "rectangleTool", "label": "Rectangle Tool",  "color": "brown", "generates_subject_type": "transcribe_rectangle_with_text_tool" },
+          {"type": "textRowTool",   "label": "Text Row Tool",   "color": "magenta",  "generates_subject_type": "transcribe_text_row_with_text_tool" }
         ]
       },
       "next_task": "debug_with_text_area_tool"
@@ -230,9 +230,9 @@
       "instruction":"Generates textAreaTool transcribe subjects:",
       "tool_config": {
         "tools": [
-          {"type": "pointTool",     "label": "Point Tool",    "color": "red",   "generates_subject_type": "transcribe_point_with_text_area_tool" },
-          {"type": "rectangleTool", "label": "Rectangle Tool",  "color": "green", "generates_subject_type": "transcribe_rectangle_with_text_area_tool" },
-          {"type": "textRowTool",   "label": "Text Row Tool", "color": "blue",  "generates_subject_type": "transcribe_text_row_with_text_area_tool" }
+          {"type": "pointTool",     "label": "Point Tool",      "color": null,   "generates_subject_type": "transcribe_point_with_text_area_tool" },
+          {"type": "rectangleTool", "label": "Rectangle Tool",  "color": null, "generates_subject_type": "transcribe_rectangle_with_text_area_tool" },
+          {"type": "textRowTool",   "label": "Text Row Tool",   "color": null,  "generates_subject_type": "transcribe_text_row_with_text_area_tool" }
         ]
       },
       "next_task": "debug_with_composite_text_tool_and_text_area_tool"
@@ -243,9 +243,9 @@
       "instruction":"Generates composite tool (textTool and textAreaTool) transcribe subjects:",
       "tool_config": {
         "tools": [
-          {"type": "pointTool",     "label": "Point Tool",    "color": "red",   "generates_subject_type": "transcribe_point_with_composite_text_tool_and_text_area_tool" },
-          {"type": "rectangleTool", "label": "Rectangle Tool",  "color": "green", "generates_subject_type": "transcribe_rectangle_with_composite_text_tool_and_text_area_tool" },
-          {"type": "textRowTool",   "label": "Text Row Tool", "color": "blue",  "generates_subject_type": "transcribe_text_row_with_composite_text_tool_and_text_area_tool" }
+          {"type": "pointTool",     "label": "Point Tool",      "color": null,   "generates_subject_type": "transcribe_point_with_composite_text_tool_and_text_area_tool" },
+          {"type": "rectangleTool", "label": "Rectangle Tool",  "color": null, "generates_subject_type": "transcribe_rectangle_with_composite_text_tool_and_text_area_tool" },
+          {"type": "textRowTool",   "label": "Text Row Tool",   "color": null,  "generates_subject_type": "transcribe_text_row_with_composite_text_tool_and_text_area_tool" }
         ]
       },
       "next_task": null
