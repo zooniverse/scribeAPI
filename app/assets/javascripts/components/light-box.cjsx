@@ -15,20 +15,21 @@ module.exports = React.createClass
     subjectCurrentPage: React.PropTypes.number.isRequired
 
   componentWillReceiveProps:->
-    # This allows the new page of subjects to load into the light-box.
-    # I switch between setting first: @props.subject_set.subjects[0] and first: @props.subject_set.subjects[@props.subject_index].
-    # The former seems appropiate when I load a new page of subjects, the seems appropiate for navigating within a current page of subjects.
 
-    # NOTE: Received prop is not correct: @props.subject_index. Why? --STI
-    # console.log 'LightBox::componentWillReceiveProps(), PROPS = ', @props
-    # console.log 'LightBox::compo....................(), SUBJECT_INDEX = ', @props.subject_index
-
-    # STI: This was causing some of the weird behavior when clicking to view a subject
-    # @setState
-    #   first: @props.subject_set.subjects[@props.subject_index]
 
   getInitialState:->
     first: @props.subject_set.subjects[0]
+    folded: false
+
+  handleFoldClick: (e)->
+
+    @setState folded: !@state.folded
+
+  lightBoxMessage:=>
+    if @state.folded
+      text = "Show Lightbox"
+    else
+      text = "Hide Lightbox"
 
   render: ->
     window.subjects = @props.subject_set.subjects
@@ -38,48 +39,63 @@ module.exports = React.createClass
     third = @props.subject_set.subjects[indexOfFirst+2]
 
     viewBox = [0, 0, 100, 100]
-    <div className="carousel">
 
-      <ActionButton id="backward" text="BACK" onClick={@moveBack.bind(this, indexOfFirst)} classes={@backButtonDisable(indexOfFirst)} />
+    if @state.folded 
+      carouselStyle ={
+        display: "none"
+      }
+    if @state.folded
+      text = "Show Lightbox"
+    else
+      text = "Hide Lightbox"
+    <div className="carousel" >
 
-      <ul>
-        <li onClick={@shineSelected.bind(this, @findSubjectIndex(@state.first))} className={"active" if @props.subject_index == @findSubjectIndex(@state.first)}>
-          {@state.first.order}
-          <svg className="light-box-subject" width={115} height={125} viewBox={viewBox} >
-              <SVGImage
-                src = {@state.first.location.standard}
-                width = {100}
-                height = {100}
-              />
-          </svg>
-        </li>
-        {if second
-          <li onClick={@shineSelected.bind(this, @findSubjectIndex(second))} className={"active" if @props.subject_index == @findSubjectIndex(second)} >
-            {second.order}
-            <svg className="light-box-subject" width={115} height={125} viewBox={viewBox} >
+    <div id="visibility-button" onClick={@handleFoldClick}>{text}</div>
+
+
+      <div id="image-list" style={carouselStyle} >
+        <ul>
+          <li onClick={@shineSelected.bind(this, @findSubjectIndex(@state.first))} className={"active" if @props.subject_index == @findSubjectIndex(@state.first)}>
+            <span class="page-number">{@state.first.order}</span>
+
+            <svg className="light-box-subject" width={125} height={125} viewBox={viewBox} >
                 <SVGImage
-                  src = {second.location.standard}
+                  src = {@state.first.location.standard}
                   width = {100}
                   height = {100}
                 />
             </svg>
           </li>
-        }
+          {if second
+            <li onClick={@shineSelected.bind(this, @findSubjectIndex(second))} className={"active" if @props.subject_index == @findSubjectIndex(second)} >
+              <span class="page-number">{second.order}</span>
+              <svg className="light-box-subject" width={125} height={125} viewBox={viewBox} >
+                  <SVGImage
+                    src = {second.location.standard}
+                    width = {100} 
+                    height = {100}
+                  />
+              </svg>
+            </li>
+          }
 
-        {if third
-          <li onClick={@shineSelected.bind(this, @findSubjectIndex(third))} className={"active" if @props.subject_index == @findSubjectIndex(third)} >
-            {third.order}
-            <svg className="light-box-subject" width={115} height={125} viewBox={viewBox} >
-                <SVGImage
-                  src = {third.location.standard}
-                  width = {100}
-                  height = {100}
-                />
-            </svg>
-          </li>
-        }
-      </ul>
-      <ActionButton id="forward" text="FORWARD" onClick={@moveForward.bind(this, indexOfFirst, third, second)} classes={@forwardButtonDisable(third if third?)} />
+          {if third
+            <li onClick={@shineSelected.bind(this, @findSubjectIndex(third))} className={"active" if @props.subject_index == @findSubjectIndex(third)} >
+              <span class="page-number">{third.order}</span>
+              <svg className="light-box-subject" width={125} height={125} viewBox={viewBox} >
+                  <SVGImage
+                    src = {third.location.standard}
+                    width = {100}
+                    height = {100}
+                  />
+              </svg>
+            </li>
+          }
+        </ul>
+
+        <ActionButton type={"back"} text="BACK" onClick={@moveBack.bind(this, indexOfFirst)} classes={@backButtonDisable(indexOfFirst)} />
+        <ActionButton type={"next"} text="NEXT" onClick={@moveForward.bind(this, indexOfFirst, third, second)} classes={@forwardButtonDisable(third if third?)} />
+      </div>
 
     </div>
 

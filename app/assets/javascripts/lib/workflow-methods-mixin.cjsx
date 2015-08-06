@@ -64,6 +64,7 @@ module.exports =
     console.log 'COMMITTED CLASSIFICATION: ', classification
     console.log '(ALL CLASSIFICATIONS): ', @state.classifications
     # PB: Commenting this out because was generating duplicate empty classifications. We should figure out where/why commitClassification is being called twice.
+    # AMS: Agreed, it is being called once when the box is checked and once when you advance to the next task.
     # @beginClassification() #creating a new classification allows not keep commiting previously commited classifications. --AMS
 
   # Update local version of a subject with a newly acquired child_subject (i.e. after submitting a subject-generating classification)
@@ -240,6 +241,11 @@ module.exports =
 
     # If we've exhausted all subject sets, collapse in shame
     if new_subject_set_index >= @state.subjectSets.length
+      @setState
+        notice:
+          header: "All Done!"
+          message: "There's nothing more to #{@props.workflowName} here."
+          onClick: "/#/mark"
       console.warn "NO MORE SUBJECT SETS"
       return
 

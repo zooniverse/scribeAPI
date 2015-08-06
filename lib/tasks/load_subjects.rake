@@ -107,7 +107,7 @@ require 'active_support'
           # If width/height not specified in CSV, autodetect:
           if width.nil? || height.nil?
             require 'fastimage'
-            width, height = FastImage.size(subj['file_path'])
+            width, height = FastImage.size(subj['file_path'],:raise_on_failure=>false, :timeout=>10.0)
             puts "        - Autodetected image size: #{width} x #{height}"
           end
 

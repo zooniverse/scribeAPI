@@ -5,7 +5,7 @@ GenericTask = require './generic'
 NOOP = Function.prototype
 
 icons =
-  point: <svg viewBox="0 0 100 100">
+  pointTool: <svg viewBox="0 0 100 100">
     <circle className="shape" r="30" cx="50" cy="50" />
     <line className="shape" x1="50" y1="5" x2="50" y2="40" />
     <line className="shape" x1="95" y1="50" x2="60" y2="50" />
@@ -17,7 +17,7 @@ icons =
     <line className="shape" x1="25" y1="90" x2="75" y2="10" />
   </svg>
 
-  rectangle: <svg viewBox="0 0 100 100">
+  rectangleTool: <svg viewBox="0 0 100 100">
     <rect className="shape" x="10" y="30" width="80" height="40" />
   </svg>
 
@@ -74,11 +74,17 @@ module.exports = React.createClass
   render: ->
     # console.log "PickOneMarkOne rendering: ", @getSubToolIndex()
 
+    # Calculate number of existing marks for each tool instance:
+    counts = {}
+    for subject in @props.subject.child_subjects
+      counts[subject.type] ?= 0
+      counts[subject.type] += 1
+
     tools = for tool, i in @props.task.tool_config.tools
       tool._key ?= Math.random()
 
-      # TODO: fix count:
-      count = 1 # (true for mark in @props.annotation.value when mark.tool is i).length
+      # How many prev marks? (i.e. child_subjects with same generates_subject_type)
+      count = counts[tool.generates_subject_type] ? 0
 
       <label
         key={tool._key}
@@ -99,6 +105,9 @@ module.exports = React.createClass
 
         <span>
           {tool.label}
+          {if count
+            <span className="count">{count}</span>
+          }
         </span>
 
 

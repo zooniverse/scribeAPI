@@ -18,8 +18,8 @@
       },
       "tool_config" : {
         "tools": [
-          {"type": "rectangleTool", "label": "Record Date", "color": "green", "generates_subject_type": "em_record_date"},
-          {"type": "rectangleTool", "label": "Record Number", "color": "green", "generates_subject_type": "em_record_number"}
+          {"type": "rectangleTool", "label": "Record Date", "color": "purple", "generates_subject_type": "em_record_date"},
+          {"type": "rectangleTool", "label": "Record Number", "color": "#FE5409", "generates_subject_type": "em_record_number"}
         ]
       },
       "next_task": "mark_secondary"
@@ -34,9 +34,9 @@
       },
       "tool_config" : {
         "tools": [
-          {"type": "pointTool", "label": "Mortgager Name", "color": "green", "generates_subject_type": "em_record_mortgager"},
+          {"type": "pointTool", "label": "Mortgager Name", "color": "red", "generates_subject_type": "em_record_mortgager"},
           {"type": "pointTool", "label": "Street Address", "color": "green", "generates_subject_type": "em_record_street_address"},
-          {"type": "pointTool", "label": "Amount Loaned", "color": "green", "generates_subject_type": "em_record_amount_loaned"}
+          {"type": "pointTool", "label": "Amount Loaned", "color": "blue", "generates_subject_type": "em_record_amount_loaned"}
         ]
       },
       "next_task": "mark_valuation"

@@ -1,13 +1,18 @@
 API = require './api'
 
+# TODO PB: There are like sixteen different ways to do the same thing in here; Should simplify
+
 module.exports =
   componentDidMount: ->
-    console.log 'QUERY PARAMS: ', @props.query
-    # if @props.query.subject_set_id
-    #   @fetchSubjectSet @props.query.subject_set_id, @props.query.subject_index, @getActiveWorkflow().id
-    if @props.query.subject_set_id and @props.query.selected_subject_id
-      @fetchSubjectSetBySubjectId @getActiveWorkflow().id, @props.query.subject_set_id, @props.query.selected_subject_id, @props.query.page
+    if @props.params.subject_set_id
+      if @props.params.selected_subject_id
+        @fetchSubjectSetBySubjectId @getActiveWorkflow().id, @props.params.subject_set_id, @props.params.selected_subject_id, @props.params.page ? 1
+      else
+        @fetchSubjectSet @props.params.subject_set_id, @getActiveWorkflow().id
+    else if @props.query.subject_set_id
+      @fetchSubjectSet @props.query.subject_set_id, @getActiveWorkflow().id
     else
+      console.log 'Fetching some subject set...'
       @fetchSubjectSets @getActiveWorkflow().id, @getActiveWorkflow().subject_fetch_limit
 
 
@@ -61,7 +66,7 @@ module.exports =
         return if a.order >= b.order then 1 else -1
     subject_sets
 
-  fetchSubjectSet: (subject_set_id, subject_index, workflow_id)->
+  fetchSubjectSet: (subject_set_id, workflow_id)->
     console.log 'fetchSubjectSet()'
     request = API.type("subject_sets").get(subject_set_id: subject_set_id, workflow_id: workflow_id)
 
@@ -71,12 +76,13 @@ module.exports =
 
     request.then (subject_set) =>
       @setState
+        subjectSet: subject_set
         subjectSets: subject_set
         subject_set_index: 0
-        subject_index: parseInt(subject_index) || 0
+        subject_index: 0 #parseInt(subject_index) || 0
+          , => console.log 'STATE: ', @state
 
   fetchSubjectSets: (workflow_id, limit) ->
-    console.log 'fetchSubjectSets()'
     if @props.overrideFetchSubjectsUrl?
       $.getJSON @props.overrideFetchSubjectsUrl, (subject_sets) =>
         @setState
@@ -87,6 +93,7 @@ module.exports =
       request = API.type('subject_sets').get
         workflow_id: workflow_id
         limit: limit
+        random: true
 
       request.then (subject_sets)=>    # DEBUG CODE
         meta = subject_sets[0].getMeta

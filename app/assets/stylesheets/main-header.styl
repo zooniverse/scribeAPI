@@ -1,15 +1,16 @@
+
 .main-header
   // display: flex
   // flex-wrap: wrap
   // justify-content: space-between
-  height 40px
-  max-height 40px
+  background: rgba(0, 0, 0, 0.18);
 
 .main-header-group
+  background: rgba(0, 0, 0, 0.18);
+  max-heigth: 50px
   position: fixed
   top 0px
   width 100%
-  background: transparent
 
   display: flex
   flex-direction: row
@@ -43,16 +44,16 @@
 
 
   &:hover
-    background: rgba(MEDIUM_GRAY, 0.5)
+    background: rgba(MEDIUM_GRAY, 0.3)
 
   &.logo
     color:  #efefef;
-    font-size: 24px;/* Approximation due to font substitution */
+    font-size: 24px;
     font-weight: 700;
     font-style: italic;
-    line-height: 36px;/* Approximation due to font substitution */
+    line-height: 36px;
     text-align: center;
-    transform: rotate(-11.719deg);/* width and height properties ommitted due to transform */
+    transform: rotate(-11.719deg)
 
     
     &:hover
@@ -87,9 +88,15 @@ a.main-header-item
   width: 3rem
 
 .login
-  line-height: 4
+  @extends $reset-button
+  float: right
   padding: 0.5rem 1.5vw 0.2em
   color rgba(255, 255, 255, 0.4)
+  overflow: hidden
+  align-items: center
+  display: flex
+  text-transform: uppercase
+  line-height 4.5em
 
   img
     max-height 20px
@@ -102,7 +109,7 @@ a.main-header-item
     padding-left 6px
 
   &:hover
-    color #fff
+    color white
 
   .options
     width 100px

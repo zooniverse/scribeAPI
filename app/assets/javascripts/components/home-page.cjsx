@@ -33,15 +33,19 @@ HomePage = React.createClass
         <div className="page-content">
           <h1>{@state.project?.title}</h1>
           <div dangerouslySetInnerHTML={{ __html: marked(@state.project.home_page_content) }} />
-          <p>Do your part to help transcribe first-hand accounts of New Zealanders from the Australian and New Zealand Army Corps.</p>
-          
-          <div id="decision-area" >
-            <a onClick={@markClick} >Start Marking</a> <span id="fancyor">or</span> <a onClick={@transcribeClick} >Start Transcribing</a>
+          <div className='decision-area'>
+            <a onChange={@markClick}>Start Marking</a> <span id='fancyor'>or</span><a onChange={@markTranscribe}>Start Transcribing</a> 
           </div>
-          
-          <div id="record-search" >
-            <NameSearch />
-          </div>
+        
+          {
+            # Is there a metadata search configured, and should it be on the homepage?
+            # TODO If mult metadata_search fields configured, maybe offer a <select> to choose between them
+            if @state.project?.metadata_search?.feature_on_homepage
+              for field in @state.project.metadata_search.fields
+                <div className="metadata-search">
+                  <NameSearch field={field.field} />
+                </div>
+          }
         </div>
       }
     </div>

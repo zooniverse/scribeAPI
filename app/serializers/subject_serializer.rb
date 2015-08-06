@@ -1,8 +1,10 @@
 class SubjectSerializer < ActiveModel::MongoidSerializer
 
-  attributes :id, :type, :parent_subject_id, :workflow_id, :name, :location, :data, :region, :classification_count, :order, :meta_data, :user_favourite
+  attributes :id, :type, :parent_subject_id, :workflow_id, :name, :location, :data, :region, :classification_count, :order, :meta_data
   attributes :width, :height, :region, :subject_set_id, :status
+  attributes :user_favourite, :user_has_classified
 
+  delegate :current_or_guest_user, to: :scope
   delegate :current_user, to: :scope
   has_many :child_subjects
 
@@ -38,7 +40,13 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
   end
 
   def user_favourite
-    (scope and scope.has_favourite?(object))
+    user = scope.nil? ? nil : current_or_guest_user
+    user and user.has_favourite?(object)
+  end
+
+  def user_has_classified
+    user = scope.nil? ? nil : current_or_guest_user
+    user and user.has_classified?(object)
   end
 
 end

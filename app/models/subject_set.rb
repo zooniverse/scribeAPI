@@ -11,6 +11,8 @@ class SubjectSet
   field :thumbnail,              type: String
   field :meta_data,              type: Hash
   field :counts,                 type: Hash
+  # Just for admin filtering
+  field :classification_count,   type: Integer, default: 0
 
   belongs_to :group
   belongs_to :project
@@ -50,9 +52,9 @@ class SubjectSet
     subject.active.for_workflow(workflow)
   end
 
-  def self.autocomplete_name(letters)
+  def self.autocomplete_name(field, letters)
     reg = /#{Regexp.escape(letters)}/i
-    where( :"meta_data.name" => reg)
+    where( :"meta_data.#{field}" => reg)
   end
 
   def workflows

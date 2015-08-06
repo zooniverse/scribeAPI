@@ -46,9 +46,8 @@ module.exports = React.createClass
           if @props.feedbackFormUrl? and showFeedbackTab
             <a className="main-header-item" href={@props.feedbackFormUrl}>Feedback</a>
         }
-
         <Login />
+
       </nav>
 
-      <div className="main-header-group"></div>
     </header>
