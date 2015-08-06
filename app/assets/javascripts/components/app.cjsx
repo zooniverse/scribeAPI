@@ -19,7 +19,7 @@ App = React.createClass
     if ! @state.project?
       API.type('projects').get().then (result)=>
         project = result[0]
-        @setState project:           project
+        @setState project: project, => console.log ' PROJECT: ', @state.project
 
   render: ->
     return null if ! @state.project?

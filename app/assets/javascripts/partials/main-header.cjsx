@@ -25,7 +25,14 @@ module.exports = React.createClass
     <header classNameim="main-header">
 
       <nav className="main-nav main-header-group">
-        <Link to="/" activeClassName="selected" className="main-header-item logo">{@props.short_title}</Link>
+        <Link to="/" activeClassName="selected" className="main-header-item logo">
+          {
+            unless @props.logo?
+              @props.short_title
+            else
+              <img src="logo.svg"/>
+          }
+        </Link>
 
         {
           # Workflows tabs:
