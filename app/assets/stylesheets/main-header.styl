@@ -47,6 +47,9 @@
     background: rgba(MEDIUM_GRAY, 0.3)
 
   &.logo
+    img
+      width 42px
+      height 42px
     color:  #efefef;
     font-size: 24px;
     font-weight: 700;
@@ -54,14 +57,12 @@
     line-height: 36px;
     text-align: center;
     transform: rotate(-11.719deg)
-
-    
     &:hover
       background: transparent
     &.selected
       background: transparent
 
-  &.selected 
+  &.selected
     background: rgba(MEDIUM_GRAY, 0.5)
     transition border 0.3s, background-color 0.3s
 

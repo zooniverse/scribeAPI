@@ -15,6 +15,7 @@ class Project
   field  :scientists,        type: Array,  default: [{name: "Stuart Lynn", location: "Chicago, IL", description: "me", url:["https://github.com/brian-c"]}]
   field  :developers,        type: Array,  default: [{name: "Stuart Lynn", location: "Chicago, IL", description: "me", url:["https://github.com/brian-c"]}]
   field  :pages,             type: Array,  default: []
+  field  :logo,              type: String
   field  :background,        type: String
   field  :forum,             type: Hash
   field  :feedback_form_url, type: String
