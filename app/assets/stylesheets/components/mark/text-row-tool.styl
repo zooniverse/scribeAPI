@@ -1,16 +1,9 @@
 .text-row-tool
-  cursor grab
-  cursor -webkit-grab
-  &.locked
-    &:active
-      cursor not-allowed
-  &:active
-    cursor grabbing
-    cursor -webkit-grabbing
 
+  // BUTTON STYLES
   .resize-button
-    cursor row-resize
-    cursor -webkit-row-resize
+    cursor grab
+    cursor -webkit-grab
     &:active
       cursor grabbing
       cursor -webkit-grabbing
@@ -20,14 +13,33 @@
 
   .mark-button
     cursor pointer
-    &.disabled
-      cursor wait
-      opacity 0.2
-      &:active
-        cursor wait
-        pointer-events none
-    .checkbox
-      transition 0.25s
-      opacity 0.6
+
+  // SHAPE STYLES
+  .tool-shape
+    cursor grab
+    cursor -webkit-grab
+
+    stroke-width 5
+    stroke rgba(100,100,0,0.3)
+    stroke-opacity 0.3
+    fill transparent
+    transition stroke-opacity 0.2s ease
+
+    &:active
+      cursor grabbing
+      cursor -webkit-grabbing
+
+    &.transcribable
+      stroke rgb(67, 187, 253)
+      stroke-opacity 1
+
+    // mark is committed and uneditable
+    &.committed
+      cursor default
       &:hover
-        opacity 1.0
+        stroke-opacity 1
+        transition-delay 0.5s // too distracting when immediate
+
+    // mark has not yet been committed
+    &.uncommitted
+      stroke #fc5424

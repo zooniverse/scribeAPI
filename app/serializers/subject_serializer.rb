@@ -2,7 +2,7 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
 
   attributes :id, :type, :parent_subject_id, :workflow_id, :name, :location, :data, :region, :classification_count, :order, :meta_data
   attributes :width, :height, :region, :subject_set_id, :status
-  attributes :user_favourite, :user_has_classified
+  attributes :user_favourite, :user_has_classified, :classifying_user_ids
 
   delegate :current_or_guest_user, to: :scope
   delegate :current_user, to: :scope
@@ -46,7 +46,10 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
 
   def user_has_classified
     user = scope.nil? ? nil : current_or_guest_user
-    user and user.has_classified?(object)
+    # user and user.has_classified?(object)
+    unless user == nil
+      return object.classifying_user_ids.include?(user.id.to_s) # Alternate method? --STI
+    end
   end
 
 end

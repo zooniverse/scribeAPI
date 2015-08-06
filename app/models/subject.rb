@@ -24,6 +24,8 @@ class Subject
   field :classification_count,        type: Integer, default: 0
   field :random_no,                   type: Float
   field :secondary_subject_count,     type: Integer, default: 0
+  field :classifying_user_ids,        type: Array
+  field :user_has_classified,         type: Boolean, default: false
 
   # Need to sort out relationship between these two fields. Are these two fields Is this :shj
   field :retire_count,                type: Integer

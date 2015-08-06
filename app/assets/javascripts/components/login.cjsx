@@ -82,7 +82,7 @@ Login = React.createClass
     links = @state.providers.map (link) ->
       icon_id = if link.id == 'zooniverse' then 'dot-circle-o' else link.id
       <a key="login-link-#{link.id}" href={link.path} title="Log in using #{link.name}"><i className="fa fa-#{icon_id} fa-2" /></a>
-      
+
     <span>
       { label || "Log In:" }
       <div className='options'>

@@ -47,6 +47,11 @@ module.exports = React.createClass
     @loadImage @props.subject.location.standard
     window.addEventListener "resize", this.updateDimensions
 
+    # scroll to mark when transcribing
+    if @props.workflow.name is 'transcribe'
+      yPos = (@props.subject.data.y - @props.subject.data.height?) * @getScale().vertical - 100
+      $('html, body').animate({scrollTop: yPos}, 500);
+
   componentWillUnmount: ->
     window.removeEventListener "resize", this.updateDimensions
 
@@ -98,7 +103,12 @@ module.exports = React.createClass
 
     # Create an initial mark instance, which will soon gather coords:
     # mark = toolName: subTool.type, userCreated: true, subToolIndex: @state.uncommittedMark?.subToolIndex ? @props.annotation?.subToolIndex
-    mark = toolName: subTool.type, userCreated: true, subToolIndex: subToolIndex, color: subTool.color # @props.annotation?.subToolIndex
+    mark =
+      toolName: subTool.type
+      userCreated: true
+      subToolIndex: subToolIndex
+      color: subTool.color # @props.annotation?.subToolIndex
+      isTranscribable: true # @props.annotation?.subToolIndex
 
     mouseCoords = @getEventOffset e
 
@@ -225,6 +235,7 @@ module.exports = React.createClass
     for child_subject, i in @props.subject.child_subjects
       child_subject.region.subject_id = child_subject.id # copy id field into region (not ideal)
       marks[i] = child_subject.region
+      marks[i].isTranscribable = !child_subject.user_has_classified
 
     # marks = (s for s in (@props.subject.child_subjects ? [] ) when s?.region?).map (m) ->
     #   # {userCreated: false}.merge
@@ -240,11 +251,6 @@ module.exports = React.createClass
 
     viewBox = [0, 0, @props.subject.width, @props.subject.height]
     scale = @getScale()
-
-
-    # if @props.workflow.name is 'transcribe'
-    #   yPos = (@props.subject.data.y - @props.subject.data.height?) * @getScale().vertical - 100
-    #   $('html, body').animate({scrollTop: yPos}, 300);
 
     actionButton =
       if @state.loading
@@ -322,6 +328,7 @@ module.exports = React.createClass
                     xScale={scale.horizontal}
                     yScale={scale.vertical}
                     disabled={! mark.userCreated}
+                    isTranscribable={mark.isTranscribable}
                     isPriorMark={isPriorMark}
                     subjectCurrentPage={@props.subjectCurrentPage}
                     selected={mark is @state.selectedMark}

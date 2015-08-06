@@ -12,7 +12,9 @@
 
     "entry_date": {
       "tool": "textTool",
-      "tool_config": {},
+      "tool_config": {
+        "suggest": "common"
+      },
       "instruction": "What is the entry date?",
       "next_task": "page_number"
     },
@@ -24,7 +26,9 @@
     },
     "location": {
       "tool": "textTool",
-      "tool_config": {},
+      "tool_config": {
+        "suggest": "common"
+      },
       "instruction": "What is the location?",
       "next_task": "entry_text"
     },
@@ -37,7 +41,9 @@
 
     "location_name": {
       "tool": "textTool",
-      "tool_config": {},
+      "tool_config": {
+        "suggest": "common"
+      },
       "instruction": "Enter the name of the location.",
       "next_task": null
     },
@@ -62,7 +68,9 @@
     },
     "location_port": {
       "tool": "textTool",
-      "tool_config": {},
+      "tool_config": {
+        "suggest": "common"
+      },
       "instruction": "Enter the name of the port.",
       "next_task": null
     },
@@ -191,6 +199,82 @@
     },
 
 
+    "event_whaling_activity": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Briefly describe the whaling activity.",
+      "next_task": null
+    },
+
+    "event_ship_interaction": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Briefly describe the ship interaction.",
+      "next_task": null
+    },
+
+    "event_native_interaction": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Briefly describe the interaction with natives.",
+      "next_task": null
+    },
+
+    "art_illustration": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Include additional comments or hit <ENTER> to leave blank.",
+      "next_task": null
+    },
+
+    "art_poem": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Include additional comments or hit <ENTER> to leave blank.",
+      "next_task": null
+    },
+
+    "art_clipping": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Include additional comments or hit <ENTER> to leave blank.",
+      "next_task": null
+    },
+
+    "art_whale_stamp": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Include additional comments or hit <ENTER> to leave blank.",
+      "next_task": null
+    },
+
+    "art_other": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Describe this artwork or transcribe any notable text.",
+      "next_task": null
+    },
+
+
+    "sea_ice_other_description": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Enter the sea ice description.",
+      "next_task": null
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -204,9 +288,11 @@
     },
     "transcribe_rectangle_with_text_tool": {
       "tool": "textTool",
-      "tool_config": {},
+      "tool_config": {
+          "suggest": "common"
+      },
       "instruction": "Transcribe this rectangle.",
-      "next_task": "entry_date"
+      "next_task": null
     },
     "transcribe_text_row_with_text_tool": {
       "tool": "textTool",
@@ -270,7 +356,9 @@
         "tools": {
           "first_field": {
             "tool": "textTool",
-            "tool_config": {},
+            "tool_config": {
+                "suggest": "common"
+            },
             "label": "Text Tool"
           },
           "second_field": {
