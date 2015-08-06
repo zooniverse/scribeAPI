@@ -4,9 +4,7 @@
   "subject_fetch_limit": "10",
   "generates_subjects": true,
   "generates_subjects_for": "transcribe",
-
-  "first_task": "location_present",
-
+  "first_task":"location_present",
   "tasks":{
     "location_present": {
       "tool": "pickOne",
@@ -42,6 +40,7 @@
     "sea_ice_present": {
       "tool": "pickOne",
       "instruction": "Are there any mentions of sea ice?",
+
       "help": {
         "title": "Mentions of Sea Ice",
         "body": "It is useful even to know that sea ice was mentioned; however, continue on to tag specific, technical descriptions when possible."
@@ -183,7 +182,6 @@
           {"type": "rectangleTool", "label": "Interaction with Natives", "color": null, "generates_subject_type": "event_native_interaction" },
           {"type": "rectangleTool", "label": "Social",                   "color": null, "generates_subject_type": "event_social" },
           {"type": "rectangleTool", "label": "Other",                    "color": null, "generates_subject_type": "event_other" }
-
         ]
       },
       "next_task": "optional_entries"
@@ -204,13 +202,6 @@
       },
       "next_task": "optional_entries"
     },
-
-
-
-
-
-
-
     "debug": {
       "generates_subjects": true,
       "tool":"pickOneMarkOne",

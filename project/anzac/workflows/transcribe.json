@@ -325,11 +325,116 @@
                     "att_transcribe_answer": {
                         "tool": "textTool",
                         "tool_config": {},
-                        "label": "Enter the response:"
+                        "label": "Enter the response as best you can:"
                     }
                 }
             },
             "generates_subject_type": "att_transcribed_question_form",
+            "next_task": null
+        },
+        "att_transcribe_two_question": {
+            "tool": "compositeTool",
+            "tool_config": {
+                "tools": {
+                    "att_transcribe_question_form": {
+                        "tool": "textTool",
+                        "tool_config": {
+                            "suggest": "common"
+                        },
+                        "label": "Please transcribe the question on the form:"
+                    },
+                    "att_transcribe_answer": {
+                        "tool": "textTool",
+                        "tool_config": {},
+                        "label": "Enter the response as best you can:"
+                    }
+                }
+            },
+            "generates_subject_type": "att_transcribed_two_question_form",
+            "next_task": "att_transcribe_two_question_p2"
+        },
+        "att_transcribe_two_question_p2": {
+            "tool": "compositeTool",
+            "tool_config": {
+                "tools": {
+                    "att_transcribe_question_form": {
+                        "tool": "textTool",
+                        "tool_config": {
+                            "suggest": "common"
+                        },
+                        "label": "Please transcribe the question on the form:"
+                    },
+                    "att_transcribe_answer": {
+                        "tool": "textTool",
+                        "tool_config": {},
+                        "label": "Enter the response as best you can:"
+                    }
+                }
+            },
+            "generates_subject_type": "att_transcribed_two_question_form_p2",
+            "next_task": null
+        },
+        "att_transcribe_three_question": {
+            "tool": "compositeTool",
+            "tool_config": {
+                "tools": {
+                    "att_transcribe_question_form": {
+                        "tool": "textTool",
+                        "tool_config": {
+                            "suggest": "common"
+                        },
+                        "label": "Please transcribe the question on the form:"
+                    },
+                    "att_transcribe_answer": {
+                        "tool": "textTool",
+                        "tool_config": {},
+                        "label": "Enter the response as best you can:"
+                    }
+                }
+            },
+            "generates_subject_type": "att_transcribed_three_question_form",
+            "next_task": "att_transcribe_three_question_p2"
+        },
+        "att_transcribe_three_question_p2": {
+            "tool": "compositeTool",
+            "tool_config": {
+                "tools": {
+                    "att_transcribe_question_form": {
+                        "tool": "textTool",
+                        "tool_config": {
+                            "suggest": "common"
+                        },
+                        "label": "Please transcribe the question on the form:"
+                    },
+                    "att_transcribe_answer": {
+                        "tool": "textTool",
+                        "tool_config": {},
+                        "label": "Enter the response as best you can:"
+                    }
+                }
+            },
+            "generates_subject_type": "att_transcribed_three_question_form_p2",
+            "next_task": "att_transcribe_three_question_p3"
+        },
+        "att_transcribe_three_question_p3": {
+            "tool": "compositeTool",
+            "tool_config": {
+                "tools": {
+                    "att_transcribe_question_form": {
+                        "tool": "textTool",
+                        "tool_config": {
+                            "suggest": "common"
+                        },
+                        "label": "Please transcribe the question on the form:"
+                    },
+                    "att_transcribe_answer": {
+                        "tool": "textTool",
+                        "tool_config": {},
+                        "label": "Enter the response as best you can:"
+                    }
+                }
+            },
+            "generates_subject_type": "att_transcribed_three_question_form_p3",
             "next_task": null
         },
         "hs_transcribe_unit": {

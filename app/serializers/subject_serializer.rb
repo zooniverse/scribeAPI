@@ -50,7 +50,6 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
     unless user == nil
       return object.classifying_user_ids.include?(user.id.to_s) # Alternate method? --STI
     end
-
   end
 
 end

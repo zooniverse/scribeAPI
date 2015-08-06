@@ -12,7 +12,7 @@ SECONDARY_HOVER=#667983
 TERTIARY_NORMAL=#FC5424
 DISABLED_GRAY=#CDCDCD
 
-SANS_SERIF = Montserrat, "Gill Sans", Arial, sans-serif
+SANS_SERIF = Arimo, Montserrat, "Gill Sans", Arial, sans-serif
 SERIF = "Playfair Display", Georgia, serif
 COURIER = "Courier New", Courier, monospace
 
@@ -48,7 +48,6 @@ a
   color: TERTIARY_NORMAL
 
 .readymade-site-background
-  //background-image: url("background.jpg")
   background-color: MEDIUM_GRAY
   background-position: 50% 33%
   background-size: cover
@@ -65,9 +64,6 @@ a
     opacity: 1
 
 .readymade-site-background-effect
-  background:
-    radial-gradient(rgba(MEDIUM_GRAY, 0), black),
-    url("black-pixel-screen.png")
   bottom: 0
   left: 0
   opacity: 1
@@ -122,7 +118,8 @@ h1
   font-size 3em
 
 .page-content
-  background-color rgba(0,0,0,0.6)
+  background-color transparent
+  text-align: center
   margin 100px 100px
   border-radius 12px
   padding 20px
@@ -131,6 +128,7 @@ h1
 
   h1
     margin-top 0
+    color: white
 
   h2
     font-size 25px

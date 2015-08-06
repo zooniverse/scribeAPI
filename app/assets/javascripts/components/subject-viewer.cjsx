@@ -110,7 +110,6 @@ module.exports = React.createClass
       color: subTool.color # @props.annotation?.subToolIndex
       isTranscribable: true # @props.annotation?.subToolIndex
 
-
     mouseCoords = @getEventOffset e
 
     if MarkComponent.defaultValues?

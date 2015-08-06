@@ -1,8 +1,8 @@
 {
   "title": "Measuring the ANZACs",
-  "short_title": "The ANZACs",
+  "short_title": "ANZAC",
   "summary": "Transcription of New Zealand World War I Personnel Files",
-  "background": "background.jpg",
+  "background": "assets/background.png",
   "admin_email": "andrea@zooniverse.org",
     "team_emails": [ "andrea@zooniverse.org" ],
   "team": [
@@ -32,7 +32,7 @@
     "type": "discourse",
     "base_url": "http://scribe-forum.nypl-labs.biz"
   },
-
+  "feedback_form_url": "http://goo.gl/forms/rrSAue1uuG",
   "metadata_search": {
     "fields": [
       {

@@ -141,7 +141,7 @@ module.exports = React.createClass
       title={@props.mark.label}
     >
       <g
-        className='rectangle-tool'
+        className="rectangle-tool#{if @props.disabled then ' locked' else ''}"
         onMouseDown={@props.onSelect unless @props.disabled}
       >
 

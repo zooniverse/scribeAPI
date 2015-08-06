@@ -18,6 +18,9 @@
         "body": "Personnel files provide a thorough description of an individual’s military service from enlistment, through wartime, and beyond. \n \n The archival copies of personnel files reflect their working origins in multiple locations and compilation into one file at various points during and after the war. Thus, the order of documents within the files varies and a key part of this project is identifying what documents are present for any individual."
       },
       "instruction":"What kind of page is this?",
+      "help": {
+        "file": "pick_page_type"
+      },
       "next_task": null,
       "tool_config": {
         "options":{
@@ -55,19 +58,24 @@
     "att_form_task":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Draw a rectangle around each record.",
+      "instruction":"Select the area for each occurrence of the following:",
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Header", "color": "red", "generates_subject_type": "att_transcribe_header" },
-          {"type": "rectangleTool", "label": "Question", "color": "red", "generates_subject_type": "att_transcribe_question" }
+          {"type": "rectangleTool", "label": "One-Part Question", "color": "red", "generates_subject_type": "att_transcribe_question" },
+          {"type": "rectangleTool", "label": "Two-Part Question", "color": "red", "generates_subject_type": "att_transcribe_two_question" },
+          {"type": "rectangleTool", "label": "Three-Part Question", "color": "red", "generates_subject_type": "att_transcribe_three_question" }
         ]
+      },
+      "help": {
+        "file": "mark_att_two_part"
       },
       "next_task": null
     },
     "att_medical_form_task":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Draw a rectangle around each record.",
+      "instruction":"Select the area for each occurrence of the following:",
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Oath Year", "color": "red", "generates_subject_type": "att_transcribe_oath_year" },
@@ -86,7 +94,7 @@
     "att_medical_sight_hearing":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Draw a rectangle around each record.",
+      "instruction":"Select the area for each occurrence of the following:",
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Sight", "color": "green", "generates_subject_type": "att_transcribe_sight" },

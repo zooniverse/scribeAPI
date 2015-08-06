@@ -10,7 +10,12 @@ ActionButton = React.createClass
       @props.onClick()
 
   render: ->
-    classes = "action-button standard-button white " 
+    if @props.type == "back"
+      classes = "action-button-back standard-button white " 
+    else if @props.type == "next"
+      classes = "action-button-next standard-button white "
+    else
+       classes = "action-button standard-button white " 
     if @props.classes? then classes = classes + @props.classes # TODO: check to see if this does what it should!!!
     <a onClick={@handleClick ? null} href={@props.href ? 'javascript:void(0);'} className={classes} disabled={@props.disabled}>
       {@props.text}
