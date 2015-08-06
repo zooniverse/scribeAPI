@@ -1,3 +1,4 @@
+
 React         = require("react")
 GroupBrowser  = require('./group-browser')
 NameSearch    = require('./name-search')
@@ -33,6 +34,7 @@ HomePage = React.createClass
         <div className="page-content">
           <h1>{@state.project?.title}</h1>
           <div dangerouslySetInnerHTML={{ __html: marked(@state.project.home_page_content) }} />
+
           {
             # Is there a metadata search configured, and should it be on the homepage?
             # TODO If mult metadata_search fields configured, maybe offer a <select> to choose between them
