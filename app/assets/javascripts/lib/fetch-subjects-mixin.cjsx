@@ -13,6 +13,13 @@ module.exports =
     subjects.sort (a,b) ->
       return if a.region.y >= b.region.y then 1 else -1
 
+  unclassifiedByUser: (subjects)->
+    unclassified_by_user = []
+    for subject in subjects
+      if subject.user_has_classified == false
+        unclassified_by_user.push(subject)
+    unclassified_by_user
+
   fetchSubject: (subject_id, workflow_id)->
     request = API.type("subjects").get(subject_id, workflow_id: workflow_id)
 
@@ -50,7 +57,8 @@ module.exports =
 
       console.log "Fetching subjects: "
       request.then (subjects) =>
-        subject = @orderSubjectsByY(subjects)
+        subjects = @unclassifiedByUser(subjects)
+        subjects = @orderSubjectsByY(subjects)
         if subjects.length is 0
 
           @setState noMoreSubjects: true, => console.log 'SET NO MORE SUBJECTS FLAG TO TRUE'

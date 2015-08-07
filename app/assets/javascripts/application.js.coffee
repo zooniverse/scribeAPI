@@ -3,3 +3,8 @@
 #= require 'lib/jquery.extensions'
 #= require 'lib/marked.min'
 #= require 'components'
+
+
+$ ->
+  $( "#accordion" ).accordion
+    collapsible: true
