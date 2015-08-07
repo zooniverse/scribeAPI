@@ -24,6 +24,8 @@ db/*.sqlite3
 /log/*
 /tmp/*
 
+#project images
+/project/anzac/images/*
 # various artifacts
 **.war
 *.rbc

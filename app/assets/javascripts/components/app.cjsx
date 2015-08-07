@@ -19,7 +19,7 @@ App = React.createClass
     if ! @state.project?
       API.type('projects').get().then (result)=>
         project = result[0]
-        @setState project:           project
+        @setState project: project #, => console.log ' PROJECT: ', @state.project
 
   render: ->
     return null if ! @state.project?
@@ -33,7 +33,12 @@ App = React.createClass
       </div>
       <div className="panoptes-main">
 
-        <MainHeader workflows={@state.project.workflows} feedbackFormUrl={@state.project.feedback_form_url} pages={@state.project.pages} short_title={@state.project.short_title} />
+        <MainHeader
+          workflows={@state.project.workflows}
+          feedbackFormUrl={@state.project.feedback_form_url}
+          pages={@state.project.pages}
+          short_title={@state.project.short_title}
+          logo={@state.project.logo} />
 
         <div className="main-content">
           <RouteHandler hash={window.location.hash} project={@state.project} />

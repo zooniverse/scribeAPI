@@ -4,8 +4,39 @@
   "subject_fetch_limit": "10",
   "generates_subjects": true,
   "generates_subjects_for": "transcribe",
-  "first_task":"location_present",
+  "first_task": "date_present",
+
   "tasks":{
+
+    "date_present": {
+      "tool": "pickOne",
+      "instruction": "Are there any date entries present?",
+      "help": {
+        "title": "Date",
+        "body": "Typically each log entry begins with a date."
+      },
+      "tool_config": {
+        "options": {
+          "yes": { "label": "Yes", "next_task": "date" },
+          "no": { "label": "No"}
+        }
+      },
+      "next_task": "location_present"
+    },
+
+    "date": {
+      "generates_subjects": true,
+      "tool":"pickOneMarkOne",
+      "instruction":"Draw a rectangle around the date.",
+      "tool_config": {
+        "tools": [
+          {"type": "rectangleTool", "label": "Date", "color": null, "generates_subject_type": "date" }
+        ]
+      },
+      "next_task": "location_present"
+    },
+
+
     "location_present": {
       "tool": "pickOne",
       "instruction": "Is there location/position information present?",

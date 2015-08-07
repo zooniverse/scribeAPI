@@ -3,7 +3,7 @@ require 'fileutils'
 desc 'creates a poject object from the project directory'
 
   task :project_drop, [:project_key] => :environment do |task, args|
-    
+
     project = Project.find_by key: args[:project_key]
     puts "Delete project: #{args[:project_key]}"
     if ! project.nil?
@@ -24,6 +24,30 @@ desc 'creates a poject object from the project directory'
     project_hash = project_hash.inject({}) { |h, (k,v)| h[k] = v if Project.fields.keys.include?(k.to_s); h }
     project.update project_hash
 
+<<<<<<< HEAD
+=======
+    # load background and logo
+    if project.background.nil?
+      puts "WARN: No background image found."
+    else
+      print 'Loading background file...'
+      background_file_path = "#{project_dir}/#{File.basename(project.background)}"
+      background_file_dest = Rails.root.join("app/assets/images")
+      cp(background_file_path, background_file_dest, verbose: false)
+      puts 'Done.'
+    end
+
+    if project.logo.nil?
+      puts "WARN: No logo image found."
+    else
+      print 'Loading logo file...'
+      logo_file_path = "#{project_dir}/#{File.basename(project.logo)}"
+      logo_file_dest = Rails.root.join("app/assets/images")
+      cp(logo_file_path, logo_file_dest, verbose: true)
+      puts 'Done.'
+    end
+
+>>>>>>> 22c849ee036e9eb6966968b08ae03820963a198d
     puts "Created project: #{project.title}"
 
     # Load pages from content/*:
@@ -49,7 +73,7 @@ desc 'creates a poject object from the project directory'
       else
         # Set updated at if content changed:
         updated_at = Time.now
-        if ! prev_pages.nil? && ! prev_pages.empty? 
+        if ! prev_pages.nil? && ! prev_pages.empty?
           previous_page = prev_pages.select { |p| p[:key] == page_key }
           if ! previous_page.empty? && (previous_page = previous_page.first)
             updated_at = ! previous_page[:updated_at].nil? && previous_page[:content] == content ? previous_page[:updated_at] : Time.now
@@ -163,7 +187,7 @@ desc 'creates a poject object from the project directory'
     if h.respond_to? :each
       if h.is_a? Hash
         h.keys.each do |k,v|
-          if k == :help && h[k].is_a?(Hash) && ! h[k][:file].nil? 
+          if k == :help && h[k].is_a?(Hash) && ! h[k][:file].nil?
             help_file_path = Rails.root.join('project', project_key, 'content', 'help', h[k][:file] + ".md")
             if File.exist? help_file_path
               content = File.read(help_file_path)
@@ -178,7 +202,7 @@ desc 'creates a poject object from the project directory'
               h[k][:body] = content
               puts "    Loaded help file: #{h[k][:file]}"
 
-            else  
+            else
               puts "    WARN: Couldn't find #{help_file_path}"
             end
 

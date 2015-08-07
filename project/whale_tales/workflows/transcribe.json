@@ -10,32 +10,10 @@
 
   "tasks": {
 
-    "entry_date": {
-      "tool": "textTool",
-      "tool_config": {
-        "suggest": "common"
-      },
-      "instruction": "What is the entry date?",
-      "next_task": "page_number"
-    },
-    "page_number": {
+    "date": {
       "tool": "textTool",
       "tool_config": {},
-      "instruction": "What is the page number?",
-      "next_task": "location"
-    },
-    "location": {
-      "tool": "textTool",
-      "tool_config": {
-        "suggest": "common"
-      },
-      "instruction": "What is the location?",
-      "next_task": "entry_text"
-    },
-    "entry_text": {
-      "tool": "textAreaTool",
-      "tool_config": {},
-      "instruction": "Please transcribe the remainder of the highlighted entry.",
+      "instruction": "Transcribe the highlighted date.",
       "next_task": null
     },
 
@@ -105,15 +83,6 @@
       "next_task": null
     },
 
-
-
-
-    "weather_date": {
-      "tool": "textTool",
-      "tool_config": {},
-      "instruction": "What is the date of this entry?",
-      "next_task": null
-    },
 
     "weather_wind": {
       "tool": "compositeTool",
