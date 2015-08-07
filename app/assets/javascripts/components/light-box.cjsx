@@ -14,8 +14,6 @@ module.exports = React.createClass
     totalSubjectPages: React.PropTypes.number.isRequired
     subjectCurrentPage: React.PropTypes.number.isRequired
 
-  componentWillReceiveProps:->
-
 
   getInitialState:->
     first: @props.subject_set.subjects[0]

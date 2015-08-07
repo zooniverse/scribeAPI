@@ -50,6 +50,7 @@ HomePage = React.createClass
           </div>
         </div>
       }
+    
     </div>
 
 module.exports = HomePage

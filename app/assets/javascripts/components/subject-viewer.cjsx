@@ -230,7 +230,7 @@ module.exports = React.createClass
           @props.onChange? mark
 
   getCurrentMarks: ->
-    # Previous marks are really just the region hashes of all child subjects:
+    # Previous marks are really just the region hashes of all child subjects
     marks = []
     for child_subject, i in @props.subject.child_subjects
       child_subject.region.subject_id = child_subject.id # copy id field into region (not ideal)
@@ -287,7 +287,9 @@ module.exports = React.createClass
             # TODO: Makr sure x, y, w, h are scaled properly
             if @props.workflow.name in ['transcribe', 'verify']
               toolName = @props.subject.region.toolName
+
               mark = @props.subject.region
+              console.log "MARK", mark
               ToolComponent = markingTools[toolName]
               isPriorMark = true
               <g>

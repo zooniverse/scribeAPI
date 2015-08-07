@@ -68,7 +68,7 @@
         ]
       },
       "help": {
-        "file": "mark_att_two_part"
+        "file": "att_q_help"
       },
       "next_task": null
     },
@@ -152,7 +152,10 @@
           {"type": "rectangleTool", "label": "Transfer", "color": "green", "generates_subject_type": "hs_transcribe_transfer_table" }
         ]
       },
-      "next_task": "hs_wounds"
+      "next_task": "hs_wounds",
+      "help": {
+        "file": "hs_transfer_help"
+      }
     },
     "hs_sticky_sheet":{
       "tool":"pickOne",
@@ -188,6 +191,9 @@
           {"type": "rectangleTool", "label": "No.", "color": "green", "generates_subject_type": "hs_transcribe_no" },
           {"type": "rectangleTool", "label": "Next-of-Kin", "color": "green", "generates_subject_type": "hs_transcribe_kin" }
         ]
+      },
+      "help": {
+        "file": "hs_mark_help"
       },
       "next_task": "hs_service"
     },
@@ -238,6 +244,9 @@
           {"type": "rectangleTool", "label": "Discharge Provisional", "color": "green", "generates_subject_type": "hs_rectangleTool_discharge_provisional" },
           {"type": "rectangleTool", "label": "Discharge Final", "color": "green", "generates_subject_type": "hs_rectangleTool_discharge_final" }
         ]
+      },
+      "help": {
+        "file": "hs_mark_help"
       },
       "next_task": null
     }

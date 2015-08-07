@@ -45,7 +45,8 @@ module.exports = React.createClass
         }
         { # Page tabs:
           @props.pages?.map (page, key) =>
-            <Link key={key} to="/#{page.name.toLowerCase()}" activeClassName="selected" className="main-header-item">{page.name}</Link>
+            formatted_name = page.name.replace("_", " ")
+            <Link key={key} to="/#{page.name.toLowerCase()}" activeClassName="selected" className="main-header-item">{formatted_name}</Link>
         }
 
         { # include feedback tab if defined
