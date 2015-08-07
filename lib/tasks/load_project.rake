@@ -24,30 +24,6 @@ desc 'creates a poject object from the project directory'
     project_hash = project_hash.inject({}) { |h, (k,v)| h[k] = v if Project.fields.keys.include?(k.to_s); h }
     project.update project_hash
 
-<<<<<<< HEAD
-=======
-    # load background and logo
-    if project.background.nil?
-      puts "WARN: No background image found."
-    else
-      print 'Loading background file...'
-      background_file_path = "#{project_dir}/#{File.basename(project.background)}"
-      background_file_dest = Rails.root.join("app/assets/images")
-      cp(background_file_path, background_file_dest, verbose: false)
-      puts 'Done.'
-    end
-
-    if project.logo.nil?
-      puts "WARN: No logo image found."
-    else
-      print 'Loading logo file...'
-      logo_file_path = "#{project_dir}/#{File.basename(project.logo)}"
-      logo_file_dest = Rails.root.join("app/assets/images")
-      cp(logo_file_path, logo_file_dest, verbose: true)
-      puts 'Done.'
-    end
-
->>>>>>> 22c849ee036e9eb6966968b08ae03820963a198d
     puts "Created project: #{project.title}"
 
     # Load pages from content/*:
