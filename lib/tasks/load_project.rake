@@ -29,11 +29,11 @@ desc 'creates a poject object from the project directory'
     end
 
     # copy background image to assets directory
-    print 'Loading background file...'
-    background_file_path = "#{project_dir}/#{File.basename(project.background)}"
-    background_file_dest = Rails.root.join("app/assets/images")
-    cp(background_file_path, background_file_dest, verbose: false)
-    puts 'Done.'
+    # print 'Loading background file...'
+    # background_file_path = "#{project_dir}/#{File.basename(project.background)}"
+    # background_file_dest = Rails.root.join("app/assets/images")
+    # cp(background_file_path, background_file_dest, verbose: false)
+    # puts 'Done.'
 
     puts "Created project: #{project.title}"
 
@@ -76,7 +76,7 @@ desc 'creates a poject object from the project directory'
       end
     end
     
-    load_help_images(args[:project_key]) 
+    load_images(args[:project_key]) 
 
     styles_path = Rails.root.join('project', args[:project_key], 'styles.css')
     if File.exist? styles_path
@@ -155,17 +155,18 @@ desc 'creates a poject object from the project directory'
     puts "  WARN: No mark workflow found" if project.workflows.find_by(name: 'mark').nil?
   end
 
-  def load_help_images(project_key)
-    help_image_path = Rails.root.join('project', project_key, 'content','help/')
-    puts "Loading help images from #{help_image_path}:"
+  def load_images(project_key)
+    image_path = Rails.root.join('project', project_key, 'images/')
+    puts "Loading images from #{image_path}:"
 
-    Dir.foreach(help_image_path).each do |file|
-      binding.pry
-      path = Rails.root.join help_image_path, file
+    Dir.foreach(image_path).each do |file|
+      puts " -- #{file}"
+      path = Rails.root.join image_path, file
       next if File.directory? path
       next if ! ['.png','.gif','.jpg', '.jpeg'].include? path.extname
-      help_image_dest = Rails.root.join("app/assets/images")
-      cp(path, help_image_dest, verbose: false)
+      image_dest = Rails.root.join("app/assets/images/#{project_key}/")
+      Dir.mkdir(image_dest) unless File.exists?(image_dest)
+      cp(path, image_dest, verbose: false)
     end
   end
 
