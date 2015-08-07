@@ -2,7 +2,14 @@ class SubjectsController < ApplicationController
   respond_to :json
 
   def index
+    puts "SUBJECT CONTROLLER INDEX"
+    puts "SUBJECT CONTROLLER INDEX"
+    puts "SUBJECT CONTROLLER INDEX"
+    puts "SUBJECT CONTROLLER INDEX"
+    puts "SUBJECT CONTROLLER INDEX"
+    puts "SUBJECT CONTROLLER INDEX"
     user = current_or_guest_user
+
 
     workflow_id           = get_objectid :workflow_id
     parent_subject_id     = get_objectid :parent_subject_id
@@ -19,7 +26,7 @@ class SubjectsController < ApplicationController
     @subjects = @subjects.random(limit: limit) if random
 
     # If user/guest active, filter out anything already classified:
-    @subjects = @subjects.user_has_not_classified user.id if ! user.nil?
+    @subjects = @subjects.user_has_not_classified user.id.to_s if ! user.nil?
 
     links = {
       "next" => {

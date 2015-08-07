@@ -231,10 +231,6 @@ module.exports = React.createClass
 
   getCurrentMarks: ->
     # Previous marks are really just the region hashes of all child subjects
-    console.log "getCurrentMarks()"
-    console.log "getCurrentMarks()"
-    console.log "getCurrentMarks()"
-    console.log "getCurrentMarks()"
     marks = []
     for child_subject, i in @props.subject.child_subjects
       child_subject.region.subject_id = child_subject.id # copy id field into region (not ideal)
