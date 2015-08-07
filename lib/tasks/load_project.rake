@@ -149,9 +149,9 @@ desc 'creates a poject object from the project directory'
     puts "Loading images from #{image_path}:"
 
     Dir.foreach(image_path).each do |file|
-      puts " -- #{file}"
       path = Rails.root.join image_path, file
       next if File.directory? path
+      puts " -- #{file}"
       next if ! ['.png','.gif','.jpg', '.jpeg'].include? path.extname
       image_dest = Rails.root.join("app/assets/images/#{project_key}/")
       Dir.mkdir(image_dest) unless File.exists?(image_dest)
