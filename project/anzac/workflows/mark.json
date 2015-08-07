@@ -61,14 +61,14 @@
       "instruction":"Select the area for each occurrence of the following:",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Header", "color": "red", "generates_subject_type": "att_transcribe_header" },
-          {"type": "rectangleTool", "label": "One-Part Question", "color": "red", "generates_subject_type": "att_transcribe_question" },
-          {"type": "rectangleTool", "label": "Two-Part Question", "color": "red", "generates_subject_type": "att_transcribe_two_question" },
-          {"type": "rectangleTool", "label": "Three-Part Question", "color": "red", "generates_subject_type": "att_transcribe_three_question" }
+          {"type": "rectangleTool", "label": "Header", "color": "green", "generates_subject_type": "att_transcribe_header" },
+          {"type": "rectangleTool", "label": "One-Part Question", "color": "green", "generates_subject_type": "att_transcribe_question" },
+          {"type": "rectangleTool", "label": "Two-Part Question", "color": "green", "generates_subject_type": "att_transcribe_two_question" },
+          {"type": "rectangleTool", "label": "Three-Part Question", "color": "green", "generates_subject_type": "att_transcribe_three_question" }
         ]
       },
       "help": {
-        "file": "mark_att_two_part"
+        "file": "att_q_help"
       },
       "next_task": null
     },
@@ -78,15 +78,15 @@
       "instruction":"Select the area for each occurrence of the following:",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Oath Year", "color": "red", "generates_subject_type": "att_transcribe_oath_year" },
-          {"type": "rectangleTool", "label": "Age", "color": "red", "generates_subject_type": "att_transcribe_age" },
-          {"type": "rectangleTool", "label": "Height", "color": "red", "generates_subject_type": "att_transcribe_height" },
-          {"type": "rectangleTool", "label": "Weight", "color": "red", "generates_subject_type": "att_transcribe_weight" },
-          {"type": "rectangleTool", "label": "Chest Measurement", "color": "red", "generates_subject_type": "att_transcribe_chest_measurement" },
-          {"type": "rectangleTool", "label": "Complexion", "color": "red", "generates_subject_type": "att_transcribe_complexion" },
-          {"type": "rectangleTool", "label": "Eye Color", "color": "red", "generates_subject_type": "att_transcribe_eye_color" },
-          {"type": "rectangleTool", "label": "Hair Color", "color": "red", "generates_subject_type": "att_transcribe_hair_color" },
-          {"type": "rectangleTool", "label": "Religious Profession", "color": "red", "generates_subject_type": "att_transcribe_religious_profession" }
+          {"type": "rectangleTool", "label": "Oath Year", "color": "green", "generates_subject_type": "att_transcribe_oath_year" },
+          {"type": "rectangleTool", "label": "Age", "color": "green", "generates_subject_type": "att_transcribe_age" },
+          {"type": "rectangleTool", "label": "Height", "color": "green", "generates_subject_type": "att_transcribe_height" },
+          {"type": "rectangleTool", "label": "Weight", "color": "green", "generates_subject_type": "att_transcribe_weight" },
+          {"type": "rectangleTool", "label": "Chest Measurement", "color": "green", "generates_subject_type": "att_transcribe_chest_measurement" },
+          {"type": "rectangleTool", "label": "Complexion", "color": "green", "generates_subject_type": "att_transcribe_complexion" },
+          {"type": "rectangleTool", "label": "Eye Color", "color": "green", "generates_subject_type": "att_transcribe_eye_color" },
+          {"type": "rectangleTool", "label": "Hair Color", "color": "green", "generates_subject_type": "att_transcribe_hair_color" },
+          {"type": "rectangleTool", "label": "Religious Profession", "color": "green", "generates_subject_type": "att_transcribe_religious_profession" }
         ]
       },
       "next_task": "att_medical_sight_hearing"
@@ -131,6 +131,7 @@
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
       "instruction":"Draw a rectangle around each record.",
+      "next_task": null,
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Distinctive Marks", "color": "green", "generates_subject_type": "att_transcribe_distinctive_marks" },
@@ -140,23 +141,25 @@
           {"type": "rectangleTool", "label": "Remarks", "color": "green", "generates_subject_type": "att_transcribe_remarks" },
           {"type": "rectangleTool", "label": "Date of Medical Exam", "color": "green", "generates_subject_type": "att_transcribe_date_medical_exam" }
         ]
-      },
-      "next_task": null
+      }
     },
     "hs_transfer_table":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
       "instruction":"Draw a rectangle around each row describing a transfer:",
+      "next_task": null,
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Transfer", "color": "green", "generates_subject_type": "hs_transcribe_transfer_table" }
         ]
       },
-      "next_task": "hs_wounds"
+      "help": {
+        "file": "hs_transfer_help"
+      }
     },
     "hs_sticky_sheet":{
       "tool":"pickOne",
-      "instruction":"Is there a sticky notes?",
+      "instruction":"Are there any sticky notes?",
       "next_task": null,
       "tool_config": {
         "options":{
@@ -188,6 +191,9 @@
           {"type": "rectangleTool", "label": "No.", "color": "green", "generates_subject_type": "hs_transcribe_no" },
           {"type": "rectangleTool", "label": "Next-of-Kin", "color": "green", "generates_subject_type": "hs_transcribe_kin" }
         ]
+      },
+      "help": {
+        "file": "hs_mark_help"
       },
       "next_task": "hs_service"
     },
@@ -227,7 +233,8 @@
     "hs_final_questions":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Draw a rectangle around each recorded instance sickness (select the whole row)",
+      "instruction":"Draw a rectangle around each instance of the following:",
+      "next_task": null,
       "tool_config": {
         "tools": [ 
           {"type": "rectangleTool", "label": "Killed in action", "color": "green", "generates_subject_type": "hs_rectangleTool_kia" },
@@ -239,7 +246,9 @@
           {"type": "rectangleTool", "label": "Discharge Final", "color": "green", "generates_subject_type": "hs_rectangleTool_discharge_final" }
         ]
       },
-      "next_task": null
+      "help": {
+        "file": "hs_mark_help"
+      }
     }
 
   }

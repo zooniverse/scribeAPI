@@ -24,27 +24,6 @@ desc 'creates a poject object from the project directory'
     project_hash = project_hash.inject({}) { |h, (k,v)| h[k] = v if Project.fields.keys.include?(k.to_s); h }
     project.update project_hash
 
-    # load background and logo
-    if project.background.nil?
-      puts "WARN: No background image found."
-    else
-      print 'Loading background file...'
-      background_file_path = "#{project_dir}/#{File.basename(project.background)}"
-      background_file_dest = Rails.root.join("app/assets/images")
-      cp(background_file_path, background_file_dest, verbose: false)
-      puts 'Done.'
-    end
-
-    if project.logo.nil?
-      puts "WARN: No logo image found."
-    else
-      print 'Loading logo file...'
-      logo_file_path = "#{project_dir}/#{File.basename(project.logo)}"
-      logo_file_dest = Rails.root.join("app/assets/images")
-      cp(logo_file_path, logo_file_dest, verbose: true)
-      puts 'Done.'
-    end
-
     puts "Created project: #{project.title}"
 
     # Load pages from content/*:
@@ -58,7 +37,6 @@ desc 'creates a poject object from the project directory'
       path = Rails.root.join content_path, file
       next if File.directory? path
       next if ! ['.html','.erb','.md'].include? path.extname
-
       ext = path.extname
       page_key = file.split('.').first
       name = page_key.capitalize
@@ -86,6 +64,8 @@ desc 'creates a poject object from the project directory'
         }
       end
     end
+    
+    load_images(args[:project_key]) 
 
     styles_path = Rails.root.join('project', args[:project_key], 'styles.css')
     if File.exist? styles_path
@@ -162,6 +142,21 @@ desc 'creates a poject object from the project directory'
     end
 
     puts "  WARN: No mark workflow found" if project.workflows.find_by(name: 'mark').nil?
+  end
+
+  def load_images(project_key)
+    image_path = Rails.root.join('project', project_key, 'images/')
+    puts "Loading images from #{image_path}:"
+
+    Dir.foreach(image_path).each do |file|
+      path = Rails.root.join image_path, file
+      next if File.directory? path
+      puts " -- #{file}"
+      next if ! ['.png','.gif','.jpg', '.jpeg', '.svg'].include? path.extname
+      image_dest = Rails.root.join("app/assets/images/#{project_key}/")
+      Dir.mkdir(image_dest) unless File.exists?(image_dest)
+      cp(path, image_dest, verbose: false)
+    end
   end
 
   def load_help_text(h, project_key)

@@ -50,7 +50,7 @@ module.exports =
 
       console.log "Fetching subjects: "
       request.then (subjects) =>
-        subject = @orderSubjectsByY(subjects)
+        subjects = @orderSubjectsByY(subjects)
         if subjects.length is 0
 
           @setState noMoreSubjects: true, => console.log 'SET NO MORE SUBJECTS FLAG TO TRUE'

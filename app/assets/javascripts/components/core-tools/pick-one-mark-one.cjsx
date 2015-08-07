@@ -61,10 +61,6 @@ module.exports = React.createClass
     # @state.annotation
     # @handleChange 0 
   componentWillUnmount:->
-    console.log "componentWillUnmount"
-    console.log "componentWillUnmount"
-    console.log "componentWillUnmount"
-    console.log "componentWillUnmount"
     @setState subToolIndex: 0
 
   getInitialState: ->
