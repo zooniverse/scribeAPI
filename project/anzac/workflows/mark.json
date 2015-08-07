@@ -159,7 +159,7 @@
     },
     "hs_sticky_sheet":{
       "tool":"pickOne",
-      "instruction":"Is there a sticky notes?",
+      "instruction":"Are there any sticky notes?",
       "next_task": null,
       "tool_config": {
         "options":{
