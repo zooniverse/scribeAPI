@@ -48,7 +48,6 @@ desc 'creates a poject object from the project directory'
       path = Rails.root.join content_path, file
       next if File.directory? path
       next if ! ['.html','.erb','.md'].include? path.extname
-
       ext = path.extname
       page_key = file.split('.').first
       name = page_key.capitalize
@@ -76,6 +75,8 @@ desc 'creates a poject object from the project directory'
         }
       end
     end
+    
+    load_help_images(args[:project_key]) 
 
     styles_path = Rails.root.join('project', args[:project_key], 'styles.css')
     if File.exist? styles_path
@@ -152,6 +153,20 @@ desc 'creates a poject object from the project directory'
     end
 
     puts "  WARN: No mark workflow found" if project.workflows.find_by(name: 'mark').nil?
+  end
+
+  def load_help_images(project_key)
+    help_image_path = Rails.root.join('project', project_key, 'content','help/')
+    puts "Loading help images from #{help_image_path}:"
+
+    Dir.foreach(help_image_path).each do |file|
+      binding.pry
+      path = Rails.root.join help_image_path, file
+      next if File.directory? path
+      next if ! ['.png','.gif','.jpg', '.jpeg'].include? path.extname
+      help_image_dest = Rails.root.join("app/assets/images")
+      cp(path, help_image_dest, verbose: false)
+    end
   end
 
   def load_help_text(h, project_key)
