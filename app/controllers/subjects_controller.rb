@@ -2,12 +2,6 @@ class SubjectsController < ApplicationController
   respond_to :json
 
   def index
-    puts "SUBJECT CONTROLLER INDEX"
-    puts "SUBJECT CONTROLLER INDEX"
-    puts "SUBJECT CONTROLLER INDEX"
-    puts "SUBJECT CONTROLLER INDEX"
-    puts "SUBJECT CONTROLLER INDEX"
-    puts "SUBJECT CONTROLLER INDEX"
     user = current_or_guest_user
 
 
