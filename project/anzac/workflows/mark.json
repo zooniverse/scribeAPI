@@ -120,7 +120,7 @@
           {"type": "rectangleTool", "label": "Hernia", "color": "green", "generates_subject_type": "att_transcribe_hernia" },
           {"type": "rectangleTool", "label": "Varicocele", "color": "green", "generates_subject_type": "att_transcribe_varicocele" },
           {"type": "rectangleTool", "label": "Varicose Veins", "color": "green", "generates_subject_type": "att_transcribe_varicose_veins" },
-          {"type": "rectangleTool", "label": "haemorrhoids", "color": "green", "generates_subject_type": "att_transcribe_haemorrhoids" },
+          {"type": "rectangleTool", "label": "Haemorrhoids", "color": "green", "generates_subject_type": "att_transcribe_haemorrhoids" },
           {"type": "rectangleTool", "label": "Skin", "color": "green", "generates_subject_type": "att_transcribe_skin" },
           {"type": "rectangleTool", "label": "Mark", "color": "green", "generates_subject_type": "att_transcribe_mark" }
         ]
@@ -139,6 +139,7 @@
           {"type": "rectangleTool", "label": "Experience of fits", "color": "green", "generates_subject_type": "att_transcribe_fits" },
           {"type": "rectangleTool", "label": "Discharged", "color": "green", "generates_subject_type": "att_transcribe_discharged" },
           {"type": "rectangleTool", "label": "Remarks", "color": "green", "generates_subject_type": "att_transcribe_remarks" },
+          {"type": "rectangleTool", "label": "Classification", "color": "green", "generates_subject_type": "att_transcribe_classification" },
           {"type": "rectangleTool", "label": "Date of Medical Exam", "color": "green", "generates_subject_type": "att_transcribe_date_medical_exam" }
         ]
       }
@@ -147,7 +148,7 @@
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
       "instruction":"Draw a rectangle around each row describing a transfer:",
-      "next_task": null,
+      "next_task": "hs_conduct_sheet",
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Transfer", "color": "green", "generates_subject_type": "hs_transcribe_transfer_table" }
@@ -155,6 +156,24 @@
       },
       "help": {
         "file": "hs_transfer_help"
+      }
+    },
+    "hs_conduct_sheet":{
+      "generates_subjects": true,
+      "tool":"pickOne",
+      "instruction":"Are there any enteries under the heading Conduct Sheet?",
+      "next_task": null,
+      "tool_config": {
+        "options":{
+          "conduct_info_present":{
+            "label":"Yes",
+            "next_task":null
+          },
+          "conduct_info_not_present":{
+            "label":"No",
+            "next_task":null
+          }
+        }
       }
     },
     "hs_sticky_sheet":{
