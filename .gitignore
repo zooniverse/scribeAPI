@@ -24,11 +24,6 @@ db/*.sqlite3
 /log/*
 /tmp/*
 
-#project images
-/app/assets/images/anzac/*
-/app/assets/images/whale_tales/*
-/app/assets/images/emigrant/*
-
 # various artifacts
 **.war
 *.rbc
