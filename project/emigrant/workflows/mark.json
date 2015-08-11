@@ -13,8 +13,7 @@
       "instruction": "First, let's identify the core fields. For each of the following, draw a box on the image.",
       "generates_subjects": true,
       "help": {
-        "title": "Drawing boxes",
-        "body": "Draw a box around each of the fields. "
+        "file": "mark_primary"
       },
       "tool_config" : {
         "tools": [
@@ -34,9 +33,9 @@
       },
       "tool_config" : {
         "tools": [
-          {"type": "pointTool", "label": "Mortgager Name", "color": "red", "generates_subject_type": "em_record_mortgager"},
-          {"type": "pointTool", "label": "Street Address", "color": "green", "generates_subject_type": "em_record_street_address"},
-          {"type": "pointTool", "label": "Amount Loaned", "color": "blue", "generates_subject_type": "em_record_amount_loaned"}
+          {"type": "rectangleTool", "label": "Mortgager Name", "color": "red", "generates_subject_type": "em_record_mortgager"},
+          {"type": "rectangleTool", "label": "Street Address", "color": "green", "generates_subject_type": "em_record_street_address"},
+          {"type": "rectangleTool", "label": "Amount Loaned", "color": "blue", "generates_subject_type": "em_record_amount_loaned"}
         ]
       },
       "next_task": "mark_valuation"
@@ -51,7 +50,7 @@
       },
       "tool_config" : {
         "tools": [
-          {"type": "pointTool", "label": "Valuation", "color": "green", "generates_subject_type": "em_record_valuation"}
+          {"type": "rectangleTool", "label": "Valuation", "color": "green", "generates_subject_type": "em_record_valuation"}
         ]
       },
       "next_task": null
