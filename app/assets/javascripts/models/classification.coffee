@@ -16,6 +16,9 @@ class Classification
     @toolName = null
 
   commit: (callback) ->
+    return if @committed
+    @committed = true
+
     @metadata.finished_at = (new Date).toISOString()
 
     data =
