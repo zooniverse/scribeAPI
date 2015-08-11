@@ -2,3 +2,24 @@
   background-image: url(http://upload.wikimedia.org/wikipedia/commons/6/67/Mulberry_Street_NYC_c1900_LOC_3g04637u_edit.jpg);
 }
 
+/* Update cursors */
+.subject-viewer .subject-container .marking-surface .subject-viewer-svg {
+  cursor: crosshair;
+}
+.rectangle-tool .tool-shape.draggable > polyline {
+  cursor: move;
+}
+.rectangle-tool .tool-shape.draggable.committed > polyline {
+  cursor: default;
+}
+.rectangle-tool .draggable .resize-button {
+  cursor: nesw-resize;
+}
+.rectangle-tool .draggable:nth-child(even) .resize-button {
+  cursor: nwse-resize;
+}
+
+/* Committed state */
+.tool-shape.draggable.committed {
+  opacity: 0.35;
+}
