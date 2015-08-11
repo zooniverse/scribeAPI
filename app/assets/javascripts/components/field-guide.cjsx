@@ -17,9 +17,9 @@ FieldGuide = React.createClass
 
   render: ->
     <div id="accordion">
-      <h3>First header</h3>
+      <h3>History Sheet</h3>
       <div>First content panel</div>
-      <h3>Second header</h3>
+      <h3>Attestation</h3>
       <div>Second content panel</div>
     </div>
 

@@ -100,6 +100,7 @@ class AppRouter
         el = $(React.findDOMNode(this)).find("#accordion")
         el.accordion
           collapsible: true
+          active: false
 
 
       render: ->
