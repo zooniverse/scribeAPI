@@ -165,7 +165,8 @@
             "next_task": "sailing_condition"
           },
           "no": {
-            "label": "No"
+            "label": "No",
+            "next_task": "weather_present"
           }
         }
       }
