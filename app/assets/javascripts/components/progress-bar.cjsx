@@ -32,7 +32,7 @@ module.exports = React.createClass # rename to Classifier
 
     current_task_key = @props.currentTask.key
 
-    <div>
+    <div className="progress-bar">
       <p>Progress</p>
       <ol>
         { for step in @props.steps
