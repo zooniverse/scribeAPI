@@ -36,7 +36,6 @@
       "next_task": "location_present"
     },
 
-
     "location_present": {
       "tool": "pickOne",
       "instruction": "Is there location/position information present?",
@@ -59,22 +58,22 @@
       "instruction":"Pick a position/location option. Draw a rectangle around the corresponding text.",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Name of Location",         "color": null, "generates_subject_type": "location_name" },
-          {"type": "rectangleTool", "label": "Geographic Coordinates",   "color": null, "generates_subject_type": "location_coordinates" },
-          {"type": "rectangleTool", "label": "Port",                     "color": null, "generates_subject_type": "location_port" },
-          {"type": "rectangleTool", "label": "Other",                    "color": null, "generates_subject_type": "location_other" }
+          {"type": "rectangleTool", "label": "Name of Location",       "color": null, "generates_subject_type": "location_name" },
+          {"type": "rectangleTool", "label": "Geographic Coordinates", "color": null, "generates_subject_type": "location_coordinates" },
+          {"type": "rectangleTool", "label": "Port",                   "color": null, "generates_subject_type": "location_port" },
+          {"type": "rectangleTool", "label": "Other",                  "color": null, "generates_subject_type": "location_other" }
         ]
       },
       "next_task": "sea_ice_present"
     },
 
+
     "sea_ice_present": {
       "tool": "pickOne",
       "instruction": "Are there any mentions of sea ice?",
-
       "help": {
         "title": "Mentions of Sea Ice",
-        "body": "It is useful even to know that sea ice was mentioned; however, continue on to tag specific, technical descriptions when possible."
+        "body": "The presence of sea ice is important to climate studies. Even knowing that sea ice was mentioned is useful. Often, descriptions of the sailing conditions infer the presence of ice. When possible, continue on to tag specific technical descriptions."
       },
       "next_task": "weather_present",
       "tool_config": {
@@ -92,13 +91,14 @@
 
     "sea_ice": {
       "tool": "pickOne",
-      "instruction": "Is there any (other) description of the sea ice?",
+      "instruction": "Is there a specific description of sea ice?",
+      "next_task": "sailing_condition_present",
       "tool_config": {
         "options": [
           {"value": "sea_ice_concentration",  "label": "Concentration Description", "next_task": "sea_ice_concentration" },
           {"value": "sea_ice_thickness",      "label": "Thickness Description",     "next_task": "sea_ice_thickness" },
           {"value": "sea_ice_special",        "label": "Special Features",          "next_task": "sea_ice_special" },
-          {"value": "sea_ice_no_description", "label": "No",                        "next_task": "weather_present" }
+          {"value": "sea_ice_no_description", "label": "No",                        "next_task": "sailing_condition_present" }
         ]
       }
     },
@@ -119,12 +119,12 @@
     },
 
 
-  "sea_ice_thickness": {
+    "sea_ice_thickness": {
     "tool": "pickMany",
     "instruction": "Select all sea ice descriptions that apply.",
     "tool_config": {
       "options": [
-        {"value": "baby_ice",  "label": "Baby Ice" },
+        {"value": "bay_ice",   "label": "Bay Ice" },
         {"value": "sludge",    "label": "Sludge" },
         {"value": "brash",     "label": "Brash" },
         {"value": "light_ice", "label": "Light Ice" },
@@ -133,9 +133,9 @@
       ]
     },
     "next_task": "sea_ice"
-  },
+    },
 
-  "sea_ice_special": {
+    "sea_ice_special": {
     "tool": "pickMany",
     "instruction": "Select all sea ice descriptions that apply.",
     "tool_config": {
@@ -148,10 +148,48 @@
       ]
     },
     "next_task": "sea_ice"
-  },
+    },
 
-
-
+    "sailing_condition_present": {
+      "tool": "pickOne",
+      "instruction": "Is there any descriptions of the sailing conditions with respect to sea ice?",
+      "help": {
+        "title": "Sailing Description and Sea Ice",
+        "body": "We are primarily interested in sailing conditions in the context of sea ice."
+      },
+      "next_task": "sea_ice",
+      "tool_config": {
+        "options": {
+          "yes": {
+            "label": "Yes",
+            "next_task": "sailing_condition"
+          },
+          "no": {
+            "label": "No",
+            "next_task": "weather_present"
+          }
+        }
+      }
+    },
+    "sailing_condition": {
+      "tool": "pickOneMarkOne",
+      "instruction": "Pick the type of description that best matches the text and draw a rectangle around it.",
+      "tool_config": {
+        "tools": [
+          {"type": "rectangleTool",  "label": "Open Water Near Ice",        "color": null, "generates_subject_type": "sailing_condition_open_water" },
+          {"type": "rectangleTool",  "label": "Occasional Ice",             "color": null, "generates_subject_type": "sailing_condition_occasional_ice" },
+          {"type": "rectangleTool",  "label": "Dodging Ice",                "color": null, "generates_subject_type": "sailing_condition_dodging_ice" },
+          {"type": "rectangleTool",  "label": "Sailing in Leads",           "color": null, "generates_subject_type": "sailing_condition_leads" },
+          {"type": "rectangleTool",  "label": "Ramming Pack Ice",           "color": null, "generates_subject_type": "sailing_condition_ramming" },
+          {"type": "rectangleTool",  "label": "Waiting for Opening in Ice", "color": null, "generates_subject_type": "sailing_condition_waiting" },
+          {"type": "rectangleTool",  "label": "Beset/Trapped in Ice",       "color": null, "generates_subject_type": "sailing_condition_trapped" },
+          {"type": "rectangleTool",  "label": "Nipped/Damaged",             "color": null, "generates_subject_type": "sailing_condition_damaged" },
+          {"type": "rectangleTool",  "label": "Wrecked",                    "color": null, "generates_subject_type": "sailing_condition_wrecked" },
+          {"type": "rectangleTool",  "label": "Other",                      "color": null, "generates_subject_type": "sailing_condition_other" }
+        ]
+      },
+      "next_task": "sea_ice"
+    },
 
     "weather_present": {
       "tool": "pickOne",
@@ -171,7 +209,6 @@
       "instruction":"Pick a weather description. Draw a rectangle around the corresponding text.",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Date",                     "color": null, "generates_subject_type": "weather_date" },
           {"type": "rectangleTool", "label": "Wind Force/Direction",     "color": null, "generates_subject_type": "weather_wind" },
           {"type": "rectangleTool", "label": "Sky/Cloud Description",    "color": null, "generates_subject_type": "weather_sky" },
           {"type": "rectangleTool", "label": "Precipitation",            "color": null, "generates_subject_type": "weather_precipitation" },

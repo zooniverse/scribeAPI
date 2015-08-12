@@ -50,7 +50,7 @@ module.exports = React.createClass
     # scroll to mark when transcribing
     if @props.workflow.name is 'transcribe'
       yPos = (@props.subject.data.y - @props.subject.data.height?) * @getScale().vertical - 100
-      $('html, body').animate({scrollTop: yPos}, 500);
+      $('html, body').animate({scrollTop: yPos}, 500)
 
   componentWillUnmount: ->
     window.removeEventListener "resize", this.updateDimensions

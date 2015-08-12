@@ -62,6 +62,77 @@
 
 
 
+
+    "sailing_condition_open_water": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Transcribe the text describing the ship sailing in open water.",
+      "next_task": null
+    },
+    "sailing_condition_occasional_ice": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Transcribe the text describing the ship sailing in occasional ice.",
+      "next_task": null
+    },
+    "sailing_condition_dodging_ice": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Transcribe the text describing the ship dodging ice.",
+      "next_task": null
+    },
+    "sailing_condition_leads": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Transcribe the text describing the ship sailing in leads.",
+      "next_task": null
+    },
+    "sailing_condition_ramming": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Transcribe the text describing the ship boring, warping, tracking, or ramming in close pack ice.",
+      "next_task": null
+    },
+    "sailing_condition_waiting": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Transcribe the text describing the ship waiting for an opening in the ice.",
+      "next_task": null
+    },
+    "sailing_condition_trapped": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Transcribe the text describing the ship beset or trapped, in the ice.",
+      "next_task": null
+    },
+    "sailing_condition_damaged": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Transcribe the text describing the ship nipped or damaged beset by ice.",
+      "next_task": null
+    },
+    "sailing_condition_wrecked": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Transcribe the text describing the ship wrecked by ice.",
+      "next_task": null
+    },
+    "sailing_condition_other": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Transcribe any text describing the ship sailing with respect to ice. ",
+      "next_task": null
+    },
+
+
+
+
+
+
+
+
+
+
     "sea_ice_date": {
       "tool": "textTool",
       "tool_config": {},

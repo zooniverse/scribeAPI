@@ -139,7 +139,6 @@ module.exports = React.createClass # rename to Classifier
 
   # User somehow indicated current task is complete; commit current classification
   handleToolComplete: (d) ->
-    # console.log 'TASK IS COMPLETE!'
     @handleDataFromTool(d)
     @commitClassification()
 
