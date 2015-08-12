@@ -88,6 +88,9 @@ class Classification
     if self.task_key == "flag_bad_subject_task"
       subject.increment_flagged_bad_count_by_one
     end
+    if self.task_key == "flag_illegible_subject_task"
+      subject.increment_flagged_illegible_count_by_one
+    end
     subject.inc classification_count: 1
 
     # Push user_id onto Subject.user_ids using mongo's fast addToSet feature, which ensures uniqueness

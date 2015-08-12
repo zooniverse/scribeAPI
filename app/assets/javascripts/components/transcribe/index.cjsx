@@ -124,7 +124,9 @@ module.exports = React.createClass # rename to Classifier
                 transcribeTools={transcribeTools}
                 onShowHelp={@toggleHelp if @getCurrentTask().help?}
                 badSubject={@state.badSubject}
-                onBadSubject={@toggleBadSubject}
+                onBadSubject={@toggleBadSubject}                
+                illegibleSubject={@state.illegibleSubject}
+                onIllegibleSubject={@toggleIllegibleSubject}
               />
 
             </SubjectViewer>

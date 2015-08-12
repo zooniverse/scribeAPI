@@ -1,9 +1,11 @@
-React             = require 'react'
-{Navigation}      = require 'react-router'
-DraggableModal    = require 'components/draggable-modal'
-SmallButton       = require 'components/buttons/small-button'
-HelpButton        = require 'components/buttons/help-button'
-BadSubjectButton  = require 'components/buttons/bad-subject-button'
+React                  = require 'react'
+{Navigation}           = require 'react-router'
+DraggableModal         = require 'components/draggable-modal'
+SmallButton            = require 'components/buttons/small-button'
+HelpButton             = require 'components/buttons/help-button'
+BadSubjectButton       = require 'components/buttons/bad-subject-button'
+IllegibleSubjectButton = require 'components/buttons/illegible-subject-button'
+
 
 TextTool = React.createClass
   displayName: 'TextTool'
@@ -223,6 +225,9 @@ TextTool = React.createClass
 
       if @props.onBadSubject?
         buttons.push <BadSubjectButton active={@props.badSubject} onClick={@props.onBadSubject} />
+
+      if @props.onIllegibleSubject?
+        buttons.push <IllegibleSubjectButton active={@props.illegibleSubject} onClick={@props.onIllegibleSubject} />
 
       if window.location.hash is '#/transcribe' || @props.task.next_task? # regular transcribe, i.e. no mark transition
         buttons.push <SmallButton label={if @props.task.next_task? then 'Next' else 'Done'} key="done-button" onClick={@commitAnnotation} />

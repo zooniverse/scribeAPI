@@ -32,6 +32,11 @@ module.exports =
     @setState badSubject: not @state.badSubject, =>
       callback?()
 
+
+  toggleIllegibleSubject: (callback) ->
+    @setState illegibleSubject: not @state.illegibleSubject, =>
+      callback?()
+
   # Push current classification to server:
   commitClassification: ->
     console.log 'COMMITTING CLASSIFICATION... current classification: ', @getCurrentClassification()
@@ -45,6 +50,9 @@ module.exports =
     # If user activated 'Bad Subject' button, override task:
     if @state.badSubject
       classification.task_key = 'flag_bad_subject_task'
+
+    if @state.illegibleSubject
+      classification.task_key = 'flag_illegible_subject_task'
 
     # Otherwise, classification is for active task:
     else

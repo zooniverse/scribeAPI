@@ -116,8 +116,6 @@ module.exports = React.createClass
     classes.push 'transcribable' if @props.isTranscribable
     classes.push if @props.disabled then 'committed' else 'uncommitted'
 
-    console.log 'MARK COLOR: ', @props.mark.color
-
     x1 = @props.mark.x
     width = @props.mark.width
     x2 = x1 + width
