@@ -94,6 +94,15 @@ class AppRouter
   controllerForPage: (page) ->
     React.createClass
       displayName: "#{page.name}Page"
+
+      componentDidMount: ->
+        # value = $(@refs.inputs.getDOMNode()).find('select')[0].value
+        el = $(React.findDOMNode(this)).find("#accordion")
+        el.accordion
+          collapsible: true
+          active: false
+
+
       render: ->
         formatted_name = page.name.replace("_", " ")
         <div className="page-content">

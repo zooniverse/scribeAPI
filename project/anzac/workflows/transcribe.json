@@ -32,7 +32,7 @@
         "att_transcribe_oath_year": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the filled in text",
+            "instruction": "Please enter the response.",
             "generates_subject_type": "att_transcribed_oath_year",
             "next_task": null
         },
@@ -79,7 +79,7 @@
         "att_transcribe_weight": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the filled in text",
+            "instruction": "Please enter the response.",
             "generates_subject_type": "att_transcribed_weight",
             "next_task": null
         },
@@ -106,28 +106,28 @@
         "att_transcribe_complexion": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the filled in text",
+            "instruction": "Please enter the response.",
             "generates_subject_type": "att_transcribed_complexion",
             "next_task": null
         },
         "att_transcribe_eye_color": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the filled in text",
+            "instruction": "Please enter the response.",
             "generates_subject_type": "att_transcribed_eye_color",
             "next_task": null
         },
         "att_transcribe_hair_color": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the filled in text",
+            "instruction": "Please enter the response.",
             "generates_subject_type": "att_transcribed_hair_color",
             "next_task": null
         },
         "att_transcribe_religious_profession": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the filled in text",
+            "instruction": "Please enter the response.",
             "generates_subject_type": "att_transcribed_religious_profession",
             "next_task": null
         },
@@ -174,140 +174,147 @@
         "att_transcribe_color_vision": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the filled in text",
+            "instruction": "Please enter the response.",
             "generates_subject_type": "att_transcribed_color_vision",
             "next_task": null
         },
         "att_transcribe_limb_formation": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the filled in text",
+            "instruction": "Please enter the response.",
             "generates_subject_type": "att_transcribed_limb_formation",
             "next_task": null
         },
         "att_transcribe_joints": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the filled in text",
+            "instruction": "Please enter the response.",
             "generates_subject_type": "att_transcribed_transcribe_joints",
             "next_task": null
         },
         "att_transcribe_chest": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the filled in text",
+            "instruction": "Please enter the response.",
             "generates_subject_type": "att_transcribed_chest",
             "next_task": null
         },
         "att_transcribe_heart": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the filled in text",
+            "instruction": "Please enter the response.",
             "generates_subject_type": "att_transcribed_heart",
             "next_task": null
         },
         "att_transcribe_lungs": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the filled in text",
+            "instruction": "Please enter the response.",
             "generates_subject_type": "att_transcribed_lungs",
             "next_task": null
         },
         "att_transcribe_teeth": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the filled in text",
+            "instruction": "Please enter the response.",
             "generates_subject_type": "att_transcribed_teeth",
             "next_task": null
         },
         "att_transcribe_illness": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the filled in text",
+            "instruction": "Please enter the response.",
             "generates_subject_type": "att_transcribed_illness",
             "next_task": null
         },
         "att_transcribe_hernia": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the filled in text",
+            "instruction": "Please enter the response.",
             "generates_subject_type": "att_transcribed_hernia",
             "next_task": null
         },
         "att_transcribe_varicocele": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the filled in text",
+            "instruction": "Please enter the response.",
             "generates_subject_type": "att_transcribed_varicocele",
             "next_task": null
         },
         "att_transcribe_varicose_veins": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the filled in text",
+            "instruction": "Please enter the response.",
             "generates_subject_type": "att_transcribed_varicose_veins",
             "next_task": null
         },
         "att_transcribe_haemorrhoids": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the filled in text",
+            "instruction": "Please enter the response.",
             "generates_subject_type": "att_transcribed_haemorrhoids",
             "next_task": null
         },
         "att_transcribe_skin": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the filled in text",
+            "instruction": "Please enter the response.",
             "generates_subject_type": "att_transcribed_skin",
             "next_task": null
         },
         "att_transcribe_mark": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the filled in text",
+            "instruction": "Please enter the response.",
             "generates_subject_type": "att_transcribed_mark",
             "next_task": null
         },
         "att_transcribe_distinctive_marks": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the filled in text",
+            "instruction": "Please enter the response.",
             "generates_subject_type": "att_transcribed_distinctive_marks",
             "next_task": null
         },
         "att_transcribe_pension": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the filled in text",
+            "instruction": "Please enter the response.",
             "generates_subject_type": "att_transcribed_pension",
             "next_task": null
         },
         "att_transcribe_fits": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the filled in text",
+            "instruction": "Please enter the response.",
             "generates_subject_type": "att_transcribed_fits",
             "next_task": null
         },
         "att_transcribe_discharged": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the filled in text",
+            "instruction": "Please enter the response.",
             "generates_subject_type": "att_transcribed_discharged",
             "next_task": null
         },
         "att_transcribe_remarks": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the filled in text",
+            "instruction": "Please enter the response.",
             "generates_subject_type": "att_transcribed_remarks",
+            "next_task": null
+        },
+        "att_transcribe_classification": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Please enter the response.",
+            "generates_subject_type": "att_transcribed_classification",
             "next_task": null
         },
         "att_transcribe_date_medical_exam": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Enter the filled in text",
+            "instruction": "Please enter the response.",
             "generates_subject_type": "att_transcribed_date_medical_exam",
             "next_task": null
         },
@@ -480,16 +487,16 @@
             "next_task": null
         },
         "hs_transcribe_nzaddress": {
-            "tool": "textTool",
+            "tool": "textAreaTool",
             "tool_config": {},
-            "instruction": "Enter the response",
+            "instruction": "Enter the response. Press [Shift] + [Enter] to start a new line.",
             "generates_subject_type": "hs_transcribed_nzaddress",
             "next_task": null
         },
         "hs_transcribe_kin": {
-            "tool": "textTool",
+            "tool": "textAreaTool",
             "tool_config": {},
-            "instruction": "Enter the response",
+            "instruction": "Enter the response. Press [Shift] + [Enter] to start a new line.",
             "generates_subject_type": "hs_transcribed_kin",
             "next_task": null
         },

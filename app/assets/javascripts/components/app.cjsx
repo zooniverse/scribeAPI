@@ -21,6 +21,11 @@ App = React.createClass
         project = result[0]
         @setState project: project #, => console.log ' PROJECT: ', @state.project
 
+  # componentDidUpdate: ->
+  #   # value = $(@refs.inputs.getDOMNode()).find('select')[0].value
+  #   console.log "findDOMnode", $(React.findDOMNode(this))
+  #   console.log "@refs", $(@refs)
+
   render: ->
     return null if ! @state.project?
 

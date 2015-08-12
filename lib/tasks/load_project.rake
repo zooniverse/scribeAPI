@@ -151,8 +151,8 @@ desc 'creates a poject object from the project directory'
     Dir.foreach(image_path).each do |file|
       path = Rails.root.join image_path, file
       next if File.directory? path
-      puts " -- #{file}"
       next if ! ['.png','.gif','.jpg', '.jpeg', '.svg'].include? path.extname
+      puts " -- #{file}"
       image_dest = Rails.root.join("app/assets/images/#{project_key}/")
       Dir.mkdir(image_dest) unless File.exists?(image_dest)
       cp(path, image_dest, verbose: false)

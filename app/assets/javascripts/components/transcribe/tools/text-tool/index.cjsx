@@ -132,6 +132,10 @@ TextTool = React.createClass
     else
       @props.annotation_key
 
+  getCaret: ()->
+    el = $(@refs.input0?.getDOMNode())
+
+
   updateValue: (val) ->
     console.log "updated val: ", val
     newAnnotation = @state.annotation
@@ -147,11 +151,17 @@ TextTool = React.createClass
   handleKeyDown: (e) ->
     @handleChange(e) # updates any autocomplete values
     # if [13].indexOf(e.keyCode) >= 0 # ENTER
-    if ! @state.autocompleting && [13].indexOf(e.keyCode) >= 0 # ENTER
+
+    if (! @state.autocompleting && [13].indexOf(e.keyCode) >= 0) && !e.shiftKey# ENTER
       if window.location.hash is '#/transcribe' || @props.task.next_task? # regular transcribe, i.e. no mark transition
         @commitAnnotation()
       else
         @returnToMarking()
+    else if e.keyCode == 13 && e.shiftKey
+      text_area =  $("textarea")
+      the_text = text_area.val()
+      the_text = the_text.concat("/n")
+      text_area.val(the_text)
 
   handleBadMark: ()->
     newAnnotation = []
