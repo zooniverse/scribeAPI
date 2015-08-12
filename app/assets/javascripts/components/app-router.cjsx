@@ -101,6 +101,7 @@ class AppRouter
         el.accordion
           collapsible: true
           active: false
+          heightStyle: "content"
 
 
       render: ->
