@@ -2,6 +2,46 @@
   background-image: url(http://upload.wikimedia.org/wikipedia/commons/6/67/Mulberry_Street_NYC_c1900_LOC_3g04637u_edit.jpg);
 }
 
+/* Header */
+.main-header-item.selected {
+  background: rgba(108,127,108,0.8);
+}
+.main-header-item:nth-child(3),
+.main-header-item:nth-child(4),
+.main-header-item:nth-child(5) {
+  margin-left: 24px;
+  overflow: visible;
+  position: relative;
+}
+.main-header-item:nth-child(3),
+.main-header-item:nth-child(4) {
+  margin-left: 20px;
+}
+.main-header-item:nth-child(3):before,
+.main-header-item:nth-child(4):before {
+  content: "\f105";
+  display: block;
+  position: absolute;
+  font-family: 'FontAwesome';
+  left: -12px;
+  font-size: 20px;
+  height: 20px;
+  line-height: 20px;
+  margin-top: -10px;
+  top: 50%;
+}
+.main-header-item:nth-child(5):before {
+  content: ' ';
+  display: block;
+  width: 1px;
+  height: 50px;
+  margin-top: -25px;
+  position: absolute;
+  left: -12px;
+  top: 50%;
+  background: rgba(255,255,255,0.3);
+}
+
 /* Z-index issues */
 .classifier .task-area {
   z-index: 100;
