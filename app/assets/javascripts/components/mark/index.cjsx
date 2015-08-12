@@ -10,6 +10,7 @@ HelpModal               = require 'components/help-modal'
 HelpButton              = require 'components/buttons/help-button'
 BadSubjectButton        = require 'components/buttons/bad-subject-button'
 DraggableModal          = require 'components/draggable-modal'
+ProgressBar             = require 'components/progress-bar'
 
 module.exports = React.createClass # rename to Classifier
   displayName: 'Mark'
@@ -39,94 +40,6 @@ module.exports = React.createClass # rename to Classifier
 
   toggleHelp: ->
     @setState helping: not @state.helping
-
-  render: ->
-    return null unless @getCurrentSubject()? && @getActiveWorkflow()?
-    currentTask = @getCurrentTask()
-    TaskComponent = @getCurrentTool()
-    onFirstAnnotation = @state.taskKey == @getActiveWorkflow().first_task
-
-
-    if currentTask.tool is 'pick_one'
-      currentAnswer = currentTask.tool_config.options?[currentAnnotation.value]
-      waitingForAnswer = not currentAnswer
-
-    <div className="classifier">
-
-      <div className="subject-area">
-        { if @state.noMoreSubjectSets
-            style = marginTop: "50px"
-            <p style={style}>There is nothing left to do. Thanks for your work and please check back soon!</p>
-
-          else if @state.notice
-            <DraggableModal header={@state.notice.header} onDone={@state.notice.onClick}>{@state.notice.message}</DraggableModal>
-
-          else if @getCurrentSubjectSet()?
-            <SubjectSetViewer
-              subject_set={@getCurrentSubjectSet()}
-              subject_index={@state.subject_index}
-              workflow={@getActiveWorkflow()}
-              task={currentTask}
-              annotation={@getCurrentClassification().annotation ? {}}
-              onComplete={@handleToolComplete}
-              onChange={@handleDataFromTool}
-              onViewSubject={@handleViewSubject}
-              subToolIndex={@state.currentSubToolIndex}
-              subjectCurrentPage={@state.subject_current_page}
-              nextPage={@nextPage}
-              prevPage={@prevPage}
-              totalSubjectPages={@state.total_subject_pages}
-            />
-        }
-      </div>
-      <div className="task-area">
-        <div className="task-container">
-          <TaskComponent
-            key={@getCurrentTask().key}
-            task={currentTask}
-            annotation={@getCurrentClassification().annotation ? {}}
-            onChange={@handleDataFromTool}
-            subject={@getCurrentSubject()}
-          />
-          <div className="help-bad-subject-holder">
-            { if @getCurrentTask().help?
-              <HelpButton onClick={@toggleHelp} />
-            }
-            { if onFirstAnnotation
-              <BadSubjectButton active={@state.badSubject} onClick={@toggleBadSubject} />
-            }
-            { if @state.badSubject
-              <p>You&#39;ve marked this subject as BAD. Thanks for flagging the issue!</p>
-            }
-          </div>
-          <nav className="task-nav">
-            { if false
-              <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
-            }
-            { if @getNextTask()?
-                <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@advanceToNextTask}>Next</button>
-              else
-                if @state.taskKey == "completion_assessment_task"
-                  if @getCurrentSubject() == @getCurrentSubjectSet().subjects[@getCurrentSubjectSet().subjects.length-1]
-                    <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next</button>
-                  else
-                    <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next Page</button>
-                else
-                  <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Done</button>
-            }
-          </nav>
-        </div>
-
-        <div className="forum-holder">
-          <ForumSubjectWidget subject_set = @getCurrentSubjectSet() />
-        </div>
-
-      </div>
-
-      { if @state.helping
-        <HelpModal help={@getCurrentTask().help} onDone={=> @setState helping: false } />
-      }
-    </div>
 
   # User changed currently-viewed subject:
   handleViewSubject: (index) ->
@@ -212,5 +125,95 @@ module.exports = React.createClass # rename to Classifier
     subject_set = @getCurrentSubjectSet()
     console.log "Np() subject_set", subject_set
     @fetchNextSubjectPage(subject_set.id, @getActiveWorkflow().id, new_page, 0, callback_fn)
+
+  render: ->
+    return null unless @getCurrentSubject()? && @getActiveWorkflow()?
+    currentTask = @getCurrentTask()
+    TaskComponent = @getCurrentTool()
+    onFirstAnnotation = @state.taskKey == @getActiveWorkflow().first_task
+
+
+    if currentTask.tool is 'pick_one'
+      currentAnswer = currentTask.tool_config.options?[currentAnnotation.value]
+      waitingForAnswer = not currentAnswer
+
+    <div className="classifier">
+
+      <div className="subject-area">
+        { if @state.noMoreSubjectSets
+            style = marginTop: "50px"
+            <p style={style}>There is nothing left to do. Thanks for your work and please check back soon!</p>
+
+          else if @state.notice
+            <DraggableModal header={@state.notice.header} onDone={@state.notice.onClick}>{@state.notice.message}</DraggableModal>
+
+          else if @getCurrentSubjectSet()?
+            <SubjectSetViewer
+              subject_set={@getCurrentSubjectSet()}
+              subject_index={@state.subject_index}
+              workflow={@getActiveWorkflow()}
+              task={currentTask}
+              annotation={@getCurrentClassification().annotation ? {}}
+              onComplete={@handleToolComplete}
+              onChange={@handleDataFromTool}
+              onViewSubject={@handleViewSubject}
+              subToolIndex={@state.currentSubToolIndex}
+              subjectCurrentPage={@state.subject_current_page}
+              nextPage={@nextPage}
+              prevPage={@prevPage}
+              totalSubjectPages={@state.total_subject_pages}
+            />
+        }
+      </div>
+      <div className="task-area">
+        <div className="task-container">
+          <TaskComponent
+            key={@getCurrentTask().key}
+            task={currentTask}
+            annotation={@getCurrentClassification().annotation ? {}}
+            onChange={@handleDataFromTool}
+            subject={@getCurrentSubject()}
+          />
+          <div className="help-bad-subject-holder">
+            { if @getCurrentTask().help?
+              <HelpButton onClick={@toggleHelp} />
+            }
+            { if onFirstAnnotation
+              <BadSubjectButton active={@state.badSubject} onClick={@toggleBadSubject} />
+            }
+            { if @state.badSubject
+              <p>You&#39;ve marked this subject as BAD. Thanks for flagging the issue!</p>
+            }
+          </div>
+          <nav className="task-nav">
+            { if false
+              <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
+            }
+            { if @getNextTask()?
+                <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@advanceToNextTask}>Next</button>
+              else
+                if @state.taskKey == "completion_assessment_task"
+                  if @getCurrentSubject() == @getCurrentSubjectSet().subjects[@getCurrentSubjectSet().subjects.length-1]
+                    <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next</button>
+                  else
+                    <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next Page</button>
+                else
+                  <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Done</button>
+            }
+          </nav>
+        </div>
+
+        <div className="forum-holder">
+          <ForumSubjectWidget subject_set = @getCurrentSubjectSet() />
+        </div>
+
+        <ProgressBar />
+
+      </div>
+
+      { if @state.helping
+        <HelpModal help={@getCurrentTask().help} onDone={=> @setState helping: false } />
+      }
+    </div>
 
 window.React = React
