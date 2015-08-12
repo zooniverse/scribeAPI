@@ -2,6 +2,7 @@ class WorkflowTask
   include Mongoid::Document
 
   field    :key,                                     type: String
+  field    :task_label,                              type: String
   field    :tool,                                    type: String
   field    :instruction,                             type: String
   field    :help,                                    type: String

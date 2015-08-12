@@ -29,6 +29,8 @@ App = React.createClass
   render: ->
     return null if ! @state.project?
 
+    console.log 'WORKFLOWS: ', @state.project.workflows
+
     style = {}
     style.backgroundImage = "url(#{@state.project.background})" if @state.project.background?
 

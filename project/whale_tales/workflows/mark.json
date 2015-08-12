@@ -9,7 +9,7 @@
   "tasks":{
 
     "date_present": {
-      "label": "Date",
+      "task_label": "Date",
       "tool": "pickOne",
       "instruction": "Are there any date entries present?",
       "help": {
@@ -39,7 +39,7 @@
 
 
     "location_present": {
-      "title": "Location",
+      "task_label": "Location",
       "tool": "pickOne",
       "instruction": "Is there location/position information present?",
       "help": {
@@ -71,7 +71,7 @@
     },
 
     "sea_ice_present": {
-      "Label": "Sea Ice",
+      "task_label": "Sea Ice",
       "tool": "pickOne",
       "instruction": "Are there any mentions of sea ice?",
 
@@ -157,7 +157,7 @@
 
 
     "weather_present": {
-      "Label": "Weather",
+      "task_label": "Weather",
       "tool": "pickOne",
       "instruction": "Are there any descriptions of the weather?",
       "next_task": "optional_entries",
@@ -189,7 +189,7 @@
     },
 
     "optional_entries": {
-      "label": "Optional Entries",
+      "task_label": "Optional Entries",
       "tool": "pickOne",
       "instruction": "Select any additional items that are present/mentioned.",
       "next_task": null,
@@ -238,6 +238,22 @@
       },
       "next_task": "optional_entries"
     },
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
     "debug": {
       "generates_subjects": true,
       "tool":"pickOneMarkOne",

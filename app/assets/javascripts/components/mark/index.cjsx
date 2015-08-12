@@ -207,7 +207,7 @@ module.exports = React.createClass # rename to Classifier
           <ForumSubjectWidget subject_set = @getCurrentSubjectSet() />
         </div>
 
-        <ProgressBar />
+        <ProgressBar workflow={@getActiveWorkflow()} currentTask={@getCurrentTask()} />
 
       </div>
 
