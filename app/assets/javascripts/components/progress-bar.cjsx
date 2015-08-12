@@ -3,19 +3,31 @@ React                   = require 'react'
 module.exports = React.createClass # rename to Classifier
   displayName: 'ProgressBar'
 
-  # getInitialState: ->
-
-  # componentWillReceiveProps: ->
-  #   console.log 'componentWillReceiveProps(), PROPS: ', @props
-
   getDefaultProps: ->
     steps: []
+
+  getInitialState: ->
+    currentTask: @props.currentTask
+    currentStep: @props.workflow.first_task
+
+  componentWillReceiveProps: (newProps) ->
+    @props.previousTask = @state.currentTask
+
+    currentStep = @state.currentStep
+    if newProps.currentTask.key in @props.steps
+      currentStep = newProps.currentTask.key
+
+    @setState
+      currentTask: newProps.currentTask
+      currentStep: currentStep
+      previousTask: @props.currentTask, =>
+        @forceUpdate()
 
   componentWillMount: ->
     @extractSequentialTasks()
 
   extractSequentialTasks: ->
-    # traverse each task in order. if label present, then add to steps
+    # traverse each task in order. if label present, then add to steps (label not implemented yet)
     tasks = @props.workflow.tasks
     key = @props.workflow.first_task
     while key isnt null
@@ -24,26 +36,25 @@ module.exports = React.createClass # rename to Classifier
       @props.steps.push key
       key = tasks[key].next_task # advance to next key
 
-    console.log 'STEPS: ', @props.steps
+    # console.log 'PROGRESS BAR STEPS: ', @props.steps
 
   render: ->
-    console.log 'componentWillMount(): Current Active Workflow: ', @props.workflow
-    console.log 'CURRENT TASK: ', @props.currentTask
 
-    current_task_key = @props.currentTask.key
+    # previous_task_key = @state.previousTask?.key
+    # # DEBUG CODE
+    # console.log '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
+    # console.log '  > CURRENT TASK : ', current_task_key
+    # console.log '  > PREVIOUS TASK: ', previous_task_key
+    # console.log '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<'
 
     <div className="progress-bar">
       <p>Progress</p>
       <ol>
         { for step in @props.steps
-            if step is current_task_key
-              classes = 'active'
-            else
-              classes = ''
-            console.log 'ACTIVE: ', step
+            if step is @state.currentStep then classes = 'active'
+            else classes = ''
             <li className={classes}>{step}</li>
         }
-
       </ol>
 
     </div>
