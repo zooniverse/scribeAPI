@@ -14,8 +14,14 @@ class Classification
     @task_key = null
     @generates_subject_type = null
     @toolName = null
+    @committed = false
 
   commit: (callback) ->
+    console.log "COMMITED?", @committed
+    console.log "COMMITED?", @committed
+    console.log "COMMITED?", @committed
+    console.log "COMMITED?", @committed
+    console.log "COMMITED?", @committed
     return if @committed
     @committed = true
 

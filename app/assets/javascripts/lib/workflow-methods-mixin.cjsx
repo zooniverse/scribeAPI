@@ -17,6 +17,7 @@ module.exports =
 
   # Start a new classification (optionally initialized with given annotation hash):
   beginClassification: (annotation = {}, callback) ->
+    console.log "~~~~~>>>>BEGIN NEW CLASSIFICATION"
     classifications = @state.classifications
     classification = new Classification()
     classification.annotation[k] = v for k, v of annotation
@@ -51,7 +52,7 @@ module.exports =
     if @state.badSubject
       classification.task_key = 'flag_bad_subject_task'
 
-    if @state.illegibleSubject
+    else if @state.illegibleSubject
       classification.task_key = 'flag_illegible_subject_task'
 
     # Otherwise, classification is for active task:
@@ -68,6 +69,11 @@ module.exports =
       if @state.badSubject
         @toggleBadSubject =>
           @advanceToNextSubject()
+      
+      if @state.illegibleSubject
+        @toggleIllegibleSubject =>
+          @advanceToNextSubject()
+
 
     console.log 'COMMITTED CLASSIFICATION: ', classification
     console.log '(ALL CLASSIFICATIONS): ', @state.classifications

@@ -133,7 +133,6 @@ module.exports = React.createClass # rename to Classifier
     # console.log "HANDLE View Subject: subject", subject
     # @state.currentSubject = subject
     # @forceUpdate()
-    console.log "mark/index -->HVS index", index
     @setState subject_index: index, => @forceUpdate()
 
 
