@@ -19,18 +19,33 @@ module.exports = React.createClass # rename to Classifier
     tasks = @props.workflow.tasks
     key = @props.workflow.first_task
     while key isnt null
-      if tasks[key].label? then @props.steps.push tasks[key].label
-      console.log 'CURRENT TASK: ', tasks[key]
+      # if tasks[key].label? then @props.steps.push tasks[key].label
+      # console.log 'CURRENT TASK: ', tasks[key]
+      @props.steps.push key
       key = tasks[key].next_task # advance to next key
 
     console.log 'STEPS: ', @props.steps
 
   render: ->
     console.log 'componentWillMount(): Current Active Workflow: ', @props.workflow
+    console.log 'CURRENT TASK: ', @props.currentTask
 
+    current_task_key = @props.currentTask.key
 
     <div>
-      <p>This will soon be a progress bar!</p>
+      <p>Progress</p>
+      <ol>
+        { for step in @props.steps
+            if step is current_task_key
+              classes = 'active'
+            else
+              classes = ''
+            console.log 'ACTIVE: ', step
+            <li className={classes}>{step}</li>
+        }
+
+      </ol>
+
     </div>
 
 window.React = React
