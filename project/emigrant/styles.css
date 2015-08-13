@@ -11,6 +11,11 @@
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00262b2d', endColorstr='#e6262b2d',GradientType=0 ); /* IE6-9 */
 }
 
+/* Global */
+button {
+  outline: none;
+}
+
 /* Header */
 .main-header-group {
   background: rgba(22,23,11,0.6);
@@ -131,6 +136,31 @@
 }
 .group-area .groups .group a:hover {
   background: rgba(255,255,255,0.2);
+}
+
+/* Rectangle Tool */
+.rectangle-tool .draggable .resize-button {
+  fill: #37464f;
+  stroke: #efefef;
+  r: 18;
+}
+.rectangle-tool .draggable .resize-button:hover {
+  fill: #8cbc8c;
+  stroke: #f1f1f1;
+}
+.delete-button circle {
+  fill: #ef4545;
+}
+.delete-button:hover circle {
+  fill: #ff5151;
+}
+.checkbox > path,
+.checkbox > text {
+  fill: #619661;
+}
+.checkbox:hover > path,
+.checkbox:hover > text {
+  fill: #53b253;
 }
 
 /* Z-index issues */
