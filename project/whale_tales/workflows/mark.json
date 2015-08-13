@@ -12,8 +12,8 @@
       "tool": "pickOne",
       "instruction": "Are there any date entries present?",
       "help": {
-        "title": "Date",
-        "body": "Typically each log entry begins with a date."
+        "title": "Dates",
+        "body": "Typically each log entry begins with a date. The year may only appear at the top of the page. Select 'yes' if you see any date mentioned anywhere on the page."
       },
       "tool_config": {
         "options": {
@@ -28,6 +28,10 @@
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
       "instruction":"Draw a rectangle around the date.",
+      "help": {
+        "title": "Dates",
+        "body": "Typically each log entry begins with a date. The year may only appear at the top of the page. Select 'yes' if you see any date mentioned anywhere on the page."
+      },
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Date", "color": null, "generates_subject_type": "date" }
@@ -40,8 +44,8 @@
       "tool": "pickOne",
       "instruction": "Is there location/position information present?",
       "help": {
-        "title": "Ship Location and Position",
-        "body": "This can be anything from the name of a port to the exact geographical coordinates."
+        "title": "Whaling ground, position, port-of-call",
+        "body": "Select the type of location, then draw a rectangle around each location of that type. Mark both the ocean region or whaling ground (typically at the top of the page) and any specific positions or geographic references that you see further down on the page."
       },
       "tool_config": {
         "options": {
@@ -56,6 +60,10 @@
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
       "instruction":"Pick a position/location option. Draw a rectangle around the corresponding text.",
+      "help": {
+        "title": "Ship Location and Position",
+        "body": "This can be any geographic reference, from the name of a port or landmark seen, to latitude/longitude coordinates. Often the whaling ground or ocean that the ship was in can be found written at the top of the page."
+      },
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Name of Location",       "color": null, "generates_subject_type": "location_name" },
@@ -72,8 +80,8 @@
       "tool": "pickOne",
       "instruction": "Are there any mentions of sea ice?",
       "help": {
-        "title": "Mentions of Sea Ice",
-        "body": "The presence of sea ice is important to climate studies. Even knowing that sea ice was mentioned is useful. Often, descriptions of the sailing conditions infer the presence of ice. When possible, continue on to tag specific technical descriptions."
+        "title": "Ice ahead!",
+        "body": "Knowing where sea ice is present is important for climate studies. Even knowing that sea ice was mentioned is useful. Often, descriptions of the sailing conditions allow us to make inferences about nearby sea ice. Scan the document and select 'yes' if there are any mentions of sea ice. (You will then be prompted to continue on to tag specific technical descriptions.)"
       },
       "next_task": "weather_present",
       "tool_config": {
@@ -89,73 +97,12 @@
       }
     },
 
-    "sea_ice": {
-      "tool": "pickOne",
-      "instruction": "Is there a specific description of sea ice?",
-      "next_task": "weather_present",
-      "tool_config": {
-        "options": [
-          {"value": "sea_ice_concentration",  "label": "Concentration Description", "next_task": "sea_ice_concentration" },
-          {"value": "sea_ice_thickness",      "label": "Thickness Description",     "next_task": "sea_ice_thickness" },
-          {"value": "sea_ice_special",        "label": "Special Features",          "next_task": "sea_ice_special" },
-          {"value": "sea_ice_no_description", "label": "No",                        "next_task": "weather_present" }
-        ]
-      }
-    },
-
-    "sea_ice_concentration": {
-      "tool": "pickMany",
-      "instruction": "Select all sea ice descriptions that apply.",
-      "tool_config": {
-        "options": [
-          {"value": "ice_field",   "label": "Ice Field" },
-          {"value": "floe",        "label": "Floe" },
-          {"value": "drift_ice",   "label": "Drift Ice" },
-          {"value": "sailing_ice", "label": "Sailing Ice" },
-          {"value": "pack_ice",    "label": "Pack Ice" }
-        ]
-      },
-      "next_task": "sea_ice"
-    },
-
-
-    "sea_ice_thickness": {
-    "tool": "pickMany",
-    "instruction": "Select all sea ice descriptions that apply.",
-    "tool_config": {
-      "options": [
-        {"value": "bay_ice",   "label": "Bay Ice" },
-        {"value": "sludge",    "label": "Sludge" },
-        {"value": "brash",     "label": "Brash" },
-        {"value": "light_ice", "label": "Light Ice" },
-        {"value": "heavy_ice", "label": "Heavy Ice" },
-        {"value": "hummock",   "label": "Hummock" }
-      ]
-    },
-    "next_task": "sea_ice"
-    },
-
-    "sea_ice_special": {
-    "tool": "pickMany",
-    "instruction": "Select all sea ice descriptions that apply.",
-    "tool_config": {
-      "options": [
-        {"value": "melt_ponds",      "label": "Melt Ponds" },
-        {"value": "snow_on_sea_ice", "label": "Snow On Sea Ice" },
-        {"value": "land_ice",        "label": "Land Ice" },
-        {"value": "floeberg",        "label": "Floeberg" },
-        {"value": "iceberg",         "label": "Iceberg" }
-      ]
-    },
-    "next_task": "sea_ice"
-    },
-
     "sailing_condition_present": {
       "tool": "pickOne",
       "instruction": "Are there any descriptions of the sailing conditions with respect to sea ice?",
       "help": {
         "title": "Sailing Description and Sea Ice",
-        "body": "We are primarily interested in sailing conditions in the context of sea ice."
+        "body": "Look for any reference to how the ship is sailing through ice (including if the ship is sailing in leads, beset, nipped/damaged, or even wrecked). How the ship is being sailed tells us a lot about the sea ice around it, even if there isn’t any specific description of the ice noted in the log. If you don’t see any reference to sailing near or through ice, select 'no.'"
       },
       "next_task": "sea_ice",
       "tool_config": {
@@ -171,9 +118,14 @@
         }
       }
     },
+
     "sailing_condition": {
       "tool": "pickOneMarkOne",
       "instruction": "Pick the type of description that best matches the text and draw a rectangle around it.",
+      "help": {
+        "title": "How is the ship sailing?",
+        "body": "Look for remarks on how the ship is being handled. Is ship sailing free, or are there constant changes of direction to get around pieces of ice? In the western Arctic, ships often sailed down leads (river-like channels) between the land and the main ice pack. Sometime ships would have to ‘force the pack’ by ramming between the floes. Select the description of how the ship is sailing, then draw a rectangle around each location of that type."
+      },
       "tool_config": {
         "tools": [
           {"type": "rectangleTool",  "label": "Open Water Near Ice",        "color": null, "generates_subject_type": "sailing_condition_open_water" },
@@ -191,10 +143,92 @@
       "next_task": "sea_ice"
     },
 
+
+    "sea_ice": {
+      "tool": "pickOne",
+      "instruction": "Is there a specific description of sea ice?",
+      "next_task": "weather_present",
+      "help": {
+        "title": "What is the sea ice like?",
+        "body": "Concentration describes how much sea ice is near the ship (for instance: field, floe, drift ice, sailing ice, pack ice). Thickness describes, well, how thick the ice is (for instance: bay ice, sludge, brash, light ice, heavy ice, hummock). Special features the science team are interested in include melt ponds, reports of snow thickness on the sea ice, land ice, floebergs, and icebergs. Select any that you see anywhere on the page. You do not need to draw any rectangles for this step."
+      },
+      "tool_config": {
+        "options": [
+          {"value": "sea_ice_concentration",  "label": "Concentration Description", "next_task": "sea_ice_concentration" },
+          {"value": "sea_ice_thickness",      "label": "Thickness Description",     "next_task": "sea_ice_thickness" },
+          {"value": "sea_ice_special",        "label": "Special Features",          "next_task": "sea_ice_special" },
+          {"value": "sea_ice_no_description", "label": "No",                        "next_task": "weather_present" }
+        ]
+      }
+    },
+
+    "sea_ice_concentration": {
+      "tool": "pickMany",
+      "instruction": "Select all sea ice descriptions that apply.",
+      "help": {
+        "title": "How much ice is near the ship?",
+        "file": "sea_ice_concentration"
+      },
+      "tool_config": {
+        "options": [
+          {"value": "ice_field",   "label": "Ice Field" },
+          {"value": "floe",        "label": "Floe" },
+          {"value": "drift_ice",   "label": "Drift Ice" },
+          {"value": "sailing_ice", "label": "Sailing Ice" },
+          {"value": "pack_ice",    "label": "Pack Ice" }
+        ]
+      },
+      "next_task": "sea_ice"
+    },
+
+
+    "sea_ice_thickness": {
+    "tool": "pickMany",
+    "instruction": "Select all sea ice descriptions that apply.",
+    "help": {
+      "title": "Words that describe ice thickness",
+      "file": "sea_ice_thickness"
+    },
+    "tool_config": {
+      "options": [
+        {"value": "bay_ice",   "label": "Bay Ice" },
+        {"value": "sludge",    "label": "Sludge" },
+        {"value": "brash",     "label": "Brash" },
+        {"value": "light_ice", "label": "Light Ice" },
+        {"value": "heavy_ice", "label": "Heavy Ice" },
+        {"value": "hummock",   "label": "Hummock" }
+      ]
+    },
+    "next_task": "sea_ice"
+    },
+
+    "sea_ice_special": {
+    "tool": "pickMany",
+    "instruction": "Select all sea ice descriptions that apply.",
+    "help": {
+      "title": "Special characteristics of sea ice types",
+      "file": "sea_ice_special"
+    },
+    "tool_config": {
+      "options": [
+        {"value": "melt_ponds",      "label": "Melt Ponds" },
+        {"value": "snow_on_sea_ice", "label": "Snow On Sea Ice" },
+        {"value": "land_ice",        "label": "Land Ice" },
+        {"value": "floeberg",        "label": "Floeberg" },
+        {"value": "iceberg",         "label": "Iceberg" }
+      ]
+    },
+    "next_task": "sea_ice"
+    },
+
     "weather_present": {
       "tool": "pickOne",
       "instruction": "Are there any descriptions of the weather?",
       "next_task": "optional_entries",
+      "help": {
+        "title": "Weather",
+        "body": "Ship captains kept a close eye on the weather and recorded what they saw in the logbook every day. Weather can include temperature, cloud cover, precipitation, barometric pressure, etc. Select 'yes' if you spot any reference to the weather on this page; if not, select 'no.'"
+      },
       "tool_config": {
         "options": {
           "present": { "label": "Yes",  "next_task": "weather" },
@@ -207,6 +241,10 @@
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
       "instruction":"Pick a weather description. Draw a rectangle around the corresponding text.",
+      "help": {
+        "title": "A record of wind and wave",
+        "file": "weather"
+      },
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Wind Force/Direction",     "color": null, "generates_subject_type": "weather_wind" },
@@ -225,6 +263,10 @@
       "tool": "pickOne",
       "instruction": "Select any additional items that are present/mentioned.",
       "next_task": null,
+      "help": {
+        "title": "More than weather and ice",
+        "body": "If there are pieces of artwork or mentions of any interesting events, select 'art' or 'event.'' You should also select 'art' for any mentions of art; for instance, artwork that was involved in a trade."
+      },
       "tool_config": {
         "options": {
           "event": {
@@ -243,6 +285,10 @@
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
       "instruction":"Pick a type of event and draw a rectangle around it.",
+      "help": {
+        "title": "Ship’s logs tell all kinds of stories",
+        "body": "Select the description of the type of event, then draw a rectangle around each event of that type. All sorts of notable events are recorded in the ship’s logbook. If you see anything from the list, please mark it. You can also mark any other kind of happening that is interesting to you. And if there is a special story told in the log you can discuss it with the community on Talk."
+      },
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Whaling Activity",         "color": null, "generates_subject_type": "event_whaling_activity" },
@@ -259,6 +305,10 @@
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
       "instruction":"Pick a type of art and draw a rectangle around it.",
+      "help": {
+        "title": "Arts and crafts",
+        "body": "Select the description of the type of art, then draw a rectangle around each artwork (or mention of art) of that type. Please mark arts and crafts from the list, or any other artwork you find in the logbook. Some artwork, scrimshaw for example, might also be reported as an item of informal trade in the logbook. Please mark these mentions as well."
+      },
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Illustration", "color": null, "generates_subject_type": "art_illustration" },
