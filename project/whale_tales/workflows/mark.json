@@ -258,7 +258,7 @@
     "art": {
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Pick an event and mark it on the document.",
+      "instruction":"Pick a type of art and mark it on the document.",
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Illustration", "color": null, "generates_subject_type": "art_illustration" },
