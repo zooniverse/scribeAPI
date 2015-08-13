@@ -80,7 +80,7 @@
         "options": {
           "yes": {
             "label": "Yes",
-            "next_task": "sea_ice"
+            "next_task": "sailing_condition_present"
           },
           "no": {
             "label": "No"
@@ -92,13 +92,13 @@
     "sea_ice": {
       "tool": "pickOne",
       "instruction": "Is there a specific description of sea ice?",
-      "next_task": "sailing_condition_present",
+      "next_task": "weather_present",
       "tool_config": {
         "options": [
           {"value": "sea_ice_concentration",  "label": "Concentration Description", "next_task": "sea_ice_concentration" },
           {"value": "sea_ice_thickness",      "label": "Thickness Description",     "next_task": "sea_ice_thickness" },
           {"value": "sea_ice_special",        "label": "Special Features",          "next_task": "sea_ice_special" },
-          {"value": "sea_ice_no_description", "label": "No",                        "next_task": "sailing_condition_present" }
+          {"value": "sea_ice_no_description", "label": "No",                        "next_task": "weather_present" }
         ]
       }
     },
@@ -152,7 +152,7 @@
 
     "sailing_condition_present": {
       "tool": "pickOne",
-      "instruction": "Is there any descriptions of the sailing conditions with respect to sea ice?",
+      "instruction": "Are there any descriptions of the sailing conditions with respect to sea ice?",
       "help": {
         "title": "Sailing Description and Sea Ice",
         "body": "We are primarily interested in sailing conditions in the context of sea ice."
@@ -166,7 +166,7 @@
           },
           "no": {
             "label": "No",
-            "next_task": "weather_present"
+            "next_task": "sea_ice"
           }
         }
       }
