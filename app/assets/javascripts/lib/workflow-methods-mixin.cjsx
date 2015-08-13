@@ -17,7 +17,6 @@ module.exports =
 
   # Start a new classification (optionally initialized with given annotation hash):
   beginClassification: (annotation = {}, callback) ->
-    console.log "~~~~~>>>>BEGIN NEW CLASSIFICATION"
     classifications = @state.classifications
     classification = new Classification()
     classification.annotation[k] = v for k, v of annotation
@@ -77,6 +76,8 @@ module.exports =
 
     console.log 'COMMITTED CLASSIFICATION: ', classification
     console.log '(ALL CLASSIFICATIONS): ', @state.classifications
+    @beginClassification() #AMS (08.12.15): We create new classifications at other times after committing classifications. And we start the workflow with empty classifcation.
+                           # If we don't call @beginClassification we can't submit multiple marks. TODO: create classifications in response to a user.
     # PB: Commenting this out because was generating duplicate empty classifications. We should figure out where/why commitClassification is being called twice.
     # AMS: Agreed, it is being called once when the box is checked and once when you advance to the next task.
     # @beginClassification() #creating a new classification allows not keep commiting previously commited classifications. --AMS

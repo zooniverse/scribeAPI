@@ -134,8 +134,8 @@ module.exports = React.createClass # rename to Classifier
     # @state.currentSubject = subject
     # @forceUpdate()
     @setState subject_index: index, => @forceUpdate()
-
-
+    @toggleBadSubject() if @state.badSubject
+         
   # User somehow indicated current task is complete; commit current classification
   handleToolComplete: (d) ->
     @handleDataFromTool(d)
