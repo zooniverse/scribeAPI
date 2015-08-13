@@ -11,11 +11,6 @@
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00262b2d', endColorstr='#e6262b2d',GradientType=0 ); /* IE6-9 */
 }
 
-/* Global */
-button {
-  outline: none;
-}
-
 /* Header */
 .main-header-group {
   background: rgba(22,23,11,0.6);
