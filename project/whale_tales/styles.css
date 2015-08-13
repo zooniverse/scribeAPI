@@ -1,0 +1,32 @@
+.home-page {
+  background-color: inherit;
+  padding-top: 6%;
+  color: #efefef;
+  font-size: 30px; /* Approximation due to font substitution */
+  font-weight: 300;
+  line-height: 68px; /* Approximation due to font substitution */
+  text-align: center;
+}
+.home-page h1 {
+  font-family: 'Roboto Slab';
+  color: #fff;
+  font-weight: 100;
+  margin-bottom: 0%;
+}
+.home-page p {
+  font-family: SANS_SERIF;
+  font-size: 100%;
+  letter-spacing: 0.03em;
+}
+.home-page p.project-summary {
+  font-size: 25px;
+  font-style: italic;
+  text-align: justify;
+  line-height: 1em;
+}
+.home-page .tagline {
+  font-size: 25px;
+  line-height: 1.25em;
+  text-align: center;
+  text-transform: uppercase;
+}
