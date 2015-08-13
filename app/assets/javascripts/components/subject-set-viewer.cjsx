@@ -44,7 +44,6 @@ module.exports = React.createClass
   render: ->
     # console.log 'SUBJECT-SET-VIEWER::render(), subject_index = ', @props.subject_index
     # NOTE: LightBox does not receive correct @props.subject_index. Why? --STI
-    console.log "@props.subject_set.subjects.length",@props.subject_set.subjects.length
     <div className="subject-set-viewer">
       <div className="light-box-area">
         {

@@ -96,7 +96,6 @@ class AppRouter
       displayName: "#{page.name}Page"
 
       componentDidMount: ->
-        # value = $(@refs.inputs.getDOMNode()).find('select')[0].value
         el = $(React.findDOMNode(this)).find("#accordion")
         el.accordion
           collapsible: true

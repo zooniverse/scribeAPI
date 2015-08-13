@@ -17,11 +17,6 @@ class Classification
     @committed = false
 
   commit: (callback) ->
-    console.log "COMMITED?", @committed
-    console.log "COMMITED?", @committed
-    console.log "COMMITED?", @committed
-    console.log "COMMITED?", @committed
-    console.log "COMMITED?", @committed
     return if @committed
     @committed = true
 
