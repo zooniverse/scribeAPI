@@ -96,7 +96,7 @@ module.exports = React.createClass # rename to Classifier
               <BadSubjectButton active={@state.badSubject} onClick={@toggleBadSubject} />
             }
             { if @state.badSubject
-              <p>You&#39;ve marked this subject as BAD. Thanks for flagging the issue!</p>
+              <p>You&#39;ve marked this subject as BAD. Thanks for flagging the issue! <strong>Press DONE to continue.</strong></p>
             }
           </div>
           <nav className="task-nav">
