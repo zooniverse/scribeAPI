@@ -10,11 +10,9 @@ GroupBrowser = React.createClass
     groups:[]
 
   componentDidMount:->
-    console.log('getting groups')
     API.type("groups").get(project_id: @props.project.id).then (groups)=>
-      console.log('got groups', groups )
-      @setState
-        groups: groups
+      group.showButtons = false for group in groups  # hide buttons by default
+      @setState groups: groups
 
   showButtonsForGroup: (group, e) ->
     group.showButtons = true
@@ -25,7 +23,7 @@ GroupBrowser = React.createClass
     @forceUpdate() # trigger re-render to update buttons
 
   renderGroup: (group) ->
-    console.log 'renderGroup(): GROUP =  ', group
+    # console.log 'renderGroup(): GROUP =  ', group
 
     buttonContainerClasses = []
     groupNameClasses = []
@@ -44,16 +42,12 @@ GroupBrowser = React.createClass
       onMouseOut={@hideButtonsForGroup.bind this, group}
       className='group'
       style={divStyle} >
-
       <div className="button-container #{buttonContainerClasses.join ' '}">
-        <a href="#/mark/#{group.subject_sets[0].id}" className="button small-button">Mark</a>
-        <a href="#/transcribe/#{group.subject_sets[0].id}" className="button small-button">Transcribe</a>
-        <a href="#/groups/#{group.id}" className="button small-button ghost">More info</a>
+        <a href="/#/mark/#{group.subject_sets[0].id}" className="button small-button">Mark</a>
+        <a href="/#/transcribe/#{group.subject_sets[0].id}" className="button small-button">Transcribe</a>
+        <a href="/#/groups/#{group.id}" className="button small-button ghost">More info</a>
       </div>
-
       <p className="group-name #{groupNameClasses.join ' '}">{group.name}</p>
-
-
     </div>
 
   render: ->
