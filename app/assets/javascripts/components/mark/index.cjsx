@@ -144,7 +144,7 @@ module.exports = React.createClass # rename to Classifier
     @commitClassification()
 
     # Initialize new classification with currently selected subToolIndex (so that right tool is selected in the right-col)
-    @beginClassification
+    @beginClassification()
 
 
   # Handle user selecting a pick/drawing tool:
