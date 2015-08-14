@@ -27,11 +27,17 @@ GroupBrowser = React.createClass
     </div>
 
   renderGroup:(group)->
-    <div className='group' >
-      <a href={"/#/groups/#{group.id}"}>
-        <img src={group.cover_image_url}></img>
-        <p>{group.name}</p>
-      </a>
+    divStyle=
+      backgroundColor: "red"
+      backgroundImage: "url(#{group.cover_image_url})"
+      backgroundSize: "300px"
+
+    <div className='group' style={divStyle}>
+      <div className="button-container">
+        <a className="button small-button">Mark</a>
+        <a className="button small-button">Transcribe</a>
+        <a className="button small-button ghost">More info</a>
+      </div>
     </div>
 
 module.exports = GroupBrowser

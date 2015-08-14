@@ -1,15 +1,59 @@
 
 .groups
-  display: flex
-  flex-direction: 'row'
-  width: 100%
+  padding 0
+  margin 0
+  list-style none
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-flow: row wrap;
+  justify-content: space-around;
+
+  // prevent highlighting/selecting
+  -webkit-touch-callout none
+  -webkit-user-select none
+  -khtml-user-select none
+  -moz-user-select none
+  -ms-user-select none
+  user-select none
 
 .group
-  width: 300px
-  margin: 20px
+  background: green;
+  padding: 5px;
+  width: 300px;
+  height: 200px;
+  margin-top: 10px;
+  line-height: 150px;
+  color: white;
+  font-weight: bold;
+  font-size: 3em;
+  text-align: center;
+  border 5px solid #fff
+  box-shadow 0 0 0 1px silver
 
-.group img
-  width: 200px
+  .button-container
+    // max-height 200px
+    position relative
+    top -5px
+    left -5px
+    display inline-block
+    height 210px
+    width 310px
+    background rgba(43,58,66,0.90)
+    a
+      border-color #8CBC8B
+      color #fff
+      display block
+      margin-left auto
+      margin-right auto
+      margin-top 20px
+      margin-bottom 20px
+
+// .group.button-container
+
+
 
 .group-page
   box-model: border-box

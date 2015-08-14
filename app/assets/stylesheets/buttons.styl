@@ -8,10 +8,11 @@
   padding: 0.4em 1.4em
   text-align: center
   font-weight bold
-
+  &:active
+    transform translateY(1px)
+    box-shadow none
   &:disabled
     pointer-events: none
-
   &.full
     display: block
     width: 100%
@@ -33,14 +34,16 @@
 
   &:hover
     background: SECONDARY_HOVER
-  
+
   &.ghost
     border: solid SECONDARY_NORMAL 2px
+    border-radius 3px
     background: transparent
     color SECONDARY_NORMAL
-    
-  
+
 .small-button
+  @extends .minor-button
+  text-transform: none;
   font-size 11px
   padding: 0.2em 1em
 
