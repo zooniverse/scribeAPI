@@ -71,7 +71,6 @@ TextTool = React.createClass
       viewerSize: new_props.viewerSize
 
   shouldComponentUpdate: ->
-    console.log "should update? ", @props, @state
     true
 
   componentDidMount: ->
@@ -152,10 +151,11 @@ TextTool = React.createClass
 
   handleKeyDown: (e) ->
     @handleChange(e) # updates any autocomplete values
-    # if [13].indexOf(e.keyCode) >= 0 # ENTER
 
     if (! @state.autocompleting && [13].indexOf(e.keyCode) >= 0) && !e.shiftKey# ENTER
+      console.log "ENTERING ON TRANSCRIPTION:", e.keyCode
       if window.location.hash is '#/transcribe' || @props.task.next_task? # regular transcribe, i.e. no mark transition
+        console.log "REGULAR OLE TRANSCRIBE"
         @commitAnnotation()
       else
         @returnToMarking()
