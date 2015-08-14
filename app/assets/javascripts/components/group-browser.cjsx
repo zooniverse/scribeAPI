@@ -25,7 +25,7 @@ GroupBrowser = React.createClass
     @forceUpdate() # trigger re-render to update buttons
 
   renderGroup: (group) ->
-    # console.log 'renderGroup(): GROUP =  ', group
+    console.log 'renderGroup(): GROUP =  ', group
 
     buttonContainerClasses = []
     groupNameClasses = []
@@ -46,9 +46,9 @@ GroupBrowser = React.createClass
       style={divStyle} >
 
       <div className="button-container #{buttonContainerClasses.join ' '}">
-        <a className="button small-button">Mark</a>
-        <a className="button small-button">Transcribe</a>
-        <a className="button small-button ghost">More info</a>
+        <a href="#/mark/#{group.subject_sets[0].id}" className="button small-button">Mark</a>
+        <a href="#/transcribe/#{group.subject_sets[0].id}" className="button small-button">Transcribe</a>
+        <a href="#/groups/#{group.id}" className="button small-button ghost">More info</a>
       </div>
 
       <p className="group-name #{groupNameClasses.join ' '}">{group.name}</p>
