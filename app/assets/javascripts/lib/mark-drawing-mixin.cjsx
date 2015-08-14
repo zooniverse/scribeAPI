@@ -38,7 +38,7 @@ module.exports =
             className   = "mark-rectangle top"
             x           = 0
             y           = 0
-            width       = { @state.imageWidth }
+            width       = { @props.subject.width }
             height      = { mark.y }
             fill        = "rgba(0,0,0,0.6)"
           />
@@ -46,8 +46,8 @@ module.exports =
             className   = "mark-rectangle bottom"
             x           = 0
             y           = { mark.y + mark.height }
-            width       = { @state.imageWidth }
-            height      = { @state.imageHeight - mark.y + mark.height }
+            width       = { @props.subject.width }
+            height      = { @props.subject.height - mark.y + mark.height }
             fill        = "rgba(0,0,0,0.6)"
           />
           <rect
@@ -62,7 +62,7 @@ module.exports =
             className   = "mark-rectangle right"
             x           = { mark.x + mark.width}
             y           = { mark.y }
-            width       = { @state.imageWidth - mark.width - mark.x }
+            width       = { @props.subject.width - mark.width - mark.x }
             height      = { mark.height }
             fill        = "rgba(0,0,0,0.6)"
           />
@@ -74,7 +74,7 @@ module.exports =
             className   = "mark-rectangle"
             x           = 0
             y           = { 0 }
-            width       = { @state.imageWidth }
+            width       = { @props.subject.width }
             height      = { mark.yUpper }
             fill        = "rgba(0,0,0,0.6)"
           />
@@ -83,8 +83,8 @@ module.exports =
             className   = "mark-rectangle"
             x           = 0
             y           = { mark.yLower }
-            width       = { @state.imageWidth }
-            height      = { @state.imageHeight - mark.yLower }
+            width       = { @props.subject.width }
+            height      = { @props.subject.height - mark.yLower }
             fill        = "rgba(0,0,0,0.6)"
           />
         </g>
