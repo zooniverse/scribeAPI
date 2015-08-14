@@ -34,14 +34,15 @@
   box-shadow 0 0 0 1px silver
 
   .button-container
-    // max-height 200px
     position relative
+    display none //inline-block
     top -5px
     left -5px
-    display inline-block
     height 210px
     width 310px
     background rgba(43,58,66,0.90)
+    &.active
+      display inline-block
     a
       border-color #8CBC8B
       color #fff
@@ -50,10 +51,6 @@
       margin-right auto
       margin-top 20px
       margin-bottom 20px
-
-// .group.button-container
-
-
 
 .group-page
   box-model: border-box

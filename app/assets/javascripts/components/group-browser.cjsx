@@ -16,27 +16,49 @@ GroupBrowser = React.createClass
       @setState
         groups: groups
 
-  render:->
-    groups  = [@renderGroup(group) for group in @state.groups]
-    <div>
-      <h3>Select a group</h3>
+  showButtonsForGroup: (group, e) ->
+    group.showButtons = true
+    @forceUpdate() # trigger re-render to update buttons
 
-      <div className="groups">
-        {groups}
-      </div>
-    </div>
+  hideButtonsForGroup: (group, e) ->
+    group.showButtons = false
+    @forceUpdate() # trigger re-render to update buttons
 
-  renderGroup:(group)->
+  renderGroup: (group) ->
+    console.log 'renderGroup(): GROUP =  ', group
+
+    classes = []
+    if group.showButtons
+      classes.push "active"
+
     divStyle=
       backgroundColor: "red"
       backgroundImage: "url(#{group.cover_image_url})"
       backgroundSize: "300px"
 
-    <div className='group' style={divStyle}>
-      <div className="button-container">
+    console.log 'CLASSES + ', classes
+
+    <div
+      onMouseOver={@showButtonsForGroup.bind this, group}
+      onMouseOut={@hideButtonsForGroup.bind this, group}
+      className='group'
+      style={divStyle} >
+
+      <div className="button-container #{classes.join ' '}">
         <a className="button small-button">Mark</a>
         <a className="button small-button">Transcribe</a>
         <a className="button small-button ghost">More info</a>
+      </div>
+      
+    </div>
+
+  render: ->
+    groups = [@renderGroup(group) for group in @state.groups]
+    <div>
+      <h3>Select a group</h3>
+
+      <div className="groups">
+        {groups}
       </div>
     </div>
 
