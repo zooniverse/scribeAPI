@@ -33,16 +33,31 @@
   border 5px solid #fff
   box-shadow 0 0 0 1px silver
 
+  .group-name
+    display none
+    top -210px
+    position relative
+    font-family Domine, serif
+    font-size 24px
+    text-align center
+    text-transform uppercase
+    text-shadow 0 2px 5px rgba(0,0,0,.75)
+    &.active
+      display block
+
   .button-container
     position relative
-    display none //inline-block
+    display inline-block
+    opacity 0
     top -5px
     left -5px
     height 210px
     width 310px
     background rgba(43,58,66,0.90)
+    transition opacity 0.2s
     &.active
-      display inline-block
+      transition opacity 0.2s
+      opacity 1
     a
       border-color #8CBC8B
       color #fff

@@ -25,18 +25,19 @@ GroupBrowser = React.createClass
     @forceUpdate() # trigger re-render to update buttons
 
   renderGroup: (group) ->
-    console.log 'renderGroup(): GROUP =  ', group
+    # console.log 'renderGroup(): GROUP =  ', group
 
-    classes = []
+    buttonContainerClasses = []
+    groupNameClasses = []
     if group.showButtons
-      classes.push "active"
+      buttonContainerClasses.push "active"
+    else
+      groupNameClasses.push "active"
 
     divStyle=
       backgroundColor: "red"
       backgroundImage: "url(#{group.cover_image_url})"
       backgroundSize: "300px"
-
-    console.log 'CLASSES + ', classes
 
     <div
       onMouseOver={@showButtonsForGroup.bind this, group}
@@ -44,12 +45,15 @@ GroupBrowser = React.createClass
       className='group'
       style={divStyle} >
 
-      <div className="button-container #{classes.join ' '}">
+      <div className="button-container #{buttonContainerClasses.join ' '}">
         <a className="button small-button">Mark</a>
         <a className="button small-button">Transcribe</a>
         <a className="button small-button ghost">More info</a>
       </div>
-      
+
+      <p className="group-name #{groupNameClasses.join ' '}">{group.name}</p>
+
+
     </div>
 
   render: ->
