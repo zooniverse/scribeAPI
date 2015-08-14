@@ -29,7 +29,8 @@ class Subject
 
   # Need to sort out relationship between these two fields. Are these two fields Is this :shj
   field :retire_count,                type: Integer
-  field :flagged_bad_count,                type: Integer
+  field :flagged_bad_count,           type: Integer
+  field :flagged_illegible_count,     type: Integer
 
 
   # ROOT SUBJECT concerns:
@@ -83,6 +84,12 @@ class Subject
   def increment_flagged_bad_count_by_one
     self.inc(flagged_bad_count: 1)
     self.check_flagged_bad_count
+  end
+
+  def increment_flagged_illegible_count_by_one
+    self.inc(flagged_illegible_count: 1)
+    # AMS: not in place yet.
+    # self.flagged_illegible_count
   end
 
   # Get the workflow task that generated this subject, if any

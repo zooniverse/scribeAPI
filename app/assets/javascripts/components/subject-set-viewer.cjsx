@@ -73,6 +73,7 @@ module.exports = React.createClass
           onComplete={@props.onComplete}
           onChange={@props.onChange}
           subToolIndex={@props.subToolIndex}
+          destroyCurrentClassification={@props.destroyCurrentClassification}
         />
       }
     </div>

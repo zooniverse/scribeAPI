@@ -5,6 +5,8 @@ DoneButton        = require './done-button'
 PrevButton        = require './prev-button'
 HelpButton        = require 'components/buttons/help-button'
 BadSubjectButton  = require 'components/buttons/bad-subject-button'
+IllegibleSubjectButton = require 'components/buttons/illegible-subject-button'
+
 
 CompositeTool = React.createClass
   displayName: 'CompositeTool'
@@ -101,6 +103,9 @@ CompositeTool = React.createClass
 
     if @props.onBadSubject?
       buttons.push <BadSubjectButton active={@props.badSubject} onClick={@props.onBadSubject} />
+
+    if @props.onIllegibleSubject?
+      buttons.push <IllegibleSubjectButton active={@props.illegibleSubject} onClick={@props.onIllegibleSubject} />
 
     {x,y} = @getPosition @props.subject.region
 

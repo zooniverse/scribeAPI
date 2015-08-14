@@ -14,8 +14,6 @@ App = React.createClass
     routerRunning:        false
 
   componentDidMount: ->
-    console.log "Mounting APP and router"
-
     if ! @state.project?
       API.type('projects').get().then (result)=>
         project = result[0]

@@ -32,8 +32,14 @@ module.exports =
     @setState badSubject: not @state.badSubject, =>
       callback?()
 
+
+  toggleIllegibleSubject: (callback) ->
+    @setState illegibleSubject: not @state.illegibleSubject, =>
+      callback?()
+
   # Push current classification to server:
   commitClassification: ->
+    console.log "commitClassification ---> @state", @state
     console.log 'COMMITTING CLASSIFICATION... current classification: ', @getCurrentClassification()
     classification = @getCurrentClassification()
     # checking for empty classification.annotation, we don't want to commit those classifications -- AMS
@@ -45,6 +51,9 @@ module.exports =
     # If user activated 'Bad Subject' button, override task:
     if @state.badSubject
       classification.task_key = 'flag_bad_subject_task'
+
+    else if @state.illegibleSubject
+      classification.task_key = 'flag_illegible_subject_task'
 
     # Otherwise, classification is for active task:
     else
@@ -60,12 +69,15 @@ module.exports =
       if @state.badSubject
         @toggleBadSubject =>
           @advanceToNextSubject()
+      
+      if @state.illegibleSubject
+        @toggleIllegibleSubject =>
+          @advanceToNextSubject()
+
 
     console.log 'COMMITTED CLASSIFICATION: ', classification
     console.log '(ALL CLASSIFICATIONS): ', @state.classifications
-    # PB: Commenting this out because was generating duplicate empty classifications. We should figure out where/why commitClassification is being called twice.
-    # AMS: Agreed, it is being called once when the box is checked and once when you advance to the next task.
-    # @beginClassification() #creating a new classification allows not keep commiting previously commited classifications. --AMS
+
 
   # Update local version of a subject with a newly acquired child_subject (i.e. after submitting a subject-generating classification)
   appendChildSubject: (subject_id, child_subject) ->
@@ -91,11 +103,14 @@ module.exports =
   getCurrentClassification: ->
     @state.classifications[@state.classificationIndex]
 
+
   # Get current task:
   getCurrentTask: ->
     return null if ! @state.taskKey?
     console.warn "TaskKey invalid: #{@state.taskKey}. Should be: #{(k for k,v of @getTasks())}" if ! @getTasks()[@state.taskKey]?
     @getTasks()[@state.taskKey]
+
+
 
   getTasks: ->
     # Add completion_assessment_task to list of tasks dynamically:

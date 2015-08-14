@@ -76,6 +76,7 @@ module.exports = React.createClass # rename to Classifier
               nextPage={@nextPage}
               prevPage={@prevPage}
               totalSubjectPages={@state.total_subject_pages}
+              destroyCurrentClassification={@destroyCurrentClassification}
             />
         }
       </div>
@@ -96,7 +97,7 @@ module.exports = React.createClass # rename to Classifier
               <BadSubjectButton active={@state.badSubject} onClick={@toggleBadSubject} />
             }
             { if @state.badSubject
-              <p>You&#39;ve marked this subject as BAD. Thanks for flagging the issue!</p>
+              <p>You&#39;ve marked this subject as BAD. Thanks for flagging the issue! <strong>Press DONE to continue.</strong></p>
             }
           </div>
           <nav className="task-nav">
@@ -104,6 +105,7 @@ module.exports = React.createClass # rename to Classifier
               <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
             }
             { if @getNextTask()?
+                console.log "STATE at the NEXT BUTTON", @state
                 <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@advanceToNextTask}>Next</button>
               else
                 if @state.taskKey == "completion_assessment_task"
@@ -133,17 +135,16 @@ module.exports = React.createClass # rename to Classifier
     # console.log "HANDLE View Subject: subject", subject
     # @state.currentSubject = subject
     # @forceUpdate()
-    console.log "mark/index -->HVS index", index
     @setState subject_index: index, => @forceUpdate()
-
-
+    @toggleBadSubject() if @state.badSubject
+         
   # User somehow indicated current task is complete; commit current classification
   handleToolComplete: (d) ->
     @handleDataFromTool(d)
     @commitClassification()
 
     # Initialize new classification with currently selected subToolIndex (so that right tool is selected in the right-col)
-    @beginClassification
+    @beginClassification()
 
 
   # Handle user selecting a pick/drawing tool:
@@ -178,6 +179,12 @@ module.exports = React.createClass # rename to Classifier
           , =>
             @forceUpdate()
 
+  destroyCurrentClassification: ->
+    classifications = @state.classifications
+    classifications.splice(@state.classificationIndex,1)
+    @setState 
+      classifications: classifications
+      classificationIndex: classifications.length-1
 
   destroyCurrentAnnotation: ->
     # TODO: implement mechanism for going backwards to previous classification, potentially deleting later classifications from stack:
