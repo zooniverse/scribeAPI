@@ -212,6 +212,7 @@ module.exports = React.createClass
         marks: marks
         selectedMark: null #, => console.log 'MARKS (after): ', @state.marks
         uncommittedMark: null
+    @props.destroyCurrentClassification()
 
   # Commit mark
   submitMark: ->

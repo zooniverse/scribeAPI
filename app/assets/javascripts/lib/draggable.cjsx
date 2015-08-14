@@ -61,13 +61,21 @@ module.exports = React.createClass
     return if $(e.target).parents(@props.disableDragIn.join(',')).length > 0
     console.log "handleStart"
 
-    pos = $(this.getDOMNode()).position()
+    $el = $(this.getDOMNode())
+    pos = $el.position()
+    offset = $el.offset()
+    parent_left = offset.left - pos.left
+    parent_top = offset.top - pos.top
 
     @setState
       dragging: true,
       rel:
         x: e.pageX - pos.left,
         y: e.pageY - pos.top
+        min_x: -parent_left
+        min_y: -parent_top
+        max_x: $(document).width() - $el.width() - parent_left
+        max_y: $(document).height() - $el.height() - parent_top
 
     @_rememberCoords e
     # console.log "previous coords", @_previousEventCoords
@@ -89,6 +97,13 @@ module.exports = React.createClass
 
     x = e.pageX - this.state.rel.x
     y = e.pageY - this.state.rel.y
+
+    # ensure element is in bounds of document
+    x = this.state.rel.min_x if x < this.state.rel.min_x
+    y = this.state.rel.min_y if y < this.state.rel.min_y
+    x = this.state.rel.max_x if x > this.state.rel.max_x
+    y = this.state.rel.max_y if y > this.state.rel.max_y
+
     @setState
       x: x
       y: y

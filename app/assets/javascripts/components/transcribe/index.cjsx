@@ -31,6 +31,7 @@ module.exports = React.createClass # rename to Classifier
     subject_index:                0
     helping:                      false
 
+
   getDefaultProps: ->
     workflowName: 'transcribe'
 
@@ -76,6 +77,10 @@ module.exports = React.createClass # rename to Classifier
   toggleHelp: ->
     @setState helping: not @state.helping
 
+  componentWillUnmount:->
+    not @state.badSubject
+
+
 
   render: ->
     # DISABLE ANIMATED SCROLLING FOR NOW
@@ -99,6 +104,7 @@ module.exports = React.createClass # rename to Classifier
             </DraggableModal>
 
           else if @getCurrentSubject()? and @getCurrentTask()?
+            console.log "@getCurrentTask().key", @getCurrentTask().key
             console.log "rendering text tool: ", "#{@state.taskKey}.#{@getCurrentSubject().id}", currentAnnotation
             <SubjectViewer
               onLoad={@handleViewerLoad}
@@ -124,7 +130,9 @@ module.exports = React.createClass # rename to Classifier
                 transcribeTools={transcribeTools}
                 onShowHelp={@toggleHelp if @getCurrentTask().help?}
                 badSubject={@state.badSubject}
-                onBadSubject={@toggleBadSubject}
+                onBadSubject={@toggleBadSubject}                
+                illegibleSubject={@state.illegibleSubject}
+                onIllegibleSubject={@toggleIllegibleSubject}
               />
 
             </SubjectViewer>

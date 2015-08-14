@@ -1,7 +1,7 @@
 React = require 'react'
 Draggable = require 'lib/draggable'
 
-RADIUS = 8
+RADIUS = 4
 STROKE_COLOR = '#fff'
 FILL_COLOR = '#000'
 STROKE_WIDTH = 1.5
@@ -12,8 +12,6 @@ module.exports = React.createClass
   displayName: 'DragHandle'
 
   render: ->
-    # console.log 'PROPS: ', @props
-
     scale = (@props.tool.props.xScale + @props.tool.props.yScale) / 2
 
     <Draggable onDrag = {@props.onDrag} >

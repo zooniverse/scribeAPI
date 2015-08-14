@@ -14,6 +14,7 @@ class Classification
     @task_key = null
     @generates_subject_type = null
     @toolName = null
+    @committed = false
 
   commit: (callback) ->
     return if @committed

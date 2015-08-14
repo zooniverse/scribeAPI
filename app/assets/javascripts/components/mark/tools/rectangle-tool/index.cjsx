@@ -116,8 +116,6 @@ module.exports = React.createClass
     classes.push 'transcribable' if @props.isTranscribable
     classes.push if @props.disabled then 'committed' else 'uncommitted'
 
-    console.log 'MARK COLOR: ', @props.mark.color
-
     x1 = @props.mark.x
     width = @props.mark.width
     x2 = x1 + width
@@ -181,7 +179,6 @@ module.exports = React.createClass
         }
 
         { # REQUIRES MARK-BUTTON-MIXIN
-          console.log 'IS TRANSCRIBABLE? ', @props.isTranscribable
           if @props.selected or @state.markStatus is 'transcribe-enabled'
             @renderMarkButton() if @props.isTranscribable
         }
