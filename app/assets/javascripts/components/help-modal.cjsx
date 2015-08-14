@@ -5,7 +5,7 @@ module.exports = React.createClass
   displayName: 'HelpModal'
 
   componentDidMount: ->
-    el = $(React.findDOMNode(this)).find("#accordion")
+    el = $(React.findDOMNode(this)).find("#accordion-help-modal")
     el.accordion
       collapsible: true
       active: false
