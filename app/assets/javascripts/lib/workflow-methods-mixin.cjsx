@@ -39,6 +39,7 @@ module.exports =
 
   # Push current classification to server:
   commitClassification: ->
+    console.log "commitClassification ---> @state", @state
     console.log 'COMMITTING CLASSIFICATION... current classification: ', @getCurrentClassification()
     classification = @getCurrentClassification()
     # checking for empty classification.annotation, we don't want to commit those classifications -- AMS
@@ -106,11 +107,14 @@ module.exports =
   getCurrentClassification: ->
     @state.classifications[@state.classificationIndex]
 
+
   # Get current task:
   getCurrentTask: ->
     return null if ! @state.taskKey?
     console.warn "TaskKey invalid: #{@state.taskKey}. Should be: #{(k for k,v of @getTasks())}" if ! @getTasks()[@state.taskKey]?
     @getTasks()[@state.taskKey]
+
+
 
   getTasks: ->
     # Add completion_assessment_task to list of tasks dynamically:

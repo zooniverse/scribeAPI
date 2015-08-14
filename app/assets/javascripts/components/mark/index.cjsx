@@ -76,6 +76,7 @@ module.exports = React.createClass # rename to Classifier
               nextPage={@nextPage}
               prevPage={@prevPage}
               totalSubjectPages={@state.total_subject_pages}
+              destroyCurrentClassification={@destroyCurrentClassification}
             />
         }
       </div>
@@ -104,6 +105,7 @@ module.exports = React.createClass # rename to Classifier
               <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
             }
             { if @getNextTask()?
+                console.log "STATE at the NEXT BUTTON", @state
                 <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@advanceToNextTask}>Next</button>
               else
                 if @state.taskKey == "completion_assessment_task"
@@ -177,6 +179,12 @@ module.exports = React.createClass # rename to Classifier
           , =>
             @forceUpdate()
 
+  destroyCurrentClassification: ->
+    classifications = @state.classifications
+    classifications.splice(@state.classificationIndex,1)
+    @setState 
+      classifications: classifications
+      classificationIndex: classifications.length-1
 
   destroyCurrentAnnotation: ->
     # TODO: implement mechanism for going backwards to previous classification, potentially deleting later classifications from stack:
