@@ -186,7 +186,7 @@ TextTool = React.createClass
     tool_content =
       <div className="input-field active">
 
-        <label>{label}</label>
+        <label dangerouslySetInnerHTML={{__html: marked( label ) }} />
         {
           atts =
             ref: ref
