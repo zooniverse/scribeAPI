@@ -63,29 +63,29 @@ module.exports = React.createClass
           "
       >
         { if @props.markStatus is "transcribe-enabled"
+            if @props.tool.props.allowsTranscribeSubject != false
+              <g>
 
-            <g>
+                <rect
+                  stroke="none"
+                  transform="translate(0,#{-0.5*BUTTON_HEI})"
+                  fill="rgba(255,255,255,0.0)"
+                  width="36"
+                  height="18"
+                  x="0"
+                  y="0"
+                  rx="0"
+                  ry="0"
+                />
 
-              <rect
-                stroke="none"
-                transform="translate(0,#{-0.5*BUTTON_HEI})"
-                fill="rgba(255,255,255,0.0)"
-                width="36"
-                height="18"
-                x="0"
-                y="0"
-                rx="0"
-                ry="0"
-              />
+                <path
+                  stroke="none"
+                  transform="translate(0,#{-0.5*BUTTON_HEI})"
+                  fill={FILL_COLOR}
+                  d="m 12,15 -3,3 21,0 0,-3 z m 5,-5 -3,3 22,0 0,-3 z M 22,5 19,8 30,8 30,5 z M 14,0 11,3 15,7 18,4 z M 9.0249385,4.975061 0,14 l 0,4 4,0 9,-9 z"
+                />
 
-              <path
-                stroke="none"
-                transform="translate(0,#{-0.5*BUTTON_HEI})"
-                fill={FILL_COLOR}
-                d="m 12,15 -3,3 21,0 0,-3 z m 5,-5 -3,3 22,0 0,-3 z M 22,5 19,8 30,8 30,5 z M 14,0 11,3 15,7 18,4 z M 9.0249385,4.975061 0,14 l 0,4 4,0 9,-9 z"
-              />
-
-            </g>
+              </g>
 
           else
 
