@@ -252,6 +252,7 @@ module.exports = React.createClass
 
     viewBox = [0, 0, @props.subject.width, @props.subject.height]
     scale = @getScale()
+    allowsTranscribeSubject = @props.task.tool_config.allows_transcribe_subject != false
 
     actionButton =
       if @state.loading
@@ -338,6 +339,7 @@ module.exports = React.createClass
                     getEventOffset={@getEventOffset}
                     submitMark={@submitMark}
                     sizeRect={@refs.sizeRect}
+                    allowsTranscribeSubject={allowsTranscribeSubject}
 
                     onSelect={@selectMark.bind this, mark}
                     onChange={@handleChange.bind this, mark}

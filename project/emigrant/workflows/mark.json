@@ -16,6 +16,7 @@
         "file": "mark_primary"
       },
       "tool_config" : {
+        "allows_transcribe_subject": false,
         "tools": [
           {"type": "rectangleTool", "label": "Record Date", "color": "purple", "generates_subject_type": "em_record_date", "help": "The record date can typically be found on the top left of each record in the format YYYY Month DD"},
           {"type": "rectangleTool", "label": "Record Number", "color": "#FE5409", "generates_subject_type": "em_record_number"}
@@ -32,6 +33,7 @@
         "file": "mark_secondary"
       },
       "tool_config" : {
+        "allows_transcribe_subject": false,
         "tools": [
           {"type": "rectangleTool", "label": "Mortgager Name", "color": "red", "generates_subject_type": "em_record_mortgager"},
           {"type": "rectangleTool", "label": "Street Address", "color": "green", "generates_subject_type": "em_record_street_address"},
@@ -49,6 +51,7 @@
         "file": "marking_valuations"
       },
       "tool_config" : {
+        "allows_transcribe_subject": false,
         "tools": [
           {"type": "rectangleTool", "label": "Valuation", "color": "green", "generates_subject_type": "em_record_valuation"}
         ]
