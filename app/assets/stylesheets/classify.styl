@@ -107,6 +107,7 @@
         display: flex
         margin: 0.5em 0
         text-align: left
+        position relative
 
         input
           visibility: hidden
@@ -128,12 +129,41 @@
           &:after
             content ')'
 
+        .help
+          position absolute
+          display none
+          right 0
+          top 0
+          height 20px
+          padding 0.4em 1em
+          background rgba(0,0,0,0.2)
+          border-left 1px solid rgba(255,255,255,0.2)
+          &:before
+            display none
+            content attr(data-text)
+            position absolute
+            right 2px
+            top 100%
+            width 200px
+            padding 0.5em
+            background #f7efa5
+            border 1px solid #918e72
+            font-size 0.8em
+            color black
+            font-weight normal
+          &:hover:before
+            display block
+
         &:hover, &.active
           color white
+          .help
+            display block
         &.active
           background-color SECONDARY_NORMAL
+          z-index 100
         &:hover
           background-color SECONDARY_HOVER
+          z-index 101
 
     .task-nav
       display: flex
