@@ -31,3 +31,12 @@
   text-align: center;
   text-transform: uppercase;
 }
+
+ /* A hack to replace the hard-coded group header */
+.groups-header span {
+  display: none;
+}
+
+.groups-header:after {
+  content: 'Select a Voyage'
+}
