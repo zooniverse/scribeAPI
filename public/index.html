@@ -7,23 +7,22 @@
     <script src='assets/application.js' charset="utf-8"></script>
     <link rel="stylesheet" href="assets/application.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="assets/jquery-ui.min.css" media="screen" title="no title" charset="utf-8" >
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/project/style.css" media="screen" title="no title" charset="utf-8">
-    <script src="//use.typekit.net/iuk1miw.js"></script>
-    <script>try{Typekit.load({ async: true });}catch(e){}</script>
-    <script type="text/javascript">
-      WebFontConfig = {
-        google: {families: [ 'Open+Sans:400,300:latin', 'Roboto+Slab:300:latin']}
-      };
-      (function() {
-        var wf = document.createElement('script');
-        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
-          '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
-        wf.type = 'text/javascript';
-        wf.async = 'true';
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(wf, s);
-      })(); </script>
+    <script type="text/javascript" src="http://use.typekit.net/iuk1miw.js"></script>
+
+    <!-- LOAD TYPEKIT -->
+    <script>
+      (function(d) {
+        var config = {
+          kitId: 'iuk1miw',
+          scriptTimeout: 3000,
+          async: true
+        },
+        h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='//use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+      })(document);
+    </script>
+
+
     <title></title>
   </head>
   <body>

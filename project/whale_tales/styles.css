@@ -9,7 +9,7 @@
   text-align: center;
 }
 .home-page h1 {
-  font-family: 'Roboto Slab';
+  /*font-family: 'Roboto Slab';*/
   color: #fff;
   font-weight: 100;
   margin-bottom: 0%;
@@ -38,6 +38,7 @@
 }
 
 .groups-header:after {
+  text-transform: none;
   content: 'Select a Voyage'
 }
 
