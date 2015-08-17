@@ -72,6 +72,15 @@
     &:hover
       background-color: #cdcdcd;
 
+  #image-list
+    cursor pointer
+    opacity 1
+    transition opacity 1s
+    &.disabled
+      transition opacity 1s
+      cursor not-allowed
+      opacity 0.25
+
   ul
     padding-left 0
     list-style none
@@ -87,7 +96,7 @@
       align-items: center
       width: 125px
       border-radius: 12px;
-      cursor: pointer;
+      cursor: inherit;
       &.active
         transition border 0.2, background 0.3s
         background-color: #3A3A3A
