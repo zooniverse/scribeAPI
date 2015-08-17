@@ -20,7 +20,7 @@
     <img src="https://s3.amazonaws.com/anzac-project/R7821550/FL18717443" alt="attestion p2">
     <p>Headed with words “Description” or “Medical Examination.” If headed with "Description", “Medical Examination” appears elsewhere on page. Done at enlistment.</p>
   </div>
-  <h3>South African Attestation</h3>
+  <h3>South African War Attestation</h3>
   <div class="modal-field-guide" >
     <img src="assets/anzac/sa_att_ex.jpeg" alt="death notification">
     <p>Includes the word "attestation," and the heading indicates service in South African war.</p>
