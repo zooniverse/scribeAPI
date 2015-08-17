@@ -236,7 +236,8 @@ module.exports = React.createClass
     for child_subject, i in @props.subject.child_subjects
       child_subject.region.subject_id = child_subject.id # copy id field into region (not ideal)
       marks[i] = child_subject.region
-      marks[i].isTranscribable = !child_subject.user_has_classified
+      console.log "CHILD SUBJECT", child_subject
+      marks[i].isTranscribable = !child_subject.user_has_classified && child_subject.status != "retired"
 
     # marks = (s for s in (@props.subject.child_subjects ? [] ) when s?.region?).map (m) ->
     #   # {userCreated: false}.merge
@@ -244,7 +245,7 @@ module.exports = React.createClass
 
     # Here we append the currently-being-drawn mark to the list of marks, if there is one:
     marks = marks.concat @state.uncommittedMark if @state.uncommittedMark?
-
+    console.log "MARKS", marks
     marks
 
   render: ->
