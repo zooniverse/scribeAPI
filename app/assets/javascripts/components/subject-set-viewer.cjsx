@@ -42,6 +42,10 @@ module.exports = React.createClass
       return null
 
   render: ->
+    # disable LightBox if work has begun
+    disableLightBox = if @props.task.key isnt @props.workflow.first_task then true else false
+
+
     # console.log 'SUBJECT-SET-VIEWER::render(), subject_index = ', @props.subject_index
     # NOTE: LightBox does not receive correct @props.subject_index. Why? --STI
     <div className="subject-set-viewer">
@@ -52,6 +56,7 @@ module.exports = React.createClass
               subject_set={@props.subject_set}
               subject_index={@props.subject_index}
               key={@props.subject_set.subjects[0].id}
+              isDisabled={disableLightBox}
 
               onSubject={@specificSelection.bind this, @props.subject_index}
               subjectCurrentPage={@props.subjectCurrentPage}

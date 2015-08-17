@@ -38,7 +38,8 @@ module.exports = React.createClass
 
     viewBox = [0, 0, 100, 100]
 
-    if @state.folded 
+
+    if @state.folded
       carouselStyle ={
         display: "none"
       }
@@ -46,14 +47,20 @@ module.exports = React.createClass
       text = "Show Lightbox"
     else
       text = "Hide Lightbox"
+
+    classes = []
+    if @props.isDisabled
+      console.log 'LIGHT BOX DISABLED'
+      classes.push 'disabled'
+    else
+      console.log 'LIGHT BOX ENABLED'
+
     <div className="carousel" >
+      <div id="visibility-button" onClick={@handleFoldClick}>{text}</div>
 
-    <div id="visibility-button" onClick={@handleFoldClick}>{text}</div>
-
-
-      <div id="image-list" style={carouselStyle} >
+      <div id="image-list" className={classes} style={carouselStyle} >
         <ul>
-          <li onClick={@shineSelected.bind(this, @findSubjectIndex(@state.first))} className={"active" if @props.subject_index == @findSubjectIndex(@state.first)}>
+          <li onClick={@shineSelected.bind(this, @findSubjectIndex(@state.first))} className={"active" if @props.subject_index == @findSubjectIndex(@state.first) }>
             <span class="page-number">{@state.first.order}</span>
 
             <svg className="light-box-subject" width={125} height={125} viewBox={viewBox} >
@@ -70,7 +77,7 @@ module.exports = React.createClass
               <svg className="light-box-subject" width={125} height={125} viewBox={viewBox} >
                   <SVGImage
                     src = {second.location.standard}
-                    width = {100} 
+                    width = {100}
                     height = {100}
                   />
               </svg>
@@ -90,10 +97,10 @@ module.exports = React.createClass
             </li>
           }
         </ul>
-
-        <ActionButton type={"back"} text="BACK" onClick={@moveBack.bind(this, indexOfFirst)} classes={@backButtonDisable(indexOfFirst)} />
-        <ActionButton type={"next"} text="NEXT" onClick={@moveForward.bind(this, indexOfFirst, third, second)} classes={@forwardButtonDisable(third if third?)} />
       </div>
+
+      <ActionButton type={"back"} text="BACK" onClick={@moveBack.bind(this, indexOfFirst)} classes={@backButtonDisable(indexOfFirst)} />
+      <ActionButton type={"next"} text="NEXT" onClick={@moveForward.bind(this, indexOfFirst, third, second)} classes={@forwardButtonDisable(third if third?)} />
 
     </div>
 
