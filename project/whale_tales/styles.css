@@ -29,7 +29,7 @@
   font-size: 25px;
   line-height: 1.25em;
   text-align: center;
-  text-transform: uppercase;
+  /*text-transform: uppercase;*/
 }
 
  /* A hack to replace the hard-coded group header */
@@ -39,4 +39,8 @@
 
 .groups-header:after {
   content: 'Select a Voyage'
+}
+
+.home-page .page-content{
+  margin: 0px;
 }
