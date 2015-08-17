@@ -74,6 +74,7 @@ module.exports =
         @toggleIllegibleSubject =>
           @advanceToNextSubject()
 
+      @beginClassification()
 
     console.log 'COMMITTED CLASSIFICATION: ', classification
     console.log '(ALL CLASSIFICATIONS): ', @state.classifications
