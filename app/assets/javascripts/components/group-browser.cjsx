@@ -53,8 +53,7 @@ GroupBrowser = React.createClass
     return null if @state.groups.length <= 1
     groups = [@renderGroup(group) for group in @state.groups]
     <div>
-      <h3>Select a group</h3>
-
+      <h3 className="groups-header"><span>Select a group</span></h3>
       <div className="groups">
         {groups}
       </div>

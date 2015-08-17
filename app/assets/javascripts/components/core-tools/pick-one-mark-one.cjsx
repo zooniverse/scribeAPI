@@ -57,9 +57,9 @@ module.exports = React.createClass
     # if ! new_props.annotation?.subToolIndex
       # console.log ".. set subToolIndex to 0", @state.annotation
       # @props.onChange? @state.annotation
-      
+
     # @state.annotation
-    # @handleChange 0 
+    # @handleChange 0
   componentWillUnmount:->
     @setState subToolIndex: 0
 
@@ -81,10 +81,13 @@ module.exports = React.createClass
 
       # How many prev marks? (i.e. child_subjects with same generates_subject_type)
       count = counts[tool.generates_subject_type] ? 0
+      classes = ['answer']
+      classes.push 'active' if i is @getSubToolIndex()
+      classes.push 'has-help' if tool.help
 
       <label
         key={tool._key}
-        className="answer #{if i is @getSubToolIndex() then 'active' else ''}"
+        className="#{classes.join ' '}"
       >
         <span
           className="drawing-tool-icon"
@@ -106,6 +109,9 @@ module.exports = React.createClass
           }
         </span>
 
+        {if tool.help
+          <span className="help" data-text="#{tool.help}"><i className="fa fa-question"></i></span>
+        }
 
       </label>
 
@@ -125,4 +131,3 @@ module.exports = React.createClass
     inp = @refs["inp-#{index}"]
     if inp.getDOMNode().checked
       @setSubToolIndex index
-

@@ -9,6 +9,3 @@
 **Sailing ice** is so spread out that a sailing ship can navigate with ease.
 
 Select any and all of these that you see anywhere on the page. You do not need to draw any rectangles for this step. If you find another word, please add it to the sea-ice glossary.
-
-<small>Need more help?</small>
-<span class="tiny-button help-button ghost minor-button">Ask a moderator</span>

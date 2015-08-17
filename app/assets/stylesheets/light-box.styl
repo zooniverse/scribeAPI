@@ -4,6 +4,14 @@
   float left
   margin-top: 3em
 
+  // prevent highlighting/selecting
+  -webkit-touch-callout none
+  -webkit-user-select none
+  -khtml-user-select none
+  -moz-user-select none
+  -ms-user-select none
+  user-select none
+
   .carousel
     position fixed
     width: 10%
@@ -23,6 +31,7 @@
     font-weight: 400;
     text-align: center;
     border-bottom: solid 3px #3f5765;
+    cursor: pointer;
 
     &:hover
       background-color: #cdcdcd;
@@ -31,7 +40,7 @@
   .action-button-next
     padding: 0;
     background-color:  #ffffff;
-    border-top: solid 3px #3f5765 
+    border-top: solid 3px #3f5765
     height: 30px
     line-height: 2;
     color: #3f5765
@@ -44,10 +53,10 @@
     opacity: 1;
     &:hover
       background-color: #cdcdcd;
-    
+
   .action-button-back
     border-right: solid 3px #3f5765;
-    border-top: solid 3px #3f5765 
+    border-top: solid 3px #3f5765
     background-color: #ffffff;
     padding: 0;
     height: 30px
@@ -63,37 +72,47 @@
     &:hover
       background-color: #cdcdcd;
 
+  #image-list
+    cursor pointer
+    opacity 1
+    transition opacity 1s
+    &.disabled
+      transition opacity 1s
+      cursor not-allowed
+      opacity 0.25
+
   ul
     padding-left 0
     list-style none
     align-items: center
 
     li
-      transition border 0.3s, background 0.3s
+      transition border 0.2s, background 0.3s
       border-style: solid;
       border-width: 3px;
-      border-color: #cbcbcb;
+      border-color: rgba(0,0,0,0);
       background-color: black
       margin: 4%;
       align-items: center
       width: 125px
-      border-radius: 8px;
+      border-radius: 12px;
+      cursor: inherit;
       &.active
-        transition border 0.3s, background 0.3s
+        transition border 0.2, background 0.3s
         background-color: #3A3A3A
         border-style: solid;
         border-width: 3px;
-        border-color:  #ffffff;
-        background-color:  #000000;
+        border-color:  #50afff;
+        background-color:  #50afff //#000000;
 
       &:hover
         border-style: solid;
         border-width: 3px;
-        border-color: #3f5765;
+        border-color: #fff;
 
       span
         border-bottom-right-radius: 8px;
-        border-top-left-radius: 3px
+        border-top-left-radius: 8px
         border-style: solid;
         border-width: 3px;
         border-color:  #ffffff;
@@ -103,10 +122,3 @@
         width: 20px;
         height: 20px;
         text-align: center;
-
-    
-
-
-
-
-
