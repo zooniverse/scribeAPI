@@ -24,7 +24,6 @@ GroupBrowser = React.createClass
 
   renderGroup: (group) ->
     # console.log 'renderGroup(): GROUP =  ', group
-
     buttonContainerClasses = []
     groupNameClasses = []
     if group.showButtons
@@ -51,6 +50,7 @@ GroupBrowser = React.createClass
     </div>
 
   render: ->
+    return null if @state.groups.length <= 1
     groups = [@renderGroup(group) for group in @state.groups]
     <div>
       <h3>Select a group</h3>
