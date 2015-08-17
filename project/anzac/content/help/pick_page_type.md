@@ -1,3 +1,4 @@
+<p>Click below to access examples and descriptions of the page types.</p>
 <div id="accordion-help-modal">
   <h3>History Sheet</h3>
   <div class="modal-field-guide" >
@@ -29,4 +30,4 @@
     <img src="https://s3.amazonaws.com/anzac-project/R10920991/FL22335668" alt="death notification">
     <p>Headed with words “Death Notification” or slight variants, and logo of Registrar of Deaths or Department of Internal Affairs.</p>
   </div>    
-</div>    
+</div>   
