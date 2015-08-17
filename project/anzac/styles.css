@@ -75,7 +75,7 @@ span.keyword {
   text-transform: uppercase;
   font-weight: 700;
   width: 20%;
-  padding: 1em 1em;
+  padding: 0.5em 1em;
 }
 
 .modal-header {

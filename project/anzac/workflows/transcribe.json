@@ -13,7 +13,7 @@
             "tool_config": {},
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "instruction": "Transcribe the entry for **serial number**.",
             "generates_subject_type": "transcribed_number",
@@ -25,7 +25,7 @@
             "instruction": "Transcribe the entry for **name**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },            
             "generates_subject_type": "transcribed_name",
             "next_task": "att_transcribe_regiment"
@@ -36,7 +36,7 @@
             "instruction": "Transcribe the entry for **regiment.**",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "att_transcribed_regiment",
             "next_task": null
@@ -47,7 +47,7 @@
             "instruction": "Transcribe the entry for **oath year**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "att_transcribed_oath_year",
             "next_task": null
@@ -56,7 +56,7 @@
             "tool": "compositeTool",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "tool_config": {
                 "tools": {
@@ -80,7 +80,7 @@
             "tool": "compositeTool",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "tool_config": {
                 "tools": {
@@ -106,7 +106,7 @@
             "instruction": "Transcribe the response.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "att_transcribed_weight",
             "next_task": null
@@ -115,7 +115,7 @@
             "tool": "compositeTool",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "tool_config": {
                 "tools": {
@@ -141,7 +141,7 @@
             "instruction": "Transcribe the entry for **complexion.**",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "att_transcribed_complexion",
             "next_task": null
@@ -152,7 +152,7 @@
             "instruction": "Transcribe the entry for **eye colour**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "att_transcribed_eye_color",
             "next_task": null
@@ -163,7 +163,7 @@
             "instruction": "Transcribe the entry for **hair colour**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "att_transcribed_hair_color",
             "next_task": null
@@ -174,7 +174,7 @@
             "instruction": "Transcribe the entry for **religious profession**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "att_transcribed_religious_profession",
             "next_task": null
@@ -183,7 +183,7 @@
             "tool": "compositeTool",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "tool_config": {
                 "tools": {
@@ -207,7 +207,7 @@
             "tool": "compositeTool",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "tool_config": {
                 "tools": {
@@ -233,7 +233,7 @@
             "instruction": "Transcribe the entry for **colour vision**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "att_transcribed_color_vision",
             "next_task": null
@@ -244,7 +244,7 @@
             "instruction": "Transcribe the entry for **limb formation**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "att_transcribed_limb_formation",
             "next_task": null
@@ -255,7 +255,7 @@
             "instruction": "Transcribe the entry for **joints formation**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "att_transcribed_transcribe_joints",
             "next_task": null
@@ -266,7 +266,7 @@
             "instruction": "Transcribe the entry for **chest formation**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "att_transcribed_chest",
             "next_task": null
@@ -277,7 +277,7 @@
             "instruction": "Transcribe the entry for **heart**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "att_transcribed_heart",
             "next_task": null
@@ -289,7 +289,7 @@
             "instruction": "Transcribe the entry for **lungs**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "att_transcribed_lungs"
         },
@@ -299,7 +299,7 @@
             "instruction": "Transcribe the entry for **teeth**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "att_transcribed_teeth",
             "next_task": null
@@ -310,7 +310,7 @@
             "instruction": "Transcribe the entry for **illness**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "att_transcribed_illness",
             "next_task": null
@@ -321,7 +321,7 @@
             "instruction": "Transcribe the entry for **hernia**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "att_transcribed_hernia",
             "next_task": null
@@ -332,7 +332,7 @@
             "instruction": "Transcribe the entry for **varicocele**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "att_transcribed_varicocele",
             "next_task": null
@@ -343,7 +343,7 @@
             "instruction": "Transcribe the entry for **veins**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "att_transcribed_varicose_veins",
             "next_task": null
@@ -354,7 +354,7 @@
             "instruction": "Transcribe the entry for **haemorrhoids**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "att_transcribed_haemorrhoids",
             "next_task": null
@@ -365,7 +365,7 @@
             "instruction": "Transcribe the entry for **skin**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "att_transcribed_skin",
             "next_task": null
@@ -376,7 +376,7 @@
             "instruction": "Transcribe the entry for **mark of vaccination**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "att_transcribed_mark",
             "next_task": null
@@ -387,7 +387,7 @@
             "instruction": "Transcribe the entry for **distinctive marks**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "att_transcribed_distinctive_marks",
             "next_task": null
@@ -398,7 +398,7 @@
             "instruction": "Transcribe the entry for **pension**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "att_transcribed_pension",
             "next_task": null
@@ -409,7 +409,7 @@
             "instruction": "Transcribe the entry for **fits**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "att_transcribed_fits",
             "next_task": null
@@ -420,7 +420,7 @@
             "instruction": "Transcribe the entry for being **discharged**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "att_transcribed_discharged",
             "next_task": null
@@ -431,7 +431,7 @@
             "instruction": "Transcribe the entry for **remarks**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "att_transcribed_remarks",
             "next_task": null
@@ -442,7 +442,7 @@
             "instruction": "Transcribe the entry for **classification**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "att_transcribed_classification",
             "next_task": null
@@ -453,7 +453,7 @@
             "instruction": "Transcribe the entry for the **date of the medical exam**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "att_transcribed_date_medical_exam",
             "next_task": null
@@ -462,7 +462,7 @@
             "tool": "compositeTool",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "tool_config": {
                 "tools": {
@@ -487,7 +487,7 @@
             "tool": "compositeTool",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "tool_config": {
                 "tools": {
@@ -512,7 +512,7 @@
             "tool": "compositeTool",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "tool_config": {
                 "tools": {
@@ -537,7 +537,7 @@
             "tool": "compositeTool",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "tool_config": {
                 "tools": {
@@ -562,7 +562,7 @@
             "tool": "compositeTool",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "tool_config": {
                 "tools": {
@@ -587,7 +587,7 @@
             "tool": "compositeTool",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "tool_config": {
                 "tools": {
@@ -614,7 +614,7 @@
             "instruction": "Transcribe the entry for **unit**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_unit",
             "next_task": null
@@ -625,7 +625,7 @@
             "instruction": "Transcribe the entry for **rank**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_rank",
             "next_task": null
@@ -636,7 +636,7 @@
             "instruction": "Transcribe the entry for **occupation**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_occupation",
             "next_task": null
@@ -647,7 +647,7 @@
             "instruction": "Transcribe the entry for **surname**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_surname",
             "next_task": null
@@ -658,7 +658,7 @@
             "instruction": "Transcribe the entry for **last employer**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_employer",
             "next_task": null
@@ -669,7 +669,7 @@
             "instruction": "Transcribe the entry for **religion**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_religion",
             "next_task": null
@@ -680,7 +680,7 @@
             "instruction": "Transcribe **last New Zealand address**. Press [Shift] + [Enter] to start a new line.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_nzaddress",
             "next_task": null
@@ -691,7 +691,7 @@
             "instruction": "Transcribe **next-of-kin**. Press [Shift] + [Enter] to start a new line.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_kin",
             "next_task": null
@@ -702,7 +702,7 @@
             "instruction": "Transcribe the entry for **number**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_no",
             "next_task": null
@@ -713,7 +713,7 @@
             "instruction": "Transcribe the entry for **christian name**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_christian_name",
             "next_task": null
@@ -724,7 +724,7 @@
             "instruction": "Transcribe the entry for **killed in action**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_kia",
             "next_task": null
@@ -735,7 +735,7 @@
             "instruction": "Transcribe the entry for **died of wounds/sickness**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_died_ws",
             "next_task": null
@@ -746,7 +746,7 @@
             "instruction": "Transcribe the entry for **missing**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_missing",
             "next_task": null
@@ -757,7 +757,7 @@
             "instruction": "Transcribe the entry for **prisoner**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_prisoner",
             "next_task": null
@@ -768,7 +768,7 @@
             "instruction": "Transcribe the entry for **injuries**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_injuries",
             "next_task": null
@@ -779,7 +779,7 @@
             "instruction": "Transcribe the entry for **discharge provisional**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_discharge_provisional",
             "next_task": null
@@ -790,7 +790,7 @@
             "instruction": "Transcribe the entry for **discharge final**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_discharge_final",
             "next_task": null
@@ -801,7 +801,7 @@
             "instruction": "Transcribe the entry for **country or troopship**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_serivce",
             "next_task": "hs_service_date_from"
@@ -812,7 +812,7 @@
             "instruction": "Transcribe the entry for **date from**",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_service_date_from",
             "next_task": "hs_service_date_to"
@@ -823,7 +823,7 @@
             "instruction": "Transcribe the entry for **date to**",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_service_date_to",
             "next_task": "hs_service_date_total_years"
@@ -834,7 +834,7 @@
             "instruction": "Transcribe the entry for **total years of service**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_service_date_total_years",
             "next_task": "hs_service_date_total_days"
@@ -845,7 +845,7 @@
             "instruction": "Transcribe the entry for **total days of service**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_service_date_total_days",
             "next_task": null
@@ -856,7 +856,7 @@
             "instruction": "Transcribe the entry for **serial no.**",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_wounds",
             "next_task": "hs_service_wounds_date"
@@ -867,7 +867,7 @@
             "instruction": "Transcribe the entry for **date of the wound**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_wounds_date",
             "next_task": "hs_service_wounds_location"
@@ -878,7 +878,7 @@
             "instruction": "Transcribe the entry for **location of the wound**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_wounds_location",
             "next_task": "hs_service_wounds_mssg_remarks"
@@ -889,7 +889,7 @@
             "instruction": "Transcribe any **messages or remarks associated with the wound**",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": null
         },
@@ -899,7 +899,7 @@
             "instruction": "Transcribe entry for **Regiment or Corps**",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_transfer_table",
             "next_task": "hs_transcribe_transfer_events"
@@ -910,7 +910,7 @@
             "instruction": "Transcribe entry for **Promotions, Reductions, Casualties, &c.**",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_transfer_events",
             "next_task": "hs_transcribe_transfer_rank"
@@ -921,7 +921,7 @@
             "instruction": "Transcribe entry for **rank**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_transfer_rank",
             "next_task": "hs_transcribe_transfer_date"
@@ -932,7 +932,7 @@
             "instruction": "Transcribe entry for **date**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_transfer_date",
             "next_task": "hs_transcribe_transfer_auth"
@@ -943,7 +943,7 @@
             "instruction": "Transcribe entry for **authority for entry**.",
             "help": {
                 "title": "Transcription Help",
-                "body": "Please transcribe the field presented as best you can. Press the illegible button to indicate that the field is illegible. If the subject is mislabeled or misplaced, press the Bad Subject button."
+                "file": "basic_transcribe_help"
             },
             "generates_subject_type": "hs_transcribed_transfer_auth",
             "next_task": null
