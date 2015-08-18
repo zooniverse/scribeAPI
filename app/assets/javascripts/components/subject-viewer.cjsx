@@ -367,7 +367,7 @@ module.exports = React.createClass
           }
 
           { @renderMarks otherMarks }
-          { @renderMarks transcribableMarks # render transcribable marks on top }
+          { @renderMarks transcribableMarks }
 
 
           </svg>
