@@ -21,7 +21,6 @@
       "help": {
         "file": "pick_page_type"
       },
-      "next_task": null,
       "tool_config": {
         "options":{
           "history_sheet":{
@@ -45,7 +44,7 @@
             "next_task": null
           },
           "sfatt":{
-            "label":"South Africa Attestation",
+            "label":"South African War Attestation",
             "next_task": null
           },
           "other_page_type":{
@@ -58,7 +57,7 @@
     "att_form_task":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Select the area for each occurrence of the following:",
+      "instruction":"Select a label and draw a rectangle around the corresponding entry.",
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Header", "color": "green", "generates_subject_type": "att_transcribe_header" },
@@ -75,7 +74,7 @@
     "att_medical_form_task":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Select the area for each occurrence of the following:",
+      "instruction":"Select a label and draw a rectangle around the corresponding entry.",
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Oath Year", "color": "green", "generates_subject_type": "att_transcribe_oath_year" },
@@ -94,7 +93,7 @@
     "att_medical_sight_hearing":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Select the area for each occurrence of the following:",
+      "instruction":"Select a label and draw a rectangle around the corresponding entry.",
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Sight", "color": "green", "generates_subject_type": "att_transcribe_sight" },
@@ -107,7 +106,7 @@
     "att_medical_form_specific":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Draw a rectangle around each record.",
+      "instruction":"Select a label and draw a rectangle around the corresponding entry.",
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Limb Formation", "color": "green", "generates_subject_type": "att_transcribe_limb_formation" },
@@ -130,7 +129,7 @@
     "att_medical_form_general_recuitment":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Draw a rectangle around each record.",
+      "instruction":"Select a label and draw a rectangle around the corresponding entry.",
       "next_task": null,
       "tool_config": {
         "tools": [
@@ -147,7 +146,7 @@
     "hs_transfer_table":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Draw a rectangle around each row describing a transfer:",
+      "instruction":"Draw a rectangle around each row describing a change of status:",
       "next_task": "hs_conduct_sheet",
       "tool_config": {
         "tools": [
@@ -161,7 +160,7 @@
     "hs_conduct_sheet":{
       "generates_subjects": true,
       "tool":"pickOne",
-      "instruction":"Are there any enteries under the heading Conduct Sheet?",
+      "instruction":"Are there any entries under the heading **Conduct Sheet?**",
       "next_task": null,
       "tool_config": {
         "options":{
@@ -196,7 +195,7 @@
     "hs_task":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Draw a rectangle around each clearly visible record.",
+      "instruction":"Select a label and draw a rectangle around the corresponding entry.",
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Unit", "color": "green", "generates_subject_type": "hs_transcribe_unit" },
@@ -219,7 +218,7 @@
     "hs_service":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Draw a rectangle around each recorded instance under the service category (select the whole row)",
+      "instruction":"Draw a rectangle around each recorded instance under the service (select the whole row)",
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Service", "color": "green", "generates_subject_type": "hs_transcribe_service" }
@@ -252,7 +251,7 @@
     "hs_final_questions":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Draw a rectangle around each instance of the following:",
+      "instruction":"Select a label and draw a rectangle around the corresponding entry.",
       "next_task": null,
       "tool_config": {
         "tools": [ 
@@ -272,4 +271,3 @@
 
   }
 }
-

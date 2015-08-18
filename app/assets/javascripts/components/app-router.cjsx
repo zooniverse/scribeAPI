@@ -93,19 +93,31 @@ class AppRouter
 
   controllerForPage: (page) ->
     React.createClass
-      displayName: "#{page.name}Page"
+      displayName: "#{page.name}Page"  
 
       componentDidMount: ->
+        elms = $(React.findDOMNode(this)).find('a.about-nav')
+        elms.on "click", (e) ->
+          e.preventDefault()
+          $('.selected-content').removeClass("selected-content")
+          $(this).addClass("selected-content")
+
+          divId = $(this).attr('href')
+          $(divId).addClass("selected-content")
+
         el = $(React.findDOMNode(this)).find("#accordion")
         el.accordion
           collapsible: true
           active: false
           heightStyle: "content"
 
+      navToggle:(e)->
+        console.log "E", e
+      
 
       render: ->
         formatted_name = page.name.replace("_", " ")
-        <div className="page-content">
+        <div className="page-content" id="#{page.name}">
           <h1>{formatted_name}</h1>
           <div dangerouslySetInnerHTML={{__html: marked(page.content)}} />
           <div className="updated-at">Last Update {page.updated_at}</div>

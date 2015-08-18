@@ -236,7 +236,7 @@ module.exports = React.createClass
     for child_subject, i in @props.subject.child_subjects
       child_subject.region.subject_id = child_subject.id # copy id field into region (not ideal)
       marks[i] = child_subject.region
-      marks[i].isTranscribable = !child_subject.user_has_classified
+      marks[i].isTranscribable = !child_subject.user_has_classified && child_subject.status != "retired"
 
     # marks = (s for s in (@props.subject.child_subjects ? [] ) when s?.region?).map (m) ->
     #   # {userCreated: false}.merge
@@ -244,14 +244,71 @@ module.exports = React.createClass
 
     # Here we append the currently-being-drawn mark to the list of marks, if there is one:
     marks = marks.concat @state.uncommittedMark if @state.uncommittedMark?
-
     marks
+
+  separateTranscribableMarks: (marks) ->
+    console.log 'renderTranscribableMarksOnTop()'
+
+    transcribableMarks = []
+    otherMarks = []
+    for mark in marks
+      if mark.isTranscribable
+        console.log 'TRANSCRIBABLE: ', mark
+        transcribableMarks.push mark
+      else
+        console.log 'OTHER: ', mark
+        otherMarks.push mark
+
+    console.log '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> MARKS: ', transcribableMarks, otherMarks
+
+    console.log '{transcribableMarks, otherMarks} = ', {transcribableMarks, otherMarks}
+    return {transcribableMarks, otherMarks}
+
+  renderMarks: (marks) ->
+    console.log 'renderMarks() ', marks
+    return unless marks.length > 0
+    scale = @getScale()
+    foo = for mark in marks
+      mark._key ?= Math.random()
+      continue if ! mark.x? || ! mark.y? # if mark hasn't acquired coords yet, don't draw it yet
+      isPriorMark = ! mark.userCreated
+      <g key={mark._key} className="marks-for-annotation" data-disabled={isPriorMark or null}>
+        {
+          mark._key ?= Math.random()
+          ToolComponent = markingTools[mark.toolName]
+          <ToolComponent
+            key={mark._key}
+            subject_id={mark.subject_id}
+            mark={mark}
+            xScale={scale.horizontal}
+            yScale={scale.vertical}
+            disabled={! mark.userCreated}
+            isTranscribable={mark.isTranscribable}
+            isPriorMark={isPriorMark}
+            subjectCurrentPage={@props.subjectCurrentPage}
+            selected={mark is @state.selectedMark}
+            getEventOffset={@getEventOffset}
+            submitMark={@submitMark}
+            sizeRect={@refs.sizeRect}
+
+            onSelect={@selectMark.bind this, mark}
+            onChange={@handleChange.bind this, mark}
+            onDestroy={@destroyMark.bind this, mark}
+          />
+        }
+      </g>
+
+    console.log 'FOO: ', foo
+    return foo
 
   render: ->
     return null if ! @props.active
 
     viewBox = [0, 0, @props.subject.width, @props.subject.height]
     scale = @getScale()
+
+    marks = @getCurrentMarks()
+    {transcribableMarks, otherMarks} = @separateTranscribableMarks(marks)
 
     actionButton =
       if @state.loading
@@ -309,44 +366,9 @@ module.exports = React.createClass
               </g>
           }
 
-          {
-            marks = @getCurrentMarks()
-            for mark in marks
-              mark._key ?= Math.random()
+          { @renderMarks otherMarks }
+          { @renderMarks transcribableMarks }
 
-              # If mark hasn't acquired coords yet, don't draw it yet:
-              continue if ! mark.x? || ! mark.y?
-
-              isPriorMark = ! mark.userCreated
-
-              <g key={mark._key} className="marks-for-annotation" data-disabled={isPriorMark or null}>
-                {
-                  # console.log 'NEW MARK: ', mark, (mark.x), (mark.y+0)
-                  mark._key ?= Math.random()
-                  ToolComponent = markingTools[mark.toolName]
-                  <ToolComponent
-                    key={mark._key}
-                    subject_id={mark.subject_id}
-                    mark={mark}
-                    xScale={scale.horizontal}
-                    yScale={scale.vertical}
-                    disabled={! mark.userCreated}
-                    isTranscribable={mark.isTranscribable}
-                    isPriorMark={isPriorMark}
-                    subjectCurrentPage={@props.subjectCurrentPage}
-                    selected={mark is @state.selectedMark}
-                    getEventOffset={@getEventOffset}
-                    submitMark={@submitMark}
-                    sizeRect={@refs.sizeRect}
-
-                    onSelect={@selectMark.bind this, mark}
-                    onChange={@handleChange.bind this, mark}
-                    onDestroy={@destroyMark.bind this, mark}
-                  />
-                }
-              </g>
-
-            }
 
           </svg>
 

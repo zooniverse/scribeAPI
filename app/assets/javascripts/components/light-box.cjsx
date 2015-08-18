@@ -50,11 +50,8 @@ module.exports = React.createClass
 
     classes = []
     if @props.isDisabled
-      console.log 'LIGHT BOX DISABLED'
       classes.push 'disabled'
     else
-      console.log 'LIGHT BOX ENABLED'
-
     <div className="carousel" >
       <div id="visibility-button" onClick={@handleFoldClick}>{text}</div>
 

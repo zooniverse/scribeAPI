@@ -34,7 +34,8 @@ class Classification
     # =>   right now, this mainly applies to workflow.generates_subjects_method == "collect-unique".
   def check_for_retirement_by_classification_count
     # PB: This isn't quite right.. Retires the *parent* subject rather than the subject generated..
-    return nil
+    # return nil
+    puts "RETIRE CHECK"
 
     workflow = subject.workflow
     if workflow.generates_subjects_method == "collect-unique"

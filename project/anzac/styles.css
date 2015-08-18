@@ -1,0 +1,192 @@
+/* custom anzac styles that overwrite Scribe defaults */
+
+.page-content{
+  background-color: transparent;
+  font-size: 1.4em;
+  line-height: 2;
+  font-weight: 300;
+  margin: 0%;
+
+}
+/* General Content Pages */
+.page-content .updated-at{
+  background-color: transparent;
+  font-size: 10px;
+}
+
+span.keyword {
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.page-content h1{
+  font-family: 'Roboto Slab';
+  text-transform: capitalize; 
+  font-size: 42px;
+  padding-bottom: 0;
+  background-color: transparent;
+  padding-top: 5%;
+  padding-left: 2.5%;
+}
+
+.page-content h2{
+  font-weight: normal;
+  letter-spacing: 2px;
+  font-size: 30px;
+  text-transform: uppercase;
+  
+}
+
+.page-content h3{
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: 30px;
+}
+
+.page-content h4{
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+
+/* Home Page */
+.home-page h1{
+  text-transform: none;
+  font-size: 2em;
+  margin: 0;
+  padding: 0;
+  padding-top: 7%;
+}
+
+.home-page h2{
+  font-weight: 100;
+  font-size: 1em;
+  line-height: 1;
+}
+
+.home-page p{
+  font-size: .9em;
+  line-height: 1.3em;
+  margin-bottom: 0;
+}
+
+.home-page a{
+  text-transform: uppercase;
+  font-weight: 700;
+  width: 20%;
+  padding: 0.5em 1em;
+}
+
+.modal-header {
+    background-color: #3f5765;
+    color: #efefef;
+    text-transform: uppercase;
+    border-bottom: solid 3px #8cbc8c;
+    border-top-left-radius: .25em;
+    border-top-right-radius: .25em;
+}
+
+.ui-accordion .ui-accordion-icons {
+    padding-left: 2.2em;
+    border-radius: 0
+}
+
+.classifier .task-area button {
+  text-transform: uppercase;
+}
+
+/* ABOUT PAGE */
+
+#about-page {
+  background-color: #efefef;
+  display: inline-block;
+  color:#2b3a42;
+  font-size: .8em;
+  line-height: 2;
+  font-weight: 300;
+  width:100%;
+}
+
+#about-page nav {
+  background-color: transparent;
+  position: fixed;
+  left: 40px;
+  height: 100%;
+  width: 30%;
+  padding-top: 2em;
+  font-family: OpenSans;
+  font-size: 20px;/* Approximation due to font substitution */
+  font-weight: 400;
+  line-height: 22px;/* Approximation due to font substitution */
+  text-align: left;
+  padding-bottom: 5%;
+}
+
+#about-page ul{
+  padding-left: 1%;
+}
+
+#about-page nav a {
+  color: #4d4d4d;
+  text-decoration: none;
+  padding-left: 1em;
+}
+
+#about-page a.selected-content {
+  border-left: solid 2px #8cbc8c;
+  font-weight: 700;
+}
+
+
+#about-page div{
+  display: none;
+  background-color:inherit;
+  padding: 2em;
+  float: right;
+  width: 70%;
+}
+
+#about-page div.selected-content{
+  display:inline-block;
+  padding-right: 4em;
+}
+
+#about-page li {
+  list-style-type: none;
+  padding-left: 1em;
+  margin-bottom: 1em;
+  line-height: 1.5em;
+  font-size: .90em
+}
+
+#about-intro li {
+  border-left: solid 2px #8cbc8c;
+}
+
+
+#about-transcription-guide li span.keyword {
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+/* Feedback Page */
+#feedback-content{
+  background-color: #efefef;
+  display: inline-block;
+  color:#2b3a42;
+  font-size: .8em;
+  line-height: 2;
+  font-weight: 300;
+  width:100%;
+}
+
+/* Field Guide */
+#field-guide{
+  background-color: #efefef;
+  display: inline-block;
+  color:#2b3a42;
+  font-size: .8em;
+  line-height: 2;
+  font-weight: 300;
+}
