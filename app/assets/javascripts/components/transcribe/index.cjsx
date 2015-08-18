@@ -97,10 +97,10 @@ module.exports = React.createClass # rename to Classifier
 
         { if ! @getCurrentSubject()
             <DraggableModal
-              header          = { if @state.userClassifiedAll then "You transcribed them all!" else "Nothing to transcribe" }
+              header          = { if @state.userClassifiedAll then "Thanks for transcribing!" else "Nothing to transcribe" }
               buttons         = {<GenericButton label='Continue' href='/#/mark' />}
             >
-                There are currently no {@props.workflowName} subjects. Try <a href="/#/mark">marking</a> instead!
+                Currently, there are no subjects to {@props.workflowName}. Try <a href="/#/mark">marking</a> instead!
             </DraggableModal>
 
           else if @getCurrentSubject()? and @getCurrentTask()?
