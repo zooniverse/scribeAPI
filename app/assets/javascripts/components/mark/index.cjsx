@@ -46,6 +46,7 @@ module.exports = React.createClass # rename to Classifier
     TaskComponent = @getCurrentTool()
     onFirstAnnotation = @state.taskKey == @getActiveWorkflow().first_task
 
+    console.log 'CURRENT TASK: ', currentTask
 
     if currentTask.tool is 'pick_one'
       currentAnswer = currentTask.tool_config.options?[currentAnnotation.value]
@@ -137,7 +138,7 @@ module.exports = React.createClass # rename to Classifier
     # @forceUpdate()
     @setState subject_index: index, => @forceUpdate()
     @toggleBadSubject() if @state.badSubject
-         
+
   # User somehow indicated current task is complete; commit current classification
   handleToolComplete: (d) ->
     @handleDataFromTool(d)
@@ -179,7 +180,7 @@ module.exports = React.createClass # rename to Classifier
   destroyCurrentClassification: ->
     classifications = @state.classifications
     classifications.splice(@state.classificationIndex,1)
-    @setState 
+    @setState
       classifications: classifications
       classificationIndex: classifications.length-1
 
