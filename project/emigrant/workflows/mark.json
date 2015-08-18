@@ -17,7 +17,7 @@
       },
       "tool_config" : {
         "tools": [
-          {"type": "rectangleTool", "label": "Record Date", "color": "purple", "generates_subject_type": "em_record_date", "help": "The record date can typically be found on the top left of each record in the format YYYY Month DD"},
+          {"type": "rectangleTool", "label": "Record Date", "color": "purple", "generates_subject_type": "em_record_date", "help": "The record date can generally be found in the upper left hand corner of the record. If multiple dates appear, draw a box around each."},
           {"type": "rectangleTool", "label": "Record Number", "color": "#FE5409", "generates_subject_type": "em_record_number"}
         ]
       },
