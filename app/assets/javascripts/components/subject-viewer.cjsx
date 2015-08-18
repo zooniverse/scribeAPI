@@ -251,6 +251,7 @@ module.exports = React.createClass
 
     viewBox = [0, 0, @props.subject.width, @props.subject.height]
     scale = @getScale()
+    displaysTranscribeButton = @props.task?.tool_config.displays_transcribe_button != false
 
     actionButton =
       if @state.loading
@@ -337,6 +338,7 @@ module.exports = React.createClass
                     getEventOffset={@getEventOffset}
                     submitMark={@submitMark}
                     sizeRect={@refs.sizeRect}
+                    displaysTranscribeButton={displaysTranscribeButton}
 
                     onSelect={@selectMark.bind this, mark}
                     onChange={@handleChange.bind this, mark}
