@@ -35,7 +35,7 @@
         "tools": [
           {"type": "rectangleTool", "label": "Mortgager Name", "color": "red", "generates_subject_type": "em_record_mortgager", "help": "The mortgager name is often found at the top of the list of hand-entered data in the bottom half of the records. The mortgager tends to be a single person’s name. If multiple names are provided, draw the box around all of them."},
           {"type": "rectangleTool", "label": "Street Address", "color": "green", "generates_subject_type": "em_record_street_address", "help":"The street address is often found at the top of the list of hand-entered data in the bottom half of the records."},
-          {"type": "rectangleTool", "label": "Amount Loaned", "color": "blue", "generates_subject_type": "em_record_amount_loaned", "help":""The Amount Loaned is typically found at or near the bottom of the record. For example, for \"Amount Loaned: $4,500.\""}
+          {"type": "rectangleTool", "label": "Amount Loaned", "color": "blue", "generates_subject_type": "em_record_amount_loaned", "help":"The Amount Loaned is typically found at or near the bottom of the record. For example, for \"Amount Loaned: $4,500.\""}
         ]
       },
       "next_task": "mark_valuation"
@@ -43,7 +43,7 @@
 
     "mark_valuation": {
       "tool": "pickOneMarkOne",
-      "instruction": "Great! Place a point next to each of the valuation dates. Valuations occur toward the bottom of the form and include an assessment date and dollar value.",
+      "instruction": "Great! Draw a box around the valuation dates. Valuations occur toward the bottom of the form and include an assessment date and dollar value. If there are multiple valuations, draw the box around all of them.",
       "generates_subjects": true,
       "help": {
         "file": "marking_valuations"
