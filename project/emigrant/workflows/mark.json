@@ -18,7 +18,7 @@
       "tool_config" : {
         "tools": [
           {"type": "rectangleTool", "label": "Record Date", "color": "purple", "generates_subject_type": "em_record_date", "help": "The record date can generally be found in the upper left hand corner of the record. If multiple dates appear, draw a box around each."},
-          {"type": "rectangleTool", "label": "Record Number", "color": "#FE5409", "generates_subject_type": "em_record_number"}
+          {"type": "rectangleTool", "label": "Record Number", "color": "#FE5409", "generates_subject_type": "em_record_number", "help": "The record number can generally be found in the upper right hand corner of the record."}
         ]
       },
       "next_task": "mark_secondary"
@@ -33,9 +33,9 @@
       },
       "tool_config" : {
         "tools": [
-          {"type": "rectangleTool", "label": "Mortgager Name", "color": "red", "generates_subject_type": "em_record_mortgager", "help": "The mortgager name is often found at the top of the list of hand-entered data in the bottom half of the records. The mortgager tends to be a single person’s name. If multiple names are provided, include them all in the box."},
+          {"type": "rectangleTool", "label": "Mortgager Name", "color": "red", "generates_subject_type": "em_record_mortgager", "help": "The mortgager name is often found at the top of the list of hand-entered data in the bottom half of the records. The mortgager tends to be a single person’s name. If multiple names are provided, draw the box around all of them."},
           {"type": "rectangleTool", "label": "Street Address", "color": "green", "generates_subject_type": "em_record_street_address", "help":"The street address is often found at the top of the list of hand-entered data in the bottom half of the records."},
-          {"type": "rectangleTool", "label": "Amount Loaned", "color": "blue", "generates_subject_type": "em_record_amount_loaned"}
+          {"type": "rectangleTool", "label": "Amount Loaned", "color": "blue", "generates_subject_type": "em_record_amount_loaned", "help":""The Amount Loaned is typically found at or near the bottom of the record. For example, for \"Amount Loaned: $4,500.\""}
         ]
       },
       "next_task": "mark_valuation"

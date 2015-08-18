@@ -28,7 +28,7 @@
       "instruction": "Enter the record number",
       "help": {
         "title": "Record Number",
-        "body": "The record date can generally be found in the upper right hand corner of the record. E.g. \"129\""
+        "body": "The record number can generally be found in the upper right hand corner of the record. E.g. \"129\""
       },
       "generates_subject_type": "em_transcribed_record_number"
     },
@@ -64,7 +64,7 @@
       "generates_subject_type": "em_transcribed_amount_loaned",
       "help": {
         "title": "Amount Loaned",
-        "body": "The Amount Loaned is typically found at or near the bottom of the record. For example, for \"Amoun Loaned: $4,500.\", enter \"4500\"."
+        "body": "The Amount Loaned is typically found at or near the bottom of the record. For example, for \"Amount Loaned: $4,500.\", enter \"4500\"."
       }
     },
 
