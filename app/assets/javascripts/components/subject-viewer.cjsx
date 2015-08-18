@@ -261,6 +261,7 @@ module.exports = React.createClass
 
     console.log '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> MARKS: ', transcribableMarks, otherMarks
 
+    console.log '{transcribableMarks, otherMarks} = ', {transcribableMarks, otherMarks}
     return {transcribableMarks, otherMarks}
 
   renderMarks: (marks) ->
@@ -305,6 +306,9 @@ module.exports = React.createClass
 
     viewBox = [0, 0, @props.subject.width, @props.subject.height]
     scale = @getScale()
+
+    marks = @getCurrentMarks()
+    {transcribableMarks, otherMarks} = @separateTranscribableMarks(marks)
 
     actionButton =
       if @state.loading
@@ -362,14 +366,9 @@ module.exports = React.createClass
               </g>
           }
 
-          {
-            marks = @getCurrentMarks()
-            {transcribableMarks, otherMarks} = @separateTranscribableMarks(marks)
-            console.log 'transcribableMarks: ', transcribableMarks
-            console.log 'otherMarks: ', otherMarks
-          }
-          {@renderMarks otherMarks}
-          {@renderMarks transcribableMarks}
+          { @renderMarks otherMarks }
+          { @renderMarks transcribableMarks # render transcribable marks on top }
+
 
           </svg>
 
