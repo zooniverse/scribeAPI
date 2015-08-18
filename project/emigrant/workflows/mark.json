@@ -34,7 +34,7 @@
       "tool_config" : {
         "tools": [
           {"type": "rectangleTool", "label": "Mortgager Name", "color": "red", "generates_subject_type": "em_record_mortgager", "help": "The mortgager name is often found at the top of the list of hand-entered data in the bottom half of the records. The mortgager tends to be a single person’s name. If multiple names are provided, include them all in the box."},
-          {"type": "rectangleTool", "label": "Street Address", "color": "green", "generates_subject_type": "em_record_street_address"},
+          {"type": "rectangleTool", "label": "Street Address", "color": "green", "generates_subject_type": "em_record_street_address", "help":"The street address is often found at the top of the list of hand-entered data in the bottom half of the records."},
           {"type": "rectangleTool", "label": "Amount Loaned", "color": "blue", "generates_subject_type": "em_record_amount_loaned"}
         ]
       },
