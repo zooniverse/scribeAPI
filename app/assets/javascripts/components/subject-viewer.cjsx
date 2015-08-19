@@ -41,7 +41,6 @@ module.exports = React.createClass
     if Object.keys(@props.annotation).length == 0 #prevents back-to-back mark tasks, displaying a duplicate mark from previous tasks.
       @setUncommittedMark null
 
-
   componentDidMount: ->
     @setView 0, 0, @props.subject.width, @props.subject.height
     @loadImage @props.subject.location.standard
@@ -167,11 +166,12 @@ module.exports = React.createClass
     if MarkComponent.initValid? and not MarkComponent.initValid mark
       @destroyMark @props.annotation, mark
 
+    mark.isUncommitted = true
+    console.log 'MARK: ', mark
     @setUncommittedMark mark
 
   setUncommittedMark: (mark) ->
-    @setState
-      uncommittedMark: mark
+    @setState uncommittedMark: mark
 
   setView: (viewX, viewY, viewWidth, viewHeight) ->
     @setState {viewX, viewY, viewWidth, viewHeight}
@@ -218,9 +218,7 @@ module.exports = React.createClass
   submitMark: ->
     mark = @state.uncommittedMark
     # console.log "SubjectViewer: Submit mark: ", mark.subToolIndex, mark
-
     @setUncommittedMark null
-
     @props.onComplete? mark
 
   handleChange: (mark) ->
@@ -237,7 +235,7 @@ module.exports = React.createClass
       child_subject.region.subject_id = child_subject.id # copy id field into region (not ideal)
       marks[i] = child_subject.region
       marks[i].isTranscribable = !child_subject.user_has_classified && child_subject.status != "retired"
-
+      marks[i].belongsToUser = child_subject.user_has_classified?
     # marks = (s for s in (@props.subject.child_subjects ? [] ) when s?.region?).map (m) ->
     #   # {userCreated: false}.merge
     #   m?.region ? {}
@@ -268,9 +266,14 @@ module.exports = React.createClass
     console.log 'renderMarks() ', marks
     return unless marks.length > 0
     scale = @getScale()
-    foo = for mark in marks
+    marksToRender = for mark in marks
+      console.log 'mark.isUncommited? = ', mark.isUncommitted?
       mark._key ?= Math.random()
       continue if ! mark.x? || ! mark.y? # if mark hasn't acquired coords yet, don't draw it yet
+
+      # hide others' marks, if button is toggled
+      continue unless mark.belongsToUser if @props.hideOtherMarks
+
       isPriorMark = ! mark.userCreated
       <g key={mark._key} className="marks-for-annotation" data-disabled={isPriorMark or null}>
         {
@@ -298,8 +301,7 @@ module.exports = React.createClass
         }
       </g>
 
-    console.log 'FOO: ', foo
-    return foo
+    return marksToRender
 
   render: ->
     return null if ! @props.active

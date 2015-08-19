@@ -16,6 +16,7 @@ module.exports = React.createClass # rename to Classifier
 
   getDefaultProps: ->
     workflowName: 'mark'
+    hideOtherMarks: true
 
   mixins: [FetchSubjectSetsMixin, BaseWorkflowMethods] # load subjects and set state variables: subjects, currentSubject, classification
 
@@ -77,6 +78,7 @@ module.exports = React.createClass # rename to Classifier
               prevPage={@prevPage}
               totalSubjectPages={@state.total_subject_pages}
               destroyCurrentClassification={@destroyCurrentClassification}
+              hideOtherMarks={@props.hideOtherMarks}
             />
         }
       </div>
@@ -137,7 +139,7 @@ module.exports = React.createClass # rename to Classifier
     # @forceUpdate()
     @setState subject_index: index, => @forceUpdate()
     @toggleBadSubject() if @state.badSubject
-         
+
   # User somehow indicated current task is complete; commit current classification
   handleToolComplete: (d) ->
     @handleDataFromTool(d)
@@ -179,7 +181,7 @@ module.exports = React.createClass # rename to Classifier
   destroyCurrentClassification: ->
     classifications = @state.classifications
     classifications.splice(@state.classificationIndex,1)
-    @setState 
+    @setState
       classifications: classifications
       classificationIndex: classifications.length-1
 
