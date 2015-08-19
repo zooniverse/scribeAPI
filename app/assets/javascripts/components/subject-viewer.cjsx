@@ -167,7 +167,6 @@ module.exports = React.createClass
       @destroyMark @props.annotation, mark
 
     mark.isUncommitted = true
-    console.log 'MARK: ', mark
     @setUncommittedMark mark
 
   setUncommittedMark: (mark) ->
@@ -230,12 +229,13 @@ module.exports = React.createClass
 
   getCurrentMarks: ->
     # Previous marks are really just the region hashes of all child subjects
+    console.log 'CHILD SUBHECTS: ', @props.subject.child_subjects
     marks = []
     for child_subject, i in @props.subject.child_subjects
       child_subject.region.subject_id = child_subject.id # copy id field into region (not ideal)
       marks[i] = child_subject.region
       marks[i].isTranscribable = !child_subject.user_has_classified && child_subject.status != "retired"
-      marks[i].belongsToUser = child_subject.user_has_classified?
+      marks[i].belongsToUser = child_subject.user_has_classified
     # marks = (s for s in (@props.subject.child_subjects ? [] ) when s?.region?).map (m) ->
     #   # {userCreated: false}.merge
     #   m?.region ? {}
@@ -251,29 +251,24 @@ module.exports = React.createClass
     otherMarks = []
     for mark in marks
       if mark.isTranscribable
-        console.log 'TRANSCRIBABLE: ', mark
         transcribableMarks.push mark
       else
-        console.log 'OTHER: ', mark
         otherMarks.push mark
-
-    console.log '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> MARKS: ', transcribableMarks, otherMarks
 
     console.log '{transcribableMarks, otherMarks} = ', {transcribableMarks, otherMarks}
     return {transcribableMarks, otherMarks}
 
   renderMarks: (marks) ->
-    console.log 'renderMarks() ', marks
+    console.log 'renderMarks(), marks: ', marks
     return unless marks.length > 0
     scale = @getScale()
     marksToRender = for mark in marks
-      console.log 'mark.isUncommited? = ', mark.isUncommitted?
       mark._key ?= Math.random()
       continue if ! mark.x? || ! mark.y? # if mark hasn't acquired coords yet, don't draw it yet
 
-      # hide others' marks, if button is toggled
-      console.log 'KLJDHSKLJDHSKLJDHS: ', @props.hideOtherMarks
-      continue unless mark.belongsToUser if @props.hideOtherMarks
+      console.log 'MARK BELONGS TO USER? ', mark.belongsToUser
+      if @props.hideOtherMarks
+        continue unless mark.belongsToUser
 
       isPriorMark = ! mark.userCreated
       <g key={mark._key} className="marks-for-annotation" data-disabled={isPriorMark or null}>
