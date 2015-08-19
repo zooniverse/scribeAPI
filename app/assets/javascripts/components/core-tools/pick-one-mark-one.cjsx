@@ -61,10 +61,14 @@ module.exports = React.createClass
     # @state.annotation
     # @handleChange 0
   componentWillUnmount:->
-    @setState subToolIndex: 0
+    @setState
+      subToolIndex: 0
+      tool: @props.task?.tool_config.tools[0]
 
   getInitialState: ->
     subToolIndex: 0 # @props.annotation?.subToolIndex ? 0
+    tool: @props.task?.tool_config.tools[0]
+
     # annotation: $.extend({subToolIndex: null}, @props.annotation ? {})
 
   render: ->
@@ -99,6 +103,7 @@ module.exports = React.createClass
           className="drawing-tool-input"
           checked={ i is @getSubToolIndex() }
           ref={"inp-" + i}
+          tool={tool}
           onChange={ @handleChange.bind this, i }
         />
 
@@ -122,12 +127,14 @@ module.exports = React.createClass
   getSubToolIndex: ->
     @state.subToolIndex
 
-  setSubToolIndex: (index) ->
-    @setState subToolIndex: index, () =>
-      @props.onChange? subToolIndex: index
+  updateState: (data) ->
+    @setState data, () =>
+      @props.onChange? data
 
   handleChange: (index, e) ->
     # console.log 'PICK-ONE-MARK-ONE::handleChange(), INDEX = ', index, @refs
     inp = @refs["inp-#{index}"]
     if inp.getDOMNode().checked
-      @setSubToolIndex index
+      @updateState
+        subToolIndex: index
+        tool: inp.props.tool
