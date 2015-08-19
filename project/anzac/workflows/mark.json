@@ -49,8 +49,7 @@
           },
           "other_page_type":{
             "label":"Other",
-            "next_task": null,
-            "generates_subject_type": "page_type_other"
+            "next_task": null
           }
         }
       }
