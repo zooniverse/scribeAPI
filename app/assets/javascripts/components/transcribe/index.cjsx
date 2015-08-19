@@ -104,8 +104,6 @@ module.exports = React.createClass # rename to Classifier
             </DraggableModal>
 
           else if @getCurrentSubject()? and @getCurrentTask()?
-            console.log "@getCurrentTask().key", @getCurrentTask().key
-            console.log "rendering text tool: ", "#{@state.taskKey}.#{@getCurrentSubject().id}", currentAnnotation
             <SubjectViewer
               onLoad={@handleViewerLoad}
               subject={@getCurrentSubject()}

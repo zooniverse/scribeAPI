@@ -33,10 +33,6 @@ module.exports = React.createClass
     annotationIsComplete: false
 
   componentWillReceiveProps: (new_props) ->
-    # console.log "SubjectViewer#componentWillReceiveProps: ", @props, new_props
-    # @setUncommittedMark null if ! @state.uncommittedMark?.saving && ! new_props.annotation?.subToolIndex?
-    # @setUncommittedMark null if ! new_props.annotation?.subToolIndex?
-    # console.log "setting null because",new_props.task?.tool != 'pickOneMarkOne'
     @setUncommittedMark null if new_props.task?.tool != 'pickOneMarkOne'
     if Object.keys(@props.annotation).length == 0 #prevents back-to-back mark tasks, displaying a duplicate mark from previous tasks.
       @setUncommittedMark null

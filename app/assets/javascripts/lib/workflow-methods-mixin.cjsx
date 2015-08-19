@@ -157,7 +157,6 @@ module.exports =
       nextKey = opt.next_task
     else
       nextKey = @getTasks()[@state.taskKey].next_task
-    console.log "next task: ", nextKey
 
     @getTasks()[nextKey]
 

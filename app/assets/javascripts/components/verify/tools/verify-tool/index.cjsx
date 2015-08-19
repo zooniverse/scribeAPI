@@ -69,7 +69,7 @@ VerifyTool = React.createClass
       label = @props.label ? ''
 
     {x,y} = @getPosition @props.subject.region
-    console.log "verify tool rendering with scale: ", @props.scale, x, x*@props.scale.horizontal, y, y*@props.scale.vertical
+    # console.log "verify tool rendering with scale: ", @props.scale, x, x*@props.scale.horizontal, y, y*@props.scale.vertical
     <DraggableModal
       
       header  = {label}
