@@ -8,13 +8,6 @@
     "generates_subjects_max": 10,
     "generates_subjects_method": "collect-unique",
     "tasks": {
-        "page_type_other": {
-            "tool": "textTool",
-            "tool_config": {},
-            "instruction": "This is a page type Other",
-            "generates_subject_type": "transcribed_page_type_other",
-            "next_task": null
-        },
         "att_transcribe_header": {
             "tool": "textTool",
             "tool_config": {},
