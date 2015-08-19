@@ -268,6 +268,7 @@ module.exports = React.createClass
     console.log 'renderMarks() ', marks
     return unless marks.length > 0
     scale = @getScale()
+    displaysTranscribeButton = @props.task?.tool_config.displays_transcribe_button != false
     foo = for mark in marks
       mark._key ?= Math.random()
       continue if ! mark.x? || ! mark.y? # if mark hasn't acquired coords yet, don't draw it yet
@@ -290,6 +291,7 @@ module.exports = React.createClass
             getEventOffset={@getEventOffset}
             submitMark={@submitMark}
             sizeRect={@refs.sizeRect}
+            displaysTranscribeButton={displaysTranscribeButton}
 
             onSelect={@selectMark.bind this, mark}
             onChange={@handleChange.bind this, mark}

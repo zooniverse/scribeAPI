@@ -69,7 +69,7 @@ module.exports =
       if @state.badSubject
         @toggleBadSubject =>
           @advanceToNextSubject()
-      
+
       if @state.illegibleSubject
         @toggleIllegibleSubject =>
           @advanceToNextSubject()
@@ -116,7 +116,11 @@ module.exports =
   getTasks: ->
     # Add completion_assessment_task to list of tasks dynamically:
 # <<<<<<< HEAD
-    $.extend @getActiveWorkflow().tasks, completion_assessment_task: @getCompletionAssessmentTask()
+    tasks = @getActiveWorkflow().tasks
+    completion_assessment_task = @getCompletionAssessmentTask()
+    # Merge keys recursively if it exists in config
+    completion_assessment_task = $.extend true, tasks['completion_assessment_task'], completion_assessment_task if tasks['completion_assessment_task']?
+    $.extend tasks, completion_assessment_task: completion_assessment_task
 # =======
 #     tasks = @getActiveWorkflow().tasks
 #     if @props.workflowName == 'mark'
