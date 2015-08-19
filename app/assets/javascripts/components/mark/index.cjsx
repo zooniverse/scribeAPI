@@ -70,7 +70,7 @@ module.exports = React.createClass # rename to Classifier
               subject_index={@state.subject_index}
               workflow={@getActiveWorkflow()}
               task={currentTask}
-              annotation={@getCurrentClassification().annotation ? {}}
+              annotation={@getCurrentClassification()?.annotation ? {}}
               onComplete={@handleToolComplete}
               onChange={@handleDataFromTool}
               onViewSubject={@handleViewSubject}
@@ -89,7 +89,7 @@ module.exports = React.createClass # rename to Classifier
           <TaskComponent
             key={@getCurrentTask().key}
             task={currentTask}
-            annotation={@getCurrentClassification().annotation ? {}}
+            annotation={@getCurrentClassification()?.annotation ? {}}
             onChange={@handleDataFromTool}
             subject={@getCurrentSubject()}
           />
@@ -109,7 +109,7 @@ module.exports = React.createClass # rename to Classifier
               <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
             }
             { if @getNextTask()?
-                console.log "STATE at the NEXT BUTTON", @state
+                # console.log "STATE at the NEXT BUTTON", @state
                 <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@advanceToNextTask}>Next</button>
               else
                 if @state.taskKey == "completion_assessment_task"
@@ -188,6 +188,9 @@ module.exports = React.createClass # rename to Classifier
     @setState
       classifications: classifications
       classificationIndex: classifications.length-1
+
+    # There should always be an empty classification ready to receive data:
+    @beginClassification()
 
   destroyCurrentAnnotation: ->
     # TODO: implement mechanism for going backwards to previous classification, potentially deleting later classifications from stack:

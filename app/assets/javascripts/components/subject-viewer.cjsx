@@ -249,25 +249,25 @@ module.exports = React.createClass
     marks
 
   separateTranscribableMarks: (marks) ->
-    console.log 'renderTranscribableMarksOnTop()'
+    # console.log 'renderTranscribableMarksOnTop()'
 
     transcribableMarks = []
     otherMarks = []
     for mark in marks
       if mark.isTranscribable
-        console.log 'TRANSCRIBABLE: ', mark
+        # console.log 'TRANSCRIBABLE: ', mark
         transcribableMarks.push mark
       else
-        console.log 'OTHER: ', mark
+        # console.log 'OTHER: ', mark
         otherMarks.push mark
 
-    console.log '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> MARKS: ', transcribableMarks, otherMarks
+    # console.log '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> MARKS: ', transcribableMarks, otherMarks
 
-    console.log '{transcribableMarks, otherMarks} = ', {transcribableMarks, otherMarks}
+    # console.log '{transcribableMarks, otherMarks} = ', {transcribableMarks, otherMarks}
     return {transcribableMarks, otherMarks}
 
   renderMarks: (marks) ->
-    console.log 'renderMarks() ', marks
+    # console.log 'renderMarks() ', marks
     return unless marks.length > 0
     scale = @getScale()
     displaysTranscribeButton = @props.task?.tool_config.displays_transcribe_button != false
@@ -302,7 +302,7 @@ module.exports = React.createClass
         }
       </g>
 
-    console.log 'FOO: ', foo
+    # console.log 'FOO: ', foo
     return foo
 
   render: ->
@@ -351,7 +351,7 @@ module.exports = React.createClass
               toolName = @props.subject.region.toolName
 
               mark = @props.subject.region
-              console.log "MARK", mark
+              # console.log "MARK", mark
               ToolComponent = markingTools[toolName]
               isPriorMark = true
               <g>
