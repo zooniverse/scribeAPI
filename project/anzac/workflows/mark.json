@@ -57,7 +57,7 @@
       "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Header", "color": "green", "generates_subject_type": "att_transcribe_header" },
+          {"type": "rectangleTool", "label": "Header", "color": "green", "generates_subject_type": "att_transcribe_header", "help":"You only need to capture this if there is written information in the header." },
           {"type": "rectangleTool", "label": "One-Part Question", "color": "green", "generates_subject_type": "att_transcribe_question" },
           {"type": "rectangleTool", "label": "Two-Part Question", "color": "green", "generates_subject_type": "att_transcribe_two_question" },
           {"type": "rectangleTool", "label": "Three-Part Question", "color": "green", "generates_subject_type": "att_transcribe_three_question" }

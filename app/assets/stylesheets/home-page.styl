@@ -42,14 +42,22 @@
       background-color: #A2C7A2;
 
   .metadata-search
-    background-color: #8cbc8c;
+    background-color rgba(63, 87, 101, 0.7);
     display: inline-block;
     max-width: 450px;
     width: 44%;
     margin: 5% 0;
+    margin-top: 0%
     padding: .8%;
     line-height: .2
     border-radius: 0.25em;
+    position: relative
+    input
+      text-indent: 35px
+    #search-icon
+      position: absolute;
+      top: 30%;
+      left: 4%;
 
   input[type="text"]
     border-radius: 0.25em;
@@ -70,5 +78,3 @@
   #decision-area
     width: 100%
 
-.metadata-search
-  margin 50px 0
