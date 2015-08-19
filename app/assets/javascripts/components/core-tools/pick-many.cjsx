@@ -118,8 +118,8 @@ module.exports = React.createClass
           {option.label}
         </span>
 
-        {if tool.help
-          <span className="help" data-text="#{tool.help}"><i className="fa fa-question"></i></span>
+        {if option.help
+          <span className="help" data-text="#{option.help}"><i className="fa fa-question"></i></span>
         }
 
       </label>
