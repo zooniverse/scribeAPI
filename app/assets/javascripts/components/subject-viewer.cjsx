@@ -272,6 +272,7 @@ module.exports = React.createClass
       continue if ! mark.x? || ! mark.y? # if mark hasn't acquired coords yet, don't draw it yet
 
       # hide others' marks, if button is toggled
+      console.log 'KLJDHSKLJDHSKLJDHS: ', @props.hideOtherMarks
       continue unless mark.belongsToUser if @props.hideOtherMarks
 
       isPriorMark = ! mark.userCreated

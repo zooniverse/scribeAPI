@@ -9,6 +9,7 @@ API                     = require '../../lib/api'
 HelpModal               = require 'components/help-modal'
 HelpButton              = require 'components/buttons/help-button'
 BadSubjectButton        = require 'components/buttons/bad-subject-button'
+HideOtherMarksButton    = require 'components/buttons/hide-other-marks-button'
 DraggableModal          = require 'components/draggable-modal'
 
 module.exports = React.createClass # rename to Classifier
@@ -16,7 +17,7 @@ module.exports = React.createClass # rename to Classifier
 
   getDefaultProps: ->
     workflowName: 'mark'
-    hideOtherMarks: true
+    # hideOtherMarks: false
 
   mixins: [FetchSubjectSetsMixin, BaseWorkflowMethods] # load subjects and set state variables: subjects, currentSubject, classification
 
@@ -28,6 +29,7 @@ module.exports = React.createClass # rename to Classifier
     subject_index:                0
     currentSubToolIndex:          0
     helping:                      false
+    hideOtherMarks:               false
 
   componentDidMount: ->
     @getCompletionAssessmentTask()
@@ -40,6 +42,12 @@ module.exports = React.createClass # rename to Classifier
 
   toggleHelp: ->
     @setState helping: not @state.helping
+
+  toggleHideOtherMarks: ->
+    @setState hideOtherMarks: not @state.hideOtherMarks
+    , =>
+      console.log 'SET @state.hidingMarks to: ', @state.hideOtherMarks
+      # @forceUpdate()
 
   render: ->
     return null unless @getCurrentSubject()? && @getActiveWorkflow()?
@@ -78,7 +86,7 @@ module.exports = React.createClass # rename to Classifier
               prevPage={@prevPage}
               totalSubjectPages={@state.total_subject_pages}
               destroyCurrentClassification={@destroyCurrentClassification}
-              hideOtherMarks={@props.hideOtherMarks}
+              hideOtherMarks={@state.hideOtherMarks}
             />
         }
       </div>
@@ -95,6 +103,7 @@ module.exports = React.createClass # rename to Classifier
             { if @getCurrentTask().help?
               <HelpButton onClick={@toggleHelp} />
             }
+            <HideOtherMarksButton onClick={@toggleHideOtherMarks} />
             { if onFirstAnnotation
               <BadSubjectButton active={@state.badSubject} onClick={@toggleBadSubject} />
             }
