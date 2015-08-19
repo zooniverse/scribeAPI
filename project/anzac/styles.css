@@ -161,14 +161,18 @@ span.keyword {
 }
 
 #about-intro li {
-  border-left: solid 2px #8cbc8c;
+  background-image: url('../assets/bullet.svg');
+  background-repeat: no-repeat;
+  background-position: 0px 25%;
+  padding-left: 2%;
+  margin-left: 2%;
 }
-
 
 #about-transcription-guide li span.keyword {
   font-weight: 500;
   text-transform: capitalize;
 }
+
 
 /* Feedback Page */
 #feedback-content{
