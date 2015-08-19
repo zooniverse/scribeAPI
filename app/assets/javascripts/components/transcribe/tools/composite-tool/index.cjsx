@@ -15,7 +15,7 @@ CompositeTool = React.createClass
   getInitialState: ->
     annotation: @props.annotation ? {}
     viewerSize: @props.viewerSize
-    active_field_key: (key for key, value of @props.task.tool_config.tools)[0]
+    active_field_key: (key for key, value of @props.task.tool_config.options)[0]
 
   getDefaultProps: ->
     annotation: {}
@@ -54,7 +54,7 @@ CompositeTool = React.createClass
   # Otherwise commit annotation (which is default behavior when there's only one input
   handleCompletedField: ->
     console.log 'handleCompletedField()'
-    field_keys = (annotation_key for annotation_key, tool_config of @props.task.tool_config.tools)
+    field_keys = (c.value for c of @props.task.tool_config.options)
     next_field_key = field_keys[ field_keys.indexOf(@state.active_field_key) + 1 ]
 
     if next_field_key?
@@ -118,7 +118,7 @@ CompositeTool = React.createClass
 
       <label>{@props.task.instruction}</label>
       {
-        for annotation_key, tool_config of @props.task.tool_config.tools
+        for annotation_key, tool_config of @props.task.tool_config.options
           ToolComponent = @props.transcribeTools[tool_config.tool]
           focus = annotation_key is @state.active_field_key
 
@@ -126,7 +126,7 @@ CompositeTool = React.createClass
 
           <ToolComponent
             task={@props.task}
-            tool_config={@props.task.tool_config.tools[annotation_key].tool_config}
+            tool_config={@props.task.tool_config.options[annotation_key].tool_config}
             subject={@props.subject}
             workflow={@props.workflow}
             standalone={false}
@@ -134,7 +134,7 @@ CompositeTool = React.createClass
             onChange={@handleChange}
             onComplete={@handleCompletedField}
             onInputFocus={@handleFieldFocus}
-            label={@props.task.tool_config.tools[annotation_key].label ? ''}
+            label={@props.task.tool_config.options[annotation_key].label ? ''}
             focus={focus}
             scale={@props.scale}
             annotation_key={annotation_key}

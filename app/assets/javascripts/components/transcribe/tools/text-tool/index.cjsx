@@ -18,6 +18,8 @@ TextTool = React.createClass
 
   # this can go into a mixin? (common across all transcribe tools)
   getPosition: (data) ->
+    return x: null, y: null if ! data.x?
+
     yPad = 20
     switch data.toolName
       when 'rectangleTool'
@@ -28,7 +30,9 @@ TextTool = React.createClass
         y = data.yLower + yPad
       else # default for pointTool
         x = data.x
-        y = data.y + yPad
+        y = data.y + yPad if data.y?
+    x = @props.subject.width / 2 if ! x?
+    y = @props.subject.height / 2 if ! y?
     return {x,y}
 
   getDefaultProps: ->

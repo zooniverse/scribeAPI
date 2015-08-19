@@ -33,7 +33,7 @@ class Workflow
 
   def create_secondary_subjects(classification)
     task = task_by_key classification.task_key
-    return if task.nil? || ! task.generates_subjects?
+    return if task.nil? || ! task.generates_subjects?(classification)
 
     # If we're here, this task generates subjects; Pass responsibility off to 
     # the configured subject generation method:

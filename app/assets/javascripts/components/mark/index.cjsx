@@ -48,7 +48,7 @@ module.exports = React.createClass # rename to Classifier
 
 
     if currentTask.tool is 'pick_one'
-      currentAnswer = currentTask.tool_config.options?[currentAnnotation.value]
+      currentAnswer = (a for a in currentTask.tool_config.options when a.value == currentAnnotation.value)[0]
       waitingForAnswer = not currentAnswer
 
     <div className="classifier">

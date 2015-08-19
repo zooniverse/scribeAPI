@@ -67,14 +67,14 @@ module.exports = React.createClass
     onChange: React.PropTypes.func.isRequired
 
   render: ->
-    answers = for k, answer of @props.task.tool_config.options
+    answers = for answer in @props.task.tool_config.options
 
       answer._key ?= Math.random()
-      checked = k is @props.annotation.value
+      checked = answer.value is @props.annotation.value
       classes = ['minor-button']
       classes.push 'active' if checked
 
-      <LabeledRadioButton key={answer._key} classes={classes.join ' '} value={k} checked={checked} onChange={@handleChange.bind this, k} label={answer.label} />
+      <LabeledRadioButton key={answer._key} classes={classes.join ' '} value={answer.value} checked={checked} onChange={@handleChange.bind this, answer.value} label={answer.label} />
 
     <GenericTask ref="inputs" {...@props} question={@props.task.instruction} answers={answers} />
 

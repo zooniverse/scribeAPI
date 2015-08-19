@@ -41,7 +41,7 @@ module.exports = React.createClass # rename to Classifier
   fetchSubjectsCallback: ->
     @setState taskKey: @getCurrentSubject().type if @getCurrentSubject()?
 
-  handleTaskComponentChange: (val) ->
+  __DEP__handleTaskComponentChange: (val) ->
     # console.log "handleTaskComponentChange val", val
     taskOption = @getCurrentTask().tool_config.options[val]
     if taskOption.next_task?
@@ -130,7 +130,7 @@ module.exports = React.createClass # rename to Classifier
                 transcribeTools={transcribeTools}
                 onShowHelp={@toggleHelp if @getCurrentTask().help?}
                 badSubject={@state.badSubject}
-                onBadSubject={@toggleBadSubject}                
+                onBadSubject={@toggleBadSubject}
                 illegibleSubject={@state.illegibleSubject}
                 onIllegibleSubject={@toggleIllegibleSubject}
               />
