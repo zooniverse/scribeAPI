@@ -27,7 +27,7 @@ module.exports = React.createClass # rename to Classifier
     subject_index:                0
     currentSubToolIndex:          0
     helping:                      false
-    currentTool:                  null
+    currentSubtool:                  null
 
   componentDidMount: ->
     @getCompletionAssessmentTask()
@@ -48,7 +48,7 @@ module.exports = React.createClass # rename to Classifier
     activeWorkflow = @getActiveWorkflow()
     firstTask = activeWorkflow.first_task
     onFirstAnnotation = @state.taskKey == firstTask
-    currentTool = if @state.currentTool then @state.currentTool else @getTasks()[firstTask]?.tool_config.tools?[0]
+    currentSubtool = if @state.currentSubtool then @state.currentSubtool else @getTasks()[firstTask]?.tool_config.tools?[0]
 
     if currentTask.tool is 'pick_one'
       currentAnswer = currentTask.tool_config.options?[currentAnnotation.value]
@@ -80,7 +80,7 @@ module.exports = React.createClass # rename to Classifier
               prevPage={@prevPage}
               totalSubjectPages={@state.total_subject_pages}
               destroyCurrentClassification={@destroyCurrentClassification}
-              currentTool={currentTool}
+              currentSubtool={currentSubtool}
             />
         }
       </div>
@@ -164,7 +164,7 @@ module.exports = React.createClass # rename to Classifier
     # to initialize marks going forward
     if d.subToolIndex? && ! d.x? && ! d.y?
       @setState currentSubToolIndex: d.subToolIndex
-      @setState currentTool: d.tool if d.tool?
+      @setState currentSubtool: d.tool if d.tool?
 
     else
       # console.log "MARK/INDEX::handleDataFromTool()", d if JSON.stringify(d) != JSON.stringify(@getCurrentClassification()?.annotation)

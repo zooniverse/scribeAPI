@@ -233,12 +233,12 @@ module.exports = React.createClass
   getCurrentMarks: ->
     # Previous marks are really just the region hashes of all child subjects
     marks = []
-    currentTool = @props.currentTool
+    currentSubtool = @props.currentSubtool
     for child_subject, i in @props.subject.child_subjects
       child_subject.region.subject_id = child_subject.id # copy id field into region (not ideal)
       marks[i] = child_subject.region
       marks[i].isTranscribable = !child_subject.user_has_classified && child_subject.status != "retired"
-      marks[i].groupActive = currentTool?.generates_subject_type == child_subject.type
+      marks[i].groupActive = currentSubtool?.generates_subject_type == child_subject.type
 
     # marks = (s for s in (@props.subject.child_subjects ? [] ) when s?.region?).map (m) ->
     #   # {userCreated: false}.merge
