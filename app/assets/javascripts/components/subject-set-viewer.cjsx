@@ -79,6 +79,7 @@ module.exports = React.createClass
           onChange={@props.onChange}
           subToolIndex={@props.subToolIndex}
           destroyCurrentClassification={@props.destroyCurrentClassification}
+          currentTool={@props.currentTool}
         />
       }
     </div>
