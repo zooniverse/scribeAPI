@@ -25,10 +25,15 @@ NameSearch = React.createClass
               q: request.term
             success: ( data ) =>
               names = []
-              for n in data
+              if data.length != 0
+                for n in data
+                  unit = {}
+                  unit["label"] =  n.meta_data.name
+                  unit["value"] = n
+                  names.push unit
+              else
                 unit = {}
-                unit["label"] =  n.meta_data.name
-                unit["value"] = n
+                unit["label"] =  "Currently, there is no match. Please check back in a few days."
                 names.push unit
               response( names )
             error: (xhr, thrownError)=>
