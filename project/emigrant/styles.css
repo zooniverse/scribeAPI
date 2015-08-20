@@ -191,3 +191,6 @@
 .tool-shape.draggable.committed {
   opacity: 0.35;
 }
+.group-active .tool-shape.draggable.committed {
+  opacity: 1;
+}

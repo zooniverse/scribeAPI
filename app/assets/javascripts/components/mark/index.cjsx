@@ -27,6 +27,7 @@ module.exports = React.createClass # rename to Classifier
     subject_index:                0
     currentSubToolIndex:          0
     helping:                      false
+    currentSubtool:                  null
 
   componentDidMount: ->
     @getCompletionAssessmentTask()
@@ -44,8 +45,10 @@ module.exports = React.createClass # rename to Classifier
     return null unless @getCurrentSubject()? && @getActiveWorkflow()?
     currentTask = @getCurrentTask()
     TaskComponent = @getCurrentTool()
-    onFirstAnnotation = @state.taskKey == @getActiveWorkflow().first_task
-
+    activeWorkflow = @getActiveWorkflow()
+    firstTask = activeWorkflow.first_task
+    onFirstAnnotation = @state.taskKey == firstTask
+    currentSubtool = if @state.currentSubtool then @state.currentSubtool else @getTasks()[firstTask]?.tool_config.tools?[0]
 
     if currentTask.tool is 'pick_one'
       currentAnswer = currentTask.tool_config.options?[currentAnnotation.value]
@@ -67,7 +70,7 @@ module.exports = React.createClass # rename to Classifier
               subject_index={@state.subject_index}
               workflow={@getActiveWorkflow()}
               task={currentTask}
-              annotation={@getCurrentClassification().annotation ? {}}
+              annotation={@getCurrentClassification()?.annotation ? {}}
               onComplete={@handleToolComplete}
               onChange={@handleDataFromTool}
               onViewSubject={@handleViewSubject}
@@ -77,6 +80,7 @@ module.exports = React.createClass # rename to Classifier
               prevPage={@prevPage}
               totalSubjectPages={@state.total_subject_pages}
               destroyCurrentClassification={@destroyCurrentClassification}
+              currentSubtool={currentSubtool}
             />
         }
       </div>
@@ -85,7 +89,7 @@ module.exports = React.createClass # rename to Classifier
           <TaskComponent
             key={@getCurrentTask().key}
             task={currentTask}
-            annotation={@getCurrentClassification().annotation ? {}}
+            annotation={@getCurrentClassification()?.annotation ? {}}
             onChange={@handleDataFromTool}
             subject={@getCurrentSubject()}
           />
@@ -105,7 +109,7 @@ module.exports = React.createClass # rename to Classifier
               <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
             }
             { if @getNextTask()?
-                console.log "STATE at the NEXT BUTTON", @state
+                # console.log "STATE at the NEXT BUTTON", @state
                 <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@advanceToNextTask}>Next</button>
               else
                 if @state.taskKey == "completion_assessment_task"
@@ -137,7 +141,7 @@ module.exports = React.createClass # rename to Classifier
     # @forceUpdate()
     @setState subject_index: index, => @forceUpdate()
     @toggleBadSubject() if @state.badSubject
-         
+
   # User somehow indicated current task is complete; commit current classification
   handleToolComplete: (d) ->
     @handleDataFromTool(d)
@@ -160,6 +164,7 @@ module.exports = React.createClass # rename to Classifier
     # to initialize marks going forward
     if d.subToolIndex? && ! d.x? && ! d.y?
       @setState currentSubToolIndex: d.subToolIndex
+      @setState currentSubtool: d.tool if d.tool?
 
     else
       # console.log "MARK/INDEX::handleDataFromTool()", d if JSON.stringify(d) != JSON.stringify(@getCurrentClassification()?.annotation)
@@ -176,12 +181,16 @@ module.exports = React.createClass # rename to Classifier
           , =>
             @forceUpdate()
 
+
   destroyCurrentClassification: ->
     classifications = @state.classifications
     classifications.splice(@state.classificationIndex,1)
-    @setState 
+    @setState
       classifications: classifications
       classificationIndex: classifications.length-1
+
+    # There should always be an empty classification ready to receive data:
+    @beginClassification()
 
   destroyCurrentAnnotation: ->
     # TODO: implement mechanism for going backwards to previous classification, potentially deleting later classifications from stack:
