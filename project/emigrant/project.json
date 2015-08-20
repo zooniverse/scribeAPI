@@ -1,9 +1,10 @@
 {
-  "title": "Emigrant Savings Bank",
+  "title": "Nation of Emigrants",
   "short_title": "Emigrant",
   "summary": "Emmmmigrannnnnt Savinnnnnnnngs Baaaaannk",
   "background": "assets/emigrant/background.jpg",
   "admin_email": "paulbeaudoin@nypl.org",
+  "logo": "/assets/emigrant/logo.png",
   "team_emails": [
     "brianfoo@nypl.org",
     "contact@paulbeaudoin.com"
