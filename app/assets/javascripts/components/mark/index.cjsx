@@ -107,7 +107,7 @@ module.exports = React.createClass # rename to Classifier
             { if @getCurrentTask().help?
               <HelpButton onClick={@toggleHelp} />
             }
-            <HideOtherMarksButton onClick={@toggleHideOtherMarks} />
+            <HideOtherMarksButton active={@state.hideOtherMarks} onClick={@toggleHideOtherMarks} />
             { if onFirstAnnotation
               <BadSubjectButton active={@state.badSubject} onClick={@toggleBadSubject} />
             }

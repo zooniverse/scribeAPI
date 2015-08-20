@@ -7,4 +7,4 @@ module.exports = React.createClass
   render: ->
     label = 'Hide Other Marks' #if @props.active then 'Bad Subject' else 'Hide Other Marks'
 
-    <SmallButton label={label} onClick={@props.onClick} className="ghost bad-subject #{'marked-bad' if @props.active}" />
+    <SmallButton label={label} onClick={@props.onClick} className="ghost toggle-button #{'toggled' if @props.active}" />
