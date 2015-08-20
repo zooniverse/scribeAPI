@@ -156,7 +156,7 @@ desc 'creates a poject object from the project directory'
       config[:options] = config.delete :tools
     # In Pick-one, structure 'options' as an array rather than a hash:
     elsif task_hash[:tool] == 'pickOne'
-      config[:options] = config[:options].map { |(option_value,config)| config[:value] = option_value; config }
+      config[:options] = config[:options].map { |(option_value,config)| config[:value] = option_value; config } if config[:options].is_a?(Hash)
     end
     config
   end
