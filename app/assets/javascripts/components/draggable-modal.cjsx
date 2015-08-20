@@ -25,7 +25,11 @@ module.exports = React.createClass
     y = @props.y ? (( $(window).height() - 300) / 2 ) + $(window).scrollTop()
     y = Math.max y, 100
     x = Math.max x, 100
-
+    console.log @props.completedSteps
+    console.log @props.progressSteps.length
+    console.log (@props.completedSteps/@props.progressSteps.length) * 100
+    progressStyle = { width: "#{(@props.completedSteps/@props.progressSteps.length) * 100}%" }
+    
     <Draggable x={x} y={y}>
 
       <div className="draggable-modal #{@props.classes}">
@@ -47,7 +51,12 @@ module.exports = React.createClass
               <DoneButton label={@props.doneButtonLabel} onClick={onDone} />
           }
         </div>
-
+        {
+          if @props.progressSteps
+            <div className={"simple-progress-bar"}>
+              <span className="tutorial-progress-ind" style={progressStyle}></span>
+            </div>
+        }
       </div>
 
     </Draggable>

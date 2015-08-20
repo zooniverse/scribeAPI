@@ -28,8 +28,8 @@ module.exports = React.createClass # rename to Classifier
     subject_index:                0
     currentSubToolIndex:          0
     helping:                      false
-    showTutorial:                 false
-    currentSubtool:                  null
+    showTutorial:                 true
+    currentSubtool:               null
 
   componentDidMount: ->
     @getCompletionAssessmentTask()
