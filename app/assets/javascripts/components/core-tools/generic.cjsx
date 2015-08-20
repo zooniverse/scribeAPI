@@ -13,7 +13,7 @@ module.exports = React.createClass
     answers: ''
 
   render: ->
-    console.log "rendering with: ", @props
+    # console.log "rendering with: ", @props
     <div className="workflow-task">
       <span>{@props.question}</span>
       <div className="answers">
