@@ -1,0 +1,55 @@
+.subject-zoom-pan
+  position:fixed
+  left: 20px
+  top: 580px
+  width: 130px
+  height: 110px
+
+  .pan, .zoom, .reset
+    position:absolute
+
+  .zoom
+    width:30px
+    height:30px
+    top:50%
+    margin-top:-28px
+    left:50%
+
+    &.out
+      margin-left:-32px
+    &.in
+      margin-left:2px
+
+  .pan
+    &.up, &.down
+      width: 50px
+      height: 20px
+      left: 50%
+      margin-left:-25px
+
+    &.up
+      top:0
+
+    &.down
+      bottom:0
+
+    &.left, &.right
+      width: 20px
+      height: 50px
+      top: 50%
+      margin-top:-25px
+
+    &.left
+      left:0
+
+    &.right
+      right:0
+
+  .reset
+    width: 64px
+    height: 20px
+    top:50%
+    margin-top:10px
+    left:50%
+    margin-left:-32px
+    font-size:10px

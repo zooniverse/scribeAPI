@@ -26,6 +26,10 @@ module.exports = React.createClass
     marks: []
     selectedMark: null
     active: @props.active
+    zoom:
+      level: 1
+      x: 0
+      y: 0
 
   getDefaultProps: ->
     tool: null # Optional tool to place alongside subject (e.g. transcription tool placed alongside mark)
@@ -51,6 +55,8 @@ module.exports = React.createClass
     if @props.workflow.name is 'transcribe'
       yPos = (@props.subject.data.y - @props.subject.data.height?) * @getScale().vertical - 100
       $('html, body').animate({scrollTop: yPos}, 500)
+
+    
 
   componentWillUnmount: ->
     window.removeEventListener "resize", this.updateDimensions
@@ -308,7 +314,8 @@ module.exports = React.createClass
   render: ->
     return null if ! @props.active
 
-    viewBox = [0, 0, @props.subject.width, @props.subject.height]
+    viewBox = @props.viewBox ? [0, 0, @props.subject.width, @props.subject.height]
+
     scale = @getScale()
 
     marks = @getCurrentMarks()

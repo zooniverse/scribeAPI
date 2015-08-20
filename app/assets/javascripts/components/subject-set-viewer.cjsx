@@ -9,11 +9,14 @@ SubjectMetadata               = require './subject-metadata'
 ActionButton                  = require './action-button'
 markingTools                  = require './mark/tools'
 LightBox                       = require './light-box'
-
+SubjectZoomPan                = require 'components/subject-zoom-pan'
+ZoomPanListenerMethods        = require 'lib/zoom-pan-listener-methods'
 
 module.exports = React.createClass
   displayName: 'SubjectSetViewer'
   resizing: false
+
+  mixins: [ZoomPanListenerMethods]
 
   getInitialState: ->
     subject_set: @props.subject_set
@@ -66,6 +69,9 @@ module.exports = React.createClass
             />
         }
       </div>
+      
+      <SubjectZoomPan subject={@props.subject_set.subjects[@props.subject_index]} onChange={@handleZoomPanViewBoxChange} viewBox={@state.zoomPanViewBox}/>
+
       { for subject, index in @props.subject_set.subjects
         <SubjectViewer
           key={index}
@@ -80,6 +86,7 @@ module.exports = React.createClass
           subToolIndex={@props.subToolIndex}
           destroyCurrentClassification={@props.destroyCurrentClassification}
           currentSubtool={@props.currentSubtool}
+          viewBox={@state.zoomPanViewBox}
         />
       }
     </div>
