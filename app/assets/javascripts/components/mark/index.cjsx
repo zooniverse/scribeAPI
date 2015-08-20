@@ -114,6 +114,9 @@ module.exports = React.createClass # rename to Classifier
             { if @state.badSubject
               <p>You&#39;ve marked this subject as BAD. Thanks for flagging the issue! <strong>Press DONE to continue.</strong></p>
             }
+            { if @state.hideOtherMarks
+              <p>Currently displaying only your marks. <strong>Toggle the button again to show all marks to-date.</strong></p>
+            }
           </div>
           <nav className="task-nav">
             { if false
