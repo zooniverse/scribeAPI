@@ -30,8 +30,8 @@ module.exports =
   # right now the trigger for this method is the forward or back button in the light-box
   # I am torn about whether to set the subject_index at this point? -- AMS
   fetchNextSubjectPage: (subject_set_id, workflow_id, page_number, subject_index, callback_fn) ->
-    console.log 'fetchNextSubjectPage()'
-    console.log 'QUERY: ', "subject_sets/#{subject_set_id}?page=#{page_number}&workflow_id=#{workflow_id}"
+    # console.log 'fetchNextSubjectPage()'
+    # console.log 'QUERY: ', "subject_sets/#{subject_set_id}?page=#{page_number}&workflow_id=#{workflow_id}"
     request = API.type("subject_sets").get("#{subject_set_id}", page: page_number, workflow_id: workflow_id)
 
     @setState
@@ -49,8 +49,8 @@ module.exports =
 
   fetchSubjectSetBySubjectId: (workflow_id, subject_set_id, selected_subject_id) ->
   # fetchSubjectSetBySubjectId: (workflow_id, subject_set_id, selected_subject_id, page) -> # why page number? --STI
-    console.log 'fetchSubjectSetBySubjectId()'
-    console.log 'THE QUERY: ', "/workflows/#{workflow_id}/subject_sets/#{subject_set_id}/subjects/#{selected_subject_id}"
+    # console.log 'fetchSubjectSetBySubjectId()'
+    # console.log 'THE QUERY: ', "/workflows/#{workflow_id}/subject_sets/#{subject_set_id}/subjects/#{selected_subject_id}"
     request = API.type('workflows').get("#{workflow_id}/subject_sets/#{subject_set_id}/subjects/#{selected_subject_id}") #?page=#{page}")
     # request = API.type("subject_sets").get(subject_set_id: subject_set_id, workflow_id: workflow_id)
 
@@ -64,7 +64,7 @@ module.exports =
           subject_index = subject_set.subjects.indexOf subject
 
       @setState
-        subjectSets: subject_set
+        subjectSets: [subject_set]
         subject_set_index: 0
         subject_index: subject_index || 0 #parseInt(subject_index) || 0
         subject_current_page: subject_set.subjects_pagination_info.current_page
@@ -78,7 +78,7 @@ module.exports =
     subject_sets
 
   fetchSubjectSet: (subject_set_id, workflow_id)->
-    console.log 'fetchSubjectSet()'
+    # console.log 'fetchSubjectSet()'
     request = API.type("subject_sets").get(subject_set_id: subject_set_id, workflow_id: workflow_id)
 
     @setState
@@ -91,7 +91,7 @@ module.exports =
         subjectSets: subject_set
         subject_set_index: 0
         subject_index: 0 #parseInt(subject_index) || 0
-          , => console.log 'STATE: ', @state
+          # , => console.log 'STATE: ', @state
 
   fetchSubjectSets: (workflow_id, limit) ->
     if @props.overrideFetchSubjectsUrl?
