@@ -1,5 +1,7 @@
 React           = require 'react'
 DraggableModal  = require '../../../draggable-modal'
+GenericButton = require 'components/buttons/generic-button'
+DoneButton    = require 'components/buttons/done-button'
 
 VerifyTool = React.createClass
   displayName: 'VerifyTool'
@@ -15,11 +17,13 @@ VerifyTool = React.createClass
     standalone: true
     annotation_key: 'value'
     focus: true
-   
+    doneButtonLabel: 'Okay'
+    transcribeButtonLabel: 'None of these? Enter your own'
+
   componentWillReceiveProps: ->
     @setState
       annotation: @props.annotation
-   
+
   commitAnnotation: ->
     @props.onComplete @state.annotation
 
@@ -68,14 +72,22 @@ VerifyTool = React.createClass
     if ! @props.standalone
       label = @props.label ? ''
 
+    buttons = null
+    if @props.task?.tool_config.displays_transcribe_button?
+      buttons = []
+      transcribe_url = "/#/transcribe/#{@props.subject?.parent_subject_id}?scrollX=#{window.scrollX}&scrollY=#{window.scrollY}&page=#{@props.subject?._meta?.current_page}"
+      buttons.push <GenericButton label={@props.transcribeButtonLabel} href={transcribe_url} className="ghost small-button help-button" />
+      buttons.push <DoneButton label={@props.doneButtonLabel} onClick={@commitAnnotation} />
+
     {x,y} = @getPosition @props.subject.region
     console.log "verify tool rendering with scale: ", @props.scale, x, x*@props.scale.horizontal, y, y*@props.scale.vertical
     <DraggableModal
-      
+
       header  = {label}
       x={x*@props.scale.horizontal}
       y={y*@props.scale.vertical}
-      onDone  = {@commitAnnotation} >
+      onDone  = {@commitAnnotation}
+      buttons = {buttons}>
 
       <div className="verify-tool-choices">
         { if @props.subject.data.task_prompt?
@@ -97,7 +109,7 @@ VerifyTool = React.createClass
         }
         </ul>
       </div>
-      
+
     </DraggableModal>
 
 module.exports = VerifyTool
