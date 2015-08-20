@@ -167,6 +167,7 @@ module.exports = React.createClass
       @destroyMark @props.annotation, mark
 
     mark.isUncommitted = true
+    mark.belongsToUser = true
     @setUncommittedMark mark
 
   setUncommittedMark: (mark) ->
@@ -236,6 +237,7 @@ module.exports = React.createClass
       marks[i] = child_subject.region
       marks[i].isTranscribable = !child_subject.user_has_classified && child_subject.status != "retired"
       marks[i].belongsToUser = child_subject.user_has_classified
+      console.log 'child_subject.user_has_classified = ', child_subject.user_has_classified
     # marks = (s for s in (@props.subject.child_subjects ? [] ) when s?.region?).map (m) ->
     #   # {userCreated: false}.merge
     #   m?.region ? {}

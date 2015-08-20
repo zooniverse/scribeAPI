@@ -12,11 +12,11 @@ class SubjectGenerationMethod
     methods[name].new
   end
 
-  def process_classification(classification)
+  def process_classification(classification, user)
     raise "Invalid subject generation method: Attempted to use abstract SubjectGenerationMethod#process_classification"
   end
 
-  def subject_attributes_from_classification(classification)
+  def subject_attributes_from_classification(classification, user)
 
     workflow = classification.subject.workflow
 
@@ -37,8 +37,11 @@ class SubjectGenerationMethod
     end
     region[:label] = task.tool_label classification
 
+    belongs_to_user = classification.user.id == user.id
+
     {
       parent_subject: classification.subject,
+      belongs_to_user: belongs_to_user,
       subject_set: classification.subject.subject_set,
       workflow: workflow_for_new_subject,
       type: subject_type,
@@ -50,7 +53,7 @@ class SubjectGenerationMethod
       height: classification.subject.height
     }
   end
-  
+
   def build_mark_region(classification)
     region = classification.annotation.inject({}) do |h, (k,v)|
       h[k] = v if ['toolName','color'].include? k

@@ -2,9 +2,9 @@ module SubjectGenerationMethods
 
   class MostPopular < SubjectGenerationMethod
 
-    def process_classification(classification)
+    def process_classification(classification, user)
 
-      atts = subject_attributes_from_classification classification
+      atts = subject_attributes_from_classification(classification, user)
       atts[:status] = 'inactive'
 
       classification.child_subject = Subject.find_or_initialize_by(workflow: atts[:workflow], parent_subject: atts[:parent_subject], type: atts[:type])
