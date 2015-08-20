@@ -73,9 +73,9 @@ VerifyTool = React.createClass
       label = @props.label ? ''
 
     buttons = null
-    if @props.task?.tool_config.displays_transcribe_button?
+    if @props.task?.tool_config.displays_transcribe_button? and @props.subject?
       buttons = []
-      transcribe_url = "/#/transcribe/#{@props.subject?.parent_subject_id}?scrollX=#{window.scrollX}&scrollY=#{window.scrollY}&page=#{@props.subject?._meta?.current_page}"
+      transcribe_url = "/#/transcribe/#{@props.subject.parent_subject_id}?scrollX=#{window.scrollX}&scrollY=#{window.scrollY}&page=#{@props.subject._meta?.current_page}"
       buttons.push <GenericButton label={@props.transcribeButtonLabel} href={transcribe_url} className="ghost small-button help-button" />
       buttons.push <DoneButton label={@props.doneButtonLabel} onClick={@commitAnnotation} />
 
