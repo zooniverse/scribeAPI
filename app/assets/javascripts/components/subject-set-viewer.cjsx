@@ -80,6 +80,7 @@ module.exports = React.createClass
           subToolIndex={@props.subToolIndex}
           destroyCurrentClassification={@props.destroyCurrentClassification}
           hideOtherMarks={@props.hideOtherMarks}
+          currentSubtool={@props.currentSubtool}
         />
       }
     </div>

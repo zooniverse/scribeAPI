@@ -230,14 +230,15 @@ module.exports = React.createClass
 
   getCurrentMarks: ->
     # Previous marks are really just the region hashes of all child subjects
-    console.log 'CHILD SUBHECTS: ', @props.subject.child_subjects
     marks = []
+    currentSubtool = @props.currentSubtool
     for child_subject, i in @props.subject.child_subjects
       child_subject.region.subject_id = child_subject.id # copy id field into region (not ideal)
       marks[i] = child_subject.region
       marks[i].isTranscribable = !child_subject.user_has_classified && child_subject.status != "retired"
       marks[i].belongsToUser = child_subject.belongs_to_user
-      console.log 'child_subject.user_has_classified = ', child_subject.user_has_classified
+      marks[i].groupActive = currentSubtool?.generates_subject_type == child_subject.type
+
     # marks = (s for s in (@props.subject.child_subjects ? [] ) when s?.region?).map (m) ->
     #   # {userCreated: false}.merge
     #   m?.region ? {}
@@ -247,7 +248,6 @@ module.exports = React.createClass
     marks
 
   separateTranscribableMarks: (marks) ->
-    console.log 'renderTranscribableMarksOnTop()'
 
     transcribableMarks = []
     otherMarks = []
@@ -268,12 +268,13 @@ module.exports = React.createClass
       mark._key ?= Math.random()
       continue if ! mark.x? || ! mark.y? # if mark hasn't acquired coords yet, don't draw it yet
 
-      console.log 'MARK BELONGS TO USER? ', mark.belongsToUser
       if @props.hideOtherMarks
         continue unless mark.belongsToUser
 
+      displaysTranscribeButton = @props.task?.tool_config.displays_transcribe_button != false
       isPriorMark = ! mark.userCreated
-      <g key={mark._key} className="marks-for-annotation" data-disabled={isPriorMark or null}>
+      
+      <g key={mark._key} className="marks-for-annotation#{if mark.groupActive then ' group-active' else ''}" data-disabled={isPriorMark or null}>
         {
           mark._key ?= Math.random()
           ToolComponent = markingTools[mark.toolName]
@@ -291,6 +292,7 @@ module.exports = React.createClass
             getEventOffset={@getEventOffset}
             submitMark={@submitMark}
             sizeRect={@refs.sizeRect}
+            displaysTranscribeButton={displaysTranscribeButton}
 
             onSelect={@selectMark.bind this, mark}
             onChange={@handleChange.bind this, mark}
