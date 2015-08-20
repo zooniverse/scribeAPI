@@ -63,11 +63,13 @@ module.exports = React.createClass
   componentWillUnmount:->
     @setState
       subToolIndex: 0
-      tool: @props.task?.tool_config.tools[0]
+      tool: @props.task?.tool_config.options[0]
+    # Ensure mark/index subToolIndex is set to 0 in case next task uses a pick-one-*
+    @props.onChange? subToolIndex: 0
 
   getInitialState: ->
     subToolIndex: 0 # @props.annotation?.subToolIndex ? 0
-    tool: @props.task?.tool_config.tools[0]
+    tool: @props.task?.tool_config.options[0]
 
     # annotation: $.extend({subToolIndex: null}, @props.annotation ? {})
 
@@ -80,7 +82,7 @@ module.exports = React.createClass
       counts[subject.type] ?= 0
       counts[subject.type] += 1
 
-    tools = for tool, i in @props.task.tool_config.tools
+    tools = for tool, i in @props.task.tool_config.options
       tool._key ?= Math.random()
 
       # How many prev marks? (i.e. child_subjects with same generates_subject_type)

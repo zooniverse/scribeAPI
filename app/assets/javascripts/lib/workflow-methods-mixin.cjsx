@@ -156,8 +156,9 @@ module.exports =
   # Get next logical task
   getNextTask: ->
     task = @getTasks()[@state.taskKey]
-    if task.tool_config?.options?[@getCurrentClassification().annotation?.value]?.next_task?
-      nextKey = task.tool_config.options[@getCurrentClassification().annotation.value].next_task
+    # PB: Moving from hash of options to an array of options
+    if (options = (c for c in task.tool_config?.options when c.value == @getCurrentClassification().annotation?.value)) && options.length > 0 && (opt = options[0])? && opt.next_task?
+      nextKey = opt.next_task
     else
       nextKey = @getTasks()[@state.taskKey].next_task
 

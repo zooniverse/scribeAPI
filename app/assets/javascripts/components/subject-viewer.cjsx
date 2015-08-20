@@ -33,10 +33,6 @@ module.exports = React.createClass
     annotationIsComplete: false
 
   componentWillReceiveProps: (new_props) ->
-    # console.log "SubjectViewer#componentWillReceiveProps: ", @props, new_props
-    # @setUncommittedMark null if ! @state.uncommittedMark?.saving && ! new_props.annotation?.subToolIndex?
-    # @setUncommittedMark null if ! new_props.annotation?.subToolIndex?
-    # console.log "setting null because",new_props.task?.tool != 'pickOneMarkOne'
     @setUncommittedMark null if new_props.task?.tool != 'pickOneMarkOne'
     if Object.keys(@props.annotation).length == 0 #prevents back-to-back mark tasks, displaying a duplicate mark from previous tasks.
       @setUncommittedMark null
@@ -91,7 +87,7 @@ module.exports = React.createClass
 
     subToolIndex = @props.subToolIndex
     return null if ! subToolIndex?
-    subTool = @props.task.tool_config?.tools?[subToolIndex]
+    subTool = @props.task.tool_config?.options?[subToolIndex]
     return null if ! subTool?
 
     # If there's a current, uncommitted mark, commit it:
@@ -351,23 +347,24 @@ module.exports = React.createClass
               toolName = @props.subject.region.toolName
 
               mark = @props.subject.region
-              # console.log "MARK", mark
-              ToolComponent = markingTools[toolName]
-              isPriorMark = true
-              <g>
-                { @highlightMark(mark, toolName) }
-                <ToolComponent
-                  key={@props.subject.id}
-                  mark={mark}
-                  xScale={scale.horizontal}
-                  yScale={scale.vertical}
-                  disabled={isPriorMark}
-                  selected={mark is @state.selectedMark}
-                  getEventOffset={@getEventOffset}
-                  ref={@refs.sizeRect}
-                  onSelect={@selectMark.bind this, @props.subject, mark}
-                />
-              </g>
+
+              if mark.x? && mark.y?
+                ToolComponent = markingTools[toolName]
+                isPriorMark = true
+                <g>
+                  { @highlightMark(mark, toolName) }
+                  <ToolComponent
+                    key={@props.subject.id}
+                    mark={mark}
+                    xScale={scale.horizontal}
+                    yScale={scale.vertical}
+                    disabled={isPriorMark}
+                    selected={mark is @state.selectedMark}
+                    getEventOffset={@getEventOffset}
+                    ref={@refs.sizeRect}
+                    onSelect={@selectMark.bind this, @props.subject, mark}
+                  />
+                </g>
           }
 
           { @renderMarks otherMarks }
