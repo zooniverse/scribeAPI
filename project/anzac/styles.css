@@ -20,7 +20,12 @@ span.keyword {
 }
 
 .page-content h1{
-  font-family: 'Roboto Slab';
+  font-family: clarendon-text-pro;
+  font-weight: 100;
+  letter-spacing: 5px;
+  text-align: center;
+  color:  #ffffff;
+  margin-bottom: 0%;
   text-transform: capitalize; 
   font-size: 42px;
   padding-bottom: 0;
@@ -66,7 +71,7 @@ span.keyword {
 }
 
 .home-page p{
-  font-size: .9em;
+  font-size: .7em;
   line-height: 1.3em;
   margin-bottom: 0;
 }
@@ -81,7 +86,7 @@ span.keyword {
 .modal-header {
     background-color: #3f5765;
     color: #efefef;
-    text-transform: uppercase;
+    text-transform: capitalize;
     border-bottom: solid 3px #8cbc8c;
     border-top-left-radius: .25em;
     border-top-right-radius: .25em;
