@@ -236,7 +236,7 @@ module.exports = React.createClass
       child_subject.region.subject_id = child_subject.id # copy id field into region (not ideal)
       marks[i] = child_subject.region
       marks[i].isTranscribable = !child_subject.user_has_classified && child_subject.status != "retired"
-      marks[i].belongsToUser = child_subject.user_has_classified
+      marks[i].belongsToUser = child_subject.belongs_to_user
       console.log 'child_subject.user_has_classified = ', child_subject.user_has_classified
     # marks = (s for s in (@props.subject.child_subjects ? [] ) when s?.region?).map (m) ->
     #   # {userCreated: false}.merge

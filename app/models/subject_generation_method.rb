@@ -37,11 +37,9 @@ class SubjectGenerationMethod
     end
     region[:label] = task.tool_label classification
 
-    belongs_to_user = classification.user.id == user.id
-
     {
       parent_subject: classification.subject,
-      belongs_to_user: belongs_to_user,
+      created_by_user_id: user.id,
       subject_set: classification.subject.subject_set,
       workflow: workflow_for_new_subject,
       type: subject_type,
