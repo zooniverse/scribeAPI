@@ -13,14 +13,18 @@
     "em_transcribed_date": {
       "instruction": "Choose the best transcription!",
       "tool": "verifyTool",
-      "tool_config": {},
+      "tool_config": {
+        "displays_transcribe_button": true
+      },
       "generates_subject_type": "consensus_date"
     },
 
     "em_transcribed_record_number": {
       "instruction": "Choose the best transcription!",
       "tool": "verifyTool",
-      "tool_config": {},
+      "tool_config": {
+        "displays_transcribe_button": true
+      },
       "generates_subject_type": "consensus_record_number"
     },
 
@@ -28,28 +32,36 @@
     "em_transcribed_mortgager": {
       "instruction": "Choose the best transcription!",
       "tool": "verifyTool",
-      "tool_config": {},
+      "tool_config": {
+        "displays_transcribe_button": true
+      },
       "generates_subject_type": "consensus_mortgager"
     },
 
     "em_transcribed_address": {
       "instruction": "Choose the best transcription!",
       "tool": "verifyTool",
-      "tool_config": {},
+      "tool_config": {
+        "displays_transcribe_button": true
+      },
       "generates_subject_type": "consensus_address"
     },
 
     "em_transcribed_amount_loaned": {
       "instruction": "Choose the best transcription!",
       "tool": "verifyTool",
-      "tool_config": {},
+      "tool_config": {
+        "displays_transcribe_button": true
+      },
       "generates_subject_type": "consensus_amount_loaned"
     },
 
     "em_transcribed_valuation": {
       "instruction": "Choose the best transcription!",
       "tool": "verifyTool",
-      "tool_config": {},
+      "tool_config": {
+        "displays_transcribe_button": true
+      },
       "generates_subject_type": "consensus_valuation"
     }
   }

@@ -10,6 +10,7 @@ HelpModal               = require 'components/help-modal'
 Tutorial               = require 'components/tutorial'
 HelpButton              = require 'components/buttons/help-button'
 BadSubjectButton        = require 'components/buttons/bad-subject-button'
+HideOtherMarksButton    = require 'components/buttons/hide-other-marks-button'
 DraggableModal          = require 'components/draggable-modal'
 
 module.exports = React.createClass # rename to Classifier
@@ -17,19 +18,21 @@ module.exports = React.createClass # rename to Classifier
 
   getDefaultProps: ->
     workflowName: 'mark'
+    # hideOtherMarks: false
 
   mixins: [FetchSubjectSetsMixin, BaseWorkflowMethods] # load subjects and set state variables: subjects, currentSubject, classification
 
   getInitialState: ->
-    taskKey:                      null
-    classifications:              []
-    classificationIndex:          0
-    subject_set_index:            0
-    subject_index:                0
-    currentSubToolIndex:          0
-    helping:                      false
+    taskKey:             null
+    classifications:     []
+    classificationIndex: 0
+    subject_set_index:   0
+    subject_index:       0
+    currentSubToolIndex: 0
+    helping:             false
+    hideOtherMarks:      false
     showTutorial:                 false
-    currentSubtool:               null
+    currentSubtool:      null
 
   componentDidMount: ->
     @getCompletionAssessmentTask()
@@ -45,6 +48,12 @@ module.exports = React.createClass # rename to Classifier
 
   toggleTutorial: ->
     @setState showTutorial: not @state.showTutorial
+
+  toggleHideOtherMarks: ->
+    @setState hideOtherMarks: not @state.hideOtherMarks
+    , =>
+      console.log 'SET @state.hidingMarks to: ', @state.hideOtherMarks
+      # @forceUpdate()
 
   render: ->
     return null unless @getCurrentSubject()? && @getActiveWorkflow()?
@@ -85,6 +94,7 @@ module.exports = React.createClass # rename to Classifier
               prevPage={@prevPage}
               totalSubjectPages={@state.total_subject_pages}
               destroyCurrentClassification={@destroyCurrentClassification}
+              hideOtherMarks={@state.hideOtherMarks}
               currentSubtool={currentSubtool}
             />
         }
@@ -102,11 +112,15 @@ module.exports = React.createClass # rename to Classifier
             { if @getCurrentTask().help?
               <HelpButton onClick={@toggleHelp} />
             }
+            <HideOtherMarksButton active={@state.hideOtherMarks} onClick={@toggleHideOtherMarks} />
             { if onFirstAnnotation
               <BadSubjectButton active={@state.badSubject} onClick={@toggleBadSubject} />
             }
             { if @state.badSubject
               <p>You&#39;ve marked this subject as BAD. Thanks for flagging the issue! <strong>Press DONE to continue.</strong></p>
+            }
+            { if @state.hideOtherMarks
+              <p>Currently displaying only your marks. <strong>Toggle the button again to show all marks to-date.</strong></p>
             }
           </div>
 

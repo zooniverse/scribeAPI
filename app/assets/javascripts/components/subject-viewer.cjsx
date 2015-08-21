@@ -41,7 +41,6 @@ module.exports = React.createClass
     if Object.keys(@props.annotation).length == 0 #prevents back-to-back mark tasks, displaying a duplicate mark from previous tasks.
       @setUncommittedMark null
 
-
   componentDidMount: ->
     @setView 0, 0, @props.subject.width, @props.subject.height
     @loadImage @props.subject.location.standard
@@ -104,6 +103,7 @@ module.exports = React.createClass
     # Create an initial mark instance, which will soon gather coords:
     # mark = toolName: subTool.type, userCreated: true, subToolIndex: @state.uncommittedMark?.subToolIndex ? @props.annotation?.subToolIndex
     mark =
+      belongsToUser: true # let users see their current mark when hiding others
       toolName: subTool.type
       userCreated: true
       subToolIndex: subToolIndex
@@ -167,11 +167,12 @@ module.exports = React.createClass
     if MarkComponent.initValid? and not MarkComponent.initValid mark
       @destroyMark @props.annotation, mark
 
+    mark.isUncommitted = true
+    mark.belongsToUser = true
     @setUncommittedMark mark
 
   setUncommittedMark: (mark) ->
-    @setState
-      uncommittedMark: mark
+    @setState uncommittedMark: mark
 
   setView: (viewX, viewY, viewWidth, viewHeight) ->
     @setState {viewX, viewY, viewWidth, viewHeight}
@@ -218,9 +219,7 @@ module.exports = React.createClass
   submitMark: ->
     mark = @state.uncommittedMark
     # console.log "SubjectViewer: Submit mark: ", mark.subToolIndex, mark
-
     @setUncommittedMark null
-
     @props.onComplete? mark
 
   handleChange: (mark) ->
@@ -238,6 +237,7 @@ module.exports = React.createClass
       child_subject.region.subject_id = child_subject.id # copy id field into region (not ideal)
       marks[i] = child_subject.region
       marks[i].isTranscribable = !child_subject.user_has_classified && child_subject.status != "retired"
+      marks[i].belongsToUser = child_subject.belongs_to_user
       marks[i].groupActive = currentSubtool?.generates_subject_type == child_subject.type
 
     # marks = (s for s in (@props.subject.child_subjects ? [] ) when s?.region?).map (m) ->
@@ -249,32 +249,31 @@ module.exports = React.createClass
     marks
 
   separateTranscribableMarks: (marks) ->
-    # console.log 'renderTranscribableMarksOnTop()'
-
     transcribableMarks = []
     otherMarks = []
     for mark in marks
       if mark.isTranscribable
-        # console.log 'TRANSCRIBABLE: ', mark
         transcribableMarks.push mark
       else
-        # console.log 'OTHER: ', mark
         otherMarks.push mark
 
-    # console.log '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> MARKS: ', transcribableMarks, otherMarks
-
-    # console.log '{transcribableMarks, otherMarks} = ', {transcribableMarks, otherMarks}
+    console.log '{transcribableMarks, otherMarks} = ', {transcribableMarks, otherMarks}
     return {transcribableMarks, otherMarks}
 
   renderMarks: (marks) ->
-    # console.log 'renderMarks() ', marks
+
     return unless marks.length > 0
     scale = @getScale()
-    displaysTranscribeButton = @props.task?.tool_config.displays_transcribe_button != false
-    foo = for mark in marks
+    marksToRender = for mark in marks
       mark._key ?= Math.random()
       continue if ! mark.x? || ! mark.y? # if mark hasn't acquired coords yet, don't draw it yet
+
+      if @props.hideOtherMarks
+        continue unless mark.belongsToUser
+
+      displaysTranscribeButton = @props.task?.tool_config.displays_transcribe_button != false
       isPriorMark = ! mark.userCreated
+
       <g key={mark._key} className="marks-for-annotation#{if mark.groupActive then ' group-active' else ''}" data-disabled={isPriorMark or null}>
         {
           mark._key ?= Math.random()
@@ -302,8 +301,8 @@ module.exports = React.createClass
         }
       </g>
 
-    # console.log 'FOO: ', foo
-    return foo
+    return marksToRender
+
 
   render: ->
     return null if ! @props.active

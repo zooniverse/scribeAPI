@@ -56,6 +56,13 @@
   top: 50%;
   background: rgba(255,255,255,0.3);
 }
+.main-header-item.logo {
+  transform: none;
+}
+.main-header-item.logo img {
+  width: auto;
+  height: 52px;
+}
 
 /* Pages */
 .page-content p,
