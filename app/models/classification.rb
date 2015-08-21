@@ -25,7 +25,7 @@ class Classification
 
   def generate_new_subjects
     if workflow.generates_subjects
-      workflow.create_secondary_subjects(self, user)
+      workflow.create_secondary_subjects(self)
     end
   end
 
@@ -95,7 +95,6 @@ class Classification
     subject.inc classification_count: 1
 
     # Push user_id onto Subject.user_ids using mongo's fast addToSet feature, which ensures uniqueness
-    puts 'ADDING USER ID >>>>>>>>>>>>>>> ', user_id.to_s, ' <<<<<<<<<<<<<<<<<'
     Subject.where({id: subject.id}).find_and_modify({"$addToSet" => {classifying_user_ids: user_id.to_s}})
   end
 

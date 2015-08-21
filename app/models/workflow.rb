@@ -31,14 +31,14 @@ class Workflow
     tasks.where(key: key).first
   end
 
-  def create_secondary_subjects(classification, user)
+  def create_secondary_subjects(classification)
     task = task_by_key classification.task_key
     return if task.nil? || ! task.generates_subjects?
 
     # If we're here, this task generates subjects; Pass responsibility off to
     # the configured subject generation method:
     method = SubjectGenerationMethod.by_name classification.workflow.generates_subjects_method
-    method.process_classification(classification, user)
+    method.process_classification(classification)
   end
 
   def next_workflow

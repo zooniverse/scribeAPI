@@ -12,11 +12,11 @@ class SubjectGenerationMethod
     methods[name].new
   end
 
-  def process_classification(classification, user)
+  def process_classification(classification)
     raise "Invalid subject generation method: Attempted to use abstract SubjectGenerationMethod#process_classification"
   end
 
-  def subject_attributes_from_classification(classification, user)
+  def subject_attributes_from_classification(classification)
 
     workflow = classification.subject.workflow
 
@@ -39,7 +39,7 @@ class SubjectGenerationMethod
 
     {
       parent_subject: classification.subject,
-      created_by_user_id: user.id,
+      created_by_user_id: classification.user.id,
       subject_set: classification.subject.subject_set,
       workflow: workflow_for_new_subject,
       type: subject_type,

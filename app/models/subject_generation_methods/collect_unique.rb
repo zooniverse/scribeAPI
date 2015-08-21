@@ -2,9 +2,9 @@ module SubjectGenerationMethods
 
   class CollectUnique < SubjectGenerationMethod
 
-    def process_classification(classification, user)
+    def process_classification(classification)
 
-      atts = subject_attributes_from_classification(classification, user)
+      atts = subject_attributes_from_classification(classification)
 
       atts[:status] = 'inactive'
 
