@@ -25,7 +25,6 @@ module.exports = React.createClass
     y = @props.y ? (( $(window).height() - 300) / 2 ) + $(window).scrollTop()
     y = Math.max y, 100
     x = Math.max x, 100
-
     <Draggable x={x} y={y}>
 
       <div className="draggable-modal #{@props.classes}">
@@ -39,6 +38,19 @@ module.exports = React.createClass
           { @props.children }
         </div>
 
+        {
+          if @props.progressSteps
+            <div className="simple-progress-bar" >
+              {
+                for step, index in @props.progressSteps
+                  if index <= @props.currentStepIndex
+                    <span key={index} className="tutorial-progress-ind-active" ></span>
+                  else
+                    <span key={index} className="tutorial-progress-ind" ></span>
+              }
+            </div>
+        }
+
         <div className="modal-buttons">
           { if @props.buttons?
               @props.buttons
@@ -47,7 +59,6 @@ module.exports = React.createClass
               <DoneButton label={@props.doneButtonLabel} onClick={onDone} />
           }
         </div>
-
       </div>
 
     </Draggable>

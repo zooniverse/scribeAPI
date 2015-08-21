@@ -84,18 +84,18 @@
             },
             "tool_config": {
                 "tools": {
-                  "att_transcribe_height_ft": {
-                    "tool": "textTool",
-                    "tool_config": {},
-                    "label": "Transcribe the entry for **feet**.",
-                    "generates_subject_type": "att_transcribed_height_ft"
-                  },
                   "att_transcribe_height_in": {
                     "tool": "textTool",
                     "tool_config": {},
                     "label": "Transcribe the entry for **inches**.",
                     "generates_subject_type": "att_transcribed_height_in"
-                   }
+                   },
+                  "att_transcribe_height_ft": {
+                    "tool": "textTool",
+                    "tool_config": {},
+                    "label": "Transcribe the entry for **feet**.",
+                    "generates_subject_type": "att_transcribed_height_ft"
+                  }
                 }
             },
             "next_task": null
@@ -462,7 +462,7 @@
             "tool": "compositeTool",
             "help": {
                 "title": "Transcription Help",
-                "file": "basic_transcribe_help"
+                "file": "autocomplete_q_help"
             },
             "tool_config": {
                 "tools": {
@@ -471,12 +471,12 @@
                         "tool_config": {
                             "suggest": "common"
                         },
-                        "label": "Please transcribe the question on the form:"
+                        "label": "Please transcribe the highlighted question:"
                     },
                     "att_transcribe_answer": {
                         "tool": "textTool",
                         "tool_config": {},
-                        "label": "Enter the response as best you can:"
+                        "label": "Transcribe the response as best you can:"
                     }
                 }
             },
@@ -487,7 +487,7 @@
             "tool": "compositeTool",
             "help": {
                 "title": "Transcription Help",
-                "file": "basic_transcribe_help"
+                "file": "autocomplete_q_help"
             },
             "tool_config": {
                 "tools": {
@@ -496,7 +496,7 @@
                         "tool_config": {
                             "suggest": "common"
                         },
-                        "label": "Please transcribe the question on the form:"
+                        "label": "Please transcribe the **first part** of the highlighted question:"
                     },
                     "att_transcribe_answer": {
                         "tool": "textTool",
@@ -512,7 +512,7 @@
             "tool": "compositeTool",
             "help": {
                 "title": "Transcription Help",
-                "file": "basic_transcribe_help"
+                "file": "autocomplete_q_help"
             },
             "tool_config": {
                 "tools": {
@@ -521,7 +521,7 @@
                         "tool_config": {
                             "suggest": "common"
                         },
-                        "label": "Please transcribe the question on the form:"
+                        "label": "Please transcribe the **second part** of the highlighted question:"
                     },
                     "att_transcribe_answer": {
                         "tool": "textTool",
@@ -537,7 +537,7 @@
             "tool": "compositeTool",
             "help": {
                 "title": "Transcription Help",
-                "file": "basic_transcribe_help"
+                "file": "autocomplete_q_help"
             },
             "tool_config": {
                 "tools": {
@@ -546,7 +546,7 @@
                         "tool_config": {
                             "suggest": "common"
                         },
-                        "label": "Please transcribe the question on the form:"
+                        "label": "Please transcribe the **first part** of the highlighted question:"
                     },
                     "att_transcribe_answer": {
                         "tool": "textTool",
@@ -562,7 +562,7 @@
             "tool": "compositeTool",
             "help": {
                 "title": "Transcription Help",
-                "file": "basic_transcribe_help"
+                "file": "autocomplete_q_help"
             },
             "tool_config": {
                 "tools": {
@@ -571,7 +571,7 @@
                         "tool_config": {
                             "suggest": "common"
                         },
-                        "label": "Please transcribe the question on the form:"
+                        "label": "Please transcribe the **second part** of the highlighted question:"
                     },
                     "att_transcribe_answer": {
                         "tool": "textTool",
@@ -587,7 +587,7 @@
             "tool": "compositeTool",
             "help": {
                 "title": "Transcription Help",
-                "file": "basic_transcribe_help"
+                "file": "autocomplete_q_help"
             },
             "tool_config": {
                 "tools": {
@@ -596,7 +596,7 @@
                         "tool_config": {
                             "suggest": "common"
                         },
-                        "label": "Please transcribe the question on the form:"
+                        "label": "Please transcribe the **third part** of the highlighted question:"
                     },
                     "att_transcribe_answer": {
                         "tool": "textTool",
@@ -843,17 +843,17 @@
             "tool": "textTool",
             "tool_config": {},
             "instruction": "Transcribe the entry for **total days of service**.",
+            "next_task": null,
             "help": {
                 "title": "Transcription Help",
                 "file": "basic_transcribe_help"
             },
-            "generates_subject_type": "hs_transcribed_service_date_total_days",
-            "next_task": null
+            "generates_subject_type": "hs_transcribed_service_date_total_days"
         },
         "hs_rectangleTool_wounds": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Transcribe the entry for **serial no.**",
+            "instruction": "Transcribe the entry for **cable no.**",
             "help": {
                 "title": "Transcription Help",
                 "file": "basic_transcribe_help"
@@ -875,18 +875,18 @@
         "hs_service_wounds_location": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Transcribe the entry for **location of the wound**.",
+            "instruction": "Transcribe the entry for **location** of the individual.",
             "help": {
                 "title": "Transcription Help",
                 "file": "basic_transcribe_help"
             },
-            "generates_subject_type": "hs_transcribed_wounds_location",
+            "generates_subject_type": "hs_transcribed_wounds_location.",
             "next_task": "hs_service_wounds_mssg_remarks"
         },
         "hs_service_wounds_mssg_remarks": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Transcribe any **messages or remarks associated with the wound**",
+            "instruction": "Transcribe any **messages or remarks** associated with the wound.",
             "help": {
                 "title": "Transcription Help",
                 "file": "basic_transcribe_help"

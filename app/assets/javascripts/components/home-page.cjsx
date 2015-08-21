@@ -41,6 +41,7 @@ HomePage = React.createClass
             if @state.project?.metadata_search?.feature_on_homepage
               for field in @state.project.metadata_search.fields
                 <div className="metadata-search">
+                  <img id="search-icon" src={"assets/searchtool.svg"}/>
                   <NameSearch field={field.field} />
                 </div>
           }

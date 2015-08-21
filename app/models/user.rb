@@ -38,6 +38,7 @@ class User
   field :status,             :type => String, :default => 'active'
   field :role,               :type => String, :default => 'user'  # user, admin, team
   field :guest,              :type => Boolean, :default => false
+  field :tutorial_complete,  :type => Boolean, :default => false
 
   has_many :favourites
   has_many :classifications

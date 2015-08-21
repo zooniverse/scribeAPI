@@ -1,9 +1,9 @@
-<p>Click below to access examples and descriptions of the page types.</p>
+<p>Click below to access examples and descriptions of the page types. Use the Lightbox to find specific pages within a personnel record. If a subject’s condition makes it impossible to identify (e.g. blurry image), press the Bad Subject button.</p>
 <div id="accordion-help-modal">
   <h3>History Sheet</h3>
   <div class="modal-field-guide" >
     <img src="https://s3.amazonaws.com/anzac-project/R7821550/FL18717394" alt="history sheet">
-    <p>Identified with "HISTORY-SHEET" as heading</p>
+    <p>Identified with "HISTORY-SHEET" as heading.</p>
   </div>
   <h3>Statement of Services</h3>
   <div class="modal-field-guide" >
