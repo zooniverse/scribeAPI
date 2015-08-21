@@ -39,6 +39,7 @@ class SubjectGenerationMethod
 
     {
       parent_subject: classification.subject,
+      created_by_user_id: classification.user.id,
       subject_set: classification.subject.subject_set,
       workflow: workflow_for_new_subject,
       type: subject_type,
@@ -50,7 +51,7 @@ class SubjectGenerationMethod
       height: classification.subject.height
     }
   end
-  
+
   def build_mark_region(classification)
     region = classification.annotation.inject({}) do |h, (k,v)|
       h[k] = v if ['toolName','color'].include? k

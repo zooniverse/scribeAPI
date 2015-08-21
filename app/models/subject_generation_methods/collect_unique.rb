@@ -4,7 +4,7 @@ module SubjectGenerationMethods
 
     def process_classification(classification)
 
-      atts = subject_attributes_from_classification classification
+      atts = subject_attributes_from_classification(classification)
 
       atts[:status] = 'inactive'
 

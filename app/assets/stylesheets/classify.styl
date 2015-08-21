@@ -242,18 +242,18 @@
       &:last
         margin-right 0
 
-
-.bad-subject
+// currently used for the "Bad Subject" and "Hide Other Marks" buttons
+.toggle-button
   color TERTIARY_NORMAL
   border-color TERTIARY_NORMAL
   margin-right: 3px
 
-  &.marked-bad
+  &.toggled
     border solid 1px darkred
     background-color darkred
     color white
 
-  &.marked-bad:before
+  &.toggled:before
     content '\2713   '
 
 

@@ -4,7 +4,7 @@ module SubjectGenerationMethods
 
     def process_classification(classification)
 
-      atts = subject_attributes_from_classification classification
+      atts = subject_attributes_from_classification(classification)
       atts[:status] = 'inactive'
 
       classification.child_subject = Subject.find_or_initialize_by(workflow: atts[:workflow], parent_subject: atts[:parent_subject], type: atts[:type])
