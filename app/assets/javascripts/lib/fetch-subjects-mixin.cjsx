@@ -2,8 +2,22 @@ API            = require './api'
 
 module.exports =
   componentDidMount: ->
-    if @getActiveWorkflow().name is 'transcribe' and @props.params.subject_id
-      @fetchSubject @props.params.subject_id,@getActiveWorkflow().id
+    console.log 'PARAMS: ', @props.params
+    console.log 'QUERY: ', @props.query
+    console.log 'FOO: ', @props.params.subject_id?
+    if @getActiveWorkflow().name is 'transcribe'
+
+      # fetch specific transcribe subject (only one!)
+      if @props.params.subject_id?
+        console.log 'Fetching specific transcribe subject (only one!)...'
+        @fetchSubject @props.params.subject_id, @getActiveWorkflow().id
+
+      else if @props.params.workflow_id? and @props.params.parent_subject_id?
+        console.log 'Fetching all transcribe subjects on this page...'
+        @fetchSubjectsOnPage @props.params.workflow_id, @props.params.parent_subject_id
+
+
+
     else if @getActiveWorkflow().name is "mark"
         @fetchSubjectSets @getActiveWorkflow().id, @getActiveWorkflow().subject_fetch_limit
     else
@@ -29,15 +43,29 @@ module.exports =
             @fetchSubjectsCallback()
 
 
+  # used by the "Transcribe this page now!" button
+  fetchSubjectsOnPage: (workflow_id, parent_subject_id) ->
+    request = API.type('subjects').get
+      workflow_id: workflow_id
+      parent_subject_id: parent_subject_id
 
-  fetchSubjects: (workflow_id, limit, page) ->
-    console.log "fetchSubjects(#{workflow_id},#{limit},#{page})"
-  # fetchSubjects: (workflow_id, limit, page=1) ->
+    console.log "Fetching subjects on page: "
+    request.then (subjects) =>
+      subjects = @orderSubjectsByY(subjects)
+      if subjects.length is 0
 
-    unless page? # default to 1st page
-      page = 1
+        @setState noMoreSubjects: true, => console.log 'SET NO MORE SUBJECTS FLAG TO TRUE'
+      else
+        @setState
+          subject_index: 0
+          subjects: subjects
+          subjects_next_page: subjects[0].getMeta("next_page")
 
-    # are we still using this? --STI
+      # Does including instance have a defined callback to call when new subjects received?
+      if @fetchSubjectsCallback?
+        @fetchSubjectsCallback()
+
+  fetchSubjects: (workflow_id, limit, page=1) ->
     if @props.overrideFetchSubjectsUrl?
       console.log "Fetching (fake) subject sets from #{@props.overrideFetchSubjectsUrl}"
       $.getJSON @props.overrideFetchSubjectsUrl, (subjects) =>

@@ -126,7 +126,7 @@ module.exports = React.createClass # rename to Classifier
           {
             if @getActiveWorkflow()?
                 <p>
-                  <Link to="transcribe" query={{ subject_set_id: @getCurrentSubjectSet().id, selected_subject_id: @getCurrentSubject().id }}>Transcribe this entire page now!</Link>
+                  <Link to="transcribe" query={{ subject_set_id: @getCurrentSubjectSet().id, selected_subject_id: @getCurrentSubject().id }}>Transcribe this page now!</Link>
                 </p>
           }
         </div>
