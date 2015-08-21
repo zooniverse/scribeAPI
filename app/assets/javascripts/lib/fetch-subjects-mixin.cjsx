@@ -2,9 +2,6 @@ API            = require './api'
 
 module.exports =
   componentDidMount: ->
-    console.log 'PARAMS: ', @props.params
-    console.log 'QUERY: ', @props.query
-    console.log 'FOO: ', @props.params.subject_id?
     if @getActiveWorkflow().name is 'transcribe'
 
       # fetch specific transcribe subject (only one!)
@@ -45,15 +42,16 @@ module.exports =
 
   # used by the "Transcribe this page now!" button
   fetchSubjectsOnPage: (workflow_id, parent_subject_id) ->
-    request = API.type('subjects').get
+    console.log 'fetchSubjectsOnPage()'
+    request = API.type('subjects.json').get
       workflow_id: workflow_id
       parent_subject_id: parent_subject_id
 
     console.log "Fetching subjects on page: "
     request.then (subjects) =>
+      console.log 'SUBJECTS: ', subjects
       subjects = @orderSubjectsByY(subjects)
       if subjects.length is 0
-
         @setState noMoreSubjects: true, => console.log 'SET NO MORE SUBJECTS FLAG TO TRUE'
       else
         @setState

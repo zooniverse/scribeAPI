@@ -22,6 +22,7 @@ module.exports = React.createClass # rename to Classifier
   mixins: [FetchSubjectSetsMixin, BaseWorkflowMethods] # load subjects and set state variables: subjects, currentSubject, classification
 
   getInitialState: ->
+    window.getWorkflowByName = @getWorkflowByName
     taskKey:                      null
     classifications:              []
     classificationIndex:          0
@@ -126,7 +127,7 @@ module.exports = React.createClass # rename to Classifier
           {
             if @getActiveWorkflow()?
                 <p>
-                  <Link to="transcribe" query={{ subject_set_id: @getCurrentSubjectSet().id, selected_subject_id: @getCurrentSubject().id }}>Transcribe this page now!</Link>
+                  <Link to="/transcribe/#{@getActiveWorkflow().id}/#{@getCurrentSubject().id}">Transcribe this page now!</Link>
                 </p>
           }
         </div>

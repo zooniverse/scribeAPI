@@ -15,6 +15,12 @@ module.exports =
     return null if k?.length != 1
     @props.project.workflows[k[0]]
 
+  getWorkflowByName: (name) ->
+    console.log 'getWorkflowByName()'
+    k = (k for w,k in @props.project.workflows when w.name is name)
+    return null if k?.length != 1
+    @props.project.workflows[k[0]]
+
   # Start a new classification (optionally initialized with given annotation hash):
   beginClassification: (annotation = {}, callback) ->
     classifications = @state.classifications
