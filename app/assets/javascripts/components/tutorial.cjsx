@@ -12,23 +12,22 @@ module.exports = React.createClass
   getInitialState:->
     currentTask: @props.tutorial.first_task
     nextTask: @props.tutorial.tasks[@props.tutorial.first_task].next_task
-    completedSteps: 1
+    completedSteps: 0
 
   advanceToNextTask:->
     if @props.tutorial.tasks[@state.currentTask].next_task == null
-      console.log "END OF TUTORIAL"
+      @props.toggleTutorial()
     else
-
       @setState 
         currentTask: @state.nextTask
-        nextTask: @props.tutorial.tasks[@state.nextTask].nextTask
+        nextTask: @props.tutorial.tasks[@state.nextTask].next_task
         completedSteps: @state.completedSteps + 1
 
   render:->
     helpContent = @props.tutorial.tasks[@state.currentTask].help
     taskKeys = Object.keys(@props.tutorial.tasks)
 
-    <DraggableModal header={helpContent.title ? 'Help'} onDone={@advanceToNextTask} width=600 classes="help-modal" progressSteps={taskKeys} completedSteps={@state.completedSteps} >
+    <DraggableModal header={helpContent.title ? 'Help'} onDone={@advanceToNextTask} width=600 classes="help-modal" progressSteps={taskKeys} currentStepIndex={@state.completedSteps} >
       <div dangerouslySetInnerHTML={{__html: marked( helpContent.body ) }} />
     </DraggableModal>
       

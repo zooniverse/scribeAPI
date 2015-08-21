@@ -28,7 +28,7 @@ module.exports = React.createClass # rename to Classifier
     subject_index:                0
     currentSubToolIndex:          0
     helping:                      false
-    showTutorial:                 true
+    showTutorial:                 false
     currentSubtool:               null
 
   componentDidMount: ->
@@ -47,7 +47,6 @@ module.exports = React.createClass # rename to Classifier
     @setState showTutorial: not @state.showTutorial
 
   render: ->
-    console.log "MARK INDEX PROPS", @props
     return null unless @getCurrentSubject()? && @getActiveWorkflow()?
     currentTask = @getCurrentTask()
     TaskComponent = @getCurrentTool()
@@ -140,7 +139,7 @@ module.exports = React.createClass # rename to Classifier
 
       </div>
       { if @state.showTutorial
-        <Tutorial tutorial={@props.project.tutorial}/>
+        <Tutorial tutorial={@props.project.tutorial} toggleTutorial={@toggleTutorial}/>
       }
       { if @state.helping
         <HelpModal help={@getCurrentTask().help} onDone={=> @setState helping: false } />

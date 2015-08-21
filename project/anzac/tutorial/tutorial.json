@@ -10,12 +10,18 @@
             }
         },
         "learn_transcribing": {
-            "next_task":null,
+            "next_task": "another_task",
             "help": {
                 "title": "Learn To Transcribe",
                 "file": "learn_transcribing"
-            },
-            "next_task": null
+            }
+        },
+        "another_task": {
+            "next_task": null,
+            "help": {
+                "title": "Learn To Mark",
+                "file": "learn_marking"
+            }
         }
     }
 }
