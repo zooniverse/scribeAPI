@@ -29,7 +29,15 @@ module.exports =
             @fetchSubjectsCallback()
 
 
-  fetchSubjects: (workflow_id, limit, page=1) ->
+
+  fetchSubjects: (workflow_id, limit, page) ->
+    console.log "fetchSubjects(#{workflow_id},#{limit},#{page})"
+  # fetchSubjects: (workflow_id, limit, page=1) ->
+
+    unless page? # default to 1st page
+      page = 1
+
+    # are we still using this? --STI
     if @props.overrideFetchSubjectsUrl?
       console.log "Fetching (fake) subject sets from #{@props.overrideFetchSubjectsUrl}"
       $.getJSON @props.overrideFetchSubjectsUrl, (subjects) =>

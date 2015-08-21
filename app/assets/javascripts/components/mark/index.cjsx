@@ -123,6 +123,12 @@ module.exports = React.createClass # rename to Classifier
                   <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Done</button>
             }
           </nav>
+          {
+            if @getActiveWorkflow()?
+                <p>
+                  <Link to="transcribe" query={{ subject_set_id: @getCurrentSubjectSet().id, selected_subject_id: @getCurrentSubject().id }}>Transcribe this entire page now!</Link>
+                </p>
+          }
         </div>
 
         {
