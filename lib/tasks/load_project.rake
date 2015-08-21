@@ -65,6 +65,7 @@ desc 'creates a poject object from the project directory'
       end
     end
     
+
     load_images(args[:project_key]) 
 
     styles_path = Rails.root.join('project', args[:project_key], 'styles.css')
@@ -73,6 +74,8 @@ desc 'creates a poject object from the project directory'
       puts "Loading #{styles.size}b of custom CSS"
       project.styles = styles
     end
+
+    project.tutorial = load_tutorial(args[:project_key])
 
     project.save
 
@@ -159,6 +162,25 @@ desc 'creates a poject object from the project directory'
       config[:options] = config[:options].map { |(option_value,config)| config[:value] = option_value; config } if config[:options].is_a?(Hash)
     end
     config
+  end
+
+  def load_tutorial(project_key)
+    project = Project.find_by key: project_key
+    tutorial_hash = {}
+    tutorial_path = Rails.root.join('project', project_key, 'tutorial', '*.json')
+    puts "Tutorial: Loading workflows from #{tutorial_path}"
+
+    Dir.glob(tutorial_path).each do |tutorial_hash_path|
+      content = File.read(tutorial_hash_path) # .gsub(/\n/, '')
+      begin
+        next if content == ''
+
+        tutorial_hash = JSON.parse content
+        tutorial_hash.deep_symbolize_keys!
+        tutorial_hash = load_help_text tutorial_hash, project_key
+      end
+    end
+    tutorial_hash
   end
 
   def load_images(project_key)

@@ -40,6 +40,19 @@ module.exports = React.createClass
           { @props.children }
         </div>
 
+        {
+          if @props.progressSteps
+            <div className="simple-progress-bar" >
+              {
+                for step, index in @props.progressSteps
+                  if index <= @props.currentStepIndex
+                    <span key={index} className="tutorial-progress-ind-active" ></span>
+                  else
+                    <span key={index} className="tutorial-progress-ind" ></span>
+              }
+            </div>
+        }
+
         <div className="modal-buttons">
           { if @props.buttons?
               @props.buttons
@@ -48,7 +61,6 @@ module.exports = React.createClass
               <DoneButton label={@props.doneButtonLabel} onClick={onDone} />
           }
         </div>
-
       </div>
 
     </Draggable>
