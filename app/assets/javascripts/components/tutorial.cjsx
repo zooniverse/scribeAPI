@@ -8,15 +8,27 @@ module.exports = React.createClass
 
   propTypes:
     tutorial: React.PropTypes.object.isRequired
+    toggleTutorial: React.PropTypes.func.isRequired
 
   getInitialState:->
     currentTask: @props.tutorial.first_task
     nextTask: @props.tutorial.tasks[@props.tutorial.first_task].next_task
     completedSteps: 0
 
+  setCompleteTutorial:->
+    request = $.getJSON "/tutorial_complete"
+
+    request.done (result)=>
+      @props.toggleTutorial()
+
+    request.fail (error)=>
+      console.log "failed to set tutorial value for user"
+
+
   advanceToNextTask:->
     if @props.tutorial.tasks[@state.currentTask].next_task == null
-      @props.toggleTutorial()
+      @setCompleteTutorial()
+
     else
       @setState 
         currentTask: @state.nextTask

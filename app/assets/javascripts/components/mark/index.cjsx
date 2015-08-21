@@ -31,8 +31,8 @@ module.exports = React.createClass # rename to Classifier
     currentSubToolIndex: 0
     helping:             false
     hideOtherMarks:      false
-    showTutorial:                 false
     currentSubtool:      null
+    completeTutorial:    @props.project.current_user_tutorial
 
   componentDidMount: ->
     @getCompletionAssessmentTask()
@@ -47,7 +47,7 @@ module.exports = React.createClass # rename to Classifier
     @setState helping: not @state.helping
 
   toggleTutorial: ->
-    @setState showTutorial: not @state.showTutorial
+    @setState completeTutorial: not @state.completeTutorial
 
   toggleHideOtherMarks: ->
     @setState hideOtherMarks: not @state.hideOtherMarks
@@ -152,7 +152,7 @@ module.exports = React.createClass # rename to Classifier
         </div>
 
       </div>
-      { if @state.showTutorial
+      { if !@state.completeTutorial
         <Tutorial tutorial={@props.project.tutorial} toggleTutorial={@toggleTutorial}/>
       }
       { if @state.helping
