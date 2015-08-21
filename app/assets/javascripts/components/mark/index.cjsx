@@ -7,6 +7,7 @@ JSONAPIClient           = require 'json-api-client' # use to manage data?
 ForumSubjectWidget      = require '../forum-subject-widget'
 API                     = require '../../lib/api'
 HelpModal               = require 'components/help-modal'
+Tutorial               = require 'components/tutorial'
 HelpButton              = require 'components/buttons/help-button'
 BadSubjectButton        = require 'components/buttons/bad-subject-button'
 HideOtherMarksButton    = require 'components/buttons/hide-other-marks-button'
@@ -31,6 +32,7 @@ module.exports = React.createClass # rename to Classifier
     helping:             false
     hideOtherMarks:      false
     currentSubtool:      null
+    completeTutorial:    @props.project.current_user_tutorial
 
   componentDidMount: ->
     @getCompletionAssessmentTask()
@@ -43,6 +45,9 @@ module.exports = React.createClass # rename to Classifier
 
   toggleHelp: ->
     @setState helping: not @state.helping
+
+  toggleTutorial: ->
+    @setState completeTutorial: not @state.completeTutorial
 
   toggleHideOtherMarks: ->
     @setState hideOtherMarks: not @state.hideOtherMarks
@@ -118,6 +123,11 @@ module.exports = React.createClass # rename to Classifier
               <p>Currently displaying only your marks. <strong>Toggle the button again to show all marks to-date.</strong></p>
             }
           </div>
+
+          <div className="tutorial-holder help-button ghost" onClick={@toggleTutorial}>
+            <HelpButton label={"Tutorial"} onClick={@toggleTutorial} />
+          </div>
+
           <nav className="task-nav">
             { if false
               <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
@@ -142,7 +152,9 @@ module.exports = React.createClass # rename to Classifier
         </div>
 
       </div>
-
+      { if !@state.completeTutorial
+        <Tutorial tutorial={@props.project.tutorial} toggleTutorial={@toggleTutorial}/>
+      }
       { if @state.helping
         <HelpModal help={@getCurrentTask().help} onDone={=> @setState helping: false } />
       }

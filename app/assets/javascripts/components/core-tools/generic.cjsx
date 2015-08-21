@@ -15,7 +15,7 @@ module.exports = React.createClass
   render: ->
     # console.log "rendering with: ", @props
     <div className="workflow-task">
-      <span>{@props.question}</span>
+      <span dangerouslySetInnerHTML={{__html: marked( @props.question ) }} />
       <div className="answers">
         { React.Children.map @props.answers, (answer) =>
             cloneWithProps answer,  classes: answer.props.classes + ' answer', disabled: @props.badSubject
