@@ -11,6 +11,8 @@ HelpButton              = require 'components/buttons/help-button'
 BadSubjectButton        = require 'components/buttons/bad-subject-button'
 DraggableModal          = require 'components/draggable-modal'
 
+{Link}                  = require 'react-router'
+
 module.exports = React.createClass # rename to Classifier
   displayName: 'Mark'
 
@@ -123,6 +125,18 @@ module.exports = React.createClass # rename to Classifier
           </nav>
         </div>
 
+        {
+          if @getActiveWorkflow()?
+            <div className="explore">
+              <h2>Explore</h2>
+              <p>
+                <Link to="mark" query={{ subject_set_id: @getCurrentSubjectSet().id, selected_subject_id: @getCurrentSubject().id }}>Link to this page.</Link>
+              </p>
+              <p>
+                <Link to="/groups/#{@getCurrentSubjectSet().group_id}">About this logbook.</Link>
+              </p>
+            </div>
+        }
         <div className="forum-holder">
           <ForumSubjectWidget subject_set = @getCurrentSubjectSet() />
         </div>
