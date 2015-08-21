@@ -103,6 +103,7 @@ module.exports = React.createClass
     # Create an initial mark instance, which will soon gather coords:
     # mark = toolName: subTool.type, userCreated: true, subToolIndex: @state.uncommittedMark?.subToolIndex ? @props.annotation?.subToolIndex
     mark =
+      belongsToUser: true # let users see their current mark when hiding others
       toolName: subTool.type
       userCreated: true
       subToolIndex: subToolIndex
@@ -248,7 +249,6 @@ module.exports = React.createClass
     marks
 
   separateTranscribableMarks: (marks) ->
-
     transcribableMarks = []
     otherMarks = []
     for mark in marks
@@ -261,7 +261,7 @@ module.exports = React.createClass
     return {transcribableMarks, otherMarks}
 
   renderMarks: (marks) ->
-    console.log 'renderMarks(), marks: ', marks
+
     return unless marks.length > 0
     scale = @getScale()
     marksToRender = for mark in marks
@@ -273,7 +273,7 @@ module.exports = React.createClass
 
       displaysTranscribeButton = @props.task?.tool_config.displays_transcribe_button != false
       isPriorMark = ! mark.userCreated
-      
+
       <g key={mark._key} className="marks-for-annotation#{if mark.groupActive then ' group-active' else ''}" data-disabled={isPriorMark or null}>
         {
           mark._key ?= Math.random()
@@ -302,6 +302,7 @@ module.exports = React.createClass
       </g>
 
     return marksToRender
+
 
   render: ->
     return null if ! @props.active
@@ -349,7 +350,7 @@ module.exports = React.createClass
               toolName = @props.subject.region.toolName
 
               mark = @props.subject.region
-              console.log "MARK", mark
+              # console.log "MARK", mark
               ToolComponent = markingTools[toolName]
               isPriorMark = true
               <g>
