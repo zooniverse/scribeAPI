@@ -23,7 +23,6 @@ span.keyword {
   font-family: clarendon-text-pro;
   font-weight: 100;
   letter-spacing: 5px;
-  text-align: center;
   color:  #ffffff;
   margin-bottom: 0%;
   text-transform: capitalize; 
@@ -54,7 +53,9 @@ span.keyword {
   font-weight: 400;
 }
 
-
+.page-content div{
+  background-color: transparent;
+}
 /* Home Page */
 .home-page h1{
   text-transform: none;
@@ -83,14 +84,25 @@ span.keyword {
   padding: 0.5em 1em;
 }
 
-.modal-header {
-    background-color: #3f5765;
-    color: #efefef;
-    text-transform: capitalize;
-    border-bottom: solid 3px #8cbc8c;
-    border-top-left-radius: .25em;
-    border-top-right-radius: .25em;
+.draggable-modal{
+  border-radius: 5px;
+  background-color:  #ffffff;
+  box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.4);
 }
+
+.classifier .draggable-modal .modal-header {
+  background-color: #3f5765;
+  letter-spacing: 1px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  padding-bottom: 15px;
+  font-family: OpenSans;
+  color:  #ffffff;
+  font-weight: 400;
+  line-height: 18px;
+  text-align: left;
+}
+
 
 .ui-accordion .ui-accordion-icons {
     padding-left: 2.2em;
@@ -118,7 +130,7 @@ span.keyword {
   position: fixed;
   left: 40px;
   height: 100%;
-  width: 30%;
+  width: 20%;
   padding-top: 2em;
   font-family: OpenSans;
   font-size: 20px;/* Approximation due to font substitution */
@@ -198,4 +210,8 @@ span.keyword {
   font-size: .8em;
   line-height: 2;
   font-weight: 300;
+}
+
+#questions-tip{
+  fill: pink;
 }
