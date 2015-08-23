@@ -10,6 +10,7 @@ HelpModal               = require 'components/help-modal'
 HelpButton              = require 'components/buttons/help-button'
 BadSubjectButton        = require 'components/buttons/bad-subject-button'
 DraggableModal          = require 'components/draggable-modal'
+Draggable               = require 'lib/draggable'
 
 {Link}                  = require 'react-router'
 
@@ -52,6 +53,7 @@ module.exports = React.createClass # rename to Classifier
     onFirstAnnotation = @state.taskKey == firstTask
     currentSubtool = if @state.currentSubtool then @state.currentSubtool else @getTasks()[firstTask]?.tool_config.tools?[0]
 
+
     if currentTask.tool is 'pick_one'
       currentAnswer = currentTask.tool_config.options?[currentAnnotation.value]
       waitingForAnswer = not currentAnswer
@@ -86,6 +88,7 @@ module.exports = React.createClass # rename to Classifier
             />
         }
       </div>
+
       <div className="task-area">
         <div className="task-container">
           <TaskComponent

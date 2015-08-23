@@ -80,14 +80,37 @@ module.exports = React.createClass # rename to Classifier
   componentWillUnmount:->
     not @state.badSubject
 
+  # this can go into a mixin? (common across all transcribe tools)
+  returnToMarking: ->
+    console.log 'returnToMarking()'
+
+    # transition back to mark
+    @transitionTo 'mark', {},
+      subject_set_id: @props.subject.subject_set_id
+      selected_subject_id: @getCurrentSubject().parent_subject_id
+      page: @props.query.page
+
 
 
   render: ->
+    console.log 'STATE: ', @state
+    console.log 'PROPS: ', @props
+
+    if @props.params.workflow_id? and @props.params.parent_subject_id?
+      transcribeMode = 'page'
+      console.log 'TRANSCRIBING ENTIRE PAGE!'
+    else if @props.params.subject_id
+      console.log 'TRANSCRIBING SINGLE SUBJECT!'
+      transcribeMode = 'single'
+    else
+      console.log 'TRANSCRIBING RANDOMLY!'
+      transcribeMode = 'random'
+
     # DISABLE ANIMATED SCROLLING FOR NOW
     # if @props.query.scrollX? and @props.query.scrollY?
     #   window.scrollTo(@props.query.scrollX,@props.query.scrollY)
-    # console.log "transcribe#index @props", @props 
-    # console.log "transcribe#index @state", @state 
+    # console.log "transcribe#index @props", @props
+    # console.log "transcribe#index @state", @state
     currentAnnotation = @getCurrentClassification().annotation
     TranscribeComponent = @getCurrentTool() # @state.currentTool
     onFirstAnnotation = currentAnnotation?.task is @getActiveWorkflow().first_task
@@ -95,7 +118,7 @@ module.exports = React.createClass # rename to Classifier
     <div className="classifier">
       <div className="subject-area">
 
-        { if ! @getCurrentSubject()
+        { unless @getCurrentSubject()
             <DraggableModal
               header          = { if @state.userClassifiedAll then "You transcribed them all!" else "Nothing to transcribe" }
               buttons         = {<GenericButton label='Continue' href='/#/mark' />}
@@ -104,6 +127,7 @@ module.exports = React.createClass # rename to Classifier
             </DraggableModal>
 
           else if @getCurrentSubject()? and @getCurrentTask()?
+
             console.log "@getCurrentTask().key", @getCurrentTask().key
             console.log "rendering text tool: ", "#{@state.taskKey}.#{@getCurrentSubject().id}", currentAnnotation
             <SubjectViewer
@@ -130,9 +154,11 @@ module.exports = React.createClass # rename to Classifier
                 transcribeTools={transcribeTools}
                 onShowHelp={@toggleHelp if @getCurrentTask().help?}
                 badSubject={@state.badSubject}
-                onBadSubject={@toggleBadSubject}                
+                onBadSubject={@toggleBadSubject}
                 illegibleSubject={@state.illegibleSubject}
                 onIllegibleSubject={@toggleIllegibleSubject}
+                returnToMarking={@returnToMarking}
+                transcribeMode={transcribeMode}
               />
 
             </SubjectViewer>

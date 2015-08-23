@@ -1,18 +1,25 @@
-API            = require './api'
+API = require './api'
 
 module.exports =
   componentDidMount: ->
+
+    # SO. MANY. BRANCHES. --STI
     if @getActiveWorkflow().name is 'transcribe'
+      console.log 'Figuring out how to fetch transcribe subjects...'
+      console.log 'PROPS: ', @props
 
       # fetch specific transcribe subject (only one!)
       if @props.params.subject_id?
         console.log 'Fetching specific transcribe subject (only one!)...'
         @fetchSubject @props.params.subject_id, @getActiveWorkflow().id
 
+      # fetch all subjects on current page
       else if @props.params.workflow_id? and @props.params.parent_subject_id?
         console.log 'Fetching all transcribe subjects on this page...'
         @fetchSubjectsOnPage @props.params.workflow_id, @props.params.parent_subject_id
 
+      else  # just fetch subjects randomly
+        @fetchSubjects @getActiveWorkflow().id, @getActiveWorkflow().subject_fetch_limit
 
 
     else if @getActiveWorkflow().name is "mark"
