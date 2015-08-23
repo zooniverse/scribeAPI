@@ -6,7 +6,6 @@ module.exports =
     # SO. MANY. BRANCHES. --STI
     if @getActiveWorkflow().name is 'transcribe'
       console.log 'Figuring out how to fetch transcribe subjects...'
-      console.log 'PROPS: ', @props
 
       # fetch specific transcribe subject (only one!)
       if @props.params.subject_id?

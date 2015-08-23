@@ -1,5 +1,6 @@
 # @cjsx React.DOM
 React                   = require 'react'
+{Navigation}            = require 'react-router'
 SubjectViewer           = require '../subject-viewer'
 JSONAPIClient           = require 'json-api-client' # use to manage data?
 FetchSubjectsMixin      = require 'lib/fetch-subjects-mixin'
@@ -22,7 +23,7 @@ GenericButton           = require 'components/buttons/generic-button'
 
 module.exports = React.createClass # rename to Classifier
   displayName: 'Transcribe'
-  mixins: [FetchSubjectsMixin, BaseWorkflowMethods] # load subjects and set state variables: subjects,  classification
+  mixins: [FetchSubjectsMixin, BaseWorkflowMethods, Navigation] # load subjects and set state variables: subjects,  classification
 
   getInitialState: ->
     taskKey:                      null
@@ -82,20 +83,15 @@ module.exports = React.createClass # rename to Classifier
 
   # this can go into a mixin? (common across all transcribe tools)
   returnToMarking: ->
-    console.log 'returnToMarking()'
+    console.log 'TRANSCRIBE-INDEX::returnToMarking()'
 
     # transition back to mark
     @transitionTo 'mark', {},
-      subject_set_id: @props.subject.subject_set_id
+      subject_set_id: @getCurrentSubject().subject_set_id
       selected_subject_id: @getCurrentSubject().parent_subject_id
       page: @props.query.page
 
-
-
   render: ->
-    console.log 'STATE: ', @state
-    console.log 'PROPS: ', @props
-
     if @props.params.workflow_id? and @props.params.parent_subject_id?
       transcribeMode = 'page'
       console.log 'TRANSCRIBING ENTIRE PAGE!'
@@ -128,8 +124,8 @@ module.exports = React.createClass # rename to Classifier
 
           else if @getCurrentSubject()? and @getCurrentTask()?
 
-            console.log "@getCurrentTask().key", @getCurrentTask().key
-            console.log "rendering text tool: ", "#{@state.taskKey}.#{@getCurrentSubject().id}", currentAnnotation
+            # console.log "@getCurrentTask().key", @getCurrentTask().key
+            # console.log "rendering text tool: ", "#{@state.taskKey}.#{@getCurrentSubject().id}", currentAnnotation
             <SubjectViewer
               onLoad={@handleViewerLoad}
               subject={@getCurrentSubject()}

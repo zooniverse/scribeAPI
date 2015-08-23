@@ -93,8 +93,6 @@ module.exports = React.createClass
     annotation: [] #@props.annotation ? {}
 
   render: ->
-
-    console.log 'PROPS:>>>>>>>>>>>>>>>> ', @props
     options = for option, i in @props.task.tool_config.options
       option._key ?= Math.random()
       isChecked = option.value in @state.annotation

@@ -16,7 +16,6 @@ module.exports =
     @props.project.workflows[k[0]]
 
   getWorkflowByName: (name) ->
-    console.log 'getWorkflowByName()'
     k = (k for w,k in @props.project.workflows when w.name is name)
     return null if k?.length != 1
     @props.project.workflows[k[0]]

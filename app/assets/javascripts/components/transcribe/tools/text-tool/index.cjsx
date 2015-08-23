@@ -112,19 +112,33 @@ TextTool = React.createClass
   # this can go into a mixin? (common across all transcribe tools)
   # NOTE: doesn't get called unless @props.standalone is true
   commitAnnotation: ->
+    console.log 'TEXT-TOOL::commitAnnotation()'
     ann = @state.annotation
     @props.onComplete ann
 
-  # this can go into a mixin? (common across all transcribe tools)
-  returnToMarking: ->
-    console.log 'returnToMarking()'
-    @commitAnnotation()
+    switch @props.transcribeMode
+      when 'page'
+        console.log '   > transcribing a page; returning to marking...'
+        @props.returnToMarking()
+      when 'single'
+        console.log '   > transcribing single subject; returning to marking...'
+        @props.returnToMarking()
+      else
+        console.log '   > transcribing in regular (RANDOM) mode; no transition.'
 
-    # transition back to mark
-    @transitionTo 'mark', {},
-      subject_set_id: @props.subject.subject_set_id
-      selected_subject_id: @props.subject.parent_subject_id
-      page: @props.subjectCurrentPage
+
+
+  # this can go into a mixin? (common across all transcribe tools)
+  # returnToMarking: ->
+  #
+  #   console.log 'TEXT-TOOL::returnToMarking(), transcribeMode = ', @props.transcribeMode
+  #   @commitAnnotation()
+  #
+  #   # transition back to mark
+  #   @transitionTo 'mark', {},
+  #     subject_set_id: @props.subject.subject_set_id
+  #     selected_subject_id: @props.subject.parent_subject_id
+  #     page: @props.subjectCurrentPage
 
   # Get key to use in annotations hash (i.e. typically 'value', unless included in composite tool)
   fieldKey: ->
@@ -138,7 +152,7 @@ TextTool = React.createClass
 
 
   updateValue: (val) ->
-    console.log "updated val: ", val
+    # console.log "updated val: ", val
     newAnnotation = @state.annotation
     newAnnotation[@fieldKey()] = val
 
@@ -154,11 +168,12 @@ TextTool = React.createClass
 
     if (! @state.autocompleting && [13].indexOf(e.keyCode) >= 0) && !e.shiftKey# ENTER
       console.log "ENTERING ON TRANSCRIPTION:", e.keyCode
-      if window.location.hash is '#/transcribe' || @props.task.next_task? # regular transcribe, i.e. no mark transition
-        console.log "REGULAR OLE TRANSCRIBE"
-        @commitAnnotation()
-      else
-        @returnToMarking()
+      @commitAnnotation()
+      # if window.location.hash is '#/transcribe' || @props.task.next_task? # regular transcribe, i.e. no mark transition
+      #   console.log "REGULAR OLE TRANSCRIBE"
+      #   @commitAnnotation()
+      # else
+      #   @returnToMarking()
     else if e.keyCode == 13 && e.shiftKey
       text_area =  $("textarea")
       the_text = text_area.val()
@@ -232,7 +247,7 @@ TextTool = React.createClass
       if window.location.hash is '#/transcribe' || @props.task.next_task? # regular transcribe, i.e. no mark transition
         buttons.push <SmallButton label={if @props.task.next_task? then 'Next' else 'Done'} key="done-button" onClick={@commitAnnotation} />
       else
-        buttons.push <SmallButton label='Finish' key="done-button" onClick={@returnToMarking} />
+        buttons.push <SmallButton label='Finish' key="done-button" onClick={@commitAnnotation} />
 
       {x,y} = @getPosition @props.subject.region
 
