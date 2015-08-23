@@ -112,8 +112,6 @@ TextTool = React.createClass
     ann = @state.annotation
     @props.onComplete ann
 
-    console.log 'PROPS: --------> ', @props
-
     if @props.transcribeMode is 'page' or @props.transcribeMode is 'single'
       if @props.isLastSubject and not @props.task.next_task?
         @props.returnToMarking()
@@ -144,13 +142,8 @@ TextTool = React.createClass
     @handleChange(e) # updates any autocomplete values
 
     if (! @state.autocompleting && [13].indexOf(e.keyCode) >= 0) && !e.shiftKey# ENTER
-      console.log "ENTERING ON TRANSCRIPTION:", e.keyCode
+      # console.log "ENTERING ON TRANSCRIPTION:", e.keyCode
       @commitAnnotation()
-      # if window.location.hash is '#/transcribe' || @props.task.next_task? # regular transcribe, i.e. no mark transition
-      #   console.log "REGULAR OLE TRANSCRIBE"
-      #   @commitAnnotation()
-      # else
-      #   @returnToMarking()
     else if e.keyCode == 13 && e.shiftKey
       text_area =  $("textarea")
       the_text = text_area.val()
@@ -221,11 +214,6 @@ TextTool = React.createClass
       if @props.onIllegibleSubject?
         buttons.push <IllegibleSubjectButton active={@props.illegibleSubject} onClick={@props.onIllegibleSubject} />
 
-      # if window.location.hash is '#/transcribe' || @props.task.next_task? # regular transcribe, i.e. no mark transition
-      #   buttons.push <SmallButton label={if @props.task.next_task? then 'Next' else 'Done'} key="done-button" onClick={@commitAnnotation} />
-      # else
-      #   buttons.push <SmallButton label='Finish' key="done-button" onClick={@commitAnnotation} />
-
       buttonLabel =
         if @props.task.next_task?
          'Continue'
@@ -235,9 +223,6 @@ TextTool = React.createClass
           else 'Next Entry'
 
       buttons.push <SmallButton label={buttonLabel} key="done-button" onClick={@commitAnnotation} />
-
-      # buttons.push <SmallButton label='Finish' key="done-button" onClick={@commitAnnotation} />
-
 
       {x,y} = @getPosition @props.subject.region
 

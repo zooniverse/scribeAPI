@@ -80,11 +80,8 @@ module.exports = React.createClass # rename to Classifier
   componentWillUnmount:->
     not @state.badSubject
 
-  # this can go into a mixin? (common across all transcribe tools)
+  # transition back to mark workflow
   returnToMarking: ->
-    console.log 'TRANSCRIBE-INDEX::returnToMarking()'
-
-    # transition back to mark
     @transitionTo 'mark', {},
       subject_set_id: @getCurrentSubject().subject_set_id
       selected_subject_id: @getCurrentSubject().parent_subject_id
@@ -93,23 +90,14 @@ module.exports = React.createClass # rename to Classifier
   render: ->
     if @props.params.workflow_id? and @props.params.parent_subject_id?
       transcribeMode = 'page'
-      console.log 'TRANSCRIBING ENTIRE PAGE!'
     else if @props.params.subject_id
-      console.log 'TRANSCRIBING SINGLE SUBJECT!'
       transcribeMode = 'single'
     else
-      console.log 'TRANSCRIBING RANDOMLY!'
       transcribeMode = 'random'
 
     if @state.subjects?
-      console.log 'SUBJECT INDEX = ', @state.subject_index
-      console.log 'SUBJECTS LENGTH = ', @state.subjects.length
       isLastSubject = ( @state.subject_index >= @state.subjects.length - 1 )
     else isLastSubject = null
-
-    console.log '++++++++++++++++++++++++++++++++++++'
-    console.log 'isLastSubject = ', isLastSubject
-    console.log '++++++++++++++++++++++++++++++++++++'
 
     currentAnnotation = @getCurrentClassification().annotation
     TranscribeComponent = @getCurrentTool() # @state.currentTool
