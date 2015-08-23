@@ -33,6 +33,7 @@ module.exports = React.createClass # rename to Classifier
     hideOtherMarks:      false
     currentSubtool:      null
     completeTutorial:    @props.project.current_user_tutorial
+    lightboxHelp:        false
 
   componentDidMount: ->
     @getCompletionAssessmentTask()
@@ -48,6 +49,9 @@ module.exports = React.createClass # rename to Classifier
 
   toggleTutorial: ->
     @setState completeTutorial: not @state.completeTutorial
+
+  toggleLightboxHelp: ->
+    @setState lightboxHelp: not @state.lightboxHelp
 
   toggleHideOtherMarks: ->
     @setState hideOtherMarks: not @state.hideOtherMarks
@@ -96,6 +100,7 @@ module.exports = React.createClass # rename to Classifier
               destroyCurrentClassification={@destroyCurrentClassification}
               hideOtherMarks={@state.hideOtherMarks}
               currentSubtool={currentSubtool}
+              lightboxHelp={@toggleLightboxHelp}
             />
         }
       </div>
@@ -157,6 +162,10 @@ module.exports = React.createClass # rename to Classifier
       }
       { if @state.helping
         <HelpModal help={@getCurrentTask().help} onDone={=> @setState helping: false } />
+      }
+      {
+        if @state.lightboxHelp
+          <HelpModal help={{title: "The Lightbox", body: "Use the Lightbox to find and select images for annotation."}} onDone={=> @setState lightboxHelp: false } />
       }
     </div>
 
