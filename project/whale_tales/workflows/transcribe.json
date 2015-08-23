@@ -14,7 +14,7 @@
       "tool": "textTool",
       "tool_config": {},
       "instruction": "Transcribe the highlighted date.",
-      "next_task": null
+      "next_task": "location_name"
     },
 
     "location_name": {

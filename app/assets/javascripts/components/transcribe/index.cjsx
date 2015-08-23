@@ -32,7 +32,6 @@ module.exports = React.createClass # rename to Classifier
     subject_index:                0
     helping:                      false
 
-
   getDefaultProps: ->
     workflowName: 'transcribe'
 
@@ -102,11 +101,16 @@ module.exports = React.createClass # rename to Classifier
       console.log 'TRANSCRIBING RANDOMLY!'
       transcribeMode = 'random'
 
-    # DISABLE ANIMATED SCROLLING FOR NOW
-    # if @props.query.scrollX? and @props.query.scrollY?
-    #   window.scrollTo(@props.query.scrollX,@props.query.scrollY)
-    # console.log "transcribe#index @props", @props
-    # console.log "transcribe#index @state", @state
+    if @state.subjects?
+      console.log 'SUBJECT INDEX = ', @state.subject_index
+      console.log 'SUBJECTS LENGTH = ', @state.subjects.length
+      isLastSubject = ( @state.subject_index >= @state.subjects.length - 1 )
+    else isLastSubject = null
+
+    console.log '++++++++++++++++++++++++++++++++++++'
+    console.log 'isLastSubject = ', isLastSubject
+    console.log '++++++++++++++++++++++++++++++++++++'
+
     currentAnnotation = @getCurrentClassification().annotation
     TranscribeComponent = @getCurrentTool() # @state.currentTool
     onFirstAnnotation = currentAnnotation?.task is @getActiveWorkflow().first_task
@@ -155,6 +159,7 @@ module.exports = React.createClass # rename to Classifier
                 onIllegibleSubject={@toggleIllegibleSubject}
                 returnToMarking={@returnToMarking}
                 transcribeMode={transcribeMode}
+                isLastSubject={isLastSubject}
               />
 
             </SubjectViewer>
