@@ -109,12 +109,14 @@ TextTool = React.createClass
   # this can go into a mixin? (common across all transcribe tools)
   # NOTE: doesn't get called unless @props.standalone is true
   commitAnnotation: ->
-    console.log 'TEXT-TOOL::commitAnnotation()'
     ann = @state.annotation
     @props.onComplete ann
 
-    if @props.isLastSubject and ( @props.transcribeMode is 'page' or @props.transcribeMode is 'single' )
-      @props.returnToMarking()
+    console.log 'PROPS: --------> ', @props
+
+    if @props.transcribeMode is 'page' or @props.transcribeMode is 'single'
+      if @props.isLastSubject and not @props.task.next_task?
+        @props.returnToMarking()
 
   # Get key to use in annotations hash (i.e. typically 'value', unless included in composite tool)
   fieldKey: ->
