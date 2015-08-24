@@ -14,6 +14,7 @@ module.exports = React.createClass
     currentTask: @props.tutorial.first_task
     nextTask: @props.tutorial.tasks[@props.tutorial.first_task].next_task
     completedSteps: 0
+    doneButtonLabel: "Next"
 
   setCompleteTutorial:->
     request = $.getJSON "/tutorial_complete"
@@ -39,7 +40,12 @@ module.exports = React.createClass
     helpContent = @props.tutorial.tasks[@state.currentTask].help
     taskKeys = Object.keys(@props.tutorial.tasks)
 
-    <DraggableModal header={helpContent.title ? 'Help'} onDone={@advanceToNextTask} width=600 classes="help-modal" progressSteps={taskKeys} currentStepIndex={@state.completedSteps} >
+    if @state.nextTask != null 
+      doneButtonLabel = "Next"
+    else 
+      doneButtonLabel = "Done"
+
+    <DraggableModal header={helpContent.title ? 'Help'} doneButtonLabel={doneButtonLabel} onDone={@advanceToNextTask} width=600 classes="help-modal" progressSteps={taskKeys} currentStepIndex={@state.completedSteps} >
       <div dangerouslySetInnerHTML={{__html: marked( helpContent.body ) }} />
     </DraggableModal>
       

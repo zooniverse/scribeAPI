@@ -7,7 +7,7 @@ module.exports = React.createClass
 
   getDefaultProps: ->
     classes: ''
-    doneButtonLabel: 'Okay'
+    doneButtonLabel: 'Done'
 
   componentDidMount: ->
     # Prevent dragging from (presumably) accidentally selecting modal text on-drag
@@ -40,6 +40,7 @@ module.exports = React.createClass
           { @props.children }
         </div>
 
+
         {
           if @props.progressSteps
             <div className="simple-progress-bar" >
@@ -52,7 +53,6 @@ module.exports = React.createClass
               }
             </div>
         }
-
         <div className="modal-buttons">
           { if @props.buttons?
               @props.buttons

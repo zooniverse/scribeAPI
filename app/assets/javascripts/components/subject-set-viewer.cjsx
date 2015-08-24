@@ -57,6 +57,7 @@ module.exports = React.createClass
               subject_index={@props.subject_index}
               key={@props.subject_set.subjects[0].id}
               isDisabled={disableLightBox}
+              toggleLightboxHelp={@props.lightboxHelp}
 
               onSubject={@specificSelection.bind this, @props.subject_index}
               subjectCurrentPage={@props.subjectCurrentPage}

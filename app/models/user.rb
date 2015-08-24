@@ -57,6 +57,11 @@ class User
   # field :unlock_token,    :type => String # Only if unlock strategy is :email or :both
   # field :locked_at,       :type => Time
 
+  def tutorial_complete!
+    self.tutorial_complete = true
+    self.save!(:validate => false)
+  end
+
   def has_favourite?(subject)
     favourites.where( subject_id: subject.id ).exists?
   end
