@@ -165,7 +165,7 @@ module.exports = React.createClass # rename to Classifier
       }
       {
         if @state.lightboxHelp
-          <HelpModal help={{title: "The Lightbox", body: "Use the Lightbox to find and select images for annotation."}} onDone={=> @setState lightboxHelp: false } />
+          <HelpModal help={{title: "The Lightbox", body: "You can use the lightbox to find images in a collection. Click on an image in the lightbox to see a larger version of the image."}} onDone={=> @setState lightboxHelp: false } />
       }
     </div>
 
