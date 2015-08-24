@@ -9,7 +9,7 @@ class UsersController < ApplicationController
 
   def tutorial_complete
     if current_or_guest_user != nil
-      current_or_guest_user.update_attributes(tutorial_complete: true)
+      current_or_guest_user.tutorial_complete!
       respond_with current_or_guest_user.tutorial_complete
     else
       respond_with false

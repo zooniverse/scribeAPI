@@ -24,18 +24,21 @@
     line-height: 2;
     background-color:  #ffffff;
     width: 100%;
-    height: 30px;
+    height: 25px;
     font-family: ProximaNova;
+    font-size: 14px;
     color: #3f5765
-    font-size: 16px;/* Approximation due to font substitution */
     font-weight: 400;
     text-align: center;
     border-bottom: solid 3px #3f5765;
     cursor: pointer;
+    span
+      padding: 8%
+    svg:hover path
+      fill: rgba(63,87,101,1)
 
-    &:hover
-      background-color: #cdcdcd;
-
+    #questions-tip
+      vertical-align: text-top;
 
   .action-button-next
     padding: 0;
@@ -46,6 +49,7 @@
     color: #3f5765
     border-radius 0
     text-align center
+    font-weight: 400;
     width: 49%
     top: 0px;
     margin: 0px;
@@ -53,6 +57,10 @@
     opacity: 1;
     &:hover
       background-color: #cdcdcd;
+    a
+      text-decoration:none
+      padding: 10%;
+      color: #3f5765
 
   .action-button-back
     border-right: solid 3px #3f5765;
@@ -64,6 +72,7 @@
     color: #3f5765
     border-radius 0
     text-align center
+    font-weight: 400;
     width: 49%
     top: 0px;
     margin: 0px;
@@ -71,6 +80,10 @@
     opacity: 1;
     &:hover
       background-color: #cdcdcd;
+    a
+      text-decoration:none
+      padding: 10%;
+      color: #3f5765
 
   #image-list
     cursor pointer

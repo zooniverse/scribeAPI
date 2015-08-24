@@ -64,7 +64,7 @@ class Subject
   def thumbnail
     location['thumbnail'].nil? ? location['standard'] : location['thumbnail']
   end
-
+  
   def update_subject_set_stats
     subject_set.inc_subject_count_for_workflow(workflow) if ! workflow.nil?
   end
