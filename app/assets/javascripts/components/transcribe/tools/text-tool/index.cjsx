@@ -241,8 +241,8 @@ TextTool = React.createClass
       {x,y} = @getPosition @props.subject.region
 
       tool_content = <DraggableModal
-        x={x*@props.scale.horizontal}
-        y={y*@props.scale.vertical}
+        x={x*@props.scale.horizontal + @props.scale.offsetX}
+        y={y*@props.scale.vertical + @props.scale.offsetY}
         buttons={buttons}
         classes="transcribe-tool"
         >

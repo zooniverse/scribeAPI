@@ -144,12 +144,14 @@ module.exports = React.createClass # rename to Classifier
             else
               @getCurrentTask().next_task
 
-          <div className="task-area">
+          <div className="right-column">
+            <div className="task-area">
 
-            <div className="forum-holder">
-              <ForumSubjectWidget subject=@getCurrentSubject() />
+              <div className="forum-holder">
+                <ForumSubjectWidget subject=@getCurrentSubject() />
+              </div>
+
             </div>
-
           </div>
       }
 

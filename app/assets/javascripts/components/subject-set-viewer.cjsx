@@ -48,7 +48,7 @@ module.exports = React.createClass
 
     # console.log 'SUBJECT-SET-VIEWER::render(), subject_index = ', @props.subject_index
     # NOTE: LightBox does not receive correct @props.subject_index. Why? --STI
-    <div className="subject-set-viewer">
+    <div className={"subject-set-viewer" + if @props.subject_set.subjects.length <= 1 then ' single-page' else '' }>
       <div className="light-box-area">
         {
           if @props.subject_set.subjects.length > 1

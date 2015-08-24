@@ -214,16 +214,18 @@ module.exports =
       body: "You do not have to complete every page, but it helps us to know, before you move on to another task, if there is any work left to do. Thanks again!"
     },
     tool_config: {
-        "options": {
-            "complete_subject": {
-                "label": "No",
-                "next_task": null
-            },
-            "incomplete_subject": {
-                "label": "Yes",
-                "next_task": null
-            }
+      "options": [
+        {
+          "label": "No",
+          "next_task": null,
+          "value": "complete_subject"
+        },
+        {
+          "label": "Yes",
+          "next_task": null,
+          "value": "incomplete_subject"
         }
+      ]
     }
     subToolIndex: 0
 

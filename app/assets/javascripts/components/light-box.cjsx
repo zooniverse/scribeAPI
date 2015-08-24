@@ -58,7 +58,7 @@ module.exports = React.createClass
       <div id="image-list" className={classes} style={carouselStyle} >
         <ul>
           <li onClick={@shineSelected.bind(this, @findSubjectIndex(@state.first))} className={"active" if @props.subject_index == @findSubjectIndex(@state.first) }>
-            <span class="page-number">{@state.first.order}</span>
+            <span className="page-number">{@state.first.order}</span>
 
             <svg className="light-box-subject" width={125} height={125} viewBox={viewBox} >
                 <SVGImage
@@ -70,7 +70,7 @@ module.exports = React.createClass
           </li>
           {if second
             <li onClick={@shineSelected.bind(this, @findSubjectIndex(second))} className={"active" if @props.subject_index == @findSubjectIndex(second)} >
-              <span class="page-number">{second.order}</span>
+              <span className="page-number">{second.order}</span>
               <svg className="light-box-subject" width={125} height={125} viewBox={viewBox} >
                   <SVGImage
                     src = {second.location.standard}
@@ -83,7 +83,7 @@ module.exports = React.createClass
 
           {if third
             <li onClick={@shineSelected.bind(this, @findSubjectIndex(third))} className={"active" if @props.subject_index == @findSubjectIndex(third)} >
-              <span class="page-number">{third.order}</span>
+              <span className="page-number">{third.order}</span>
               <svg className="light-box-subject" width={125} height={125} viewBox={viewBox} >
                   <SVGImage
                     src = {third.location.standard}
