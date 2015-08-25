@@ -14,11 +14,11 @@ module.exports = React.createClass
     y: @props.y #? 0
     dragged: false
 
-  componentWillReceiveProps: ->
+  componentWillReceiveProps: (new_props) ->
     if ! @state.dragged
       @setState
-        x: @props.x
-        y: @props.y
+        x: new_props.x
+        y: new_props.y
 
   propTypes:
     # children: React.PropTypes.component.isRequired
@@ -55,11 +55,10 @@ module.exports = React.createClass
   handleStart: (e) ->
 
     return if e.button != 0
-    console.log "Draggable: handleStart", @props.disableDragIn.indexOf(e.target.nodeName), e.target.nodeName
+    # console.log "Draggable: handleStart", @props.disableDragIn.indexOf(e.target.nodeName), e.target.nodeName
 
     return if @props.disableDragIn.indexOf(e.target.nodeName) >= 0
     return if $(e.target).parents(@props.disableDragIn.join(',')).length > 0
-    console.log "handleStart"
 
     $el = $(this.getDOMNode())
     pos = $el.position()

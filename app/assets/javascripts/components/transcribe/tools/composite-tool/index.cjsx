@@ -15,7 +15,7 @@ CompositeTool = React.createClass
   getInitialState: ->
     annotation: @props.annotation ? {}
     viewerSize: @props.viewerSize
-    active_field_key: (key for key, value of @props.task.tool_config.tools)[0]
+    active_field_key: (key for key, value of @props.task.tool_config.options)[0]
 
   getDefaultProps: ->
     annotation: {}
@@ -54,7 +54,7 @@ CompositeTool = React.createClass
   # Otherwise commit annotation (which is default behavior when there's only one input
   handleCompletedField: ->
     console.log 'handleCompletedField()'
-    field_keys = (annotation_key for annotation_key, tool_config of @props.task.tool_config.tools)
+    field_keys = (c.value for c of @props.task.tool_config.options)
     next_field_key = field_keys[ field_keys.indexOf(@state.active_field_key) + 1 ]
 
     if next_field_key?
@@ -89,14 +89,8 @@ CompositeTool = React.createClass
       page: @props.subjectCurrentPage
 
   render: ->
-    console.log 'render()'
     buttons = []
     # TK: buttons.push <PrevButton onClick={=> console.log "Prev button clicked!"} />
-
-    if window.location.hash is '#/transcribe' || @props.task.next_task? # regular transcribe, i.e. no mark transition
-      buttons.push <DoneButton label={if @props.task.next_task? then 'Next' else 'Done'} key="done-button" onClick={@commitAnnotation} />
-    else
-      buttons.push <DoneButton label='Finish' key="done-button" onClick={@returnToMarking} />
 
     if @props.onShowHelp?
       buttons.push <HelpButton onClick={@props.onShowHelp}/>
@@ -107,26 +101,30 @@ CompositeTool = React.createClass
     if @props.onIllegibleSubject?
       buttons.push <IllegibleSubjectButton active={@props.illegibleSubject} onClick={@props.onIllegibleSubject} />
 
+    if window.location.hash is '#/transcribe' || @props.task.next_task? # regular transcribe, i.e. no mark transition
+      buttons.push <DoneButton label={if @props.task.next_task? then 'Next' else 'Done'} key="done-button" onClick={@commitAnnotation} />
+    else
+      buttons.push <DoneButton label='Finish' key="done-button" onClick={@returnToMarking} />
+
     {x,y} = @getPosition @props.subject.region
 
     <DraggableModal
-      x={x*@props.scale.horizontal}
-      y={y*@props.scale.vertical}
+      x={x*@props.scale.horizontal + @props.scale.offsetX}
+      y={y*@props.scale.vertical + @props.scale.offsetY}
       buttons={buttons}
       classes="transcribe-tool composite"
       >
 
       <label>{@props.task.instruction}</label>
       {
-        for annotation_key, tool_config of @props.task.tool_config.tools
-          ToolComponent = @props.transcribeTools[tool_config.tool]
+        for sub_tool in @props.task.tool_config.options
+          ToolComponent = @props.transcribeTools[sub_tool.tool]
+          annotation_key = sub_tool.value
           focus = annotation_key is @state.active_field_key
-
-          console.log 'render::focus = ', focus, ' ', annotation_key
 
           <ToolComponent
             task={@props.task}
-            tool_config={@props.task.tool_config.tools[annotation_key].tool_config}
+            tool_config={sub_tool.tool_config}
             subject={@props.subject}
             workflow={@props.workflow}
             standalone={false}
@@ -134,7 +132,7 @@ CompositeTool = React.createClass
             onChange={@handleChange}
             onComplete={@handleCompletedField}
             onInputFocus={@handleFieldFocus}
-            label={@props.task.tool_config.tools[annotation_key].label ? ''}
+            label={sub_tool.label ? ''}
             focus={focus}
             scale={@props.scale}
             annotation_key={annotation_key}

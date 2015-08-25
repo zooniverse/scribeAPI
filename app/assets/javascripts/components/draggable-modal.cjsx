@@ -25,6 +25,8 @@ module.exports = React.createClass
     y = @props.y ? (( $(window).height() - 300) / 2 ) + $(window).scrollTop()
     y = Math.max y, 100
     x = Math.max x, 100
+    x = $(window).width() - width if x > $(window).width() - width
+
     <Draggable x={x} y={y}>
 
       <div className="draggable-modal #{@props.classes}">

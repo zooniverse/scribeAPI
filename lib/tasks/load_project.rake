@@ -120,6 +120,11 @@ desc 'creates a poject object from the project directory'
             task_config[:key] = task_key.to_s
             # Remove any config params not officially declared as fields of WorkflowTask:
             task_config = task_config.inject({}) { |h, (k,v)| h[k] = v if WorkflowTask.fields.keys.include?(k.to_s); h }
+
+            # Rewrite pick-one-* tool configs to be structured the same per https://github.com/zooniverse/scribeAPI/issues/241
+            # .. Just until project owners update their own configs
+            task_config[:tool_config] = translate_pick_one_tool_config task_config
+
             a << task_config
           end
         end
@@ -145,6 +150,22 @@ desc 'creates a poject object from the project directory'
     end
 
     puts "  WARN: No mark workflow found" if project.workflows.find_by(name: 'mark').nil?
+  end
+
+  def translate_pick_one_tool_config(task_hash)
+    config = task_hash[:tool_config]
+    
+    # In Pick-one-mark-one and compositeTool, rename 'tools' to 'options'
+    if ['pickOneMarkOne', 'compositeTool'].include? task_hash[:tool]
+      config[:options] = config.delete :tools
+    end
+
+    # In Pick-one and compositeTool, structure 'options' as an array rather than a hash:
+    if ['pickOne','compositeTool']
+      config[:options] = config[:options].map { |(option_value,config)| config[:value] = option_value; config } if config[:options].is_a?(Hash)
+    end
+
+    config
   end
 
   def load_tutorial(project_key)

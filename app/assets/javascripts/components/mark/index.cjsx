@@ -69,7 +69,7 @@ module.exports = React.createClass # rename to Classifier
     currentSubtool = if @state.currentSubtool then @state.currentSubtool else @getTasks()[firstTask]?.tool_config.tools?[0]
 
     if currentTask.tool is 'pick_one'
-      currentAnswer = currentTask.tool_config.options?[currentAnnotation.value]
+      currentAnswer = (a for a in currentTask.tool_config.options when a.value == currentAnnotation.value)[0]
       waitingForAnswer = not currentAnswer
 
     <div className="classifier">
@@ -104,58 +104,60 @@ module.exports = React.createClass # rename to Classifier
             />
         }
       </div>
-      <div className="task-area">
-        <div className="task-container">
-          <TaskComponent
-            key={@getCurrentTask().key}
-            task={currentTask}
-            annotation={@getCurrentClassification()?.annotation ? {}}
-            onChange={@handleDataFromTool}
-            subject={@getCurrentSubject()}
-          />
-          <div className="help-bad-subject-holder">
-            { if @getCurrentTask().help?
-              <HelpButton onClick={@toggleHelp} />
-            }
-            <HideOtherMarksButton active={@state.hideOtherMarks} onClick={@toggleHideOtherMarks} />
-            { if onFirstAnnotation
-              <BadSubjectButton active={@state.badSubject} onClick={@toggleBadSubject} />
-            }
-            { if @state.badSubject
-              <p>You&#39;ve marked this subject as BAD. Thanks for flagging the issue! <strong>Press DONE to continue.</strong></p>
-            }
-            { if @state.hideOtherMarks
-              <p>Currently displaying only your marks. <strong>Toggle the button again to show all marks to-date.</strong></p>
-            }
-          </div>
+      <div className="right-column">
+        <div className="task-area">
+          <div className="task-container">
+            <TaskComponent
+              key={@getCurrentTask().key}
+              task={currentTask}
+              annotation={@getCurrentClassification()?.annotation ? {}}
+              onChange={@handleDataFromTool}
+              subject={@getCurrentSubject()}
+            />
+            <div className="help-bad-subject-holder">
+              { if @getCurrentTask().help?
+                <HelpButton onClick={@toggleHelp} />
+              }
+              <HideOtherMarksButton active={@state.hideOtherMarks} onClick={@toggleHideOtherMarks} />
+              { if onFirstAnnotation
+                <BadSubjectButton active={@state.badSubject} onClick={@toggleBadSubject} />
+              }
+              { if @state.badSubject
+                <p>You&#39;ve marked this subject as BAD. Thanks for flagging the issue! <strong>Press DONE to continue.</strong></p>
+              }
+              { if @state.hideOtherMarks
+                <p>Currently displaying only your marks. <strong>Toggle the button again to show all marks to-date.</strong></p>
+              }
+            </div>
 
-          <div className="tutorial-holder help-button ghost" onClick={@toggleTutorial}>
-            <HelpButton label={"Tutorial"} onClick={@toggleTutorial} />
-          </div>
+            <div className="tutorial-holder help-button ghost" onClick={@toggleTutorial}>
+              <HelpButton label={"Tutorial"} onClick={@toggleTutorial} />
+            </div>
 
-          <nav className="task-nav">
-            { if false
-              <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
-            }
-            { if @getNextTask()?
-                # console.log "STATE at the NEXT BUTTON", @state
-                <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@advanceToNextTask}>Next</button>
-              else
-                if @state.taskKey == "completion_assessment_task"
-                  if @getCurrentSubject() == @getCurrentSubjectSet().subjects[@getCurrentSubjectSet().subjects.length-1]
-                    <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next</button>
-                  else
-                    <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next Page</button>
+            <nav className="task-nav">
+              { if false
+                <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
+              }
+              { if @getNextTask()?
+                  # console.log "STATE at the NEXT BUTTON", @state
+                  <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@advanceToNextTask}>Next</button>
                 else
-                  <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Done</button>
-            }
-          </nav>
-        </div>
+                  if @state.taskKey == "completion_assessment_task"
+                    if @getCurrentSubject() == @getCurrentSubjectSet().subjects[@getCurrentSubjectSet().subjects.length-1]
+                      <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next</button>
+                    else
+                      <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next Page</button>
+                  else
+                    <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Done</button>
+              }
+            </nav>
+          </div>
 
-        <div className="forum-holder">
-          <ForumSubjectWidget subject_set = @getCurrentSubjectSet() />
-        </div>
+          <div className="forum-holder">
+            <ForumSubjectWidget subject_set = @getCurrentSubjectSet() />
+          </div>
 
+        </div>
       </div>
       { if !@state.completeTutorial
         <Tutorial tutorial={@props.project.tutorial} toggleTutorial={@toggleTutorial}/>

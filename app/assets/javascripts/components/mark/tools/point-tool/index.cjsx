@@ -40,7 +40,7 @@ module.exports = React.createClass
     @props.onChange e
 
   handleMouseDown: ->
-    @props.onSelect @props.mark unless @props.disabled
+    @props.onSelect @props.mark # unless @props.disabled
 
   render: ->
     classes = []
@@ -74,7 +74,6 @@ module.exports = React.createClass
     >
       <g
         className='point-tool'
-        onMouseDown={@handleMouseDown}
       >
 
         <Draggable onDrag={@handleDrag}>
