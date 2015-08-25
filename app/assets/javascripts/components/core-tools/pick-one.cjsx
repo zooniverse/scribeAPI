@@ -68,7 +68,6 @@ module.exports = React.createClass
 
   render: ->
     answers = for answer in @props.task.tool_config.options
-
       answer._key ?= Math.random()
       checked = answer.value is @props.annotation.value
       classes = ['minor-button']

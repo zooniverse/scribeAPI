@@ -1,15 +1,12 @@
 React                  = require 'react'
-{Navigation}           = require 'react-router'
 DraggableModal         = require 'components/draggable-modal'
 SmallButton            = require 'components/buttons/small-button'
 HelpButton             = require 'components/buttons/help-button'
 BadSubjectButton       = require 'components/buttons/bad-subject-button'
 IllegibleSubjectButton = require 'components/buttons/illegible-subject-button'
 
-
 TextTool = React.createClass
   displayName: 'TextTool'
-  mixins: [Navigation]
 
   getInitialState: ->
     annotation: @props.annotation ? {}
@@ -119,16 +116,9 @@ TextTool = React.createClass
     ann = @state.annotation
     @props.onComplete ann
 
-  # this can go into a mixin? (common across all transcribe tools)
-  returnToMarking: ->
-    console.log 'returnToMarking()'
-    @commitAnnotation()
-
-    # transition back to mark
-    @transitionTo 'mark', {},
-      subject_set_id: @props.subject.subject_set_id
-      selected_subject_id: @props.subject.parent_subject_id
-      page: @props.subjectCurrentPage
+    if @props.transcribeMode is 'page' or @props.transcribeMode is 'single'
+      if @props.isLastSubject and not @props.task.next_task?
+        @props.returnToMarking()
 
   # Get key to use in annotations hash (i.e. typically 'value', unless included in composite tool)
   fieldKey: ->
@@ -140,9 +130,8 @@ TextTool = React.createClass
   getCaret: ()->
     el = $(@refs.input0?.getDOMNode())
 
-
   updateValue: (val) ->
-    console.log "updated val: ", val
+    # console.log "updated val: ", val
     newAnnotation = @state.annotation
     newAnnotation[@fieldKey()] = val
 
@@ -157,12 +146,8 @@ TextTool = React.createClass
     @handleChange(e) # updates any autocomplete values
 
     if (! @state.autocompleting && [13].indexOf(e.keyCode) >= 0) && !e.shiftKey# ENTER
-      console.log "ENTERING ON TRANSCRIPTION:", e.keyCode
-      if window.location.hash is '#/transcribe' || @props.task.next_task? # regular transcribe, i.e. no mark transition
-        console.log "REGULAR OLE TRANSCRIBE"
-        @commitAnnotation()
-      else
-        @returnToMarking()
+      # console.log "ENTERING ON TRANSCRIPTION:", e.keyCode
+      @commitAnnotation()
     else if e.keyCode == 13 && e.shiftKey
       text_area =  $("textarea")
       the_text = text_area.val()
@@ -233,16 +218,21 @@ TextTool = React.createClass
       if @props.onIllegibleSubject?
         buttons.push <IllegibleSubjectButton active={@props.illegibleSubject} onClick={@props.onIllegibleSubject} />
 
-      if window.location.hash is '#/transcribe' || @props.task.next_task? # regular transcribe, i.e. no mark transition
-        buttons.push <SmallButton label={if @props.task.next_task? then 'Next' else 'Done'} key="done-button" onClick={@commitAnnotation} />
-      else
-        buttons.push <SmallButton label='Finish' key="done-button" onClick={@returnToMarking} />
+      buttonLabel =
+        if @props.task.next_task?
+         'Continue'
+        else
+          if @props.isLastSubject and ( @props.transcribeMode is 'page' or @props.transcribeMode is 'single' )
+            'Return to Marking'
+          else 'Next Entry'
+
+      buttons.push <SmallButton label={buttonLabel} key="done-button" onClick={@commitAnnotation} />
 
       {x,y} = @getPosition @props.subject.region
 
       tool_content = <DraggableModal
-        x={x*@props.scale.horizontal}
-        y={y*@props.scale.vertical}
+        x={x*@props.scale.horizontal + @props.scale.offsetX}
+        y={y*@props.scale.vertical + @props.scale.offsetY}
         buttons={buttons}
         classes="transcribe-tool"
         >

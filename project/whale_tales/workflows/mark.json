@@ -66,10 +66,10 @@
       },
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Name of Location",       "color": null, "generates_subject_type": "location_name" },
-          {"type": "rectangleTool", "label": "Geographic Coordinates", "color": null, "generates_subject_type": "location_coordinates" },
-          {"type": "rectangleTool", "label": "Port",                   "color": null, "generates_subject_type": "location_port" },
-          {"type": "rectangleTool", "label": "Other",                  "color": null, "generates_subject_type": "location_other" }
+          {"type": "rectangleTool", "label": "Name of Location",       "color": "#eeff00", "generates_subject_type": "location_name" },
+          {"type": "rectangleTool", "label": "Geographic Coordinates", "color": "#0000ff", "generates_subject_type": "location_coordinates" },
+          {"type": "rectangleTool", "label": "Port",                   "color": "#5ce600", "generates_subject_type": "location_port" },
+          {"type": "rectangleTool", "label": "Other",                  "color": "#e59900", "generates_subject_type": "location_other" }
         ]
       },
       "next_task": "sea_ice_present"
@@ -128,16 +128,16 @@
       },
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool",  "label": "Open Water Near Ice",        "color": null, "generates_subject_type": "sailing_condition_open_water" },
-          {"type": "rectangleTool",  "label": "Occasional Ice",             "color": null, "generates_subject_type": "sailing_condition_occasional_ice" },
-          {"type": "rectangleTool",  "label": "Dodging Ice",                "color": null, "generates_subject_type": "sailing_condition_dodging_ice" },
-          {"type": "rectangleTool",  "label": "Sailing in Leads",           "color": null, "generates_subject_type": "sailing_condition_leads" },
-          {"type": "rectangleTool",  "label": "Ramming Pack Ice",           "color": null, "generates_subject_type": "sailing_condition_ramming" },
-          {"type": "rectangleTool",  "label": "Waiting for Opening in Ice", "color": null, "generates_subject_type": "sailing_condition_waiting" },
-          {"type": "rectangleTool",  "label": "Beset/Trapped in Ice",       "color": null, "generates_subject_type": "sailing_condition_trapped" },
-          {"type": "rectangleTool",  "label": "Nipped/Damaged",             "color": null, "generates_subject_type": "sailing_condition_damaged" },
-          {"type": "rectangleTool",  "label": "Wrecked",                    "color": null, "generates_subject_type": "sailing_condition_wrecked" },
-          {"type": "rectangleTool",  "label": "Other",                      "color": null, "generates_subject_type": "sailing_condition_other" }
+          {"type": "rectangleTool",  "label": "Open Water Near Ice",        "color": "#eeff00", "generates_subject_type": "sailing_condition_open_water" },
+          {"type": "rectangleTool",  "label": "Occasional Ice",             "color": "#ff4400", "generates_subject_type": "sailing_condition_occasional_ice" },
+          {"type": "rectangleTool",  "label": "Dodging Ice",                "color": "#0000ff", "generates_subject_type": "sailing_condition_dodging_ice" },
+          {"type": "rectangleTool",  "label": "Sailing in Leads",           "color": "#00ccff", "generates_subject_type": "sailing_condition_leads" },
+          {"type": "rectangleTool",  "label": "Ramming Pack Ice",           "color": "#5ce600", "generates_subject_type": "sailing_condition_ramming" },
+          {"type": "rectangleTool",  "label": "Waiting for Opening in Ice", "color": "#0099e6", "generates_subject_type": "sailing_condition_waiting" },
+          {"type": "rectangleTool",  "label": "Beset/Trapped in Ice",       "color": "#e59900", "generates_subject_type": "sailing_condition_trapped" },
+          {"type": "rectangleTool",  "label": "Nipped/Damaged",             "color": "#00cca3", "generates_subject_type": "sailing_condition_damaged" },
+          {"type": "rectangleTool",  "label": "Wrecked",                    "color": "#7700b3", "generates_subject_type": "sailing_condition_wrecked" },
+          {"type": "rectangleTool",  "label": "Other",                      "color": "#ff40d9", "generates_subject_type": "sailing_condition_other" }
         ]
       },
       "next_task": "sea_ice"
@@ -247,13 +247,13 @@
       },
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Wind Force/Direction",     "color": null, "generates_subject_type": "weather_wind" },
-          {"type": "rectangleTool", "label": "Sky/Cloud Description",    "color": null, "generates_subject_type": "weather_sky" },
-          {"type": "rectangleTool", "label": "Precipitation",            "color": null, "generates_subject_type": "weather_precipitation" },
-          {"type": "rectangleTool", "label": "Sea State",                "color": null, "generates_subject_type": "weather_sea" },
-          {"type": "rectangleTool", "label": "Temperature",              "color": null, "generates_subject_type": "weather_temperature" },
-          {"type": "rectangleTool", "label": "Barometric Pressure",      "color": null, "generates_subject_type": "weather_pressure" },
-          {"type": "rectangleTool", "label": "Other Weather Desciption", "color": null, "generates_subject_type": "weather_other_description" }
+          {"type": "rectangleTool", "label": "Wind Force/Direction",     "color": "#eeff00", "generates_subject_type": "weather_wind" },
+          {"type": "rectangleTool", "label": "Sky/Cloud Description",    "color": "#ff4400", "generates_subject_type": "weather_sky" },
+          {"type": "rectangleTool", "label": "Precipitation",            "color": "#0000ff", "generates_subject_type": "weather_precipitation" },
+          {"type": "rectangleTool", "label": "Sea State",                "color": "#00ccff", "generates_subject_type": "weather_sea" },
+          {"type": "rectangleTool", "label": "Temperature",              "color": "#5ce600", "generates_subject_type": "weather_temperature" },
+          {"type": "rectangleTool", "label": "Barometric Pressure",      "color": "#0099e6", "generates_subject_type": "weather_pressure" },
+          {"type": "rectangleTool", "label": "Other Weather Desciption", "color": "#e59900", "generates_subject_type": "weather_other_description" }
         ]
       },
       "next_task": "optional_entries"
@@ -291,11 +291,11 @@
       },
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Whaling Activity",         "color": null, "generates_subject_type": "event_whaling_activity" },
-          {"type": "rectangleTool", "label": "Ship Interaction",         "color": null, "generates_subject_type": "event_ship_interaction" },
-          {"type": "rectangleTool", "label": "Interaction with Natives", "color": null, "generates_subject_type": "event_native_interaction" },
-          {"type": "rectangleTool", "label": "Social",                   "color": null, "generates_subject_type": "event_social" },
-          {"type": "rectangleTool", "label": "Other",                    "color": null, "generates_subject_type": "event_other" }
+          {"type": "rectangleTool", "label": "Whaling Activity",         "color": "#ff40d9", "generates_subject_type": "event_whaling_activity" },
+          {"type": "rectangleTool", "label": "Ship Interaction",         "color": "#00cca3", "generates_subject_type": "event_ship_interaction" },
+          {"type": "rectangleTool", "label": "Interaction with Natives", "color": "#0099e6", "generates_subject_type": "event_native_interaction" },
+          {"type": "rectangleTool", "label": "Social",                   "color": "#00ccff", "generates_subject_type": "event_social" },
+          {"type": "rectangleTool", "label": "Other",                    "color": "#ff4400", "generates_subject_type": "event_other" }
         ]
       },
       "next_task": "optional_entries"
@@ -311,11 +311,11 @@
       },
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Illustration", "color": null, "generates_subject_type": "art_illustration" },
-          {"type": "rectangleTool", "label": "Poem",         "color": null, "generates_subject_type": "art_poem" },
-          {"type": "rectangleTool", "label": "Clipping",     "color": null, "generates_subject_type": "art_clipping" },
-          {"type": "rectangleTool", "label": "Whale/Stamp",  "color": null, "generates_subject_type": "art_whale_stamp" },
-          {"type": "rectangleTool", "label": "Other",        "color": null, "generates_subject_type": "art_other" }
+          {"type": "rectangleTool", "label": "Illustration", "color": "#ff40d9", "generates_subject_type": "art_illustration" },
+          {"type": "rectangleTool", "label": "Poem",         "color": "#00cca3", "generates_subject_type": "art_poem" },
+          {"type": "rectangleTool", "label": "Clipping",     "color": "#0099e6", "generates_subject_type": "art_clipping" },
+          {"type": "rectangleTool", "label": "Whale/Stamp",  "color": "#00ccff", "generates_subject_type": "art_whale_stamp" },
+          {"type": "rectangleTool", "label": "Other",        "color": "#ff4400", "generates_subject_type": "art_other" }
         ]
       },
       "next_task": "optional_entries"

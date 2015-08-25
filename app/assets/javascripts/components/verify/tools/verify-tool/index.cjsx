@@ -84,8 +84,8 @@ VerifyTool = React.createClass
     <DraggableModal
 
       header  = {label}
-      x={x*@props.scale.horizontal}
-      y={y*@props.scale.vertical}
+      x={x*@props.scale.horizontal + @props.scale.offsetX}
+      y={y*@props.scale.vertical + @props.scale.offsetY}
       onDone  = {@commitAnnotation}
       buttons = {buttons}>
 

@@ -93,7 +93,6 @@ module.exports = React.createClass
     annotation: [] #@props.annotation ? {}
 
   render: ->
-
     options = for option, i in @props.task.tool_config.options
       option._key ?= Math.random()
       isChecked = option.value in @state.annotation
@@ -118,7 +117,7 @@ module.exports = React.createClass
           {option.label}
         </span>
 
-        {if option.help
+        {if option.help?
           <span className="help" data-text="#{option.help}"><i className="fa fa-question"></i></span>
         }
 

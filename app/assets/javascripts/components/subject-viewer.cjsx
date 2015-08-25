@@ -180,8 +180,11 @@ module.exports = React.createClass
     rect ?= width: 0, height: 0
     horizontal = rect.width / @props.subject.width
     vertical = rect.height / @props.subject.height
-    # TODO hack fallback:
-    return {horizontal, vertical}
+    offsetX = rect.left + $(window).scrollLeft()
+    offsetY = rect.top + $(window).scrollTop()
+    # console.log "top: ", rect.top, $(window).scrollTop(), offsetY
+    # PB: Adding offsetX and offsetY, which are also necessary to calculate window absolute px coordinates from source-image coordinates
+    return {horizontal, vertical, offsetX, offsetY}
 
   getEventOffset: (e) ->
     rect = @refs.sizeRect.getDOMNode().getBoundingClientRect()
@@ -253,7 +256,7 @@ module.exports = React.createClass
       else
         otherMarks.push mark
 
-    console.log '{transcribableMarks, otherMarks} = ', {transcribableMarks, otherMarks}
+    # console.log '{transcribableMarks, otherMarks} = ', {transcribableMarks, otherMarks}
     return {transcribableMarks, otherMarks}
 
   renderMarks: (marks) ->
@@ -369,8 +372,7 @@ module.exports = React.createClass
           { @renderMarks otherMarks }
           { @renderMarks transcribableMarks }
 
-
-          </svg>
+        </svg>
 
     #  Render any tools passed directly in in same parent div so that we can efficiently position them with respect to marks"
 

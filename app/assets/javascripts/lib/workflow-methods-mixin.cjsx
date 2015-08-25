@@ -15,6 +15,11 @@ module.exports =
     return null if k?.length != 1
     @props.project.workflows[k[0]]
 
+  getWorkflowByName: (name) ->
+    k = (k for w,k in @props.project.workflows when w.name is name)
+    return null if k?.length != 1
+    @props.project.workflows[k[0]]
+
   # Start a new classification (optionally initialized with given annotation hash):
   beginClassification: (annotation = {}, callback) ->
     classifications = @state.classifications
@@ -28,19 +33,18 @@ module.exports =
           window.classifications = @state.classifications # make accessible to console
           callback() if callback?
 
-  toggleBadSubject: (callback) ->
+  toggleBadSubject: (e, callback) ->
     @setState badSubject: not @state.badSubject, =>
       callback?()
 
 
-  toggleIllegibleSubject: (callback) ->
+  toggleIllegibleSubject: (e, callback) ->
     @setState illegibleSubject: not @state.illegibleSubject, =>
       callback?()
 
   # Push current classification to server:
   commitClassification: ->
-    console.log "commitClassification ---> @state", @state
-    console.log 'COMMITTING CLASSIFICATION... current classification: ', @getCurrentClassification()
+    console.log 'COMMITTING CLASSIFICATION: ', @getCurrentClassification()
     classification = @getCurrentClassification()
     # checking for empty classification.annotation, we don't want to commit those classifications -- AMS
 
@@ -214,16 +218,18 @@ module.exports =
       body: "You do not have to complete every page, but it helps us to know, before you move on to another task, if there is any work left to do. Thanks again!"
     },
     tool_config: {
-        "options": {
-            "complete_subject": {
-                "label": "No",
-                "next_task": null
-            },
-            "incomplete_subject": {
-                "label": "Yes",
-                "next_task": null
-            }
+      "options": [
+        {
+          "label": "No",
+          "next_task": null,
+          "value": "complete_subject"
+        },
+        {
+          "label": "Yes",
+          "next_task": null,
+          "value": "incomplete_subject"
         }
+      ]
     }
     subToolIndex: 0
 

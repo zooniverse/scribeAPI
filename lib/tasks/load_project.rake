@@ -154,13 +154,17 @@ desc 'creates a poject object from the project directory'
 
   def translate_pick_one_tool_config(task_hash)
     config = task_hash[:tool_config]
-    # In Pick-one-mark-one, rename 'tools' to 'options'
-    if task_hash[:tool] == 'pickOneMarkOne'
+    
+    # In Pick-one-mark-one and compositeTool, rename 'tools' to 'options'
+    if ['pickOneMarkOne', 'compositeTool'].include? task_hash[:tool]
       config[:options] = config.delete :tools
-    # In Pick-one, structure 'options' as an array rather than a hash:
-    elsif task_hash[:tool] == 'pickOne'
+    end
+
+    # In Pick-one and compositeTool, structure 'options' as an array rather than a hash:
+    if ['pickOne','compositeTool']
       config[:options] = config[:options].map { |(option_value,config)| config[:value] = option_value; config } if config[:options].is_a?(Hash)
     end
+
     config
   end
 
