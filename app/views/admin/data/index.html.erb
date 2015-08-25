@@ -16,6 +16,19 @@
   </div>
 <% end %>
 
+<h3>Completeness</h3>
+<% {  "Complete (Only crowd-verified subjects)" => 'complete',
+      "All (All data  in a massive json struc)" =>  'all'
+   }.each do |(label, key)|
+     input_id = "download_status_#{key}"
+%>
+  <div>
+    <input type="radio" id="<%= input_id %>" name="download_status" value="<%= key %>"<%= key == 'all' ? ' checked="checked"' : '' %> />
+    <label for="<%= input_id %>"><%= label %></label>
+  </div>
+<% end %>
+
+
 <h3>Download</h3>
 
 <input type="submit" value="Download" />

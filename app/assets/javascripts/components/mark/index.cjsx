@@ -195,7 +195,7 @@ module.exports = React.createClass # rename to Classifier
 
         </div>
       </div>
-      { if !@state.completeTutorial
+      { if @props.project.tutorial? && !@state.completeTutorial
         <Tutorial tutorial={@props.project.tutorial} toggleTutorial={@toggleTutorial}/>
       }
       { if @state.helping
