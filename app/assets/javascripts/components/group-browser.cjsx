@@ -32,7 +32,6 @@ GroupBrowser = React.createClass
       groupNameClasses.push "active"
 
     divStyle=
-      backgroundColor: "red"
       backgroundImage: "url(#{group.cover_image_url})"
       backgroundSize: "300px"
 
