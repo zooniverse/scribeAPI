@@ -181,6 +181,13 @@ module.exports = React.createClass # rename to Classifier
             <ForumSubjectWidget subject_set = @getCurrentSubjectSet() />
           </div>
 
+          <div className="social-media-container">
+            <i className="fa fa-facebook-square"></i>
+            <i className="fa fa-twitter-square"></i>
+            <i className="fa fa-google-plus-square"></i>
+
+          </div>
+
         </div>
       </div>
       { if !@state.completeTutorial
