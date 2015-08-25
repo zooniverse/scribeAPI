@@ -33,19 +33,18 @@ module.exports =
           window.classifications = @state.classifications # make accessible to console
           callback() if callback?
 
-  toggleBadSubject: (callback) ->
+  toggleBadSubject: (e, callback) ->
     @setState badSubject: not @state.badSubject, =>
       callback?()
 
 
-  toggleIllegibleSubject: (callback) ->
+  toggleIllegibleSubject: (e, callback) ->
     @setState illegibleSubject: not @state.illegibleSubject, =>
       callback?()
 
   # Push current classification to server:
   commitClassification: ->
-    console.log "commitClassification ---> @state", @state
-    console.log 'COMMITTING CLASSIFICATION... current classification: ', @getCurrentClassification()
+    console.log 'COMMITTING CLASSIFICATION: ', @getCurrentClassification()
     classification = @getCurrentClassification()
     # checking for empty classification.annotation, we don't want to commit those classifications -- AMS
 
