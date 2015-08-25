@@ -1,13 +1,14 @@
 .subject-viewer
-  // position absolute
-  position relative
-  float left
-  margin-top 40px
-  // width 100%
+  // position relative
+  // float left
+  // width 700px
+  // z-index 0
+
   text-align center
   display none
-  z-index 0
-  margin-left 150px
+  flex-grow 1
+  flex-flow: row nowrap
+  margin-left 10px
 
   &.active
     // display none
@@ -20,9 +21,9 @@
     // background none
     margin-bottom 20px
     .marking-surface
-      width 840px
+      // width 840px
       text-align center
-      display inline-block
+      // display inline-block
     .subject-ui
       background-color rgba(0,0,0,0.75)
       position fixed
@@ -30,8 +31,9 @@
       width 100%
       height 80px
   .subject-viewer-svg
-    border 2px solid #000
-    max-width 90%
+    // border 2px solid #000
+    width 100%
+    min-width 600px
     height 100%
     rect.previous-mark
       opacity 0.5

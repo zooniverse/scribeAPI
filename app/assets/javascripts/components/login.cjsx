@@ -65,7 +65,7 @@ Login = React.createClass
 
   renderLoggedInAsGuest: ->
     <span>
-      <span className="guest-hello">Hello Guest!</span>
+      <span className="label guest-hello">Hello Guest!</span>
       { @renderLoginOptions('Log in to save your work:') }
     </span>
 
@@ -74,7 +74,7 @@ Login = React.createClass
       { if @state.user.avatar
           <img src="#{@state.user.avatar}" />
       }
-      Hello {@state.user.name} <a className="logout" onClick={@signOut} >Logout</a>
+      <span className="label">Hello {@state.user.name} </span><a className="logout" onClick={@signOut} >Logout</a>
     </p>
 
 
@@ -84,7 +84,7 @@ Login = React.createClass
       <a key="login-link-#{link.id}" href={link.path} title="Log in using #{link.name}"><i className="fa fa-#{icon_id} fa-2" /></a>
 
     <span>
-      { label || "Log In:" }
+      <span className="label">{ label || "Log In:" }</span>
       <div className='options'>
         { links }
       </div>

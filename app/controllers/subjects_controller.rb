@@ -15,7 +15,7 @@ class SubjectsController < ApplicationController
 
     # Filter by subject set?
     @subjects = @subjects.by_parent_subject(parent_subject_id) if parent_subject_id
-    
+
     # Randomize?
     @subjects = @subjects.random(limit: limit) if random
 

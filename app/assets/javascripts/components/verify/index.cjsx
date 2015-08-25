@@ -88,23 +88,25 @@ module.exports = React.createClass # rename to Classifier
       </div>
 
       { if @getCurrentSubject()?
-          <div style={display: "none"} className="task-area">
+          <div className="right-column">
+            <div style={display: "none"} className="task-area">
 
-            <div className="task-container">
-              <nav className="task-nav">
-                <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
-                { if nextTask?
-                    <button type="button" className="continue major-button" onClick={@advanceToTask.bind(@, nextTask)}>Next</button>
-                  else
-                    <button type="button" className="continue major-button" onClick={@completeClassification}>Done</button>
-                }
-              </nav>
+              <div className="task-container">
+                <nav className="task-nav">
+                  <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
+                  { if nextTask?
+                      <button type="button" className="continue major-button" onClick={@advanceToTask.bind(@, nextTask)}>Next</button>
+                    else
+                      <button type="button" className="continue major-button" onClick={@completeClassification}>Done</button>
+                  }
+                </nav>
+              </div>
+
+              <div className="forum-holder">
+                <ForumSubjectWidget subject_set=@getCurrentSubject() />
+              </div>
+
             </div>
-
-            <div className="forum-holder">
-              <ForumSubjectWidget subject_set=@getCurrentSubject() />
-            </div>
-
           </div>
       }
     </div>

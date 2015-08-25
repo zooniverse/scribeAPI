@@ -38,7 +38,7 @@ module.exports =
       subjectSet: []
 
     request.then (subject_set) =>
-      console.log 'fetchNextSubjectPage() callback!'
+      # console.log 'fetchNextSubjectPage() callback!'
       callback_fn()? # fixes weird pagination bugs; not too happy about this one --STI
       @setState
         subjectSets: subject_set
