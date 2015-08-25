@@ -12,6 +12,9 @@ HelpButton              = require 'components/buttons/help-button'
 BadSubjectButton        = require 'components/buttons/bad-subject-button'
 HideOtherMarksButton    = require 'components/buttons/hide-other-marks-button'
 DraggableModal          = require 'components/draggable-modal'
+Draggable               = require 'lib/draggable'
+
+{Link}                  = require 'react-router'
 
 module.exports = React.createClass # rename to Classifier
   displayName: 'Mark'
@@ -67,6 +70,7 @@ module.exports = React.createClass # rename to Classifier
     firstTask = activeWorkflow.first_task
     onFirstAnnotation = @state.taskKey == firstTask
     currentSubtool = if @state.currentSubtool then @state.currentSubtool else @getTasks()[firstTask]?.tool_config.tools?[0]
+
 
     if currentTask.tool is 'pick_one'
       currentAnswer = (a for a in currentTask.tool_config.options when a.value == currentAnnotation.value)[0]
@@ -151,7 +155,27 @@ module.exports = React.createClass # rename to Classifier
                     <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Done</button>
               }
             </nav>
+
+            {
+              if @getActiveWorkflow()?
+                  <p>
+                    <Link to="/transcribe/#{@getWorkflowByName('transcribe').id}/#{@getCurrentSubject().id}">Transcribe this page now!</Link>
+                  </p>
+            }
           </div>
+
+          {
+            if @getActiveWorkflow()?
+              <div className="explore">
+                <h2>Explore</h2>
+                <p>
+                  <Link to="mark" query={{ subject_set_id: @getCurrentSubjectSet().id, selected_subject_id: @getCurrentSubject().id }}>Link to this page.</Link>
+                </p>
+                <p>
+                  <Link to="/groups/#{@getCurrentSubjectSet().group_id}">About this logbook.</Link>
+                </p>
+              </div>
+          }
 
           <div className="forum-holder">
             <ForumSubjectWidget subject_set = @getCurrentSubjectSet() />

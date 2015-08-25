@@ -1,5 +1,6 @@
 # @cjsx React.DOM
 React                   = require 'react'
+{Navigation}            = require 'react-router'
 SubjectViewer           = require '../subject-viewer'
 JSONAPIClient           = require 'json-api-client' # use to manage data?
 FetchSubjectsMixin      = require 'lib/fetch-subjects-mixin'
@@ -22,7 +23,7 @@ GenericButton           = require 'components/buttons/generic-button'
 
 module.exports = React.createClass # rename to Classifier
   displayName: 'Transcribe'
-  mixins: [FetchSubjectsMixin, BaseWorkflowMethods] # load subjects and set state variables: subjects,  classification
+  mixins: [FetchSubjectsMixin, BaseWorkflowMethods, Navigation] # load subjects and set state variables: subjects,  classification
 
   getInitialState: ->
     taskKey:                      null
@@ -30,7 +31,6 @@ module.exports = React.createClass # rename to Classifier
     classificationIndex:          0
     subject_index:                0
     helping:                      false
-
 
   getDefaultProps: ->
     workflowName: 'transcribe'
@@ -60,6 +60,7 @@ module.exports = React.createClass # rename to Classifier
         => @forceUpdate()
 
   handleTaskComplete: (d) ->
+    console.log 'TRANSCRIBE/INDEX::handleTaskComplete()'
     @handleDataFromTool(d)
     @commitClassificationAndContinue d
 
@@ -80,14 +81,25 @@ module.exports = React.createClass # rename to Classifier
   componentWillUnmount:->
     not @state.badSubject
 
-
+  # transition back to mark workflow
+  returnToMarking: ->
+    @transitionTo 'mark', {},
+      subject_set_id: @getCurrentSubject().subject_set_id
+      selected_subject_id: @getCurrentSubject().parent_subject_id
+      page: @props.query.page
 
   render: ->
-    # DISABLE ANIMATED SCROLLING FOR NOW
-    # if @props.query.scrollX? and @props.query.scrollY?
-    #   window.scrollTo(@props.query.scrollX,@props.query.scrollY)
-    # console.log "transcribe#index @props", @props 
-    # console.log "transcribe#index @state", @state 
+    if @props.params.workflow_id? and @props.params.parent_subject_id?
+      transcribeMode = 'page'
+    else if @props.params.subject_id
+      transcribeMode = 'single'
+    else
+      transcribeMode = 'random'
+
+    if @state.subjects?
+      isLastSubject = ( @state.subject_index >= @state.subjects.length - 1 )
+    else isLastSubject = null
+
     currentAnnotation = @getCurrentClassification().annotation
     TranscribeComponent = @getCurrentTool() # @state.currentTool
     onFirstAnnotation = currentAnnotation?.task is @getActiveWorkflow().first_task
@@ -95,7 +107,7 @@ module.exports = React.createClass # rename to Classifier
     <div className="classifier">
       <div className="subject-area">
 
-        { if ! @getCurrentSubject()
+        { unless @getCurrentSubject()
             <DraggableModal
               header          = { if @state.userClassifiedAll then "Thanks for transcribing!" else "Nothing to transcribe" }
               buttons         = {<GenericButton label='Continue' href='/#/mark' />}
@@ -104,6 +116,7 @@ module.exports = React.createClass # rename to Classifier
             </DraggableModal>
 
           else if @getCurrentSubject()? and @getCurrentTask()?
+
             <SubjectViewer
               onLoad={@handleViewerLoad}
               subject={@getCurrentSubject()}
@@ -131,6 +144,9 @@ module.exports = React.createClass # rename to Classifier
                 onBadSubject={@toggleBadSubject}
                 illegibleSubject={@state.illegibleSubject}
                 onIllegibleSubject={@toggleIllegibleSubject}
+                returnToMarking={@returnToMarking}
+                transcribeMode={transcribeMode}
+                isLastSubject={isLastSubject}
               />
 
             </SubjectViewer>
