@@ -8,12 +8,9 @@ class UsersController < ApplicationController
   end
 
   def tutorial_complete
-    if current_or_guest_user != nil
-      current_or_guest_user.tutorial_complete!
-      respond_with current_or_guest_user.tutorial_complete
-    else
-      respond_with false
-    end
+    user = require_user!
+    user.tutorial_complete!
+    respond_with user.tutorial_complete
   end
 
 end
