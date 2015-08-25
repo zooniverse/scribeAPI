@@ -71,6 +71,9 @@ module.exports = React.createClass # rename to Classifier
     onFirstAnnotation = @state.taskKey == firstTask
     currentSubtool = if @state.currentSubtool then @state.currentSubtool else @getTasks()[firstTask]?.tool_config.tools?[0]
 
+    # direct link to this page
+    pageURL = "#{location.origin}/#/mark?subject_set_id=#{@getCurrentSubjectSet().id}&selected_subject_id=#{@getCurrentSubject().id}"
+
 
     if currentTask.tool is 'pick_one'
       currentAnswer = (a for a in currentTask.tool_config.options when a.value == currentAnnotation.value)[0]
@@ -158,9 +161,9 @@ module.exports = React.createClass # rename to Classifier
 
             {
               if @getActiveWorkflow()?
-                  <p>
-                    <Link to="/transcribe/#{@getWorkflowByName('transcribe').id}/#{@getCurrentSubject().id}">Transcribe this page now!</Link>
-                  </p>
+                <p>
+                  <Link to="/transcribe/#{@getWorkflowByName('transcribe').id}/#{@getCurrentSubject().id}">Transcribe this page now!</Link>
+                </p>
             }
           </div>
 
@@ -168,9 +171,6 @@ module.exports = React.createClass # rename to Classifier
             if @getActiveWorkflow()?
               <div className="explore">
                 <h2>Explore</h2>
-                <p>
-                  <Link to="mark" query={{ subject_set_id: @getCurrentSubjectSet().id, selected_subject_id: @getCurrentSubject().id }}>Link to this page.</Link>
-                </p>
                 <p>
                   <Link to="/groups/#{@getCurrentSubjectSet().group_id}">About this logbook.</Link>
                 </p>
@@ -182,10 +182,15 @@ module.exports = React.createClass # rename to Classifier
           </div>
 
           <div className="social-media-container">
-            <i className="fa fa-facebook-square"></i>
-            <i className="fa fa-twitter-square"></i>
-            <i className="fa fa-google-plus-square"></i>
-
+            <a href="https://www.facebook.com/sharer.php?u=#{encodeURIComponent pageURL}" target="_blank">
+              <i className="fa fa-facebook-square"/>
+            </a>
+            <a href="https://twitter.com/home?status=#{encodeURIComponent pageURL}%0A" target="_blank">
+              <i className="fa fa-twitter-square"/>
+            </a>
+            <a href="https://plus.google.com/share?url=#{encodeURIComponent pageURL}" target="_blank">
+              <i className="fa fa-google-plus-square"/>
+            </a>
           </div>
 
         </div>
