@@ -1,5 +1,6 @@
 require 'pry'
 class ClassificationsController < ApplicationController
+  include ActionView::Helpers::TextHelper
   respond_to :json
 
   def create
@@ -12,6 +13,7 @@ class ClassificationsController < ApplicationController
     if annotation.keys().include?("value")
       annotation["value"] = invalid_line_ending_check(annotation["value"])
     end
+    
     annotation       = {} if annotation.nil?
     started_at       = params["classifications"]["metadata"]["started_at"]
     finished_at      = params["classifications"]["metadata"]["finished_at"]
