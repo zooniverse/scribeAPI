@@ -23,7 +23,7 @@ module.exports = React.createClass
     imageWidth: @props.subject.width
     imageHeight: @props.subject.height
     subject: @props.subject
-    marks: []
+    marks: @getMarksFromProps(@props)
     selectedMark: null
     active: @props.active
 
@@ -36,6 +36,8 @@ module.exports = React.createClass
     @setUncommittedMark null if new_props.task?.tool != 'pickOneMarkOne'
     if Object.keys(@props.annotation).length == 0 #prevents back-to-back mark tasks, displaying a duplicate mark from previous tasks.
       @setUncommittedMark null
+
+    @setState marks: @getMarksFromProps(new_props)
 
   componentDidMount: ->
     @setView 0, 0, @props.subject.width, @props.subject.height
@@ -83,6 +85,8 @@ module.exports = React.createClass
 
   # Handle initial mousedown:
   handleInitStart: (e) ->
+    # Ignore right-click
+    return null if e.buttons? && e.button? && e.button > 0
 
     subToolIndex = @props.subToolIndex
     return null if ! subToolIndex?
@@ -123,7 +127,7 @@ module.exports = React.createClass
 
     @setUncommittedMark mark
 
-    @selectMark mark
+    # @selectMark mark
 
   # Handle mouse dragging
   handleInitDrag: (e) ->
@@ -168,7 +172,9 @@ module.exports = React.createClass
     @setUncommittedMark mark
 
   setUncommittedMark: (mark) ->
-    @setState uncommittedMark: mark
+    @setState
+      uncommittedMark: mark,
+      selectedMark: mark
 
   setView: (viewX, viewY, viewWidth, viewHeight) ->
     @setState {viewX, viewY, viewWidth, viewHeight}
@@ -195,56 +201,65 @@ module.exports = React.createClass
 
   # Set mark to currently selected:
   selectMark: (mark) ->
-    @setState selectedMark: mark, =>
-      if mark?.details?
-        @forceUpdate() # Re-render to reposition the details tooltip.
+    sel = =>
+      @setState selectedMark: mark, =>
+        if mark?.details?
+          @forceUpdate() # Re-render to reposition the details tooltip.
+
+    # First, if we're blurring some other uncommitted mark, commit it:
+    if @state.uncommittedMark? && mark != @state.uncommittedMark
+      @submitMark sel
+
+    else
+      sel()
+
 
   # Destroy mark:
   destroyMark: (mark) ->
-    # return
-    console.log 'destroyMark(): ', mark
-
     marks = @state.marks
+    ind = marks.indexOf mark
 
-    if mark is @state.selectedMark
-      marks.splice (marks.indexOf mark), 1
+    # If it's a previously saved mark (by this or another user):
+    if ind >= 0
+
+      # Submit flag to server:
+      @props.onDestroy? marks[ind]
+
+      # Flag the subject as deleted by user:
+      marks[ind].user_has_deleted = true
+
       @setState
         marks: marks
-        selectedMark: null #, => console.log 'MARKS (after): ', @state.marks
-        uncommittedMark: null
-    @props.destroyCurrentClassification()
+
+    else if mark is @state.uncommittedMark
+      @props.destroyCurrentClassification()
 
   # Commit mark
-  submitMark: ->
+  submitMark: (callback) ->
     mark = @state.uncommittedMark
     # console.log "SubjectViewer: Submit mark: ", mark.subToolIndex, mark
     @setUncommittedMark null
     @props.onComplete? mark
+    callback?()
 
   handleChange: (mark) ->
     @setState
       selectedMark: mark
         , =>
-          # console.log 'SELECTED MARK: ', mark
           @props.onChange? mark
 
-  getCurrentMarks: ->
+  getMarksFromProps: (props) ->
     # Previous marks are really just the region hashes of all child subjects
     marks = []
-    currentSubtool = @props.currentSubtool
-    for child_subject, i in @props.subject.child_subjects
-      child_subject.region.subject_id = child_subject.id # copy id field into region (not ideal)
+    currentSubtool = props.currentSubtool
+    for child_subject, i in props.subject.child_subjects
       marks[i] = child_subject.region
+      marks[i].subject_id = child_subject.id # child_subject.region.subject_id = child_subject.id # copy id field into region (not ideal)
       marks[i].isTranscribable = !child_subject.user_has_classified && child_subject.status != "retired"
       marks[i].belongsToUser = child_subject.belongs_to_user
       marks[i].groupActive = currentSubtool?.generates_subject_type == child_subject.type
+      marks[i].user_has_deleted = child_subject.user_has_deleted
 
-    # marks = (s for s in (@props.subject.child_subjects ? [] ) when s?.region?).map (m) ->
-    #   # {userCreated: false}.merge
-    #   m?.region ? {}
-
-    # Here we append the currently-being-drawn mark to the list of marks, if there is one:
-    marks = marks.concat @state.uncommittedMark if @state.uncommittedMark?
     marks
 
   separateTranscribableMarks: (marks) ->
@@ -263,9 +278,11 @@ module.exports = React.createClass
 
     return unless marks.length > 0
     scale = @getScale()
+
     marksToRender = for mark in marks
       mark._key ?= Math.random()
       continue if ! mark.x? || ! mark.y? # if mark hasn't acquired coords yet, don't draw it yet
+      continue if mark.user_has_deleted
 
       if @props.hideOtherMarks
         continue unless mark.belongsToUser
@@ -309,7 +326,10 @@ module.exports = React.createClass
     viewBox = [0, 0, @props.subject.width, @props.subject.height]
     scale = @getScale()
 
-    marks = @getCurrentMarks()
+    # marks = @getCurrentMarks()
+    marks = @state.marks
+    marks = marks.concat @state.uncommittedMark if @state.uncommittedMark?
+
     {transcribableMarks, otherMarks} = @separateTranscribableMarks(marks)
 
     actionButton =

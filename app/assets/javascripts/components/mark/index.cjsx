@@ -1,4 +1,5 @@
 React                   = require 'react'
+{Navigation}            = require 'react-router'
 SubjectSetViewer        = require '../subject-set-viewer'
 coreTools               = require 'components/core-tools'
 FetchSubjectSetsMixin   = require 'lib/fetch-subject-sets-mixin'
@@ -23,7 +24,7 @@ module.exports = React.createClass # rename to Classifier
     workflowName: 'mark'
     # hideOtherMarks: false
 
-  mixins: [FetchSubjectSetsMixin, BaseWorkflowMethods] # load subjects and set state variables: subjects, currentSubject, classification
+  mixins: [FetchSubjectSetsMixin, BaseWorkflowMethods, Navigation] # load subjects and set state variables: subjects, currentSubject, classification
 
   getInitialState: ->
     taskKey:             null
@@ -98,6 +99,7 @@ module.exports = React.createClass # rename to Classifier
               annotation={@getCurrentClassification()?.annotation ? {}}
               onComplete={@handleToolComplete}
               onChange={@handleDataFromTool}
+              onDestroy={@handleMarkDelete}
               onViewSubject={@handleViewSubject}
               subToolIndex={@state.currentSubToolIndex}
               subjectCurrentPage={@state.subject_current_page}
@@ -254,6 +256,8 @@ module.exports = React.createClass # rename to Classifier
           , =>
             @forceUpdate()
 
+  handleMarkDelete: (m) ->
+    @flagSubjectAsUserDeleted m.subject_id
 
   destroyCurrentClassification: ->
     classifications = @state.classifications
