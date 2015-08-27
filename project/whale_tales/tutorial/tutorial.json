@@ -1,26 +1,47 @@
 {
     "name": "Tutorial",
-    "first_task": "learn_marking",
+    "first_task": "welcome",
     "tasks": {
-        "learn_marking": {
-            "next_task": "learn_transcribing",
+        "welcome": {
+            "next_task": "multiple_workflows",
             "help": {
-                "title": "Learn To Mark",
-                "body": "learn_marking"
+                "title": "Welcome to Old Weather: Whaling!",
+                "file": "welcome"
             }
         },
-        "learn_transcribing": {
-            "next_task": "another_task",
+        "multiple_workflows": {
+            "next_task": "marking",
             "help": {
-                "title": "Learn To Transcribe",
-                "body": "learn_transcribing"
+                "title": "Mark, transcribe, or do both",
+                "file": "multiple_workflows"
             }
         },
-        "another_task": {
+        "marking": {
+            "next_task": "transcribing_and_marking",
+            "help": {
+                "title": "How to mark pages",
+                "file": "marking"
+            }
+        },
+        "transcribing_and_marking": {
+            "next_task": "transcribing",
+            "help": {
+                "title": "How to transcribe while marking",
+                "file": "transcribing_and_marking"
+            }
+        },
+        "transcribing": {
+            "next_task": "start_exploring",
+            "help": {
+                "title": "How to just transcribe",
+                "file": "how_to_mark_pages"
+            }
+        },
+        "start_exploring": {
             "next_task": null,
             "help": {
-                "title": "Learn To Mark",
-                "body": "learn_marking"
+                "title": "You're ready to start exploring!",
+                "file": "start_exploring"
             }
         }
     }
