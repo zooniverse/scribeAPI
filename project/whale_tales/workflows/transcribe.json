@@ -175,26 +175,6 @@
       "next_task": "weather_wind2"
     },
 
-    "weather_wind2": {
-      "tool": "compositeTool",
-      "tool_config": {
-        "tools": {
-          "weather_date2": {
-            "tool": "textTool",
-            "tool_config": {},
-            "label": "Wind direction/force"
-          },
-          "weather_sky2": {
-            "tool": "textTool",
-            "tool_config": {},
-            "label": "Other description"
-          }
-        }
-      },
-      "instruction": "Enter the wind force/direction.",
-      "next_task": null
-    },
-
 
     "weather_sky": {
       "tool": "textTool",
