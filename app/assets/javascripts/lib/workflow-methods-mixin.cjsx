@@ -162,7 +162,13 @@ module.exports =
     task = @getTasks()[@state.taskKey]
     console.log 'TASK: ', task
     # PB: Moving from hash of options to an array of options
-    if (options = (c for c in task.tool_config?.options when c.value == @getCurrentClassification().annotation?.value)) && options.length > 0 && (opt = options[0])? && opt.next_task?
+    # options = (c for c in task.tool_config?.options when c.value is @getCurrentClassification().annotation?.value)
+    options = task.tool_config?.options
+
+    console.log 'OPTIONS: ', options
+    # if (options = (c for c in task.tool_config?.options when c.value is @getCurrentClassification().annotation?.value)) && options.length > 0 && (opt = options[0])? && opt.next_task?
+
+    if options and options.length > 0 && (opt = options[0])? && opt.next_task?
       nextKey = opt.next_task
     else
       nextKey = @getTasks()[@state.taskKey].next_task
