@@ -2,12 +2,13 @@
 React           = require 'react'
 Draggable       = require 'lib/draggable'
 DragHandle      = require './drag-handle'
-DeleteButton    = require './delete-button'
+DeleteButton    = require 'components/buttons/delete-mark'
 MarkButtonMixin = require 'lib/mark-button-mixin'
 
 MINIMUM_SIZE = 5
 DELETE_BUTTON_ANGLE = 45
-DELETE_BUTTON_DISTANCE = 9 / 10
+DELETE_BUTTON_DISTANCE_X = 12
+DELETE_BUTTON_DISTANCE_Y = 12
 DEBUG = false
 
 module.exports = React.createClass
@@ -100,9 +101,9 @@ module.exports = React.createClass
     @props.onChange e
 
   getDeleteButtonPosition: ->
-    theta = (DELETE_BUTTON_ANGLE) * (Math.PI / 180)
-    x: (SELECTED_RADIUS / @props.xScale) * Math.cos theta
-    y: -1 * (SELECTED_RADIUS / @props.yScale) * Math.sin theta
+    x = @props.mark.x + @props.mark.width + DELETE_BUTTON_DISTANCE_X / @props.xScale
+    y = @props.mark.y - DELETE_BUTTON_DISTANCE_Y / @props.yScale
+    {x, y}
 
   getMarkButtonPosition: ->
     x: @props.mark.x + @props.mark.width
@@ -135,12 +136,11 @@ module.exports = React.createClass
 
     <g
       tool={this}
-      onMouseDown={@props.onSelect unless @props.disabled}
+      onMouseDown={@props.onSelect}
       title={@props.mark.label}
     >
       <g
         className="rectangle-tool#{if @props.disabled then ' locked' else ''}"
-        onMouseDown={@props.onSelect unless @props.disabled}
       >
 
         <Draggable onDrag = {@handleMainDrag} >
@@ -168,14 +168,16 @@ module.exports = React.createClass
 
         </Draggable>
 
-        { if @props.selected and not @props.disabled
-          <g>
-            <DeleteButton tool={this} x={x1 + (width * DELETE_BUTTON_DISTANCE)} y={y1} />
-            <DragHandle tool={this} x={x1} y={y1} onDrag={@handleX1Y1Drag} />
-            <DragHandle tool={this} x={x2} y={y1} onDrag={@handleX2Y1Drag} />
-            <DragHandle tool={this} x={x2} y={y2} onDrag={@handleX2Y2Drag} />
-            <DragHandle tool={this} x={x1} y={y2} onDrag={@handleX1Y2Drag} />
-          </g>
+        { if @props.selected
+            <DeleteButton onClick={@props.onDestroy} scale={scale} x={@getDeleteButtonPosition().x} y={@getDeleteButtonPosition().y}/>
+        }
+        { if @props.selected && not @props.disabled
+            <g>
+              <DragHandle tool={this} x={x1} y={y1} onDrag={@handleX1Y1Drag} />
+              <DragHandle tool={this} x={x2} y={y1} onDrag={@handleX2Y1Drag} />
+              <DragHandle tool={this} x={x2} y={y2} onDrag={@handleX2Y2Drag} />
+              <DragHandle tool={this} x={x1} y={y2} onDrag={@handleX1Y2Drag} />
+            </g>
         }
 
         { # REQUIRES MARK-BUTTON-MIXIN

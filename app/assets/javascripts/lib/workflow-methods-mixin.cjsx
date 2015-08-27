@@ -42,6 +42,17 @@ module.exports =
     @setState illegibleSubject: not @state.illegibleSubject, =>
       callback?()
 
+  flagSubjectAsUserDeleted: (subject_id) ->
+    classification = @getCurrentClassification()
+    classification.subject_id = subject_id # @getCurrentSubject()?.id
+    classification.workflow_id = @getActiveWorkflow().id
+    classification.task_key = 'flag_bad_subject_task'
+    
+    classification.commit (classification) =>
+      @updateChildSubject @getCurrentSubject().id, classification.subject_id, user_has_deleted: true
+        
+      @beginClassification()
+
   # Push current classification to server:
   commitClassification: ->
     console.log 'COMMITTING CLASSIFICATION: ', @getCurrentClassification()
@@ -84,7 +95,16 @@ module.exports =
     console.log '(ALL CLASSIFICATIONS): ', @state.classifications
 
 
-  # Update local version of a subject with a newly acquired child_subject (i.e. after submitting a subject-generating classification)
+  # Update specified child_subject with given properties (e.g. after submitting a delete flag)
+  updateChildSubject: (parent_subject_id, child_subject_id, props) ->
+    if (s = @getSubjectById(parent_subject_id))
+      for c, i in s.child_subjects
+        if c.id == child_subject_id
+          c[k] = v for k,v of props
+    else
+      console.warn "WorkflowMethodsMixin#appendChildSubject: couldn't find subject by ", subject_id
+
+  # Add newly acquired child_subject to child_subjects array of relevant subject (i.e. after submitting a subject-generating classification)
   appendChildSubject: (subject_id, child_subject) ->
     if (s = @getSubjectById(subject_id))
       s.child_subjects.push $.extend({userCreated: true}, child_subject)
@@ -160,8 +180,15 @@ module.exports =
   # Get next logical task
   getNextTask: ->
     task = @getTasks()[@state.taskKey]
+    console.log 'TASK: ', task
     # PB: Moving from hash of options to an array of options
-    if (options = (c for c in task.tool_config?.options when c.value == @getCurrentClassification().annotation?.value)) && options.length > 0 && (opt = options[0])? && opt.next_task?
+    # options = (c for c in task.tool_config?.options when c.value is @getCurrentClassification().annotation?.value)
+    options = task.tool_config?.options
+
+    console.log 'OPTIONS: ', options
+    # if (options = (c for c in task.tool_config?.options when c.value is @getCurrentClassification().annotation?.value)) && options.length > 0 && (opt = options[0])? && opt.next_task?
+
+    if options and options.length > 0 && (opt = options[0])? && opt.next_task?
       nextKey = opt.next_task
     else
       nextKey = @getTasks()[@state.taskKey].next_task
@@ -276,7 +303,7 @@ module.exports =
         notice:
           header: "All Done!"
           message: "There's nothing more to #{@props.workflowName} here."
-          onClick: "/#/mark"
+          onClick: @transitionTo? 'mark' # "/#/mark"
       console.warn "NO MORE SUBJECT SETS"
       return
 

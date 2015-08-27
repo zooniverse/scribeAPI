@@ -78,6 +78,7 @@ module.exports = React.createClass
           active={index == @props.subject_index}
           onComplete={@props.onComplete}
           onChange={@props.onChange}
+          onDestroy={@props.onDestroy}
           subToolIndex={@props.subToolIndex}
           destroyCurrentClassification={@props.destroyCurrentClassification}
           hideOtherMarks={@props.hideOtherMarks}

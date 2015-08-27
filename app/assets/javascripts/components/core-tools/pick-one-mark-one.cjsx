@@ -74,13 +74,13 @@ module.exports = React.createClass
     # annotation: $.extend({subToolIndex: null}, @props.annotation ? {})
 
   render: ->
-    # console.log "PickOneMarkOne rendering: ", @getSubToolIndex()
+    # console.log "PickOneMarkOne rendering: ", @props.subject.child_subjects
 
     # Calculate number of existing marks for each tool instance:
     counts = {}
     for subject in @props.subject.child_subjects
       counts[subject.type] ?= 0
-      counts[subject.type] += 1
+      counts[subject.type] += 1 unless subject.user_has_deleted
 
     tools = for tool, i in @props.task.tool_config.options
       tool._key ?= Math.random()
