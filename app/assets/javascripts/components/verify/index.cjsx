@@ -1,5 +1,6 @@
 # @cjsx React.DOM
 React              = require 'react'
+{Navigation}       = require 'react-router'
 SubjectViewer      = require '../subject-viewer'
 JSONAPIClient      = require 'json-api-client' # use to manage data?
 FetchSubjectsMixin = require 'lib/fetch-subjects-mixin'
@@ -20,7 +21,7 @@ API                = require '../../lib/api'
 
 module.exports = React.createClass # rename to Classifier
   displayName: 'Verify'
-  mixins: [FetchSubjectsMixin, BaseWorkflowMethods] # load subjects and set state variables: subjects,  classification
+  mixins: [FetchSubjectsMixin, BaseWorkflowMethods, Navigation] # load subjects and set state variables: subjects,  classification
 
   getDefaultProps: ->
     workflowName: 'verify'

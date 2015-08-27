@@ -25,8 +25,6 @@ class Subject
   field :classification_count,        type: Integer, default: 0
   field :random_no,                   type: Float
   field :secondary_subject_count,     type: Integer, default: 0
-  field :classifying_user_ids,        type: Array
-  field :user_has_classified,         type: Boolean, default: false
   field :created_by_user_id,          type: String
 
   # Need to sort out relationship between these two fields. Are these two fields Is this :shj
@@ -47,6 +45,7 @@ class Subject
 
   # Denormalized array of user ids that have classified this subject for quick filtering
   field :classifying_user_ids,        type: Array, default: []
+  field :deleting_user_ids,        type: Array, default: []
 
   belongs_to :workflow
   belongs_to :parent_subject, :class_name => "Subject", :foreign_key => "parent_subject_id"
@@ -154,7 +153,7 @@ class Subject
 
 
   def to_s
-    "#{status == 'inactive' ? '[Inactive] ' : ''}#{workflow.nil? ? 'Final' : workflow.name.capitalize} Subject (#{type})"
+    "#{status != 'active' ? "[#{status.capitalize}] " : ''}#{workflow.nil? ? 'Final' : workflow.name.capitalize} Subject (#{type})"
   end
 
   private
