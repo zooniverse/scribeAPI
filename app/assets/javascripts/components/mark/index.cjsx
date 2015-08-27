@@ -127,10 +127,10 @@ module.exports = React.createClass # rename to Classifier
               }
               <HideOtherMarksButton active={@state.hideOtherMarks} onClick={@toggleHideOtherMarks} />
               { if onFirstAnnotation
-                <BadSubjectButton active={@state.badSubject} onClick={@toggleBadSubject} />
+                <BadSubjectButton label={"Bad " + @props.project.term('subject')} active={@state.badSubject} onClick={@toggleBadSubject} />
               }
               { if @state.badSubject
-                <p>You&#39;ve marked this subject as BAD. Thanks for flagging the issue! <strong>Press DONE to continue.</strong></p>
+                <p>You&#39;ve marked this {@props.project.term('subject')} as BAD. Thanks for flagging the issue! <strong>Press DONE to continue.</strong></p>
               }
               { if @state.hideOtherMarks
                 <p>Currently displaying only your marks. <strong>Toggle the button again to show all marks to-date.</strong></p>
@@ -160,9 +160,9 @@ module.exports = React.createClass # rename to Classifier
             </nav>
 
             {
-              if @getActiveWorkflow()?
+              if @getActiveWorkflow()? && @getWorkflowByName('transcribe')?
                 <p>
-                  <Link to="/transcribe/#{@getWorkflowByName('transcribe').id}/#{@getCurrentSubject().id}">Transcribe this page now!</Link>
+                  <Link to="/transcribe/#{@getWorkflowByName('transcribe').id}/#{@getCurrentSubject().id}">Transcribe this {@props.project.term('subject')} now!</Link>
                 </p>
             }
           </div>
@@ -172,13 +172,13 @@ module.exports = React.createClass # rename to Classifier
               <div className="explore">
                 <h2>Explore</h2>
                 <p>
-                  <Link to="/groups/#{@getCurrentSubjectSet().group_id}">About this logbook.</Link>
+                  <Link to="/groups/#{@getCurrentSubjectSet().group_id}">About this {@props.project.term('group')}.</Link>
                 </p>
               </div>
           }
 
           <div className="forum-holder">
-            <ForumSubjectWidget subject_set = @getCurrentSubjectSet() />
+            <ForumSubjectWidget subject_set={@getCurrentSubjectSet()} project={@props.project} />
           </div>
 
           <div className="social-media-container">

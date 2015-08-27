@@ -24,6 +24,7 @@ class Project
   field  :team_emails,       type: Array
   field  :metadata_search,   type: Hash
   field  :tutorial,          type: Hash
+  field  :terms_map,         type: Hash, default: {} # Hash mapping internal terms to project appropriate terms (e.g. 'group'=>'ship')
 
   include CachedStats
 
