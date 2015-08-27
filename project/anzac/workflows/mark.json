@@ -19,36 +19,43 @@
         "file": "pick_page_type"
       },
       "tool_config": {
-        "options":{
-          "history_sheet":{
+        "options":[
+          {
+            "value":"history_sheet",
             "label":"History Sheet",
             "next_task":"hs_sticky_sheet"
           },
-          "hs_conduct_sheet":{
+          {
+            "value": "hs_conduct_sheet",
             "label":"Statement of Services",
             "next_task": "hs_transfer_table"
           },           
-          "att_form":{
+          {
+            "value":"att_form",
             "label":"Attestation: General Form",
             "next_task":"att_form_task"
           },
-          "att_medical_form":{
+          {
+            "value":"att_medical_form",
             "label":"Attestation: Medical Form",
             "next_task":"att_medical_form_task"
           },
-          "death_notification":{
+          {
+            "value":"death_notification",
             "label":"Death Notification",
             "next_task": null
           },
-          "sfatt":{
+          {
+            "value":"sfatt",
             "label":"South African War Attestation",
             "next_task": null
           },
-          "other_page_type":{
+          {
+            "value":"other_page_type",
             "label":"Other",
             "next_task": null
           }
-        }
+        ]
       }
     },
     "att_form_task":{
@@ -160,16 +167,18 @@
       "instruction":"Are there any entries under the heading **Conduct Sheet?**",
       "next_task": null,
       "tool_config": {
-        "options":{
-          "conduct_info_present":{
+        "options":[
+          {
+            "value":"conduct_info_present",
             "label":"Yes",
             "next_task":null
           },
-          "conduct_info_not_present":{
+          {
+            "value":"conduct_info_not_present",
             "label":"No",
             "next_task":null
           }
-        }
+        ]
       }
     },
     "hs_sticky_sheet":{
@@ -177,16 +186,18 @@
       "instruction":"Are there any sticky notes?",
       "next_task": null,
       "tool_config": {
-        "options":{
-          "sticky_note_present":{
+        "options":[
+          {
+            "value":"sticky_note_present",
             "label":"Yes",
             "next_task":"hs_task"
           },
-          "no_sticky_note":{
+          {
+            "value":"no_sticky_note",
             "label":"No",
             "next_task":"hs_task"
           }          
-        }
+        ]
       }
     },
     "hs_task":{
