@@ -16,10 +16,10 @@
         "body": "Typically each log entry begins with a date. The year may only appear at the top of the page. Select 'yes' if you see any date mentioned anywhere on the page."
       },
       "tool_config": {
-        "options": {
-          "yes": { "label": "Yes", "next_task": "date" },
-          "no": { "label": "No"}
-        }
+        "options": [
+          {"value": "yes", "label": "Yes", "next_task": "date" },
+          {"value": "no", "label": "No"}
+        ]
       },
       "next_task": "location_present"
     },
@@ -48,10 +48,10 @@
         "body": "Select the type of location, then draw a rectangle around each location of that type. Mark both the ocean region or whaling ground (typically at the top of the page) and any specific positions or geographic references that you see further down on the page."
       },
       "tool_config": {
-        "options": {
-          "yes": { "label": "Yes", "next_task": "location" },
-          "no": { "label": "No"}
-        }
+        "options": [
+          { "value": "yes", "label": "Yes", "next_task": "location" },
+          { "value": "no", "label": "No"}
+        ]
       },
       "next_task": "sea_ice_present"
     },
@@ -85,15 +85,17 @@
       },
       "next_task": "weather_present",
       "tool_config": {
-        "options": {
-          "yes": {
+        "options": [
+          {
+            "value": "yes",
             "label": "Yes",
             "next_task": "sailing_condition_present"
           },
-          "no": {
+          {
+            "value": "no",
             "label": "No"
           }
-        }
+        ]
       }
     },
 
@@ -106,16 +108,18 @@
       },
       "next_task": "sea_ice",
       "tool_config": {
-        "options": {
-          "yes": {
+        "options": [
+          {
+            "value": "no",
             "label": "Yes",
             "next_task": "sailing_condition"
           },
-          "no": {
+          {
+            "value": "no",
             "label": "No",
             "next_task": "sea_ice"
           }
-        }
+        ]
       }
     },
 
@@ -230,10 +234,10 @@
         "body": "Ship captains kept a close eye on the weather and recorded what they saw in the logbook every day. Weather can include temperature, cloud cover, precipitation, barometric pressure, etc. Select 'yes' if you spot any reference to the weather on this page; if not, select 'no.'"
       },
       "tool_config": {
-        "options": {
-          "present": { "label": "Yes",  "next_task": "weather" },
-          "mentioned": { "label": "No" }
-        }
+        "options": [
+          { "value": "present", "label": "Yes",  "next_task": "weather" },
+          { "value": "mentioned", "label": "No" }
+        ]
       }
     },
 
@@ -268,16 +272,18 @@
         "body": "If there are pieces of artwork or mentions of any interesting events, select 'art' or 'event.'' You should also select 'art' for any mentions of art; for instance, artwork that was involved in a trade."
       },
       "tool_config": {
-        "options": {
-          "event": {
+        "options": [
+          {
+            "value": "event",
             "label": "Event",
             "next_task": "events"
           },
-          "art": {
+          {
+            "value": "art",
             "label": "Art",
             "next_task": "art"
           }
-        }
+        ]
       }
     },
 
