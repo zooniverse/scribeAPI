@@ -140,6 +140,7 @@ span.keyword {
   padding-bottom: 5%;
 }
 
+
 #about-page ul{
   padding-left: 1%;
 }
@@ -210,6 +211,114 @@ span.keyword {
   font-size: .8em;
   line-height: 2;
   font-weight: 300;
+}
+
+#field-guide nav {
+  background-color: transparent;
+  position: fixed;
+  left: 40px;
+  height: 100%;
+  width: 20%;
+  padding-top: 2em;
+  font-family: OpenSans;
+  font-size: 20px;/* Approximation due to font substitution */
+  font-weight: 400;
+  line-height: 22px;/* Approximation due to font substitution */
+  text-align: left;
+  padding-bottom: 5%;
+}
+
+#field-guide div{
+  display: none;
+  background-color:inherit;
+  text-align: left;
+  padding: 2em;
+  float: right;
+  width: 70%;
+}
+
+#field-guide a.selected-content {
+  border-left: solid 2px #8cbc8c;
+  font-weight: 700;
+}
+
+#field-guide div.selected-content{
+  display:inline-block;
+  padding-right: 4em;
+}
+
+#field-guide #accordion{
+    width: 98%;
+    display: inherit;
+    text-align: left;
+    background-color: transparent;
+    color: #2b3a42;
+    font-size: .8em;
+    line-height: 2;
+    font-weight: 300;
+}
+
+#field-guide #accordion div{
+    width: auto;
+    float: none;
+}
+
+
+#field-guide #accordion #att_ex{
+    display: inline-block;
+    float: left;
+    background-color: transparent;
+    width: 20%;
+}
+
+#field-guide #accordion #att_ex img{
+  width: 100%;
+  padding-bottom 20%;
+}
+
+#field-guide #field-guide .ui-accordion-header{
+  color: #3f5765;
+}
+
+#field-guide .ui-state-default.ui-state-focus{
+  color: #3f5765;
+  background-color: rgba(144, 141, 141, 0.29);
+  border-color: #8cbc8c;
+  outline: none;
+}
+
+#field-guide .ui-state-default.ui-state-active{
+  color: #2b3a42;
+  background-color: rgba(144, 141, 141, 0.29);
+  border-color: #8cbc8c;
+  outline: none;
+}
+
+#field-guide .ui-state-default.ui-state-hover{  
+  color: #2b3a42;
+  background-color: rgba(144, 141, 141, 0.29);
+  border-color: #8cbc8c;
+  outline: none;
+}
+
+
+#field-guide #accordion img{
+  width 20%
+  padding-left 5%  
+}
+
+#field-guide li {
+  list-style-type: none;
+  padding-left: 1em;
+  margin-bottom: 1em;
+  line-height: 1.5em;
+  font-size: .90em
+}
+
+#field-guide nav a {
+  color: #4d4d4d;
+  text-decoration: none;
+  padding-left: 1em;
 }
 
 #questions-tip{
