@@ -10,9 +10,9 @@ class ClassificationsController < ApplicationController
     task_key         = params["classifications"]["task_key"]
 
     annotation       = params["classifications"]["annotation"]
-    if annotation.keys().include?("value")
-      annotation["value"] = invalid_line_ending_check(annotation["value"])
-    end
+    # if annotation.keys().include?("value")
+    #   annotation["value"] = invalid_line_ending_check(annotation["value"])
+    # end
     
     annotation       = {} if annotation.nil?
     started_at       = params["classifications"]["metadata"]["started_at"]
@@ -35,9 +35,9 @@ class ClassificationsController < ApplicationController
     respond_with @result
   end
 
-  def invalid_line_ending_check(string)
-    string.gsub(/(?:\n\r?|\r\n?)/, '<br>')
-  end
+  # def invalid_line_ending_check(string)
+  #   string.gsub(/(?:\n\r?|\r\n?)/, '<br>')
+  # end
 
 
   def terms
