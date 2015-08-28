@@ -171,11 +171,23 @@ TextTool = React.createClass
 
     ref = @props.ref || "input0"
 
+    # Grab examples either from examples in top level of task or (for composite tool) inside this field's option hash:
+    examples = @props.task.examples ? ( t for t in (@props.task.tool_config?.options ? []) when t.value==@props.annotation_key )[0]?.examples
+
     # create component input field(s)
     tool_content =
       <div className="input-field active">
 
         <label dangerouslySetInnerHTML={{__html: marked( label ) }} />
+
+        { if examples
+          <ul className="task-examples">
+          { for ex in examples
+              <li>{ex}</li>
+          }
+          </ul>
+        }
+
         {
           atts =
             ref: ref

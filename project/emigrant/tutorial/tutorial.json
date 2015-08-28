@@ -1,0 +1,27 @@
+{
+    "name": "Tutorial",
+    "first_task": "learn_marking",
+    "tasks": {
+        "learn_marking": {
+            "next_task": "learn_transcribing",
+            "help": {
+                "title": "Learn To Mark",
+                "file": "learn_marking"
+            }
+        },
+        "learn_transcribing": {
+            "next_task": "another_task",
+            "help": {
+                "title": "Learn To Transcribe",
+                "file": "learn_transcribing"
+            }
+        },
+        "another_task": {
+            "next_task": null,
+            "help": {
+                "title": "Learn To Mark",
+                "file": "learn_marking"
+            }
+        }
+    }
+}
