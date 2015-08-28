@@ -14,9 +14,17 @@
   -ms-user-select none
   user-select none
 
+  transition margin 0.2s
+
+  &.folded
+    transition margin 0.2s
+    margin-left -120px
+
   .carousel
+    box-shadow: 0 0 5px 3px rgba(0,0,0,0.4);
+
     position fixed
-    width 150px
+    width inherit
     // width: 10%
     // min-width 150px
     background-color black
@@ -39,6 +47,11 @@
       padding: 8%
     svg:hover path
       fill: rgba(63,87,101,1)
+
+    &:hover i
+      font-weight bold
+
+      color #8cbc8c
 
     #questions-tip
       vertical-align: text-top;
