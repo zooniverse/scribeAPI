@@ -157,7 +157,7 @@ desc 'creates a poject object from the project directory'
     
     # In Pick-one-mark-one and compositeTool, rename 'tools' to 'options'
     if ['pickOneMarkOne', 'compositeTool'].include? task_hash[:tool]
-      config[:options] = config.delete :tools
+      config[:options] = config.delete :tools if config[:options].nil?
     end
 
     # In Pick-one and compositeTool, structure 'options' as an array rather than a hash:
