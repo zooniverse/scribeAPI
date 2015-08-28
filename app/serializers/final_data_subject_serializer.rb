@@ -32,7 +32,7 @@ class FinalDataSubjectSerializer < ActiveModel::MongoidSerializer
       # .. For all other child subjects, delete :region since it's avail in parent
       data.delete :region
     end
-
+    data.delete :transcription_classifications if data[:transcription_classifications].empty?
     data.delete :child_subjects if data[:child_subjects].empty?
 
     data
