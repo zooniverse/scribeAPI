@@ -16,11 +16,11 @@
                 "file": "learn_transcribing"
             }
         },
-        "another_task": {
+        "learn_verifying": {
             "next_task": null,
             "help": {
-                "title": "Learn To Mark",
-                "file": "learn_marking"
+                "title": "Learn To Verify",
+                "file": "learn_verifying"
             }
         }
     }
