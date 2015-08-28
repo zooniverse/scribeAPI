@@ -86,6 +86,7 @@ module.exports = React.createClass # rename to Classifier
     @transitionTo 'mark', {},
       subject_set_id: @getCurrentSubject().subject_set_id
       selected_subject_id: @getCurrentSubject().parent_subject_id
+
       page: @props.query.page
 
   render: ->
