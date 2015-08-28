@@ -79,7 +79,7 @@ class FinalDataSubjectSerializer < ActiveModel::MongoidSerializer
   def transcription_classifications
     transcribe_workflow_id = Workflow.where(name:"transcribe").to_a[0]._id
     transcription_classifications = object.classifications.where( {workflow_id: transcribe_workflow_id} ).to_a
-    object.classifications.where( {workflow_id: transcribe_workflow_id} ).map{ |c| FinalClassificationSerializer.new(c) }
+    object.classifications.where( {workflow_id: transcribe_workflow_id} ).map{ |c| FinalClassificationSerializer.new(c, root: false) }
   end
 
 end
