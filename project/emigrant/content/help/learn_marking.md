@@ -1,5 +1,9 @@
-Select a label, draw a rectangle around all instaces of that variable on the image. No need to mark an area twice. 
-You will see other people's rectangles on the image. We hope this will help us get more complete transcription and repsect your time.
+#Hi!
 
+Your task is to identify fields in a series of bank records.
+
+Use the menu on the right to select a field (e.g. "Record Date"). Then, use your mouse to draw a box on the image around each place that the field appears.
+
+If a box has already been created, you don't need to draw it again.
 
 

@@ -1,1 +1,1 @@
-Transcribe the text exactly as you see it and to the best of your ability.
+Later on, in the Transcribe task, you'll have a chance to transcribe the regions you've identified.
