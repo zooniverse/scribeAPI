@@ -148,7 +148,6 @@ module.exports = React.createClass # rename to Classifier
                 <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
               }
               { if @getNextTask()?
-                  # console.log "STATE at the NEXT BUTTON", @state
                   <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@advanceToNextTask}>Next</button>
                 else
                   if @state.taskKey == "completion_assessment_task"
@@ -211,9 +210,6 @@ module.exports = React.createClass # rename to Classifier
 
   # User changed currently-viewed subject:
   handleViewSubject: (index) ->
-    # console.log "HANDLE View Subject: subject", subject
-    # @state.currentSubject = subject
-    # @forceUpdate()
     @setState subject_index: index, => @forceUpdate()
     @toggleBadSubject() if @state.badSubject
 
