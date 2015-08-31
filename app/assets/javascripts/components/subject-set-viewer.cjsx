@@ -52,21 +52,22 @@ module.exports = React.createClass
     # console.log 'SUBJECT-SET-VIEWER::render(), subject_index = ', @props.subject_index
     # NOTE: LightBox does not receive correct @props.subject_index. Why? --STI
     <div className={"subject-set-viewer" + if @props.subject_set.subjects.length <= 1 then ' single-page' else '' }>
-      {
-        if @props.subject_set.subjects.length > 1
-          <LightBox
-            subject_set={@props.subject_set}
-            subject_index={@props.subject_index}
-            key={@props.subject_set.subjects[0].id}
-            isDisabled={disableLightBox}
-            toggleLightboxHelp={@props.lightboxHelp}
-            onSubject={@specificSelection.bind this, @props.subject_index}
-            subjectCurrentPage={@props.subjectCurrentPage}
-            nextPage={@props.nextPage}
-            prevPage={@props.prevPage}
-            totalSubjectPages={@props.totalSubjectPages}
-            />
-        }
+      <div className="light-box-area">
+        {
+          if @props.subject_set.subjects.length > 1
+            <LightBox
+              subject_set={@props.subject_set}
+              subject_index={@props.subject_index}
+              key={@props.subject_set.subjects[0].id}
+              isDisabled={disableLightBox}
+              toggleLightboxHelp={@props.lightboxHelp}
+              onSubject={@specificSelection.bind this, @props.subject_index}
+              subjectCurrentPage={@props.subjectCurrentPage}
+              nextPage={@props.nextPage}
+              prevPage={@props.prevPage}
+              totalSubjectPages={@props.totalSubjectPages}
+              />
+          }
       </div>
 
       <SubjectZoomPan subject={@props.subject_set.subjects[@props.subject_index]} onChange={@handleZoomPanViewBoxChange} viewBox={@state.zoomPanViewBox}/>
