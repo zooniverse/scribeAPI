@@ -131,7 +131,6 @@ TextTool = React.createClass
     el = $(@refs.input0?.getDOMNode())
 
   updateValue: (val) ->
-    # console.log "updated val: ", val
     newAnnotation = @state.annotation
     newAnnotation[@fieldKey()] = val
 
