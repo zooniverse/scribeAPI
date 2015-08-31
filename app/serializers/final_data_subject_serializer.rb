@@ -5,6 +5,7 @@ class FinalDataSubjectSerializer < ActiveModel::MongoidSerializer
   attributes :classification_count
   attributes :generated_in_workflow
   attributes :child_subjects
+  attributes :transcription_classifications
 
   def attributes
     data = super
@@ -31,7 +32,7 @@ class FinalDataSubjectSerializer < ActiveModel::MongoidSerializer
       # .. For all other child subjects, delete :region since it's avail in parent
       data.delete :region
     end
-
+    data.delete :transcription_classifications if data[:transcription_classifications].empty?
     data.delete :child_subjects if data[:child_subjects].empty?
 
     data
@@ -73,6 +74,12 @@ class FinalDataSubjectSerializer < ActiveModel::MongoidSerializer
 
   def include_task?
     ! object.parent_workflow_task.nil?
+  end
+
+  def transcription_classifications
+    transcribe_workflow_id = Workflow.where(name:"transcribe").to_a[0]._id
+    transcription_classifications = object.classifications.where( {workflow_id: transcribe_workflow_id} ).to_a
+    object.classifications.where( {workflow_id: transcribe_workflow_id} ).map{ |c| FinalClassificationSerializer.new(c, root: false) }
   end
 
 end
