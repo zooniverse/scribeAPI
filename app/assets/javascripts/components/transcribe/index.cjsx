@@ -116,7 +116,7 @@ module.exports = React.createClass # rename to Classifier
               header          = { if @state.userClassifiedAll then "Thanks for transcribing!" else "Nothing to transcribe" }
               buttons         = {<GenericButton label='Continue' href='/#/mark' />}
             >
-                Currently, there are no subjects to {@props.workflowName}. Try <a href="/#/mark">marking</a> instead!
+                Currently, there are no {@props.project.term('subject')}s to {@props.workflowName}. Try <a href="/#/mark">marking</a> instead!
             </DraggableModal>
 
           else if @getCurrentSubject()? and @getCurrentTask()?
@@ -169,7 +169,7 @@ module.exports = React.createClass # rename to Classifier
             <div className="task-area">
 
               <div className="forum-holder">
-                <ForumSubjectWidget subject=@getCurrentSubject() />
+                <ForumSubjectWidget subject=@getCurrentSubject() project={@props.project} />
               </div>
 
             </div>

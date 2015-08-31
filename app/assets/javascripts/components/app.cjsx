@@ -2,6 +2,7 @@ React = require("react")
 MainHeader                    = require '../partials/main-header'
 API                           = require '../lib/api'
 AppRouter                     = require './app-router'
+Project                       = require 'models/project.coffee'
 
 {RouteHandler}                = require 'react-router'
 
@@ -16,13 +17,8 @@ App = React.createClass
   componentDidMount: ->
     if ! @state.project?
       API.type('projects').get().then (result)=>
-        project = result[0]
-        @setState project: project #, => console.log ' PROJECT: ', @state.project
-
-  # componentDidUpdate: ->
-  #   # value = $(@refs.inputs.getDOMNode()).find('select')[0].value
-  #   console.log "findDOMnode", $(React.findDOMNode(this))
-  #   console.log "@refs", $(@refs)
+        project = new Project(result[0])
+        @setState project: project
 
   render: ->
     return null if ! @state.project?
