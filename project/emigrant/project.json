@@ -5,6 +5,11 @@
   "background": "assets/emigrant/background.jpg",
   "admin_email": "paulbeaudoin@nypl.org",
   "logo": "/assets/emigrant/logo.svg",
+  "terms_map": {
+    "group": "collection",
+    "subject set": "page",
+    "subject": "page"
+  },
   "team_emails": [
     "brianfoo@nypl.org",
     "contact@paulbeaudoin.com",
