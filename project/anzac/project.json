@@ -5,6 +5,11 @@
   "background": "assets/anzac/background.png",
   "admin_email": "andrea@zooniverse.org",
     "team_emails": [ "andrea@zooniverse.org" ],
+  "terms_map": {
+    "group": "collection",
+    "subject set": "personnel record",
+    "subject": "page"
+  },
   "team": [
     {
       "name": "Andrea Simenstad",
