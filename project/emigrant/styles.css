@@ -1,15 +1,15 @@
 /* Fonts */
 @font-face {
   font-family: 'Kievit';
-  src: url('//ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/ff_kievit_web/KievitWeb-Book.eot'); /* IE9 Compat Modes */
-  src: url('//ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/ff_kievit_web/KievitWeb-Book.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-       url('//ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/ff_kievit_web/KievitWeb-Book.woff') format('woff'); /* Pretty Modern Browsers */
+  src: url('/emigrant/KievitWeb-Book.eot'); /* IE9 Compat Modes */
+  src: url('/emigrant/KievitWeb-Book.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('/emigrant/KievitWeb-Book.woff') format('woff'); /* Pretty Modern Browsers */
 }
 @font-face {
   font-family: 'Kievit';
-  src: url('//ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/ff_kievit_web/KievitWeb-Medi.eot'); /* IE9 Compat Modes */
-  src: url('//ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/ff_kievit_web/KievitWeb-Medi.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-       url('//ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/ff_kievit_web/KievitWeb-Medi.woff') format('woff'); /* Pretty Modern Browsers */
+  src: url('/emigrant/KievitWeb-Medi.eot'); /* IE9 Compat Modes */
+  src: url('/emigrant/KievitWeb-Medi.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('/emigrant/KievitWeb-Medi.woff') format('woff'); /* Pretty Modern Browsers */
   font-weight: bold;
 }
 html, body,
