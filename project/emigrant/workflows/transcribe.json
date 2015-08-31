@@ -15,9 +15,10 @@
       "tool": "textTool",
       "tool_config": {},
       "instruction": "Enter the record date",
+      "examples": ["1867 May 11", "1867 July 30", "1875 December 31"],
       "help": {
         "title": "Record Date",
-        "body": "The record date can generally be found in the upper left hand corner of the record. Enter it as written, e.g. \"1867 May 11\""
+        "body": "The record date can generally be found in the upper left hand corner of the record."
       },
       "generates_subject_type": "em_transcribed_date"
     },
@@ -26,9 +27,10 @@
       "tool": "numberTool",
       "tool_config": {},
       "instruction": "Enter the record number",
+      "examples": ["287", "289"],
       "help": {
         "title": "Record Number",
-        "body": "The record number can generally be found in the upper right hand corner of the record. E.g. \"129\""
+        "body": "The record number can generally be found in the upper right hand corner of the record."
       },
       "generates_subject_type": "em_transcribed_record_number"
     },
@@ -39,6 +41,7 @@
         "suggest": "common"
       },
       "instruction": "Enter the mortgager's name",
+      "examples": ["John O'Meallia", "Trustees of St. Patrick's Cathedral"],
       "generates_subject_type": "em_transcribed_mortgager",
       "help": {
         "title": "Mortgager Name",
@@ -50,10 +53,11 @@
       "tool": "textTool",
       "tool_config": {},
       "instruction": "Enter the street address",
+      "examples": ["39 Mott St", "S. W. corner of 7th Avenue & 25th St. No 226 7th Avenue", "Mulberry, Mott and Prince St"],
       "generates_subject_type": "em_transcribed_address",
       "help": {
         "title": "Street Address",
-        "body": "The building address is sometimes labeled \"No. of Street or Avenue\". When possible, try to interpret the address given using contemporary address conventions. For example, for \"No. 39 Mott St\" enter \"39 Mott St\""
+        "body": "The building address is sometimes labeled \"No. of Street or Avenue\". When possible, try to interpret the address given using contemporary address conventions."
       }
     },
 
@@ -61,10 +65,11 @@
       "tool": "numberTool",
       "tool_config": {},
       "instruction": "Enter the Amount Loaned",
+      "examples": ["$4,500", "$50,000 and $30,000"],
       "generates_subject_type": "em_transcribed_amount_loaned",
       "help": {
         "title": "Amount Loaned",
-        "body": "The amount loaned is typically found at or near the bottom of the record. For example, for \"Amount Loaned: $4,500.\", enter \"4500\"."
+        "body": "The amount loaned is typically found at or near the bottom of the record."
       }
     },
 
@@ -74,11 +79,13 @@
         "tools": {
           "em_valuation_date": {
             "tool": "textTool",
+            "examples": ["1879 November"],
             "tool_config": {"suggest": "common"},
             "label": "Date"
           },
           "em_valuation_amount": {
             "tool": "textTool",
+            "examples": ["$200,000"],
             "tool_config": {},
             "label": "Amount"
           }

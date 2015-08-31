@@ -23,22 +23,23 @@ CompositeTool = React.createClass
     task: null
     subject: null
 
-  # componentWillReceiveProps: (new_props) ->
-  #   @setState annotation: new_props
-
   # this can go into a mixin? (common across all transcribe tools)
-  # DUPE in text-tool:
   getPosition: (data) ->
+    return x: null, y: null if ! data.x?
+
+    yPad = 20
     switch data.toolName
       when 'rectangleTool'
         x = data.x
-        y = parseFloat(data.y) + parseFloat(data.height)
+        y = parseFloat(data.y) + parseFloat(data.height) + yPad
       when 'textRowTool'
         x = data.x
-        y = data.yLower
+        y = data.yLower + yPad
       else # default for pointTool
         x = data.x
-        y = data.y
+        y = data.y + yPad if data.y?
+    x = @props.subject.width / 2 if ! x?
+    y = @props.subject.height / 2 if ! y?
     return {x,y}
 
   onViewerResize: (size) ->
@@ -126,6 +127,7 @@ CompositeTool = React.createClass
       >
 
       <label>{@props.task.instruction}</label>
+
       {
         for sub_tool in @props.task.tool_config.options
           ToolComponent = @props.transcribeTools[sub_tool.tool]
