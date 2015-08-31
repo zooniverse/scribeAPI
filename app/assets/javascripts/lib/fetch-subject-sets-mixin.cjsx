@@ -5,8 +5,8 @@ API = require './api'
 module.exports =
   componentDidMount: ->
     # can anyone figure out how to simplify? --STI
-    # console.log '@PROPS.PARAMS: ', @props.params
-    # console.log '@PROPS.QUERY : ', @props.query
+    console.log '@PROPS.PARAMS: ', @props.params
+    console.log '@PROPS.QUERY : ', @props.query
     if @props.params.subject_set_id
         # console.log '>>>>>>>>>>>>>>>>>>>>>>>>>>>> A <<<<<<<<<<<<<<<<<<<<<<<<<<<<'
         # Used for directly accessing a subject set
@@ -16,7 +16,7 @@ module.exports =
       if @props.query.selected_subject_id and @props.query.selected_subject_id
         # console.log '>>>>>>>>>>>>>>>>>>>>>>>>>>>> B <<<<<<<<<<<<<<<<<<<<<<<<<<<<'
         # Used to transition from Transcribe to Mark
-        @fetchSubjectSetBySubjectId @getActiveWorkflow().id, @props.query.subject_set_id, @props.query.selected_subject_id #, @props.query.page ? 1 # Forget why I decided to pass page number? --STI
+        @fetchSubjectSetBySubjectId @getActiveWorkflow().id, @props.query.subject_set_id, @props.query.selected_subject_id, @props.query.mark_task_key #, @props.query.page ? 1 # Forget why I decided to pass page number? --STI
       else
         # console.log '>>>>>>>>>>>>>>>>>>>>>>>>>>>> C <<<<<<<<<<<<<<<<<<<<<<<<<<<<'
         @fetchSubjectSet @props.query.subject_set_id, @getActiveWorkflow().id # fetch specific subject set
@@ -47,7 +47,7 @@ module.exports =
         subject_current_page: subject_set.subject_pagination_info.current_page
         total_subject_pages: subject_set.subject_pagination_info.total_pages
 
-  fetchSubjectSetBySubjectId: (workflow_id, subject_set_id, selected_subject_id) ->
+  fetchSubjectSetBySubjectId: (workflow_id, subject_set_id, selected_subject_id, mark_task_key) ->
   # fetchSubjectSetBySubjectId: (workflow_id, subject_set_id, selected_subject_id, page) -> # why page number? --STI
     # console.log 'fetchSubjectSetBySubjectId()'
     # console.log 'THE QUERY: ', "/workflows/#{workflow_id}/subject_sets/#{subject_set_id}/subjects/#{selected_subject_id}"
@@ -70,6 +70,7 @@ module.exports =
         subject_current_page: subject_set.subjects_pagination_info.current_page
         total_subject_pages: subject_set.subjects_pagination_info.total_pages
         currentSubjectSet: subject_set
+        taskKey: mark_task_key
 
   orderSubjectsByOrder: (subject_sets) ->
     for subject_set in subject_sets
