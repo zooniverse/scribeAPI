@@ -28,7 +28,7 @@
       "instruction": "Enter the record number",
       "help": {
         "title": "Record Number",
-        "body": "The record date can generally be found in the upper right hand corner of the record. E.g. \"129\""
+        "body": "The record number can generally be found in the upper right hand corner of the record. E.g. \"129\""
       },
       "generates_subject_type": "em_transcribed_record_number"
     },
@@ -42,7 +42,7 @@
       "generates_subject_type": "em_transcribed_mortgager",
       "help": {
         "title": "Mortgager Name",
-        "body": "The Mortgager is often found at the top of the list of hand-entered data. The mortgager tends to be a single person's name. If multiple names are given, enter them all separated by semi-colons."
+        "body": "The mortgager is often found at the top of the list of hand-entered data. The mortgager tends to be a single person's name. If multiple names are given, enter them all separated by semi-colons."
       }
     },
 
@@ -64,7 +64,7 @@
       "generates_subject_type": "em_transcribed_amount_loaned",
       "help": {
         "title": "Amount Loaned",
-        "body": "The Amount Loaned is typically found at or near the bottom of the record. For example, for \"Amoun Loaned: $4,500.\", enter \"4500\"."
+        "body": "The amount loaned is typically found at or near the bottom of the record. For example, for \"Amount Loaned: $4,500.\", enter \"4500\"."
       }
     },
 
@@ -87,7 +87,7 @@
 
       "help": {
         "title": "Valuatation",
-        "body": "Sometimes records include individual, dated Valuations of the property and/or building. If any exist in this record, note the most recent."
+        "body": "Sometimes records include individual, dated valuations of the property and/or building. If any exist in this record, note the most recent."
       },
       "generates_subject_type": "em_transcribed_valuation",
       "instruction": "Enter the last property valuation that was recorded, if any",

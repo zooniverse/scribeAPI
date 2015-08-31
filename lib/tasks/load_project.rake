@@ -64,8 +64,9 @@ desc 'creates a poject object from the project directory'
         }
       end
     end
-    
-    load_images(args[:project_key]) 
+
+
+    load_images(args[:project_key])
 
     styles_path = Rails.root.join('project', args[:project_key], 'styles.css')
     if File.exist? styles_path
@@ -73,6 +74,8 @@ desc 'creates a poject object from the project directory'
       puts "Loading #{styles.size}b of custom CSS"
       project.styles = styles
     end
+
+    project.tutorial = load_tutorial(args[:project_key])
 
     project.save
 
@@ -117,6 +120,11 @@ desc 'creates a poject object from the project directory'
             task_config[:key] = task_key.to_s
             # Remove any config params not officially declared as fields of WorkflowTask:
             task_config = task_config.inject({}) { |h, (k,v)| h[k] = v if WorkflowTask.fields.keys.include?(k.to_s); h }
+
+            # Rewrite pick-one-* tool configs to be structured the same per https://github.com/zooniverse/scribeAPI/issues/241
+            # .. Just until project owners update their own configs
+            task_config[:tool_config] = translate_pick_one_tool_config task_config
+
             a << task_config
           end
         end
@@ -142,6 +150,41 @@ desc 'creates a poject object from the project directory'
     end
 
     puts "  WARN: No mark workflow found" if project.workflows.find_by(name: 'mark').nil?
+  end
+
+  def translate_pick_one_tool_config(task_hash)
+    config = task_hash[:tool_config]
+
+    # In Pick-one-mark-one and compositeTool, rename 'tools' to 'options'
+    if ['pickOneMarkOne', 'compositeTool'].include? task_hash[:tool]
+      config[:options] = config.delete :tools if config[:options].nil?
+    end
+
+    # In Pick-one and compositeTool, structure 'options' as an array rather than a hash:
+    if ['pickOne','compositeTool']
+      config[:options] = config[:options].map { |(option_value,config)| config[:value] = option_value; config } if config[:options].is_a?(Hash)
+    end
+
+    config
+  end
+
+  def load_tutorial(project_key)
+    project = Project.find_by key: project_key
+    tutorial_hash = {}
+    tutorial_path = Rails.root.join('project', project_key, 'tutorial', '*.json')
+    puts "Tutorial: Loading workflows from #{tutorial_path}"
+
+    Dir.glob(tutorial_path).each do |tutorial_hash_path|
+      content = File.read(tutorial_hash_path) # .gsub(/\n/, '')
+      begin
+        next if content == ''
+
+        tutorial_hash = JSON.parse content
+        tutorial_hash.deep_symbolize_keys!
+        tutorial_hash = load_help_text tutorial_hash, project_key
+      end
+    end
+    tutorial_hash
   end
 
   def load_images(project_key)

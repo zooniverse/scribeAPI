@@ -63,24 +63,26 @@ module.exports = React.createClass
   componentWillUnmount:->
     @setState
       subToolIndex: 0
-      tool: @props.task?.tool_config.tools[0]
+      tool: @props.task?.tool_config.options[0]
+    # Ensure mark/index subToolIndex is set to 0 in case next task uses a pick-one-*
+    @props.onChange? subToolIndex: 0
 
   getInitialState: ->
     subToolIndex: 0 # @props.annotation?.subToolIndex ? 0
-    tool: @props.task?.tool_config.tools[0]
+    tool: @props.task?.tool_config.options[0]
 
     # annotation: $.extend({subToolIndex: null}, @props.annotation ? {})
 
   render: ->
-    # console.log "PickOneMarkOne rendering: ", @getSubToolIndex()
+    # console.log "PickOneMarkOne rendering: ", @props.subject.child_subjects
 
     # Calculate number of existing marks for each tool instance:
     counts = {}
     for subject in @props.subject.child_subjects
       counts[subject.type] ?= 0
-      counts[subject.type] += 1
+      counts[subject.type] += 1 unless subject.user_has_deleted
 
-    tools = for tool, i in @props.task.tool_config.tools
+    tools = for tool, i in @props.task.tool_config.options
       tool._key ?= Math.random()
 
       # How many prev marks? (i.e. child_subjects with same generates_subject_type)

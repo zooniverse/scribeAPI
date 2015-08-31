@@ -62,7 +62,15 @@ class AppRouter
               name={workflow.name + '_specific'}
             />
         }
-
+        { (w for w, i in project.workflows when w.name in ['transcribe']).map (workflow, key) =>
+            handler = eval workflow.name.charAt(0).toUpperCase() + workflow.name.slice(1)
+            <Route
+              key={key}
+              path={workflow.name + '/:workflow_id' + '/:parent_subject_id' }
+              handler={handler}
+              name={workflow.name + '_entire_page'}
+            />
+        }
         { # Project-configured pages:
           project.pages?.map (page, key) =>
             <Route
@@ -93,7 +101,7 @@ class AppRouter
 
   controllerForPage: (page) ->
     React.createClass
-      displayName: "#{page.name}Page"  
+      displayName: "#{page.name}Page"
 
       componentDidMount: ->
         elms = $(React.findDOMNode(this)).find('a.about-nav')
@@ -113,7 +121,7 @@ class AppRouter
 
       navToggle:(e)->
         console.log "E", e
-      
+
 
       render: ->
         formatted_name = page.name.replace("_", " ")

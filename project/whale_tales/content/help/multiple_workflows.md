@@ -1,0 +1,1 @@
+You can select from two interfaces: “Mark” and “Transcribe.” In “Mark,” you’ll be identifying interesting and relevant portions of the logbooks. In “Transcribe,” you’ll be typing out what those relevant portions say. You can also simultaneously mark and transcribe by using the “Mark” interface; this is best if you want to go transcribe a log chronologically.

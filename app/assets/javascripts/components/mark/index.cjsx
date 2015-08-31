@@ -1,4 +1,5 @@
 React                   = require 'react'
+{Navigation}            = require 'react-router'
 SubjectSetViewer        = require '../subject-set-viewer'
 coreTools               = require 'components/core-tools'
 FetchSubjectSetsMixin   = require 'lib/fetch-subject-sets-mixin'
@@ -7,27 +8,36 @@ JSONAPIClient           = require 'json-api-client' # use to manage data?
 ForumSubjectWidget      = require '../forum-subject-widget'
 API                     = require '../../lib/api'
 HelpModal               = require 'components/help-modal'
+Tutorial               = require 'components/tutorial'
 HelpButton              = require 'components/buttons/help-button'
 BadSubjectButton        = require 'components/buttons/bad-subject-button'
+HideOtherMarksButton    = require 'components/buttons/hide-other-marks-button'
 DraggableModal          = require 'components/draggable-modal'
+Draggable               = require 'lib/draggable'
+
+{Link}                  = require 'react-router'
 
 module.exports = React.createClass # rename to Classifier
   displayName: 'Mark'
 
   getDefaultProps: ->
     workflowName: 'mark'
+    # hideOtherMarks: false
 
-  mixins: [FetchSubjectSetsMixin, BaseWorkflowMethods] # load subjects and set state variables: subjects, currentSubject, classification
+  mixins: [FetchSubjectSetsMixin, BaseWorkflowMethods, Navigation] # load subjects and set state variables: subjects, currentSubject, classification
 
   getInitialState: ->
-    taskKey:                      null
-    classifications:              []
-    classificationIndex:          0
-    subject_set_index:            0
-    subject_index:                0
-    currentSubToolIndex:          0
-    helping:                      false
-    currentSubtool:                  null
+    taskKey:             null
+    classifications:     []
+    classificationIndex: 0
+    subject_set_index:   0
+    subject_index:       0
+    currentSubToolIndex: 0
+    helping:             false
+    hideOtherMarks:      false
+    currentSubtool:      null
+    completeTutorial:    @props.project.current_user_tutorial
+    lightboxHelp:        false
 
   componentDidMount: ->
     @getCompletionAssessmentTask()
@@ -41,6 +51,18 @@ module.exports = React.createClass # rename to Classifier
   toggleHelp: ->
     @setState helping: not @state.helping
 
+  toggleTutorial: ->
+    @setState completeTutorial: not @state.completeTutorial
+
+  toggleLightboxHelp: ->
+    @setState lightboxHelp: not @state.lightboxHelp
+
+  toggleHideOtherMarks: ->
+    @setState hideOtherMarks: not @state.hideOtherMarks
+    , =>
+      console.log 'SET @state.hidingMarks to: ', @state.hideOtherMarks
+      # @forceUpdate()
+
   render: ->
     return null unless @getCurrentSubject()? && @getActiveWorkflow()?
     currentTask = @getCurrentTask()
@@ -50,8 +72,12 @@ module.exports = React.createClass # rename to Classifier
     onFirstAnnotation = @state.taskKey == firstTask
     currentSubtool = if @state.currentSubtool then @state.currentSubtool else @getTasks()[firstTask]?.tool_config.tools?[0]
 
+    # direct link to this page
+    pageURL = "#{location.origin}/#/mark?subject_set_id=#{@getCurrentSubjectSet().id}&selected_subject_id=#{@getCurrentSubject().id}"
+
+
     if currentTask.tool is 'pick_one'
-      currentAnswer = currentTask.tool_config.options?[currentAnnotation.value]
+      currentAnswer = (a for a in currentTask.tool_config.options when a.value == currentAnnotation.value)[0]
       waitingForAnswer = not currentAnswer
 
     <div className="classifier">
@@ -73,6 +99,7 @@ module.exports = React.createClass # rename to Classifier
               annotation={@getCurrentClassification()?.annotation ? {}}
               onComplete={@handleToolComplete}
               onChange={@handleDataFromTool}
+              onDestroy={@handleMarkDelete}
               onViewSubject={@handleViewSubject}
               subToolIndex={@state.currentSubToolIndex}
               subjectCurrentPage={@state.subject_current_page}
@@ -80,57 +107,105 @@ module.exports = React.createClass # rename to Classifier
               prevPage={@prevPage}
               totalSubjectPages={@state.total_subject_pages}
               destroyCurrentClassification={@destroyCurrentClassification}
+              hideOtherMarks={@state.hideOtherMarks}
               currentSubtool={currentSubtool}
+              lightboxHelp={@toggleLightboxHelp}
             />
         }
       </div>
-      <div className="task-area">
-        <div className="task-container">
-          <TaskComponent
-            key={@getCurrentTask().key}
-            task={currentTask}
-            annotation={@getCurrentClassification()?.annotation ? {}}
-            onChange={@handleDataFromTool}
-            subject={@getCurrentSubject()}
-          />
-          <div className="help-bad-subject-holder">
-            { if @getCurrentTask().help?
-              <HelpButton onClick={@toggleHelp} />
-            }
-            { if onFirstAnnotation
-              <BadSubjectButton active={@state.badSubject} onClick={@toggleBadSubject} />
-            }
-            { if @state.badSubject
-              <p>You&#39;ve marked this subject as BAD. Thanks for flagging the issue! <strong>Press DONE to continue.</strong></p>
+      <div className="right-column">
+        <div className="task-area">
+          <div className="task-container">
+            <TaskComponent
+              key={@getCurrentTask().key}
+              task={currentTask}
+              annotation={@getCurrentClassification()?.annotation ? {}}
+              onChange={@handleDataFromTool}
+              subject={@getCurrentSubject()}
+            />
+            <div className="help-bad-subject-holder">
+              { if @getCurrentTask().help?
+                <HelpButton onClick={@toggleHelp} />
+              }
+              <HideOtherMarksButton active={@state.hideOtherMarks} onClick={@toggleHideOtherMarks} />
+              { if onFirstAnnotation
+                <BadSubjectButton label={"Bad " + @props.project.term('subject')} active={@state.badSubject} onClick={@toggleBadSubject} />
+              }
+              { if @state.badSubject
+                <p>You&#39;ve marked this {@props.project.term('subject')} as BAD. Thanks for flagging the issue! <strong>Press DONE to continue.</strong></p>
+              }
+              { if @state.hideOtherMarks
+                <p>Currently displaying only your marks. <strong>Toggle the button again to show all marks to-date.</strong></p>
+              }
+            </div>
+
+            <div className="tutorial-holder help-button ghost" onClick={@toggleTutorial}>
+              <HelpButton label={"Tutorial"} onClick={@toggleTutorial} />
+            </div>
+
+            <nav className="task-nav">
+              { if false
+                <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
+              }
+              { if @getNextTask()?
+                  # console.log "STATE at the NEXT BUTTON", @state
+                  <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@advanceToNextTask}>Next</button>
+                else
+                  if @state.taskKey == "completion_assessment_task"
+                    if @getCurrentSubject() == @getCurrentSubjectSet().subjects[@getCurrentSubjectSet().subjects.length-1]
+                      <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next</button>
+                    else
+                      <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next Page</button>
+                  else
+                    <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Done</button>
+              }
+            </nav>
+
+            {
+              if @getActiveWorkflow()? && @getWorkflowByName('transcribe')?
+                <p>
+                  <Link to="/transcribe/#{@getWorkflowByName('transcribe').id}/#{@getCurrentSubject().id}">Transcribe this {@props.project.term('subject')} now!</Link>
+                </p>
             }
           </div>
-          <nav className="task-nav">
-            { if false
-              <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
-            }
-            { if @getNextTask()?
-                # console.log "STATE at the NEXT BUTTON", @state
-                <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@advanceToNextTask}>Next</button>
-              else
-                if @state.taskKey == "completion_assessment_task"
-                  if @getCurrentSubject() == @getCurrentSubjectSet().subjects[@getCurrentSubjectSet().subjects.length-1]
-                    <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next</button>
-                  else
-                    <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next Page</button>
-                else
-                  <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Done</button>
-            }
-          </nav>
-        </div>
 
-        <div className="forum-holder">
-          <ForumSubjectWidget subject_set = @getCurrentSubjectSet() />
-        </div>
+          {
+            if @getActiveWorkflow()?
+              <div className="explore">
+                <h2>Explore</h2>
+                <p>
+                  <Link to="/groups/#{@getCurrentSubjectSet().group_id}">About this {@props.project.term('group')}.</Link>
+                </p>
+              </div>
+          }
 
+          <div className="forum-holder">
+            <ForumSubjectWidget subject_set={@getCurrentSubjectSet()} project={@props.project} />
+          </div>
+
+          <div className="social-media-container">
+            <a href="https://www.facebook.com/sharer.php?u=#{encodeURIComponent pageURL}" target="_blank">
+              <i className="fa fa-facebook-square"/>
+            </a>
+            <a href="https://twitter.com/home?status=#{encodeURIComponent pageURL}%0A" target="_blank">
+              <i className="fa fa-twitter-square"/>
+            </a>
+            <a href="https://plus.google.com/share?url=#{encodeURIComponent pageURL}" target="_blank">
+              <i className="fa fa-google-plus-square"/>
+            </a>
+          </div>
+
+        </div>
       </div>
-
+      { if @props.project.tutorial? && !@state.completeTutorial
+        <Tutorial tutorial={@props.project.tutorial} toggleTutorial={@toggleTutorial}/>
+      }
       { if @state.helping
         <HelpModal help={@getCurrentTask().help} onDone={=> @setState helping: false } />
+      }
+      {
+        if @state.lightboxHelp
+          <HelpModal help={{title: "The Lightbox", body: "You can use the lightbox to find images in a collection. Click on an image in the lightbox to see a larger version of the image."}} onDone={=> @setState lightboxHelp: false } />
       }
     </div>
 
@@ -181,6 +256,8 @@ module.exports = React.createClass # rename to Classifier
           , =>
             @forceUpdate()
 
+  handleMarkDelete: (m) ->
+    @flagSubjectAsUserDeleted m.subject_id
 
   destroyCurrentClassification: ->
     classifications = @state.classifications

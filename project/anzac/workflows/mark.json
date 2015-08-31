@@ -13,54 +13,58 @@
   "tasks":{
     "pick_page_type":{
       "tool":"pickOne",
-      "help": {
-        "title": "Determine the Page Type",
-        "body": "Personnel files provide a thorough description of an individual’s military service from enlistment, through wartime, and beyond. \n \n The archival copies of personnel files reflect their working origins in multiple locations and compilation into one file at various points during and after the war. Thus, the order of documents within the files varies and a key part of this project is identifying what documents are present for any individual."
-      },
       "instruction":"What kind of page is this?",
       "help": {
+        "title": "Page Type",
         "file": "pick_page_type"
       },
       "tool_config": {
-        "options":{
-          "history_sheet":{
+        "options":[
+          {
+            "value":"history_sheet",
             "label":"History Sheet",
             "next_task":"hs_sticky_sheet"
           },
-          "hs_conduct_sheet":{
+          {
+            "value": "hs_conduct_sheet",
             "label":"Statement of Services",
             "next_task": "hs_transfer_table"
           },           
-          "att_form":{
+          {
+            "value":"att_form",
             "label":"Attestation: General Form",
             "next_task":"att_form_task"
           },
-          "att_medical_form":{
+          {
+            "value":"att_medical_form",
             "label":"Attestation: Medical Form",
             "next_task":"att_medical_form_task"
           },
-          "death_notification":{
+          {
+            "value":"death_notification",
             "label":"Death Notification",
             "next_task": null
           },
-          "sfatt":{
+          {
+            "value":"sfatt",
             "label":"South African War Attestation",
             "next_task": null
           },
-          "other_page_type":{
+          {
+            "value":"other_page_type",
             "label":"Other",
             "next_task": null
           }
-        }
+        ]
       }
     },
     "att_form_task":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Select a label and draw a rectangle around the corresponding entry.",
+      "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Header", "color": "green", "generates_subject_type": "att_transcribe_header" },
+          {"type": "rectangleTool", "label": "Header", "color": "green", "generates_subject_type": "att_transcribe_header", "help":"You only need to capture this if there is written information in the header." },
           {"type": "rectangleTool", "label": "One-Part Question", "color": "green", "generates_subject_type": "att_transcribe_question" },
           {"type": "rectangleTool", "label": "Two-Part Question", "color": "green", "generates_subject_type": "att_transcribe_two_question" },
           {"type": "rectangleTool", "label": "Three-Part Question", "color": "green", "generates_subject_type": "att_transcribe_three_question" }
@@ -74,7 +78,7 @@
     "att_medical_form_task":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Select a label and draw a rectangle around the corresponding entry.",
+      "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Oath Year", "color": "green", "generates_subject_type": "att_transcribe_oath_year" },
@@ -93,7 +97,7 @@
     "att_medical_sight_hearing":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Select a label and draw a rectangle around the corresponding entry.",
+      "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Sight", "color": "green", "generates_subject_type": "att_transcribe_sight" },
@@ -106,7 +110,7 @@
     "att_medical_form_specific":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Select a label and draw a rectangle around the corresponding entry.",
+      "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Limb Formation", "color": "green", "generates_subject_type": "att_transcribe_limb_formation" },
@@ -129,7 +133,7 @@
     "att_medical_form_general_recuitment":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Select a label and draw a rectangle around the corresponding entry.",
+      "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
       "next_task": null,
       "tool_config": {
         "tools": [
@@ -163,16 +167,18 @@
       "instruction":"Are there any entries under the heading **Conduct Sheet?**",
       "next_task": null,
       "tool_config": {
-        "options":{
-          "conduct_info_present":{
+        "options":[
+          {
+            "value":"conduct_info_present",
             "label":"Yes",
             "next_task":null
           },
-          "conduct_info_not_present":{
+          {
+            "value":"conduct_info_not_present",
             "label":"No",
             "next_task":null
           }
-        }
+        ]
       }
     },
     "hs_sticky_sheet":{
@@ -180,22 +186,24 @@
       "instruction":"Are there any sticky notes?",
       "next_task": null,
       "tool_config": {
-        "options":{
-          "sticky_note_present":{
+        "options":[
+          {
+            "value":"sticky_note_present",
             "label":"Yes",
             "next_task":"hs_task"
           },
-          "no_sticky_note":{
+          {
+            "value":"no_sticky_note",
             "label":"No",
             "next_task":"hs_task"
           }          
-        }
+        ]
       }
     },
     "hs_task":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Select a label and draw a rectangle around the corresponding entry.",
+      "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Unit", "color": "green", "generates_subject_type": "hs_transcribe_unit" },
@@ -218,7 +226,7 @@
     "hs_service":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Draw a rectangle around each recorded instance under the service (select the whole row)",
+      "instruction":"Draw a rectangle around each recorded instance under the heading **Service**. Select the whole row from **Country and Troopship** to **Total Days**",
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Service", "color": "green", "generates_subject_type": "hs_transcribe_service" }
@@ -251,7 +259,7 @@
     "hs_final_questions":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Select a label and draw a rectangle around the corresponding entry.",
+      "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
       "next_task": null,
       "tool_config": {
         "tools": [ 

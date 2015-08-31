@@ -11,7 +11,7 @@ class Project
   field  :summary ,          type: String, default: "Classify pictures of zoo's"
   field  :description,       type: String, default: "We need your help to understand zoo's better"
   field  :home_page_content, type: String, default: "<p>Page content goes here</p>"
-  field  :organizations,     type: Array,  default: [{name: "zooniverse", location: "Chicago IL", description: "blah balh", url:["https://www.zooniverse.org/"]}]
+  field  :organizations,     type: Array,  default: [{name: "zooniverse", location: "Chicago IL", description: "provides opportunities for people around the world to contribute to real discoveries", url:["https://www.zooniverse.org/"]}]
   field  :scientists,        type: Array,  default: [{name: "Stuart Lynn", location: "Chicago, IL", description: "me", url:["https://github.com/brian-c"]}]
   field  :developers,        type: Array,  default: [{name: "Stuart Lynn", location: "Chicago, IL", description: "me", url:["https://github.com/brian-c"]}]
   field  :pages,             type: Array,  default: []
@@ -23,6 +23,8 @@ class Project
   field  :admin_email,       type: String
   field  :team_emails,       type: Array
   field  :metadata_search,   type: Hash
+  field  :tutorial,          type: Hash
+  field  :terms_map,         type: Hash, default: {} # Hash mapping internal terms to project appropriate terms (e.g. 'group'=>'ship')
 
   include CachedStats
 

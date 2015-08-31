@@ -1,7 +1,7 @@
 React           = require 'react'
 DrawingToolRoot = require './root'
 Draggable       = require 'lib/draggable'
-DeleteButton    = require './delete-button'
+DeleteButton    = require 'components/buttons/delete-mark'
 MarkButtonMixin = require 'lib/mark-button-mixin'
 
 # DEFAULT SETTINGS
@@ -25,8 +25,8 @@ module.exports = React.createClass
 
   getDeleteButtonPosition: ->
     theta = (DELETE_BUTTON_ANGLE) * (Math.PI / 180)
-    x: (SELECTED_RADIUS / @props.xScale) * Math.cos theta
-    y: -1 * (SELECTED_RADIUS / @props.yScale) * Math.sin theta
+    x: (SELECTED_RADIUS / @props.xScale) * Math.cos(theta) + 20
+    y: -1 * (SELECTED_RADIUS / @props.yScale) * Math.sin(theta) - 20
 
   getMarkButtonPosition: ->
     x: SELECTED_RADIUS/@props.xScale
@@ -40,7 +40,7 @@ module.exports = React.createClass
     @props.onChange e
 
   handleMouseDown: ->
-    @props.onSelect @props.mark unless @props.disabled
+    @props.onSelect @props.mark # unless @props.disabled
 
   render: ->
     classes = []
@@ -52,8 +52,6 @@ module.exports = React.createClass
       @props.disabled = true
 
     averageScale = (@props.xScale + @props.yScale) / 2
-
-    console.log 'AVERAGE SCALE = ', averageScale
 
     crosshairSpace = CROSSHAIR_SPACE / averageScale
     crosshairWidth = CROSSHAIR_WIDTH / averageScale
@@ -74,7 +72,6 @@ module.exports = React.createClass
     >
       <g
         className='point-tool'
-        onMouseDown={@handleMouseDown}
       >
 
         <Draggable onDrag={@handleDrag}>
@@ -109,8 +106,8 @@ module.exports = React.createClass
 
         </Draggable>
 
-        { if @props.selected and not @props.disabled
-          <DeleteButton tool={this} getDeleteButtonPosition={@getDeleteButtonPosition} />
+        { if @props.selected
+            <DeleteButton onClick={@props.onDestroy} scale={scale} x={@getDeleteButtonPosition().x} y={@getDeleteButtonPosition().y}/>
         }
 
         { # REQUIRES MARK-BUTTON-MIXIN

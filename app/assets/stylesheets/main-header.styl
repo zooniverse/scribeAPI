@@ -6,9 +6,10 @@
   background: rgba(0, 0, 0, 0.18);
 
 .main-header-group
-  background: rgba(0, 0, 0, 0.18);
+  // background: rgba(0, 0, 0, 0.35);
+  background linear-gradient( 0, rgba(0,0,0,0.2), rgba(0,0,0,0.5), rgba(0,0,0,0.9), rgba(0,0,0,0.9), rgba(0,0,0,1.0) );
   max-heigth: 50px
-  position: fixed
+  position fixed
   top 0px
   width 100%
 
@@ -134,3 +135,7 @@ a.main-header-item
 
       &:hover
         color #fff
+
+@media all and (max-width: 1200px)
+  .login .label
+    display none

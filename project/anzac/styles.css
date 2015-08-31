@@ -1,5 +1,7 @@
 /* custom anzac styles that overwrite Scribe defaults */
-
+.main-header-group{
+  background: rgba(0, 0, 0, 0.18);
+}
 .page-content{
   background-color: transparent;
   font-size: 1.4em;
@@ -20,7 +22,11 @@ span.keyword {
 }
 
 .page-content h1{
-  font-family: 'Roboto Slab';
+  font-family: clarendon-text-pro;
+  font-weight: 100;
+  letter-spacing: 5px;
+  color:  #ffffff;
+  margin-bottom: 0%;
   text-transform: capitalize; 
   font-size: 42px;
   padding-bottom: 0;
@@ -49,7 +55,9 @@ span.keyword {
   font-weight: 400;
 }
 
-
+.page-content div{
+  background-color: transparent;
+}
 /* Home Page */
 .home-page h1{
   text-transform: none;
@@ -66,7 +74,7 @@ span.keyword {
 }
 
 .home-page p{
-  font-size: .9em;
+  font-size: .7em;
   line-height: 1.3em;
   margin-bottom: 0;
 }
@@ -78,14 +86,25 @@ span.keyword {
   padding: 0.5em 1em;
 }
 
-.modal-header {
-    background-color: #3f5765;
-    color: #efefef;
-    text-transform: uppercase;
-    border-bottom: solid 3px #8cbc8c;
-    border-top-left-radius: .25em;
-    border-top-right-radius: .25em;
+.draggable-modal{
+  border-radius: 5px;
+  background-color:  #ffffff;
+  box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.4);
 }
+
+.classifier .draggable-modal .modal-header {
+  background-color: #3f5765;
+  letter-spacing: 1px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  padding-bottom: 15px;
+  font-family: OpenSans;
+  color:  #ffffff;
+  font-weight: 400;
+  line-height: 18px;
+  text-align: left;
+}
+
 
 .ui-accordion .ui-accordion-icons {
     padding-left: 2.2em;
@@ -113,7 +132,7 @@ span.keyword {
   position: fixed;
   left: 40px;
   height: 100%;
-  width: 30%;
+  width: 20%;
   padding-top: 2em;
   font-family: OpenSans;
   font-size: 20px;/* Approximation due to font substitution */
@@ -122,6 +141,7 @@ span.keyword {
   text-align: left;
   padding-bottom: 5%;
 }
+
 
 #about-page ul{
   padding-left: 1%;
@@ -161,14 +181,18 @@ span.keyword {
 }
 
 #about-intro li {
-  border-left: solid 2px #8cbc8c;
+  background-image: url('../assets/bullet.svg');
+  background-repeat: no-repeat;
+  background-position: 0px 25%;
+  padding-left: 2%;
+  margin-left: 2%;
 }
-
 
 #about-transcription-guide li span.keyword {
   font-weight: 500;
   text-transform: capitalize;
 }
+
 
 /* Feedback Page */
 #feedback-content{
@@ -189,4 +213,116 @@ span.keyword {
   font-size: .8em;
   line-height: 2;
   font-weight: 300;
+}
+
+#field-guide nav {
+  background-color: transparent;
+  position: fixed;
+  left: 0px;
+  height: 100%;
+  width: 20%;
+  padding-top: 2em;
+  font-family: OpenSans;
+  font-size: 20px;/* Approximation due to font substitution */
+  font-weight: 400;
+  line-height: 22px;/* Approximation due to font substitution */
+  text-align: left;
+  padding-bottom: 5%;
+}
+
+#field-guide div{
+  display: none;
+  background-color:inherit;
+  text-align: left;
+  padding: 2em;
+  float: right;
+  width: 70%;
+}
+
+#field-guide a.selected-content {
+  border-left: solid 2px #8cbc8c;
+  font-weight: 700;
+}
+
+#field-guide div.selected-content{
+  display:inline-block;
+  padding-right: 4em;
+}
+
+#field-guide #accordion{
+    width: 98%;
+    display: inherit;
+    text-align: left;
+    background-color: transparent;
+    color: #2b3a42;
+    font-size: .8em;
+    line-height: 2;
+    font-weight: 300;
+}
+
+#field-guide #accordion div{
+    width: auto;
+    float: none;
+}
+
+
+#field-guide #accordion #att_ex{
+    display: inline-block;
+    float: left;
+    background-color: transparent;
+    width: 20%;
+}
+
+#field-guide #accordion #att_ex img{
+  width: 100%;
+  padding-bottom 20%;
+}
+
+#field-guide #field-guide .ui-accordion-header{
+  color: #3f5765;
+}
+
+#field-guide .ui-state-default.ui-state-focus{
+  color: #3f5765;
+  background-color: rgba(144, 141, 141, 0.29);
+  border-color: #8cbc8c;
+  outline: none;
+}
+
+#field-guide .ui-state-default.ui-state-active{
+  color: #2b3a42;
+  background-color: rgba(144, 141, 141, 0.29);
+  border-color: #8cbc8c;
+  outline: none;
+}
+
+#field-guide .ui-state-default.ui-state-hover{  
+  color: #2b3a42;
+  background-color: rgba(144, 141, 141, 0.29);
+  border-color: #8cbc8c;
+  outline: none;
+}
+
+
+#field-guide #accordion img{
+  width 20%
+  padding-left 5%  
+}
+
+#field-guide li {
+  list-style-type: none;
+  padding-left: 1em;
+  margin-bottom: 1em;
+  line-height: 1.5em;
+  font-size: .90em
+}
+
+#field-guide nav a {
+  color: #4d4d4d;
+  text-decoration: none;
+  padding-left: 1em;
+}
+
+#questions-tip{
+  fill: pink;
 }

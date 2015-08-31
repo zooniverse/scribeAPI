@@ -15,6 +15,12 @@ module.exports =
     return null if k?.length != 1
     @props.project.workflows[k[0]]
 
+
+  getWorkflowByName: (name) ->
+    k = (k for w,k in @props.project.workflows when w.name is name)
+    return null if k?.length != 1
+    @props.project.workflows[k[0]]
+
   # Start a new classification (optionally initialized with given annotation hash):
   beginClassification: (annotation = {}, callback) ->
     classifications = @state.classifications
@@ -28,19 +34,29 @@ module.exports =
           window.classifications = @state.classifications # make accessible to console
           callback() if callback?
 
-  toggleBadSubject: (callback) ->
+  toggleBadSubject: (e, callback) ->
     @setState badSubject: not @state.badSubject, =>
       callback?()
 
 
-  toggleIllegibleSubject: (callback) ->
+  toggleIllegibleSubject: (e, callback) ->
     @setState illegibleSubject: not @state.illegibleSubject, =>
       callback?()
 
+  flagSubjectAsUserDeleted: (subject_id) ->
+    classification = @getCurrentClassification()
+    classification.subject_id = subject_id # @getCurrentSubject()?.id
+    classification.workflow_id = @getActiveWorkflow().id
+    classification.task_key = 'flag_bad_subject_task'
+
+    classification.commit (classification) =>
+      @updateChildSubject @getCurrentSubject().id, classification.subject_id, user_has_deleted: true
+
+      @beginClassification()
+
   # Push current classification to server:
   commitClassification: ->
-    console.log "commitClassification ---> @state", @state
-    console.log 'COMMITTING CLASSIFICATION... current classification: ', @getCurrentClassification()
+    console.log 'COMMITTING CLASSIFICATION: ', @getCurrentClassification()
     classification = @getCurrentClassification()
     # checking for empty classification.annotation, we don't want to commit those classifications -- AMS
 
@@ -80,7 +96,16 @@ module.exports =
     console.log '(ALL CLASSIFICATIONS): ', @state.classifications
 
 
-  # Update local version of a subject with a newly acquired child_subject (i.e. after submitting a subject-generating classification)
+  # Update specified child_subject with given properties (e.g. after submitting a delete flag)
+  updateChildSubject: (parent_subject_id, child_subject_id, props) ->
+    if (s = @getSubjectById(parent_subject_id))
+      for c, i in s.child_subjects
+        if c.id == child_subject_id
+          c[k] = v for k,v of props
+    else
+      console.warn "WorkflowMethodsMixin#appendChildSubject: couldn't find subject by ", subject_id
+
+  # Add newly acquired child_subject to child_subjects array of relevant subject (i.e. after submitting a subject-generating classification)
   appendChildSubject: (subject_id, child_subject) ->
     if (s = @getSubjectById(subject_id))
       s.child_subjects.push $.extend({userCreated: true}, child_subject)
@@ -104,6 +129,36 @@ module.exports =
   getCurrentClassification: ->
     @state.classifications[@state.classificationIndex]
 
+
+  findTaskByGeneratedType: (tasks, subject_type) ->
+    console.log "fTBGT"
+    console.log "-----> tasks:", tasks
+    console.log "-----> subject_type:", subject_type
+    for key, value of tasks
+      # console.log "-----> key:", key
+      # console.log "-----> value:", value
+      task_key = key
+      for key, value of value.tool_config.options
+        # console.log "-~~~~~~> key:", key
+        # console.log "~~~~~~-> value:", value
+        for k, v of value
+          console.log "********> key:", key
+          console.log "********> value:", value
+          console.log "********> value.generates_subject_type:", value.generates_subject_type
+
+        if value.generates_subject_type == subject_type
+          console.log "FOUND THE TASK", task_key
+
+          return task_key
+      
+
+
+      # for key,value in value.tool_config.options
+      #   console.log "------> key", value
+
+        # if option.generates_subject_type == subject_type
+        #   console.log "THE TASK", task
+        
 
   # Get current task:
   getCurrentTask: ->
@@ -138,11 +193,12 @@ module.exports =
 
   # Load next logical task
   advanceToNextTask: () ->
+    # console.log 'advanceToNextTask()'
     nextTaskKey = @getNextTask()?.key
     if nextTaskKey is null
-      console.log 'NOTHING LEFT TO DO'
+      # console.log 'NOTHING LEFT TO DO'
       return
-    console.log 'LOADING NEXT TASK: ', nextTaskKey
+    # console.log 'TASK KEY: ', nextTaskKey
 
     # Commit whatever current classification is:
     @commitClassification()
@@ -155,9 +211,12 @@ module.exports =
 
   # Get next logical task
   getNextTask: ->
+    # console.log 'getNextTask()'
     task = @getTasks()[@state.taskKey]
-    if task.tool_config?.options?[@getCurrentClassification().annotation?.value]?.next_task?
-      nextKey = task.tool_config.options[@getCurrentClassification().annotation.value].next_task
+    # PB: Moving from hash of options to an array of options
+
+    if (options = (c for c in task.tool_config?.options when c.value is @getCurrentClassification().annotation?.value)) && options.length > 0 && (opt = options[0])? && opt.next_task?
+      nextKey = opt.next_task
     else
       nextKey = @getTasks()[@state.taskKey].next_task
 
@@ -213,16 +272,18 @@ module.exports =
       body: "You do not have to complete every page, but it helps us to know, before you move on to another task, if there is any work left to do. Thanks again!"
     },
     tool_config: {
-        "options": {
-            "complete_subject": {
-                "label": "No",
-                "next_task": null
-            },
-            "incomplete_subject": {
-                "label": "Yes",
-                "next_task": null
-            }
+      "options": [
+        {
+          "label": "No",
+          "next_task": null,
+          "value": "complete_subject"
+        },
+        {
+          "label": "Yes",
+          "next_task": null,
+          "value": "incomplete_subject"
         }
+      ]
     }
     subToolIndex: 0
 
@@ -269,7 +330,7 @@ module.exports =
         notice:
           header: "All Done!"
           message: "There's nothing more to #{@props.workflowName} here."
-          onClick: "/#/mark"
+          onClick: @transitionTo? 'mark' # "/#/mark"
       console.warn "NO MORE SUBJECT SETS"
       return
 

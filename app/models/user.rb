@@ -38,6 +38,7 @@ class User
   field :status,             :type => String, :default => 'active'
   field :role,               :type => String, :default => 'user'  # user, admin, team
   field :guest,              :type => Boolean, :default => false
+  field :tutorial_complete,  :type => Boolean, :default => false
 
   has_many :favourites
   has_many :classifications
@@ -55,6 +56,11 @@ class User
   # field :failed_attempts, :type => Integer, :default => 0 # Only if lock strategy is :failed_attempts
   # field :unlock_token,    :type => String # Only if unlock strategy is :email or :both
   # field :locked_at,       :type => Time
+
+  def tutorial_complete!
+    self.tutorial_complete = true
+    self.save!(:validate => false)
+  end
 
   def has_favourite?(subject)
     favourites.where( subject_id: subject.id ).exists?

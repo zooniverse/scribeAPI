@@ -1,5 +1,6 @@
 # @cjsx React.DOM
 React              = require 'react'
+{Navigation}       = require 'react-router'
 SubjectViewer      = require '../subject-viewer'
 JSONAPIClient      = require 'json-api-client' # use to manage data?
 FetchSubjectsMixin = require 'lib/fetch-subjects-mixin'
@@ -20,7 +21,7 @@ API                = require '../../lib/api'
 
 module.exports = React.createClass # rename to Classifier
   displayName: 'Verify'
-  mixins: [FetchSubjectsMixin, BaseWorkflowMethods] # load subjects and set state variables: subjects,  classification
+  mixins: [FetchSubjectsMixin, BaseWorkflowMethods, Navigation] # load subjects and set state variables: subjects,  classification
 
   getDefaultProps: ->
     workflowName: 'verify'
@@ -66,7 +67,7 @@ module.exports = React.createClass # rename to Classifier
               header          = { if @state.userClassifiedAll then "You verified them all!" else "Nothing to verify" }
               buttons         = {<GenericButton label='Continue' href='/#/mark' />}
             >
-                There are currently no {@props.workflowName} subjects. Try <a href="/#/mark">marking</a> instead!
+              Currently, there are no {@props.project.term('subject')}s to {@props.workflowName}. Try <a href="/#/mark">marking</a> instead!
             </DraggableModal>
 
           else if @getCurrentSubject()?
@@ -88,23 +89,25 @@ module.exports = React.createClass # rename to Classifier
       </div>
 
       { if @getCurrentSubject()?
-          <div style={display: "none"} className="task-area">
+          <div className="right-column">
+            <div style={display: "none"} className="task-area">
 
-            <div className="task-container">
-              <nav className="task-nav">
-                <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
-                { if nextTask?
-                    <button type="button" className="continue major-button" onClick={@advanceToTask.bind(@, nextTask)}>Next</button>
-                  else
-                    <button type="button" className="continue major-button" onClick={@completeClassification}>Done</button>
-                }
-              </nav>
+              <div className="task-container">
+                <nav className="task-nav">
+                  <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
+                  { if nextTask?
+                      <button type="button" className="continue major-button" onClick={@advanceToTask.bind(@, nextTask)}>Next</button>
+                    else
+                      <button type="button" className="continue major-button" onClick={@completeClassification}>Done</button>
+                  }
+                </nav>
+              </div>
+
+              <div className="forum-holder">
+                <ForumSubjectWidget subject=@getCurrentSubject() project={@props.project} />
+              </div>
+
             </div>
-
-            <div className="forum-holder">
-              <ForumSubjectWidget subject_set=@getCurrentSubject() />
-            </div>
-
           </div>
       }
     </div>

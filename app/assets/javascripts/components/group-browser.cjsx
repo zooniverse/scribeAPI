@@ -32,7 +32,6 @@ GroupBrowser = React.createClass
       groupNameClasses.push "active"
 
     divStyle=
-      backgroundColor: "red"
       backgroundImage: "url(#{group.cover_image_url})"
       backgroundSize: "300px"
 
@@ -50,10 +49,12 @@ GroupBrowser = React.createClass
     </div>
 
   render: ->
+    # Only display GroupBrowser if more than one group defined:
     return null if @state.groups.length <= 1
+
     groups = [@renderGroup(group) for group in @state.groups]
     <div>
-      <h3 className="groups-header"><span>Select a group</span></h3>
+      <h3 className="groups-header"><span>Select a {@props.project.term('group')}</span></h3>
       <div className="groups">
         {groups}
       </div>

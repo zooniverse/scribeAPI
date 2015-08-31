@@ -12,6 +12,7 @@ class Subject
   scope :complete, -> { where(status: 'complete').asc(:order)  }
   scope :by_workflow, -> (workflow_id) { where(workflow_id: workflow_id)  }
   scope :by_parent_subject_set, -> (parent_subject_set_id) { where(parent_subject_set_id: parent_subject_set_id)  }
+  scope :by_parent_subject, -> (parent_subject_id) { where(parent_subject_id: parent_subject_id) }
   scope :user_has_not_classified, -> (user_id) { where(:classifying_user_ids.ne => user_id)  }
 
   # This is a hash with one entry per deriv; `standard', 'thumbnail', etc
@@ -24,8 +25,7 @@ class Subject
   field :classification_count,        type: Integer, default: 0
   field :random_no,                   type: Float
   field :secondary_subject_count,     type: Integer, default: 0
-  field :classifying_user_ids,        type: Array
-  field :user_has_classified,         type: Boolean, default: false
+  field :created_by_user_id,          type: String
 
   # Need to sort out relationship between these two fields. Are these two fields Is this :shj
   field :retire_count,                type: Integer
@@ -45,6 +45,7 @@ class Subject
 
   # Denormalized array of user ids that have classified this subject for quick filtering
   field :classifying_user_ids,        type: Array, default: []
+  field :deleting_user_ids,        type: Array, default: []
 
   belongs_to :workflow
   belongs_to :parent_subject, :class_name => "Subject", :foreign_key => "parent_subject_id"
@@ -63,7 +64,7 @@ class Subject
   def thumbnail
     location['thumbnail'].nil? ? location['standard'] : location['thumbnail']
   end
-
+  
   def update_subject_set_stats
     subject_set.inc_subject_count_for_workflow(workflow) if ! workflow.nil?
   end
@@ -152,7 +153,7 @@ class Subject
 
 
   def to_s
-    "#{status == 'inactive' ? '[Inactive] ' : ''}#{workflow.nil? ? 'Final' : workflow.name.capitalize} Subject (#{type})"
+    "#{status != 'active' ? "[#{status.capitalize}] " : ''}#{workflow.nil? ? 'Final' : workflow.name.capitalize} Subject (#{type})"
   end
 
   private

@@ -7,7 +7,7 @@ module.exports = React.createClass
 
   getDefaultProps: ->
     classes: ''
-    doneButtonLabel: 'Okay'
+    doneButtonLabel: 'Done'
 
   componentDidMount: ->
     # Prevent dragging from (presumably) accidentally selecting modal text on-drag
@@ -25,6 +25,7 @@ module.exports = React.createClass
     y = @props.y ? (( $(window).height() - 300) / 2 ) + $(window).scrollTop()
     y = Math.max y, 100
     x = Math.max x, 100
+    x = $(window).width() - width if x > $(window).width() - width
 
     <Draggable x={x} y={y}>
 
@@ -39,6 +40,19 @@ module.exports = React.createClass
           { @props.children }
         </div>
 
+
+        {
+          if @props.progressSteps
+            <div className="simple-progress-bar" >
+              {
+                for step, index in @props.progressSteps
+                  if index <= @props.currentStepIndex
+                    <span key={index} className="tutorial-progress-ind-active" ></span>
+                  else
+                    <span key={index} className="tutorial-progress-ind" ></span>
+              }
+            </div>
+        }
         <div className="modal-buttons">
           { if @props.buttons?
               @props.buttons
@@ -47,7 +61,6 @@ module.exports = React.createClass
               <DoneButton label={@props.doneButtonLabel} onClick={onDone} />
           }
         </div>
-
       </div>
 
     </Draggable>

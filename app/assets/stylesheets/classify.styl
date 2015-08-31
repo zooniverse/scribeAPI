@@ -1,15 +1,16 @@
 .classifier
-  // display: flex
-  // flex-wrap: wrap
-  // justify-content: center
+  display: flex
+  flex-flow: row nowrap
+  justify-content: center
+
   .subject-area
-    float: left
-    width: 75%
-    align-items: center
-    justify-content: center
-    display: flex
-    margin-top 25px
-    // margin: 0 1.5vw 1em 0
+    // float: left
+    // width: 75%
+    // align-items: center
+    // justify-content: center
+    // display: flex
+
+    flex-grow: 1
 
   .subject-container
     color: gray
@@ -56,136 +57,168 @@
     &.active
       background: #f60
 
-  .task-area
-    position fixed
-    width: 18%
-    min-width: 250px
-    z-index: 50
-    right 20px
-    top 60px
-    margin-top 20px
-    background-color #EFEFEF
-    color SECONDARY_NORMAL
-    padding 20px
-    border-radius 5px
+  .right-column
+    width 250px
+    flex-shrink 0
+    padding 0 10px
 
-    // prevent highlighting/selecting
-    -webkit-touch-callout none
-    -webkit-user-select none
-    -khtml-user-select none
-    -moz-user-select none
-    -ms-user-select none
-    user-select none
+    .task-area
+      position fixed
+      // margin-right 10px
+      // width: 18%
+      // min-width: 250px
+      // z-index: 50
+      // right 20px
+      // top 80px
+      // margin-top 20px
+      background-color #EFEFEF
+      color SECONDARY_NORMAL
+      padding 20px
+      border-radius 5px
+      border-top-right-radius 0px
+      border-bottom-right-radius 0px
 
-    .help-bad-subject-holder
-      padding: 10px 0
+      box-shadow: 0 0 5px 3px rgba(0,0,0,0.4);
 
-      button
-        margin 10px 10px 0 0
+      // prevent highlighting/selecting
+      -webkit-touch-callout none
+      -webkit-user-select none
+      -khtml-user-select none
+      -moz-user-select none
+      -ms-user-select none
+      user-select none
 
-    & > div:nth-child(2)
-      margin-top 20px
-      padding-top 20px
-      border-top solid #999 1px
+      .help-bad-subject-holder
+        padding: 10px 0
 
-    .workflow-task
-      margin-bottom 10px
-      .pick-one-dropdown
-        font-size 1.5em
-        transition opacity 0.250s
-        background-color #ececec
-        opacity 0.75
-        outline none
-        &:hover
-          opacity 1.0
+        button
+          margin 10px 10px 0 0
+
+      & > div:nth-child(2)
+        margin-top 20px
+        padding-top 20px
+        border-top solid #999 1px
+
+      .workflow-task
+        margin-bottom 10px
+        .pick-one-dropdown
+          font-size 1.5em
           transition opacity 0.250s
-        border-radius 5px
-        padding 12px 20px
-        height 40px
-        width 300px
-        border 2px solid transparent
-        cursor pointer
-        opacity 0.75
+          background-color #ececec
+          opacity 0.75
+          outline none
+          &:hover
+            opacity 1.0
+            transition opacity 0.250s
+          border-radius 5px
+          padding 12px 20px
+          height 40px
+          width 300px
+          border 2px solid transparent
+          cursor pointer
+          opacity 0.75
 
-      .answer
-        @extends .standard-button
-        background-color #ddd
-        color #333
-        font-size 12px
+        .answer
+          width: 90%
+          @extends .standard-button
+          background-color #ddd
+          color #333
+          font-size 12px
 
-        align-items: center
-        display: flex
-        margin: 0.5em 0
-        text-align: left
-        position relative
+          align-items: center
+          display: flex
+          margin: 0.5em 0
+          text-align: left
+          position relative
 
-        input
-          visibility: hidden
-        .drawing-tool-icon
-          flex-shrink: 0
-          line-height: 1
-          margin-right: 0.5em
-        .markdown > p:first-child:last-child
-          margin: 0
-        .tool-count
-          margin-left: 0.5em
-          opacity: 0.7
+          input
+            visibility: hidden
+          .drawing-tool-icon
+            flex-shrink: 0
+            line-height: 1
+            margin-right: 0.5em
+          .markdown > p:first-child:last-child
+            margin: 0
+          .tool-count
+            margin-left: 0.5em
+            opacity: 0.7
 
-        .count
-          margin-left 0.5em
+          .count
+            margin-left 0.5em
 
-          &:before
-            content '('
-          &:after
-            content ')'
+            &:before
+              content '('
+            &:after
+              content ')'
 
-        .help
-          position absolute
-          display none
-          right 0
-          top 0
-          height 20px
-          padding 0.4em 1em
-          background rgba(0,0,0,0.2)
-          border-left 1px solid rgba(255,255,255,0.2)
-          &:before
-            display none
-            content attr(data-text)
-            position absolute
-            right 2px
-            top 100%
-            width 200px
-            padding 0.5em
-            background #f7efa5
-            border 1px solid #918e72
-            font-size 0.8em
-            color black
-            font-weight normal
-          &:hover:before
-            display block
-
-        &:hover, &.active
-          color white
           .help
-            display block
-        &.active
-          background-color SECONDARY_NORMAL
-          z-index 100
-        &:hover
-          background-color SECONDARY_HOVER
-          z-index 101
+            position absolute
+            display none
+            right 0
+            top 0
+            height 20px
+            padding 0.4em 1em
+            background rgba(0,0,0,0.2)
+            border-left 1px solid rgba(255,255,255,0.2)
+            &:before
+              display none
+              content attr(data-text)
+              position absolute
+              right 2px
+              top 100%
+              width 200px
+              padding 0.5em
+              background #f7efa5
+              border 1px solid #918e72
+              font-size 0.8em
+              color black
+              font-weight normal
+            &:hover:before
+              display block
 
-    .task-nav
-      display: flex
-      margin-top: 1em
-      .back
-        flex: 1 0
-      .talk
-        flex: 2 0
-      .continue
-        flex: 3 0
-      :not(:first-child)
-        margin-left: 0.5em
+          &:hover, &.active
+            color white
+            .help
+              display block
+          &.active
+            background-color SECONDARY_NORMAL
+            z-index 100
+          &:hover
+            background-color SECONDARY_HOVER
+            z-index 101
+
+      .explore
+        margin-bottom 20px
+        border-bottom: solid #999 1px;
+        h2
+          font-size 20px
+          margin-top 0
+
+      .social-media-container
+        padding-top 20px
+        font-size 26px
+        text-align center
+        transition color 0.2s
+
+        i
+          color #3f5765
+          cursor pointer
+          padding 2px
+          &:hover
+            transition color 0.2s
+            color #8cbc8c
+
+      .task-nav
+        display: flex
+        margin-top: 1em
+        .back
+          flex: 1 0
+        .talk
+          flex: 2 0
+        .continue
+          flex: 3 0
+        :not(:first-child)
+          margin-left: 0.5em
 
 .workflow-task
   .drawing-tool-icon > svg
@@ -242,18 +275,18 @@
       &:last
         margin-right 0
 
-
-.bad-subject
+// currently used for the "Bad Subject" and "Hide Other Marks" buttons
+.toggle-button
   color TERTIARY_NORMAL
   border-color TERTIARY_NORMAL
   margin-right: 3px
 
-  &.marked-bad
+  &.toggled
     border solid 1px darkred
     background-color darkred
     color white
 
-  &.marked-bad:before
+  &.toggled:before
     content '\2713   '
 
 

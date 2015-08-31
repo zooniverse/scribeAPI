@@ -16,10 +16,10 @@
         "body": "Typically each log entry begins with a date. The year may only appear at the top of the page. Select 'yes' if you see any date mentioned anywhere on the page."
       },
       "tool_config": {
-        "options": {
-          "yes": { "label": "Yes", "next_task": "date" },
-          "no": { "label": "No"}
-        }
+        "options": [
+          {"value": "yes", "label": "Yes", "next_task": "date" },
+          {"value": "no", "label": "No"}
+        ]
       },
       "next_task": "location_present"
     },
@@ -33,7 +33,7 @@
         "body": "Typically each log entry begins with a date. The year may only appear at the top of the page. Select 'yes' if you see any date mentioned anywhere on the page."
       },
       "tool_config": {
-        "tools": [
+        "options": [
           {"type": "rectangleTool", "label": "Date", "color": null, "generates_subject_type": "date" }
         ]
       },
@@ -48,10 +48,10 @@
         "body": "Select the type of location, then draw a rectangle around each location of that type. Mark both the ocean region or whaling ground (typically at the top of the page) and any specific positions or geographic references that you see further down on the page."
       },
       "tool_config": {
-        "options": {
-          "yes": { "label": "Yes", "next_task": "location" },
-          "no": { "label": "No"}
-        }
+        "options": [
+          { "value": "yes", "label": "Yes", "next_task": "location" },
+          { "value": "no", "label": "No"}
+        ]
       },
       "next_task": "sea_ice_present"
     },
@@ -65,11 +65,11 @@
         "body": "This can be any geographic reference, from the name of a port or landmark seen, to latitude/longitude coordinates. Often the whaling ground or ocean that the ship was in can be found written at the top of the page."
       },
       "tool_config": {
-        "tools": [
-          {"type": "rectangleTool", "label": "Name of Location",       "color": null, "generates_subject_type": "location_name" },
-          {"type": "rectangleTool", "label": "Geographic Coordinates", "color": null, "generates_subject_type": "location_coordinates" },
-          {"type": "rectangleTool", "label": "Port",                   "color": null, "generates_subject_type": "location_port" },
-          {"type": "rectangleTool", "label": "Other",                  "color": null, "generates_subject_type": "location_other" }
+        "options": [
+          {"type": "rectangleTool", "label": "Name of Location",       "color": "#eeff00", "generates_subject_type": "location_name" },
+          {"type": "rectangleTool", "label": "Geographic Coordinates", "color": "#0000ff", "generates_subject_type": "location_coordinates" },
+          {"type": "rectangleTool", "label": "Port",                   "color": "#5ce600", "generates_subject_type": "location_port" },
+          {"type": "rectangleTool", "label": "Other",                  "color": "#e59900", "generates_subject_type": "location_other" }
         ]
       },
       "next_task": "sea_ice_present"
@@ -85,15 +85,17 @@
       },
       "next_task": "weather_present",
       "tool_config": {
-        "options": {
-          "yes": {
+        "options": [
+          {
+            "value": "yes",
             "label": "Yes",
             "next_task": "sailing_condition_present"
           },
-          "no": {
+          {
+            "value": "no",
             "label": "No"
           }
-        }
+        ]
       }
     },
 
@@ -106,16 +108,18 @@
       },
       "next_task": "sea_ice",
       "tool_config": {
-        "options": {
-          "yes": {
+        "options": [
+          {
+            "value": "no",
             "label": "Yes",
             "next_task": "sailing_condition"
           },
-          "no": {
+          {
+            "value": "no",
             "label": "No",
             "next_task": "sea_ice"
           }
-        }
+        ]
       }
     },
 
@@ -127,17 +131,17 @@
         "body": "Look for remarks on how the ship is being handled. Is ship sailing free, or are there constant changes of direction to get around pieces of ice? In the western Arctic, ships often sailed down leads (river-like channels) between the land and the main ice pack. Sometime ships would have to ‘force the pack’ by ramming between the floes. Select the description of how the ship is sailing, then draw a rectangle around each location of that type."
       },
       "tool_config": {
-        "tools": [
-          {"type": "rectangleTool",  "label": "Open Water Near Ice",        "color": null, "generates_subject_type": "sailing_condition_open_water" },
-          {"type": "rectangleTool",  "label": "Occasional Ice",             "color": null, "generates_subject_type": "sailing_condition_occasional_ice" },
-          {"type": "rectangleTool",  "label": "Dodging Ice",                "color": null, "generates_subject_type": "sailing_condition_dodging_ice" },
-          {"type": "rectangleTool",  "label": "Sailing in Leads",           "color": null, "generates_subject_type": "sailing_condition_leads" },
-          {"type": "rectangleTool",  "label": "Ramming Pack Ice",           "color": null, "generates_subject_type": "sailing_condition_ramming" },
-          {"type": "rectangleTool",  "label": "Waiting for Opening in Ice", "color": null, "generates_subject_type": "sailing_condition_waiting" },
-          {"type": "rectangleTool",  "label": "Beset/Trapped in Ice",       "color": null, "generates_subject_type": "sailing_condition_trapped" },
-          {"type": "rectangleTool",  "label": "Nipped/Damaged",             "color": null, "generates_subject_type": "sailing_condition_damaged" },
-          {"type": "rectangleTool",  "label": "Wrecked",                    "color": null, "generates_subject_type": "sailing_condition_wrecked" },
-          {"type": "rectangleTool",  "label": "Other",                      "color": null, "generates_subject_type": "sailing_condition_other" }
+        "options": [
+          {"type": "rectangleTool",  "label": "Open Water Near Ice",        "color": "#eeff00", "generates_subject_type": "sailing_condition_open_water" },
+          {"type": "rectangleTool",  "label": "Occasional Ice",             "color": "#ff4400", "generates_subject_type": "sailing_condition_occasional_ice" },
+          {"type": "rectangleTool",  "label": "Dodging Ice",                "color": "#0000ff", "generates_subject_type": "sailing_condition_dodging_ice" },
+          {"type": "rectangleTool",  "label": "Sailing in Leads",           "color": "#00ccff", "generates_subject_type": "sailing_condition_leads" },
+          {"type": "rectangleTool",  "label": "Ramming Pack Ice",           "color": "#5ce600", "generates_subject_type": "sailing_condition_ramming" },
+          {"type": "rectangleTool",  "label": "Waiting for Opening in Ice", "color": "#0099e6", "generates_subject_type": "sailing_condition_waiting" },
+          {"type": "rectangleTool",  "label": "Beset/Trapped in Ice",       "color": "#e59900", "generates_subject_type": "sailing_condition_trapped" },
+          {"type": "rectangleTool",  "label": "Nipped/Damaged",             "color": "#00cca3", "generates_subject_type": "sailing_condition_damaged" },
+          {"type": "rectangleTool",  "label": "Wrecked",                    "color": "#7700b3", "generates_subject_type": "sailing_condition_wrecked" },
+          {"type": "rectangleTool",  "label": "Other",                      "color": "#ff40d9", "generates_subject_type": "sailing_condition_other" }
         ]
       },
       "next_task": "sea_ice"
@@ -230,10 +234,10 @@
         "body": "Ship captains kept a close eye on the weather and recorded what they saw in the logbook every day. Weather can include temperature, cloud cover, precipitation, barometric pressure, etc. Select 'yes' if you spot any reference to the weather on this page; if not, select 'no.'"
       },
       "tool_config": {
-        "options": {
-          "present": { "label": "Yes",  "next_task": "weather" },
-          "mentioned": { "label": "No" }
-        }
+        "options": [
+          { "value": "present", "label": "Yes",  "next_task": "weather" },
+          { "value": "mentioned", "label": "No" }
+        ]
       }
     },
 
@@ -246,14 +250,14 @@
         "file": "weather"
       },
       "tool_config": {
-        "tools": [
-          {"type": "rectangleTool", "label": "Wind Force/Direction",     "color": null, "generates_subject_type": "weather_wind" },
-          {"type": "rectangleTool", "label": "Sky/Cloud Description",    "color": null, "generates_subject_type": "weather_sky" },
-          {"type": "rectangleTool", "label": "Precipitation",            "color": null, "generates_subject_type": "weather_precipitation" },
-          {"type": "rectangleTool", "label": "Sea State",                "color": null, "generates_subject_type": "weather_sea" },
-          {"type": "rectangleTool", "label": "Temperature",              "color": null, "generates_subject_type": "weather_temperature" },
-          {"type": "rectangleTool", "label": "Barometric Pressure",      "color": null, "generates_subject_type": "weather_pressure" },
-          {"type": "rectangleTool", "label": "Other Weather Desciption", "color": null, "generates_subject_type": "weather_other_description" }
+        "options": [
+          {"type": "rectangleTool", "label": "Wind Force/Direction",     "color": "#eeff00", "generates_subject_type": "weather_wind" },
+          {"type": "rectangleTool", "label": "Sky/Cloud Description",    "color": "#ff4400", "generates_subject_type": "weather_sky" },
+          {"type": "rectangleTool", "label": "Precipitation",            "color": "#0000ff", "generates_subject_type": "weather_precipitation" },
+          {"type": "rectangleTool", "label": "Sea State",                "color": "#00ccff", "generates_subject_type": "weather_sea" },
+          {"type": "rectangleTool", "label": "Temperature",              "color": "#5ce600", "generates_subject_type": "weather_temperature" },
+          {"type": "rectangleTool", "label": "Barometric Pressure",      "color": "#0099e6", "generates_subject_type": "weather_pressure" },
+          {"type": "rectangleTool", "label": "Other Weather Desciption", "color": "#e59900", "generates_subject_type": "weather_other_description" }
         ]
       },
       "next_task": "optional_entries"
@@ -268,16 +272,18 @@
         "body": "If there are pieces of artwork or mentions of any interesting events, select 'art' or 'event.'' You should also select 'art' for any mentions of art; for instance, artwork that was involved in a trade."
       },
       "tool_config": {
-        "options": {
-          "event": {
+        "options": [
+          {
+            "value": "event",
             "label": "Event",
             "next_task": "events"
           },
-          "art": {
+          {
+            "value": "art",
             "label": "Art",
             "next_task": "art"
           }
-        }
+        ]
       }
     },
 
@@ -290,12 +296,12 @@
         "body": "Select the description of the type of event, then draw a rectangle around each event of that type. All sorts of notable events are recorded in the ship’s logbook. If you see anything from the list, please mark it. You can also mark any other kind of happening that is interesting to you. And if there is a special story told in the log you can discuss it with the community on Talk."
       },
       "tool_config": {
-        "tools": [
-          {"type": "rectangleTool", "label": "Whaling Activity",         "color": null, "generates_subject_type": "event_whaling_activity" },
-          {"type": "rectangleTool", "label": "Ship Interaction",         "color": null, "generates_subject_type": "event_ship_interaction" },
-          {"type": "rectangleTool", "label": "Interaction with Natives", "color": null, "generates_subject_type": "event_native_interaction" },
-          {"type": "rectangleTool", "label": "Social",                   "color": null, "generates_subject_type": "event_social" },
-          {"type": "rectangleTool", "label": "Other",                    "color": null, "generates_subject_type": "event_other" }
+        "options": [
+          {"type": "rectangleTool", "label": "Whaling Activity",         "color": "#ff40d9", "generates_subject_type": "event_whaling_activity" },
+          {"type": "rectangleTool", "label": "Ship Interaction",         "color": "#00cca3", "generates_subject_type": "event_ship_interaction" },
+          {"type": "rectangleTool", "label": "Interaction with Natives", "color": "#0099e6", "generates_subject_type": "event_native_interaction" },
+          {"type": "rectangleTool", "label": "Social",                   "color": "#00ccff", "generates_subject_type": "event_social" },
+          {"type": "rectangleTool", "label": "Other",                    "color": "#ff4400", "generates_subject_type": "event_other" }
         ]
       },
       "next_task": "optional_entries"
@@ -310,12 +316,12 @@
         "body": "Select the description of the type of art, then draw a rectangle around each artwork (or mention of art) of that type. Please mark arts and crafts from the list, or any other artwork you find in the logbook. Some artwork, scrimshaw for example, might also be reported as an item of informal trade in the logbook. Please mark these mentions as well."
       },
       "tool_config": {
-        "tools": [
-          {"type": "rectangleTool", "label": "Illustration", "color": null, "generates_subject_type": "art_illustration" },
-          {"type": "rectangleTool", "label": "Poem",         "color": null, "generates_subject_type": "art_poem" },
-          {"type": "rectangleTool", "label": "Clipping",     "color": null, "generates_subject_type": "art_clipping" },
-          {"type": "rectangleTool", "label": "Whale/Stamp",  "color": null, "generates_subject_type": "art_whale_stamp" },
-          {"type": "rectangleTool", "label": "Other",        "color": null, "generates_subject_type": "art_other" }
+        "options": [
+          {"type": "rectangleTool", "label": "Illustration", "color": "#ff40d9", "generates_subject_type": "art_illustration" },
+          {"type": "rectangleTool", "label": "Poem",         "color": "#00cca3", "generates_subject_type": "art_poem" },
+          {"type": "rectangleTool", "label": "Clipping",     "color": "#0099e6", "generates_subject_type": "art_clipping" },
+          {"type": "rectangleTool", "label": "Whale/Stamp",  "color": "#00ccff", "generates_subject_type": "art_whale_stamp" },
+          {"type": "rectangleTool", "label": "Other",        "color": "#ff4400", "generates_subject_type": "art_other" }
         ]
       },
       "next_task": "optional_entries"
@@ -325,7 +331,7 @@
       "tool":"pickOneMarkOne",
       "instruction":"Generates textTool transcribe subjects:",
       "tool_config": {
-        "tools": [
+        "options": [
           {"type": "pointTool",     "label": "Point Tool",      "color": "pink",   "generates_subject_type": "transcribe_point_with_text_tool" },
           {"type": "rectangleTool", "label": "Rectangle Tool",  "color": "brown", "generates_subject_type": "transcribe_rectangle_with_text_tool" },
           {"type": "textRowTool",   "label": "Text Row Tool",   "color": "magenta",  "generates_subject_type": "transcribe_text_row_with_text_tool" }
@@ -338,7 +344,7 @@
       "tool":"pickOneMarkOne",
       "instruction":"Generates textAreaTool transcribe subjects:",
       "tool_config": {
-        "tools": [
+        "options": [
           {"type": "pointTool",     "label": "Point Tool",      "color": null,   "generates_subject_type": "transcribe_point_with_text_area_tool" },
           {"type": "rectangleTool", "label": "Rectangle Tool",  "color": null, "generates_subject_type": "transcribe_rectangle_with_text_area_tool" },
           {"type": "textRowTool",   "label": "Text Row Tool",   "color": null,  "generates_subject_type": "transcribe_text_row_with_text_area_tool" }
@@ -351,7 +357,7 @@
       "tool":"pickOneMarkOne",
       "instruction":"Generates composite tool (textTool and textAreaTool) transcribe subjects:",
       "tool_config": {
-        "tools": [
+        "options": [
           {"type": "pointTool",     "label": "Point Tool",      "color": null,   "generates_subject_type": "transcribe_point_with_composite_text_tool_and_text_area_tool" },
           {"type": "rectangleTool", "label": "Rectangle Tool",  "color": null, "generates_subject_type": "transcribe_rectangle_with_composite_text_tool_and_text_area_tool" },
           {"type": "textRowTool",   "label": "Text Row Tool",   "color": null,  "generates_subject_type": "transcribe_text_row_with_composite_text_tool_and_text_area_tool" }

@@ -1,5 +1,6 @@
 # @cjsx React.DOM
 React                   = require 'react'
+{Navigation}            = require 'react-router'
 SubjectViewer           = require '../subject-viewer'
 JSONAPIClient           = require 'json-api-client' # use to manage data?
 FetchSubjectsMixin      = require 'lib/fetch-subjects-mixin'
@@ -22,7 +23,7 @@ GenericButton           = require 'components/buttons/generic-button'
 
 module.exports = React.createClass # rename to Classifier
   displayName: 'Transcribe'
-  mixins: [FetchSubjectsMixin, BaseWorkflowMethods] # load subjects and set state variables: subjects,  classification
+  mixins: [FetchSubjectsMixin, BaseWorkflowMethods, Navigation] # load subjects and set state variables: subjects,  classification
 
   getInitialState: ->
     taskKey:                      null
@@ -30,6 +31,7 @@ module.exports = React.createClass # rename to Classifier
     classificationIndex:          0
     subject_index:                0
     helping:                      false
+    last_mark_task_key: @props.query.last_mark_task_key
 
 
   getDefaultProps: ->
@@ -41,7 +43,7 @@ module.exports = React.createClass # rename to Classifier
   fetchSubjectsCallback: ->
     @setState taskKey: @getCurrentSubject().type if @getCurrentSubject()?
 
-  handleTaskComponentChange: (val) ->
+  __DEP__handleTaskComponentChange: (val) ->
     # console.log "handleTaskComponentChange val", val
     taskOption = @getCurrentTask().tool_config.options[val]
     if taskOption.next_task?
@@ -60,6 +62,7 @@ module.exports = React.createClass # rename to Classifier
         => @forceUpdate()
 
   handleTaskComplete: (d) ->
+    console.log 'TRANSCRIBE/INDEX::handleTaskComplete()'
     @handleDataFromTool(d)
     @commitClassificationAndContinue d
 
@@ -80,34 +83,48 @@ module.exports = React.createClass # rename to Classifier
   componentWillUnmount:->
     not @state.badSubject
 
+  # transition back to mark workflow
+  returnToMarking: ->
+    @transitionTo 'mark', {},
+      subject_set_id: @getCurrentSubject().subject_set_id
+      selected_subject_id: @getCurrentSubject().parent_subject_id
+      mark_task_key: @state.last_mark_task_key
 
+      page: @props.query.page
 
   render: ->
-    # DISABLE ANIMATED SCROLLING FOR NOW
-    # if @props.query.scrollX? and @props.query.scrollY?
-    #   window.scrollTo(@props.query.scrollX,@props.query.scrollY)
-    # console.log "transcribe#index @props", @props 
-    # console.log "transcribe#index @state", @state 
+    if @props.params.workflow_id? and @props.params.parent_subject_id?
+      transcribeMode = 'page'
+    else if @props.params.subject_id
+      transcribeMode = 'single'
+    else
+      transcribeMode = 'random'
+
+    if @state.subjects?
+      isLastSubject = ( @state.subject_index >= @state.subjects.length - 1 )
+    else isLastSubject = null
+
     currentAnnotation = @getCurrentClassification().annotation
     TranscribeComponent = @getCurrentTool() # @state.currentTool
     onFirstAnnotation = currentAnnotation?.task is @getActiveWorkflow().first_task
+    console.log "TRANSCRIBE task_key", @get
 
     <div className="classifier">
       <div className="subject-area">
 
-        { if ! @getCurrentSubject()
+        { unless @getCurrentSubject()
             <DraggableModal
-              header          = { if @state.userClassifiedAll then "You transcribed them all!" else "Nothing to transcribe" }
+              header          = { if @state.userClassifiedAll then "Thanks for transcribing!" else "Nothing to transcribe" }
               buttons         = {<GenericButton label='Continue' href='/#/mark' />}
             >
-                There are currently no {@props.workflowName} subjects. Try <a href="/#/mark">marking</a> instead!
+                Currently, there are no {@props.project.term('subject')}s to {@props.workflowName}. Try <a href="/#/mark">marking</a> instead!
             </DraggableModal>
 
           else if @getCurrentSubject()? and @getCurrentTask()?
-            console.log "@getCurrentTask().key", @getCurrentTask().key
-            console.log "rendering text tool: ", "#{@state.taskKey}.#{@getCurrentSubject().id}", currentAnnotation
+
             <SubjectViewer
               onLoad={@handleViewerLoad}
+              taskKey={@state.task_key}
               subject={@getCurrentSubject()}
               active=true
               workflow={@getActiveWorkflow()}
@@ -130,9 +147,12 @@ module.exports = React.createClass # rename to Classifier
                 transcribeTools={transcribeTools}
                 onShowHelp={@toggleHelp if @getCurrentTask().help?}
                 badSubject={@state.badSubject}
-                onBadSubject={@toggleBadSubject}                
+                onBadSubject={@toggleBadSubject}
                 illegibleSubject={@state.illegibleSubject}
                 onIllegibleSubject={@toggleIllegibleSubject}
+                returnToMarking={@returnToMarking}
+                transcribeMode={transcribeMode}
+                isLastSubject={isLastSubject}
               />
 
             </SubjectViewer>
@@ -146,12 +166,14 @@ module.exports = React.createClass # rename to Classifier
             else
               @getCurrentTask().next_task
 
-          <div className="task-area">
+          <div className="right-column">
+            <div className="task-area">
 
-            <div className="forum-holder">
-              <ForumSubjectWidget subject=@getCurrentSubject() />
+              <div className="forum-holder">
+                <ForumSubjectWidget subject=@getCurrentSubject() project={@props.project} />
+              </div>
+
             </div>
-
           </div>
       }
 
