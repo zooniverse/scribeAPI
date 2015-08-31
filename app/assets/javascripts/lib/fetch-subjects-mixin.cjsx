@@ -2,6 +2,8 @@ API = require './api'
 
 module.exports =
   componentDidMount: ->
+    console.log "PARAMS @props", @props.params
+    console.log "QUERY @props", @props.query
 
     # SO. MANY. BRANCHES. --STI
     if @getActiveWorkflow().name is 'transcribe'

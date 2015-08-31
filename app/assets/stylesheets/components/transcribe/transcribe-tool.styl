@@ -1,6 +1,7 @@
 .transcribe-tool
   position absolute
   min-width 200px
+  max-width 500px
   background-color rgba(255,255,255,0.75)
   box-shadow 0 0 5px 3px rgba(0,0,0,.4)
   border-radius 6px
@@ -28,6 +29,26 @@
         text-align left
         cursor move
         font-size 20px
+
+        // passing task labels through marked creates a root <p> tag
+        p
+          margin 0
+
+      .task-examples
+        list-style none
+        margin 10px 0
+        padding-left 0
+
+        li
+          display inline-block
+          padding-left 0.8em 
+          font-style italic
+
+          &:before, &:after
+            content '"'
+
+      .task-examples:before
+        content 'e.g.'
 
       input
         outline none
@@ -72,6 +93,9 @@
           clear left
           padding-top 0.8em
           line-height 1.4em
+
+        .task-examples
+          margin 0
 
   .button
     outline none

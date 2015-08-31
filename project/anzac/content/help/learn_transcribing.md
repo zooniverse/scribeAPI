@@ -1,1 +1,1 @@
-Transcribe the text exactly as you see it and to the best of your ability.
+In “Transcribe,” you will be presented with portions of documents that other people have already marked, and you will simply type out what you see and click . If the highlighted portion does not contain the information requested (for instance, a weather description that has been marked as a date), please select “Bad Subject.” If it is unreadable, select “Illegible.”
