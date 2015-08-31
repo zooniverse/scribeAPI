@@ -1,5 +1,1 @@
-Select a label, draw a rectangle around all instaces of that variable on the image. No need to mark an area twice. 
-You will see other people's rectangles on the image. We hope this will help us get more complete transcription and repsect your time.
-
-
-
+In “Mark,” you will follow the instructions to the right of each page to identify important elements in each document. For some questions, you will need to draw rectangles on the document. You will see marks submitted by other volunteers as well, although you can hide these for visibility. You do not need to re-mark things that have already been marked! You can also delete others’ marks; this votes for those marks being incorrect.

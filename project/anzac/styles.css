@@ -1,5 +1,7 @@
 /* custom anzac styles that overwrite Scribe defaults */
-
+.main-header-group{
+  background: rgba(0, 0, 0, 0.18);
+}
 .page-content{
   background-color: transparent;
   font-size: 1.4em;
