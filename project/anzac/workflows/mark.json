@@ -66,7 +66,7 @@
       "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Header", "color": "green", "generates_subject_type": "att_transcribe_header", "help":"You only need to capture this if there is written information in the header." },
+          {"type": "rectangleTool", "label": "Number in the header", "color": "green", "generates_subject_type": "att_transcribe_header", "help":"Look for a number with the following formats: 'xx/yyyy' or 'yyyyy'" },
           {"type": "rectangleTool", "label": "One-Part Question", "color": "green", "generates_subject_type": "att_transcribe_question" },
           {"type": "rectangleTool", "label": "Two-Part Question", "color": "green", "generates_subject_type": "att_transcribe_two_question" },
           {"type": "rectangleTool", "label": "Three-Part Question", "color": "green", "generates_subject_type": "att_transcribe_three_question" }
@@ -75,7 +75,7 @@
       "help": {
         "file": "att_q_help"
       },
-      "next_task": null
+      "next_task": "other_data_field"
     },
     "att_medical_form_task":{
       "generates_subjects": true,
@@ -136,7 +136,7 @@
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
       "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
-      "next_task": null,
+      "next_task": "other_data_field",
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Distinctive Marks", "color": "green", "generates_subject_type": "att_transcribe_distinctive_marks" },
@@ -167,7 +167,7 @@
       "generates_subjects": true,
       "tool":"pickOne",
       "instruction":"Are there any entries under the heading **Conduct Sheet?**",
-      "next_task": null,
+      "next_task": "other_data_field",
       "tool_config": {
         "options":[
           {
@@ -262,7 +262,7 @@
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
       "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
-      "next_task": null,
+      "next_task": "other_data_field",
       "tool_config": {
         "tools": [ 
           {"type": "rectangleTool", "label": "Killed in action", "color": "green", "generates_subject_type": "hs_rectangleTool_kia" },
@@ -277,6 +277,18 @@
       "help": {
         "file": "hs_mark_help"
       }
+    },
+    "other_data_field":{
+      "generates_subjects": true,
+      "tool":"pickOneMarkOne",
+      "instruction":"Draw a rectangle around any extra information that should be marked.",
+      "next_task":null,
+      "tool_config":{
+        "tools": [
+          {"type":"rectangleTool", "label": "Other", "color": "green", "generates_subject_type":"transcribe_other_data_field"}
+        ]
+      }
+
     }
 
   }

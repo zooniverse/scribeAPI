@@ -250,7 +250,7 @@ span.keyword {
   padding-right: 4em;
 }
 
-#field-guide #accordion{
+#field-guide #accordion {
     width: 98%;
     display: inherit;
     text-align: left;
@@ -261,20 +261,20 @@ span.keyword {
     font-weight: 300;
 }
 
-#field-guide #accordion div{
+#field-guide #accordion div {
     width: auto;
     float: none;
 }
 
 
-#field-guide #accordion #att_ex{
+#field-guide #accordion #att_ex {
     display: inline-block;
     float: left;
     background-color: transparent;
     width: 20%;
 }
 
-#field-guide #accordion #att_ex img{
+#field-guide #accordion #att_ex img {
   width: 100%;
   padding-bottom 20%;
 }
@@ -338,5 +338,19 @@ span.keyword {
 
 #questions-tip{
   fill: pink;
+}
+
+.rectangle-tool .tool-shape {
+    cursor: grab;
+    cursor: -webkit-grab;
+    stroke-width: 1;
+    stroke: #646400;
+    fill: rgba(0,128,0,.1);
+}
+
+.tool-shape.committed.tanscribing.draggable {
+    fill: transparent;
+    stroke-width: 0;
+    cursor: default;
 }
 
