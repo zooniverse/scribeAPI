@@ -53,7 +53,7 @@ module.exports =
     # console.log 'THE QUERY: ', "/workflows/#{workflow_id}/subject_sets/#{subject_set_id}/subjects/#{selected_subject_id}"
     request = API.type('workflows').get("#{workflow_id}/subject_sets/#{subject_set_id}/subjects/#{selected_subject_id}") #?page=#{page}")
     # request = API.type("subject_sets").get(subject_set_id: subject_set_id, workflow_id: workflow_id)
-
+    console.log "MARK TASH KEY", mark_task_key
     @setState
       subjectSet: []
       # currentSubjectSet: null
@@ -63,15 +63,24 @@ module.exports =
         if subject.id is subject_set.selected_subject_id
           subject_index = subject_set.subjects.indexOf subject
 
-      @setState
-        subjectSets: [subject_set]
-        subject_set_index: 0
-        subject_index: subject_index || 0 #parseInt(subject_index) || 0
-        subject_current_page: subject_set.subjects_pagination_info.current_page
-        total_subject_pages: subject_set.subjects_pagination_info.total_pages
-        currentSubjectSet: subject_set
-        taskKey: mark_task_key
-
+      if mark_task_key
+        @setState
+          subjectSets: [subject_set]
+          subject_set_index: 0
+          subject_index: subject_index || 0 #parseInt(subject_index) || 0
+          subject_current_page: subject_set.subjects_pagination_info.current_page
+          total_subject_pages: subject_set.subjects_pagination_info.total_pages
+          currentSubjectSet: subject_set
+          taskKey: mark_task_key if mark_task_key
+      else
+        @setState
+          subjectSets: [subject_set]
+          subject_set_index: 0
+          subject_index: subject_index || 0 #parseInt(subject_index) || 0
+          subject_current_page: subject_set.subjects_pagination_info.current_page
+          total_subject_pages: subject_set.subjects_pagination_info.total_pages
+          currentSubjectSet: subject_set
+  
   orderSubjectsByOrder: (subject_sets) ->
     for subject_set in subject_sets
       subject_set.subjects = subject_set.subjects.sort (a,b) ->
