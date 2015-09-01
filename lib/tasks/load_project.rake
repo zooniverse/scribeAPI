@@ -67,12 +67,20 @@ desc 'creates a poject object from the project directory'
 
 
     load_images(args[:project_key])
+    load_fonts(args[:project_key])
 
     styles_path = Rails.root.join('project', args[:project_key], 'styles.css')
     if File.exist? styles_path
       styles = File.read styles_path
       puts "Loading #{styles.size}b of custom CSS"
       project.styles = styles
+    end
+
+    custom_js_path = Rails.root.join('project', args[:project_key], 'custom.js')
+    if File.exist? custom_js_path
+      custom_js = File.read custom_js_path
+      puts "Loading #{custom_js.size}b of custom JS"
+      project.custom_js = custom_js
     end
 
     project.tutorial = load_tutorial(args[:project_key])
@@ -199,6 +207,23 @@ desc 'creates a poject object from the project directory'
       image_dest = Rails.root.join("app/assets/images/#{project_key}/")
       Dir.mkdir(image_dest) unless File.exists?(image_dest)
       cp(path, image_dest, verbose: false)
+    end
+  end
+
+  def load_fonts(project_key)
+    font_path = Rails.root.join('project', project_key, 'fonts/')
+    puts "Loading fonts from #{font_path}:"
+
+    if File.directory?(font_path)
+      Dir.foreach(font_path).each do |file|
+        path = Rails.root.join font_path, file
+        next if File.directory? path
+        next if ! ['.eot','.woff2','.woff', '.ttf', '.svg'].include? path.extname
+        puts " -- #{file}"
+        font_dest = Rails.root.join("app/assets/fonts/#{project_key}/")
+        Dir.mkdir(font_dest) unless File.exists?(font_dest)
+        cp(path, font_dest, verbose: false)
+      end
     end
   end
 

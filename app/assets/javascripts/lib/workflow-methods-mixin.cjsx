@@ -15,6 +15,7 @@ module.exports =
     return null if k?.length != 1
     @props.project.workflows[k[0]]
 
+
   getWorkflowByName: (name) ->
     k = (k for w,k in @props.project.workflows when w.name is name)
     return null if k?.length != 1
@@ -47,10 +48,10 @@ module.exports =
     classification.subject_id = subject_id # @getCurrentSubject()?.id
     classification.workflow_id = @getActiveWorkflow().id
     classification.task_key = 'flag_bad_subject_task'
-    
+
     classification.commit (classification) =>
       @updateChildSubject @getCurrentSubject().id, classification.subject_id, user_has_deleted: true
-        
+
       @beginClassification()
 
   # Push current classification to server:
@@ -127,7 +128,7 @@ module.exports =
   # Get current classification:
   getCurrentClassification: ->
     @state.classifications[@state.classificationIndex]
-
+        
 
   # Get current task:
   getCurrentTask: ->
@@ -162,11 +163,12 @@ module.exports =
 
   # Load next logical task
   advanceToNextTask: () ->
+    # console.log 'advanceToNextTask()'
     nextTaskKey = @getNextTask()?.key
     if nextTaskKey is null
-      console.log 'NOTHING LEFT TO DO'
+      # console.log 'NOTHING LEFT TO DO'
       return
-    console.log 'LOADING NEXT TASK: ', nextTaskKey
+    # console.log 'TASK KEY: ', nextTaskKey
 
     # Commit whatever current classification is:
     @commitClassification()
@@ -179,16 +181,11 @@ module.exports =
 
   # Get next logical task
   getNextTask: ->
+    # console.log 'getNextTask()'
     task = @getTasks()[@state.taskKey]
-    console.log 'TASK: ', task
     # PB: Moving from hash of options to an array of options
-    # options = (c for c in task.tool_config?.options when c.value is @getCurrentClassification().annotation?.value)
-    options = task.tool_config?.options
 
-    console.log 'OPTIONS: ', options
-    # if (options = (c for c in task.tool_config?.options when c.value is @getCurrentClassification().annotation?.value)) && options.length > 0 && (opt = options[0])? && opt.next_task?
-
-    if options and options.length > 0 && (opt = options[0])? && opt.next_task?
+    if (options = (c for c in task.tool_config?.options when c.value is @getCurrentClassification().annotation?.value)) && options.length > 0 && (opt = options[0])? && opt.next_task?
       nextKey = opt.next_task
     else
       nextKey = @getTasks()[@state.taskKey].next_task

@@ -67,7 +67,7 @@ module.exports = React.createClass
         }
         </ul>
       }
-      <a target="_blank" href={create_url}>Start a discussion about this subject set</a>
+      <a target="_blank" href={create_url}>Start a discussion about this {@props.project.term('subject set')}</a>
     </div>
 
 

@@ -53,64 +53,77 @@ module.exports = React.createClass
     if @props.isDisabled
       classes.push 'disabled'
     else
-    <div className="carousel" >
-      <div id="visibility-button" >
-        <svg onClick={@handleFoldClick} width="10px" height="10px" viewBox="0 0 10 10">
-          <path fillRule="evenodd" d="M 9.24 7.83C 9.24 7.83 7.83 9.24 7.83 9.24 7.83 9.24 5 6.41 5 6.41 5 6.41 2.17 9.24 2.17 9.24 2.17 9.24 0.76 7.83 0.76 7.83 0.76 7.83 3.59 5 3.59 5 3.59 5 0.76 2.17 0.76 2.17 0.76 2.17 2.17 0.76 2.17 0.76 2.17 0.76 5 3.59 5 3.59 5 3.59 7.83 0.76 7.83 0.76 7.83 0.76 9.24 2.17 9.24 2.17 9.24 2.17 6.41 5 6.41 5 6.41 5 9.24 7.83 9.24 7.83Z" fill="rgb(187,191,195)"/>
-        </svg>
-        <span onClick={@handleFoldClick} >{text}</span>
-        <svg onClick={@props.toggleLightboxHelp} id="questions-tip" width="14px" height="14px" viewBox="0 0 14 14">
-          <path fillRule="evenodd" d="M 7 0C 3.13 0-0 3.13-0 7-0 10.87 3.13 14 7 14 10.87 14 14 10.87 14 7 14 3.13 10.87 0 7 0ZM 7.04 11.13C 6.51 11.13 6.07 10.68 6.07 10.15 6.07 9.63 6.51 9.18 7.04 9.18 7.57 9.18 8.01 9.63 8.01 10.15 8.01 10.68 7.57 11.13 7.04 11.13ZM 7.56 7.66C 7.56 7.85 7.65 8.06 7.77 8.16 7.77 8.16 6.47 8.55 6.47 8.55 6.21 8.27 6.07 7.91 6.07 7.49 6.07 6.06 7.82 5.9 7.82 5.07 7.82 4.7 7.54 4.39 6.89 4.39 6.29 4.39 5.78 4.69 5.41 5.13 5.41 5.13 4.44 4.04 4.44 4.04 5.07 3.29 6.03 2.87 7.07 2.87 8.61 2.87 9.56 3.65 9.56 4.77 9.56 6.52 7.56 6.65 7.56 7.66Z" fill="rgb(187,191,195)"/>
-        </svg>
-      </div>
 
-      <div id="image-list" className={classes} style={carouselStyle} >
-        <ul>
-          <li onClick={@shineSelected.bind(this, @findSubjectIndex(@state.first))} className={"active" if @props.subject_index == @findSubjectIndex(@state.first) }>
-            <span className="page-number">{@state.first.order}</span>
+    containerClasses = []
+    containerClasses.push "light-box-area"
+    if @state.folded then containerClasses.push "folded"
 
-            <svg className="light-box-subject" width={125} height={125} viewBox={viewBox} >
-                <SVGImage
-                  src = {@state.first.location.standard}
-                  width = {100}
-                  height = {100}
-                />
-            </svg>
-          </li>
-          {if second
-            <li onClick={@shineSelected.bind(this, @findSubjectIndex(second))} className={"active" if @props.subject_index == @findSubjectIndex(second)} >
-              <span className="page-number">{second.order}</span>
+    <div className={containerClasses.join ' '}>
+      <div className="carousel" >
+        <div id="visibility-button" >
+          <svg onClick={@handleFoldClick} width="10px" height="10px" viewBox="0 0 10 10">
+            <path fillRule="evenodd" d="M 9.24 7.83C 9.24 7.83 7.83 9.24 7.83 9.24 7.83 9.24 5 6.41 5 6.41 5 6.41 2.17 9.24 2.17 9.24 2.17 9.24 0.76 7.83 0.76 7.83 0.76 7.83 3.59 5 3.59 5 3.59 5 0.76 2.17 0.76 2.17 0.76 2.17 2.17 0.76 2.17 0.76 2.17 0.76 5 3.59 5 3.59 5 3.59 7.83 0.76 7.83 0.76 7.83 0.76 9.24 2.17 9.24 2.17 9.24 2.17 6.41 5 6.41 5 6.41 5 9.24 7.83 9.24 7.83Z" fill="rgb(187,191,195)"/>
+          </svg>
+          <span onClick={@handleFoldClick} >{text}</span>
+
+          {
+            if @state.folded
+              <i className="fa fa-angle-double-right" onClick={@handleFoldClick}></i>
+            else
+              <svg onClick={@props.toggleLightboxHelp} id="questions-tip" width="14px" height="14px" viewBox="0 0 14 14">
+                <path fillRule="evenodd" d="M 7 0C 3.13 0-0 3.13-0 7-0 10.87 3.13 14 7 14 10.87 14 14 10.87 14 7 14 3.13 10.87 0 7 0ZM 7.04 11.13C 6.51 11.13 6.07 10.68 6.07 10.15 6.07 9.63 6.51 9.18 7.04 9.18 7.57 9.18 8.01 9.63 8.01 10.15 8.01 10.68 7.57 11.13 7.04 11.13ZM 7.56 7.66C 7.56 7.85 7.65 8.06 7.77 8.16 7.77 8.16 6.47 8.55 6.47 8.55 6.21 8.27 6.07 7.91 6.07 7.49 6.07 6.06 7.82 5.9 7.82 5.07 7.82 4.7 7.54 4.39 6.89 4.39 6.29 4.39 5.78 4.69 5.41 5.13 5.41 5.13 4.44 4.04 4.44 4.04 5.07 3.29 6.03 2.87 7.07 2.87 8.61 2.87 9.56 3.65 9.56 4.77 9.56 6.52 7.56 6.65 7.56 7.66Z" fill="rgb(187,191,195)"/>
+              </svg>
+          }
+
+        </div>
+
+        <div id="image-list" className={classes} style={carouselStyle} >
+          <ul>
+            <li onClick={@shineSelected.bind(this, @findSubjectIndex(@state.first))} className={"active" if @props.subject_index == @findSubjectIndex(@state.first) }>
+              <span className="page-number">{@state.first.order}</span>
+
               <svg className="light-box-subject" width={125} height={125} viewBox={viewBox} >
                   <SVGImage
-                    src = {second.location.standard}
+                    src = {@state.first.location.standard}
                     width = {100}
                     height = {100}
                   />
               </svg>
             </li>
-          }
+            {if second
+              <li onClick={@shineSelected.bind(this, @findSubjectIndex(second))} className={"active" if @props.subject_index == @findSubjectIndex(second)} >
+                <span className="page-number">{second.order}</span>
+                <svg className="light-box-subject" width={125} height={125} viewBox={viewBox} >
+                    <SVGImage
+                      src = {second.location.standard}
+                      width = {100}
+                      height = {100}
+                    />
+                </svg>
+              </li>
+            }
 
-          {if third
-            <li onClick={@shineSelected.bind(this, @findSubjectIndex(third))} className={"active" if @props.subject_index == @findSubjectIndex(third)} >
-              <span className="page-number">{third.order}</span>
-              <svg className="light-box-subject" width={125} height={125} viewBox={viewBox} >
-                  <SVGImage
-                    src = {third.location.standard}
-                    width = {100}
-                    height = {100}
-                  />
-              </svg>
-            </li>
-          }
-        </ul>
+            {if third
+              <li onClick={@shineSelected.bind(this, @findSubjectIndex(third))} className={"active" if @props.subject_index == @findSubjectIndex(third)} >
+                <span className="page-number">{third.order}</span>
+                <svg className="light-box-subject" width={125} height={125} viewBox={viewBox} >
+                    <SVGImage
+                      src = {third.location.standard}
+                      width = {100}
+                      height = {100}
+                    />
+                </svg>
+              </li>
+            }
+          </ul>
 
-        <ActionButton type={"back"} text="BACK" onClick={@moveBack.bind(this, indexOfFirst)} classes={@backButtonDisable(indexOfFirst)} />
-        
-        <ActionButton type={"next"} text="NEXT" onClick={@moveForward.bind(this, indexOfFirst, third, second)} classes={@forwardButtonDisable(third if third?)} />
+          <ActionButton type={"back"} text="BACK" onClick={@moveBack.bind(this, indexOfFirst)} classes={@backButtonDisable(indexOfFirst)} />
+
+          <ActionButton type={"next"} text="NEXT" onClick={@moveForward.bind(this, indexOfFirst, third, second)} classes={@forwardButtonDisable(third if third?)} />
+        </div>
+
       </div>
-
     </div>
-
 
   # allows user to click on a subject in the lightbox to load that subject into the subject-viewer.
   # This method ultimately sets the state.subject_index in mark/index. See subject-set-viewer#specificSelection() and mark/index#handleViewSubject().

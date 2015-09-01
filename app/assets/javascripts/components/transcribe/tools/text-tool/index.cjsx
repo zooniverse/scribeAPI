@@ -131,7 +131,6 @@ TextTool = React.createClass
     el = $(@refs.input0?.getDOMNode())
 
   updateValue: (val) ->
-    # console.log "updated val: ", val
     newAnnotation = @state.annotation
     newAnnotation[@fieldKey()] = val
 
@@ -225,7 +224,7 @@ TextTool = React.createClass
         buttons.push <HelpButton onClick={@props.onShowHelp}/>
 
       if @props.onBadSubject?
-        buttons.push <BadSubjectButton active={@props.badSubject} onClick={@props.onBadSubject} />
+        buttons.push <BadSubjectButton label={"Bad mark"} active={@props.badSubject} onClick={@props.onBadSubject} />
 
       if @props.onIllegibleSubject?
         buttons.push <IllegibleSubjectButton active={@props.illegibleSubject} onClick={@props.onIllegibleSubject} />

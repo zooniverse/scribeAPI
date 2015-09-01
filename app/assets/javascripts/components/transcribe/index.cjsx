@@ -31,6 +31,8 @@ module.exports = React.createClass # rename to Classifier
     classificationIndex:          0
     subject_index:                0
     helping:                      false
+    last_mark_task_key:           @props.query.mark_key
+
 
   getDefaultProps: ->
     workflowName: 'transcribe'
@@ -86,6 +88,8 @@ module.exports = React.createClass # rename to Classifier
     @transitionTo 'mark', {},
       subject_set_id: @getCurrentSubject().subject_set_id
       selected_subject_id: @getCurrentSubject().parent_subject_id
+      mark_task_key: @props.query.mark_key
+
       page: @props.query.page
 
   render: ->
@@ -112,13 +116,14 @@ module.exports = React.createClass # rename to Classifier
               header          = { if @state.userClassifiedAll then "Thanks for transcribing!" else "Nothing to transcribe" }
               buttons         = {<GenericButton label='Continue' href='/#/mark' />}
             >
-                Currently, there are no subjects to {@props.workflowName}. Try <a href="/#/mark">marking</a> instead!
+                Currently, there are no {@props.project.term('subject')}s to {@props.workflowName}. Try <a href="/#/mark">marking</a> instead!
             </DraggableModal>
 
           else if @getCurrentSubject()? and @getCurrentTask()?
 
             <SubjectViewer
               onLoad={@handleViewerLoad}
+              task={@getCurrentTask()}
               subject={@getCurrentSubject()}
               active=true
               workflow={@getActiveWorkflow()}
@@ -164,7 +169,7 @@ module.exports = React.createClass # rename to Classifier
             <div className="task-area">
 
               <div className="forum-holder">
-                <ForumSubjectWidget subject=@getCurrentSubject() />
+                <ForumSubjectWidget subject=@getCurrentSubject() project={@props.project} />
               </div>
 
             </div>

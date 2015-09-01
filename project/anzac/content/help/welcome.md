@@ -1,0 +1,1 @@
+In this project, you’ll be working alongside other volunteers to digitize the personnel files of New Zealand soldiers who served in World War I and the South African War, and help an international team of historians learn about the society and lifestyles of New Zealanders in the early 20th century. This brief tutorial will help teach you how to get started.

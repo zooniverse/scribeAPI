@@ -20,10 +20,12 @@ class Project
   field  :forum,             type: Hash
   field  :feedback_form_url, type: String
   field  :styles,            type: String
+  field  :custom_js,         type: String
   field  :admin_email,       type: String
   field  :team_emails,       type: Array
   field  :metadata_search,   type: Hash
   field  :tutorial,          type: Hash
+  field  :terms_map,         type: Hash, default: {} # Hash mapping internal terms to project appropriate terms (e.g. 'group'=>'ship')
 
   include CachedStats
 
