@@ -53,6 +53,8 @@
           {
             "value":"other_page_type",
             "label":"Other",
+            "help":"Any page that doesn't fit the description of the above labels.",
+            "generates_subject_type": "transcribe_other_page_type",
             "next_task": null
           }
         ]

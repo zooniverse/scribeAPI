@@ -2,6 +2,7 @@
 .main-header-group{
   background: rgba(0, 0, 0, 0.18);
 }
+
 .page-content{
   background-color: transparent;
   font-size: 1.4em;
@@ -151,6 +152,7 @@ span.keyword {
   color: #4d4d4d;
   text-decoration: none;
   padding-left: 1em;
+  font-size: 15px;
 }
 
 #about-page a.selected-content {
@@ -175,8 +177,8 @@ span.keyword {
 #about-page li {
   list-style-type: none;
   padding-left: 1em;
-  margin-bottom: 1em;
-  line-height: 1.5em;
+  margin-bottom: 15px;
+  line-height: 25px;
   font-size: .90em
 }
 
@@ -223,7 +225,6 @@ span.keyword {
   width: 20%;
   padding-top: 2em;
   font-family: OpenSans;
-  font-size: 20px;/* Approximation due to font substitution */
   font-weight: 400;
   line-height: 22px;/* Approximation due to font substitution */
   text-align: left;
@@ -312,8 +313,8 @@ span.keyword {
 #field-guide li {
   list-style-type: none;
   padding-left: 1em;
-  margin-bottom: 1em;
-  line-height: 1.5em;
+  margin-bottom: 15px;
+  line-height: 25px;
   font-size: .90em
 }
 
@@ -321,8 +322,21 @@ span.keyword {
   color: #4d4d4d;
   text-decoration: none;
   padding-left: 1em;
+  font-size: 15px;
+}
+
+#accordion-help-modal p.other-form {
+  width: 100%;
+  float: none;
+}
+
+#accordion p.other-form{
+  width: 100%;
+  float: none;
+  padding: 0;
 }
 
 #questions-tip{
   fill: pink;
 }
+
