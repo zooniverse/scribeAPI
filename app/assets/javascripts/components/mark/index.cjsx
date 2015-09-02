@@ -48,6 +48,9 @@ module.exports = React.createClass # rename to Classifier
 
     @beginClassification()
 
+  componentWillReceiveProps:->
+    @setState completeTutorial: @props.project.current_user_tutorial
+
   toggleHelp: ->
     @setState helping: not @state.helping
 

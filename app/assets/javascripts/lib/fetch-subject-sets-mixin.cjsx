@@ -63,23 +63,19 @@ module.exports =
         if subject.id is subject_set.selected_subject_id
           subject_index = subject_set.subjects.indexOf subject
 
-      if mark_task_key
-        @setState
-          subjectSets: [subject_set]
-          subject_set_index: 0
-          subject_index: subject_index || 0 #parseInt(subject_index) || 0
-          subject_current_page: subject_set.subjects_pagination_info.current_page
-          total_subject_pages: subject_set.subjects_pagination_info.total_pages
-          currentSubjectSet: subject_set
-          taskKey: mark_task_key if mark_task_key
-      else
-        @setState
-          subjectSets: [subject_set]
-          subject_set_index: 0
-          subject_index: subject_index || 0 #parseInt(subject_index) || 0
-          subject_current_page: subject_set.subjects_pagination_info.current_page
-          total_subject_pages: subject_set.subjects_pagination_info.total_pages
-          currentSubjectSet: subject_set
+      stateHash = {
+        subjectSets: [subject_set]
+        subject_set_index: 0
+        subject_index: subject_index || 0 #parseInt(subject_index) || 0
+        subject_current_page: subject_set.subjects_pagination_info.current_page
+        total_subject_pages: subject_set.subjects_pagination_info.total_pages
+        currentSubjectSet: subject_set
+      }
+
+      stateHash.taskKey = mark_task_key if mark_task_key
+      
+      @setState stateHash
+
   
   orderSubjectsByOrder: (subject_sets) ->
     for subject_set in subject_sets
