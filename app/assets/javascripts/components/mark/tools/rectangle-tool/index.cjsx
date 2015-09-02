@@ -116,6 +116,7 @@ module.exports = React.createClass
     classes = []
     classes.push 'transcribable' if @props.isTranscribable
     classes.push if @props.disabled then 'committed' else 'uncommitted'
+    classes.push "tanscribing" if @checkLocation()
 
     x1 = @props.mark.x
     width = @props.mark.width
