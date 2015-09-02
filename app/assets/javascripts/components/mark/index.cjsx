@@ -48,6 +48,9 @@ module.exports = React.createClass # rename to Classifier
 
     @beginClassification()
 
+  componentWillReceiveProps:->
+    @setState completeTutorial: @props.project.current_user_tutorial
+
   toggleHelp: ->
     @setState helping: not @state.helping
 
@@ -148,7 +151,6 @@ module.exports = React.createClass # rename to Classifier
                 <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
               }
               { if @getNextTask()?
-                  # console.log "STATE at the NEXT BUTTON", @state
                   <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@advanceToNextTask}>Next</button>
                 else
                   if @state.taskKey == "completion_assessment_task"
@@ -205,15 +207,12 @@ module.exports = React.createClass # rename to Classifier
       }
       {
         if @state.lightboxHelp
-          <HelpModal help={{title: "The Lightbox", body: "You can use the lightbox to find images in a collection. Click on an image in the lightbox to see a larger version of the image."}} onDone={=> @setState lightboxHelp: false } />
+          <HelpModal help={{title: "The Lightbox", body: "Use the Lightbox to navigate through a set of documents. You can select any of the images in the Lighbox by clicking on the thumbnail. Once selected, you can start submitting classifications. You do not need to go through the images in order. However, once you start classifying an image, the Lightbox will be deactivated until that classification is done."}} onDone={=> @setState lightboxHelp: false } />
       }
     </div>
 
   # User changed currently-viewed subject:
   handleViewSubject: (index) ->
-    # console.log "HANDLE View Subject: subject", subject
-    # @state.currentSubject = subject
-    # @forceUpdate()
     @setState subject_index: index, => @forceUpdate()
     @toggleBadSubject() if @state.badSubject
 

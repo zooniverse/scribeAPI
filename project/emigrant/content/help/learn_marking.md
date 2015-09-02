@@ -1,9 +1,7 @@
-#Hi!
+To the right of the screen, you'll see some field labels. Select a field and draw a rectangle around each field that appears on the page.
 
-Your task is to identify fields in a series of bank records.
+You may see existing rectangles on the page. If this is the case, someone has already marked the field and there's no need to mark an area twice. For additional, field specific guidance select the help buttons next to each field label.
 
-Use the menu on the right to select a field (e.g. "Record Date"). Then, use your mouse to draw a box on the image around each place that the field appears.
+The marks created in this task identify the fields to be transcribed in the next task phase.
 
-If a box has already been created, you don't need to draw it again.
-
-
+<!--add screenshot of help?-->

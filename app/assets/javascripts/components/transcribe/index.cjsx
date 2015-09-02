@@ -31,7 +31,7 @@ module.exports = React.createClass # rename to Classifier
     classificationIndex:          0
     subject_index:                0
     helping:                      false
-    last_mark_task_key: @props.query.last_mark_task_key
+    last_mark_task_key:           @props.query.mark_key
 
 
   getDefaultProps: ->
@@ -88,7 +88,7 @@ module.exports = React.createClass # rename to Classifier
     @transitionTo 'mark', {},
       subject_set_id: @getCurrentSubject().subject_set_id
       selected_subject_id: @getCurrentSubject().parent_subject_id
-      mark_task_key: @state.last_mark_task_key
+      mark_task_key: @props.query.mark_key
 
       page: @props.query.page
 
@@ -107,7 +107,6 @@ module.exports = React.createClass # rename to Classifier
     currentAnnotation = @getCurrentClassification().annotation
     TranscribeComponent = @getCurrentTool() # @state.currentTool
     onFirstAnnotation = currentAnnotation?.task is @getActiveWorkflow().first_task
-    console.log "TRANSCRIBE task_key", @get
 
     <div className="classifier">
       <div className="subject-area">
@@ -124,7 +123,7 @@ module.exports = React.createClass # rename to Classifier
 
             <SubjectViewer
               onLoad={@handleViewerLoad}
-              taskKey={@state.task_key}
+              task={@getCurrentTask()}
               subject={@getCurrentSubject()}
               active=true
               workflow={@getActiveWorkflow()}

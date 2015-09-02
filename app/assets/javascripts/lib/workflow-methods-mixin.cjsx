@@ -128,36 +128,6 @@ module.exports =
   # Get current classification:
   getCurrentClassification: ->
     @state.classifications[@state.classificationIndex]
-
-
-  findTaskByGeneratedType: (tasks, subject_type) ->
-    console.log "fTBGT"
-    console.log "-----> tasks:", tasks
-    console.log "-----> subject_type:", subject_type
-    for key, value of tasks
-      # console.log "-----> key:", key
-      # console.log "-----> value:", value
-      task_key = key
-      for key, value of value.tool_config.options
-        # console.log "-~~~~~~> key:", key
-        # console.log "~~~~~~-> value:", value
-        for k, v of value
-          console.log "********> key:", key
-          console.log "********> value:", value
-          console.log "********> value.generates_subject_type:", value.generates_subject_type
-
-        if value.generates_subject_type == subject_type
-          console.log "FOUND THE TASK", task_key
-
-          return task_key
-      
-
-
-      # for key,value in value.tool_config.options
-      #   console.log "------> key", value
-
-        # if option.generates_subject_type == subject_type
-        #   console.log "THE TASK", task
         
 
   # Get current task:

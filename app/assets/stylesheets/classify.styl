@@ -1,16 +1,13 @@
 .classifier
-  display: flex
-  flex-flow: row nowrap
+
+  flexbox(flex)
+  flex-direction(row)
+  flex-wrap(nowrap)
+
   justify-content: center
 
   .subject-area
-    // float: left
-    // width: 75%
-    // align-items: center
-    // justify-content: center
-    // display: flex
-
-    flex-grow: 1
+    flex(grow: 1)
 
   .subject-container
     color: gray
@@ -59,18 +56,12 @@
 
   .right-column
     width 250px
-    flex-shrink 0
+    flex(shrink: 0)
+    // flex-shrink 0
     padding 0 10px
 
     .task-area
       position fixed
-      // margin-right 10px
-      // width: 18%
-      // min-width: 250px
-      // z-index: 50
-      // right 20px
-      // top 80px
-      // margin-top 20px
       background-color #EFEFEF
       color SECONDARY_NORMAL
       padding 20px
