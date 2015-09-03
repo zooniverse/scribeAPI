@@ -183,6 +183,7 @@ module.exports = React.createClass
 
         { # REQUIRES MARK-BUTTON-MIXIN
           if @props.selected or @state.markStatus is 'transcribe-enabled'
+            console.log "@RECTANGLE props.selected", @props.selected
             @renderMarkButton() if @props.isTranscribable
         }
 

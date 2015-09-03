@@ -12,12 +12,21 @@ MARK_STATES = [
 module.exports =
 
   getInitialState: ->
-    if @props.isPriorMark
+    if @props.isPriorMark and @props.selected
       markStatus = 'transcribe-enabled'
     else
       markStatus = 'waiting-for-mark'
     markStatus: markStatus
     locked: ''
+
+  componentWillReceiveProps: (new_props)->
+    if new_props.isPriorMark and new_props.selected
+      markStatus = 'transcribe-enabled'
+    else
+      markStatus = 'waiting-for-mark'
+    @setState 
+      markStatus: markStatus
+      locked: ''
 
   checkLocation: ()->
     pattern = new RegExp('^(#\/transcribe)')
@@ -51,8 +60,6 @@ module.exports =
 
   respondToMarkState: ->
     markStatus = @state.markStatus
-
-    console.log 'MARK STATUS: ', markStatus
 
     switch markStatus
       when 'mark-committed'
