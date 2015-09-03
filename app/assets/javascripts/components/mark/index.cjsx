@@ -20,6 +20,9 @@ Draggable               = require 'lib/draggable'
 module.exports = React.createClass # rename to Classifier
   displayName: 'Mark'
 
+  propTypes:
+    setTutorialComplete: React.PropTypes.func.isRequired
+
   getDefaultProps: ->
     workflowName: 'mark'
     # hideOtherMarks: false
@@ -200,7 +203,7 @@ module.exports = React.createClass # rename to Classifier
         </div>
       </div>
       { if @props.project.tutorial? && !@state.completeTutorial
-        <Tutorial tutorial={@props.project.tutorial} toggleTutorial={@toggleTutorial}/>
+        <Tutorial tutorial={@props.project.tutorial} toggleTutorial={@toggleTutorial} setTutorialComplete={@props.setTutorialComplete} />
       }
       { if @state.helping
         <HelpModal help={@getCurrentTask().help} onDone={=> @setState helping: false } />
