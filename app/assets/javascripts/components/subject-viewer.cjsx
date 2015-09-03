@@ -243,6 +243,7 @@ module.exports = React.createClass
     callback?()
 
   handleChange: (mark) ->
+    console.log "HANDLE CHANGE IN SUBJECT VIEWER"
     @setState
       selectedMark: mark
         , =>
