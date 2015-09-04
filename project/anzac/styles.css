@@ -2,6 +2,7 @@
 .main-header-group{
   background: rgba(0, 0, 0, 0.18);
 }
+
 .page-content{
   background-color: transparent;
   -font-size: 1.4em;
@@ -160,6 +161,7 @@ span.keyword {
   color: #4d4d4d;
   text-decoration: none;
   padding-left: 1em;
+  font-size: 15px;
 }
 
 #about-page a.selected-content {
@@ -184,8 +186,8 @@ span.keyword {
 #about-page li {
   list-style-type: none;
   padding-left: 1em;
-  margin-bottom: 1em;
-  line-height: 1.5em;
+  margin-bottom: 15px;
+  line-height: 25px;
   font-size: .90em
 }
 
@@ -232,7 +234,6 @@ span.keyword {
   width: 20%;
   padding-top: 2em;
   font-family: OpenSans;
-  font-size: 20px;/* Approximation due to font substitution */
   font-weight: 400;
   line-height: 22px;/* Approximation due to font substitution */
   text-align: left;
@@ -258,7 +259,7 @@ span.keyword {
   padding-right: 4em;
 }
 
-#field-guide #accordion{
+#field-guide #accordion {
     width: 98%;
     display: inherit;
     text-align: left;
@@ -269,20 +270,20 @@ span.keyword {
     font-weight: 300;
 }
 
-#field-guide #accordion div{
+#field-guide #accordion div {
     width: auto;
     float: none;
 }
 
 
-#field-guide #accordion #att_ex{
+#field-guide #accordion #att_ex {
     display: inline-block;
     float: left;
     background-color: transparent;
     width: 20%;
 }
 
-#field-guide #accordion #att_ex img{
+#field-guide #accordion #att_ex img {
   width: 100%;
   padding-bottom 20%;
 }
@@ -321,8 +322,8 @@ span.keyword {
 #field-guide li {
   list-style-type: none;
   padding-left: 1em;
-  margin-bottom: 1em;
-  line-height: 1.5em;
+  margin-bottom: 15px;
+  line-height: 25px;
   font-size: .90em
 }
 
@@ -330,8 +331,35 @@ span.keyword {
   color: #4d4d4d;
   text-decoration: none;
   padding-left: 1em;
+  font-size: 15px;
+}
+
+#accordion-help-modal p.other-form {
+  width: 100%;
+  float: none;
+}
+
+#accordion p.other-form{
+  width: 100%;
+  float: none;
+  padding: 0;
 }
 
 #questions-tip{
   fill: pink;
 }
+
+.rectangle-tool .tool-shape {
+    cursor: grab;
+    cursor: -webkit-grab;
+    stroke-width: 1;
+    stroke: #646400;
+    fill: rgba(0,128,0,.1);
+}
+
+.tool-shape.committed.tanscribing.draggable {
+    fill: transparent;
+    stroke-width: 0;
+    cursor: default;
+}
+

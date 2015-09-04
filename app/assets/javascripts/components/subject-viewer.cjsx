@@ -243,6 +243,7 @@ module.exports = React.createClass
     callback?()
 
   handleChange: (mark) ->
+    console.log "HANDLE CHANGE IN SUBJECT VIEWER"
     @setState
       selectedMark: mark
         , =>
@@ -345,8 +346,6 @@ module.exports = React.createClass
       markingSurfaceContent =
         <svg
           className = "subject-viewer-svg"
-          width = {@props.subject.width}
-          height = {@props.subject.height}
           viewBox = {viewBox}
           data-tool = {@props.selectedDrawingTool?.type} >
           <rect

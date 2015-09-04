@@ -8,6 +8,20 @@
     "generates_subjects_max": 10,
     "generates_subjects_method": "collect-unique",
     "tasks": {
+        "transcribe_other_page_type":{
+            "tool":"textAreaTool",
+            "tool_config":{},
+            "instruction":"Give a brief description of the form.",
+            "generates_subject_type":"transcribed_other_page_type",
+            "next_task": null
+        },        
+        "transcribe_other_data_field":{
+            "tool":"textAreaTool",
+            "tool_config":{},
+            "instruction":"Transcribe the highlighted area.",
+            "generates_subject_type":"transcribed_other_page_type",
+            "next_task": null
+        },
         "att_transcribe_header": {
             "tool": "textTool",
             "tool_config": {},

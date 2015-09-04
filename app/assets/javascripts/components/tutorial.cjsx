@@ -9,6 +9,7 @@ module.exports = React.createClass
   propTypes:
     tutorial: React.PropTypes.object.isRequired
     toggleTutorial: React.PropTypes.func.isRequired
+    setTutorialComplete: React.PropTypes.func.isRequired
 
   getInitialState:->
     currentTask: @props.tutorial.first_task
@@ -29,6 +30,7 @@ module.exports = React.createClass
   advanceToNextTask:->
     if @props.tutorial.tasks[@state.currentTask].next_task == null
       @setCompleteTutorial()
+      @props.setTutorialComplete()
 
     else
       @setState 

@@ -20,6 +20,10 @@ App = React.createClass
         project = new Project(result[0])
         @setState project: project
 
+  setTutorialComplete:->
+    @state.project.current_user_tutorial = true
+    @setState project: project
+
   render: ->
     return null if ! @state.project?
 
@@ -40,7 +44,7 @@ App = React.createClass
           logo={@state.project.logo} />
 
         <div className="main-content">
-          <RouteHandler hash={window.location.hash} project={@state.project} />
+          <RouteHandler hash={window.location.hash} project={@state.project} setTutorialComplete={@setTutorialComplete} />
         </div>
       </div>
     </div>

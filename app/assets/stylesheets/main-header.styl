@@ -1,10 +1,4 @@
 
-.main-header
-  // display: flex
-  // flex-wrap: wrap
-  // justify-content: space-between
-  background: rgba(0, 0, 0, 0.18);
-
 .main-header-group
   // background: rgba(0, 0, 0, 0.35);
   // PB: Note the following isn't supported by FF
@@ -14,15 +8,11 @@
   position fixed
   top 0px
   width 100%
+  height 72px
 
-  display: flex
-  flex-direction: row
-  flex-wrap: wrap
+  flexbox(flex)
   border: 0 solid rgba(FOREGROUND, 0.5)
   z-index 100
-
-  &:empty
-    flex: 1
 
   // disable selecting text
   -webkit-touch-callout none
@@ -41,10 +31,19 @@
   border-radius: 2
   color: white
   cursor: normal
-  display: flex
-  padding: 0.5rem 1.5vw 0.2em
+  flex(grow: 1)
+  // padding: 0.5rem 1.5vw 0.2em
+  padding 0 10px 0
   white-space: nowrap
+  box-shadow: 0 0 0 inset
+  transition: box-shadow 0.2s
+  text-transform: uppercase
+  letter-spacing: .2em
+  text-align center
+  line-height 72px
 
+  &[data-active]
+    box-shadow: 0 -3px 0 inset
 
   &:hover
     background: rgba(MEDIUM_GRAY, 0.3)
@@ -53,11 +52,12 @@
     img
       width 42px
       height 42px
+      margin-top 10px
     color:  #efefef;
     font-size: 24px;
     font-weight: 700;
     font-style: italic;
-    line-height: 36px;
+    // line-height: 36px;
     text-align: center;
     transform: rotate(-11.719deg)
     &:hover
@@ -76,16 +76,6 @@
     color: inherit
     text-decoration: none
 
-a.main-header-item
-  box-shadow: 0 0 0 inset
-  transition: box-shadow 0.2s
-  text-transform: uppercase
-  letter-spacing: .2em
-
-
-  &[data-active]
-    box-shadow: 0 -3px 0 inset
-
 .account-bar-avatar
   border-radius: 50%
   height: 3rem
@@ -95,12 +85,10 @@ a.main-header-item
 
 .login
   @extends $reset-button
-  float: right
-  padding: 0.5rem 1.5vw 0.2em
+  flex(grow: 10)
   color rgba(255, 255, 255, 0.4)
   overflow: hidden
   align-items: center
-  display: flex
   text-transform: uppercase
   line-height 4.5em
 
@@ -138,6 +126,6 @@ a.main-header-item
       &:hover
         color #fff
 
-@media all and (max-width: 1200px)
+@media all and (max-width: 1100px)
   .login .label
     display none

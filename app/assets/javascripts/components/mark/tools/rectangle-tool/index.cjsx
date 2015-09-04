@@ -116,6 +116,7 @@ module.exports = React.createClass
     classes = []
     classes.push 'transcribable' if @props.isTranscribable
     classes.push if @props.disabled then 'committed' else 'uncommitted'
+    classes.push "tanscribing" if @checkLocation()
 
     x1 = @props.mark.x
     width = @props.mark.width
@@ -182,6 +183,7 @@ module.exports = React.createClass
 
         { # REQUIRES MARK-BUTTON-MIXIN
           if @props.selected or @state.markStatus is 'transcribe-enabled'
+            console.log "@RECTANGLE props.selected", @props.selected
             @renderMarkButton() if @props.isTranscribable
         }
 

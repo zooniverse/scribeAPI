@@ -20,6 +20,9 @@ Draggable               = require 'lib/draggable'
 module.exports = React.createClass # rename to Classifier
   displayName: 'Mark'
 
+  propTypes:
+    setTutorialComplete: React.PropTypes.func.isRequired
+
   getDefaultProps: ->
     workflowName: 'mark'
     # hideOtherMarks: false
@@ -47,6 +50,9 @@ module.exports = React.createClass # rename to Classifier
       taskKey: @getActiveWorkflow().first_task
 
     @beginClassification()
+
+  componentWillReceiveProps:->
+    @setState completeTutorial: @props.project.current_user_tutorial
 
   toggleHelp: ->
     @setState helping: not @state.helping
@@ -194,14 +200,14 @@ module.exports = React.createClass # rename to Classifier
         </div>
       </div>
       { if @props.project.tutorial? && !@state.completeTutorial
-        <Tutorial tutorial={@props.project.tutorial} toggleTutorial={@toggleTutorial}/>
+        <Tutorial tutorial={@props.project.tutorial} toggleTutorial={@toggleTutorial} setTutorialComplete={@props.setTutorialComplete} />
       }
       { if @state.helping
         <HelpModal help={@getCurrentTask().help} onDone={=> @setState helping: false } />
       }
       {
         if @state.lightboxHelp
-          <HelpModal help={{title: "The Lightbox", body: "You can use the lightbox to find images in a collection. Click on an image in the lightbox to see a larger version of the image."}} onDone={=> @setState lightboxHelp: false } />
+          <HelpModal help={{title: "The Lightbox", body: "Use the Lightbox to navigate through a set of documents. You can select any of the images in the Lighbox by clicking on the thumbnail. Once selected, you can start submitting classifications. You do not need to go through the images in order. However, once you start classifying an image, the Lightbox will be deactivated until that classification is done."}} onDone={=> @setState lightboxHelp: false } />
       }
     </div>
 
