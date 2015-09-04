@@ -53,7 +53,6 @@ module.exports =
     # console.log 'THE QUERY: ', "/workflows/#{workflow_id}/subject_sets/#{subject_set_id}/subjects/#{selected_subject_id}"
     request = API.type('workflows').get("#{workflow_id}/subject_sets/#{subject_set_id}/subjects/#{selected_subject_id}") #?page=#{page}")
     # request = API.type("subject_sets").get(subject_set_id: subject_set_id, workflow_id: workflow_id)
-    console.log "MARK TASH KEY", mark_task_key
     @setState
       subjectSet: []
       # currentSubjectSet: null
