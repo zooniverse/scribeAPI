@@ -46,7 +46,6 @@ module.exports = React.createClass
   #   }
   #
   render: ->
-
     transform = "
       translate(#{@props.position.x-BUTTON_WID}, #{@props.position.y-2*BUTTON_HEI*@props.tool.props.yScale})
       rotate(#{@props.rotate})
