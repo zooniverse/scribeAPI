@@ -50,7 +50,7 @@ class SubjectSetSerializer < ActiveModel::MongoidSerializer
       options = serialization_options.nil? ? serialization_options : @_serialization_options
 
       workflow_id = options[:workflow_id] # I think we need to pull workflow_id from serialization_options, subject_sets don't belong to workflow.
-      subjects_limit = options[:subjects_limit] || 100
+      subjects_limit = options[:subjects_limit] || 3 # 100
       subjects_page = options[:subjects_page] || 1
       # return nil if object.nil?
 

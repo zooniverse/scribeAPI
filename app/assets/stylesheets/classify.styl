@@ -255,14 +255,23 @@
   z-index 10
   text-align left
 
-  .modal-header, .modal-body, .modal-buttons
+  .modal-body, .modal-buttons
     padding 20px 20px 10px
 
   .modal-header
     font-size 1.6em
+    background-color #3f5765
+    color white
+    padding 14px 20px
 
   .modal-body
     overflow hidden
+
+    p:first-of-type
+      margin-top 0
+
+    p:last-of-type
+      margin-bottom 0
 
   .modal-buttons
     text-align right

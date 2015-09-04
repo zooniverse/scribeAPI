@@ -4,9 +4,31 @@ API = require './api'
 
 module.exports =
   componentDidMount: ->
-    # can anyone figure out how to simplify? --STI
-    console.log '@PROPS.PARAMS: ', @props.params
-    console.log '@PROPS.QUERY : ', @props.query
+
+    # Gather filters by which to query subject-sets
+    params =
+      subject_set_id:           @props.params.subject_set_id ? @props.query.subject_set_id
+      group_id:                 @props.query.group_id ? null
+
+    # Establish a callback for after subjects are fetched - to apply additional state changes:
+    postFetchCallback = (subject_sets) =>
+      return if subject_sets.length == 0
+
+      state = {}
+
+      # If a specific subject id indicated..
+      if @props.query.selected_subject_id?
+        # Get the index of the specified subject in the (presumably first & only) subject set:
+        state.subject_index = (ind for subj,ind in subject_sets[0].subjects when subj.id == @props.query.selected_subject_id )[0]
+        
+      # If taskKey specified, now's the time to set that too:
+      state.taskKey = @props.query.mark_task_key if @props.query.mark_task_key
+
+      @setState state if state
+
+    @fetchSubjectSets params, postFetchCallback
+
+    """
     if @props.params.subject_set_id
         # console.log '>>>>>>>>>>>>>>>>>>>>>>>>>>>> A <<<<<<<<<<<<<<<<<<<<<<<<<<<<'
         # Used for directly accessing a subject set
@@ -24,14 +46,24 @@ module.exports =
       # console.log 'Fetching some subject set...'
       # console.log '>>>>>>>>>>>>>>>>>>>>>>>>>>>> D <<<<<<<<<<<<<<<<<<<<<<<<<<<<'
       @fetchSubjectSets @getActiveWorkflow().id, @getActiveWorkflow().subject_fetch_limit # fetch random subject sets, given limit
-
+    """
 
   # this method fetches the next page of subjects in a given subject_set.
   # right now the trigger for this method is the forward or back button in the light-box
   # I am torn about whether to set the subject_index at this point? -- AMS
   fetchNextSubjectPage: (subject_set_id, workflow_id, page_number, subject_index, callback_fn) ->
-    # console.log 'fetchNextSubjectPage()'
-    # console.log 'QUERY: ', "subject_sets/#{subject_set_id}?page=#{page_number}&workflow_id=#{workflow_id}"
+
+    # Gather filters by which to query subject-sets
+    params =
+      subject_set_id: subject_set_id
+      workflow_id: workflow_id
+      subject_page: page_number
+
+    @fetchSubjectSets params, () =>
+      @setState subject_index: subject_index
+      callback_fn()
+
+    """
     request = API.type("subject_sets").get("#{subject_set_id}", page: page_number, workflow_id: workflow_id)
 
     @setState
@@ -46,8 +78,11 @@ module.exports =
         subject_index: subject_index || 0 # not sure that subject_index should be set here.
         subject_current_page: subject_set.subject_pagination_info.current_page
         total_subject_pages: subject_set.subject_pagination_info.total_pages
+    """
 
-  fetchSubjectSetBySubjectId: (workflow_id, subject_set_id, selected_subject_id, mark_task_key) ->
+  # PB: Deprecated; previously only called inside this mixin
+  __DEP_fetchSubjectSetBySubjectId: (workflow_id, subject_set_id, selected_subject_id, mark_task_key) ->
+    @fetchSubjectSets
   # fetchSubjectSetBySubjectId: (workflow_id, subject_set_id, selected_subject_id, page) -> # why page number? --STI
     # console.log 'fetchSubjectSetBySubjectId()'
     # console.log 'THE QUERY: ', "/workflows/#{workflow_id}/subject_sets/#{subject_set_id}/subjects/#{selected_subject_id}"
@@ -78,7 +113,9 @@ module.exports =
         return if a.order >= b.order then 1 else -1
     subject_sets
 
-  fetchSubjectSet: (subject_set_id, workflow_id)->
+  # PB: Deprecated; previously only called inside this mixin
+  __DEP_fetschSubjectSet: (subject_set_id, workflow_id)->
+    @
     # console.log 'fetchSubjectSet()'
     request = API.type("subject_sets").get(subject_set_id: subject_set_id, workflow_id: workflow_id)
 
@@ -94,32 +131,35 @@ module.exports =
         subject_index: 0 #parseInt(subject_index) || 0
           # , => console.log 'STATE: ', @state
 
-  fetchSubjectSets: (workflow_id, limit) ->
-    if @props.overrideFetchSubjectsUrl?
-      $.getJSON @props.overrideFetchSubjectsUrl, (subject_sets) =>
-        @setState
-          subjectSets: subject_sets
-          # currentSubjectSet: subject_sets[0]
 
-    else
-      request = API.type('subject_sets').get
-        workflow_id: workflow_id
-        limit: limit
-        random: true
+  # This is the main fetch method for subject sets.
+  fetchSubjectSets: (params, callback) ->
+    # Apply defaults to unset params:
+    _params = $.extend({
+      limit: 10
+      workflow_id: @getActiveWorkflow().id
+      random: true
+    }, params)
+    # Strip null params:
+    params = {}; params[k] = v for k,v of _params when v?
 
-      request.then (subject_sets)=>    # DEBUG CODE
-        meta = subject_sets[0].getMeta
+    API.type('subject_sets').get(params).then (subject_sets) =>
 
-        subject_sets = @orderSubjectsByOrder(subject_sets)
-        ind = 0
-        # Uncomment this to ffwd to a set with child subjects:
-        # ind = (i for s,i in subject_sets when s.subjects[0].child_subjects?.length > 0)[0] ? 0
-        @setState
-          subjectSets: subject_sets
-          subject_set_index: ind
-          subject_current_page: subject_sets[0].getMeta("current_page")
-          subject_set_current_page: subject_sets[0].getMeta("current_page")
-          total_subject_pages: subject_sets[0].getMeta("total_pages")
+      # Establish a no-results state:
+      state = subjectSets: []
 
-        if @fetchSubjectsCallback?
-          @fetchSubjectsCallback()
+      if subject_sets.length > 0
+        state =
+          subjectSets: @orderSubjectsByOrder(subject_sets)
+          subject_set_index: 0
+          subject_sets_current_page: subject_sets[0].getMeta("current_page")
+          subject_sets_total_pages: subject_sets[0].getMeta("total_pages")
+          subjects_current_page: subject_sets[0].subjects_pagination_info.current_page
+          subjects_total_pages: subject_sets[0].subjects_pagination_info.total_pages
+
+      @setState state
+
+      callback? subject_sets
+
+      if @fetchSubjectsCallback?
+        @fetchSubjectsCallback()

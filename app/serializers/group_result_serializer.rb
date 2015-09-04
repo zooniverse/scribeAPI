@@ -1,11 +1,11 @@
-class SubjectSetResultSerializer < ActiveModel::MongoidSerializer
+class GroupResultSerializer < ActiveModel::MongoidSerializer
   attributes :data, :links, :meta
 
   root false
 
   def data
-    options = serialization_options.merge({root: false, scope: scope})
-    object.map { |s| SubjectSetSerializer.new(s, options) }
+    options = serialization_options.merge({root: false})
+    object.map { |s| GroupSerializer.new(s, root: false, scope: scope) }
   end
 
   def meta

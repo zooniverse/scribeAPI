@@ -4,9 +4,10 @@ class SubjectsController < ApplicationController
   def index
     user = current_or_guest_user
 
-
     workflow_id           = get_objectid :workflow_id
+    group_id              = get_objectid :group_id
     parent_subject_id     = get_objectid :parent_subject_id
+    # Note that pagination is kind of useless when randomizing
     random                = get_bool :random, false
     limit                 = get_int :limit, 10
     page                  = get_int :page, 1
@@ -16,8 +17,13 @@ class SubjectsController < ApplicationController
     # Filter by subject set?
     @subjects = @subjects.by_parent_subject(parent_subject_id) if parent_subject_id
 
+    # Filter by group?
+    @subjects = @subjects.by_group(group_id) if group_id
+
     # Randomize?
-    @subjects = @subjects.random(limit: limit) if random
+    # @subjects = @subjects.random(limit: limit) if random
+    # PB: Above randomization method produces better randomness, but inconsistent totals
+    @subjects = @subjects.random_order if random
 
     # If user/guest active, filter out anything already classified:
     @subjects = @subjects.user_has_not_classified user.id.to_s if ! user.nil?
@@ -30,6 +36,7 @@ class SubjectsController < ApplicationController
         href: @subjects.prev_page.nil? ? nil : url_for(controller: 'subjects', page: @subjects.prev_page)
       }
     }
+    puts "count: #{@subjects.count}"
     respond_with SubjectResultSerializer.new(@subjects, scope: self.view_context), workflow_id: workflow_id, links: links
   end
 

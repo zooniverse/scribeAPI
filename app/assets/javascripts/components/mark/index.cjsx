@@ -59,9 +59,6 @@ module.exports = React.createClass # rename to Classifier
 
   toggleHideOtherMarks: ->
     @setState hideOtherMarks: not @state.hideOtherMarks
-    , =>
-      console.log 'SET @state.hidingMarks to: ', @state.hideOtherMarks
-      # @forceUpdate()
 
   render: ->
     return null unless @getCurrentSubject()? && @getActiveWorkflow()?
@@ -102,10 +99,10 @@ module.exports = React.createClass # rename to Classifier
               onDestroy={@handleMarkDelete}
               onViewSubject={@handleViewSubject}
               subToolIndex={@state.currentSubToolIndex}
-              subjectCurrentPage={@state.subject_current_page}
               nextPage={@nextPage}
               prevPage={@prevPage}
-              totalSubjectPages={@state.total_subject_pages}
+              subjectCurrentPage={@state.subjects_current_page}
+              totalSubjectPages={@state.subjects_total_pages}
               destroyCurrentClassification={@destroyCurrentClassification}
               hideOtherMarks={@state.hideOtherMarks}
               currentSubtool={currentSubtool}
@@ -286,16 +283,13 @@ module.exports = React.createClass # rename to Classifier
     @advanceToNextSubject()
 
   nextPage: (callback_fn)->
-    console.log 'nextPage()'
-    new_page = @state.subject_current_page + 1
+    new_page = @state.subjects_current_page + 1
     subject_set = @getCurrentSubjectSet()
-    console.log "Np() subject_set", subject_set, new_page
     @fetchNextSubjectPage(subject_set.id, @getActiveWorkflow().id, new_page, 0, callback_fn)
 
   prevPage: (callback_fn) ->
-    new_page = @state.subject_current_page - 1
+    new_page = @state.subjects_current_page - 1
     subject_set = @getCurrentSubjectSet()
-    console.log "Np() subject_set", subject_set
     @fetchNextSubjectPage(subject_set.id, @getActiveWorkflow().id, new_page, 0, callback_fn)
 
 window.React = React
