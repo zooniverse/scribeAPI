@@ -1,11 +1,11 @@
 React = require 'react'
 
-ZOOM_STEP   = 0.35    # Amount to zoom by 
+ZOOM_STEP   = 0.35    # Amount to zoom by
 ZOOM_MAX    = 3
 ZOOM_MIN    = 1
 
 PAN_STEP    = 0.10    # Amount to pan by
-PAN_MIN_X   = 0       # 
+PAN_MIN_X   = 0       #
 PAN_MAX_X   = 0.7     # Max allowed val for x
 PAN_MIN_Y   = 0
 PAN_MAX_Y   = 0.7     # Max allowed val for y
@@ -112,11 +112,11 @@ module.exports = React.createClass
 
   render: ->
     <div className="subject-zoom-pan">
-      <button className="zoom out" onClick={() => @zoom -1} disabled={if ! @canZoom(-1) then 'disabled'}>-</button>
-      <button className="zoom in" onClick={() => @zoom 1} disabled={if ! @canZoom(1) then 'disabled'}>+</button>
-      <button className="pan up" onClick={() => @pan 'up'} disabled={if ! @canPan('up') then 'disabled'}>^</button>
-      <button className="pan right" onClick={() => @pan 'right'} disabled={if ! @canPan('right') then 'disabled'}>&gt;</button>
-      <button className="pan left" onClick={() => @pan 'left'} disabled={if ! @canPan('left') then 'disabled'}>&lt;</button>
-      <button className="pan down" onClick={() => @pan 'down'} disabled={if ! @canPan('down') then 'disabled'}>V</button>
+      <button className="zoom out #{if ! @canZoom(-1) then 'disabled'}" title="zoom out" onClick={() => @zoom -1}></button>
+      <button className="zoom in #{if ! @canZoom(1) then 'disabled'}" title="zoom in" onClick={() => @zoom 1}></button>
+      <button className="pan up #{if ! @canPan('up') then 'disabled'}" title="pan up" onClick={() => @pan 'up'}></button>
+      <button className="pan right #{if ! @canPan('right') then 'disabled'}" title="pan right" onClick={() => @pan 'right'}></button>
+      <button className="pan left #{if ! @canPan('left') then 'disabled'}" title="pan left" onClick={() => @pan 'left'}></button>
+      <button className="pan down #{if ! @canPan('down') then 'disabled'}" title="pan down" onClick={() => @pan 'down'}></button>
       <button className="reset" onClick={@reset}>reset</button>
     </div>
