@@ -16,6 +16,7 @@ API::Application.routes.draw do
   get '/tutorial_complete',                                   to: "users#tutorial_complete"
   get '/projects/stats',                                      to: 'projects#stats'
   get '/project/style.css',                                   to: 'projects#project_css',  defaults: { format: 'css' }
+  get '/project/custom.js',                                   to: 'projects#project_js',  defaults: { format: 'js' }
   get '/workflows/:workflow_id/subjects',                     to: 'subjects#index'
   get '/workflows/:workflow_id/subject_sets',                 to: 'subject_sets#index'
   get '/subjects/:subject_id',                                to: 'subjects#show',         defaults: { format: 'json' }

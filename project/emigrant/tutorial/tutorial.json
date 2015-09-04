@@ -1,0 +1,27 @@
+{
+    "name": "Tutorial",
+    "first_task": "learn_marking",
+    "tasks": {
+        "learn_marking": {
+            "next_task": "learn_transcribing",
+            "help": {
+                "title": "Marking Regions",
+                "file": "learn_marking"
+            }
+        },
+        "learn_transcribing": {
+            "next_task": "learn_verifying",
+            "help": {
+                "title": "Transcribing",
+                "file": "learn_transcribing"
+            }
+        },
+        "learn_verifying": {
+            "next_task": null,
+            "help": {
+                "title": "Learn To Verify",
+                "file": "learn_verifying"
+            }
+        }
+    }
+}

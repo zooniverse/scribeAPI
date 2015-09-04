@@ -9,6 +9,7 @@ class WorkflowTask
   field    :tool_config,                             type: Hash
   field    :next_task,                               type: String
   field    :help,                                    type: Hash
+  field    :examples,                                type: Array
 
   embedded_in :workflow
 

@@ -11,7 +11,7 @@
   "tasks": {
 
     "em_transcribed_date": {
-      "instruction": "Choose the best transcription!",
+      "instruction": "Choose the best transcription or enter your own!",
       "tool": "verifyTool",
       "tool_config": {
         "displays_transcribe_button": true
@@ -20,7 +20,7 @@
     },
 
     "em_transcribed_record_number": {
-      "instruction": "Choose the best transcription!",
+      "instruction": "Choose the best transcription or enter your own!",
       "tool": "verifyTool",
       "tool_config": {
         "displays_transcribe_button": true
@@ -30,7 +30,7 @@
 
 
     "em_transcribed_mortgager": {
-      "instruction": "Choose the best transcription!",
+      "instruction": "Choose the best transcription or enter your own!",
       "tool": "verifyTool",
       "tool_config": {
         "displays_transcribe_button": true
@@ -39,7 +39,7 @@
     },
 
     "em_transcribed_address": {
-      "instruction": "Choose the best transcription!",
+      "instruction": "Choose the best transcription or enter your own!",
       "tool": "verifyTool",
       "tool_config": {
         "displays_transcribe_button": true
@@ -48,7 +48,7 @@
     },
 
     "em_transcribed_amount_loaned": {
-      "instruction": "Choose the best transcription!",
+      "instruction": "Choose the best transcription or enter your own!",
       "tool": "verifyTool",
       "tool_config": {
         "displays_transcribe_button": true
@@ -57,7 +57,7 @@
     },
 
     "em_transcribed_valuation": {
-      "instruction": "Choose the best transcription!",
+      "instruction": "Choose the best transcription or enter your own!",
       "tool": "verifyTool",
       "tool_config": {
         "displays_transcribe_button": true

@@ -29,5 +29,9 @@
   <div class="modal-field-guide" >
     <img src="https://s3.amazonaws.com/anzac-project/R10920991/FL22335668" alt="death notification">
     <p>Headed with words “Death Notification” or slight variants, and logo of Registrar of Deaths or Department of Internal Affairs.</p>
-  </div>    
+  </div> 
+  <h3>Other Forms</h3>
+  <div>
+    <p class="other-form" >The millions of pages of records for 140,000 files also include many other types of documents, including pension or medal notifications, records of hospital treatment, proceedings of medical boards to determine a soldiers' fitness for return to combat or to return home, letters, and telegrams. We are not transcribing information off these pages in the current project.</p> <p class="other-form" >We are giving citizen scientists the opportunity to write a short description of what these other pages are in a free text field. A brief description of the other pages you see will help us organize the files for research by you, the Measuring the ANZACs team, and other researchers in the future. We hope that the short descriptions will let researchers narrow in on particular groups, such as men who received pensions, or men who returned to the front after recovering from wounds.</p>
+  </div>   
 </div>   
