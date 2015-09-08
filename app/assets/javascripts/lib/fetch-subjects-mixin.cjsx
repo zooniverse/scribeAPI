@@ -3,13 +3,17 @@ API = require './api'
 module.exports =
   componentDidMount: ->
 
-    # Gather filters by which to query subjects
-    params =
-      subject_id:               @props.params.subject_id
-      parent_subject_id:        @props.params.parent_subject_id
-      group_id:                 @props.query.group_id ? null
+    # Fetching a single subject?
+    if @props.params.subject_id?
+      @fetchSubject @props.params.subject_id
 
-    @fetchSubjects params
+    # Fetching subjects by current workflow and optional filters:
+    else
+      # Gather filters by which to query subjects
+      params =
+        parent_subject_id:        @props.params.parent_subject_id
+        group_id:                 @props.query.group_id ? null
+      @fetchSubjects params
 
     """
     # SO. MANY. BRANCHES. --STI
@@ -39,44 +43,44 @@ module.exports =
     subjects.sort (a,b) ->
       return if a.region.y >= b.region.y then 1 else -1
 
-  __DEP_fetchSubject: (subject_id, workflow_id)->
-    request = API.type("subjects").get(subject_id, workflow_id: workflow_id)
+  # Fetch a single subject:
+  fetchSubject: (subject_id)->
+    request = API.type("subjects").get subject_id
 
     @setState
       subject: []
-      currentSubject: null
 
-    request.then (subject)=>
+    request.then (subject) =>
       @setState
-        subjects: [subject]
-        currentSubject: subject,
+        subject_index: 0
+        subjects: [subject],
         () =>
           if @fetchSubjectsCallback?
             @fetchSubjectsCallback()
 
 
   # used by the "Transcribe this page now!" button
-  __DEP_fetchSubjectsOnPage: (workflow_id, parent_subject_id) ->
-    # console.log 'fetchSubjectsOnPage()'
-    request = API.type('subjects.json').get
-      workflow_id: workflow_id
-      parent_subject_id: parent_subject_id
+  # __DEP_fetchSubjectsOnPage: (workflow_id, parent_subject_id) ->
+  #  # console.log 'fetchSubjectsOnPage()'
+  #  request = API.type('subjects.json').get
+  #    workflow_id: workflow_id
+  #    parent_subject_id: parent_subject_id
 
-    # console.log "Fetching subjects on page: "
-    request.then (subjects) =>
-      # console.log 'SUBJECTS: ', subjects
-      subjects = @orderSubjectsByY(subjects)
-      if subjects.length is 0
-        @setState noMoreSubjects: true, => console.log 'SET NO MORE SUBJECTS FLAG TO TRUE'
-      else
-        @setState
-          subject_index: 0
-          subjects: subjects
-          subjects_next_page: subjects[0].getMeta("next_page")
-
-      # Does including instance have a defined callback to call when new subjects received?
-      if @fetchSubjectsCallback?
-        @fetchSubjectsCallback()
+  #  # console.log "Fetching subjects on page: "
+  #   request.then (subjects) =>
+  #     # console.log 'SUBJECTS: ', subjects
+  #     subjects = @orderSubjectsByY(subjects)
+  #     if subjects.length is 0
+  #       @setState noMoreSubjects: true, => console.log 'SET NO MORE SUBJECTS FLAG TO TRUE'
+  #     else
+  #       @setState
+  #         subject_index: 0
+  #         subjects: subjects
+  #         subjects_next_page: subjects[0].getMeta("next_page")
+  # 
+  #     # Does including instance have a defined callback to call when new subjects received?
+  #     if @fetchSubjectsCallback?
+  #       @fetchSubjectsCallback()
 
   fetchSubjects: (params, callback) ->
     # Apply defaults to unset params:

@@ -36,16 +36,18 @@ class SubjectsController < ApplicationController
         href: @subjects.prev_page.nil? ? nil : url_for(controller: 'subjects', page: @subjects.prev_page)
       }
     }
-    puts "count: #{@subjects.count}"
     respond_with SubjectResultSerializer.new(@subjects, scope: self.view_context), workflow_id: workflow_id, links: links
   end
 
   def show
-    subject_id  = params["subject_id"]
-    @subject = Subject.find_by( _id: params[:subject_id] )
-    respond_with  @subject
-  end
+    subject_id = get_objectid :subject_id
 
+    links = {
+      self: url_for(@subject)
+    }
+    @subject = Subject.find subject_id
+    respond_with SubjectResultSerializer.new(@subject, scope: self.view_context), links: links
+  end
 
 
 end
