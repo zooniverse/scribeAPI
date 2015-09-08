@@ -70,6 +70,8 @@ module.exports = React.createClass # rename to Classifier
       # @forceUpdate()
 
   render: ->
+    console.log 'render()'
+    console.log 'render::CURRENT SUBJECT: ', @getCurrentSubject()
     return null unless @getCurrentSubject()? && @getActiveWorkflow()?
     currentTask = @getCurrentTask()
     TaskComponent = @getCurrentTool()
@@ -186,8 +188,10 @@ module.exports = React.createClass # rename to Classifier
 
           <div className="forum-holder">
             {
+              console.log 'CURRENT SUBJECT: ', @getCurrentSubject()
               if hasZooniverseId
-                <a href="https://www.zooniverse.org/projects/djsato/old-weather-whaling/talk/subjects/#{@getCurrentSubject().meta_data.zooniverse_id}/">Click here to discuss this page</a>
+                console.log 'BLASH!'
+                <a target="_blank" href="https://www.zooniverse.org/projects/djsato/old-weather-whaling/talk/subjects/#{@getCurrentSubject().meta_data.zooniverse_id}/">Click here to discuss this page</a>
               else
                 <ForumSubjectWidget subject_set={@getCurrentSubjectSet()} project={@props.project} />
 
@@ -222,6 +226,7 @@ module.exports = React.createClass # rename to Classifier
 
   # User changed currently-viewed subject:
   handleViewSubject: (index) ->
+    console.log 'handleViewSunject()'
     @setState subject_index: index, => @forceUpdate()
     @toggleBadSubject() if @state.badSubject
 
