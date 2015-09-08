@@ -77,7 +77,7 @@ module.exports = React.createClass # rename to Classifier
     firstTask = activeWorkflow.first_task
     onFirstAnnotation = @state.taskKey == firstTask
     currentSubtool = if @state.currentSubtool then @state.currentSubtool else @getTasks()[firstTask]?.tool_config.tools?[0]
-
+    hasZooniverseId = @getCurrentSubject().meta_data.zooniverse_id?
     # direct link to this page
     pageURL = "#{location.origin}/#/mark?subject_set_id=#{@getCurrentSubjectSet().id}&selected_subject_id=#{@getCurrentSubject().id}"
 
@@ -186,10 +186,13 @@ module.exports = React.createClass # rename to Classifier
 
           <div className="forum-holder">
             {
-              console.log 'CURRENT SUBJECT: ', @getCurrentSubject()
+              if hasZooniverseId
+                <a href="https://www.zooniverse.org/projects/djsato/old-weather-whaling/talk/subjects/#{@getCurrentSubject().meta_data.zooniverse_id}/">Click here to discuss this page</a>
+              else
+                <ForumSubjectWidget subject_set={@getCurrentSubjectSet()} project={@props.project} />
+
             }
-            <ForumSubjectWidget subject_set={@getCurrentSubjectSet()} project={@props.project} />
-          </div>
+            </div>
 
           <div className="social-media-container">
             <a href="https://www.facebook.com/sharer.php?u=#{encodeURIComponent pageURL}" target="_blank">
