@@ -34,7 +34,7 @@
             "next_task": "start_exploring",
             "help": {
                 "title": "How to just transcribe",
-                "file": "how_to_mark_pages"
+                "file": "transcribing"
             }
         },
         "start_exploring": {
