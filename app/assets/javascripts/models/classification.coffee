@@ -17,11 +17,10 @@ class Classification
     @committed = false
 
   commit: (callback) ->
-    return if @committed
+    # return if @committed  # this flag doesn't seem to be used anywhere --STI
+    # NOTE: a more pressing concern: why is @committed ever true? seems this is called multiple times, yet no dupes?
     @committed = true
-
     @metadata.finished_at = (new Date).toISOString()
-
     data =
       classifications:
         annotation: @annotation

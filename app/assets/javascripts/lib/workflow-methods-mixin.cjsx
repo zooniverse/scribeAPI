@@ -128,7 +128,7 @@ module.exports =
   # Get current classification:
   getCurrentClassification: ->
     @state.classifications[@state.classificationIndex]
-        
+
 
   # Get current task:
   getCurrentTask: ->
