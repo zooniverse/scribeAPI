@@ -34,10 +34,11 @@ class Subject
 
 
   # ROOT SUBJECT concerns:
-  field :order
+  field :order,                       type: Integer
   field :name,                        type: String
-  field :width
-  field :height
+  field :width,                       type: Integer
+  field :height,                      type: Integer
+  field :zooniverse_id
 
   # SECONDARY SUBJECT concerns:
   field :data,                        type: Hash
@@ -64,7 +65,7 @@ class Subject
   def thumbnail
     location['thumbnail'].nil? ? location['standard'] : location['thumbnail']
   end
-  
+
   def update_subject_set_stats
     subject_set.inc_subject_count_for_workflow(workflow) if ! workflow.nil?
   end

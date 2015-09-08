@@ -185,6 +185,9 @@ module.exports = React.createClass # rename to Classifier
           }
 
           <div className="forum-holder">
+            {
+              console.log 'CURRENT SUBJECT: ', @getCurrentSubject()
+            }
             <ForumSubjectWidget subject_set={@getCurrentSubjectSet()} project={@props.project} />
           </div>
 
