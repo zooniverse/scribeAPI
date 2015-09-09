@@ -127,8 +127,14 @@ html, body,
 }
 
 /* Homepage */
-.home-page {
+div.home-page {
   padding-top: 40px;
+    -webkit-touch-callout: text;
+  -webkit-user-select: text;
+  -khtml-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
 }
 .home-page h1 {
   display: block;
@@ -170,9 +176,6 @@ html, body,
 .home-page li a {
   display: block;
   margin: 0.2em 0.8em 0.8em;
-}
-.group-area {
-
 }
 .group-area .groups {
   text-align: center;
