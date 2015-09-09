@@ -172,20 +172,29 @@ html, body,
   margin: 0.2em 0.8em 0.8em;
 }
 .group-area {
-  display: none;
+
 }
 .group-area .groups {
-  display: block;
   text-align: center;
 }
 .group-area .groups .group {
   display: inline-block;
+  height: 273px;
+  overflow: hidden;
 }
 .group-area .groups .group a {
   background: none;
 }
 .group-area .groups .group a:hover {
   background: rgba(255,255,255,0.2);
+}
+.group .group-name {
+  font-family: 'Kievit', 'Helvetica Neue', Arial, sans-serif;
+}
+.group .button-container {
+  height: auto;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 /* Rectangle Tool */
