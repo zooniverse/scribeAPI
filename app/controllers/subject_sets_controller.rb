@@ -3,6 +3,7 @@ class SubjectSetsController < ApplicationController
 
   def index
     workflow_id                 = get_objectid :workflow_id
+    group_id                    = get_objectid :group_id
     random                      = get_bool :random, false
     subject_set_id              = get_objectid :subject_set_id
 
@@ -12,12 +13,16 @@ class SubjectSetsController < ApplicationController
     subjects_limit              = get_int :subjects_limit, 100
     subjects_page               = get_int :subjects_page, 1
 
+    query = {}
+    
     # Filter out sets not apprpriate for workflow?
-    if workflow_id
-      query = {"counts.#{workflow_id}.active_subjects" => {"$gt"=>0}}
-    else
-      query = {}
-    end
+    query["counts.#{workflow_id}.active_subjects"] = {"$gt"=>0} if ! workflow_id.nil?
+
+    # Filter by group_id? 
+    query[:group_id] = group_id if ! group_id.nil? 
+
+    # Override random if querying by subject_set_id:
+    random = false if ! subject_set_id.nil?
 
     # Get random set of subject-sets?
     if random
