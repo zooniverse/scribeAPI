@@ -341,16 +341,25 @@ span.keyword {
 }
 
 .rectangle-tool .tool-shape {
-    cursor: grab;
-    cursor: -webkit-grab;
-    stroke-width: 1;
-    stroke: #646400;
-    fill: rgba(0,128,0,.1);
+  cursor: grab;
+  cursor: -webkit-grab;
+  stroke-width: 1;
+  fill: rgba(0,128,0,.1);
 }
 
-.tool-shape.committed.tanscribing.draggable {
-    fill: transparent;
-    stroke-width: 0;
-    cursor: default;
+.tool-shape.transcribable.uncommitted{
+  cursor: grab;
+  cursor: -webkit-grab;
+  stroke-width: 1;
+  fill: rgba(0,128,0,.1);
+  
 }
+
+
+.tool-shape.committed.tanscribing.draggable {
+  fill: transparent;
+  stroke-width: 0;
+  cursor: default;
+}
+
 

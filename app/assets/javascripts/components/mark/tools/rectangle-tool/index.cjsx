@@ -7,7 +7,7 @@ MarkButtonMixin = require 'lib/mark-button-mixin'
 
 MINIMUM_SIZE = 5
 DELETE_BUTTON_ANGLE = 45
-DELETE_BUTTON_DISTANCE_X = 12
+DELETE_BUTTON_DISTANCE_X = 5
 DELETE_BUTTON_DISTANCE_Y = 12
 DEBUG = false
 
@@ -61,13 +61,48 @@ module.exports = React.createClass
       mark.status = 'mark'
     mark: mark
     # set up the state in order to caluclate the polyline as rectangle
-    x: @props.mark.x
-    y: @props.mark.y
-    width: @props.width
-    height: @props.height
+    x1 = @props.mark.x
+    x2 = x1 + @props.mark.width
+    y1 = @props.mark.y
+    y2 = y1 + @props.mark.height
+
+    pointsHash: @createRectangleObjects(x1, x2, y1, y2)
 
     buttonDisabled: false
     lockTool: false
+
+  componentWillReceiveProps:(newProps)->
+    x1 = newProps.mark.x
+
+    console.log "newProps.mark.width", newProps.mark.width
+    x2 = x1 + newProps.mark.width
+    y1 = newProps.mark.y
+    y2 = y1 + newProps.mark.height
+
+    @setState pointsHash: @createRectangleObjects(x1, x2, y1, y2)
+
+  createRectangleObjects: (x1 , x2, y1, y2) ->
+    console.log "x1 , x2, y1, y2: #{x1} , #{x2}, #{y1}, #{y2}"
+    if x1 < x2
+      LX = x1
+      HX = x2
+    else 
+      LX = x2
+      HX = x1
+
+    if y1 < y2
+      LY = y1
+      HY = y2
+    else 
+      LY = y2
+      HY = y1
+
+    pointsHash = {
+      handleLLDrag: [LX, LY],
+      handleHLDrag: [HX, LY],
+      handleHHDrag: [HX, HY],
+      handleLHDrag: [LX, HY]
+    }
 
   handleMainDrag: (e, d) ->
     return if @state.locked
@@ -76,41 +111,66 @@ module.exports = React.createClass
     @props.mark.y += d.y / @props.yScale
     @props.onChange e
 
-  handleX1Y1Drag: (e, d) ->
+  dragFilter: (key) ->
+    # console.log "dragFilter KEY", key
+    if key == "handleLLDrag"
+      return @handleLLDrag
+    if key == "handleLHDrag"
+      return @handleLHDrag
+    if key == "handleHLDrag"
+      return @handleHLDrag
+    if key == "handleHHDrag"
+      return @handleHHDrag
+
+  handleLLDrag: (e, d) ->
     @props.mark.x += d.x / @props.xScale
     @props.mark.y += d.y / @props.yScale
     @props.mark.width -= d.x / @props.xScale
     @props.mark.height -= d.y / @props.yScale
     @props.onChange e
 
-  handleX1Y2Drag: (e, d) ->
+  handleLHDrag: (e, d) ->
     @props.mark.x += d.x / @props.xScale
     @props.mark.width -= d.x / @props.xScale
     @props.mark.height += d.y / @props.yScale
     @props.onChange e
 
-  handleX2Y1Drag: (e, d) ->
+  handleHLDrag: (e, d) ->
     @props.mark.y += d.y / @props.yScale
     @props.mark.width += d.x / @props.xScale
     @props.mark.height -= d.y / @props.yScale
+    console.log @props.mark.height
     @props.onChange e
 
-  handleX2Y2Drag: (e, d) ->
+  handleHHDrag: (e, d) ->
     @props.mark.width += d.x / @props.xScale
     @props.mark.height += d.y / @props.yScale
     @props.onChange e
 
-  getDeleteButtonPosition: ->
-    x = @props.mark.x + @props.mark.width + DELETE_BUTTON_DISTANCE_X / @props.xScale
-    y = @props.mark.y - DELETE_BUTTON_DISTANCE_Y / @props.yScale
+  getDeleteButtonPosition: ()->
+    points = @state.pointsHash["handleHLDrag"]
+    x = points[0] + DELETE_BUTTON_DISTANCE_X / @props.xScale
+    y = points[1] / @props.yScale
     {x, y}
 
-  getMarkButtonPosition: ->
-    x: @props.mark.x + @props.mark.width
-    y: @props.mark.y + @props.mark.height + 20 / @props.yScale
+  getMarkButtonPosition: ()->
+    points = @state.pointsHash["handleHHDrag"]
+    x: points[0]
+    y: points[1] + 20 / @props.yScale
 
   handleMouseDown: ->
     @props.onSelect @props.mark
+
+  normalizeMark: ->
+    if @props.mark.width < 0
+      @props.mark.x += @props.mark.width
+      @props.mark.width *= -1
+
+    if @props.mark.height < 0
+      @props.mark.y += @props.mark.height
+      @props.mark.height *= -1
+
+    @props.onChange()
 
   render: ->
     classes = []
@@ -134,7 +194,7 @@ module.exports = React.createClass
       [x1, y2].join ','
       [x1, y1].join ','
     ].join '\n'
-
+    
     <g
       tool={this}
       onMouseDown={@props.onSelect}
@@ -170,20 +230,21 @@ module.exports = React.createClass
         </Draggable>
 
         { if @props.selected
-            <DeleteButton onClick={@props.onDestroy} scale={scale} x={@getDeleteButtonPosition().x} y={@getDeleteButtonPosition().y}/>
+            <DeleteButton onClick={@props.onDestroy} scale={scale} x={@getDeleteButtonPosition(@state.pointsHash).x} y={@getDeleteButtonPosition(@state.pointsHash).y}/>
         }
-        { if @props.selected && not @props.disabled
-            <g>
-              <DragHandle tool={this} x={x1} y={y1} onDrag={@handleX1Y1Drag} />
-              <DragHandle tool={this} x={x2} y={y1} onDrag={@handleX2Y1Drag} />
-              <DragHandle tool={this} x={x2} y={y2} onDrag={@handleX2Y2Drag} />
-              <DragHandle tool={this} x={x1} y={y2} onDrag={@handleX1Y2Drag} />
+        
+        { 
+          if @props.selected && not @props.disabled
+            <g> 
+              {
+                for key, value of @state.pointsHash
+                  <DragHandle key={key} tool={this} x={value[0]} y={value[1]} onDrag={@dragFilter(key)} onEnd={@normalizeMark} />
+              }
             </g>
         }
 
         { # REQUIRES MARK-BUTTON-MIXIN
           if @props.selected or @state.markStatus is 'transcribe-enabled'
-            console.log "@RECTANGLE props.selected", @props.selected
             @renderMarkButton() if @props.isTranscribable
         }
 
