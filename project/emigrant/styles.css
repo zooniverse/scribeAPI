@@ -39,7 +39,7 @@ html, body,
 
 /* Header */
 .main-header-group {
-  background: rgba(22,23,11,0.6);
+  background: rgba(22,23,11,0.8);
 }
 .main-header-item:hover {
   background: rgba(85,85,85,0.5);
