@@ -17,9 +17,20 @@ class Classification
     @committed = false
 
   commit: (callback) ->
+    console.log 'Classification::commit()'
+
+    console.log 'COMMIT flag was set to: ', @committed
+
+
     # return if @committed  # this flag doesn't seem to be used anywhere --STI
-    # NOTE: a more pressing concern: why is @committed ever true? seems this is called multiple times, yet no dupes?
+    # # NOTE: a more pressing concern: why is @committed ever true? seems this is called multiple times, yet no dupes?
+    #
+
     @committed = true
+
+
+    console.log 'set COMMITTED flag to: ', @committed
+    console.log 'ANNOTATION: ', @annotation
     @metadata.finished_at = (new Date).toISOString()
     data =
       classifications:

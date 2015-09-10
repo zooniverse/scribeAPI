@@ -23,9 +23,11 @@ module.exports =
 
   # Start a new classification (optionally initialized with given annotation hash):
   beginClassification: (annotation = {}, callback) ->
+    console.log "beginClassification() (reset annotation hash)"
     classifications = @state.classifications
     classification = new Classification()
     classification.annotation[k] = v for k, v of annotation
+    console.log 'pushed classification to @state.classifications'
     classifications.push classification
     @setState
       classifications: classifications
@@ -173,8 +175,7 @@ module.exports =
     # Commit whatever current classification is:
     @commitClassification()
     # start a new one:
-    @beginClassification {}
-
+    # @beginClassification {} # this keps adding empty (uncommitted) classifications to @state.classifications --STI
 
     # After classification ready with empty annotation, proceed to next task:
     @advanceToTask nextTaskKey
