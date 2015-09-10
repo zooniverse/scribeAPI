@@ -26,7 +26,7 @@
   height: 200px;
   margin-bottom: 10px;
   margin-left: 10px;
-  line-height: 150px;
+  // line-height: 150px;
   color: white;
   font-weight: bold;
   font-size: 3em;
@@ -56,10 +56,16 @@
     width 310px
     background rgba(43,58,66,0.90)
     transition opacity .3s
+
     &.active
       transition opacity .3s
       opacity 1
+
     a
+      letter-spacing: .03em;
+      border-radius: 4px;
+      font-weight: 80;
+      text-align: center;
       border-color #8CBC8B
       color #fff
       display block
@@ -67,16 +73,21 @@
       margin-right auto
       margin-top 20px
       margin-bottom 20px
+      line-height 20px
+      font-size 20px
+      padding 10px
+      width 200px
 
 .group-page
   box-model: border-box
-  padding: 50px
-  margin-top:100px
 
   .group-image
     max-width 400px
     max-height 500px
     float right
+    margin-bottom 10px
+  p
+    font-size 1.3em
 
 .subject_set
   margin: 0px 20px

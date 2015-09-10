@@ -102,10 +102,6 @@ html, body,
   line-height: 2;
   text-align: left;
 }
-.page-content h1,
-.page-content div {
-  background: none;
-}
 .page-content h2 {
   font-size: 36px;
   font-weight: 400;
@@ -116,7 +112,7 @@ html, body,
   margin: 1em auto 1.8em;
   width: 80%;
 }
-.page-content img {
+.page-content#Team img {
   display: block;
   width: 60%;
   height: auto;
