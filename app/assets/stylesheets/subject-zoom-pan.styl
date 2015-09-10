@@ -1,13 +1,11 @@
 .subject-zoom-pan
-  position:fixed
-  left: 20px
-  bottom: 20px
   width: 130px
   height: 130px
   background: rgba(0, 0, 0, 0.7)
   border: 2px solid #444444
   border-radius: 65px
   z-index: 99
+  position: relative
 
   &:before
     content: ' '
@@ -103,6 +101,7 @@
       bottom: 5px
       &:before
         transform: rotate(180deg)
+        -webkit-transform: rotate(180deg)
 
     &.left, &.right
       width: 20px
@@ -114,11 +113,13 @@
       left: 5px
       &:before
         transform: rotate(-90deg)
+        -webkit-transform: rotate(-90deg)
 
     &.right
       right: 5px
       &:before
         transform: rotate(90deg)
+        -webkit-transform: rotate(90deg)
 
     &:hover
       &:before
