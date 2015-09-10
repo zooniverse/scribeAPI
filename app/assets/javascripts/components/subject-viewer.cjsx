@@ -243,7 +243,6 @@ module.exports = React.createClass
     callback?()
 
   handleChange: (mark) ->
-    console.log "HANDLE CHANGE IN SUBJECT VIEWER"
     @setState
       selectedMark: mark
         , =>
@@ -377,6 +376,8 @@ module.exports = React.createClass
                   { @highlightMark(mark, toolName) }
                   <ToolComponent
                     key={@props.subject.id}
+                    xBound={@props.subject.width}
+                    yBound={@props.subject.height}
                     mark={mark}
                     xScale={scale.horizontal}
                     yScale={scale.vertical}
