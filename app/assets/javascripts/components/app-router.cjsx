@@ -96,7 +96,7 @@ class AppRouter
         <DefaultRoute name="home-default" handler={HomePage} />
       </Route>
 
-    Router.run routes, (Handler) ->
+    Router.run routes, (Handler, state) ->
       React.render <Handler />, document.body
 
   controllerForPage: (page) ->

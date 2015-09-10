@@ -5,11 +5,11 @@ class SubjectResultSerializer < ActiveModel::MongoidSerializer
 
   # This serializes both single objects and arrays of objects, so data should output either a hash or an array respectively:
   def data
-    options = serialization_options.merge({root: false})
+    options = serialization_options.merge({root: false, scope: scope})
     if object.respond_to? :each
-      object.map { |s| SubjectSerializer.new(s, root: false, scope: scope) }
+      object.map { |s| SubjectSerializer.new(s, options) }
     else
-      SubjectSerializer.new(object, root: false, scope: scope)
+      SubjectSerializer.new(object, options)
     end
   end
 
@@ -24,6 +24,6 @@ class SubjectResultSerializer < ActiveModel::MongoidSerializer
   end
 
   def links
-    return serialization_options[:links]
+    serialization_options[:links]
   end
 end

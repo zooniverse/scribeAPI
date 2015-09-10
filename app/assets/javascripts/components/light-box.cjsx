@@ -30,8 +30,12 @@ module.exports = React.createClass
     else
       text = "Hide Lightbox"
 
+  componentDidUpdate: (prev_props) ->
+    # PB State is confusing in this component. Sometimes first thumbnail is shown twice for some reason. This seems to fix:
+    @setState first: @props.subject_set.subjects[0] if @state.first != @props.subject_set.subjects[0]
+
   render: ->
-    window.subjects = @props.subject_set.subjects
+    # window.subjects = @props.subject_set.subjects # pb ?
     return null if @props.subject_set.subjects.length <= 1
     indexOfFirst = @findSubjectIndex(@state.first)
     second = @props.subject_set.subjects[indexOfFirst+1]
