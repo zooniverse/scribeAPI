@@ -32,7 +32,8 @@ module.exports = React.createClass
 
   componentDidUpdate: (prev_props) ->
     # PB State is confusing in this component. Sometimes first thumbnail is shown twice for some reason. This seems to fix:
-    @setState first: @props.subject_set.subjects[0] if @state.first != @props.subject_set.subjects[0]
+    console.log "update: ", prev_props, @props
+    # @setState first: @props.subject_set.subjects[0] if @state.first != @props.subject_set.subjects[0]
 
   render: ->
     # window.subjects = @props.subject_set.subjects # pb ?
