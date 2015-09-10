@@ -5,7 +5,6 @@ coreTools               = require 'components/core-tools'
 FetchSubjectSetsMixin   = require 'lib/fetch-subject-sets-mixin'
 BaseWorkflowMethods     = require 'lib/workflow-methods-mixin'
 JSONAPIClient           = require 'json-api-client' # use to manage data?
-ForumSubjectWidget      = require '../forum-subject-widget'
 API                     = require '../../lib/api'
 HelpModal               = require 'components/help-modal'
 Tutorial               = require 'components/tutorial'
@@ -114,8 +113,13 @@ module.exports = React.createClass # rename to Classifier
               totalSubjectPages={@state.total_subject_pages}
               destroyCurrentClassification={@destroyCurrentClassification}
               hideOtherMarks={@state.hideOtherMarks}
+              toggleHideOtherMarks={@toggleHideOtherMarks}
               currentSubtool={currentSubtool}
               lightboxHelp={@toggleLightboxHelp}
+              pageURL={pageURL}
+              project={@props.project}
+              toggleTutorial={@toggleTutorial}
+              completeTutorial={@state.completeTutorial}
             />
         }
       </div>
@@ -133,7 +137,6 @@ module.exports = React.createClass # rename to Classifier
               { if @getCurrentTask().help?
                 <HelpButton onClick={@toggleHelp} />
               }
-              <HideOtherMarksButton active={@state.hideOtherMarks} onClick={@toggleHideOtherMarks} />
               { if onFirstAnnotation
                 <BadSubjectButton label={"Bad " + @props.project.term('subject')} active={@state.badSubject} onClick={@toggleBadSubject} />
               }
@@ -143,10 +146,6 @@ module.exports = React.createClass # rename to Classifier
               { if @state.hideOtherMarks
                 <p>Currently displaying only your marks. <strong>Toggle the button again to show all marks to-date.</strong></p>
               }
-            </div>
-
-            <div className="tutorial-holder help-button ghost" onClick={@toggleTutorial}>
-              <HelpButton label={"Tutorial"} onClick={@toggleTutorial} />
             </div>
 
             <nav className="task-nav">
@@ -169,35 +168,9 @@ module.exports = React.createClass # rename to Classifier
             {
               if @getActiveWorkflow()? && @getWorkflowByName('transcribe')?
                 <p>
-                  <Link to="/transcribe/#{@getWorkflowByName('transcribe').id}/#{@getCurrentSubject().id}">Transcribe this {@props.project.term('subject')} now!</Link>
+                  <Link to="/transcribe/#{@getWorkflowByName('transcribe').id}/#{@getCurrentSubject().id}" className={"minor-button ghost"}>Transcribe this {@props.project.term('subject')} now!</Link>
                 </p>
             }
-          </div>
-
-          {
-            if @getActiveWorkflow()?
-              <div className="explore">
-                <h2>Explore</h2>
-                <p>
-                  <Link to="/groups/#{@getCurrentSubjectSet().group_id}">About this {@props.project.term('group')}.</Link>
-                </p>
-              </div>
-          }
-
-          <div className="forum-holder">
-            <ForumSubjectWidget subject_set={@getCurrentSubjectSet()} project={@props.project} />
-          </div>
-
-          <div className="social-media-container">
-            <a href="https://www.facebook.com/sharer.php?u=#{encodeURIComponent pageURL}" target="_blank">
-              <i className="fa fa-facebook-square"/>
-            </a>
-            <a href="https://twitter.com/home?status=#{encodeURIComponent pageURL}%0A" target="_blank">
-              <i className="fa fa-twitter-square"/>
-            </a>
-            <a href="https://plus.google.com/share?url=#{encodeURIComponent pageURL}" target="_blank">
-              <i className="fa fa-google-plus-square"/>
-            </a>
           </div>
 
         </div>

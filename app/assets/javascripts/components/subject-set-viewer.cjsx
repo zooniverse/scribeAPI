@@ -70,6 +70,12 @@ module.exports = React.createClass
         viewBox={@state.zoomPanViewBox}
         onExpand={@onToolbarExpand}
         onHide={@onToolbarHide}
+        hideOtherMarks={@props.hideOtherMarks}
+        toggleHideOtherMarks={@props.toggleHideOtherMarks}
+        pageURL={@props.pageURL}
+        project={@props.project}
+        toggleTutorial={@props.toggleTutorial}
+        completeTutorial={@props.completeTutorial}
       />
 
       { for subject, index in @props.subject_set.subjects
