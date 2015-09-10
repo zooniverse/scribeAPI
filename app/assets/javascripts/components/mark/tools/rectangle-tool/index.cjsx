@@ -7,8 +7,8 @@ MarkButtonMixin = require 'lib/mark-button-mixin'
 
 MINIMUM_SIZE = 5
 DELETE_BUTTON_ANGLE = 45
-DELETE_BUTTON_DISTANCE_X = 5
-DELETE_BUTTON_DISTANCE_Y = 12
+DELETE_BUTTON_DISTANCE_X = 12
+DELETE_BUTTON_DISTANCE_Y = 0
 DEBUG = false
 
 module.exports = React.createClass
@@ -73,8 +73,6 @@ module.exports = React.createClass
 
   componentWillReceiveProps:(newProps)->
     x1 = newProps.mark.x
-
-    console.log "newProps.mark.width", newProps.mark.width
     x2 = x1 + newProps.mark.width
     y1 = newProps.mark.y
     y2 = y1 + newProps.mark.height
@@ -82,7 +80,6 @@ module.exports = React.createClass
     @setState pointsHash: @createRectangleObjects(x1, x2, y1, y2)
 
   createRectangleObjects: (x1 , x2, y1, y2) ->
-    console.log "x1 , x2, y1, y2: #{x1} , #{x2}, #{y1}, #{y2}"
     if x1 < x2
       LX = x1
       HX = x2
@@ -150,7 +147,7 @@ module.exports = React.createClass
   getDeleteButtonPosition: ()->
     points = @state.pointsHash["handleHLDrag"]
     x = points[0] + DELETE_BUTTON_DISTANCE_X / @props.xScale
-    y = points[1] / @props.yScale
+    y = points[1] + DELETE_BUTTON_DISTANCE_Y / @props.yScale
     {x, y}
 
   getMarkButtonPosition: ()->
