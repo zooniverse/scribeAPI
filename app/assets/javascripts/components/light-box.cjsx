@@ -30,11 +30,6 @@ module.exports = React.createClass
     else
       text = "Hide Lightbox"
 
-  componentDidUpdate: (prev_props) ->
-    # PB State is confusing in this component. Sometimes first thumbnail is shown twice for some reason. This seems to fix:
-    console.log "update: ", prev_props, @props
-    # @setState first: @props.subject_set.subjects[0] if @state.first != @props.subject_set.subjects[0]
-
   render: ->
     # window.subjects = @props.subject_set.subjects # pb ?
     return null if @props.subject_set.subjects.length <= 1
@@ -151,7 +146,9 @@ module.exports = React.createClass
 
   # finds the index of a given subject within the current page of the subject_set
   findSubjectIndex: (subject_arg)->
-    return @props.subject_set.subjects.indexOf subject_arg
+    # PB sometimes equality is failing on subjects, so let's try just matching id
+    # return @props.subject_set.subjects.indexOf subject_arg
+    return (s.id for s in @props.subject_set.subjects).indexOf subject_arg.id
 
   # allows user to naviagate back though a subject_set
   # # controlls navigation of current page of subjects as well as the method that pull a new page of subjects
