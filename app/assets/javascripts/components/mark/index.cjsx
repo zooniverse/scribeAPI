@@ -43,6 +43,7 @@ module.exports = React.createClass # rename to Classifier
 
   componentDidMount: ->
     @getCompletionAssessmentTask()
+    @fetchSubjectSetsBasedOnProps()
 
   componentWillMount: ->
     @setState
@@ -50,7 +51,13 @@ module.exports = React.createClass # rename to Classifier
 
     @beginClassification()
 
-  componentWillReceiveProps:->
+  componentDidUpdate: (prev_props) ->
+    # If visitor nav'd from, for example, /mark/[some id] to /mark, this component won't re-mount, so detect transition here:
+    if prev_props.hash != @props.hash
+      @fetchSubjectSetsBasedOnProps()
+
+  componentWillReceiveProps: (new_props) ->
+    # PB: Should the following check new_props instead? (@props is the old props, immediately overwritten by new_props)
     @setState completeTutorial: @props.project.current_user_tutorial
 
   toggleHelp: ->
@@ -64,9 +71,6 @@ module.exports = React.createClass # rename to Classifier
 
   toggleHideOtherMarks: ->
     @setState hideOtherMarks: not @state.hideOtherMarks
-    , =>
-      console.log 'SET @state.hidingMarks to: ', @state.hideOtherMarks
-      # @forceUpdate()
 
   render: ->
     return null unless @getCurrentSubject()? && @getActiveWorkflow()?
@@ -81,7 +85,7 @@ module.exports = React.createClass # rename to Classifier
     pageURL = "#{location.origin}/#/mark?subject_set_id=#{@getCurrentSubjectSet().id}&selected_subject_id=#{@getCurrentSubject().id}"
 
 
-    if currentTask.tool is 'pick_one'
+    if currentTask?.tool is 'pick_one'
       currentAnswer = (a for a in currentTask.tool_config.options when a.value == currentAnnotation.value)[0]
       waitingForAnswer = not currentAnswer
 
@@ -107,10 +111,10 @@ module.exports = React.createClass # rename to Classifier
               onDestroy={@handleMarkDelete}
               onViewSubject={@handleViewSubject}
               subToolIndex={@state.currentSubToolIndex}
-              subjectCurrentPage={@state.subject_current_page}
               nextPage={@nextPage}
               prevPage={@prevPage}
-              totalSubjectPages={@state.total_subject_pages}
+              subjectCurrentPage={@state.subjects_current_page}
+              totalSubjectPages={@state.subjects_total_pages}
               destroyCurrentClassification={@destroyCurrentClassification}
               hideOtherMarks={@state.hideOtherMarks}
               toggleHideOtherMarks={@toggleHideOtherMarks}
@@ -265,16 +269,13 @@ module.exports = React.createClass # rename to Classifier
     @advanceToNextSubject()
 
   nextPage: (callback_fn)->
-    console.log 'nextPage()'
-    new_page = @state.subject_current_page + 1
+    new_page = @state.subjects_current_page + 1
     subject_set = @getCurrentSubjectSet()
-    console.log "Np() subject_set", subject_set, new_page
     @fetchNextSubjectPage(subject_set.id, @getActiveWorkflow().id, new_page, 0, callback_fn)
 
   prevPage: (callback_fn) ->
-    new_page = @state.subject_current_page - 1
+    new_page = @state.subjects_current_page - 1
     subject_set = @getCurrentSubjectSet()
-    console.log "Np() subject_set", subject_set
     @fetchNextSubjectPage(subject_set.id, @getActiveWorkflow().id, new_page, 0, callback_fn)
 
 window.React = React
