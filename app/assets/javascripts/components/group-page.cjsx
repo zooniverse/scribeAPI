@@ -6,35 +6,32 @@ API           = require('../lib/api')
 GroupPage = React.createClass
   displayName: "GroupPage"
 
-  getInitialState:->
-    console.log("GROUP PAGE ")
+  getInitialState: ->
     group: null
-    loading: false
 
-  componentDidMount:->
-    @setState
-      loading: true
-
-    console.log "props: ", @props
-    API.type("groups").get(@props.params.group_id).then (group)=>
-      console.log "GROUP ", group
+  componentDidMount: ->
+    API.type("groups").get(@props.params.group_id).then (group) =>
       @setState
         group: group
-        loading: false
 
+    API.type("subject_sets").get(group_id: @props.params.group_id).then (sets) =>
+      @setState
+        subject_sets: sets
 
-  render:->
-    if @state.loading
+  render: ->
+    if ! @state.group?
       <div className="group-page">
         <h2>Loading...</h2>
       </div>
-    else if @state.group
+
+    else
       <div className='page-content'>
+        <h1>{@state.group.name}</h1>
+
         <div className="group-page">
 
           <img className="group-image" src={@state.group.cover_image_url}></img>
 
-          <h1>{@state.group.name}</h1>
           <p>{@state.group.description}</p>
 
           <dl className="metadata-list">
@@ -54,7 +51,7 @@ GroupPage = React.createClass
           </dl>
 
           <div className='subject_sets'>
-            { for set, i in @state.group.subject_sets
+            { for set, i in @state.subject_sets ? []
                 <div key={i} className="subject_set">
 
                   <img src={set.thumbnail} />
@@ -68,8 +65,6 @@ GroupPage = React.createClass
 
         </div>
       </div>
-    else
-      <h2>Something went wrong</h2>
 
 
 module.exports = GroupPage

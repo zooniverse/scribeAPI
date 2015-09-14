@@ -16,7 +16,6 @@ HomePage = React.createClass
 
     if ! @state.project
       API.type('projects').get().then (result)=>
-        console.log "got projects"
         project = result[0]
         @setState project: project
 
