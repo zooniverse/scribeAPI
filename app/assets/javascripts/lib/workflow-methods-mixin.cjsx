@@ -23,6 +23,7 @@ module.exports =
 
   # Start a new classification (optionally initialized with given annotation hash):
   beginClassification: (annotation = {}, callback) ->
+    console.log '------------------------------------------------------------------'
     console.log "beginClassification() (reset annotation hash)"
     classifications = @state.classifications
     classification = new Classification()
@@ -33,6 +34,7 @@ module.exports =
       classifications: classifications
       classificationIndex: classifications.length-1
         , =>
+          @forceUpdate()
           window.classifications = @state.classifications # make accessible to console
           callback() if callback?
 
@@ -92,7 +94,8 @@ module.exports =
         @toggleIllegibleSubject =>
           @advanceToNextSubject()
 
-      @beginClassification()
+    # bring this outside of the classsification callback
+    @beginClassification()
 
     console.log 'COMMITTED CLASSIFICATION: ', classification
     console.log '(ALL CLASSIFICATIONS): ', @state.classifications
@@ -109,6 +112,7 @@ module.exports =
 
   # Add newly acquired child_subject to child_subjects array of relevant subject (i.e. after submitting a subject-generating classification)
   appendChildSubject: (subject_id, child_subject) ->
+    console.log 'appendChildSubject()'
     if (s = @getSubjectById(subject_id))
       s.child_subjects.push $.extend({userCreated: true}, child_subject)
 

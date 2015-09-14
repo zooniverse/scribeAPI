@@ -85,6 +85,7 @@ module.exports = React.createClass
 
   # Handle initial mousedown:
   handleInitStart: (e) ->
+    console.log 'handleInitStart()'
     # Ignore right-click
     return null if e.buttons? && e.button? && e.button > 0
 
@@ -95,7 +96,8 @@ module.exports = React.createClass
 
     # If there's a current, uncommitted mark, commit it:
     if @state.uncommittedMark?
-      @submitMark()
+      console.log 'SubjectViewer::handleInitStart(): Submitting previous (uncommitted) mark!'
+      @submitMark(@state.uncommittedMark)
 
     # Instantiate appropriate marking tool:
     MarkComponent = markingTools[subTool.type] # NEEDS FIXING
@@ -123,6 +125,7 @@ module.exports = React.createClass
       for key, value of initValues
         mark[key] = value
 
+    console.log 'PROPS.ONCHANGE? = ', @props.onChange?
     @props.onChange? mark
 
     @setUncommittedMark mark
@@ -131,6 +134,8 @@ module.exports = React.createClass
 
   # Handle mouse dragging
   handleInitDrag: (e) ->
+    console.log 'handleInitDrag()'
+
     return null if ! @state.uncommittedMark?
 
     mark = @state.uncommittedMark
@@ -151,6 +156,7 @@ module.exports = React.createClass
 
   # Handle mouseup at end of drag:
   handleInitRelease: (e) ->
+    console.log 'HANDLE INITIAL RELEASE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
     return null if ! @state.uncommittedMark?
 
     mark = @state.uncommittedMark
@@ -235,12 +241,11 @@ module.exports = React.createClass
       @props.destroyCurrentClassification()
 
   # Commit mark
-  submitMark: (callback) ->
-    mark = @state.uncommittedMark
-    # console.log "SubjectViewer: Submit mark: ", mark.subToolIndex, mark
+  submitMark: (mark) ->
+    mark = mark ? mark : @state.uncommittedMark
     @setUncommittedMark null
     @props.onComplete? mark
-    callback?()
+    # callback?()
 
   handleChange: (mark) ->
     console.log "HANDLE CHANGE IN SUBJECT VIEWER"
@@ -276,7 +281,6 @@ module.exports = React.createClass
     return {transcribableMarks, otherMarks}
 
   renderMarks: (marks) ->
-
     return unless marks.length > 0
     scale = @getScale()
 
