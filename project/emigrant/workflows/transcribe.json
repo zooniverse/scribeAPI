@@ -99,6 +99,30 @@
       "generates_subject_type": "em_transcribed_valuation",
       "instruction": "Enter as they appear, the date and amount of the last property valuation that was recorded, if any",
       "next_task": null
+    },
+
+    "em_record_dimensions": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Enter the building dimensions",
+      "examples": ["100 x 100"],
+      "help": {
+        "title": "Record Dimensions",
+        "body": "Enter the ground dimensions of the building as they appear. These are often found below the street address in the hand-entered data in the bottom half of the records. Otherwise, they may be written in the drawing of the building footprint in the top half of the records."
+      },
+      "generates_subject_type": "em_transcribed_dimensions"
+    },
+
+    "em_record_description": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Enter the building description",
+      "examples": ["68 x 100 Frame Edifice with Slate roof and brick basement."],
+      "help": {
+        "title": "Building Description",
+        "body": "The buiding description is often found in the middle of the list of hand-entered data in the bottom half of the records."
+      },
+      "generates_subject_type": "em_transcribed_description""
     }
 
   }
