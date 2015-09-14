@@ -36,27 +36,10 @@ module.exports =
         , =>
           @forceUpdate()
           window.classifications = @state.classifications # make accessible to console
-          callback() if callback?
+          if callback?
+            console.log 'CALLING beginClassification() CALLBACK!'
+            callback()
 
-  toggleBadSubject: (e, callback) ->
-    @setState badSubject: not @state.badSubject, =>
-      callback?()
-
-
-  toggleIllegibleSubject: (e, callback) ->
-    @setState illegibleSubject: not @state.illegibleSubject, =>
-      callback?()
-
-  flagSubjectAsUserDeleted: (subject_id) ->
-    classification = @getCurrentClassification()
-    classification.subject_id = subject_id # @getCurrentSubject()?.id
-    classification.workflow_id = @getActiveWorkflow().id
-    classification.task_key = 'flag_bad_subject_task'
-
-    classification.commit (classification) =>
-      @updateChildSubject @getCurrentSubject().id, classification.subject_id, user_has_deleted: true
-
-      @beginClassification()
 
   # Push current classification to server:
   commitClassification: ->
@@ -99,6 +82,26 @@ module.exports =
 
     console.log 'COMMITTED CLASSIFICATION: ', classification
     console.log '(ALL CLASSIFICATIONS): ', @state.classifications
+
+  toggleBadSubject: (e, callback) ->
+    @setState badSubject: not @state.badSubject, =>
+      callback?()
+
+
+  toggleIllegibleSubject: (e, callback) ->
+    @setState illegibleSubject: not @state.illegibleSubject, =>
+      callback?()
+
+  flagSubjectAsUserDeleted: (subject_id) ->
+    classification = @getCurrentClassification()
+    classification.subject_id = subject_id # @getCurrentSubject()?.id
+    classification.workflow_id = @getActiveWorkflow().id
+    classification.task_key = 'flag_bad_subject_task'
+
+    classification.commit (classification) =>
+      @updateChildSubject @getCurrentSubject().id, classification.subject_id, user_has_deleted: true
+
+      @beginClassification()
 
 
   # Update specified child_subject with given properties (e.g. after submitting a delete flag)

@@ -83,21 +83,25 @@ module.exports = React.createClass
 
   # VARIOUS EVENT HANDLERS
 
+  # Commit mark
+  submitMark: (mark, nextMark) ->
+    return unless mark?
+    console.log 'submitMark()'
+
+    # mark = mark ? mark : @state.uncommittedMark
+    # @setUncommittedMark null
+    @props.onComplete? mark, nextMark # mark/index::handleDataFromTool()
+      # mark/index::handleDataFromTool()
+      # mark/index::commitClassification()
+    # callback?()
+
   # Handle initial mousedown:
   handleInitStart: (e) ->
     console.log 'handleInitStart()'
     # Ignore right-click
     return null if e.buttons? && e.button? && e.button > 0
-
-    subToolIndex = @props.subToolIndex
-    return null if ! subToolIndex?
-    subTool = @props.task.tool_config?.options?[subToolIndex]
-    return null if ! subTool?
-
-    # If there's a current, uncommitted mark, commit it:
-    if @state.uncommittedMark?
-      console.log 'SubjectViewer::handleInitStart(): Submitting previous (uncommitted) mark!'
-      @submitMark(@state.uncommittedMark)
+    return null if ! (subToolIndex = @props.subToolIndex)?
+    return null if ! (subTool = @props.task.tool_config?.options?[subToolIndex])?
 
     # Instantiate appropriate marking tool:
     MarkComponent = markingTools[subTool.type] # NEEDS FIXING
@@ -124,6 +128,12 @@ module.exports = React.createClass
       initValues = MarkComponent.initStart mouseCoords, mark, e
       for key, value of initValues
         mark[key] = value
+
+    # If there's a current, uncommitted mark, commit it:
+    if @state.uncommittedMark?
+      console.log 'SubjectViewer::handleInitStart(): Submitting previous (uncommitted) mark!', @state.uncommittedMark
+      @submitMark(@state.uncommittedMark, nextMark = mark)
+      @setUncommittedMark null
 
     console.log 'PROPS.ONCHANGE? = ', @props.onChange?
     @props.onChange? mark
@@ -178,9 +188,10 @@ module.exports = React.createClass
     @setUncommittedMark mark
 
   setUncommittedMark: (mark) ->
+    # console.log 'setUncommittedMark(): ', mark
     @setState
       uncommittedMark: mark,
-      selectedMark: mark
+      selectedMark: mark #, => @forceUpdate() # not sure if this is needed?
 
   setView: (viewX, viewY, viewWidth, viewHeight) ->
     @setState {viewX, viewY, viewWidth, viewHeight}
@@ -240,15 +251,7 @@ module.exports = React.createClass
     else if mark is @state.uncommittedMark
       @props.destroyCurrentClassification()
 
-  # Commit mark
-  submitMark: (mark) ->
-    mark = mark ? mark : @state.uncommittedMark
-    @setUncommittedMark null
-    @props.onComplete? mark
-    # callback?()
-
   handleChange: (mark) ->
-    console.log "HANDLE CHANGE IN SUBJECT VIEWER"
     @setState
       selectedMark: mark
         , =>

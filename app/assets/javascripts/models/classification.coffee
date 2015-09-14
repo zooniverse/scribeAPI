@@ -21,9 +21,11 @@ class Classification
 
     console.log 'COMMIT flag was set to: ', @committed
 
-    return if @committed  # this flag doesn't seem to be used anywhere --STI
+    if @committed  # this flag doesn't seem to be used anywhere --STI
+      console.log 'ALREADY SUBMITTED THIS CLASSIFICATION!'
+      return
     # NOTE: a more pressing concern: why is @committed ever true? seems this is called multiple times, yet no dupes?
-    
+
     @committed = true
 
 
