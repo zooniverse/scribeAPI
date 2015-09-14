@@ -122,7 +122,7 @@
         "title": "Building Description",
         "body": "The buiding description is often found in the middle of the list of hand-entered data in the bottom half of the records."
       },
-      "generates_subject_type": "em_transcribed_description""
+      "generates_subject_type": "em_transcribed_description"
     }
 
   }
