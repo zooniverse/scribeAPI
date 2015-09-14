@@ -197,6 +197,8 @@ desc 'creates a poject object from the project directory'
 
   def load_images(project_key)
     image_path = Rails.root.join('project', project_key, 'images/')
+    return if ! File.exists? image_path
+
     puts "Loading images from #{image_path}:"
 
     Dir.foreach(image_path).each do |file|

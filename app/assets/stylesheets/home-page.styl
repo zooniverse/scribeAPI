@@ -1,11 +1,10 @@
 .home-page
   background-color: inherit
-  padding-top: 6%;
   color:  #efefef;
   font-size: 30px;/* Approximation due to font substitution */
   font-weight: 300;
   line-height: 68px;/* Approximation due to font substitution */
-  text-align: center;
+  margin 10px auto
 
   h1
     font-family: clarendon-text-pro
@@ -14,39 +13,26 @@
     text-align: center
     color:  #ffffff;
     margin-bottom: 0%
+    padding 0
+
+  .page-content > div
+    max-width 800px
+    margin 0 auto
+    padding 0
 
   p
     font-family: ProximaNova, 'Helvetica Neue'
     font-size: 100%
     letter-spacing: 0.03em
 
-  a
-    display:inline-block
-    letter-spacing: .03em;
-    color: white
-    border-radius: 4px;
-    background-color:  #8cbc8c;
-    width: 200px;
-    line-height: 1em;
-    color: #ffffff;
-    font-size: 20px;
-    font-weight: 80;
-    text-align: center;
-    height: auto;
-    padding: .5em 0
-    text-decoration none
+  p, li, h1, h2, h3, hr
+    color white
 
-    &:hover
-      border-radius: 4px;
-      background-color: #A2C7A2;
-
-  .metadata-search
+  div.metadata-search
     background-color rgba(63, 87, 101, 0.7);
-    display: inline-block;
     max-width: 450px;
     width: 44%;
-    margin: 5% 0;
-    margin-top: 0%
+    margin: 0 auto;
     padding: .8%;
     line-height: .2
     border-radius: 0.25em;

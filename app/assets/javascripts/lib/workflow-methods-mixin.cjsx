@@ -297,10 +297,15 @@ module.exports =
     # If we've exhausted all subject sets, collapse in shame
     if new_subject_set_index >= @state.subjectSets.length
       @setState
+        taskKey: null
         notice:
           header: "All Done!"
           message: "There's nothing more to #{@props.workflowName} here."
-          onClick: @transitionTo? 'mark' # "/#/mark"
+          onClick: () =>
+            @transitionTo? 'mark' # "/#/mark"
+            @setState
+              notice: null
+              taskKey: @getActiveWorkflow().first_task
       console.warn "NO MORE SUBJECT SETS"
       return
 
@@ -316,7 +321,7 @@ module.exports =
   commitClassificationAndContinue: (d) ->
     @commitClassification()
     @beginClassification {}, () =>
-      if @getCurrentTask().next_task?
+      if @getCurrentTask()?.next_task?
         @advanceToTask @getCurrentTask().next_task
 
       else
