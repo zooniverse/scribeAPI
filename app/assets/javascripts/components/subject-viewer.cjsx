@@ -84,13 +84,13 @@ module.exports = React.createClass
   # VARIOUS EVENT HANDLERS
 
   # Commit mark
-  submitMark: (mark, nextMark) ->
+  submitMark: (mark, callback) ->
     return unless mark?
     console.log 'submitMark()'
 
     # mark = mark ? mark : @state.uncommittedMark
     # @setUncommittedMark null
-    @props.onComplete? mark, nextMark # mark/index::handleDataFromTool()
+    @props.onComplete? mark # mark/index::handleDataFromTool()
       # mark/index::handleDataFromTool()
       # mark/index::commitClassification()
     # callback?()
@@ -98,16 +98,30 @@ module.exports = React.createClass
   # Handle initial mousedown:
   handleInitStart: (e) ->
     console.log 'handleInitStart()'
-    # Ignore right-click
-    return null if e.buttons? && e.button? && e.button > 0
+    return null if e.buttons? && e.button? && e.button > 0 # ignore right-click
+
+    mark = @createMark(e)
+
+    # If there's a current, uncommitted mark, commit it:
+    if @state.uncommittedMark?
+      console.log 'SubjectViewer::handleInitStart(): Submitting previous (uncommitted) mark!', @state.uncommittedMark
+      @submitMark(@state.uncommittedMark)
+      @setUncommittedMark null
+
+    console.log 'PROPS.ONCHANGE? = ', @props.onChange?
+    @props.onChange? mark
+
+    @setUncommittedMark mark
+
+    # @selectMark mark
+
+  createMark: (e) ->
     return null if ! (subToolIndex = @props.subToolIndex)?
     return null if ! (subTool = @props.task.tool_config?.options?[subToolIndex])?
 
     # Instantiate appropriate marking tool:
     MarkComponent = markingTools[subTool.type] # NEEDS FIXING
 
-    # Create an initial mark instance, which will soon gather coords:
-    # mark = toolName: subTool.type, userCreated: true, subToolIndex: @state.uncommittedMark?.subToolIndex ? @props.annotation?.subToolIndex
     mark =
       belongsToUser: true # let users see their current mark when hiding others
       toolName: subTool.type
@@ -129,18 +143,8 @@ module.exports = React.createClass
       for key, value of initValues
         mark[key] = value
 
-    # If there's a current, uncommitted mark, commit it:
-    if @state.uncommittedMark?
-      console.log 'SubjectViewer::handleInitStart(): Submitting previous (uncommitted) mark!', @state.uncommittedMark
-      @submitMark(@state.uncommittedMark, nextMark = mark)
-      @setUncommittedMark null
+    return mark
 
-    console.log 'PROPS.ONCHANGE? = ', @props.onChange?
-    @props.onChange? mark
-
-    @setUncommittedMark mark
-
-    # @selectMark mark
 
   # Handle mouse dragging
   handleInitDrag: (e) ->

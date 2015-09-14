@@ -25,20 +25,22 @@ module.exports =
   beginClassification: (annotation = {}, callback) ->
     console.log '------------------------------------------------------------------'
     console.log "beginClassification() (reset annotation hash)"
+    console.log 'annotation = ', annotation
     classifications = @state.classifications
     classification = new Classification()
-    classification.annotation[k] = v for k, v of annotation
+
+    if annotation?
+      classification.annotation[k] = v for k, v of annotation
     console.log 'pushed classification to @state.classifications'
     classifications.push classification
+
     @setState
       classifications: classifications
       classificationIndex: classifications.length-1
         , =>
           @forceUpdate()
           window.classifications = @state.classifications # make accessible to console
-          if callback?
-            console.log 'CALLING beginClassification() CALLBACK!'
-            callback()
+          callback() if callback?
 
 
   # Push current classification to server:
