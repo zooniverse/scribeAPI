@@ -43,7 +43,7 @@ module.exports = React.createClass
 
   render: ->
     # disable LightBox if work has begun
-    disableLightBox = if @props.task.key isnt @props.workflow.first_task then true else false
+    disableLightBox = if @props.task?.key isnt @props.workflow.first_task then true else false
 
 
     # console.log 'SUBJECT-SET-VIEWER::render(), subject_index = ', @props.subject_index

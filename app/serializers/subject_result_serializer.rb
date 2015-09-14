@@ -3,9 +3,14 @@ class SubjectResultSerializer < ActiveModel::MongoidSerializer
 
   root false
 
+  # This serializes both single objects and arrays of objects, so data should output either a hash or an array respectively:
   def data
-    options = serialization_options.merge({root: false})
-    object.map { |s| SubjectSerializer.new(s, root: false, scope: scope) }
+    options = serialization_options.merge({root: false, scope: scope})
+    if object.respond_to? :each
+      object.map { |s| SubjectSerializer.new(s, options) }
+    else
+      SubjectSerializer.new(object, options)
+    end
   end
 
   def meta
@@ -15,10 +20,10 @@ class SubjectResultSerializer < ActiveModel::MongoidSerializer
       prev_page: object.prev_page,
       total_pages: object.total_pages,
       total: object.count
-    }
+    } if object.respond_to? :current_page
   end
 
   def links
-    return serialization_options[:links]
+    serialization_options[:links]
   end
 end
