@@ -44,6 +44,7 @@ module.exports = React.createClass # rename to Classifier
 
   componentDidMount: ->
     @getCompletionAssessmentTask()
+    @fetchSubjectSetsBasedOnProps()
 
   componentWillMount: ->
     @setState
@@ -51,7 +52,13 @@ module.exports = React.createClass # rename to Classifier
 
     @beginClassification()
 
-  componentWillReceiveProps:->
+  componentDidUpdate: (prev_props) ->
+    # If visitor nav'd from, for example, /mark/[some id] to /mark, this component won't re-mount, so detect transition here:
+    if prev_props.hash != @props.hash
+      @fetchSubjectSetsBasedOnProps()
+
+  componentWillReceiveProps: (new_props) ->
+    # PB: Should the following check new_props instead? (@props is the old props, immediately overwritten by new_props)
     @setState completeTutorial: @props.project.current_user_tutorial
 
   toggleHelp: ->
@@ -65,9 +72,6 @@ module.exports = React.createClass # rename to Classifier
 
   toggleHideOtherMarks: ->
     @setState hideOtherMarks: not @state.hideOtherMarks
-    , =>
-      console.log 'SET @state.hidingMarks to: ', @state.hideOtherMarks
-      # @forceUpdate()
 
   # User changed currently-viewed subject:
   handleViewSubject: (index) ->
@@ -134,7 +138,7 @@ module.exports = React.createClass # rename to Classifier
     # @props.classification.annotations.pop()
 
   completeSubjectSet: ->
-    @commitCurrentClassification()
+    @commitClassification()
     @beginClassification()
 
     # TODO: Should maybe make this workflow-configurable?
@@ -144,23 +148,19 @@ module.exports = React.createClass # rename to Classifier
         taskKey: "completion_assessment_task"
 
   completeSubjectAssessment: ->
-    @commitCurrentClassification()
+    @commitClassification()
     @beginClassification()
     @advanceToNextSubject()
 
   nextPage: (callback_fn)->
-    console.log 'nextPage()'
-    new_page = @state.subject_current_page + 1
+    new_page = @state.subjects_current_page + 1
     subject_set = @getCurrentSubjectSet()
-    console.log "Np() subject_set", subject_set, new_page
     @fetchNextSubjectPage(subject_set.id, @getActiveWorkflow().id, new_page, 0, callback_fn)
 
   prevPage: (callback_fn) ->
-    new_page = @state.subject_current_page - 1
+    new_page = @state.subjects_current_page - 1
     subject_set = @getCurrentSubjectSet()
-    console.log "Np() subject_set", subject_set
     @fetchNextSubjectPage(subject_set.id, @getActiveWorkflow().id, new_page, 0, callback_fn)
-
 
   render: ->
     return null unless @getCurrentSubject()? && @getActiveWorkflow()?
@@ -175,7 +175,7 @@ module.exports = React.createClass # rename to Classifier
     pageURL = "#{location.origin}/#/mark?subject_set_id=#{@getCurrentSubjectSet().id}&selected_subject_id=#{@getCurrentSubject().id}"
 
 
-    if currentTask.tool is 'pick_one'
+    if currentTask?.tool is 'pick_one'
       currentAnswer = (a for a in currentTask.tool_config.options when a.value == currentAnnotation.value)[0]
       waitingForAnswer = not currentAnswer
 
@@ -201,10 +201,10 @@ module.exports = React.createClass # rename to Classifier
               onDestroy={@handleMarkDelete}
               onViewSubject={@handleViewSubject}
               subToolIndex={@state.currentSubToolIndex}
-              subjectCurrentPage={@state.subject_current_page}
               nextPage={@nextPage}
               prevPage={@prevPage}
-              totalSubjectPages={@state.total_subject_pages}
+              subjectCurrentPage={@state.subjects_current_page}
+              totalSubjectPages={@state.subjects_total_pages}
               destroyCurrentClassification={@destroyCurrentClassification}
               hideOtherMarks={@state.hideOtherMarks}
               currentSubtool={currentSubtool}
@@ -214,58 +214,60 @@ module.exports = React.createClass # rename to Classifier
       </div>
       <div className="right-column">
         <div className="task-area">
-          <div className="task-container">
-            <TaskComponent
-              key={@getCurrentTask().key}
-              task={currentTask}
-              annotation={@getCurrentClassification()?.annotation ? {}}
-              onChange={@handleDataFromTool}
-              subject={@getCurrentSubject()}
-            />
-            <div className="help-bad-subject-holder">
-              { if @getCurrentTask().help?
-                <HelpButton onClick={@toggleHelp} />
-              }
-              <HideOtherMarksButton active={@state.hideOtherMarks} onClick={@toggleHideOtherMarks} />
-              { if onFirstAnnotation
-                <BadSubjectButton label={"Bad " + @props.project.term('subject')} active={@state.badSubject} onClick={@toggleBadSubject} />
-              }
-              { if @state.badSubject
-                <p>You&#39;ve marked this {@props.project.term('subject')} as BAD. Thanks for flagging the issue! <strong>Press DONE to continue.</strong></p>
-              }
-              { if @state.hideOtherMarks
-                <p>Currently displaying only your marks. <strong>Toggle the button again to show all marks to-date.</strong></p>
-              }
-            </div>
+          { if @getCurrentTask()?
+              <div className="task-container">
+                <TaskComponent
+                  key={@getCurrentTask().key}
+                  task={currentTask}
+                  annotation={@getCurrentClassification()?.annotation ? {}}
+                  onChange={@handleDataFromTool}
+                  subject={@getCurrentSubject()}
+                />
+                <div className="help-bad-subject-holder">
+                  { if @getCurrentTask().help?
+                    <HelpButton onClick={@toggleHelp} />
+                  }
+                  <HideOtherMarksButton active={@state.hideOtherMarks} onClick={@toggleHideOtherMarks} />
+                  { if onFirstAnnotation
+                    <BadSubjectButton label={"Bad " + @props.project.term('subject')} active={@state.badSubject} onClick={@toggleBadSubject} />
+                  }
+                  { if @state.badSubject
+                    <p>You&#39;ve marked this {@props.project.term('subject')} as BAD. Thanks for flagging the issue! <strong>Press DONE to continue.</strong></p>
+                  }
+                  { if @state.hideOtherMarks
+                    <p>Currently displaying only your marks. <strong>Toggle the button again to show all marks to-date.</strong></p>
+                  }
+                </div>
 
-            <div className="tutorial-holder help-button ghost" onClick={@toggleTutorial}>
-              <HelpButton label={"Tutorial"} onClick={@toggleTutorial} />
-            </div>
+                <div className="tutorial-holder help-button ghost" onClick={@toggleTutorial}>
+                  <HelpButton label={"Tutorial"} onClick={@toggleTutorial} />
+                </div>
 
-            <nav className="task-nav">
-              { if false
-                <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
-              }
-              { if @getNextTask()?
-                  <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@advanceToNextTask}>Next</button>
-                else
-                  if @state.taskKey == "completion_assessment_task"
-                    if @getCurrentSubject() == @getCurrentSubjectSet().subjects[@getCurrentSubjectSet().subjects.length-1]
-                      <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next</button>
+                <nav className="task-nav">
+                  { if false
+                    <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
+                  }
+                  { if @getNextTask()?
+                      <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@advanceToNextTask}>Next</button>
                     else
-                      <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next Page</button>
-                  else
-                    <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Done</button>
-              }
-            </nav>
+                      if @state.taskKey == "completion_assessment_task"
+                        if @getCurrentSubject() == @getCurrentSubjectSet().subjects[@getCurrentSubjectSet().subjects.length-1]
+                          <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next</button>
+                        else
+                          <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next Page</button>
+                      else
+                        <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Done</button>
+                  }
+                </nav>
 
-            {
-              if @getActiveWorkflow()? && @getWorkflowByName('transcribe')?
-                <p>
-                  <Link to="/transcribe/#{@getWorkflowByName('transcribe').id}/#{@getCurrentSubject().id}">Transcribe this {@props.project.term('subject')} now!</Link>
-                </p>
-            }
-          </div>
+                {
+                  if @getActiveWorkflow()? && @getWorkflowByName('transcribe')?
+                    <p>
+                      <Link to="/transcribe/#{@getWorkflowByName('transcribe').id}/#{@getCurrentSubject().id}">Transcribe this {@props.project.term('subject')} now!</Link>
+                    </p>
+                }
+              </div>
+          }
 
           {
             if @getActiveWorkflow()?
@@ -307,5 +309,6 @@ module.exports = React.createClass # rename to Classifier
       }
 
     </div>
+
 
 window.React = React

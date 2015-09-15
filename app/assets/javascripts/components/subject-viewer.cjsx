@@ -287,7 +287,7 @@ module.exports = React.createClass
           <ToolComponent
             key={mark._key}
             subject_id={mark.subject_id}
-            taskKey={@props.task.key}
+            taskKey={@props.task?.key}
             mark={mark}
             xScale={scale.horizontal}
             yScale={scale.vertical}
@@ -366,6 +366,8 @@ module.exports = React.createClass
                   { @highlightMark(mark, toolName) }
                   <ToolComponent
                     key={@props.subject.id}
+                    xBound={@props.subject.width}
+                    yBound={@props.subject.height}
                     mark={mark}
                     xScale={scale.horizontal}
                     yScale={scale.vertical}

@@ -28,18 +28,18 @@ html, body,
 .readymade-site-background-effect {
   width: 100%;
   height: 100%;
-  background: -moz-linear-gradient(top,  rgba(22,23,11,0) 0%, rgba(22,23,11,0.66) 50%, rgba(22,23,11,0.9) 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(22,23,11,0)), color-stop(50%,rgba(22,23,11,0.66)), color-stop(100%,rgba(22,23,11,0.9))); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top,  rgba(22,23,11,0) 0%,rgba(22,23,11,0.66) 50%,rgba(22,23,11,0.9) 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top,  rgba(22,23,11,0) 0%,rgba(22,23,11,0.66) 50%,rgba(22,23,11,0.9) 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top,  rgba(22,23,11,0) 0%,rgba(22,23,11,0.66) 50%,rgba(22,23,11,0.9) 100%); /* IE10+ */
-  background: linear-gradient(to bottom,  rgba(22,23,11,0) 0%,rgba(22,23,11,0.66) 50%,rgba(22,23,11,0.9) 100%); /* W3C */
+  background: -moz-linear-gradient(top,  rgba(22,23,11,0.5) 0%, rgba(22,23,11,0.8) 50%, rgba(22,23,11,1) 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(22,23,11,0.5)), color-stop(50%,rgba(22,23,11,0.8)), color-stop(100%,rgba(22,23,11,1))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  rgba(22,23,11,0.5) 0%,rgba(22,23,11,0.8) 50%,rgba(22,23,11,1) 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  rgba(22,23,11,0.5) 0%,rgba(22,23,11,0.8) 50%,rgba(22,23,11,1) 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  rgba(22,23,11,0.5) 0%,rgba(22,23,11,0.8) 50%,rgba(22,23,11,1) 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  rgba(22,23,11,0.5) 0%,rgba(22,23,11,0.8) 50%,rgba(22,23,11,1) 100%); /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00262b2d', endColorstr='#e6262b2d',GradientType=0 ); /* IE6-9 */
 }
 
 /* Header */
 .main-header-group {
-  background: rgba(22,23,11,0.6);
+  background: rgba(22,23,11,0.8);
 }
 .main-header-item:hover {
   background: rgba(85,85,85,0.5);
@@ -91,15 +91,16 @@ html, body,
 }
 
 /* Pages */
+.page-content {
+  background-color: rgba(0,0,0,0.8);
+  padding: 20px 40px;
+  margin: 40px 100px;
+}
 .page-content p,
 .page-content li {
   font-size: 18px;
   line-height: 2;
   text-align: left;
-}
-.page-content h1,
-.page-content div {
-  background: none;
 }
 .page-content h2 {
   font-size: 36px;
@@ -111,26 +112,40 @@ html, body,
   margin: 1em auto 1.8em;
   width: 80%;
 }
-.page-content img {
+.page-content#Team img {
   display: block;
   width: 60%;
   height: auto;
   margin: 0 auto;
 }
+.page-content > h1 {
+  display: none;
+}
 
 /* Homepage */
+div.home-page {
+  padding-top: 40px;
+    -webkit-touch-callout: text;
+  -webkit-user-select: text;
+  -khtml-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
 .home-page h1 {
+  display: block;
   text-transform: uppercase;
+  padding-bottom: 0px;
 }
 .home-page .page-content {
-  margin: 140px 100px;
+  margin: 0 100px 40px;
 }
 .home-page p,
 .home-page li {
   font-size: 28px;
   text-align: center;
 }
-.home-page a {
+.home-page p > a:first-child {
   font-size: 30px;
   padding: 0.5em 0.8em;
   width: auto;
@@ -158,22 +173,64 @@ html, body,
 .home-page li a {
   display: block;
   margin: 0.2em 0.8em 0.8em;
+  font-size: 30px;
+  padding: 0.5em 0.8em;
+  width: auto;
 }
-.group-area {
-  display: none;
+.home-page .logo {
+  font-size: 1.1em;
+}
+.home-page .logo:before {
+  content: ' ';
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  background-image: url('/assets/emigrant/nypl-logo.svg');
+  background-size: 100% 100%;
+  margin-right: 12px;
+  vertical-align: text-bottom;
+}
+.home-page .logo a {
+  display: inline;
+  letter-spacing: normal;
+  border-radius: 0px;
+  background: none;
+  width: auto;
+  line-height: 1.8em;
+  color: #9fce9f;
+  font-size: 1.1em;
+  font-weight: 300;
+  height: auto;
+  padding: 0;
+  text-decoration: none;
+}
+.home-page .logo a:hover {
+  color: #c9eac9;
 }
 .group-area .groups {
-  display: block;
   text-align: center;
 }
 .group-area .groups .group {
   display: inline-block;
+  height: 273px;
+  overflow: hidden;
 }
 .group-area .groups .group a {
   background: none;
+  font-size: 30px;
+  padding: 0.5em 0.8em;
+  width: auto;
 }
 .group-area .groups .group a:hover {
   background: rgba(255,255,255,0.2);
+}
+.group .group-name {
+  font-family: 'Kievit', 'Helvetica Neue', Arial, sans-serif;
+}
+.group .button-container {
+  height: auto;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 /* Rectangle Tool */
@@ -206,6 +263,11 @@ html, body,
   z-index: 100;
 }
 
+/* Tutorial */
+.help-modal {
+  box-shadow: 0 0 0 2000px rgba(0,0,0,0.8);
+}
+
 /* Update cursors */
 .subject-viewer .subject-container .marking-surface .subject-viewer-svg {
   cursor: crosshair;
@@ -229,4 +291,10 @@ html, body,
 }
 .group-active .tool-shape.draggable.committed {
   opacity: 1;
+}
+
+/* Pick one, mark one */
+.classifier .right-column .task-area .workflow-task .answer {
+  padding-left: 7px;
+  border-left: 10px solid #ddd;
 }

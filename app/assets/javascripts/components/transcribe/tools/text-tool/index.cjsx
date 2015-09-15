@@ -181,8 +181,8 @@ TextTool = React.createClass
 
         { if examples
           <ul className="task-examples">
-          { for ex in examples
-              <li>{ex}</li>
+          { for ex,i in examples
+              <li key={i}>{ex}</li>
           }
           </ul>
         }

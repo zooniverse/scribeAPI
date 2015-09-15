@@ -31,7 +31,7 @@ module.exports = React.createClass
       text = "Hide Lightbox"
 
   render: ->
-    window.subjects = @props.subject_set.subjects
+    # window.subjects = @props.subject_set.subjects # pb ?
     return null if @props.subject_set.subjects.length <= 1
     indexOfFirst = @findSubjectIndex(@state.first)
     second = @props.subject_set.subjects[indexOfFirst+1]
@@ -146,7 +146,9 @@ module.exports = React.createClass
 
   # finds the index of a given subject within the current page of the subject_set
   findSubjectIndex: (subject_arg)->
-    return @props.subject_set.subjects.indexOf subject_arg
+    # PB sometimes equality is failing on subjects, so let's try just matching id
+    # return @props.subject_set.subjects.indexOf subject_arg
+    return (s.id for s in @props.subject_set.subjects).indexOf subject_arg.id
 
   # allows user to naviagate back though a subject_set
   # # controlls navigation of current page of subjects as well as the method that pull a new page of subjects

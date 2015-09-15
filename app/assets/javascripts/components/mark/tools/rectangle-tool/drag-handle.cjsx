@@ -14,7 +14,7 @@ module.exports = React.createClass
   render: ->
     scale = (@props.tool.props.xScale + @props.tool.props.yScale) / 2
 
-    <Draggable onDrag = {@props.onDrag} >
+    <Draggable onDrag = {@props.onDrag} onEnd={@props.onEnd}>
       <g
         fill={FILL_COLOR}
         stroke={STROKE_COLOR}
