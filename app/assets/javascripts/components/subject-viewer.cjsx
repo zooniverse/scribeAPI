@@ -95,6 +95,8 @@ module.exports = React.createClass
       # mark/index::commitClassification()
     # callback?()
 
+    @setUncommittedMark null
+
   # Handle initial mousedown:
   handleInitStart: (e) ->
     console.log 'handleInitStart()'
@@ -117,6 +119,7 @@ module.exports = React.createClass
     # @selectMark newMark
 
   createMark: (e) ->
+    console.log 'createMark()'
     return null if ! (subToolIndex = @props.subToolIndex)?
     return null if ! (subTool = @props.task.tool_config?.options?[subToolIndex])?
 
@@ -149,9 +152,9 @@ module.exports = React.createClass
 
   # Handle mouse dragging
   handleInitDrag: (e) ->
-    console.log 'handleInitDrag()'
+    console.log 'handleInitDrag()', Math.random()
 
-    return null if ! @state.uncommittedMark?
+    return null unless @state.uncommittedMark?
 
     mark = @state.uncommittedMark
 
@@ -165,9 +168,7 @@ module.exports = React.createClass
         mark[key] = value
 
     @props.onChange? mark
-
-    @setState
-      uncommittedMark: mark
+    @setState uncommittedMark: mark
 
   # Handle mouseup at end of drag:
   handleInitRelease: (e) ->
