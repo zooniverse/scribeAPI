@@ -17,18 +17,9 @@ class Classification
     @committed = false
 
   commit: (callback) ->
-    console.log 'Classification::commit()'
-
-    console.log 'COMMIT flag was set to: ', @committed
-
-    if @committed  # this flag doesn't seem to be used anywhere --STI
-      console.log 'ALREADY SUBMITTED THIS CLASSIFICATION!'
-      return
-
+    return if @committed
     @committed = true
 
-    console.log 'set COMMITTED flag to: ', @committed
-    console.log 'ANNOTATION: ', @annotation
     @metadata.finished_at = (new Date).toISOString()
     data =
       classifications:

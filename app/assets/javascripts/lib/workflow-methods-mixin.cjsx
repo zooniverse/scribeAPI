@@ -23,15 +23,12 @@ module.exports =
 
   # Start a new classification (optionally initialized with given annotation hash):
   beginClassification: (annotation = {}, callback) ->
-    console.log '------------------------------------------------------------------'
-    console.log "beginClassification() (reset annotation hash)"
-    console.log 'annotation = ', annotation
     classifications = @state.classifications
     classification = new Classification()
 
     if annotation?
       classification.annotation[k] = v for k, v of annotation
-    console.log 'pushed classification to @state.classifications'
+
     classifications.push classification
 
     @setState
@@ -42,12 +39,23 @@ module.exports =
           window.classifications = @state.classifications # make accessible to console
           callback() if callback?
 
+  commitClassification: (classification) ->
+    # Commit classification to backend
+    classification.commit (classification) =>
+      # Did this generate a child_subject? Update local copy:
+      if classification.child_subject
+        @appendChildSubject classification.subject_id, classification.child_subject
 
-  # Push current classification to server:
-  commitClassification: () ->
-    console.log 'STATE.CLASSIFICATIONS: ', @state.classifications
-    console.log 'commitClassification(): ', @getCurrentClassification()
+      if @state.badSubject
+        @toggleBadSubject =>
+          @advanceToNextSubject()
 
+      if @state.illegibleSubject
+        @toggleIllegibleSubject =>
+          @advanceToNextSubject()
+
+  # used to commit task-level classifications, i.e. not from marking tools
+  commitCurrentClassification: () ->
     classification = @getCurrentClassification()
     classification.subject_id = @getCurrentSubject()?.id
     classification.subject_set_id = @getCurrentSubjectSet().id if @getCurrentSubjectSet()?
@@ -63,35 +71,12 @@ module.exports =
       classification.task_key = @state.taskKey
       return if Object.keys(classification.annotation).length == 0
 
-    console.log 'COMMITTING CLASSIFICATION...', classification
-
-    # Commit classification to backend
-    classification.commit (classification) =>
-      # Did this generate a child_subject? Update local copy:
-      if classification.child_subject
-        @appendChildSubject classification.subject_id, classification.child_subject
-
-      if @state.badSubject
-        @toggleBadSubject =>
-          @advanceToNextSubject()
-
-      if @state.illegibleSubject
-        @toggleIllegibleSubject =>
-          @advanceToNextSubject()
-
-    # # # bring this outside of the classsification callback
+    @commitClassification(classification)
     @beginClassification()
-    #
-    # console.log 'COMMITTED CLASSIFICATION: ', classification
-    # console.log '(ALL CLASSIFICATIONS): ', @state.classifications
 
-  # Push current classification to server:
+  # used for committing marking tools (by passing annotation)
   createAndCommitClassification: (annotation) ->
-    # console.log 'STATE.CLASSIFICATIONS: ', @state.classifications
-    console.log 'createAndCommitClassification(): ', @getCurrentClassification()
-
     classifications = @state.classifications
-
     classification = new Classification()
     classification.annotation = annotation ? annotation : {} # initialize annotation
     classification.subject_id = @getCurrentSubject()?.id
@@ -110,30 +95,7 @@ module.exports =
       classification.task_key = @state.taskKey
       return if Object.keys(classification.annotation).length == 0
 
-    # Commit classification to backend
-    classification.commit (classification) =>
-      # Did this generate a child_subject? Update local copy:
-      if classification.child_subject
-        @appendChildSubject classification.subject_id, classification.child_subject
-
-      if @state.badSubject
-        @toggleBadSubject =>
-          @advanceToNextSubject()
-
-      if @state.illegibleSubject
-        @toggleIllegibleSubject =>
-          @advanceToNextSubject()
-
-      # @forceUpdate()
-
-    # classifications.push classification
-    # @setState
-    #   classifications: classifications
-    #   classificationIndex: classifications.length-1
-    #     , =>
-    #       @forceUpdate()
-    #       window.classifications = @state.classifications # make accessible to console
-    #       callback() if callback?
+    @commitClassification(classification)
 
   toggleBadSubject: (e, callback) ->
     @setState badSubject: not @state.badSubject, =>
@@ -151,9 +113,7 @@ module.exports =
 
     classification.commit (classification) =>
       @updateChildSubject @getCurrentSubject().id, classification.subject_id, user_has_deleted: true
-
       @beginClassification()
-
 
   # Update specified child_subject with given properties (e.g. after submitting a delete flag)
   updateChildSubject: (parent_subject_id, child_subject_id, props) ->
@@ -223,9 +183,7 @@ module.exports =
 
   # Load next logical task
   advanceToNextTask: () ->
-    console.log 'advanceToNextTask()'
-    console.log 'PROPS: ', @props
-    console.log 'STATE: ', @state
+    # console.log 'advanceToNextTask()'
     nextTaskKey = @getNextTask()?.key
     if nextTaskKey is null
       # console.log 'NOTHING LEFT TO DO'
@@ -233,7 +191,7 @@ module.exports =
     # console.log 'TASK KEY: ', nextTaskKey
 
     # Commit whatever current classification is:
-    @commitClassification()
+    @commitCurrentClassification()
     # start a new one:
     # @beginClassification {} # this keps adding empty (uncommitted) classifications to @state.classifications --STI
 
@@ -373,9 +331,8 @@ module.exports =
       taskKey: @getActiveWorkflow().first_task
       currentSubToolIndex: 0
 
-
   commitClassificationAndContinue: (d) ->
-    @commitClassification()
+    @commitCurrentClassification()
     @beginClassification {}, () =>
       if @getCurrentTask().next_task?
         @advanceToTask @getCurrentTask().next_task

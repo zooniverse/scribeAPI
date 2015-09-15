@@ -76,7 +76,6 @@ module.exports = React.createClass # rename to Classifier
 
   # User somehow indicated current task is complete; commit current classification
   handleToolComplete: (annotation) ->
-    console.log 'handleToolComplete() '
     @handleDataFromTool(annotation)
     @createAndCommitClassification(annotation)
 
@@ -86,8 +85,6 @@ module.exports = React.createClass # rename to Classifier
 
   # Handle user selecting a pick/drawing tool:
   handleDataFromTool: (d) ->
-    console.log 'handleDataFromTool()'
-
     # Kind of a hack: We receive annotation data from two places:
     #  1. tool selection widget in right-col
     #  2. the actual draggable marking tools
@@ -137,7 +134,7 @@ module.exports = React.createClass # rename to Classifier
     # @props.classification.annotations.pop()
 
   completeSubjectSet: ->
-    @commitClassification()
+    @commitCurrentClassification()
     @beginClassification()
 
     # TODO: Should maybe make this workflow-configurable?
@@ -147,7 +144,7 @@ module.exports = React.createClass # rename to Classifier
         taskKey: "completion_assessment_task"
 
   completeSubjectAssessment: ->
-    @commitClassification()
+    @commitCurrentClassification()
     @beginClassification()
     @advanceToNextSubject()
 

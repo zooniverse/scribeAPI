@@ -84,43 +84,25 @@ module.exports = React.createClass
   # VARIOUS EVENT HANDLERS
 
   # Commit mark
-  submitMark: (mark, newMark) ->
+  submitMark: (mark) ->
     return unless mark?
-    console.log 'submitMark()'
-
-    # mark = mark ? mark : @state.uncommittedMark
-    # @setUncommittedMark null
-    @props.onComplete? mark #, newMark # mark/index::handleDataFromTool()
-      # mark/index::handleDataFromTool()
-      # mark/index::commitClassification()
-    # callback?()
-    # @setUncommittedMark null
-
-    @setUncommittedMark null
+    @props.onComplete? mark
+    @setUncommittedMark null # reset uncommitted mark
 
   # Handle initial mousedown:
   handleInitStart: (e) ->
-    # console.log 'handleInitStart()'
     return null if e.buttons? && e.button? && e.button > 0 # ignore right-click
-
     newMark = @createMark(e)
 
-    console.log 'NEW MARK IS: ', newMark
-    console.log 'UNCOMMITTED MARK IS: ', @state.uncommittedMark
-
-    # If there's a current, uncommitted mark, commit it:
+    # submit uncommitted mark
     if @state.uncommittedMark?
-      console.log '[[[[[ SUBMIT PREVIOUS MARK ]]]]]'
       @submitMark(@state.uncommittedMark)
-      # @setUncommittedMark newMark
 
-    # console.log 'PROPS.ONCHANGE? = ', @props.onChange?
     @props.onChange? newMark
     @setUncommittedMark newMark
     # @selectMark newMark
 
   createMark: (e) ->
-    console.log 'createMark()'
     return null if ! (subToolIndex = @props.subToolIndex)?
     return null if ! (subTool = @props.task.tool_config?.options?[subToolIndex])?
 
@@ -150,16 +132,11 @@ module.exports = React.createClass
 
     return mark
 
-
   # Handle mouse dragging
   handleInitDrag: (e) ->
-    console.log 'handleInitDrag()', Math.random()
     return null if ! @state.uncommittedMark?
-
     mark = @state.uncommittedMark
-
-    # Instantiate appropriate marking tool:
-    MarkComponent = markingTools[mark.toolName]
+    MarkComponent = markingTools[mark.toolName] # instantiate appropriate marking tool
 
     if MarkComponent.initMove?
       mouseCoords = @getEventOffset e
@@ -172,7 +149,6 @@ module.exports = React.createClass
 
   # Handle mouseup at end of drag:
   handleInitRelease: (e) ->
-    console.log 'HANDLE INITIAL RELEASE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
     return null if ! @state.uncommittedMark?
 
     mark = @state.uncommittedMark
