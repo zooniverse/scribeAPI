@@ -21,7 +21,6 @@ class Classification
     @committed = true
 
     @metadata.finished_at = (new Date).toISOString()
-
     data =
       classifications:
         annotation: @annotation

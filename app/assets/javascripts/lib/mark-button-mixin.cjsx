@@ -24,16 +24,16 @@ module.exports =
       markStatus = 'transcribe-enabled'
     else
       markStatus = 'waiting-for-mark'
-    @setState 
+    @setState
       markStatus: markStatus
       locked: ''
 
   checkLocation: ()->
     pattern = new RegExp('^(#\/transcribe)')
     pattern.test("#{window.location.hash}")
-    
+
   renderMarkButton: ->
-    return null if @checkLocation() 
+    return null if @checkLocation()
     <MarkButton
       tool={this}
       onDrag={@onClickMarkButton}
@@ -71,7 +71,6 @@ module.exports =
         '''
         @setState locked: true
         @props.submitMark(@props.mark)
-        # @props.submitMark(@props.key)
         # console.log 'Mark submitted. Click TRANSCRIBE to begin transcribing.'
       when 'mark-finished'
         console.log '''
@@ -103,5 +102,3 @@ module.exports =
       strokeWidth: if selected then 3 else 2
       strokeColor: if mark.color then mark.color else '#43bbfd'
     atts
-
-
