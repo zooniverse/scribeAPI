@@ -84,13 +84,13 @@ module.exports = React.createClass
   # VARIOUS EVENT HANDLERS
 
   # Commit mark
-  submitMark: (mark, callback) ->
+  submitMark: (mark, newMark) ->
     return unless mark?
     console.log 'submitMark()'
 
     # mark = mark ? mark : @state.uncommittedMark
     # @setUncommittedMark null
-    @props.onComplete? mark # mark/index::handleDataFromTool()
+    @props.onComplete? mark #, newMark # mark/index::handleDataFromTool()
       # mark/index::handleDataFromTool()
       # mark/index::commitClassification()
     # callback?()
@@ -100,20 +100,21 @@ module.exports = React.createClass
     console.log 'handleInitStart()'
     return null if e.buttons? && e.button? && e.button > 0 # ignore right-click
 
-    mark = @createMark(e)
+    newMark = @createMark(e)
+
+    console.log 'NEW MARK IS: ', newMark
+    console.log 'UNCOMMITTED MARK IS: ', @state.uncommittedMark
 
     # If there's a current, uncommitted mark, commit it:
     if @state.uncommittedMark?
-      console.log 'SubjectViewer::handleInitStart(): Submitting previous (uncommitted) mark!', @state.uncommittedMark
+      console.log '[[[[[ SUBMIT PREVIOUS MARK ]]]]]'
       @submitMark(@state.uncommittedMark)
-      @setUncommittedMark null
+      # @setUncommittedMark newMark
 
-    console.log 'PROPS.ONCHANGE? = ', @props.onChange?
-    @props.onChange? mark
-
-    @setUncommittedMark mark
-
-    # @selectMark mark
+    # console.log 'PROPS.ONCHANGE? = ', @props.onChange?
+    @props.onChange? newMark
+    @setUncommittedMark newMark
+    # @selectMark newMark
 
   createMark: (e) ->
     return null if ! (subToolIndex = @props.subToolIndex)?

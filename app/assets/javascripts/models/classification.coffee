@@ -24,10 +24,8 @@ class Classification
     if @committed  # this flag doesn't seem to be used anywhere --STI
       console.log 'ALREADY SUBMITTED THIS CLASSIFICATION!'
       return
-    # NOTE: a more pressing concern: why is @committed ever true? seems this is called multiple times, yet no dupes?
 
     @committed = true
-
 
     console.log 'set COMMITTED flag to: ', @committed
     console.log 'ANNOTATION: ', @annotation

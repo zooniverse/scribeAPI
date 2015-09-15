@@ -44,10 +44,17 @@ module.exports =
 
 
   # Push current classification to server:
-  commitClassification: ->
-    console.log 'COMMITTING CLASSIFICATION: ', @getCurrentClassification()
-    classification = @getCurrentClassification()
-    # checking for empty classification.annotation, we don't want to commit those classifications -- AMS
+  commitClassification: (annotation) ->
+    console.log 'STATE.CLASSIFICATIONS: ', @state.classifications
+    console.log 'commitClassification(): ', @getCurrentClassification()
+
+    classifications = @state.classifications
+
+    # classification = @getCurrentClassification()
+    classification = new Classification()
+
+
+    classification.annotation = annotation ? annotation : {} # initialize annotation
 
     classification.subject_id = @getCurrentSubject()?.id
     classification.subject_set_id = @getCurrentSubjectSet().id if @getCurrentSubjectSet()?
@@ -65,8 +72,15 @@ module.exports =
       classification.task_key = @state.taskKey
       return if Object.keys(classification.annotation).length == 0
 
+
+    classifications.push classification
+    @setState classifications: classifications, => window.classifications = @state.classifications
+
+    console.log 'COMMITTING CLASSIFICATION...'
+
     # Commit classification to backend
     classification.commit (classification) =>
+      console.log 'RESPONSE'
       # Did this generate a child_subject? Update local copy:
       if classification.child_subject
         @appendChildSubject classification.subject_id, classification.child_subject
@@ -79,11 +93,11 @@ module.exports =
         @toggleIllegibleSubject =>
           @advanceToNextSubject()
 
-    # bring this outside of the classsification callback
-    @beginClassification()
-
-    console.log 'COMMITTED CLASSIFICATION: ', classification
-    console.log '(ALL CLASSIFICATIONS): ', @state.classifications
+    # # # bring this outside of the classsification callback
+    # @beginClassification()
+    #
+    # console.log 'COMMITTED CLASSIFICATION: ', classification
+    # console.log '(ALL CLASSIFICATIONS): ', @state.classifications
 
   toggleBadSubject: (e, callback) ->
     @setState badSubject: not @state.badSubject, =>

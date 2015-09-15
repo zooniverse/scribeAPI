@@ -75,10 +75,10 @@ module.exports = React.createClass # rename to Classifier
     @toggleBadSubject() if @state.badSubject
 
   # User somehow indicated current task is complete; commit current classification
-  handleToolComplete: (d) ->
+  handleToolComplete: (annotation) ->
     console.log 'handleToolComplete() '
-    @handleDataFromTool(d)
-    @commitClassification()
+    @handleDataFromTool(annotation)
+    @commitClassification(annotation)
 
     # Initialize new classification with currently selected subToolIndex (so that right tool is selected in the right-col)
     # @beginClassification() #AMS (8/17): this is causing issues with autosave, moving it back to commitClassification
