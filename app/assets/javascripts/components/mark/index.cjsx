@@ -39,7 +39,7 @@ module.exports = React.createClass # rename to Classifier
     helping:             false
     hideOtherMarks:      false
     currentSubtool:      null
-    completeTutorial:    @props.project.current_user_tutorial
+    showingTutorial:     ! @props.project.current_user_tutorial # Initially show the tutorial if the user hasn't seen it
     lightboxHelp:        false
 
   componentDidMount: ->
@@ -57,15 +57,11 @@ module.exports = React.createClass # rename to Classifier
     if prev_props.hash != @props.hash
       @fetchSubjectSetsBasedOnProps()
 
-  componentWillReceiveProps: (new_props) ->
-    # PB: Should the following check new_props instead? (@props is the old props, immediately overwritten by new_props)
-    @setState completeTutorial: @props.project.current_user_tutorial
-
   toggleHelp: ->
     @setState helping: not @state.helping
 
   toggleTutorial: ->
-    @setState completeTutorial: not @state.completeTutorial
+    @setState showingTutorial: not @state.showingTutorial
 
   toggleLightboxHelp: ->
     @setState lightboxHelp: not @state.lightboxHelp
@@ -208,7 +204,7 @@ module.exports = React.createClass # rename to Classifier
 
         </div>
       </div>
-      { if @props.project.tutorial? && !@state.completeTutorial
+      { if @props.project.tutorial? && @state.showingTutorial
         <Tutorial tutorial={@props.project.tutorial} toggleTutorial={@toggleTutorial} setTutorialComplete={@props.setTutorialComplete} />
       }
       { if @state.helping
