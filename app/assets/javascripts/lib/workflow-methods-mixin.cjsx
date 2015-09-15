@@ -44,18 +44,56 @@ module.exports =
 
 
   # Push current classification to server:
-  commitClassification: (annotation) ->
+  commitClassification: () ->
     console.log 'STATE.CLASSIFICATIONS: ', @state.classifications
     console.log 'commitClassification(): ', @getCurrentClassification()
 
+    classification = @getCurrentClassification()
+    classification.subject_id = @getCurrentSubject()?.id
+    classification.subject_set_id = @getCurrentSubjectSet().id if @getCurrentSubjectSet()?
+    classification.workflow_id = @getActiveWorkflow().id
+
+    # If user activated 'Bad Subject' button, override task:
+    if @state.badSubject
+      classification.task_key = 'flag_bad_subject_task'
+    else if @state.illegibleSubject
+      classification.task_key = 'flag_illegible_subject_task'
+    # Otherwise, classification is for active task:
+    else
+      classification.task_key = @state.taskKey
+      return if Object.keys(classification.annotation).length == 0
+
+    console.log 'COMMITTING CLASSIFICATION...', classification
+
+    # Commit classification to backend
+    classification.commit (classification) =>
+      # Did this generate a child_subject? Update local copy:
+      if classification.child_subject
+        @appendChildSubject classification.subject_id, classification.child_subject
+
+      if @state.badSubject
+        @toggleBadSubject =>
+          @advanceToNextSubject()
+
+      if @state.illegibleSubject
+        @toggleIllegibleSubject =>
+          @advanceToNextSubject()
+
+    # # # bring this outside of the classsification callback
+    @beginClassification()
+    #
+    # console.log 'COMMITTED CLASSIFICATION: ', classification
+    # console.log '(ALL CLASSIFICATIONS): ', @state.classifications
+
+  # Push current classification to server:
+  createAndCommitClassification: (annotation) ->
+    # console.log 'STATE.CLASSIFICATIONS: ', @state.classifications
+    console.log 'createAndCommitClassification(): ', @getCurrentClassification()
+
     classifications = @state.classifications
 
-    # classification = @getCurrentClassification()
     classification = new Classification()
-
-
     classification.annotation = annotation ? annotation : {} # initialize annotation
-
     classification.subject_id = @getCurrentSubject()?.id
     classification.subject_set_id = @getCurrentSubjectSet().id if @getCurrentSubjectSet()?
     classification.workflow_id = @getActiveWorkflow().id
@@ -72,15 +110,8 @@ module.exports =
       classification.task_key = @state.taskKey
       return if Object.keys(classification.annotation).length == 0
 
-
-    classifications.push classification
-    @setState classifications: classifications, => window.classifications = @state.classifications
-
-    console.log 'COMMITTING CLASSIFICATION...'
-
     # Commit classification to backend
     classification.commit (classification) =>
-      console.log 'RESPONSE'
       # Did this generate a child_subject? Update local copy:
       if classification.child_subject
         @appendChildSubject classification.subject_id, classification.child_subject
@@ -93,16 +124,20 @@ module.exports =
         @toggleIllegibleSubject =>
           @advanceToNextSubject()
 
-    # # # bring this outside of the classsification callback
-    # @beginClassification()
-    #
-    # console.log 'COMMITTED CLASSIFICATION: ', classification
-    # console.log '(ALL CLASSIFICATIONS): ', @state.classifications
+      # @forceUpdate()
+
+    # classifications.push classification
+    # @setState
+    #   classifications: classifications
+    #   classificationIndex: classifications.length-1
+    #     , =>
+    #       @forceUpdate()
+    #       window.classifications = @state.classifications # make accessible to console
+    #       callback() if callback?
 
   toggleBadSubject: (e, callback) ->
     @setState badSubject: not @state.badSubject, =>
       callback?()
-
 
   toggleIllegibleSubject: (e, callback) ->
     @setState illegibleSubject: not @state.illegibleSubject, =>
@@ -188,7 +223,9 @@ module.exports =
 
   # Load next logical task
   advanceToNextTask: () ->
-    # console.log 'advanceToNextTask()'
+    console.log 'advanceToNextTask()'
+    console.log 'PROPS: ', @props
+    console.log 'STATE: ', @state
     nextTaskKey = @getNextTask()?.key
     if nextTaskKey is null
       # console.log 'NOTHING LEFT TO DO'

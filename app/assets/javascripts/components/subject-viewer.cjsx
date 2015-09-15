@@ -94,12 +94,13 @@ module.exports = React.createClass
       # mark/index::handleDataFromTool()
       # mark/index::commitClassification()
     # callback?()
+    # @setUncommittedMark null
 
     @setUncommittedMark null
 
   # Handle initial mousedown:
   handleInitStart: (e) ->
-    console.log 'handleInitStart()'
+    # console.log 'handleInitStart()'
     return null if e.buttons? && e.button? && e.button > 0 # ignore right-click
 
     newMark = @createMark(e)
@@ -153,8 +154,7 @@ module.exports = React.createClass
   # Handle mouse dragging
   handleInitDrag: (e) ->
     console.log 'handleInitDrag()', Math.random()
-
-    return null unless @state.uncommittedMark?
+    return null if ! @state.uncommittedMark?
 
     mark = @state.uncommittedMark
 
