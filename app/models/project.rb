@@ -28,8 +28,7 @@ class Project
   field  :terms_map,         type: Hash, default: {} # Hash mapping internal terms to project appropriate terms (e.g. 'group'=>'ship')
 
   include CachedStats
-
-  update_interval 10
+  update_interval 1000
 
   has_many :groups, dependent: :destroy
   has_many :subject_sets
@@ -49,7 +48,7 @@ class Project
     datetime_format = "%Y-%m-%d %H:00"
 
     # determine date range
-    current_time = Time.new
+    current_time = Time.now.utc # Time.new
     end_date = current_time
     start_date = end_date - range_in_days.days
 
@@ -62,11 +61,11 @@ class Project
     users_data = []
     users_in_range = User.where(:created_at => start_date..end_date).group_by {|d| d.created_at.strftime(datetime_format)}
     (start_date.to_i..end_date.to_i).step(1.hour) do |i_date|
-      n_date = Time.at(i_date)
+      n_date = Time.at(i_date).utc
       hour = n_date.strftime(datetime_format)
       users_data << {
-      date: hour,
-      value: users_in_range[hour] ? users_in_range[hour].size : 0
+        date: hour,
+        value: users_in_range[hour] ? users_in_range[hour].size : 0
       }
     end
 
@@ -75,8 +74,8 @@ class Project
     subject_groups = Subject.all.group_by {|d| d.status}
     subject_groups.each do |status, subjects|
       subjects_data << {
-      label: status,
-      value: subjects.size
+        label: status,
+        value: subjects.size
       }
     end
 
@@ -84,15 +83,14 @@ class Project
     classifications_data = []
     classifications_in_range = Classification.where(:created_at => start_date..end_date).group_by {|d| d.created_at.strftime(datetime_format)}
     (start_date.to_i..end_date.to_i).step(1.hour) do |i_date|
-      n_date = Time.at(i_date)
+      n_date = Time.at(i_date).utc
       hour = n_date.strftime(datetime_format)
       classifications_data << {
-      date: hour,
-      value: classifications_in_range[hour] ? classifications_in_range[hour].size : 0
+        date: hour,
+        value: classifications_in_range[hour] ? classifications_in_range[hour].size : 0
       }
     end
 
-    # return data
     {
       updated_at: current_time.strftime(datetime_format),
       start_date: start_date.strftime(datetime_format),

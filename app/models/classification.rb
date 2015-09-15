@@ -1,5 +1,6 @@
 class Classification
   include Mongoid::Document
+  include Mongoid::Timestamps
 
   field :location
   field :task_key,                        type: String

@@ -21,8 +21,7 @@ App = React.createClass
         @setState project: project
 
   setTutorialComplete:->
-    @state.project.current_user_tutorial = true
-    @setState project: project
+    @setState project: $.extend(@state.project, current_user_tutorial: true)
 
   render: ->
     return null if ! @state.project?
