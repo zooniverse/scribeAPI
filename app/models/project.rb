@@ -28,7 +28,7 @@ class Project
   field  :terms_map,         type: Hash, default: {} # Hash mapping internal terms to project appropriate terms (e.g. 'group'=>'ship')
 
   include CachedStats
-  update_interval 1000
+  update_interval 30
 
   has_many :groups, dependent: :destroy
   has_many :subject_sets

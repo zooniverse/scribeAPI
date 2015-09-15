@@ -10,7 +10,7 @@ class Group
   field :meta_data,       type: Hash
 
   include CachedStats
-  update_interval 10
+  update_interval 30
 
   belongs_to :project
   has_many :subject_sets, dependent: :destroy
