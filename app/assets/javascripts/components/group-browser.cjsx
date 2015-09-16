@@ -42,7 +42,7 @@ GroupBrowser = React.createClass
       style={divStyle} >
       <div className="button-container #{buttonContainerClasses.join ' '}">
         { for workflow in @props.project.workflows
-            if (group.stats.workflow_counts[workflow.id]?.active_subjects ? 0) > 0
+            if (group.stats.workflow_counts?[workflow.id]?.active_subjects ? 0) > 0
               <a href={"/#/#{workflow.name}?group_id=#{group.id}"} className="button small-button">{workflow.name.capitalize()}</a>
         }
         <a href="/#/groups/#{group.id}" className="button small-button ghost">More info</a>
