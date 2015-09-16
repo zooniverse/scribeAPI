@@ -52,7 +52,7 @@ module.exports = React.createClass
   render: ->
     return null if ! @state.connector?
 
-    create_url = @state.connector.create_url(@props)
+    create_url = @state.connector.create_url(@props) # needed create_url to have access to props. better way to do this? -STI
     subject_posts = @state.posts.subject ? ( @state.posts.subject_set ? [] )
 
     <div className="forum-subject-widget">

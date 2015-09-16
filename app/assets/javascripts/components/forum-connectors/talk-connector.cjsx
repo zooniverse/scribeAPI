@@ -7,6 +7,7 @@ module.exports =
   class TalkConnector
     constructor: (@options) ->
 
+    # this method doesn't yet do anytying
     fetchPosts: (type, id, callback) ->
       url = '/proxy/forum'
       url += '/search.json?search=' + id
@@ -34,5 +35,6 @@ module.exports =
     create_url: (props) ->
       url = "https://www.zooniverse.org/projects/#{@options.account_name}/old-weather-whaling/talk/subjects/#{props.subject.meta_data.zooniverse_id}/"
 
+    # this method doesn't yet do anytying
     search_url: (term) ->
       @options.base_url + "/search?search=#{term}"
