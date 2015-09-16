@@ -22,8 +22,6 @@ module.exports = React.createClass
     posts:          {}
 
   componentDidMount: ->
-    console.log 'PROPS: ', @props
-
     API.type('projects').get().then (result)=>
       project = result[0]
 
@@ -54,7 +52,7 @@ module.exports = React.createClass
   render: ->
     return null if ! @state.connector?
 
-    create_url = @state.connector.create_url()
+    create_url = @state.connector.create_url(@props)
     subject_posts = @state.posts.subject ? ( @state.posts.subject_set ? [] )
 
     <div className="forum-subject-widget">

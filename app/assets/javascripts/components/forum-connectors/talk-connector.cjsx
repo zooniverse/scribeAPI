@@ -31,8 +31,8 @@ module.exports =
           console.error "Error loading posts: ", url, status, err.toString()
         ).bind(this)
 
-    create_url: ->
-      @options.base_url
+    create_url: (props) ->
+      url = "https://www.zooniverse.org/projects/#{@options.account_name}/old-weather-whaling/talk/subjects/#{props.subject.meta_data.zooniverse_id}/"
 
     search_url: (term) ->
       @options.base_url + "/search?search=#{term}"
