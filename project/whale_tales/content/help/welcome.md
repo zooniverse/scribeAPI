@@ -1,1 +1,1 @@
-In this project, you’ll be working alongside other volunteers to digitize logbooks from 19th- and early 20th-century whaling ships. By extracting information about sea-ice levels, weather, events onboard, and more, you’ll be contributing to both climate science and historical research. This brief tutorial will help teach you how to get started.
+In this project, you’ll be working together with other volunteers to extract scientific data (and amazing stories) from 19th century ships’ logs. You can choose to **Mark** and/or **Transcribe** key information that you find.
