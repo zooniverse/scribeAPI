@@ -5,7 +5,6 @@ React                         = require 'react'
 LoadingIndicator              = require './loading-indicator'
 ForumConnectors               = require './forum-connectors'
 
-
 module.exports = React.createClass
   displayName: 'ForumSubjectWidget'
   resizing: false
@@ -21,13 +20,13 @@ module.exports = React.createClass
   getInitialState: ->
     connector:      null
     posts:          {}
-    
+
   componentDidMount: ->
 
     API.type('projects').get().then (result)=>
       project = result[0]
 
-      if project.forum?.type? 
+      if project.forum?.type?
         if ! ForumConnectors[project.forum?.type]?
           console.warn "Unsupported forum type. No connector defined for #{project.forum.type}"
         else

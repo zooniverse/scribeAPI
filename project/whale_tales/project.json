@@ -50,7 +50,8 @@
   ],
 
   "forum": {
-    "type": "discourse",
+    "type": "talk",
+    "account_name": "djsato",
     "base_url": "http://scribe-forum.nypl-labs.biz"
   },
 

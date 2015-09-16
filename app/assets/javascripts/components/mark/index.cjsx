@@ -8,13 +8,12 @@ JSONAPIClient           = require 'json-api-client' # use to manage data?
 ForumSubjectWidget      = require '../forum-subject-widget'
 API                     = require '../../lib/api'
 HelpModal               = require 'components/help-modal'
-Tutorial               = require 'components/tutorial'
+Tutorial                = require 'components/tutorial'
 HelpButton              = require 'components/buttons/help-button'
 BadSubjectButton        = require 'components/buttons/bad-subject-button'
 HideOtherMarksButton    = require 'components/buttons/hide-other-marks-button'
 DraggableModal          = require 'components/draggable-modal'
 Draggable               = require 'lib/draggable'
-
 {Link}                  = require 'react-router'
 
 module.exports = React.createClass # rename to Classifier
@@ -47,9 +46,7 @@ module.exports = React.createClass # rename to Classifier
     @fetchSubjectSetsBasedOnProps()
 
   componentWillMount: ->
-    @setState
-      taskKey: @getActiveWorkflow().first_task
-
+    @setState taskKey: @getActiveWorkflow().first_task
     @beginClassification()
 
   componentDidUpdate: (prev_props) ->
@@ -166,13 +163,15 @@ module.exports = React.createClass # rename to Classifier
     console.log 'render()'
     console.log 'render::CURRENT SUBJECT: ', @getCurrentSubject()
     return null unless @getCurrentSubject()? && @getActiveWorkflow()?
+
+
     currentTask = @getCurrentTask()
     TaskComponent = @getCurrentTool()
     activeWorkflow = @getActiveWorkflow()
     firstTask = activeWorkflow.first_task
     onFirstAnnotation = @state.taskKey == firstTask
     currentSubtool = if @state.currentSubtool then @state.currentSubtool else @getTasks()[firstTask]?.tool_config.tools?[0]
-    hasZooniverseId = @getCurrentSubject().meta_data.zooniverse_id?
+
     # direct link to this page
     pageURL = "#{location.origin}/#/mark?subject_set_id=#{@getCurrentSubjectSet().id}&selected_subject_id=#{@getCurrentSubject().id}"
 
@@ -282,16 +281,8 @@ module.exports = React.createClass # rename to Classifier
           }
 
           <div className="forum-holder">
-            {
-              console.log 'CURRENT SUBJECT: ', @getCurrentSubject()
-              if hasZooniverseId
-                console.log 'BLASH!'
-                <a target="_blank" href="https://www.zooniverse.org/projects/djsato/old-weather-whaling/talk/subjects/#{@getCurrentSubject().meta_data.zooniverse_id}/">Click here to discuss this page</a>
-              else
-                <ForumSubjectWidget subject_set={@getCurrentSubjectSet()} project={@props.project} />
-
-            }
-            </div>
+            <ForumSubjectWidget subject_set={@getCurrentSubjectSet()} project={@props.project} />
+          </div>
 
           <div className="social-media-container">
             <a href="https://www.facebook.com/sharer.php?u=#{encodeURIComponent pageURL}" target="_blank">

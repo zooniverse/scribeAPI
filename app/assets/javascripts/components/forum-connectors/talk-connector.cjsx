@@ -4,7 +4,7 @@ React = require 'react'
 
 module.exports =
 
-  class DiscourseConnector
+  class TalkConnector
     constructor: (@options) ->
 
     fetchPosts: (type, id, callback) ->
