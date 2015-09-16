@@ -22,6 +22,7 @@ module.exports = React.createClass
     posts:          {}
 
   componentDidMount: ->
+    console.log 'PROPS: ', @props
 
     API.type('projects').get().then (result)=>
       project = result[0]

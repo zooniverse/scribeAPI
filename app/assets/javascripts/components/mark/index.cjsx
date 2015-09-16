@@ -281,7 +281,7 @@ module.exports = React.createClass # rename to Classifier
           }
 
           <div className="forum-holder">
-            <ForumSubjectWidget subject_set={@getCurrentSubjectSet()} project={@props.project} />
+            <ForumSubjectWidget subject={@getCurrentSubject()} subject_set={@getCurrentSubjectSet()} project={@props.project} />
           </div>
 
           <div className="social-media-container">
