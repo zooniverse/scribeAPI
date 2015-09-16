@@ -13,6 +13,7 @@ class Subject
   scope :by_workflow, -> (workflow_id) { where(workflow_id: workflow_id)  }
   scope :by_parent_subject_set, -> (parent_subject_set_id) { where(parent_subject_set_id: parent_subject_set_id)  }
   scope :by_parent_subject, -> (parent_subject_id) { where(parent_subject_id: parent_subject_id) }
+  scope :by_group, -> (group_id) { where(group_id: group_id) }
   scope :user_has_not_classified, -> (user_id) { where(:classifying_user_ids.ne => user_id)  }
 
   # This is a hash with one entry per deriv; `standard', 'thumbnail', etc
@@ -49,6 +50,7 @@ class Subject
   field :deleting_user_ids,        type: Array, default: []
 
   belongs_to :workflow
+  belongs_to :group
   belongs_to :parent_subject, :class_name => "Subject", :foreign_key => "parent_subject_id"
   belongs_to :subject_set, :class_name => "SubjectSet", :foreign_key => "subject_set_id"
 

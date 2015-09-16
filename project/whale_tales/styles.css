@@ -31,6 +31,11 @@
   text-align: center;
   /*text-transform: uppercase;*/
 }
+.home-page a.standard-button {
+  font-size: 20px;
+  padding: 0 2em;
+  line-height: 2em;
+}
 
  /* A hack to replace the hard-coded group header */
 .groups-header span {
@@ -42,6 +47,15 @@
   content: 'Select a Voyage'
 }
 
-.home-page .page-content{
+.home-page .page-content {
   margin: 0px;
+}
+
+.custom-page > div, .group-page {
+  background-color: #3f5765;
+  color: #FFF;
+}
+
+.page-content > h1 {
+  background-color: #2b3a42;
 }

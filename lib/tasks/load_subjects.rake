@@ -127,7 +127,8 @@ require 'active_support'
             meta_data: meta_data,
             width: width,
             height: height,
-            order: order
+            order: order,
+            group: group
           })
           s.activate!
           puts "        - Saved subject: #{s.location[:standard]}"

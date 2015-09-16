@@ -33,6 +33,10 @@ module Randomizer
 
       result
     end
+
+    def random_order
+      order [ :random_no, [:asc,:desc].shuffle.first ]
+    end
   end
 
   def save

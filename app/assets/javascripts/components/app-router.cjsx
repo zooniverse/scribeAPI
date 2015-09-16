@@ -96,7 +96,7 @@ class AppRouter
         <DefaultRoute name="home-default" handler={HomePage} />
       </Route>
 
-    Router.run routes, (Handler) ->
+    Router.run routes, (Handler, state) ->
       React.render <Handler />, document.body
 
   controllerForPage: (page) ->
@@ -125,7 +125,7 @@ class AppRouter
 
       render: ->
         formatted_name = page.name.replace("_", " ")
-        <div className="page-content" id="#{page.name}">
+        <div className="page-content custom-page" id="#{page.name}">
           <h1>{formatted_name}</h1>
           <div dangerouslySetInnerHTML={{__html: marked(page.content)}} />
           <div className="updated-at">Last Update {page.updated_at}</div>

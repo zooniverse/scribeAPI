@@ -41,8 +41,13 @@ GroupBrowser = React.createClass
       className='group'
       style={divStyle} >
       <div className="button-container #{buttonContainerClasses.join ' '}">
-        <a href="/#/mark/#{group.subject_sets[0].id}" className="button small-button">Mark</a>
-        <a href="/#/transcribe/#{group.subject_sets[0].id}" className="button small-button">Transcribe</a>
+        { if false
+            <a href="/#/mark/#{group.subject_sets[0].id}" className="button small-button">Mark</a>
+            <a href="/#/transcribe/#{group.subject_sets[0].id}" className="button small-button">Transcribe</a>
+            <a href="/#/groups/#{group.id}" className="button small-button ghost">More info</a>
+        }
+        <a href="/#/mark?group_id=#{group.id}" className="button small-button">Mark</a>
+        <a href="/#/transcribe?group_id=#{group.id}" className="button small-button">Transcribe</a>
         <a href="/#/groups/#{group.id}" className="button small-button ghost">More info</a>
       </div>
       <p className="group-name #{groupNameClasses.join ' '}">{group.name}</p>
