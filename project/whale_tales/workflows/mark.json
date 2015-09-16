@@ -110,7 +110,7 @@
       "tool_config": {
         "options": [
           {
-            "value": "no",
+            "value": "yes",
             "label": "Yes",
             "next_task": "sailing_condition"
           },

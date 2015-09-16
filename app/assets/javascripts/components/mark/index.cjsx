@@ -160,10 +160,7 @@ module.exports = React.createClass # rename to Classifier
     @fetchNextSubjectPage(subject_set.id, @getActiveWorkflow().id, new_page, 0, callback_fn)
 
   render: ->
-    console.log 'render()'
-    console.log 'render::CURRENT SUBJECT: ', @getCurrentSubject()
     return null unless @getCurrentSubject()? && @getActiveWorkflow()?
-
 
     currentTask = @getCurrentTask()
     TaskComponent = @getCurrentTool()
