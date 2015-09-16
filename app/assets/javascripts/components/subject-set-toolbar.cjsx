@@ -45,7 +45,7 @@ module.exports = React.createClass
         </div>
       </div>
       <div className="subject-set-toolbar-links">
-        <a className={"toggle-pan-zoom" + if @state.active_pane == 'pan-zoom' then ' active' else '' } title="Toggle pan and zoom tool" onClick={() => @togglePane 'pan-zoom'}></a>
-        <a className={"toggle-multi-page" + if @props.subject_set.subjects.length <= 1 then ' disabled' else '' + if @state.active_pane == 'multi-page' then ' active' else '' } title="Toggle multi-page navigation" onClick={() => @togglePane 'multi-page'}></a>
+        <a className={"toggle-pan-zoom" + if @state.active_pane == 'pan-zoom' then ' active' else '' } onClick={() => @togglePane 'pan-zoom'}><div className="helper">Toggle pan and zoom tool</div></a>
+        <a className={"toggle-multi-page" + if @props.subject_set.subjects.length <= 1 then ' disabled' else '' + if @state.active_pane == 'multi-page' then ' active' else '' } onClick={() => @togglePane 'multi-page'}><div className="helper">Toggle multi-page navigation</div></a>
       </div>
     </div>
