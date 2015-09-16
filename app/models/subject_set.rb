@@ -14,6 +14,9 @@ class SubjectSet
   # Just for admin filtering
   field :classification_count,   type: Integer, default: 0
 
+  field :complete_secondary_subject_count,    type: Integer, default: 0
+  field :active_secondary_subject_count,      type: Integer, default: 0
+
   belongs_to :group
   belongs_to :project
   has_many :subjects, dependent: :destroy, :order => [:order, :asc]
@@ -25,6 +28,28 @@ class SubjectSet
     workflows.each{|workflow| workflow.inc(:active_subjects => 1 )}
     save
   end
+
+=begin
+  def inc_active_secondary_subject(amount = 1)
+    if amount > 0
+      self.inc(:active_secondary_subject_count => amount)
+      self.group.inc(:active_secondary_subject_count => amount)
+    else
+      self.dec(:active_secondary_subject_count => amount)
+      self.group.dec(:active_secondary_subject_count => amount)
+    end
+  end
+
+  def inc_complete_secondary_subject(amount = 1)
+    if amount > 0
+      self.inc(:complete_secondary_subject_count => amount)
+      # self.group.inc(:complete_secondary_subject_count => amount)
+    else
+      self.dec(:complete_secondary_subject_count => amount)
+      # self.group.dec(:complete_secondary_subject_count => amount)
+    end
+  end
+=end
 
   def inc_subject_count_for_workflow(workflow)
     self.inc("counts.#{workflow.id.to_s}.total_subjects" => 1)

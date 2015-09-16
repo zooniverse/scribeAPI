@@ -13,6 +13,7 @@ module.exports =
       params =
         parent_subject_id:        @props.params.parent_subject_id
         group_id:                 @props.query.group_id ? null
+        subject_set_id:           @props.query.subject_set_id ? null
       @fetchSubjects params
 
     """
