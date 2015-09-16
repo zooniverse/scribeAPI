@@ -37,6 +37,10 @@
   line-height: 2em;
 }
 
+.readymade-site-background{
+  top: -370px;
+}
+
  /* A hack to replace the hard-coded group header */
 .groups-header span {
   display: none;
