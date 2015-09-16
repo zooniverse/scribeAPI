@@ -63,6 +63,26 @@
         "displays_transcribe_button": true
       },
       "generates_subject_type": "consensus_valuation"
+    },
+
+    "em_transcribed_dimensions": {
+      "instruction": "Choose the best transcription or enter your own!",
+      "tool": "verifyTool",
+      "tool_config": {
+        "displays_transcribe_button": true
+      },
+      "generates_subject_type": "consensus_dimensions"
+    },
+
+    "em_record_description": {
+      "instruction": "Choose the best transcription or enter your own!",
+      "tool": "verifyTool",
+      "tool_config": {
+        "displays_transcribe_button": true
+      },
+      "generates_subject_type": "consensus_description"
     }
+
+
   }
 }

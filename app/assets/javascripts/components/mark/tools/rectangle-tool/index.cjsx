@@ -136,7 +136,6 @@ module.exports = React.createClass
     @props.mark.y += d.y / @props.yScale
     @props.mark.width += d.x / @props.xScale
     @props.mark.height -= d.y / @props.yScale
-    console.log @props.mark.height
     @props.onChange e
 
   handleHHDrag: (e, d) ->
@@ -204,6 +203,7 @@ module.exports = React.createClass
         <Draggable onDrag = {@handleMainDrag} >
           <g
             className="tool-shape #{classes.join ' '}"
+            key={points}
             dangerouslySetInnerHTML={
               __html: "
                 <filter id=\"dropShadow\">
