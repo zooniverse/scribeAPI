@@ -253,8 +253,8 @@ namespace :project do
   desc "Drop & Load a project by name"
   task :reload, [:project_key] => :environment do |task, args|
 
-    Rake::Task['subjects:drop'].invoke(args[:project_key])
-    Rake::Task['subjects:load'].invoke(args[:project_key])
+    Rake::Task['project:drop'].invoke(args[:project_key])
+    Rake::Task['project:load'].invoke(args[:project_key])
 
   end
 
