@@ -40,6 +40,7 @@ module.exports =
           callback() if callback?
 
   commitClassification: (classification) ->
+    return unless classification?
     # Commit classification to backend
     classification.commit (classification) =>
       # Did this generate a child_subject? Update local copy:
