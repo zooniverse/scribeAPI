@@ -94,7 +94,7 @@ module.exports = React.createClass
       <label
         key={tool._key}
         className="#{classes.join ' '}"
-        style={'border-color': tool.color}
+        style={borderColor: tool.color}
       >
         <span
           className="drawing-tool-icon"
