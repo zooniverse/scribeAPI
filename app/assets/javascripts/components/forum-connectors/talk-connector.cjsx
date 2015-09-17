@@ -37,7 +37,7 @@ module.exports =
       unless props.subject.meta_data.zooniverse_id?
         console.warn "Warning: Meta data field, zooniverse_id, does not exist for this subject."
         return null
-      url = "https://www.zooniverse.org/projects/#{@options.account_name}/old-weather-whaling/talk/subjects/#{props.subject.meta_data.zooniverse_id}/"
+      url = "https://www.zooniverse.org/projects/#{@options.account_username}/#{@options.project_name}/talk/subjects/#{props.subject.meta_data.zooniverse_id}/"
 
     # this method doesn't yet do anytying
     search_url: (term) ->

@@ -51,7 +51,8 @@
 
   "forum": {
     "type": "talk",
-    "account_name": "djsato"
+    "account_username": "djsato",
+    "project_name": "old-weather-whaling"
   },
 
   "feedback_form_url": "https://docs.google.com/forms/d/12FTryz5oTuzJE-UtbuMYCH5M77lLo-H74wiN35ORc8U/viewform",
