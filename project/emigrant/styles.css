@@ -277,6 +277,12 @@ div.home-page {
 }
 .delete-button circle {
   fill: #ef4545;
+  transform: translate(5px, -15px);
+  -webkit-transform: translate(5px, -15px);
+}
+.delete-button path {
+  transform: translate(5px, -15px) rotate(45deg);
+  -webkit-transform: translate(5px, -15px) rotate(45deg);
 }
 .delete-button:hover circle {
   fill: #ff5151;
