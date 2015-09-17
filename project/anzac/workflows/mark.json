@@ -29,7 +29,7 @@
             "value": "hs_conduct_sheet",
             "label":"Statement of Services",
             "next_task": "hs_transfer_table"
-          },           
+          },
           {
             "value":"att_form",
             "label":"Attestation: General Form",
@@ -53,7 +53,7 @@
           {
             "value":"other_page_type",
             "label":"Other",
-            "help":"Any page that doesn't fit the description of the above labels.",
+            "help": {"title": "Other", "body": "Any page that doesn't fit the description of the above labels."},
             "generates_subject_type": "transcribe_other_page_type",
             "next_task": null
           }
@@ -66,7 +66,7 @@
       "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Number in the header", "color": "green", "generates_subject_type": "att_transcribe_header", "help":"Look for a number with the following formats: 'xx/yyyy' or 'yyyyy'" },
+          {"type": "rectangleTool", "label": "Number in the header", "color": "green", "generates_subject_type": "att_transcribe_header", "help": {"title":"Number in the header", "body": "Look for a number with the following formats: 'xx/yyyy' or 'yyyyy'"}},
           {"type": "rectangleTool", "label": "One-Part Question", "color": "green", "generates_subject_type": "att_transcribe_question" },
           {"type": "rectangleTool", "label": "Two-Part Question", "color": "green", "generates_subject_type": "att_transcribe_two_question" },
           {"type": "rectangleTool", "label": "Three-Part Question", "color": "green", "generates_subject_type": "att_transcribe_three_question" }
@@ -198,7 +198,7 @@
             "value":"no_sticky_note",
             "label":"No",
             "next_task":"hs_task"
-          }          
+          }
         ]
       }
     },
@@ -264,7 +264,7 @@
       "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
       "next_task": "other_data_field",
       "tool_config": {
-        "tools": [ 
+        "tools": [
           {"type": "rectangleTool", "label": "Killed in action", "color": "green", "generates_subject_type": "hs_rectangleTool_kia" },
           {"type": "rectangleTool", "label": "Died of wounds/sickness", "color": "green", "generates_subject_type": "hs_rectangleTool_died_ws" },
           {"type": "rectangleTool", "label": "Missing", "color": "green", "generates_subject_type": "hs_rectangleTool_missing" },
