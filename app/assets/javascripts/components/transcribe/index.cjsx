@@ -21,9 +21,12 @@ HelpModal               = require 'components/help-modal'
 DraggableModal          = require 'components/draggable-modal'
 GenericButton           = require 'components/buttons/generic-button'
 
+ZoomPanListenerMethods  = require 'lib/zoom-pan-listener-methods'
+SubjectSetToolbar       = require 'components/subject-set-toolbar'
+
 module.exports = React.createClass # rename to Classifier
   displayName: 'Transcribe'
-  mixins: [FetchSubjectsMixin, BaseWorkflowMethods, Navigation] # load subjects and set state variables: subjects,  classification
+  mixins: [FetchSubjectsMixin, BaseWorkflowMethods, Navigation, ZoomPanListenerMethods] # load subjects and set state variables: subjects,  classification
 
   getInitialState: ->
     taskKey:                      null
@@ -32,7 +35,7 @@ module.exports = React.createClass # rename to Classifier
     subject_index:                0
     helping:                      false
     last_mark_task_key:           @props.query.mark_key
-
+    toolbar_expanded:             false
 
   getDefaultProps: ->
     workflowName: 'transcribe'
@@ -92,6 +95,12 @@ module.exports = React.createClass # rename to Classifier
 
       page: @props.query.page
 
+  onToolbarExpand: ->
+    @setState toolbar_expanded: true
+
+  onToolbarHide: ->
+    @setState toolbar_expanded: false
+
   render: ->
     if @props.params.workflow_id? and @props.params.parent_subject_id?
       transcribeMode = 'page'
@@ -108,7 +117,20 @@ module.exports = React.createClass # rename to Classifier
     TranscribeComponent = @getCurrentTool() # @state.currentTool
     onFirstAnnotation = currentAnnotation?.task is @getActiveWorkflow().first_task
 
-    <div className="classifier">
+    <div className={"classifier with-toolbar" + if @state.toolbar_expanded then ' expand' else ''}>
+
+      { if @getCurrentSubject()? and @getCurrentTask()?
+        <SubjectSetToolbar
+          workflow={@getActiveWorkflow()}
+          subject={@getCurrentSubject()}
+          task={@getCurrentTask()}
+          onZoomChange={@handleZoomPanViewBoxChange}
+          viewBox={@state.zoomPanViewBox}
+          onExpand={@onToolbarExpand}
+          onHide={@onToolbarHide}
+        />
+      }
+
       <div className="subject-area">
 
         { unless @getCurrentSubject()
@@ -129,6 +151,7 @@ module.exports = React.createClass # rename to Classifier
               workflow={@getActiveWorkflow()}
               classification={@props.classification}
               annotation={currentAnnotation}
+              viewBox={@state.zoomPanViewBox}
             >
               <TranscribeComponent
                 viewerSize={@state.viewerSize}
