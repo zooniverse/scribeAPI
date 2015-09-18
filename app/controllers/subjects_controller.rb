@@ -6,6 +6,7 @@ class SubjectsController < ApplicationController
 
     workflow_id           = get_objectid :workflow_id
     group_id              = get_objectid :group_id
+    subject_set_id        = get_objectid :subject_set_id
     parent_subject_id     = get_objectid :parent_subject_id
     # Note that pagination is kind of useless when randomizing
     random                = get_bool :random, false
@@ -14,11 +15,14 @@ class SubjectsController < ApplicationController
 
     @subjects = Subject.by_workflow(workflow_id).active.page(page).per(limit)
 
-    # Filter by subject set?
+    # Filter by subject?
     @subjects = @subjects.by_parent_subject(parent_subject_id) if parent_subject_id
 
     # Filter by group?
     @subjects = @subjects.by_group(group_id) if group_id
+
+    # Filter by subject set?
+    @subjects = @subjects.by_subject_set(subject_set_id) if subject_set_id
 
     # Randomize?
     # @subjects = @subjects.random(limit: limit) if random

@@ -1,7 +1,7 @@
-# @cjsx React.DOM
-
 React = require 'react'
 API   = require '../lib/api'
+
+SmallButton   = require('components/buttons/small-button')
 
 GroupBrowser = React.createClass
   displayName: 'GroupBrowser'
@@ -43,13 +43,10 @@ GroupBrowser = React.createClass
       className='group'
       style={divStyle} >
       <div className="button-container #{buttonContainerClasses.join ' '}">
-        { if false
-            <a href="/#/mark/#{group.subject_sets[0].id}" className="button small-button">Mark</a>
-            <a href="/#/transcribe/#{group.subject_sets[0].id}" className="button small-button">Transcribe</a>
-            <a href="/#/groups/#{group.id}" className="button small-button ghost">More info</a>
+        { for workflow in @props.project.workflows
+            if (group.stats.workflow_counts?[workflow.id]?.active_subjects ? 0) > 0
+              <a href={"/#/#{workflow.name}?group_id=#{group.id}"} className="button small-button">{workflow.name.capitalize()}</a>
         }
-        <a href="/#/mark?group_id=#{group.id}" className="button small-button">Mark</a>
-        <a href="/#/transcribe?group_id=#{group.id}" className="button small-button">Transcribe</a>
         <a href="/#/groups/#{group.id}" className="button small-button ghost">More info</a>
       </div>
       <p className="group-name #{groupNameClasses.join ' '}">{group.name}</p>

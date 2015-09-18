@@ -320,7 +320,7 @@ module.exports =
         taskKey: null
         notice:
           header: "All Done!"
-          message: "There's nothing more to #{@props.workflowName} here."
+          message: "There's nothing more for you to #{@props.workflowName} here."
           onClick: () =>
             @transitionTo? 'mark' # "/#/mark"
             @setState

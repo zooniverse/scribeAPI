@@ -5,6 +5,7 @@
     <th></th> 
     <th>Status</th>
     <th>Pages</th>
+    <th>Secondary Subjects</th>
     <th>Classifications</th>
   </tr>
 
@@ -13,6 +14,7 @@
     <td><%= link_to admin_subject_set_path(set) do %><img src="<%= set.thumbnail %>" width="100"/><% end %></td>
     <td><%= link_to admin_subject_set_path(set) do %><%= set.state %><% end %></td>
     <td> <%= set.subjects.root.count %> </td> 
+    <td> <%= set.active_secondary_subject_count %> </td> 
     <td> <%= set.classification_count %> </td> 
   </tr>
 <% end %>

@@ -25,6 +25,10 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
     data
   end
 
+  def type
+    object.type.nil? ? 'subjects' : object.type
+  end
+
   # Let's override default has_many so that we can restrict to active (i.e. to hide retired marks)
   def child_subjects
     object.child_subjects.active.map { |s| SubjectSerializer.new(s, root: false, scope: scope) }

@@ -50,14 +50,30 @@ GroupPage = React.createClass
             }
           </dl>
 
+          { if @state.group.stats?
+              <span>
+                <h2>Activity</h2>
+                <dl className="metadata-list">
+                  <dt>Classifications In-Progress</dt>
+                  <dd>{@state.group.stats?.total_pending ? 0}</dd>
+                  <dt>Complete Classifications</dt>
+                  <dd>{@state.group.stats?.total_finished ? 0}</dd>
+                  <dt>Overal Estimated Completion</dt>
+                  <dd>{parseInt((@state.group.stats?.completeness ? 0) * 100)}%</dd>
+                </dl>
+              </span>
+          }
+
           <div className='subject_sets'>
             { for set, i in @state.subject_sets ? []
                 <div key={i} className="subject_set">
 
                   <img src={set.thumbnail} />
                   <div className="mark-transcribe-buttons">
-                    <SmallButton label="Mark" href={"#/mark/#{set.id}"} />
-                    <SmallButton label="Transcribe" href={"#/transcribe/#{set.id}"} />
+                    { for workflow in @props.project.workflows
+                        if (set.counts[workflow.id]?.active_subjects ? 0) > 0
+                          <SmallButton key={workflow.id} label={workflow.name} href={"#/#{workflow.name}?subject_set_id=#{set.id}"} />
+                    }
                   </div>
                 </div>
             }
