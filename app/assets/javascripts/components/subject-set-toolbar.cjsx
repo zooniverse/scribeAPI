@@ -79,13 +79,12 @@ module.exports = React.createClass
 
       </div>
       <div className="subject-set-toolbar-links">
-        <a className={"toggle-pan-zoom" + if @state.active_pane == 'pan-zoom' then ' active' else '' } title="Toggle pan and zoom tool" onClick={() => @togglePane 'pan-zoom'}></a>
-        <a className={"toggle-multi-page" + if @props.subject_set.subjects.length <= 1 then ' disabled' else '' + if @state.active_pane == 'multi-page' then ' active' else '' } title="Toggle multi-page navigation" onClick={() => @togglePane 'multi-page'}></a>
-        <a className={if @props.hideOtherMarks == true then 'fa fa-toggle-on fa-2x' else 'fa fa-toggle-off fa-2x' } title="Hide Marks of Other People" onClick={@props.toggleHideOtherMarks}></a>
-        <a className={"fa fa-comments-o" + if @state.active_pane == 'discuss' then ' active' else '' } title="Discuss this page" onClick={() => @togglePane 'discuss'}></a>
-        <a className={"fa fa-share-alt" + if @state.active_pane == 'share' then ' active' else '' } title="Share this image" onClick={() => @togglePane 'share'}></a>
-        <a className={"fa fa-info" + if @state.active_pane == 'explore' then ' active' else '' } title="More information on this subject" onClick={() => @togglePane 'explore'}></a>
-        <a className={"fa fa-question" + if @props.completeTutorial != true then ' active' else ''} title="Tutorial" onClick={@props.toggleTutorial}></a>
-
+        <a className={"toggle-pan-zoom" + if @state.active_pane == 'pan-zoom' then ' active' else '' } title="Toggle pan and zoom tool" onClick={() => @togglePane 'pan-zoom'}><div className="helper">Toggle pan and zoom tool</div></a>
+        <a className={"toggle-multi-page" + if @props.subject_set.subjects.length <= 1 then ' disabled' else '' + if @state.active_pane == 'multi-page' then ' active' else '' } title="Toggle multi-page navigation" onClick={() => @togglePane 'multi-page'}><div className="helper">Toggle multi-page navigation</div></a>
+        <a className={if @props.hideOtherMarks == true then 'fa fa-toggle-on fa-2x' else 'fa fa-toggle-off fa-2x' } onClick={@props.toggleHideOtherMarks}><div className="helper">Hide Marks of Other People</div></a>
+        <a className={"fa fa-comments-o" + if @state.active_pane == 'discuss' then ' active' else '' } onClick={() => @togglePane 'discuss'}><div className="helper">Discuss this page</div></a>
+        <a className={"fa fa-share-alt" + if @state.active_pane == 'share' then ' active' else '' } onClick={() => @togglePane 'share'}><div className="helper">Share this image</div></a>
+        <a className={"fa fa-info" + if @state.active_pane == 'explore' then ' active' else '' } onClick={() => @togglePane 'explore'}><div className="helper">More information on this subject</div></a>
+        <a className={"fa fa-question" + if @props.completeTutorial != true then ' active' else ''} onClick={@props.toggleTutorial}><div className="helper">Tutorial</div></a>
       </div>
     </div>

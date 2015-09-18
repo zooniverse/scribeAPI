@@ -27,16 +27,20 @@
 
   a
     display: block
-    font-family: "FontAwesome"
-    color: #fff
+    position: relative
     width: 60px
     height: 60px
-    line-height: 60px
-    text-align: center
+    color: #fff
     cursor: pointer
     opacity: 0.7
+    text-align: center
     transition: background 0.5s, color 0.5s
     -webkit-transition: background 0.5s, color 0.5s
+
+    &:before,
+    &:after
+      font-family: "FontAwesome"
+      line-height: 60px
 
     &:hover,
     &.active
@@ -64,6 +68,42 @@
       content: "\f00e"
 
     &.disabled
+      display: none
+
+    .helper
+      display: none
+      position: absolute
+      height: 40px
+      width: 100px
+      top: 50%
+      left: 60px
+      margin-top: -20px
+      font-size: 12px
+      padding: 6px
+      background: #3f5765
+      color: #fff
+      justify-content: center
+      align-content: center
+      flex-direction: column
+      z-index: 1000
+      box-shadow: 2px 2px 2px 0px rgba(0,0,0,0.4)
+
+      &:before
+        content: ' '
+        position: absolute
+        top: 50%
+        left: -6px
+        margin-top: -3px
+        width: 0
+        height: 0
+        border-top: 6px solid transparent
+        border-bottom: 6px solid transparent
+        border-right: 6px solid #3f5765
+
+    &:hover .helper
+      display: flex
+
+    &.active:hover .helper
       display: none
 
 .subject-set-toolbar-panes
