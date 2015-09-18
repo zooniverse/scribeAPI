@@ -1,24 +1,72 @@
 require 'fileutils'
 
-desc 'creates a poject object from the project directory'
+namespace :project do
 
-  task :project_drop, [:project_key] => :environment do |task, args|
+  desc "Load content, styling, subjects, and workflows for named project non-destructively"
+  task :load, [:project_key, :area] => :environment do |task, args|
+    args.with_defaults area: 'all'
 
-    project = Project.find_by key: args[:project_key]
-    puts "Delete project: #{args[:project_key]}"
-    if ! project.nil?
-      project.destroy
+    # Validate AREA arg:
+    if ! ['all','content','style','workflows','subjects'].include? args[:area]
+      puts "Unknown AREA given: #{args[:area]}"
+      exit
     end
 
+    project = nil
+    # Before proceeding to update anything non-core, confirm we have a project to update:
+    if ! ['all','content'].include? args[:area]
+      project = Project.find_by key: args[:project_key]
+
+      if project.nil?
+        if args[:area] != 'all'
+          puts "Before updating #{args[:area]} you must create the project using project:load[#{args[:project_key]}]"
+        else
+          puts "Halting because project not found"
+        end
+        exit
+      end
+    end
+
+    # Load content:
+    if ['all','content'].include? args[:area]
+      project = load_content args[:project_key]
+      puts "Done loading content for \"#{project.title}\""
+    end
+
+    # Load custom styling (css,js,images,fonts, etc):
+    if ['all','style'].include? args[:area]
+      load_styles project
+      puts "Done loading style for \"#{project.title}\""
+    end
+      
+    # Load workflows:
+    if ['all','workflows'].include? args[:area]
+      begin
+        Rake::Task['project:load_workflows'].invoke project.key
+      rescue Exception => e
+        puts "ERROR: #{e.inspect}"
+      end
+      puts "Done loading #{project.workflows.count} workflow(s) into \"#{project.title}\""
+    end
+
+    # Load subjects:
+    if ['all','subjects'].include? args[:area]
+      if ! project.workflows.find_by(name: 'mark')
+        puts "Can't load subjects before loading a mark workflow! Run rake project:load[#{project.key},workflows] first"
+        exit
+      end
+      Rake::Task['subjects:load_groups'].invoke(project.key)
+      puts "Done loading #{project.subject_sets.count} subject sets into \"#{project.title}\""
+    end
   end
 
-  task :project_load, [:project_key] => :environment do |task, args|
-    project_dir = Rails.root.join('project', args[:project_key])
+  def load_content(project_key)
+    project_dir = Rails.root.join('project', project_key)
     project_file_path = "#{project_dir}/project.json"
     project_hash = JSON.parse File.read(project_file_path)
 
     # load project_file_path
-    project = Project.find_or_create_by key: args[:project_key]
+    project = Project.find_or_create_by key: project_key
 
     # Set all valid fields from hash:
     project_hash = project_hash.inject({}) { |h, (k,v)| h[k] = v if Project.fields.keys.include?(k.to_s); h }
@@ -27,7 +75,7 @@ desc 'creates a poject object from the project directory'
     puts "Created project: #{project.title}"
 
     # Load pages from content/*:
-    content_path = Rails.root.join('project', args[:project_key], 'content')
+    content_path = Rails.root.join('project', project_key, 'content')
     puts "Loading pages from #{content_path}:"
 
     prev_pages = project.pages
@@ -65,47 +113,72 @@ desc 'creates a poject object from the project directory'
       end
     end
 
+    project.tutorial = load_tutorial(project_key)
+   
+    project.save
+    project
+  end
 
-    load_images(args[:project_key])
-    load_fonts(args[:project_key])
+  def load_styles(project)
+ 
+    load_images(project.key)
+    load_fonts(project.key)
 
-    styles_path = Rails.root.join('project', args[:project_key], 'styles.css')
+    styles_path = Rails.root.join('project', project.key, 'styles.css')
     if File.exist? styles_path
       styles = File.read styles_path
       puts "Loading #{styles.size}b of custom CSS"
       project.styles = styles
     end
 
-    custom_js_path = Rails.root.join('project', args[:project_key], 'custom.js')
+    custom_js_path = Rails.root.join('project', project.key, 'custom.js')
     if File.exist? custom_js_path
       custom_js = File.read custom_js_path
       puts "Loading #{custom_js.size}b of custom JS"
       project.custom_js = custom_js
     end
 
-    project.tutorial = load_tutorial(args[:project_key])
-
     project.save
+  end
 
-    begin
-      Rake::Task['load_workflows'].invoke project.key
-      Rake::Task['project_setup'].invoke project.key
+  def load_images(project_key)
+    image_path = Rails.root.join('project', project_key, 'images/')
+    return if ! File.exists? image_path
 
-      puts "Done loading \"#{project.title}\" with #{project.workflows.count} workflow(s), #{project.subject_sets.count} subject sets."
+    puts "Loading images from #{image_path}:"
 
-    # rescue Exception => e
-      # If a workflow json can't be parsed, halt:
-      puts ""
-      # puts "ERROR: #{e.inspect}"
-     #  puts "Halting: #{e.message}"
+    Dir.foreach(image_path).each do |file|
+      path = Rails.root.join image_path, file
+      next if File.directory? path
+      next if ! ['.png','.gif','.jpg', '.jpeg', '.svg'].include? path.extname
+      puts " -- #{file}"
+      image_dest = Rails.root.join("app/assets/images/#{project_key}/")
+      Dir.mkdir(image_dest) unless File.exists?(image_dest)
+      cp(path, image_dest, verbose: false)
     end
   end
 
+  def load_fonts(project_key)
+    font_path = Rails.root.join('project', project_key, 'fonts/')
+    puts "Loading fonts from #{font_path}:"
 
-  desc "loads workflow jsons from workflows/*.json"
+    if File.directory?(font_path)
+      Dir.foreach(font_path).each do |file|
+        path = Rails.root.join font_path, file
+        next if File.directory? path
+        next if ! ['.eot','.woff2','.woff', '.ttf', '.svg'].include? path.extname
+        puts " -- #{file}"
+        font_dest = Rails.root.join("app/assets/fonts/#{project_key}/")
+        Dir.mkdir(font_dest) unless File.exists?(font_dest)
+        cp(path, font_dest, verbose: false)
+      end
+    end
+  end
+
+  desc "Loads workflow jsons from workflows/*.json"
   task :load_workflows, [:project_key] => :environment do |task, args|
     project = Project.find_by key: args[:project_key]
-    project.workflows.destroy_all
+    # project.workflows.destroy_all
 
     workflows_path = Rails.root.join('project', args[:project_key], 'workflows', '*.json')
     puts "Workflows: Loading workflows from #{workflows_path}"
@@ -120,7 +193,7 @@ desc 'creates a poject object from the project directory'
 
         puts "  Loading '#{workflow_hash[:name]}' workflow"
 
-        workflow_hash[:project] = project
+        # workflow_hash[:project] = project
 
         tasks = workflow_hash.delete :tasks
         if tasks.is_a? Hash
@@ -140,15 +213,13 @@ desc 'creates a poject object from the project directory'
 
         workflow_hash = load_help_text workflow_hash, args[:project_key]
 
-        workflow = Workflow.create workflow_hash
+        workflow = project.workflows.find_or_create_by name: workflow_hash[:name]
+        workflow.update_attributes workflow_hash
         puts "    Loaded #{workflow.tasks.count} task(s)"
 
         if workflow.generates_subjects && ! workflow.generates_subjects_for
           puts "    WARN: #{workflow.name} generates subjects, but generates_subjects_for not set"
         end
-      # rescue => e
-       #  puts "  WARN: Couldn't parse workflow from #{workflow_hash_path}: #{e}"
-        # raise "Error parsing #{workflow_hash_path}"
       end
     end
 
@@ -159,6 +230,36 @@ desc 'creates a poject object from the project directory'
 
     puts "  WARN: No mark workflow found" if project.workflows.find_by(name: 'mark').nil?
   end
+
+  desc "Drop a project by name"
+  task :drop, [:project_key] => :environment do |task, args|
+    project = Project.find_by key: args[:project_key]
+    if project.nil?
+      puts "No project called \"#{args[:project_key]}\" was found in the database"
+      exit
+    else
+      project.destroy
+    end
+
+    # Delete fonts:
+    FileUtils.remove_dir Rails.root.join("app/assets/fonts/#{args[:project_key]}"), true
+
+    # Delete images:
+    FileUtils.remove_dir Rails.root.join("app/assets/images/#{args[:project_key]}"), true
+
+    puts "Deleted project: #{args[:project_key]}"
+  end
+
+  desc "Drop & Load a project by name"
+  task :reload, [:project_key] => :environment do |task, args|
+
+    Rake::Task['project:drop'].invoke(args[:project_key])
+    Rake::Task['project:load'].invoke(args[:project_key])
+
+  end
+
+
+
 
   def translate_pick_one_tool_config(task_hash)
     config = task_hash[:tool_config]
@@ -195,39 +296,6 @@ desc 'creates a poject object from the project directory'
     tutorial_hash
   end
 
-  def load_images(project_key)
-    image_path = Rails.root.join('project', project_key, 'images/')
-    return if ! File.exists? image_path
-
-    puts "Loading images from #{image_path}:"
-
-    Dir.foreach(image_path).each do |file|
-      path = Rails.root.join image_path, file
-      next if File.directory? path
-      next if ! ['.png','.gif','.jpg', '.jpeg', '.svg'].include? path.extname
-      puts " -- #{file}"
-      image_dest = Rails.root.join("app/assets/images/#{project_key}/")
-      Dir.mkdir(image_dest) unless File.exists?(image_dest)
-      cp(path, image_dest, verbose: false)
-    end
-  end
-
-  def load_fonts(project_key)
-    font_path = Rails.root.join('project', project_key, 'fonts/')
-    puts "Loading fonts from #{font_path}:"
-
-    if File.directory?(font_path)
-      Dir.foreach(font_path).each do |file|
-        path = Rails.root.join font_path, file
-        next if File.directory? path
-        next if ! ['.eot','.woff2','.woff', '.ttf', '.svg'].include? path.extname
-        puts " -- #{file}"
-        font_dest = Rails.root.join("app/assets/fonts/#{project_key}/")
-        Dir.mkdir(font_dest) unless File.exists?(font_dest)
-        cp(path, font_dest, verbose: false)
-      end
-    end
-  end
 
   def load_help_text(h, project_key)
     if h.respond_to? :each
@@ -272,3 +340,6 @@ desc 'creates a poject object from the project directory'
       num_downstream_workflows(w.next_workflow, prev_count + 1)
     end
   end
+
+
+end
