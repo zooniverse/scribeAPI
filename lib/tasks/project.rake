@@ -301,7 +301,11 @@ namespace :project do
     if h.respond_to? :each
       if h.is_a? Hash
         h.keys.each do |k,v|
-          if k == :help && h[k].is_a?(Hash) && ! h[k][:file].nil?
+          if k == :help && h[k].is_a?(Hash) && ! h[k][:file].nil? || k == "help" && h[k].is_a?(Hash) && ! h[k]["file"].nil?
+            # Support nested objects
+            if k == "help"
+              h[k][:file] = h[k]["file"]
+            end
             help_file_path = Rails.root.join('project', project_key, 'content', 'help', h[k][:file] + ".md")
             if File.exist? help_file_path
               content = File.read(help_file_path)

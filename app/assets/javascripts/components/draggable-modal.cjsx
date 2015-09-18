@@ -13,6 +13,11 @@ module.exports = React.createClass
     # Prevent dragging from (presumably) accidentally selecting modal text on-drag
     $(React.findDOMNode(@)).disableSelection()
 
+  closeModal: ->
+    if @props.onClose
+      @props.onClose()
+    @setState closed: true
+
   render: ->
     onDone = @props.onDone
     if ! onDone?
@@ -30,6 +35,10 @@ module.exports = React.createClass
     <Draggable x={x} y={y}>
 
       <div className="draggable-modal #{@props.classes}">
+        { if @props.closeButton?
+          <a className="modal-close-button" onClick={@closeModal}></a>
+        }
+
         { if @props.header?
           <div className="modal-header">
             { @props.header }
@@ -64,4 +73,3 @@ module.exports = React.createClass
       </div>
 
     </Draggable>
-
