@@ -5,7 +5,6 @@ React                         = require 'react'
 LoadingIndicator              = require './loading-indicator'
 ForumConnectors               = require './forum-connectors'
 
-
 module.exports = React.createClass
   displayName: 'ForumSubjectWidget'
   resizing: false
@@ -21,13 +20,12 @@ module.exports = React.createClass
   getInitialState: ->
     connector:      null
     posts:          {}
-    
-  componentDidMount: ->
 
+  componentDidMount: ->
     API.type('projects').get().then (result)=>
       project = result[0]
 
-      if project.forum?.type? 
+      if project.forum?.type?
         if ! ForumConnectors[project.forum?.type]?
           console.warn "Unsupported forum type. No connector defined for #{project.forum.type}"
         else
@@ -54,7 +52,7 @@ module.exports = React.createClass
   render: ->
     return null if ! @state.connector?
 
-    create_url = @state.connector.create_url()
+    create_url = @state.connector.create_url(@props) # needed create_url to have access to props. better way to do this? -STI
     subject_posts = @state.posts.subject ? ( @state.posts.subject_set ? [] )
 
     <div className="forum-subject-widget">

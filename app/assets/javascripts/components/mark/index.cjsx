@@ -8,13 +8,12 @@ JSONAPIClient           = require 'json-api-client' # use to manage data?
 ForumSubjectWidget      = require '../forum-subject-widget'
 API                     = require '../../lib/api'
 HelpModal               = require 'components/help-modal'
-Tutorial               = require 'components/tutorial'
+Tutorial                = require 'components/tutorial'
 HelpButton              = require 'components/buttons/help-button'
 BadSubjectButton        = require 'components/buttons/bad-subject-button'
 HideOtherMarksButton    = require 'components/buttons/hide-other-marks-button'
 DraggableModal          = require 'components/draggable-modal'
 Draggable               = require 'lib/draggable'
-
 {Link}                  = require 'react-router'
 
 module.exports = React.createClass # rename to Classifier
@@ -48,9 +47,7 @@ module.exports = React.createClass # rename to Classifier
     @fetchSubjectSetsBasedOnProps()
 
   componentWillMount: ->
-    @setState
-      taskKey: @getActiveWorkflow().first_task
-
+    @setState taskKey: @getActiveWorkflow().first_task
     @beginClassification()
 
   componentDidUpdate: (prev_props) ->
@@ -175,6 +172,7 @@ module.exports = React.createClass # rename to Classifier
 
   render: ->
     return null unless @getCurrentSubject()? && @getActiveWorkflow()?
+
     currentTask = @getCurrentTask()
     TaskComponent = @getCurrentTool()
     activeWorkflow = @getActiveWorkflow()
@@ -292,7 +290,7 @@ module.exports = React.createClass # rename to Classifier
           }
 
           <div className="forum-holder">
-            <ForumSubjectWidget subject_set={@getCurrentSubjectSet()} project={@props.project} />
+            <ForumSubjectWidget subject={@getCurrentSubject()} subject_set={@getCurrentSubjectSet()} project={@props.project} />
           </div>
 
           <div className="social-media-container">
