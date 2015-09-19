@@ -73,7 +73,7 @@ require 'active_support'
 
       subjects_by_set = {}
 
-      puts "    Reding subjects from: #{group_file}"
+      puts "    Reading subjects from: #{group_file}"
       CSV.foreach(group_file, :headers=>true, :header_converters=> lambda {|f| f.strip}, :converters=> lambda {|f| f ? f.strip : nil}) do |row|
         data = row.to_hash
         key = data['set_key']
@@ -83,12 +83,10 @@ require 'active_support'
       end
 
       subjects_by_set.each do |(set_key, subjects)|
-
         data = subjects.first
         thumbnail       = data['thumbnail']
         name            = data['name']
         meta_data       = data.except('group_id', 'file_path', 'retire_count', 'thumbnail', 'width','height', 'order')
-
         puts "    Adding subject set: #{set_key}"
         subject_set = group.subject_sets.create({
           name: name,
@@ -114,6 +112,11 @@ require 'active_support'
           # Parse order from csv if avail; otherwise default to position in csv:
           order = subj['order'].nil? ? i : subj['order'].to_i
 
+          # add zooniverse_id if exists
+          if subj.has_key?("zooniverse_id")
+            meta_data["zooniverse_id"] = subj["zooniverse_id"]
+          end
+
           puts "      Adding subject: #{subj['file_path']}"
           s = subject_set.subjects.create({
             location: {
@@ -133,4 +136,3 @@ require 'active_support'
 
       end
     end
-

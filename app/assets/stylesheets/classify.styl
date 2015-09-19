@@ -62,13 +62,10 @@
 
     .task-area
       position fixed
-      background-color #EFEFEF
+      background-color #ffffff
       color SECONDARY_NORMAL
       padding 20px
-      border-radius 5px
-      border-top-right-radius 0px
-      border-bottom-right-radius 0px
-
+      height 100%
       box-shadow: 0 0 5px 3px rgba(0,0,0,0.4);
 
       // prevent highlighting/selecting
@@ -110,7 +107,6 @@
           opacity 0.75
 
         .answer
-          width: 90%
           @extends .standard-button
           background-color #ddd
           color #333
@@ -165,7 +161,7 @@
               color black
               font-weight normal
             &:hover:before
-              display block
+              // display block
 
           &:hover, &.active
             color white
@@ -255,6 +251,30 @@
 
       &:last
         margin-right 0
+
+  .modal-close-button
+    position absolute
+    top -10px
+    right -10px
+    width 40px
+    height 40px
+    line-height 40px
+    text-align center
+    border-radius 20px
+    background #8cbc8c
+    color white
+    font-size 30px
+    cursor pointer
+
+    &:hover
+      background lighten(#8cbc8c, 15%)
+
+    &:before
+      content "\f00d"
+      font-family 'FontAwesome'
+      display inline-block
+      margin-top -1px
+
 
 // currently used for the "Bad Subject" and "Hide Other Marks" buttons
 .toggle-button

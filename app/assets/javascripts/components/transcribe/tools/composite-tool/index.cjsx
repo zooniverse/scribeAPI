@@ -135,6 +135,7 @@ CompositeTool = React.createClass
           focus = annotation_key is @state.active_field_key
 
           <ToolComponent
+            key={Math.floor(Math.random()*10 + 1)}
             task={@props.task}
             tool_config={sub_tool.tool_config}
             subject={@props.subject}

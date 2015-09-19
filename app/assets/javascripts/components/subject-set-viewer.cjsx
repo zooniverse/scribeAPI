@@ -76,6 +76,7 @@ module.exports = React.createClass
         project={@props.project}
         toggleTutorial={@props.toggleTutorial}
         completeTutorial={@props.completeTutorial}
+        showingTutorial={@props.showingTutorial}
       />
 
       { for subject, index in @props.subject_set.subjects

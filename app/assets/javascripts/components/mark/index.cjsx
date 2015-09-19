@@ -7,13 +7,12 @@ BaseWorkflowMethods     = require 'lib/workflow-methods-mixin'
 JSONAPIClient           = require 'json-api-client' # use to manage data?
 API                     = require '../../lib/api'
 HelpModal               = require 'components/help-modal'
-Tutorial               = require 'components/tutorial'
+Tutorial                = require 'components/tutorial'
 HelpButton              = require 'components/buttons/help-button'
 BadSubjectButton        = require 'components/buttons/bad-subject-button'
 HideOtherMarksButton    = require 'components/buttons/hide-other-marks-button'
 DraggableModal          = require 'components/draggable-modal'
 Draggable               = require 'lib/draggable'
-
 {Link}                  = require 'react-router'
 
 module.exports = React.createClass # rename to Classifier
@@ -40,15 +39,14 @@ module.exports = React.createClass # rename to Classifier
     currentSubtool:      null
     showingTutorial:     ! @props.project.current_user_tutorial # Initially show the tutorial if the user hasn't seen it
     lightboxHelp:        false
+    activeSubjectHelper: null
 
   componentDidMount: ->
     @getCompletionAssessmentTask()
     @fetchSubjectSetsBasedOnProps()
 
   componentWillMount: ->
-    @setState
-      taskKey: @getActiveWorkflow().first_task
-
+    @setState taskKey: @getActiveWorkflow().first_task
     @beginClassification()
 
   componentDidUpdate: (prev_props) ->
@@ -58,12 +56,15 @@ module.exports = React.createClass # rename to Classifier
 
   toggleHelp: ->
     @setState helping: not @state.helping
+    @hideSubjectHelp()
 
   toggleTutorial: ->
     @setState showingTutorial: not @state.showingTutorial
+    @hideSubjectHelp()
 
   toggleLightboxHelp: ->
     @setState lightboxHelp: not @state.lightboxHelp
+    @hideSubjectHelp()
 
   toggleHideOtherMarks: ->
     @setState hideOtherMarks: not @state.hideOtherMarks
@@ -157,8 +158,20 @@ module.exports = React.createClass # rename to Classifier
     subject_set = @getCurrentSubjectSet()
     @fetchNextSubjectPage(subject_set.id, @getActiveWorkflow().id, new_page, 0, callback_fn)
 
+  showSubjectHelp: (subject_type) ->
+    @setState
+      activeSubjectHelper: subject_type
+      helping: false
+      showingTutorial: false
+      lightboxHelp: false
+
+  hideSubjectHelp: () ->
+    @setState
+      activeSubjectHelper: null
+
   render: ->
     return null unless @getCurrentSubject()? && @getActiveWorkflow()?
+
     currentTask = @getCurrentTask()
     TaskComponent = @getCurrentTool()
     activeWorkflow = @getActiveWorkflow()
@@ -209,12 +222,18 @@ module.exports = React.createClass # rename to Classifier
               project={@props.project}
               toggleTutorial={@toggleTutorial}
               completeTutorial={@state.completeTutorial}
+              showingTutorial={@state.showingTutorial}
             />
         }
       </div>
       <div className="right-column">
         <div className="task-area">
           <div className="task-container">
+            { if @getCurrentTask().help?
+              <svg id="task-help" width="100%" height="14px" viewBox="0 0 14 14" onClick={@toggleHelp}>
+                <path fillRule="evenodd" d="M 7 0C 3.13 0 0 3.13 0 7 0 10.87 3.13 14 7 14 10.87 14 14 10.87 14 7 14 3.13 10.87 0 7 0ZM 7.04 11.13C 6.51 11.13 6.07 10.68 6.07 10.15 6.07 9.63 6.51 9.18 7.04 9.18 7.57 9.18 8.01 9.63 8.01 10.15 8.01 10.68 7.57 11.13 7.04 11.13ZM 7.56 7.66C 7.56 7.85 7.65 8.06 7.77 8.16 7.77 8.16 6.47 8.55 6.47 8.55 6.21 8.27 6.07 7.91 6.07 7.49 6.07 6.06 7.82 5.9 7.82 5.07 7.82 4.7 7.54 4.39 6.89 4.39 6.29 4.39 5.78 4.69 5.41 5.13 5.41 5.13 4.44 4.04 4.44 4.04 5.07 3.29 6.03 2.87 7.07 2.87 8.61 2.87 9.56 3.65 9.56 4.77 9.56 6.52 7.56 6.65 7.56 7.66Z" fill="rgb(0,0,0)" opacity="0.20"/>
+              </svg>
+            }
             <TaskComponent
               key={@getCurrentTask().key}
               task={currentTask}
@@ -223,17 +242,11 @@ module.exports = React.createClass # rename to Classifier
               subject={@getCurrentSubject()}
             />
             <div className="help-bad-subject-holder">
-              { if @getCurrentTask().help?
-                <HelpButton onClick={@toggleHelp} />
-              }
               { if onFirstAnnotation
                 <BadSubjectButton label={"Bad " + @props.project.term('subject')} active={@state.badSubject} onClick={@toggleBadSubject} />
               }
               { if @state.badSubject
                 <p>You&#39;ve marked this {@props.project.term('subject')} as BAD. Thanks for flagging the issue! <strong>Press DONE to continue.</strong></p>
-              }
-              { if @state.hideOtherMarks
-                <p>Currently displaying only your marks. <strong>Toggle the button again to show all marks to-date.</strong></p>
               }
             </div>
 
@@ -273,6 +286,12 @@ module.exports = React.createClass # rename to Classifier
       {
         if @state.lightboxHelp
           <HelpModal help={{title: "The Lightbox", body: "Use the Lightbox to navigate through a set of documents. You can select any of the images in the Lighbox by clicking on the thumbnail. Once selected, you can start submitting classifications. You do not need to go through the images in order. However, once you start classifying an image, the Lightbox will be deactivated until that classification is done."}} onDone={=> @setState lightboxHelp: false } />
+      }
+      {
+        if @getCurrentTask()?
+          for tool, i in @getCurrentTask().tool_config.options
+            if tool.help && tool.generates_subject_type && @state.activeSubjectHelper == tool.generates_subject_type
+              <HelpModal help={tool.help} onDone={@hideSubjectHelp} />
       }
 
     </div>
