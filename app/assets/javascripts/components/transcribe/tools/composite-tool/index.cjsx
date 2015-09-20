@@ -129,12 +129,13 @@ CompositeTool = React.createClass
       <label>{@props.task.instruction}</label>
 
       {
-        for sub_tool in @props.task.tool_config.options
+        for sub_tool, index in @props.task.tool_config.options
           ToolComponent = @props.transcribeTools[sub_tool.tool]
           annotation_key = sub_tool.value
           focus = annotation_key is @state.active_field_key
 
           <ToolComponent
+            key={index}
             task={@props.task}
             tool_config={sub_tool.tool_config}
             subject={@props.subject}
