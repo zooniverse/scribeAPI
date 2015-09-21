@@ -75,7 +75,7 @@ module.exports = React.createClass
 
               <svg className="light-box-subject" width={125} height={125} viewBox={viewBox} >
                   <SVGImage
-                    src = {if @state.first.location.thumbnail then @state.first.location.thumbnail else @state.first.location.standard}
+                    src = {if @state.first.location.thumbnail? then @state.first.location.thumbnail else @state.first.location.standard}
                     width = {100}
                     height = {100}
                   />
@@ -86,7 +86,7 @@ module.exports = React.createClass
                 <span className="page-number">{second.order}</span>
                 <svg className="light-box-subject" width={125} height={125} viewBox={viewBox} >
                     <SVGImage
-                      src = {if second.location.thumbnail then second.location.thumbnail else second.location.standard}
+                      src = {if second.location.thumbnail? then second.location.thumbnail else second.location.standard}
                       width = {100}
                       height = {100}
                     />
@@ -99,7 +99,7 @@ module.exports = React.createClass
                 <span className="page-number">{third.order}</span>
                 <svg className="light-box-subject" width={125} height={125} viewBox={viewBox} >
                     <SVGImage
-                      src = {if third.location.thumbnail then third.location.thumbnail else third.location.standard}
+                      src = {if third.location.thumbnail? then third.location.thumbnail else third.location.standard}
                       width = {100}
                       height = {100}
                     />
