@@ -165,6 +165,7 @@ TextTool = React.createClass
 
     unless @props.standalone
       label = @props.label ? ''
+      label = label[0] if Array.isArray(label)
     else
       label = @props.task.instruction
 
