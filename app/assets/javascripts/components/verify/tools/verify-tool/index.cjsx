@@ -77,7 +77,7 @@ VerifyTool = React.createClass
       buttons = []
       transcribe_url = "/#/transcribe/#{@props.subject.parent_subject_id}?scrollX=#{window.scrollX}&scrollY=#{window.scrollY}&page=#{@props.subject._meta?.current_page}"
       buttons.push <GenericButton label={@props.transcribeButtonLabel} href={transcribe_url} className="ghost small-button help-button" />
-      buttons.push <DoneButton label={@props.doneButtonLabel} onClick={@commitAnnotation} />
+      # buttons.push <DoneButton label={@props.doneButtonLabel} onClick={@commitAnnotation} />
 
     {x,y} = @getPosition @props.subject.region
     # console.log "verify tool rendering with scale: ", @props.scale, x, x*@props.scale.horizontal, y, y*@props.scale.vertical

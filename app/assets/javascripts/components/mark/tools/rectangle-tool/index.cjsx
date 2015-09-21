@@ -83,14 +83,14 @@ module.exports = React.createClass
     if x1 < x2
       LX = x1
       HX = x2
-    else 
+    else
       LX = x2
       HX = x1
 
     if y1 < y2
       LY = y1
       HY = y2
-    else 
+    else
       LY = y2
       HY = y1
 
@@ -136,7 +136,6 @@ module.exports = React.createClass
     @props.mark.y += d.y / @props.yScale
     @props.mark.width += d.x / @props.xScale
     @props.mark.height -= d.y / @props.yScale
-    console.log @props.mark.height
     @props.onChange e
 
   handleHHDrag: (e, d) ->
@@ -191,7 +190,7 @@ module.exports = React.createClass
       [x1, y2].join ','
       [x1, y1].join ','
     ].join '\n'
-    
+
     <g
       tool={this}
       onMouseDown={@props.onSelect}
@@ -204,6 +203,7 @@ module.exports = React.createClass
         <Draggable onDrag = {@handleMainDrag} >
           <g
             className="tool-shape #{classes.join ' '}"
+            key={points}
             dangerouslySetInnerHTML={
               __html: "
                 <filter id=\"dropShadow\">
@@ -229,10 +229,10 @@ module.exports = React.createClass
         { if @props.selected
             <DeleteButton onClick={@props.onDestroy} scale={scale} x={@getDeleteButtonPosition(@state.pointsHash).x} y={@getDeleteButtonPosition(@state.pointsHash).y}/>
         }
-        
-        { 
+
+        {
           if @props.selected && not @props.disabled
-            <g> 
+            <g>
               {
                 for key, value of @state.pointsHash
                   <DragHandle key={key} tool={this} x={value[0]} y={value[1]} onDrag={@dragFilter(key)} onEnd={@normalizeMark} />

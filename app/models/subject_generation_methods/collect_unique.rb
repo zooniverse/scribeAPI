@@ -5,7 +5,6 @@ module SubjectGenerationMethods
     def process_classification(classification)
 
       atts = subject_attributes_from_classification(classification)
-
       atts[:status] = 'inactive'
 
       classification.child_subject = Subject.find_or_initialize_by(workflow: atts[:workflow], parent_subject: atts[:parent_subject], type: atts[:type])
@@ -35,7 +34,21 @@ module SubjectGenerationMethods
       puts "considering activating.... if #{num_parent_classifications} >= #{classification.workflow.generates_subjects_after}"
       if num_parent_classifications >= classification.workflow.generates_subjects_after
         puts "Activating generated subject because now has #{num_parent_classifications} parent classifications"
-        atts[:status] = 'active'
+
+        # Get number of distinct classifications:
+        num_vals = classification.child_subject.data['values'].nil? ? -1 : classification.child_subject.data['values'].size
+
+        # Get subject-generation method type (presumably for Verify workflow) (which is likely 'most-popular')
+        verify_method = classification.child_subject.workflow.generates_subjects_method
+
+        if num_vals == 1 && verify_method == 'most-popular'
+          puts "Auto upgrading verify subject to complete because only one val: #{classification.child_subject.data}"
+          atts[:status] = 'complete'
+
+        else
+          classification.child_subject.activate! # atts[:status] = 'active'
+          atts.delete :status
+        end
       end
 
       puts "Saving atts to classification: #{atts.inspect}"

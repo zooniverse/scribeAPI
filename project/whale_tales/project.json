@@ -2,18 +2,15 @@
   "title": "Old Weather: Whaling",
   "short_title": "Old Weather: Whaling",
   "summary": "We want to see if (yes obviously) cats are better than animals",
-  "admin_email": "sascha@zooniverse.org",
-  "team_emails": [
-    "sascha@zooniverse.org",
-    "cs@zooniverse.org"
-  ],
   "logo": "/assets/whale_tales/logo.svg",
-  "background": "/assets/whale_tales/background.jpg",
+  "background": "/assets/whale_tales/background_cropped.jpg",
+
   "admin_email": "sascha@zooniverse.org",
   "team_emails": [
     "sascha@zooniverse.org",
     "cs@zooniverse.org"
   ],
+
   "team": [
     {
       "name": "Stuart Lynn",
@@ -53,10 +50,17 @@
   ],
 
   "forum": {
-    "type": "discourse",
-    "base_url": "http://scribe-forum.nypl-labs.biz"
+    "type": "talk",
+    "account_username": "djsato",
+    "project_name": "old-weather-whaling"
   },
 
-  "feedback_form_url": "https://docs.google.com/forms/d/12FTryz5oTuzJE-UtbuMYCH5M77lLo-H74wiN35ORc8U/viewform"
+  "feedback_form_url": "https://docs.google.com/forms/d/12FTryz5oTuzJE-UtbuMYCH5M77lLo-H74wiN35ORc8U/viewform",
+
+  "terms_map": {
+    "group": "ship",
+    "subject set": "logbook",
+    "subject": "page"
+  }
 
 }

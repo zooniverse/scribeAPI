@@ -83,25 +83,32 @@ module.exports = React.createClass
 
   # VARIOUS EVENT HANDLERS
 
+  # Commit mark
+  submitMark: (mark) ->
+    return unless mark?
+    @props.onComplete? mark
+    @setUncommittedMark null # reset uncommitted mark
+
   # Handle initial mousedown:
   handleInitStart: (e) ->
-    # Ignore right-click
-    return null if e.buttons? && e.button? && e.button > 0
+    return null if e.buttons? && e.button? && e.button > 0 # ignore right-click
+    newMark = @createMark(e)
 
-    subToolIndex = @props.subToolIndex
-    return null if ! subToolIndex?
-    subTool = @props.task.tool_config?.options?[subToolIndex]
-    return null if ! subTool?
-
-    # If there's a current, uncommitted mark, commit it:
+    # submit uncommitted mark
     if @state.uncommittedMark?
-      @submitMark()
+      @submitMark(@state.uncommittedMark)
+
+    @props.onChange? newMark
+    @setUncommittedMark newMark
+    # @selectMark newMark
+
+  createMark: (e) ->
+    return null if ! (subToolIndex = @props.subToolIndex)?
+    return null if ! (subTool = @props.task.tool_config?.options?[subToolIndex])?
 
     # Instantiate appropriate marking tool:
     MarkComponent = markingTools[subTool.type] # NEEDS FIXING
 
-    # Create an initial mark instance, which will soon gather coords:
-    # mark = toolName: subTool.type, userCreated: true, subToolIndex: @state.uncommittedMark?.subToolIndex ? @props.annotation?.subToolIndex
     mark =
       belongsToUser: true # let users see their current mark when hiding others
       toolName: subTool.type
@@ -123,20 +130,13 @@ module.exports = React.createClass
       for key, value of initValues
         mark[key] = value
 
-    @props.onChange? mark
-
-    @setUncommittedMark mark
-
-    # @selectMark mark
+    return mark
 
   # Handle mouse dragging
   handleInitDrag: (e) ->
     return null if ! @state.uncommittedMark?
-
     mark = @state.uncommittedMark
-
-    # Instantiate appropriate marking tool:
-    MarkComponent = markingTools[mark.toolName]
+    MarkComponent = markingTools[mark.toolName] # instantiate appropriate marking tool
 
     if MarkComponent.initMove?
       mouseCoords = @getEventOffset e
@@ -145,9 +145,7 @@ module.exports = React.createClass
         mark[key] = value
 
     @props.onChange? mark
-
-    @setState
-      uncommittedMark: mark
+    @setState uncommittedMark: mark
 
   # Handle mouseup at end of drag:
   handleInitRelease: (e) ->
@@ -172,9 +170,10 @@ module.exports = React.createClass
     @setUncommittedMark mark
 
   setUncommittedMark: (mark) ->
+    # console.log 'setUncommittedMark(): ', mark
     @setState
       uncommittedMark: mark,
-      selectedMark: mark
+      selectedMark: mark #, => @forceUpdate() # not sure if this is needed?
 
   setView: (viewX, viewY, viewWidth, viewHeight) ->
     @setState {viewX, viewY, viewWidth, viewHeight}
@@ -234,14 +233,6 @@ module.exports = React.createClass
     else if mark is @state.uncommittedMark
       @props.destroyCurrentClassification()
 
-  # Commit mark
-  submitMark: (callback) ->
-    mark = @state.uncommittedMark
-    # console.log "SubjectViewer: Submit mark: ", mark.subToolIndex, mark
-    @setUncommittedMark null
-    @props.onComplete? mark
-    callback?()
-
   handleChange: (mark) ->
     @setState
       selectedMark: mark
@@ -275,7 +266,6 @@ module.exports = React.createClass
     return {transcribableMarks, otherMarks}
 
   renderMarks: (marks) ->
-
     return unless marks.length > 0
     scale = @getScale()
 

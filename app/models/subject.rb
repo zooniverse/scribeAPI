@@ -11,7 +11,7 @@ class Subject
   scope :active, -> { where(status: 'active').asc(:order)  }
   scope :complete, -> { where(status: 'complete').asc(:order)  }
   scope :by_workflow, -> (workflow_id) { where(workflow_id: workflow_id)  }
-  scope :by_parent_subject_set, -> (parent_subject_set_id) { where(parent_subject_set_id: parent_subject_set_id)  }
+  scope :by_subject_set, -> (subject_set_id) { where(subject_set_id: subject_set_id)  }
   scope :by_parent_subject, -> (parent_subject_id) { where(parent_subject_id: parent_subject_id) }
   scope :by_group, -> (group_id) { where(group_id: group_id) }
   scope :user_has_not_classified, -> (user_id) { where(:classifying_user_ids.ne => user_id)  }
@@ -22,7 +22,6 @@ class Subject
   field :status,                      type: String,  default: "active" #options: "active", "inactive", "bad", "retired", "complete", "contentious"
 
   field :meta_data,                   type: Hash
-  field :secondary_subject_count,     type: Integer, default: 0
   field :classification_count,        type: Integer, default: 0
   field :random_no,                   type: Float
   field :secondary_subject_count,     type: Integer, default: 0
@@ -35,10 +34,11 @@ class Subject
 
 
   # ROOT SUBJECT concerns:
-  field :order
+  field :order,                       type: Integer
   field :name,                        type: String
-  field :width
-  field :height
+  field :width,                       type: Integer
+  field :height,                      type: Integer
+  field :zooniverse_id
 
   # SECONDARY SUBJECT concerns:
   field :data,                        type: Hash
@@ -66,9 +66,11 @@ class Subject
   def thumbnail
     location['thumbnail'].nil? ? location['standard'] : location['thumbnail']
   end
-  
+
   def update_subject_set_stats
+    subject_set.subject_activated_on_workflow(workflow) if ! workflow.nil? && status == 'active'
     subject_set.inc_subject_count_for_workflow(workflow) if ! workflow.nil?
+    # subject_set.inc_active_secondary_subject 1 if type != 'root'
   end
 
   def increment_parents_subject_count_by(count)
@@ -130,16 +132,19 @@ class Subject
   def bad!
     status! 'bad'
     subject_set.subject_deactivated_on_workflow(workflow) if ! workflow.nil?
+    # subject_set.inc_complete_secondary_subject 1 if type != 'root'
   end
 
   def retire!
     status! 'retired'
     subject_set.subject_completed_on_workflow(workflow) if ! workflow.nil?
+    # subject_set.inc_complete_secondary_subject 1 if type != 'root'
   end
 
   def activate!
     status! 'active'
-    self.subject_set.subject_activated_on_workflow(workflow) if ! workflow.nil?
+    subject_set.subject_activated_on_workflow(workflow) if ! workflow.nil?
+    # subject_set.inc_active_secondary_subject 1 if type != 'root'
   end
 
   def calculate_most_popular_parent_classification
@@ -157,6 +162,19 @@ class Subject
   def to_s
     "#{status != 'active' ? "[#{status.capitalize}] " : ''}#{workflow.nil? ? 'Final' : workflow.name.capitalize} Subject (#{type})"
   end
+
+
+  def self.group_by_field_for_group(group, field, match={})
+    self.collection.aggregate([
+      {"$match" => { "group_id" => group.id }.merge(match)}, 
+      {"$group" => { "_id" => "$#{field.to_s}", count: {"$sum" =>  1} }}
+
+    ]).inject({}) do |h, p|
+      h[p["_id"]] = p["count"]
+      h
+    end
+  end
+
 
   private
 

@@ -1,7 +1,7 @@
-# @cjsx React.DOM
-
 React = require 'react'
 API   = require '../lib/api'
+
+SmallButton   = require('components/buttons/small-button')
 
 GroupBrowser = React.createClass
   displayName: 'GroupBrowser'
@@ -31,6 +31,8 @@ GroupBrowser = React.createClass
     else
       groupNameClasses.push "active"
 
+    console.log 'GROUP BACKGROUND: ', group.cover_image_url
+
     divStyle=
       backgroundImage: "url(#{group.cover_image_url})"
       backgroundSize: "300px"
@@ -41,13 +43,10 @@ GroupBrowser = React.createClass
       className='group'
       style={divStyle} >
       <div className="button-container #{buttonContainerClasses.join ' '}">
-        { if false
-            <a href="/#/mark/#{group.subject_sets[0].id}" className="button small-button">Mark</a>
-            <a href="/#/transcribe/#{group.subject_sets[0].id}" className="button small-button">Transcribe</a>
-            <a href="/#/groups/#{group.id}" className="button small-button ghost">More info</a>
+        { for workflow in @props.project.workflows
+            if (group.stats.workflow_counts?[workflow.id]?.active_subjects ? 0) > 0
+              <a href={"/#/#{workflow.name}?group_id=#{group.id}"} className="button small-button">{workflow.name.capitalize()}</a>
         }
-        <a href="/#/mark?group_id=#{group.id}" className="button small-button">Mark</a>
-        <a href="/#/transcribe?group_id=#{group.id}" className="button small-button">Transcribe</a>
         <a href="/#/groups/#{group.id}" className="button small-button ghost">More info</a>
       </div>
       <p className="group-name #{groupNameClasses.join ' '}">{group.name}</p>
@@ -57,6 +56,7 @@ GroupBrowser = React.createClass
     # Only display GroupBrowser if more than one group defined:
     return null if @state.groups.length <= 1
 
+    console.log 'GROUPS: ', @state.groups
     groups = [@renderGroup(group) for group in @state.groups]
     <div>
       <h3 className="groups-header"><span>Select a {@props.project.term('group')}</span></h3>

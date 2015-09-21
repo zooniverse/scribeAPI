@@ -8,13 +8,12 @@ JSONAPIClient           = require 'json-api-client' # use to manage data?
 ForumSubjectWidget      = require '../forum-subject-widget'
 API                     = require '../../lib/api'
 HelpModal               = require 'components/help-modal'
-Tutorial               = require 'components/tutorial'
+Tutorial                = require 'components/tutorial'
 HelpButton              = require 'components/buttons/help-button'
 BadSubjectButton        = require 'components/buttons/bad-subject-button'
 HideOtherMarksButton    = require 'components/buttons/hide-other-marks-button'
 DraggableModal          = require 'components/draggable-modal'
 Draggable               = require 'lib/draggable'
-
 {Link}                  = require 'react-router'
 
 module.exports = React.createClass # rename to Classifier
@@ -39,17 +38,16 @@ module.exports = React.createClass # rename to Classifier
     helping:             false
     hideOtherMarks:      false
     currentSubtool:      null
-    completeTutorial:    @props.project.current_user_tutorial
+    showingTutorial:     ! @props.project.current_user_tutorial # Initially show the tutorial if the user hasn't seen it
     lightboxHelp:        false
+    activeSubjectHelper: null
 
   componentDidMount: ->
     @getCompletionAssessmentTask()
     @fetchSubjectSetsBasedOnProps()
 
   componentWillMount: ->
-    @setState
-      taskKey: @getActiveWorkflow().first_task
-
+    @setState taskKey: @getActiveWorkflow().first_task
     @beginClassification()
 
   componentDidUpdate: (prev_props) ->
@@ -57,24 +55,124 @@ module.exports = React.createClass # rename to Classifier
     if prev_props.hash != @props.hash
       @fetchSubjectSetsBasedOnProps()
 
-  componentWillReceiveProps: (new_props) ->
-    # PB: Should the following check new_props instead? (@props is the old props, immediately overwritten by new_props)
-    @setState completeTutorial: @props.project.current_user_tutorial
-
   toggleHelp: ->
     @setState helping: not @state.helping
+    @hideSubjectHelp()
 
   toggleTutorial: ->
-    @setState completeTutorial: not @state.completeTutorial
+    @setState showingTutorial: not @state.showingTutorial
+    @hideSubjectHelp()
 
   toggleLightboxHelp: ->
     @setState lightboxHelp: not @state.lightboxHelp
+    @hideSubjectHelp()
 
   toggleHideOtherMarks: ->
     @setState hideOtherMarks: not @state.hideOtherMarks
 
+  # User changed currently-viewed subject:
+  handleViewSubject: (index) ->
+    @setState subject_index: index, => @forceUpdate()
+    @toggleBadSubject() if @state.badSubject
+
+  # User somehow indicated current task is complete; commit current classification
+  handleToolComplete: (annotation) ->
+    @handleDataFromTool(annotation)
+    @createAndCommitClassification(annotation)
+
+    # Initialize new classification with currently selected subToolIndex (so that right tool is selected in the right-col)
+    # @beginClassification() #AMS (8/17): this is causing issues with autosave, moving it back to commitClassification
+
+
+  # Handle user selecting a pick/drawing tool:
+  handleDataFromTool: (d) ->
+    # Kind of a hack: We receive annotation data from two places:
+    #  1. tool selection widget in right-col
+    #  2. the actual draggable marking tools
+    # We want to remember the subToolIndex so that the right-col menu highlights
+    # the correct tool after committing a mark. If incoming data has subToolIndex
+    # but no mark location information, we know this callback was called by the
+    # right-col. So only in that case, record currentSubToolIndex, which we use
+    # to initialize marks going forward
+    if d.subToolIndex? && ! d.x? && ! d.y?
+      @setState currentSubToolIndex: d.subToolIndex
+      @setState currentSubtool: d.tool if d.tool?
+
+    else
+      # console.log "MARK/INDEX::handleDataFromTool()", d if JSON.stringify(d) != JSON.stringify(@getCurrentClassification()?.annotation)
+      classifications = @state.classifications
+      classifications[@state.classificationIndex].annotation[k] = v for k, v of d
+
+      # console.log 'classification.annotation = ', classifications[@state.classificationIndex].annotation
+
+
+      # PB: Saving STI's notes here in case we decide tools should fully
+      #   replace annotation hash rather than selectively update by key as above:
+      # not clear whether we should replace annotations, or append to it --STI
+      # classifications[@state.classificationIndex].annotation = d #[k] = v for k, v of d
+
+      @setState
+        classifications: classifications
+          , =>
+            @forceUpdate()
+
+  handleMarkDelete: (m) ->
+    @flagSubjectAsUserDeleted m.subject_id
+
+  destroyCurrentClassification: ->
+    classifications = @state.classifications
+    classifications.splice(@state.classificationIndex,1)
+    @setState
+      classifications: classifications
+      classificationIndex: classifications.length-1
+
+    # There should always be an empty classification ready to receive data:
+    @beginClassification()
+
+  destroyCurrentAnnotation: ->
+    # TODO: implement mechanism for going backwards to previous classification, potentially deleting later classifications from stack:
+    console.log "WARN: destroyCurrentAnnotation not implemented"
+    # @props.classification.annotations.pop()
+
+  completeSubjectSet: ->
+    @commitClassification()
+    @beginClassification()
+
+    # TODO: Should maybe make this workflow-configurable?
+    show_subject_assessment = true
+    if show_subject_assessment
+      @setState
+        taskKey: "completion_assessment_task"
+
+  completeSubjectAssessment: ->
+    @commitClassification()
+    @beginClassification()
+    @advanceToNextSubject()
+
+  nextPage: (callback_fn)->
+    new_page = @state.subjects_current_page + 1
+    subject_set = @getCurrentSubjectSet()
+    @fetchNextSubjectPage(subject_set.id, @getActiveWorkflow().id, new_page, 0, callback_fn)
+
+  prevPage: (callback_fn) ->
+    new_page = @state.subjects_current_page - 1
+    subject_set = @getCurrentSubjectSet()
+    @fetchNextSubjectPage(subject_set.id, @getActiveWorkflow().id, new_page, 0, callback_fn)
+
+  showSubjectHelp: (subject_type) ->
+    @setState
+      activeSubjectHelper: subject_type
+      helping: false
+      showingTutorial: false
+      lightboxHelp: false
+
+  hideSubjectHelp: () ->
+    @setState
+      activeSubjectHelper: null
+
   render: ->
     return null unless @getCurrentSubject()? && @getActiveWorkflow()?
+
     currentTask = @getCurrentTask()
     TaskComponent = @getCurrentTool()
     activeWorkflow = @getActiveWorkflow()
@@ -132,6 +230,7 @@ module.exports = React.createClass # rename to Classifier
                   task={currentTask}
                   annotation={@getCurrentClassification()?.annotation ? {}}
                   onChange={@handleDataFromTool}
+                  onSubjectHelp={@showSubjectHelp}
                   subject={@getCurrentSubject()}
                 />
                 <div className="help-bad-subject-holder">
@@ -191,7 +290,7 @@ module.exports = React.createClass # rename to Classifier
           }
 
           <div className="forum-holder">
-            <ForumSubjectWidget subject_set={@getCurrentSubjectSet()} project={@props.project} />
+            <ForumSubjectWidget subject={@getCurrentSubject()} subject_set={@getCurrentSubjectSet()} project={@props.project} />
           </div>
 
           <div className="social-media-container">
@@ -208,7 +307,7 @@ module.exports = React.createClass # rename to Classifier
 
         </div>
       </div>
-      { if @props.project.tutorial? && !@state.completeTutorial
+      { if @props.project.tutorial? && @state.showingTutorial
         <Tutorial tutorial={@props.project.tutorial} toggleTutorial={@toggleTutorial} setTutorialComplete={@props.setTutorialComplete} />
       }
       { if @state.helping
@@ -218,93 +317,14 @@ module.exports = React.createClass # rename to Classifier
         if @state.lightboxHelp
           <HelpModal help={{title: "The Lightbox", body: "Use the Lightbox to navigate through a set of documents. You can select any of the images in the Lighbox by clicking on the thumbnail. Once selected, you can start submitting classifications. You do not need to go through the images in order. However, once you start classifying an image, the Lightbox will be deactivated until that classification is done."}} onDone={=> @setState lightboxHelp: false } />
       }
+      {
+        if @getCurrentTask()?
+          for tool, i in @getCurrentTask().tool_config.options
+            if tool.help && tool.generates_subject_type && @state.activeSubjectHelper == tool.generates_subject_type
+              <HelpModal help={tool.help} onDone={@hideSubjectHelp} />
+      }
+
     </div>
 
-  # User changed currently-viewed subject:
-  handleViewSubject: (index) ->
-    @setState subject_index: index, => @forceUpdate()
-    @toggleBadSubject() if @state.badSubject
-
-  # User somehow indicated current task is complete; commit current classification
-  handleToolComplete: (d) ->
-    @handleDataFromTool(d)
-    @commitClassification()
-
-    # Initialize new classification with currently selected subToolIndex (so that right tool is selected in the right-col)
-    # @beginClassification() #AMS (8/17): this is causing issues with autosave, moving it back to commitClassification
-
-
-  # Handle user selecting a pick/drawing tool:
-  handleDataFromTool: (d) ->
-
-    # Kind of a hack: We receive annotation data from two places:
-    #  1. tool selection widget in right-col
-    #  2. the actual draggable marking tools
-    # We want to remember the subToolIndex so that the right-col menu highlights
-    # the correct tool after committing a mark. If incoming data has subToolIndex
-    # but no mark location information, we know this callback was called by the
-    # right-col. So only in that case, record currentSubToolIndex, which we use
-    # to initialize marks going forward
-    if d.subToolIndex? && ! d.x? && ! d.y?
-      @setState currentSubToolIndex: d.subToolIndex
-      @setState currentSubtool: d.tool if d.tool?
-
-    else
-      # console.log "MARK/INDEX::handleDataFromTool()", d if JSON.stringify(d) != JSON.stringify(@getCurrentClassification()?.annotation)
-      classifications = @state.classifications
-      classifications[@state.classificationIndex].annotation[k] = v for k, v of d
-
-      # PB: Saving STI's notes here in case we decide tools should fully
-      #   replace annotation hash rather than selectively update by key as above:
-      # not clear whether we should replace annotations, or append to it --STI
-      # classifications[@state.classificationIndex].annotation = d #[k] = v for k, v of d
-
-      @setState
-        classifications: classifications
-          , =>
-            @forceUpdate()
-
-  handleMarkDelete: (m) ->
-    @flagSubjectAsUserDeleted m.subject_id
-
-  destroyCurrentClassification: ->
-    classifications = @state.classifications
-    classifications.splice(@state.classificationIndex,1)
-    @setState
-      classifications: classifications
-      classificationIndex: classifications.length-1
-
-    # There should always be an empty classification ready to receive data:
-    @beginClassification()
-
-  destroyCurrentAnnotation: ->
-    # TODO: implement mechanism for going backwards to previous classification, potentially deleting later classifications from stack:
-    console.log "WARN: destroyCurrentAnnotation not implemented"
-    # @props.classification.annotations.pop()
-
-  completeSubjectSet: ->
-    @commitClassification()
-    @beginClassification()
-
-    # TODO: Should maybe make this workflow-configurable?
-    show_subject_assessment = true
-    if show_subject_assessment
-      @setState
-        taskKey: "completion_assessment_task"
-
-  completeSubjectAssessment: ->
-    @commitClassification()
-    @beginClassification()
-    @advanceToNextSubject()
-
-  nextPage: (callback_fn)->
-    new_page = @state.subjects_current_page + 1
-    subject_set = @getCurrentSubjectSet()
-    @fetchNextSubjectPage(subject_set.id, @getActiveWorkflow().id, new_page, 0, callback_fn)
-
-  prevPage: (callback_fn) ->
-    new_page = @state.subjects_current_page - 1
-    subject_set = @getCurrentSubjectSet()
-    @fetchNextSubjectPage(subject_set.id, @getActiveWorkflow().id, new_page, 0, callback_fn)
 
 window.React = React
