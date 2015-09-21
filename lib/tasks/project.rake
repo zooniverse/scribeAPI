@@ -1,24 +1,72 @@
 require 'fileutils'
 
-desc 'creates a poject object from the project directory'
+namespace :project do
 
-  task :project_drop, [:project_key] => :environment do |task, args|
+  desc "Load content, styling, subjects, and workflows for named project non-destructively"
+  task :load, [:project_key, :area] => :environment do |task, args|
+    args.with_defaults area: 'all'
 
-    project = Project.find_by key: args[:project_key]
-    puts "Delete project: #{args[:project_key]}"
-    if ! project.nil?
-      project.destroy
+    # Validate AREA arg:
+    if ! ['all','content','style','workflows','subjects'].include? args[:area]
+      puts "Unknown AREA given: #{args[:area]}"
+      exit
     end
 
+    project = nil
+    # Before proceeding to update anything non-core, confirm we have a project to update:
+    if ! ['all','content'].include? args[:area]
+      project = Project.find_by key: args[:project_key]
+
+      if project.nil?
+        if args[:area] != 'all'
+          puts "Before updating #{args[:area]} you must create the project using project:load[#{args[:project_key]}]"
+        else
+          puts "Halting because project not found"
+        end
+        exit
+      end
+    end
+
+    # Load content:
+    if ['all','content'].include? args[:area]
+      project = load_content args[:project_key]
+      puts "Done loading content for \"#{project.title}\""
+    end
+
+    # Load custom styling (css,js,images,fonts, etc):
+    if ['all','style'].include? args[:area]
+      load_styles project
+      puts "Done loading style for \"#{project.title}\""
+    end
+      
+    # Load workflows:
+    if ['all','workflows'].include? args[:area]
+      begin
+        Rake::Task['project:load_workflows'].invoke project.key
+      rescue Exception => e
+        puts "ERROR: #{e.inspect}"
+      end
+      puts "Done loading #{project.workflows.count} workflow(s) into \"#{project.title}\""
+    end
+
+    # Load subjects:
+    if ['all','subjects'].include? args[:area]
+      if ! project.workflows.find_by(name: 'mark')
+        puts "Can't load subjects before loading a mark workflow! Run rake project:load[#{project.key},workflows] first"
+        exit
+      end
+      Rake::Task['subjects:load_groups'].invoke(project.key)
+      puts "Done loading #{project.subject_sets.count} subject sets into \"#{project.title}\""
+    end
   end
 
-  task :project_load, [:project_key] => :environment do |task, args|
-    project_dir = Rails.root.join('project', args[:project_key])
+  def load_content(project_key)
+    project_dir = Rails.root.join('project', project_key)
     project_file_path = "#{project_dir}/project.json"
     project_hash = JSON.parse File.read(project_file_path)
 
     # load project_file_path
-    project = Project.find_or_create_by key: args[:project_key]
+    project = Project.find_or_create_by key: project_key
 
     # Set all valid fields from hash:
     project_hash = project_hash.inject({}) { |h, (k,v)| h[k] = v if Project.fields.keys.include?(k.to_s); h }
@@ -27,7 +75,7 @@ desc 'creates a poject object from the project directory'
     puts "Created project: #{project.title}"
 
     # Load pages from content/*:
-    content_path = Rails.root.join('project', args[:project_key], 'content')
+    content_path = Rails.root.join('project', project_key, 'content')
     puts "Loading pages from #{content_path}:"
 
     prev_pages = project.pages
@@ -65,134 +113,32 @@ desc 'creates a poject object from the project directory'
       end
     end
 
+    project.tutorial = load_tutorial(project_key)
+   
+    project.save
+    project
+  end
 
-    load_images(args[:project_key])
-    load_fonts(args[:project_key])
+  def load_styles(project)
+ 
+    load_images(project.key)
+    load_fonts(project.key)
 
-    styles_path = Rails.root.join('project', args[:project_key], 'styles.css')
+    styles_path = Rails.root.join('project', project.key, 'styles.css')
     if File.exist? styles_path
       styles = File.read styles_path
       puts "Loading #{styles.size}b of custom CSS"
       project.styles = styles
     end
 
-    custom_js_path = Rails.root.join('project', args[:project_key], 'custom.js')
+    custom_js_path = Rails.root.join('project', project.key, 'custom.js')
     if File.exist? custom_js_path
       custom_js = File.read custom_js_path
       puts "Loading #{custom_js.size}b of custom JS"
       project.custom_js = custom_js
     end
 
-    project.tutorial = load_tutorial(args[:project_key])
-
     project.save
-
-    begin
-      Rake::Task['load_workflows'].invoke project.key
-      Rake::Task['project_setup'].invoke project.key
-
-      puts "Done loading \"#{project.title}\" with #{project.workflows.count} workflow(s), #{project.subject_sets.count} subject sets."
-
-    # rescue Exception => e
-      # If a workflow json can't be parsed, halt:
-      puts ""
-      # puts "ERROR: #{e.inspect}"
-     #  puts "Halting: #{e.message}"
-    end
-  end
-
-
-  desc "loads workflow jsons from workflows/*.json"
-  task :load_workflows, [:project_key] => :environment do |task, args|
-    project = Project.find_by key: args[:project_key]
-    project.workflows.destroy_all
-
-    workflows_path = Rails.root.join('project', args[:project_key], 'workflows', '*.json')
-    puts "Workflows: Loading workflows from #{workflows_path}"
-
-    Dir.glob(workflows_path).each do |workflow_hash_path|
-      content = File.read(workflow_hash_path) # .gsub(/\n/, '')
-      begin
-        next if content == ''
-
-        workflow_hash = JSON.parse content
-        workflow_hash.deep_symbolize_keys!
-
-        puts "  Loading '#{workflow_hash[:name]}' workflow"
-
-        workflow_hash[:project] = project
-
-        tasks = workflow_hash.delete :tasks
-        if tasks.is_a? Hash
-          tasks = tasks.inject([]) do |a, (task_key, task_config)|
-            task_config[:key] = task_key.to_s
-            # Remove any config params not officially declared as fields of WorkflowTask:
-            task_config = task_config.inject({}) { |h, (k,v)| h[k] = v if WorkflowTask.fields.keys.include?(k.to_s); h }
-
-            # Rewrite pick-one-* tool configs to be structured the same per https://github.com/zooniverse/scribeAPI/issues/241
-            # .. Just until project owners update their own configs
-            task_config[:tool_config] = translate_pick_one_tool_config task_config
-
-            a << task_config
-          end
-        end
-        workflow_hash[:tasks] = tasks
-
-        workflow_hash = load_help_text workflow_hash, args[:project_key]
-
-        workflow = Workflow.create workflow_hash
-        puts "    Loaded #{workflow.tasks.count} task(s)"
-
-        if workflow.generates_subjects && ! workflow.generates_subjects_for
-          puts "    WARN: #{workflow.name} generates subjects, but generates_subjects_for not set"
-        end
-      # rescue => e
-       #  puts "  WARN: Couldn't parse workflow from #{workflow_hash_path}: #{e}"
-        # raise "Error parsing #{workflow_hash_path}"
-      end
-    end
-
-    # Order workflows such that each appears before any workflows it generates subjects for
-    project.workflows.each do |w|
-      w.update_attribute :order, project.workflows.size - num_downstream_workflows(w) - 1
-    end
-
-    puts "  WARN: No mark workflow found" if project.workflows.find_by(name: 'mark').nil?
-  end
-
-  def translate_pick_one_tool_config(task_hash)
-    config = task_hash[:tool_config]
-
-    # In Pick-one-mark-one and compositeTool, rename 'tools' to 'options'
-    if ['pickOneMarkOne', 'compositeTool'].include? task_hash[:tool]
-      config[:options] = config.delete :tools if config[:options].nil?
-    end
-
-    # In Pick-one and compositeTool, structure 'options' as an array rather than a hash:
-    if ['pickOne','compositeTool']
-      config[:options] = config[:options].map { |(option_value,config)| config[:value] = option_value; config } if config[:options].is_a?(Hash)
-    end
-
-    config
-  end
-
-  def load_tutorial(project_key)
-    project = Project.find_by key: project_key
-    tutorial_hash = {}
-    tutorial_path = Rails.root.join('project', project_key, 'tutorial', '*.json')
-    puts "Tutorial: Loading workflows from #{tutorial_path}"
-
-    Dir.glob(tutorial_path).each do |tutorial_hash_path|
-      content = File.read(tutorial_hash_path) # .gsub(/\n/, '')
-      begin
-        next if content == ''
-
-        tutorial_hash = JSON.parse content
-        tutorial_hash.deep_symbolize_keys!
-        tutorial_hash = load_help_text tutorial_hash, project_key
-      end
-    end
-    tutorial_hash
   end
 
   def load_images(project_key)
@@ -229,11 +175,137 @@ desc 'creates a poject object from the project directory'
     end
   end
 
+  desc "Loads workflow jsons from workflows/*.json"
+  task :load_workflows, [:project_key] => :environment do |task, args|
+    project = Project.find_by key: args[:project_key]
+    # project.workflows.destroy_all
+
+    workflows_path = Rails.root.join('project', args[:project_key], 'workflows', '*.json')
+    puts "Workflows: Loading workflows from #{workflows_path}"
+
+    Dir.glob(workflows_path).each do |workflow_hash_path|
+      content = File.read(workflow_hash_path) # .gsub(/\n/, '')
+      begin
+        next if content == ''
+
+        workflow_hash = JSON.parse content
+        workflow_hash.deep_symbolize_keys!
+
+        puts "  Loading '#{workflow_hash[:name]}' workflow"
+
+        # workflow_hash[:project] = project
+
+        tasks = workflow_hash.delete :tasks
+        if tasks.is_a? Hash
+          tasks = tasks.inject([]) do |a, (task_key, task_config)|
+            task_config[:key] = task_key.to_s
+            # Remove any config params not officially declared as fields of WorkflowTask:
+            task_config = task_config.inject({}) { |h, (k,v)| h[k] = v if WorkflowTask.fields.keys.include?(k.to_s); h }
+
+            # Rewrite pick-one-* tool configs to be structured the same per https://github.com/zooniverse/scribeAPI/issues/241
+            # .. Just until project owners update their own configs
+            task_config[:tool_config] = translate_pick_one_tool_config task_config
+
+            a << task_config
+          end
+        end
+        workflow_hash[:tasks] = tasks
+
+        workflow_hash = load_help_text workflow_hash, args[:project_key]
+
+        workflow = project.workflows.find_or_create_by name: workflow_hash[:name]
+        workflow.update_attributes workflow_hash
+        puts "    Loaded #{workflow.tasks.count} task(s)"
+
+        if workflow.generates_subjects && ! workflow.generates_subjects_for
+          puts "    WARN: #{workflow.name} generates subjects, but generates_subjects_for not set"
+        end
+      end
+    end
+
+    # Order workflows such that each appears before any workflows it generates subjects for
+    project.workflows.each do |w|
+      w.update_attribute :order, project.workflows.size - num_downstream_workflows(w) - 1
+    end
+
+    puts "  WARN: No mark workflow found" if project.workflows.find_by(name: 'mark').nil?
+  end
+
+  desc "Drop a project by name"
+  task :drop, [:project_key] => :environment do |task, args|
+    project = Project.find_by key: args[:project_key]
+    if project.nil?
+      puts "No project called \"#{args[:project_key]}\" was found in the database"
+      exit
+    else
+      project.destroy
+    end
+
+    # Delete fonts:
+    FileUtils.remove_dir Rails.root.join("app/assets/fonts/#{args[:project_key]}"), true
+
+    # Delete images:
+    FileUtils.remove_dir Rails.root.join("app/assets/images/#{args[:project_key]}"), true
+
+    puts "Deleted project: #{args[:project_key]}"
+  end
+
+  desc "Drop & Load a project by name"
+  task :reload, [:project_key] => :environment do |task, args|
+
+    Rake::Task['project:drop'].invoke(args[:project_key])
+    Rake::Task['project:load'].invoke(args[:project_key])
+
+  end
+
+
+
+
+  def translate_pick_one_tool_config(task_hash)
+    config = task_hash[:tool_config]
+
+    # In Pick-one-mark-one and compositeTool, rename 'tools' to 'options'
+    if ['pickOneMarkOne', 'compositeTool'].include? task_hash[:tool]
+      config[:options] = config.delete :tools if config[:options].nil?
+    end
+
+    # In Pick-one and compositeTool, structure 'options' as an array rather than a hash:
+    if ['pickOne','compositeTool']
+      config[:options] = config[:options].map { |(option_value,config)| config[:value] = option_value; config } if config[:options].is_a?(Hash)
+    end
+
+    config
+  end
+
+  def load_tutorial(project_key)
+    project = Project.find_by key: project_key
+    tutorial_hash = {}
+    tutorial_path = Rails.root.join('project', project_key, 'tutorial', '*.json')
+    puts "Tutorial: Loading workflows from #{tutorial_path}"
+
+    Dir.glob(tutorial_path).each do |tutorial_hash_path|
+      content = File.read(tutorial_hash_path) # .gsub(/\n/, '')
+      begin
+        next if content == ''
+
+        tutorial_hash = JSON.parse content
+        tutorial_hash.deep_symbolize_keys!
+        tutorial_hash = load_help_text tutorial_hash, project_key
+      end
+    end
+    tutorial_hash
+  end
+
+
   def load_help_text(h, project_key)
     if h.respond_to? :each
       if h.is_a? Hash
         h.keys.each do |k,v|
-          if k == :help && h[k].is_a?(Hash) && ! h[k][:file].nil?
+          if k == :help && h[k].is_a?(Hash) && ! h[k][:file].nil? || k == "help" && h[k].is_a?(Hash) && ! h[k]["file"].nil?
+            # Support nested objects
+            if k == "help"
+              h[k][:file] = h[k]["file"]
+            end
             help_file_path = Rails.root.join('project', project_key, 'content', 'help', h[k][:file] + ".md")
             if File.exist? help_file_path
               content = File.read(help_file_path)
@@ -272,3 +344,6 @@ desc 'creates a poject object from the project directory'
       num_downstream_workflows(w.next_workflow, prev_count + 1)
     end
   end
+
+
+end

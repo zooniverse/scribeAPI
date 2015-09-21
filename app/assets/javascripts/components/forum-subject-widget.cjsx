@@ -5,7 +5,6 @@ React                         = require 'react'
 LoadingIndicator              = require './loading-indicator'
 ForumConnectors               = require './forum-connectors'
 
-
 module.exports = React.createClass
   displayName: 'ForumSubjectWidget'
   resizing: false
@@ -25,7 +24,6 @@ module.exports = React.createClass
   # componentDidMount: ->
   componentWillReceiveProps: (new_props) ->
 
-    # API.type('projects').get().then (result)=>
     project = new_props.project # result[0]
 
     if project.forum?.type?
@@ -66,7 +64,6 @@ module.exports = React.createClass
   render: ->
     return null if ! @state.connector?
 
-    # create_url = @state.connector.create_url @props.subject_set ? @props.subject
     create_url = @state.connector.create_url @props.subject
     subject_posts = @state.posts.subject ? ( @state.posts.subject_set ? [] )
 

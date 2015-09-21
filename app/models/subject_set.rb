@@ -5,6 +5,7 @@ class SubjectSet
 
   paginates_per 2
 
+  field :key,                    type: String
   field :name,                   type: String
   field :random_no ,             type: Float
   field :state ,                 type: String, default: "active"
