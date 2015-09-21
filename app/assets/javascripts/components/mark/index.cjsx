@@ -134,7 +134,7 @@ module.exports = React.createClass # rename to Classifier
     # @props.classification.annotations.pop()
 
   completeSubjectSet: ->
-    @commitClassification()
+    @commitCurrentClassification()
     @beginClassification()
 
     # TODO: Should maybe make this workflow-configurable?
@@ -144,7 +144,7 @@ module.exports = React.createClass # rename to Classifier
         taskKey: "completion_assessment_task"
 
   completeSubjectAssessment: ->
-    @commitClassification()
+    @commitCurrentClassification()
     @beginClassification()
     @advanceToNextSubject()
 
@@ -276,7 +276,7 @@ module.exports = React.createClass # rename to Classifier
           }
 
           <div className="forum-holder">
-            <ForumSubjectWidget subject_set={@getCurrentSubjectSet()} project={@props.project} />
+            <ForumSubjectWidget subject_set={@getCurrentSubjectSet()} subject={@getCurrentSubject()} project={@props.project} />
           </div>
 
           <div className="social-media-container">
