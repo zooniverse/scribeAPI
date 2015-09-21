@@ -12,11 +12,6 @@ module.exports = React.createClass
   getInitialState: ->
     key: 0
 
-  componentWillReceiveProps: (new_props)->
-    newKey = @state.key + 1
-    @setState 
-      key: newKey
-
   getDefaultProps: ->
     src: ''
     width: 0
@@ -24,4 +19,4 @@ module.exports = React.createClass
 
   render: ->
     imageHTML = "<image xlink:href='#{@props.src}' width='#{@props.width}' height='#{@props.height}' />"
-    <g key={@state.key} className="svg-image-container" dangerouslySetInnerHTML={__html: imageHTML} {...@props} />
+    <g key={@props.src} className="svg-image-container" dangerouslySetInnerHTML={__html: imageHTML} {...@props} />
