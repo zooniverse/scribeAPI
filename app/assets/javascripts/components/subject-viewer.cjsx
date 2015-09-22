@@ -20,6 +20,7 @@ module.exports = React.createClass
   mixins: [MarkDrawingMixin] # load helper methods to draw marks and highlights
 
   getInitialState: ->
+    console.log 'SUBJECT: ', @props.subject
     imageWidth: @props.subject.width
     imageHeight: @props.subject.height
     subject: @props.subject
@@ -78,7 +79,7 @@ module.exports = React.createClass
           url: url
           # imageWidth: img.width
           # imageHeight: img.height
-          loading: false
+          loading: false, => console.log 'DISPLAYING IMAGE: ', @state.url
         @updateDimensions()
 
   # VARIOUS EVENT HANDLERS

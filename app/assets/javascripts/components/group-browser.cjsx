@@ -23,7 +23,6 @@ GroupBrowser = React.createClass
     @forceUpdate() # trigger re-render to update buttons
 
   renderGroup: (group) ->
-    # console.log 'renderGroup(): GROUP =  ', group
     buttonContainerClasses = []
     groupNameClasses = []
     if group.showButtons
@@ -31,14 +30,11 @@ GroupBrowser = React.createClass
     else
       groupNameClasses.push "active"
 
-    divStyle=
-      backgroundImage: "url(#{group.cover_image_url})"
-
     <div
       onMouseOver={@showButtonsForGroup.bind this, group}
       onMouseOut={@hideButtonsForGroup.bind this, group}
       className='group'
-      style={divStyle} >
+      style={backgroundImage: "url(#{group.cover_image_url})"} >
       <div className="button-container #{buttonContainerClasses.join ' '}">
         { for workflow in @props.project.workflows
             if (group.stats.workflow_counts?[workflow.id]?.active_subjects ? 0) > 0

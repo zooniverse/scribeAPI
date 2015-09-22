@@ -16,6 +16,8 @@ module.exports = React.createClass
   resizing: false
 
   getInitialState: ->
+    console.log 'SUBJECT SET: ', @props.subject_set
+
     subject_set: @props.subject_set
     tool: @props.tool
     # subject_index: @props.subject_index ? 0pmark
@@ -65,24 +67,23 @@ module.exports = React.createClass
             totalSubjectPages={@props.totalSubjectPages}
           />
       }
-      { for subject, index in @props.subject_set.subjects
-        <SubjectViewer
-          key={index}
-          subject={subject}
-          workflow={@props.workflow}
-          task={@props.task}
-          subjectCurrentPage={@props.subjectCurrentPage}
-          annotation={@props.annotation}
-          active={index == @props.subject_index}
-          onComplete={@props.onComplete}
-          onChange={@props.onChange}
-          onDestroy={@props.onDestroy}
-          subToolIndex={@props.subToolIndex}
-          destroyCurrentClassification={@props.destroyCurrentClassification}
-          hideOtherMarks={@props.hideOtherMarks}
-          currentSubtool={@props.currentSubtool}
-        />
-      }
+
+      <SubjectViewer
+        subject={@props.subject_set.subjects[@props.subject_index]}
+        workflow={@props.workflow}
+        task={@props.task}
+        subjectCurrentPage={@props.subjectCurrentPage}
+        annotation={@props.annotation}
+        active={true}
+        onComplete={@props.onComplete}
+        onChange={@props.onChange}
+        onDestroy={@props.onDestroy}
+        subToolIndex={@props.subToolIndex}
+        destroyCurrentClassification={@props.destroyCurrentClassification}
+        hideOtherMarks={@props.hideOtherMarks}
+        currentSubtool={@props.currentSubtool}
+      />
+
     </div>
 
 window.React = React
