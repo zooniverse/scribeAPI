@@ -32,7 +32,6 @@ module.exports = React.createClass
       y: e.pageY
 
   handleStart: (e) ->
-    console.log 'HANDLE START >>>>>>>>>>>>>>>>>>>>>>>>>>>>'
     return false if e.target.nodeName is "INPUT" or e.target.nodeName is "TEXTAREA"
     return false if $(e.target).parents('a').length > 0
     e.preventDefault()

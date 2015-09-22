@@ -8,13 +8,12 @@ JSONAPIClient           = require 'json-api-client' # use to manage data?
 ForumSubjectWidget      = require '../forum-subject-widget'
 API                     = require '../../lib/api'
 HelpModal               = require 'components/help-modal'
-Tutorial               = require 'components/tutorial'
+Tutorial                = require 'components/tutorial'
 HelpButton              = require 'components/buttons/help-button'
 BadSubjectButton        = require 'components/buttons/bad-subject-button'
 HideOtherMarksButton    = require 'components/buttons/hide-other-marks-button'
 DraggableModal          = require 'components/draggable-modal'
 Draggable               = require 'lib/draggable'
-
 {Link}                  = require 'react-router'
 
 module.exports = React.createClass # rename to Classifier
@@ -41,15 +40,14 @@ module.exports = React.createClass # rename to Classifier
     currentSubtool:      null
     showingTutorial:     ! @props.project.current_user_tutorial # Initially show the tutorial if the user hasn't seen it
     lightboxHelp:        false
+    activeSubjectHelper: null
 
   componentDidMount: ->
     @getCompletionAssessmentTask()
     @fetchSubjectSetsBasedOnProps()
 
   componentWillMount: ->
-    @setState
-      taskKey: @getActiveWorkflow().first_task
-
+    @setState taskKey: @getActiveWorkflow().first_task
     @beginClassification()
 
   componentDidUpdate: (prev_props) ->
@@ -59,12 +57,15 @@ module.exports = React.createClass # rename to Classifier
 
   toggleHelp: ->
     @setState helping: not @state.helping
+    @hideSubjectHelp()
 
   toggleTutorial: ->
     @setState showingTutorial: not @state.showingTutorial
+    @hideSubjectHelp()
 
   toggleLightboxHelp: ->
     @setState lightboxHelp: not @state.lightboxHelp
+    @hideSubjectHelp()
 
   toggleHideOtherMarks: ->
     @setState hideOtherMarks: not @state.hideOtherMarks
@@ -158,8 +159,20 @@ module.exports = React.createClass # rename to Classifier
     subject_set = @getCurrentSubjectSet()
     @fetchNextSubjectPage(subject_set.id, @getActiveWorkflow().id, new_page, 0, callback_fn)
 
+  showSubjectHelp: (subject_type) ->
+    @setState
+      activeSubjectHelper: subject_type
+      helping: false
+      showingTutorial: false
+      lightboxHelp: false
+
+  hideSubjectHelp: () ->
+    @setState
+      activeSubjectHelper: null
+
   render: ->
     return null unless @getCurrentSubject()? && @getActiveWorkflow()?
+
     currentTask = @getCurrentTask()
     TaskComponent = @getCurrentTool()
     activeWorkflow = @getActiveWorkflow()
@@ -217,6 +230,7 @@ module.exports = React.createClass # rename to Classifier
                   task={currentTask}
                   annotation={@getCurrentClassification()?.annotation ? {}}
                   onChange={@handleDataFromTool}
+                  onSubjectHelp={@showSubjectHelp}
                   subject={@getCurrentSubject()}
                 />
                 <div className="help-bad-subject-holder">
@@ -276,7 +290,7 @@ module.exports = React.createClass # rename to Classifier
           }
 
           <div className="forum-holder">
-            <ForumSubjectWidget subject_set={@getCurrentSubjectSet()} project={@props.project} />
+            <ForumSubjectWidget subject={@getCurrentSubject()} subject_set={@getCurrentSubjectSet()} project={@props.project} />
           </div>
 
           <div className="social-media-container">
@@ -302,6 +316,12 @@ module.exports = React.createClass # rename to Classifier
       {
         if @state.lightboxHelp
           <HelpModal help={{title: "The Lightbox", body: "Use the Lightbox to navigate through a set of documents. You can select any of the images in the Lighbox by clicking on the thumbnail. Once selected, you can start submitting classifications. You do not need to go through the images in order. However, once you start classifying an image, the Lightbox will be deactivated until that classification is done."}} onDone={=> @setState lightboxHelp: false } />
+      }
+      {
+        if @getCurrentTask()?
+          for tool, i in @getCurrentTask().tool_config.options
+            if tool.help && tool.generates_subject_type && @state.activeSubjectHelper == tool.generates_subject_type
+              <HelpModal help={tool.help} onDone={@hideSubjectHelp} />
       }
 
     </div>

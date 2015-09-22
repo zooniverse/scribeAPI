@@ -3,31 +3,17 @@
     "first_task": "welcome",
     "tasks": {
         "welcome": {
-            "next_task": "multiple_workflows",
+            "next_task": "marking",
             "help": {
                 "title": "Welcome to Old Weather: Whaling!",
                 "file": "welcome"
             }
         },
-        "multiple_workflows": {
-            "next_task": "marking",
-            "help": {
-                "title": "Mark, transcribe, or do both",
-                "file": "multiple_workflows"
-            }
-        },
         "marking": {
-            "next_task": "transcribing_and_marking",
+            "next_task": "transcribing",
             "help": {
                 "title": "How to mark pages",
                 "file": "marking"
-            }
-        },
-        "transcribing_and_marking": {
-            "next_task": "transcribing",
-            "help": {
-                "title": "How to transcribe while marking",
-                "file": "transcribing_and_marking"
             }
         },
         "transcribing": {

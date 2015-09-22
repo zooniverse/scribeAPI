@@ -89,7 +89,7 @@ module.exports = React.createClass
       count = counts[tool.generates_subject_type] ? 0
       classes = ['answer']
       classes.push 'active' if i is @getSubToolIndex()
-      classes.push 'has-help' if tool.help
+      classes.push 'has-help' if tool.help && tool.generates_subject_type
 
       <label
         key={tool._key}
@@ -117,8 +117,8 @@ module.exports = React.createClass
           }
         </span>
 
-        {if tool.help
-          <span className="help" data-text="#{tool.help}"><i className="fa fa-question"></i></span>
+        {if tool.help && tool.generates_subject_type
+          <span className="help" onClick={@props.onSubjectHelp.bind null, tool.generates_subject_type}><i className="fa fa-question"></i></span>
         }
 
       </label>
