@@ -2,7 +2,7 @@ require 'fileutils'
 
 namespace :project do
 
-  desc "Load content, styling, subjects, and workflows for named project non-destructively"
+  desc "Load project by key. :area param can be 'content','style','workflows', or 'subjects' (or omitted to load all)."
   task :load, [:project_key, :area] => :environment do |task, args|
     args.with_defaults area: 'all'
 
@@ -42,7 +42,8 @@ namespace :project do
     # Load workflows:
     if ['all','workflows'].include? args[:area]
       begin
-        Rake::Task['project:load_workflows'].invoke project.key
+        # Rake::Task['project:load_workflows'].invoke project.key
+        load_workflows project.key
       rescue Exception => e
         puts "ERROR: #{e.inspect}"
       end
@@ -58,6 +59,43 @@ namespace :project do
       Rake::Task['subjects:load_groups'].invoke(project.key)
       puts "Done loading #{project.subject_sets.count} subject sets into \"#{project.title}\""
     end
+
+    if Project.active.count == 0
+      puts "Activating '#{project.title}'"
+      project.activate!
+
+    else
+      puts "____________"
+      puts "Another project, '#{Project.active.first.title}', is currently active. To activate '#{project.title}', run:"
+      puts "  rake project:activate[#{args[:project_key]}]"
+    end
+  end
+
+  desc "List projects and active status"
+  task :list, [:project_key] => :environment do |task, args|
+    args.with_defaults area: 'all'
+
+    puts "Listing projects:"
+    Project.all.each do |project|
+      puts "  [#{project.status == 'active' ? 'active' : ' ' * 6}] #{project.title}"
+    end
+  end
+
+  desc "Activate a project by key. Only one project may be active at one time."
+  task :activate, [:project_key] => :environment do |task, args|
+    args.with_defaults area: 'all'
+
+    project = get_project args[:project_key]
+    if ! project.nil?
+      puts "Activating #{project.title}"
+      project.activate!
+    end
+  end
+
+  def get_project(project_key)
+    project = Project.find_by key: project_key
+    puts "Failed to find project '#{project_key}'" if project.nil?
+    project
   end
 
   def load_content(project_key)
@@ -175,12 +213,11 @@ namespace :project do
     end
   end
 
-  desc "Loads workflow jsons from workflows/*.json"
-  task :load_workflows, [:project_key] => :environment do |task, args|
-    project = Project.find_by key: args[:project_key]
-    # project.workflows.destroy_all
+  # Loads workflow jsons from workflows/*.json
+  def load_workflows(project_key)
+    project = Project.find_by key: project_key
 
-    workflows_path = Rails.root.join('project', args[:project_key], 'workflows', '*.json')
+    workflows_path = Rails.root.join('project', project_key, 'workflows', '*.json')
     puts "Workflows: Loading workflows from #{workflows_path}"
 
     Dir.glob(workflows_path).each do |workflow_hash_path|
@@ -211,7 +248,7 @@ namespace :project do
         end
         workflow_hash[:tasks] = tasks
 
-        workflow_hash = load_help_text workflow_hash, args[:project_key]
+        workflow_hash = load_help_text workflow_hash, project_key
 
         workflow = project.workflows.find_or_create_by name: workflow_hash[:name]
         workflow.update_attributes workflow_hash
@@ -231,7 +268,7 @@ namespace :project do
     puts "  WARN: No mark workflow found" if project.workflows.find_by(name: 'mark').nil?
   end
 
-  desc "Drop a project by name"
+  desc "Drop a project by key"
   task :drop, [:project_key] => :environment do |task, args|
     project = Project.find_by key: args[:project_key]
     if project.nil?
@@ -250,7 +287,7 @@ namespace :project do
     puts "Deleted project: #{args[:project_key]}"
   end
 
-  desc "Drop & Load a project by name"
+  desc "Drop & Load a project by key"
   task :reload, [:project_key] => :environment do |task, args|
 
     Rake::Task['project:drop'].invoke(args[:project_key])
