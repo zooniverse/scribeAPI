@@ -72,7 +72,7 @@ namespace :project do
   end
 
   desc "List projects and active status"
-  task :list, [:project_key] => :environment do |task, args|
+  task :list, [] => :environment do |task, args|
     args.with_defaults area: 'all'
 
     puts "Listing projects:"
