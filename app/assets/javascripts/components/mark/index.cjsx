@@ -240,6 +240,7 @@ module.exports = React.createClass # rename to Classifier
               annotation={@getCurrentClassification()?.annotation ? {}}
               onChange={@handleDataFromTool}
               subject={@getCurrentSubject()}
+              onSubjectHelp={@showSubjectHelp}
             />
             <div className="help-bad-subject-holder">
               { if onFirstAnnotation

@@ -208,7 +208,7 @@
       "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Unit", "color": "green", "generates_subject_type": "hs_transcribe_unit" },
+          {"type": "rectangleTool", "label": "Unit", "color": "green", "generates_subject_type": "hs_transcribe_unit", "help":{"title":"hello hello", "body":"Some help here."}},
           {"type": "rectangleTool", "label": "Rank", "color": "green", "generates_subject_type": "hs_transcribe_rank" },
           {"type": "rectangleTool", "label": "Surname", "color": "green", "generates_subject_type": "hs_transcribe_surname" },
           {"type": "rectangleTool", "label": "Christian name", "color": "green", "generates_subject_type": "hs_transcribe_christian_name" },
