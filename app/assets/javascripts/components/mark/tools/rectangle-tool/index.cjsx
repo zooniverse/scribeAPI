@@ -5,7 +5,7 @@ DragHandle      = require './drag-handle'
 DeleteButton    = require 'components/buttons/delete-mark'
 MarkButtonMixin = require 'lib/mark-button-mixin'
 
-MINIMUM_SIZE = 5
+MINIMUM_SIZE = 50
 DELETE_BUTTON_ANGLE = 45
 DELETE_BUTTON_DISTANCE_X = 12
 DELETE_BUTTON_DISTANCE_Y = 0
@@ -26,8 +26,8 @@ module.exports = React.createClass
     defaultValues: ({x, y}) ->
       x: x
       y: y
-      width: 0
-      height: 0
+      width: MINIMUM_SIZE
+      height: MINIMUM_SIZE
 
     initStart: ({x,y}, mark) ->
       @initCoords = {x,y}
@@ -94,6 +94,11 @@ module.exports = React.createClass
       LY = y2
       HY = y1
 
+    # PB: L and H seem to denote Low and High values of x & y, so:
+    # LL: upper left
+    # HL: upper right
+    # HH: lower right
+    # LH: lower left
     pointsHash = {
       handleLLDrag: [LX, LY],
       handleHLDrag: [HX, LY],
@@ -106,6 +111,7 @@ module.exports = React.createClass
     return if @props.disabled
     @props.mark.x += d.x / @props.xScale
     @props.mark.y += d.y / @props.yScale
+    @assertBounds()
     @props.onChange e
 
   dragFilter: (key) ->
@@ -121,8 +127,8 @@ module.exports = React.createClass
 
   handleLLDrag: (e, d) ->
     @props.mark.x += d.x / @props.xScale
-    @props.mark.y += d.y / @props.yScale
     @props.mark.width -= d.x / @props.xScale
+    @props.mark.y += d.y / @props.yScale
     @props.mark.height -= d.y / @props.yScale
     @props.onChange e
 
@@ -133,8 +139,8 @@ module.exports = React.createClass
     @props.onChange e
 
   handleHLDrag: (e, d) ->
-    @props.mark.y += d.y / @props.yScale
     @props.mark.width += d.x / @props.xScale
+    @props.mark.y += d.y / @props.yScale
     @props.mark.height -= d.y / @props.yScale
     @props.onChange e
 
@@ -142,6 +148,23 @@ module.exports = React.createClass
     @props.mark.width += d.x / @props.xScale
     @props.mark.height += d.y / @props.yScale
     @props.onChange e
+
+
+  assertBounds: ->
+    @props.mark.x = Math.min @props.sizeRect.props.width - @props.mark.width, @props.mark.x
+    @props.mark.y = Math.min @props.sizeRect.props.height - @props.mark.height, @props.mark.y
+
+    @props.mark.x = Math.max 0, @props.mark.x
+    @props.mark.y = Math.max 0, @props.mark.y
+
+    @props.mark.width = Math.max @props.mark.width, MINIMUM_SIZE
+    @props.mark.height = Math.max @props.mark.height, MINIMUM_SIZE
+
+  validVert: (y,h) ->
+    y >= 0 && y + h <= @props.sizeRect.props.height
+
+  validHoriz: (x,w) ->
+    x >= 0 && x + w <= @props.sizeRect.props.width
 
   getDeleteButtonPosition: ()->
     points = @state.pointsHash["handleHLDrag"]

@@ -20,12 +20,11 @@ module.exports = React.createClass
   mixins: [MarkDrawingMixin] # load helper methods to draw marks and highlights
 
   getInitialState: ->
-    imageWidth: @props.subject.width
-    imageHeight: @props.subject.height
     subject: @props.subject
     marks: @getMarksFromProps(@props)
     selectedMark: null
     active: @props.active
+    scale: {horizontal: 1, vertical: 1}
 
   getDefaultProps: ->
     tool: null # Optional tool to place alongside subject (e.g. transcription tool placed alongside mark)
@@ -39,31 +38,38 @@ module.exports = React.createClass
 
     @setState marks: @getMarksFromProps(new_props)
 
+    if new_props.subject.id == @props.subject.id
+      @scrollToSubject()
+
   componentDidMount: ->
     @setView 0, 0, @props.subject.width, @props.subject.height
     @loadImage @props.subject.location.standard
     window.addEventListener "resize", this.updateDimensions
 
+  scrollToSubject: ->
     # scroll to mark when transcribing
     if @props.workflow.name is 'transcribe'
-      yPos = (@props.subject.data.y - @props.subject.data.height?) * @getScale().vertical - 100
-      $('html, body').animate({scrollTop: yPos}, 500)
+      yPos = (@props.subject.data.y - @props.subject.data.height?) * @state.scale.vertical - 100
+      $('html, body').stop().animate({scrollTop: yPos}, 500)
+
+  componentDidUpdate: ->
+    scale = @getScale()
+    changed = scale.horizontal != @state.scale.horizontal && scale.vertical != @state.scale.vertical
+    if changed
+      @setState scale: scale, () =>
+        @updateDimensions()
+        @scrollToSubject()
 
   componentWillUnmount: ->
-    window.removeEventListener "resize", this.updateDimensions
+    window.removeEventListener "resize", @updateDimensions
 
   updateDimensions: ->
-    @setState
-      windowInnerWidth: window.innerWidth
-      windowInnerHeight: window.innerHeight
-
-    if ! @state.loading && @getScale()? && @props.onLoad?
-      scale = @getScale()
+    if ! @state.loading && @state.scale? && @props.onLoad?
+      scale = @state.scale
       props =
         size:
           w: scale.horizontal * @props.subject.width
           h: scale.vertical * @props.subject.height
-          scale: scale
 
       @props.onLoad props
 
@@ -72,14 +78,12 @@ module.exports = React.createClass
       img = new Image()
       img.src = url
       img.onload = =>
-        # if @isMounted()
-
         @setState
           url: url
-          # imageWidth: img.width
-          # imageHeight: img.height
           loading: false
-        @updateDimensions()
+          scale: @getScale(), () =>
+            @updateDimensions()
+            @scrollToSubject()
 
   # VARIOUS EVENT HANDLERS
 
@@ -181,6 +185,7 @@ module.exports = React.createClass
   # PB This is not returning anything but 0, 0 for me; Seems like @refs.sizeRect is empty when evaluated (though nonempty later)
   getScale: ->
     rect = @refs.sizeRect?.getDOMNode().getBoundingClientRect()
+
     return {horizontal: 1, vertical: 1} if ! rect? || ! rect.width?
     rect ?= width: 0, height: 0
     horizontal = rect.width / @props.subject.width
@@ -193,7 +198,7 @@ module.exports = React.createClass
 
   getEventOffset: (e) ->
     rect = @refs.sizeRect.getDOMNode().getBoundingClientRect()
-    scale = @getScale()
+    scale = @state.scale # @getScale()
     x = ((e.pageX - pageXOffset - rect.left) / scale.horizontal) + @state.viewX
     y = ((e.pageY - pageYOffset - rect.top) / scale.vertical) + @state.viewY
     return {x, y}
@@ -267,7 +272,8 @@ module.exports = React.createClass
 
   renderMarks: (marks) ->
     return unless marks.length > 0
-    scale = @getScale()
+    # scale = @getScale()
+    scale = @state.scale
 
     marksToRender = for mark in marks
       mark._key ?= Math.random()
@@ -315,7 +321,7 @@ module.exports = React.createClass
     return null if ! @props.active
 
     viewBox = [0, 0, @props.subject.width, @props.subject.height]
-    scale = @getScale()
+    scale = @state.scale # @getScale()
 
     # marks = @getCurrentMarks()
     marks = @state.marks
