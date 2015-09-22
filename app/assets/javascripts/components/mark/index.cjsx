@@ -135,7 +135,7 @@ module.exports = React.createClass # rename to Classifier
     # @props.classification.annotations.pop()
 
   completeSubjectSet: ->
-    @commitClassification()
+    @commitCurrentClassification()
     @beginClassification()
 
     # TODO: Should maybe make this workflow-configurable?
@@ -145,7 +145,7 @@ module.exports = React.createClass # rename to Classifier
         taskKey: "completion_assessment_task"
 
   completeSubjectAssessment: ->
-    @commitClassification()
+    @commitCurrentClassification()
     @beginClassification()
     @advanceToNextSubject()
 
