@@ -188,18 +188,18 @@
             "tool": "textTool",
             "tool_config": {},
             "instruction": "Transcribe the entry for **religious profession**.",
-            "help": {
-                "title": "Transcription Help",
-                "file": "basic_transcribe_help"
-            },
+            "help":{
+                "title":"Religious Profession", 
+                "body":"Often abbreviated. See list of abbreviations <a style='text-decoration:none' target='_blank' href='http://localhost:3000/#/field_guide#religious-denominations'>here</a>."
+                },
             "generates_subject_type": "att_transcribed_religious_profession",
             "next_task": null
         },
         "att_transcribe_sight": {
             "tool": "compositeTool",
             "help": {
-                "title": "Transcription Help",
-                "file": "basic_transcribe_help"
+                "title": "Sight",
+                "body": "Often specified as x/6 or x/20, 'normal', or 'good'"
             },
             "tool_config": {
                 "tools": {
