@@ -9,6 +9,9 @@ React = require 'react'
 module.exports = React.createClass
   displayName: 'SVGImage'
 
+  getInitialState: ->
+    key: 0
+
   getDefaultProps: ->
     src: ''
     width: 0
@@ -16,4 +19,4 @@ module.exports = React.createClass
 
   render: ->
     imageHTML = "<image xlink:href='#{@props.src}' width='#{@props.width}' height='#{@props.height}' />"
-    <g className="svg-image-container" dangerouslySetInnerHTML={__html: imageHTML} {...@props} />
+    <g key={@props.src} className="svg-image-container" dangerouslySetInnerHTML={__html: imageHTML} {...@props} />
