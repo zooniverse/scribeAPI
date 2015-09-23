@@ -17,7 +17,7 @@ class Classification
     @committed = false
 
   commit: (callback) ->
-    console.log 'Classification::commit()', @committed
+    console.log 'Classification::commit()'
     return if @committed
     @committed = true
 

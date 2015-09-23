@@ -79,9 +79,6 @@ module.exports = React.createClass # rename to Classifier
     @handleDataFromTool(annotation)
     @createAndCommitClassification(annotation)
 
-    # Initialize new classification with currently selected subToolIndex (so that right tool is selected in the right-col)
-    # @beginClassification() #AMS (8/17): this is causing issues with autosave, moving it back to commitClassification
-
 
   # Handle user selecting a pick/drawing tool:
   handleDataFromTool: (d) ->
