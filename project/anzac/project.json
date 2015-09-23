@@ -16,7 +16,7 @@
       "role": "developer",
       "organization": "UofM"
     },
-    { 
+    {
       "name": "Evan Roberts",
       "role": "PI",
       "organization": "UofM"
@@ -35,7 +35,8 @@
   ],
   "forum": {
     "type": "discourse",
-    "base_url": "http://scribe-forum.nypl-labs.biz"
+    "base_url": "http://scribe-forum.nypl-labs.biz",
+    "enable_search": false
   },
   "feedback_form_url": "http://goo.gl/forms/rrSAue1uuG",
   "metadata_search": {

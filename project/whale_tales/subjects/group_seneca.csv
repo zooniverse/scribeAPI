@@ -1,4 +1,4 @@
-order,file_path,thumbnail,width,height,capture_location,date,set_key,zooniverse_id
+order,file_path,thumbnail,width,height,capture_location,date,set_key,metadata
 1,http://demo.zooniverse.org/whaling-logs-test-data/beta-logbooks/seneca/logbookofsenecab00unse_0069.jpg,http://demo.zooniverse.org/whaling-logs-test-data/beta-logbooks/seneca/logbookofsenecab00unse_0069_thumb.jpg,1600,2636,n/a,n/a,n/a,916723
 2,http://demo.zooniverse.org/whaling-logs-test-data/beta-logbooks/seneca/logbookofsenecab00unse_0070.jpg,http://demo.zooniverse.org/whaling-logs-test-data/beta-logbooks/seneca/logbookofsenecab00unse_0070_thumb.jpg,1600,2575,n/a,n/a,n/a,916771
 3,http://demo.zooniverse.org/whaling-logs-test-data/beta-logbooks/seneca/logbookofsenecab00unse_0071.jpg,http://demo.zooniverse.org/whaling-logs-test-data/beta-logbooks/seneca/logbookofsenecab00unse_0071_thumb.jpg,1600,2636,n/a,n/a,n/a,916731
