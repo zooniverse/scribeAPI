@@ -57,7 +57,6 @@ module.exports = React.createClass
 
     <div className="forum-subject-widget">
       <form onSubmit={@handleSearchFormSubmit} method='get' action='javascript:void(0);'><input type="text" ref="search_term" placeholder="Search forum"/></form>
-      <h2>Discuss</h2>
       { if subject_posts.length > 0
         <ul>
         { for post in subject_posts
@@ -65,7 +64,7 @@ module.exports = React.createClass
         }
         </ul>
       }
-      <a target="_blank" href={create_url}>Start a discussion about this {@props.project.term('subject set')}</a>
+      <p><a target="_blank" href={create_url}>Start a discussion about this {@props.project.term('subject set')}</a></p>
     </div>
 
 
