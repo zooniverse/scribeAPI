@@ -1,4 +1,4 @@
-# The Record Date
+# Record Date
 
 "The record date can generally be found in the upper left hand corner of the record. If multiple dates appear, transcribe each. This date can also appear on records as the 'Date of Approval' and 'Dated.'"
 

@@ -86,8 +86,7 @@
       "examples": ["brick", "frame", "Brick & stone", "bk and frame"],
       "generates_subject_type": "em_transcribed_record_material",
       "help": {
-        "file": "t_record_material",
-        "body": "Enter the building material as appears e.g. \"brick\", \"frame\", \"Brick & stone\", \"bk and frame\"."
+        "file": "t_record_material"
       }
     },
 
@@ -114,7 +113,7 @@
         "file": "t_record_valuation"
       },
       "generates_subject_type": "em_transcribed_valuation",
-      "instruction": "Enter as they appear, the date and amount of the last property valuation that was recorded, if any",
+      "instruction": "Enter as they appear, the date and amount of the last property valuation that was recorded.",
       "next_task": null
     },
 
@@ -141,7 +140,7 @@
             "file": "t_survey"
           },
           "generates_subject_type": "em_transcribed_survey",
-          "instruction": "Enter as they appear, the building dimensions and description that was recorded, if any.",
+          "instruction": "Enter as they appear, the building dimensions and description that was recorded.",
           "next_task": null
         }
   }
