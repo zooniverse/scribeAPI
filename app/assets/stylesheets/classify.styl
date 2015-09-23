@@ -68,6 +68,11 @@
       border-radius 5px
       border-top-right-radius 0px
       border-bottom-right-radius 0px
+      height 100vh
+      display flex
+      flex-direction column
+      overflow hidden
+      overflow-y auto
 
       a
         cursor pointer
@@ -81,6 +86,9 @@
       -moz-user-select none
       -ms-user-select none
       user-select none
+
+      .task-container
+        flex nil 1 0 auto
 
       .help-bad-subject-holder
         margin 10px -8px 15px 0
@@ -210,8 +218,8 @@
         box-sizing border-box
         border-top solid #999 1px
         background #ddd
-        border-bottom-right-radius 10px
-        border-bottom-left-radius 10px
+        margin-bottom 110px
+        flex nil none
 
         > p
           margin 0
@@ -263,8 +271,6 @@
         background #3f5765
         line-height 1
         width 100%
-        border-bottom-right-radius 5px
-        border-bottom-left-radius 5px
 
         i
           color #ddd
