@@ -18,8 +18,8 @@ class Classification
 
   commit: (callback) ->
     console.log 'Classification::commit()'
-    # return if @committed
-    # @committed = true
+    return if @committed
+    @committed = true
 
     @metadata.finished_at = (new Date).toISOString()
     data =

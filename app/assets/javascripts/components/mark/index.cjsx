@@ -5,7 +5,6 @@ coreTools               = require 'components/core-tools'
 FetchSubjectSetsMixin   = require 'lib/fetch-subject-sets-mixin'
 BaseWorkflowMethods     = require 'lib/workflow-methods-mixin'
 JSONAPIClient           = require 'json-api-client' # use to manage data?
-ForumSubjectWidget      = require '../forum-subject-widget'
 API                     = require '../../lib/api'
 HelpModal               = require 'components/help-modal'
 Tutorial                = require 'components/tutorial'
@@ -79,9 +78,6 @@ module.exports = React.createClass # rename to Classifier
   handleToolComplete: (annotation) ->
     @handleDataFromTool(annotation)
     @createAndCommitClassification(annotation)
-
-    # Initialize new classification with currently selected subToolIndex (so that right tool is selected in the right-col)
-    # @beginClassification() #AMS (8/17): this is causing issues with autosave, moving it back to commitClassification
 
 
   # Handle user selecting a pick/drawing tool:
@@ -216,93 +212,65 @@ module.exports = React.createClass # rename to Classifier
               totalSubjectPages={@state.subjects_total_pages}
               destroyCurrentClassification={@destroyCurrentClassification}
               hideOtherMarks={@state.hideOtherMarks}
+              toggleHideOtherMarks={@toggleHideOtherMarks}
               currentSubtool={currentSubtool}
               lightboxHelp={@toggleLightboxHelp}
+              pageURL={pageURL}
+              project={@props.project}
+              toggleTutorial={@toggleTutorial}
+              completeTutorial={@state.completeTutorial}
+              showingTutorial={@state.showingTutorial}
             />
         }
       </div>
       <div className="right-column">
         <div className="task-area">
-          { if @getCurrentTask()?
-              <div className="task-container">
-                <TaskComponent
-                  key={@getCurrentTask().key}
-                  task={currentTask}
-                  annotation={@getCurrentClassification()?.annotation ? {}}
-                  onChange={@handleDataFromTool}
-                  onSubjectHelp={@showSubjectHelp}
-                  subject={@getCurrentSubject()}
-                />
-                <div className="help-bad-subject-holder">
-                  { if @getCurrentTask().help?
-                    <HelpButton onClick={@toggleHelp} />
-                  }
-                  <HideOtherMarksButton active={@state.hideOtherMarks} onClick={@toggleHideOtherMarks} />
-                  { if onFirstAnnotation
-                    <BadSubjectButton label={"Bad " + @props.project.term('subject')} active={@state.badSubject} onClick={@toggleBadSubject} />
-                  }
-                  { if @state.badSubject
-                    <p>You&#39;ve marked this {@props.project.term('subject')} as BAD. Thanks for flagging the issue! <strong>Press DONE to continue.</strong></p>
-                  }
-                  { if @state.hideOtherMarks
-                    <p>Currently displaying only your marks. <strong>Toggle the button again to show all marks to-date.</strong></p>
-                  }
-                </div>
+          <div className="task-container">
+            { if @getCurrentTask().help?
+              <svg id="task-help" width="100%" height="14px" viewBox="0 0 14 14" onClick={@toggleHelp}>
+                <path fillRule="evenodd" d="M 7 0C 3.13 0 0 3.13 0 7 0 10.87 3.13 14 7 14 10.87 14 14 10.87 14 7 14 3.13 10.87 0 7 0ZM 7.04 11.13C 6.51 11.13 6.07 10.68 6.07 10.15 6.07 9.63 6.51 9.18 7.04 9.18 7.57 9.18 8.01 9.63 8.01 10.15 8.01 10.68 7.57 11.13 7.04 11.13ZM 7.56 7.66C 7.56 7.85 7.65 8.06 7.77 8.16 7.77 8.16 6.47 8.55 6.47 8.55 6.21 8.27 6.07 7.91 6.07 7.49 6.07 6.06 7.82 5.9 7.82 5.07 7.82 4.7 7.54 4.39 6.89 4.39 6.29 4.39 5.78 4.69 5.41 5.13 5.41 5.13 4.44 4.04 4.44 4.04 5.07 3.29 6.03 2.87 7.07 2.87 8.61 2.87 9.56 3.65 9.56 4.77 9.56 6.52 7.56 6.65 7.56 7.66Z" fill="rgb(0,0,0)" opacity="0.20"/>
+              </svg>
+            }
+            <TaskComponent
+              key={@getCurrentTask().key}
+              task={currentTask}
+              annotation={@getCurrentClassification()?.annotation ? {}}
+              onChange={@handleDataFromTool}
+              subject={@getCurrentSubject()}
+              onSubjectHelp={@showSubjectHelp}
+            />
+            <div className="help-bad-subject-holder">
+              { if onFirstAnnotation
+                <BadSubjectButton label={"Bad " + @props.project.term('subject')} active={@state.badSubject} onClick={@toggleBadSubject} />
+              }
+              { if @state.badSubject
+                <p>You&#39;ve marked this {@props.project.term('subject')} as BAD. Thanks for flagging the issue! <strong>Press DONE to continue.</strong></p>
+              }
+            </div>
 
-                <div className="tutorial-holder help-button ghost" onClick={@toggleTutorial}>
-                  <HelpButton label={"Tutorial"} onClick={@toggleTutorial} />
-                </div>
-
-                <nav className="task-nav">
-                  { if false
-                    <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
-                  }
-                  { if @getNextTask()?
-                      <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@advanceToNextTask}>Next</button>
+            <nav className="task-nav">
+              { if false
+                <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
+              }
+              { if @getNextTask()?
+                  <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@advanceToNextTask}>Next</button>
+                else
+                  if @state.taskKey == "completion_assessment_task"
+                    if @getCurrentSubject() == @getCurrentSubjectSet().subjects[@getCurrentSubjectSet().subjects.length-1]
+                      <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next</button>
                     else
-                      if @state.taskKey == "completion_assessment_task"
-                        if @getCurrentSubject() == @getCurrentSubjectSet().subjects[@getCurrentSubjectSet().subjects.length-1]
-                          <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next</button>
-                        else
-                          <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next Page</button>
-                      else
-                        <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Done</button>
-                  }
-                </nav>
+                      <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next Page</button>
+                  else
+                    <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Done</button>
+              }
+            </nav>
 
-                {
-                  if @getActiveWorkflow()? && @getWorkflowByName('transcribe')?
-                    <p>
-                      <Link to="/transcribe/#{@getWorkflowByName('transcribe').id}/#{@getCurrentSubject().id}?mark_key=#{@state.taskKey}">Transcribe this {@props.project.term('subject')} now!</Link>
-                    </p>
-                }
-              </div>
-          }
-
-          {
-            if @getActiveWorkflow()?
-              <div className="explore">
-                <h2>Explore</h2>
+            {
+              if @getActiveWorkflow()? && @getWorkflowByName('transcribe')?
                 <p>
-                  <Link to="/groups/#{@getCurrentSubjectSet().group_id}">About this {@props.project.term('group')}.</Link>
+                  <Link to="/transcribe/#{@getWorkflowByName('transcribe').id}/#{@getCurrentSubject().id}" className={"minor-button ghost"}>Transcribe this {@props.project.term('subject')} now!</Link>
                 </p>
-              </div>
-          }
-
-          <div className="forum-holder">
-            <ForumSubjectWidget subject={@getCurrentSubject()} subject_set={@getCurrentSubjectSet()} project={@props.project} />
-          </div>
-
-          <div className="social-media-container">
-            <a href="https://www.facebook.com/sharer.php?u=#{encodeURIComponent pageURL}" target="_blank">
-              <i className="fa fa-facebook-square"/>
-            </a>
-            <a href="https://twitter.com/home?status=#{encodeURIComponent pageURL}%0A" target="_blank">
-              <i className="fa fa-twitter-square"/>
-            </a>
-            <a href="https://plus.google.com/share?url=#{encodeURIComponent pageURL}" target="_blank">
-              <i className="fa fa-google-plus-square"/>
-            </a>
+            }
           </div>
 
         </div>
