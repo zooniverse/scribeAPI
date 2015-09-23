@@ -26,6 +26,7 @@ class Project
   field  :metadata_search,   type: Hash
   field  :tutorial,          type: Hash
   field  :terms_map,         type: Hash, default: {} # Hash mapping internal terms to project appropriate terms (e.g. 'group'=>'ship')
+  field :status,             type: String, default: 'inactive'
 
   include CachedStats
   update_interval 30
@@ -36,10 +37,19 @@ class Project
   has_many :subjects
 
   scope :most_recent, -> { order(updated_at: -1) }
+  scope :active, -> { where(status: 'active') }
+
+  def activate!
+    return if self.status == 'active'
+
+    self.class.active.each do |p|
+      p.update_attributes status: 'inactive'
+    end
+    self.update_attributes status: 'active'
+  end
 
   def self.current
-    # Get most recently updated, in lieu of some other project selection mechanism:
-    most_recent.first
+    active.first
   end
 
   def calc_stats
