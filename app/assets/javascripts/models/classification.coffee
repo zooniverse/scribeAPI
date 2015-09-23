@@ -17,9 +17,9 @@ class Classification
     @committed = false
 
   commit: (callback) ->
-    console.log 'Classification::commit()'
-    # return if @committed
-    # @committed = true
+    console.log 'Classification::commit()', @committed
+    return if @committed
+    @committed = true
 
     @metadata.finished_at = (new Date).toISOString()
     data =
