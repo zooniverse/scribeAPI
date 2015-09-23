@@ -273,7 +273,7 @@ module.exports = React.createClass # rename to Classifier
                 {
                   if @getActiveWorkflow()? && @getWorkflowByName('transcribe')?
                     <p>
-                      <Link to="/transcribe/#{@getWorkflowByName('transcribe').id}/#{@getCurrentSubject().id}">Transcribe this {@props.project.term('subject')} now!</Link>
+                      <Link to="/transcribe/#{@getWorkflowByName('transcribe').id}/#{@getCurrentSubject().id}?mark_key=#{@state.taskKey}">Transcribe this {@props.project.term('subject')} now!</Link>
                     </p>
                 }
               </div>
