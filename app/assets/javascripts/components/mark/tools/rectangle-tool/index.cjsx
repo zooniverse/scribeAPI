@@ -4,7 +4,7 @@ DragHandle      = require './drag-handle'
 DeleteButton    = require 'components/buttons/delete-mark'
 MarkButtonMixin = require 'lib/mark-button-mixin'
 
-MINIMUM_SIZE = 50
+MINIMUM_SIZE = 15
 DELETE_BUTTON_ANGLE = 45
 DELETE_BUTTON_DISTANCE_X = 12
 DELETE_BUTTON_DISTANCE_Y = 0
