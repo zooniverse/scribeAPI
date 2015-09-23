@@ -174,7 +174,6 @@ module.exports = React.createClass
     @setUncommittedMark mark
 
   setUncommittedMark: (mark) ->
-    # console.log 'setUncommittedMark(): ', mark
     @setState
       uncommittedMark: mark,
       selectedMark: mark #, => @forceUpdate() # not sure if this is needed?

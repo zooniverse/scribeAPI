@@ -1,4 +1,3 @@
-# @cjsx React.DOM
 React           = require 'react'
 Draggable       = require 'lib/draggable'
 DragHandle      = require './drag-handle'
@@ -26,8 +25,8 @@ module.exports = React.createClass
     defaultValues: ({x, y}) ->
       x: x
       y: y
-      width: MINIMUM_SIZE
-      height: MINIMUM_SIZE
+      width: 0
+      height: 0
 
     initStart: ({x,y}, mark) ->
       @initCoords = {x,y}
@@ -52,6 +51,13 @@ module.exports = React.createClass
 
     initValid: (mark) ->
       mark.width > MINIMUM_SIZE and mark.height > MINIMUM_SIZE
+
+    # This callback is called on mouseup to override mark properties (e.g. if too small)
+    initRelease: (coords, mark, e) ->
+      mark.width = Math.max mark.width, MINIMUM_SIZE
+      mark.height = Math.max mark.height, MINIMUM_SIZE
+      mark
+
 
   initCoords: null
 
@@ -115,7 +121,6 @@ module.exports = React.createClass
     @props.onChange e
 
   dragFilter: (key) ->
-    # console.log "dragFilter KEY", key
     if key == "handleLLDrag"
       return @handleLLDrag
     if key == "handleLHDrag"
