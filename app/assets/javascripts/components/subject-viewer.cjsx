@@ -20,7 +20,6 @@ module.exports = React.createClass
   mixins: [MarkDrawingMixin] # load helper methods to draw marks and highlights
 
   getInitialState: ->
-    console.log 'SUBJECT: ', @props.subject
     imageWidth: @props.subject.width
     imageHeight: @props.subject.height
     subject: @props.subject
@@ -313,6 +312,7 @@ module.exports = React.createClass
 
 
   render: ->
+    console.log 'SubjectViewer:subject= ', @props.subject
     return null if ! @props.active
 
     viewBox = [0, 0, @props.subject.width, @props.subject.height]

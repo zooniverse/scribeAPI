@@ -171,6 +171,7 @@ module.exports = React.createClass # rename to Classifier
       activeSubjectHelper: null
 
   render: ->
+    console.log 'CURRENT SUBJECT: ', @getCurrentSubject()
     return null unless @getCurrentSubject()? && @getActiveWorkflow()?
 
     currentTask = @getCurrentTask()

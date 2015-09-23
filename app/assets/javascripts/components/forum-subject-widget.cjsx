@@ -24,6 +24,8 @@ module.exports = React.createClass
   # componentDidMount: ->
   componentWillReceiveProps: (new_props) ->
 
+    console.log 'NEW SUBJECT: ', new_props.subject
+
     project = new_props.project # result[0]
 
     if project.forum?.type?
@@ -52,7 +54,9 @@ module.exports = React.createClass
 
   render: ->
     return null if ! @state.connector?
+    console.log 'RENDER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
     create_url = @state.connector.create_url @props.subject
+    console.log 'URL = ', create_url
     search_enabled = @state.connector.search_url()?
 
     subject_posts = @state.posts.subject ? ( @state.posts.subject_set ? [] )
