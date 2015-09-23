@@ -38,7 +38,6 @@
 
   "forum": {
     "type": "discourse",
-    "base_url": "http://scribe-forum.nypl-labs.biz",
-    "enable_search": true
+    "base_url": "http://scribe-forum.nypl-labs.biz"
   }
 }

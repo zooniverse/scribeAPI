@@ -53,25 +53,25 @@ module.exports = React.createClass
   render: ->
     return null if ! @state.connector?
     create_url = @state.connector.create_url @props.subject
+    search_enabled = @state.connector.search_url()?
+
     subject_posts = @state.posts.subject ? ( @state.posts.subject_set ? [] )
 
     <div className="forum-subject-widget">
-      { if @props.project.forum.enable_search
-          <form onSubmit={@handleSearchFormSubmit} method='get' action='javascript:void(0);'><input type="text" ref="search_term" placeholder="Search forum"/></form>
+      { if search_enabled
+        <form onSubmit={@handleSearchFormSubmit} method='get' action='javascript:void(0);'><input type="text" ref="search_term" placeholder="Search forum"/></form>
       }
       <h2>Discuss</h2>
 
-      { if @state.loading and @props.project.forum.search_ena
+      { if @state.loading and search_enabled
           <span>Searching for discussions about this {@props.project.term('subject')}...</span>
-
         else if subject_posts.length > 0
-
           <span>
             Discussion about this {@props.project.term('subject')}:
             <ul>
             { for post,i in subject_posts
               <li key={i}>
-                "<a target="_blank" href={post.url}>{post.excerpt.truncate 70}</a>"
+                "<a target="_blank" href={post.search_url}>{post.excerpt.truncate 70}</a>"
                 <br />&ndash; {post.author}, {moment(post.updated_at).fromNow()}
               </li>
             }
@@ -82,7 +82,7 @@ module.exports = React.createClass
       { if create_url?
           <a target="_blank" href={create_url}>Start a { if subject_posts.length > 0 then 'new' else '' } discussion about this {@props.project.term('subject set')}</a>
         else
-          <a>Oops! Disscussions have not been set up for this page.</a>
+          <a>Oops! Disscussions have not been set up for this {@props.project.term('subject set')}.</a>
       }
 
     </div>
