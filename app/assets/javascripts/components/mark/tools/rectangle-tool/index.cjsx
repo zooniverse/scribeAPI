@@ -147,11 +147,12 @@ module.exports = React.createClass
     points = @state.pointsHash["handleHLDrag"]
     x = points[0] + DELETE_BUTTON_DISTANCE_X / @props.xScale
     y = points[1] + DELETE_BUTTON_DISTANCE_Y / @props.yScale
+    x = Math.min x, @props.sizeRect.props.width - 40
     {x, y}
 
   getMarkButtonPosition: ()->
     points = @state.pointsHash["handleHHDrag"]
-    x: points[0]
+    x: Math.min points[0], @props.sizeRect.props.width - 90
     y: points[1] + 20 / @props.yScale
 
   handleMouseDown: ->
