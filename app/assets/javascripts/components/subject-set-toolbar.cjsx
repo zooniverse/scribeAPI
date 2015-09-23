@@ -67,7 +67,7 @@ module.exports = React.createClass
         </div>
 
         <div className={"forum-holder pane" + if @state.active_pane == 'discuss' then ' active' else '' } >
-            <ForumSubjectWidget subject_set={@props.subject_set} project={@props.project} />
+            <ForumSubjectWidget subject_set={@props.subject_set} project={@props.project} subject={@props.subject}/>
         </div>
 
          <div className={"explore pane" + if @state.active_pane == 'explore' then ' active' else ''} >
