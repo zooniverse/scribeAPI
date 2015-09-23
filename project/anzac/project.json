@@ -34,10 +34,10 @@
     }
   ],
   "forum": {
-    "type": "discourse",
-    "base_url": "http://scribe-forum.nypl-labs.biz"
+    "type": "talk",
+    "account_username": "asimenstad",
+    "project_name": "measuring-the-anzacs"
   },
-  "feedback_form_url": "http://goo.gl/forms/rrSAue1uuG",
   "metadata_search": {
     "fields": [
       {
