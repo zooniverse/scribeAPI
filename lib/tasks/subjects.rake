@@ -115,8 +115,7 @@ namespace :subjects do
           meta_data["zooniverse_id"] = subj["zooniverse_id"]
         end
 
-        puts "      Adding subject: #{subj['file_path']}"
-
+        # puts "      Adding subject: #{subj['file_path']}"
         # Subject.all.where("location.standard" => "https://s3.amazonaws.com/scribe.nypl.org/emigrant-records/originals/037.jpg").count
         # puts "s = SubjectSet[#{subject_set.id}].subjects.where(\"location.standard\" => \"#{subj['file_path']}\").first"
         # puts "  updating metadata: #{meta_data}"
@@ -136,7 +135,7 @@ namespace :subjects do
           group: group
         })
         subject.activate!
-        puts "        - Saved subject: #{subject.location[:standard]}"
+        puts "Added subject: #{subject.location[:standard]}"
       end
 
     end
