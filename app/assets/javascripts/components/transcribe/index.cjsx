@@ -159,24 +159,6 @@ module.exports = React.createClass # rename to Classifier
         }
       </div>
 
-      { if @getCurrentTask()? and @getCurrentSubject()
-          nextTask =
-            if @getCurrentTask().tool_config.options?[currentAnnotation.value]?
-              @getCurrentTask().tool_config.options?[currentAnnotation.value].next_task
-            else
-              @getCurrentTask().next_task
-
-          <div className="right-column">
-            <div className="task-area">
-
-              <div className="forum-holder">
-                <ForumSubjectWidget subject=@getCurrentSubject() project={@props.project} />
-              </div>
-
-            </div>
-          </div>
-      }
-
       { if @state.helping
         <HelpModal help={@getCurrentTask().help} onDone={=> @setState helping: false } />
       }
