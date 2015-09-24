@@ -236,9 +236,6 @@ module.exports = React.createClass # rename to Classifier
                   { if @getCurrentTask().help?
                     <HelpButton onClick={@toggleHelp} label="" className="task-help-button" />
                   }
-                  { if onFirstAnnotation
-                    <BadSubjectButton class="bad-subject-button" label={"Bad " + @props.project.term('subject')} active={@state.badSubject} onClick={@toggleBadSubject} />
-                  }
                 </div>
                 <nav className="task-nav">
                   { if false
