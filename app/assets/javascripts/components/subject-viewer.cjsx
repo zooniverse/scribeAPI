@@ -315,9 +315,7 @@ module.exports = React.createClass
 
     return marksToRender
 
-
   render: ->
-    console.log 'SubjectViewer:subject= ', @props.subject
     return null if ! @props.active
 
     viewBox = [0, 0, @props.subject.width, @props.subject.height]
