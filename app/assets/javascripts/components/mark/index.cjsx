@@ -222,7 +222,7 @@ module.exports = React.createClass # rename to Classifier
         }
       </div>
       <div className="right-column">
-        <div className="task-area">
+        <div className={"task-area " + @getActiveWorkflow().name}>
           { if @getCurrentTask()?
               <div className="task-container">
                 <TaskComponent
@@ -250,7 +250,7 @@ module.exports = React.createClass # rename to Classifier
                         <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Done</button>
                   }
                 </nav>
-                
+
                 <div className="help-bad-subject-holder">
                   { if @getCurrentTask().help?
                     <HelpButton onClick={@toggleHelp} label="" className="task-help-button" />
