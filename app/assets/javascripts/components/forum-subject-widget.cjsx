@@ -61,7 +61,6 @@ module.exports = React.createClass
       { if search_enabled
           <form onSubmit={@handleSearchFormSubmit} method='get' action='javascript:void(0);'><input type="text" ref="search_term" placeholder="Search forum"/></form>
       }
-      <h2>Discuss</h2>
 
       { if search_enabled and subject_posts.length > 0
         <ul>
