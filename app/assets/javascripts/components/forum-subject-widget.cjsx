@@ -24,8 +24,6 @@ module.exports = React.createClass
   # componentDidMount: ->
   componentWillReceiveProps: (new_props) ->
 
-    console.log 'NEW SUBJECT: ', new_props.subject
-
     project = new_props.project # result[0]
 
     if project.forum?.type?
@@ -54,41 +52,30 @@ module.exports = React.createClass
 
   render: ->
     return null if ! @state.connector?
-    console.log 'RENDER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
     create_url = @state.connector.create_url @props.subject
-    console.log 'URL = ', create_url
     search_enabled = @state.connector.search_url()?
 
     subject_posts = @state.posts.subject ? ( @state.posts.subject_set ? [] )
 
     <div className="forum-subject-widget">
       { if search_enabled
-        <form onSubmit={@handleSearchFormSubmit} method='get' action='javascript:void(0);'><input type="text" ref="search_term" placeholder="Search forum"/></form>
+          <form onSubmit={@handleSearchFormSubmit} method='get' action='javascript:void(0);'><input type="text" ref="search_term" placeholder="Search forum"/></form>
       }
       <h2>Discuss</h2>
 
-      { if @state.loading and search_enabled
-          <span>Searching for discussions about this {@props.project.term('subject')}...</span>
-        else if subject_posts.length > 0
-          <span>
-            Discussion about this {@props.project.term('subject')}:
-            <ul>
-            { for post,i in subject_posts
-              <li key={i}>
-                "<a target="_blank" href={post.search_url}>{post.excerpt.truncate 70}</a>"
-                <br />&ndash; {post.author}, {moment(post.updated_at).fromNow()}
-              </li>
-            }
-            </ul>
-          </span>
+      { if search_enabled and subject_posts.length > 0
+        <ul>
+        { for post in subject_posts
+          <li><a target="_blank" href={post.url}>{post.title}</a> (Updated {post.updated_at})</li>
+        }
+        </ul>
       }
 
       { if create_url?
-          <a target="_blank" href={create_url}>Start a { if subject_posts.length > 0 then 'new' else '' } discussion about this {@props.project.term('subject set')}</a>
+          <p><a target="_blank" href={create_url}>Start a discussion about this {@props.project.term('subject set')}</a></p>
         else
-          <a>Oops! Disscussions have not been set up for this {@props.project.term('subject set')}.</a>
+          <p><a>Oops! Disscussions have not been set up for this {@props.project.term('subject set')}.</a></p>
       }
-
     </div>
 
 
