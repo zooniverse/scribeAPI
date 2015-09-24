@@ -24,6 +24,10 @@ module.exports = React.createClass
     marks: @getMarksFromProps(@props)
     selectedMark: null
     active: @props.active
+    zoom:
+      level: 1
+      x: 0
+      y: 0
     scale: {horizontal: 1, vertical: 1}
 
   getDefaultProps: ->
@@ -59,6 +63,8 @@ module.exports = React.createClass
       @setState scale: scale, () =>
         @updateDimensions()
         @scrollToSubject()
+
+    
 
   componentWillUnmount: ->
     window.removeEventListener "resize", @updateDimensions
@@ -319,7 +325,7 @@ module.exports = React.createClass
   render: ->
     return null if ! @props.active
 
-    viewBox = [0, 0, @props.subject.width, @props.subject.height]
+    viewBox = @props.viewBox ? [0, 0, @props.subject.width, @props.subject.height]
     scale = @state.scale # @getScale()
 
     # marks = @getCurrentMarks()

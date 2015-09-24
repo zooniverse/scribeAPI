@@ -1,10 +1,5 @@
 .light-box-area
-  height: 100%
-  // background-color: #121215
-  // float left
-  width: 150px
-  flex(shrink: 1)
-  margin-left 10px
+  z-index 100
 
   // prevent highlighting/selecting
   -webkit-touch-callout none
@@ -23,28 +18,26 @@
   .carousel
     box-shadow: 0 0 5px 3px rgba(0,0,0,0.4);
 
-    position fixed
     width inherit
     // width: 10%
     // min-width 150px
-    background-color black
     align-item: center
-    background-color: #cbcbcb
+    background: #cbcbcb
 
   #visibility-button
-    line-height: 2;
-    background-color:  #ffffff;
-    width: 100%;
-    height: 25px;
-    font-family: ProximaNova;
-    font-size: 14px;
+    line-height: 2
+    width: 100%
+    height: 25px
+    font-family: ProximaNova
+    font-size: 14px
     color: #3f5765
-    font-weight: 400;
-    text-align: center;
-    border-bottom: solid 3px #3f5765;
-    cursor: pointer;
+    font-weight: 400
+    text-align: right
+    cursor: pointer
     span
       padding: 8%
+    svg path
+      fill: black
     svg:hover path
       fill: rgba(63,87,101,1)
 
@@ -54,7 +47,8 @@
       color #8cbc8c
 
     #questions-tip
-      vertical-align: text-top;
+      vertical-align: text-top
+      margin-right: 4px
 
   .action-button-next
     padding: 0;
@@ -114,6 +108,7 @@
     padding-left 0
     list-style none
     align-items: center
+    margin-top: 0
 
     li
       transition border 0.2s, background 0.3s
