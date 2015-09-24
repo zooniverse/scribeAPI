@@ -60,7 +60,10 @@ namespace :project do
       puts "Done loading #{project.subject_sets.count} subject sets into \"#{project.title}\""
     end
 
-    if Project.active.count == 0
+    if project.status == 'active'
+      puts "'#{project.title}' is active"
+
+    elsif Project.active.count == 0
       puts "Activating '#{project.title}'"
       project.activate!
 
@@ -152,6 +155,17 @@ namespace :project do
     end
 
     project.tutorial = load_tutorial(project_key)
+
+    # Metadata search configured? Create indexes:
+    # TODO Note that indexes created this way must be manually removed. 
+    # Loading lots of different projects (or the same project with different
+    # indexes) will create mult. indexes, which may slow query planning
+    if project.metadata_search
+      project.metadata_search[:fields].each do |field|
+        SubjectSet.index("project" => 1, "metadata.#{field['field']}" => 1)
+      end
+      SubjectSet.create_indexes
+    end
    
     project.save
     project
