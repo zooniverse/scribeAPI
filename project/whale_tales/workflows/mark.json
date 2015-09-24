@@ -2,6 +2,7 @@
   "name":"mark",
   "label":"Mark Workflow",
   "subject_fetch_limit": "10",
+  "subject_set_fetch_limit": "1",
   "generates_subjects": true,
   "generates_subjects_for": "transcribe",
   "first_task": "date_present",
