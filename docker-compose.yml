@@ -1,0 +1,26 @@
+mongodb:
+  image: mongo:2.4
+
+anzac:
+  build: .
+  links:
+    - mongodb:mongodb
+  command: anzac
+  ports:
+    - 3000:3000
+
+whale_tales:
+  build: .
+  links:
+    - mongodb:mongodb
+  command: whale_tales
+  ports:
+    - 3000:3000
+
+emigrant:
+  build: .
+  links:
+    - mongodb:mongodb
+  command: emigrant
+  ports:
+    - 3000:3000
