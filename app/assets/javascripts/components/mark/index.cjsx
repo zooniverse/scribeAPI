@@ -220,7 +220,7 @@ module.exports = React.createClass # rename to Classifier
         }
       </div>
       <div className="right-column">
-        <div className="task-area">
+        <div className={"task-area " + @getActiveWorkflow().name}>
           { if @getCurrentTask()?
               <div className="task-container">
                 <TaskComponent
@@ -256,7 +256,22 @@ module.exports = React.createClass # rename to Classifier
                         <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Done</button>
                   }
                 </nav>
-                
+
+                <div className="help-bad-subject-holder">
+                  { if @getCurrentTask().help?
+                    <HelpButton onClick={@toggleHelp} label="" className="task-help-button" />
+                  }
+                  { if onFirstAnnotation
+                    <BadSubjectButton label={"Bad " + @props.project.term('subject')} active={@state.badSubject} onClick={@toggleBadSubject} />
+                  }
+                  <HideOtherMarksButton active={@state.hideOtherMarks} onClick={@toggleHideOtherMarks} />
+                  { if @state.badSubject
+                    <p>You&#39;ve marked this {@props.project.term('subject')} as BAD. Thanks for flagging the issue! <strong>Press DONE to continue.</strong></p>
+                  }
+                  { if @state.hideOtherMarks
+                    <p>Currently displaying only your marks. <strong>Toggle the button again to show all marks to-date.</strong></p>
+                  }
+                </div>
 
               </div>
           }
