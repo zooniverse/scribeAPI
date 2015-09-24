@@ -72,11 +72,6 @@ module.exports = React.createClass
         onHide={@onToolbarHide}
         hideOtherMarks={@props.hideOtherMarks}
         toggleHideOtherMarks={@props.toggleHideOtherMarks}
-        pageURL={@props.pageURL}
-        project={@props.project}
-        toggleTutorial={@props.toggleTutorial}
-        completeTutorial={@props.completeTutorial}
-        showingTutorial={@props.showingTutorial}
       />
 
       { for subject, index in @props.subject_set.subjects
