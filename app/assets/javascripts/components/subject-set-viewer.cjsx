@@ -8,16 +8,19 @@ LoadingIndicator              = require './loading-indicator'
 SubjectMetadata               = require './subject-metadata'
 ActionButton                  = require './action-button'
 markingTools                  = require './mark/tools'
-LightBox                       = require './light-box'
-
+ZoomPanListenerMethods        = require 'lib/zoom-pan-listener-methods'
+SubjectSetToolbar             = require './subject-set-toolbar'
 
 module.exports = React.createClass
   displayName: 'SubjectSetViewer'
   resizing: false
 
+  mixins: [ZoomPanListenerMethods]
+
   getInitialState: ->
     subject_set: @props.subject_set
     tool: @props.tool
+    toolbar_expanded: false
     # subject_index: @props.subject_index ? 0pmark
 
   advancePrevious: ->
@@ -41,30 +44,41 @@ module.exports = React.createClass
     else
       return null
 
+  onToolbarExpand: ->
+    @setState toolbar_expanded: true
+
+  onToolbarHide: ->
+    @setState toolbar_expanded: false
+
   render: ->
-    # disable LightBox if work has begun
-    disableLightBox = if @props.task?.key isnt @props.workflow.first_task then true else false
-
-
     # console.log 'SUBJECT-SET-VIEWER::render(), subject_index = ', @props.subject_index
     # NOTE: LightBox does not receive correct @props.subject_index. Why? --STI
-    <div className={"subject-set-viewer" + if @props.subject_set.subjects.length <= 1 then ' single-page' else '' }>
-      {
-        if @props.subject_set.subjects.length > 1
-          <LightBox
-            subject_set={@props.subject_set}
-            subject_index={@props.subject_index}
-            key={@props.subject_set.subjects[0].id}
-            isDisabled={disableLightBox}
-            toggleLightboxHelp={@props.lightboxHelp}
+    <div className={"subject-set-viewer" + if @state.toolbar_expanded then ' expand' else ''}>
+      <SubjectSetToolbar
+        workflow={@props.workflow}
+        task={@props.task}
+        subject={@props.subject_set.subjects[@props.subject_index]}
+        subject_set={@props.subject_set}
+        subject_index={@props.subject_index}
+        subjectCurrentPage={@props.subjectCurrentPage}
+        lightboxHelp={@props.lightboxHelp}
+        onSubject={@specificSelection.bind this, @props.subject_index}
+        nextPage={@props.nextPage}
+        prevPage={@props.prevPage}
+        totalSubjectPages={@props.totalSubjectPages}
+        onZoomChange={@handleZoomPanViewBoxChange}
+        viewBox={@state.zoomPanViewBox}
+        onExpand={@onToolbarExpand}
+        onHide={@onToolbarHide}
+        hideOtherMarks={@props.hideOtherMarks}
+        toggleHideOtherMarks={@props.toggleHideOtherMarks}
+        pageURL={@props.pageURL}
+        project={@props.project}
+        toggleTutorial={@props.toggleTutorial}
+        completeTutorial={@props.completeTutorial}
+        showingTutorial={@props.showingTutorial}
+      />
 
-            onSubject={@specificSelection.bind this, @props.subject_index}
-            subjectCurrentPage={@props.subjectCurrentPage}
-            nextPage={@props.nextPage}
-            prevPage={@props.prevPage}
-            totalSubjectPages={@props.totalSubjectPages}
-          />
-      }
       { for subject, index in @props.subject_set.subjects
         <SubjectViewer
           key={index}
@@ -81,6 +95,7 @@ module.exports = React.createClass
           destroyCurrentClassification={@props.destroyCurrentClassification}
           hideOtherMarks={@props.hideOtherMarks}
           currentSubtool={@props.currentSubtool}
+          viewBox={@state.zoomPanViewBox}
         />
       }
     </div>

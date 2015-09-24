@@ -78,4 +78,12 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
     end
   end
 
+  def meta_data
+    if object[:meta_data] == nil
+      meta_data = object.parent_subject.meta_data
+    else 
+      object[:meta_data]
+    end
+  end
+
 end

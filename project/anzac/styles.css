@@ -224,6 +224,7 @@ span.keyword {
   -font-size: .8em;
   line-height: 2;
   font-weight: 300;
+  min-width: 95%
 }
 
 #field-guide nav {
