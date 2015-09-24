@@ -10,4 +10,4 @@ ln -fs /config/* ./config/
 
 rake project:load[$1]
 
-exec bundle exec rails server
+exec bundle exec rails server -p 80
