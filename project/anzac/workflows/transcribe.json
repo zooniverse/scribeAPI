@@ -100,15 +100,13 @@
                 "tools": {
                   "att_transcribe_height_in": {
                     "tool": "textTool",
-                    "examples":"Most aged 17-40. Double check if older or younger.",
                     "tool_config": {},
-                    "label": ["Transcribe the entry for **inches**."],
+                    "label": "Transcribe the entry for **inches**.",
                     "generates_subject_type": "att_transcribed_height_in"
                    },
                   "att_transcribe_height_ft": {
                     "tool": "textTool",
                     "tool_config": {},
-                    "examples":["Most 5 or 6. Double check other values."],
                     "label": "Transcribe the entry for **feet**.",
                     "generates_subject_type": "att_transcribed_height_ft"
                   }
