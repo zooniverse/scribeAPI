@@ -69,7 +69,18 @@
       border-top-right-radius 0px
       border-bottom-right-radius 0px
 
-      box-shadow: 0 0 5px 3px rgba(0,0,0,0.4);
+      &.mark
+        padding 20px 20px 0
+        height 100vh
+        display flex
+        flex-direction column
+        overflow hidden
+        overflow-y auto
+
+      a
+        cursor pointer
+
+      box-shadow 0 0 5px 3px rgba(0,0,0,0.4)
 
       // prevent highlighting/selecting
       -webkit-touch-callout none
@@ -79,19 +90,44 @@
       -ms-user-select none
       user-select none
 
+      .task-container
+        flex nil 1 0 auto
+
       .help-bad-subject-holder
-        padding: 10px 0
+        margin 10px -8px 15px 0
 
         button
           margin 10px 10px 0 0
 
-      & > div:nth-child(2)
-        margin-top 20px
-        padding-top 20px
-        border-top solid #999 1px
+        .task-help-button
+          position absolute
+          top 0
+          right 0
+          font-family FontAwesome
+          background #bbb
+          color #fff
+          width 24px
+          height 24px
+          line-height 24px
+          text-align center
+          border none
+          border-radius 12px
+          padding 0
+          font-weight normal
+          font-size 14px
+          -webkit-font-smoothing antialiased
+          -moz-osx-font-smoothing grayscale
+          &:hover
+            background #3f5765
+
+          &:before
+            content "\f128"
 
       .workflow-task
         margin-bottom 10px
+        > span:first-child > p:first-child
+          margin-top 0
+          padding-right 10px
         .pick-one-dropdown
           font-size 1.5em
           transition opacity 0.250s
@@ -110,7 +146,7 @@
           opacity 0.75
 
         .answer
-          width: 90%
+          width: 88%
           @extends .standard-button
           background-color #ddd
           color #333
@@ -178,30 +214,78 @@
             background-color SECONDARY_HOVER
             z-index 101
 
+      .task-secondary-area
+        width 260px
+        margin-left -20px
+        margin-right -20px
+        box-sizing border-box
+        border-top solid #999 1px
+        background #ddd
+        margin-bottom 110px
+        flex nil none
+
+        > p
+          margin 0
+          > a
+            display block
+            padding 8px 16px
+            text-decoration none
+            color #777
+            border-bottom 1px solid #bbb
+
+            &:before
+              font-family FontAwesome
+              color #aaa
+              display inline-block
+              margin-right 6px
+              -webkit-font-smoothing antialiased
+              -moz-osx-font-smoothing grayscale
+              font-size 16px
+              vertical-align baseline
+
+            &.tutorial-link:before
+              content "\f059"
+
+            &.transcribe-link:before
+              content "\f14b"
+
+            &.about-link:before
+              content "\f05a"
+
+            &:hover
+              &,
+              &:before
+                color #3f5765
+
       .explore
         margin-bottom 20px
-        border-bottom: solid #999 1px;
+        border-bottom solid #999 1px
         h2
           font-size 20px
           margin-top 0
 
       .social-media-container
-        padding-top 20px
+        margin 10px 0 -10px
+        padding-top 8px
+        padding-bottom 4px
         font-size 26px
         text-align center
         transition color 0.2s
+        background #3f5765
+        line-height 1
+        width 100%
 
         i
-          color #3f5765
+          color #ddd
           cursor pointer
-          padding 2px
+          padding 0 2px
           &:hover
             transition color 0.2s
-            color #8cbc8c
+            color #fff
 
       .task-nav
         display: flex
-        margin-top: 1em
+        margin-top: 20px
         .back
           flex: 1 0
         .talk
