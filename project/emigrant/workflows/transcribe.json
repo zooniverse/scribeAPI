@@ -100,11 +100,23 @@
             "tool_config": {"suggest": "common"},
             "label": "Date"
           },
+          "em_valuation_ground": {
+            "tool": "textTool",
+            "examples": ["$200,000"],
+            "tool_config": {},
+            "label": "Ground Value"
+          },
+          "em_valuation_building": {
+            "tool": "textTool",
+            "examples": ["$200,000"],
+            "tool_config": {},
+            "label": "Building Value"
+          },
           "em_valuation_amount": {
             "tool": "textTool",
             "examples": ["$200,000"],
             "tool_config": {},
-            "label": "Amount"
+            "label": "Total Valuation"
           }
         }
       },
@@ -113,7 +125,7 @@
         "file": "t_record_valuation"
       },
       "generates_subject_type": "em_transcribed_valuation",
-      "instruction": "Enter as they appear, the date and amount of the last property valuation that was recorded.",
+      "instruction": "Enter as they appear, the date and amounts of the last property valuation that was recorded.",
       "next_task": null
     },
 
