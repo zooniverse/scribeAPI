@@ -62,22 +62,26 @@
 
     .task-area
       position fixed
-      background-color #EFEFEF
+      background-color #ffffff
       color SECONDARY_NORMAL
-      padding 20px 20px 0
+      padding 20px
       border-radius 5px
       border-top-right-radius 0px
       border-bottom-right-radius 0px
-      height 100vh
-      display flex
-      flex-direction column
-      overflow hidden
-      overflow-y auto
+
+      &.mark
+        padding 20px 20px 0
+        height 100vh
+        display flex
+        flex-direction column
+        overflow hidden
+        overflow-y auto
 
       a
         cursor pointer
 
       box-shadow 0 0 5px 3px rgba(0,0,0,0.4)
+
 
       // prevent highlighting/selecting
       -webkit-touch-callout none
@@ -89,12 +93,14 @@
 
       .task-container
         flex nil 1 0 auto
+        padding-bottom 10%
 
       .help-bad-subject-holder
         margin 10px -8px 15px 0
 
         button
           margin 10px 10px 0 0
+          width 98%
 
         .task-help-button
           position absolute
@@ -112,6 +118,7 @@
           padding 0
           font-weight normal
           font-size 14px
+          margin: 2%
           -webkit-font-smoothing antialiased
           -moz-osx-font-smoothing grayscale
           &:hover
@@ -143,7 +150,7 @@
           opacity 0.75
 
         .answer
-          width: 88%
+          width: 85%
           @extends .standard-button
           background-color #ddd
           color #333
@@ -289,6 +296,7 @@
           flex: 2 0
         .continue
           flex: 3 0
+          width: 100%
         :not(:first-child)
           margin-left: 0.5em
 
@@ -394,6 +402,8 @@
 
   &.toggled:before
     content '\2713   '
+
+
 
 
 .help-modal

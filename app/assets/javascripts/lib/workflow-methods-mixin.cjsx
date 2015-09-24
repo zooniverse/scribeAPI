@@ -96,6 +96,18 @@ module.exports =
       classification.task_key = @state.taskKey
       return if Object.keys(classification.annotation).length == 0
 
+    classifications = @state.classifications
+
+    classifications.push classification
+
+    @setState
+      classifications: classifications
+      classificationIndex: classifications.length-1
+        , =>
+          @forceUpdate()
+          window.classifications = @state.classifications # make accessible to console
+          callback() if callback?
+    
     @commitClassification(classification)
 
   toggleBadSubject: (e, callback) ->

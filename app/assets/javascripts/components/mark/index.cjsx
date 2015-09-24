@@ -80,9 +80,6 @@ module.exports = React.createClass # rename to Classifier
     @handleDataFromTool(annotation)
     @createAndCommitClassification(annotation)
 
-    # Initialize new classification with currently selected subToolIndex (so that right tool is selected in the right-col)
-    # @beginClassification() #AMS (8/17): this is causing issues with autosave, moving it back to commitClassification
-
 
   # Handle user selecting a pick/drawing tool:
   handleDataFromTool: (d) ->
@@ -216,13 +213,14 @@ module.exports = React.createClass # rename to Classifier
               totalSubjectPages={@state.subjects_total_pages}
               destroyCurrentClassification={@destroyCurrentClassification}
               hideOtherMarks={@state.hideOtherMarks}
+              toggleHideOtherMarks={@toggleHideOtherMarks}
               currentSubtool={currentSubtool}
               lightboxHelp={@toggleLightboxHelp}
             />
         }
       </div>
       <div className="right-column">
-        <div className="task-area">
+        <div className={"task-area " + @getActiveWorkflow().name}>
           { if @getCurrentTask()?
               <div className="task-container">
                 <TaskComponent
@@ -234,6 +232,14 @@ module.exports = React.createClass # rename to Classifier
                   subject={@getCurrentSubject()}
                 />
 
+                <div className="help-bad-subject-holder">
+                  { if @getCurrentTask().help?
+                    <HelpButton onClick={@toggleHelp} label="" className="task-help-button" />
+                  }
+                  { if onFirstAnnotation
+                    <BadSubjectButton class="bad-subject-button" label={"Bad " + @props.project.term('subject')} active={@state.badSubject} onClick={@toggleBadSubject} />
+                  }
+                </div>
                 <nav className="task-nav">
                   { if false
                     <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
@@ -308,7 +314,6 @@ module.exports = React.createClass # rename to Classifier
                 <i className="fa fa-google-plus-square"/>
               </a>
             </div>
-
           </div>
 
         </div>
