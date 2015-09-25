@@ -89,10 +89,8 @@ module.exports = React.createClass
       { if create_url?
           <a target="_blank" href={create_url}>Start a { if subject_posts.length > 0 then 'new' else '' } discussion about this {@props.project.term('subject set')}</a>
         else
-          <a>Oops! Disscussions have not been set up for this {@props.project.term('subject set')}.</a>
+          <p>Oops! Disscussions have not been set up for this {@props.project.term('subject set')}.</p>
       }
 
     </div>
-
-
 window.React = React
