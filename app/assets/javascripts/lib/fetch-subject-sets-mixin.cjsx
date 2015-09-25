@@ -62,7 +62,6 @@ module.exports =
 
   # This is the main fetch method for subject sets. (fetches via SubjectSetsController#index)
   fetchSubjectSets: (params, callback) ->
-    console.log "limit = ", @getActiveWorkflow().subject_set_fetch_limit
     # Apply defaults to unset params:
     _params = $.extend({
       limit: 2
