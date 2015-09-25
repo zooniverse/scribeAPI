@@ -21,27 +21,28 @@ module.exports = React.createClass
     connector:      null
     posts:          {}
 
-  componentDidMount: ->
-    API.type('projects').get().then (result)=>
-      project = result[0]
+  # componentDidMount: ->
+  componentWillReceiveProps: (new_props) ->
 
-      if project.forum?.type?
-        if ! ForumConnectors[project.forum?.type]?
-          console.warn "Unsupported forum type. No connector defined for #{project.forum.type}"
-        else
-          connector = new ForumConnectors[project.forum.type] project.forum
+    project = new_props.project # result[0]
 
-      if connector?
-        @setState connector: connector, () =>
-          if @props.subject_set?
-            @fetchPosts 'subject_set', @props.subject_set.id
-          else if @props.subject?
-            @fetchPosts 'subject', @props.subject.id
+    if project.forum?.type?
+      if ! ForumConnectors[project.forum?.type]?
+        console.warn "Unsupported forum type. No connector defined for #{project.forum.type}"
+      else
+        connector = new ForumConnectors[project.forum.type] project.forum, project
+
+    if connector?
+      @setState connector: connector, () =>
+        @fetchPosts 'subject', new_props.subject.id
 
   fetchPosts: (type, id) ->
-    @state.connector.fetchPosts type, id, (posts) =>
-      @setState
-        posts: posts
+    @setState loading: true, () =>
+      @state.connector.fetchPosts type, id, (posts) =>
+        @setState loading: false
+        console.log 'FETCHED posts: ', posts
+        @setState
+          posts: posts
 
   handleSearchFormSubmit: (e) ->
     e.preventDefault()
@@ -51,11 +52,41 @@ module.exports = React.createClass
 
   render: ->
     return null if ! @state.connector?
+    create_url = @state.connector.create_url @props.subject
+    search_enabled = @state.connector.search_url()?
 
-    create_url = @state.connector.create_url(@props) # needed create_url to have access to props. better way to do this? -STI
     subject_posts = @state.posts.subject ? ( @state.posts.subject_set ? [] )
 
     <div className="forum-subject-widget">
+<<<<<<< HEAD
+      { if search_enabled
+        <form onSubmit={@handleSearchFormSubmit} method='get' action='javascript:void(0);'><input type="text" ref="search_term" placeholder="Search forum"/></form>
+      }
+      <h2>Discuss</h2>
+
+      { if @state.loading and search_enabled
+          <span>Searching for discussions about this {@props.project.term('subject')}...</span>
+        else if subject_posts.length > 0
+          <span>
+            Discussion about this {@props.project.term('subject')}:
+            <ul>
+            { for post,i in subject_posts
+              <li key={i}>
+                "<a target="_blank" href={post.search_url}>{post.excerpt.truncate 70}</a>"
+                <br />&ndash; {post.author}, {moment(post.updated_at).fromNow()}
+              </li>
+            }
+            </ul>
+          </span>
+      }
+
+      { if create_url?
+          <a target="_blank" href={create_url}>Start a { if subject_posts.length > 0 then 'new' else '' } discussion about this {@props.project.term('subject set')}</a>
+        else
+          <a>Oops! Disscussions have not been set up for this {@props.project.term('subject set')}.</a>
+      }
+
+=======
       <form onSubmit={@handleSearchFormSubmit} method='get' action='javascript:void(0);'><input type="text" ref="search_term" placeholder="Search forum"/></form>
       { if subject_posts.length > 0
         <ul>
@@ -65,6 +96,7 @@ module.exports = React.createClass
         </ul>
       }
       <p><a target="_blank" href={create_url}>Start a discussion about this {@props.project.term('subject set')}</a></p>
+>>>>>>> master
     </div>
 
 
