@@ -38,10 +38,11 @@ App = React.createClass
         <MainHeader
           workflows={@state.project.workflows}
           feedbackFormUrl={@state.project.feedback_form_url}
+          discussUrl={@state.project.discuss_url}
+          blogUrl={@state.project.blog_url}
           pages={@state.project.pages}
           short_title={@state.project.short_title}
           logo={@state.project.logo} />
-
         <div className="main-content">
           <RouteHandler hash={window.location.hash} project={@state.project} setTutorialComplete={@setTutorialComplete} />
         </div>
