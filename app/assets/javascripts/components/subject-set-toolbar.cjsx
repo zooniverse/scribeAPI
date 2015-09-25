@@ -8,7 +8,7 @@ ForumSubjectWidget            = require './forum-subject-widget'
 module.exports = React.createClass
   displayName: "SubjectSetToolbar"
 
-  propTypes: 
+  propTypes:
     hideOtherMarks: React.PropTypes.bool.isRequired
 
   getInitialState: ->
@@ -16,9 +16,6 @@ module.exports = React.createClass
     zoomPanViewBox: @props.viewBox
     active_pane: ''
     hideMarks: true
-
-  componentDidMount: ->
-    window.addEventListener "keydown", (e) => @_handleZoomKeys(e)
 
   togglePane: (name) ->
     if @state.active_pane == name
