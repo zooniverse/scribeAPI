@@ -1,1 +1,1 @@
-If you’d like to learn more, visit the [About](/#/about) page and our [blog](); if you want to chat with other volunteers or ask for additional help, please join us on [Talk](). Thank you for your help!
+If you’d like to learn more, visit the [About](/#/about) page and the <a target="_blank" href="http://whalingmuseumblog.org">Whaling Museum Blog</a>; if you want to chat with other volunteers or ask for additional help, please join us on <a target="_blank" href="http://www.zooniverse.org/projects/zooniverse/old-weather/talk/">Talk</a>. Thank you for your help!

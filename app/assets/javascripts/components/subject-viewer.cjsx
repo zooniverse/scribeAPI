@@ -321,7 +321,6 @@ module.exports = React.createClass
 
     return marksToRender
 
-
   render: ->
     return null if ! @props.active
 

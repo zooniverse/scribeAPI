@@ -64,7 +64,6 @@ module.exports = React.createClass
     search_enabled = @state.connector.search_url()?
 
     subject_posts = @state.posts.subject ? ( @state.posts.subject_set ? [] )
-
     <div className="forum-subject-widget">
       { if search_enabled
         <form onSubmit={@handleSearchFormSubmit} method='get' action='javascript:void(0);'><input type="text" ref="search_term" placeholder="Search forum"/></form>
@@ -87,12 +86,10 @@ module.exports = React.createClass
       }
 
       { if create_url?
-          <a target="_blank" href={create_url}>Start a { if subject_posts.length > 0 then 'new' else '' } discussion about this {@props.project.term('subject set')}</a>
+          <a target="_blank" className="forum-link" href={create_url}> Discuss this {@props.project.term('subject set')}.</a>
         else
-          <a>Oops! Disscussions have not been set up for this {@props.project.term('subject set')}.</a>
+          <p>Oops! Disscussions have not been set up for this {@props.project.term('subject set')}.</p>
       }
 
     </div>
-
-
 window.React = React
