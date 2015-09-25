@@ -80,7 +80,7 @@ class SubjectSet
 
   def self.autocomplete_name(field, letters)
     reg = /#{Regexp.escape(letters)}/i
-    where( :"meta_data.#{field}" => reg)
+    where( project: Project.current, :"meta_data.#{field}" => reg)
   end
 
   def workflows

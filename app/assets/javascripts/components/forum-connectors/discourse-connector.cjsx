@@ -25,7 +25,7 @@ module.exports =
             title: p.blurb
             excerpt: p.blurb
             author: p.username
-            url: base_url + '/t/' + p.slug
+            url: base_url + '/t/' + p.topic_slug
             updated_at: p.updated_at
           resp = {}
           resp[type ? 'subjects'] = posts

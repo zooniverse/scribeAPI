@@ -20,8 +20,8 @@ module.exports = React.createClass
   getInitialState: ->
     connector:      null
     posts:          {}
+    fetch_status:   {}
 
-  # componentDidMount: ->
   componentWillReceiveProps: (new_props) ->
 
     project = new_props.project # result[0]
@@ -37,12 +37,20 @@ module.exports = React.createClass
         @fetchPosts 'subject', new_props.subject.id
 
   fetchPosts: (type, id) ->
-    @setState loading: true, () =>
-      @state.connector.fetchPosts type, id, (posts) =>
-        @setState loading: false
-        console.log 'FETCHED posts: ', posts
-        @setState
-          posts: posts
+    # If we've already fetched or are fetching posts for this type & id, abort
+    return if @state.fetch_status["#{type}.#{id}"]?
+
+    # For duration of fetch, status of this fetch is 'fetching'
+    @setState
+      fetch_status: $.extend(@state.fetch_status, {"#{type}.#{id}": 'fetching'})
+      loading: true, () =>
+        @state.connector.fetchPosts type, id, (posts) =>
+          @setState loading: false
+
+          # Save posts to state as well as setting fetch_status for this type&id to 'fetched'
+          @setState
+            posts: posts
+            fetch_status: $.extend(@state.fetch_status, {"#{type}.#{id}": 'fetched'})
 
   handleSearchFormSubmit: (e) ->
     e.preventDefault()
@@ -59,23 +67,30 @@ module.exports = React.createClass
 
     <div className="forum-subject-widget">
       { if search_enabled
-          <form onSubmit={@handleSearchFormSubmit} method='get' action='javascript:void(0);'><input type="text" ref="search_term" placeholder="Search forum"/></form>
+        <form onSubmit={@handleSearchFormSubmit} method='get' action='javascript:void(0);'><input type="text" ref="search_term" placeholder="Search forum"/></form>
       }
 
-      { if search_enabled and subject_posts.length > 0
-        <ul>
-        { for post in subject_posts
-          <li><a target="_blank" href={post.url}>{post.title}</a> (Updated {post.updated_at})</li>
-        }
-        </ul>
+      { if @state.loading and search_enabled
+          <span>Searching for discussions about this {@props.project.term('subject')}...</span>
+        else if subject_posts.length > 0
+          <span>
+            Discussion about this {@props.project.term('subject')}:
+            <ul>
+            { for post,i in subject_posts
+              <li key={i}>
+                "<a target="_blank" href={post.url}>{post.excerpt.truncate 70}</a>"
+                <br />&ndash; {post.author}, {moment(post.updated_at).fromNow()}
+              </li>
+            }
+            </ul>
+          </span>
       }
 
       { if create_url?
-          <p><a target="_blank" href={create_url}>Start a discussion about this {@props.project.term('subject set')}</a></p>
+          <a target="_blank" href={create_url}>Start a { if subject_posts.length > 0 then 'new' else '' } discussion about this {@props.project.term('subject set')}</a>
         else
-          <p><a>Oops! Disscussions have not been set up for this {@props.project.term('subject set')}.</a></p>
+          <p>Oops! Disscussions have not been set up for this {@props.project.term('subject set')}.</p>
       }
+
     </div>
-
-
 window.React = React
