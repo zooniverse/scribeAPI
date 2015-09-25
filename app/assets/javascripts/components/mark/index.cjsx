@@ -236,7 +236,7 @@ module.exports = React.createClass # rename to Classifier
                   { if false
                     <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
                   }
-                  { if @getNextTask()?
+                  { if @getNextTask() and not @state.badSubject?
                       <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@advanceToNextTask}>Next</button>
                     else
                       if @state.taskKey == "completion_assessment_task"
