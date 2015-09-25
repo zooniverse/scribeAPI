@@ -20,8 +20,8 @@ module.exports = React.createClass
   getInitialState: ->
     connector:      null
     posts:          {}
+    fetch_status:   {}
 
-  # componentDidMount: ->
   componentWillReceiveProps: (new_props) ->
 
     project = new_props.project # result[0]
@@ -37,12 +37,20 @@ module.exports = React.createClass
         @fetchPosts 'subject', new_props.subject.id
 
   fetchPosts: (type, id) ->
-    @setState loading: true, () =>
-      @state.connector.fetchPosts type, id, (posts) =>
-        @setState loading: false
-        console.log 'FETCHED posts: ', posts
-        @setState
-          posts: posts
+    # If we've already fetched or are fetching posts for this type & id, abort
+    return if @state.fetch_status["#{type}.#{id}"]?
+
+    # For duration of fetch, status of this fetch is 'fetching'
+    @setState
+      fetch_status: $.extend(@state.fetch_status, {"#{type}.#{id}": 'fetching'})
+      loading: true, () =>
+        @state.connector.fetchPosts type, id, (posts) =>
+          @setState loading: false
+
+          # Save posts to state as well as setting fetch_status for this type&id to 'fetched'
+          @setState
+            posts: posts
+            fetch_status: $.extend(@state.fetch_status, {"#{type}.#{id}": 'fetched'})
 
   handleSearchFormSubmit: (e) ->
     e.preventDefault()
@@ -70,7 +78,7 @@ module.exports = React.createClass
             <ul>
             { for post,i in subject_posts
               <li key={i}>
-                "<a target="_blank" href={post.search_url}>{post.excerpt.truncate 70}</a>"
+                "<a target="_blank" href={post.url}>{post.excerpt.truncate 70}</a>"
                 <br />&ndash; {post.author}, {moment(post.updated_at).fromNow()}
               </li>
             }
