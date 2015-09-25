@@ -58,26 +58,16 @@ module.exports = React.createClass
     subject_posts = @state.posts.subject ? ( @state.posts.subject_set ? [] )
 
     <div className="forum-subject-widget">
-<<<<<<< HEAD
       { if search_enabled
         <form onSubmit={@handleSearchFormSubmit} method='get' action='javascript:void(0);'><input type="text" ref="search_term" placeholder="Search forum"/></form>
       }
-      <h2>Discuss</h2>
 
-      { if @state.loading and search_enabled
-          <span>Searching for discussions about this {@props.project.term('subject')}...</span>
-        else if subject_posts.length > 0
-          <span>
-            Discussion about this {@props.project.term('subject')}:
-            <ul>
-            { for post,i in subject_posts
-              <li key={i}>
-                "<a target="_blank" href={post.search_url}>{post.excerpt.truncate 70}</a>"
-                <br />&ndash; {post.author}, {moment(post.updated_at).fromNow()}
-              </li>
-            }
-            </ul>
-          </span>
+      { if search_enabled and subject_posts.length > 0
+        <ul>
+        { for post in subject_posts
+          <li><a target="_blank" href={post.url}>{post.title}</a> (Updated {post.updated_at})</li>
+        }
+        </ul>
       }
 
       { if create_url?
@@ -86,17 +76,6 @@ module.exports = React.createClass
           <a>Oops! Disscussions have not been set up for this {@props.project.term('subject set')}.</a>
       }
 
-=======
-      <form onSubmit={@handleSearchFormSubmit} method='get' action='javascript:void(0);'><input type="text" ref="search_term" placeholder="Search forum"/></form>
-      { if subject_posts.length > 0
-        <ul>
-        { for post in subject_posts
-          <li><a target="_blank" href={post.url}>{post.title}</a> (Updated {post.updated_at})</li>
-        }
-        </ul>
-      }
-      <p><a target="_blank" href={create_url}>Start a discussion about this {@props.project.term('subject set')}</a></p>
->>>>>>> master
     </div>
 
 
