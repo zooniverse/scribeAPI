@@ -29,9 +29,9 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
     object.type.nil? ? 'subjects' : object.type
   end
 
-  # Let's override default has_many so that we can restrict to active (i.e. to hide retired marks)
+
   def child_subjects
-    object.child_subjects.active.map { |s| SubjectSerializer.new(s, root: false, scope: scope) }
+    object.child_subjects.map { |s| SubjectSerializer.new(s, root: false, scope: scope) }
   end
 
   def workflow_id
