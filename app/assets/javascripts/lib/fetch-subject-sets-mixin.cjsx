@@ -1,4 +1,5 @@
-API = require './api'
+API              = require './api'
+SubjectSet       = require 'models/subject_set.coffee'
 
 module.exports =
 
@@ -62,18 +63,10 @@ module.exports =
 
   # This is the main fetch method for subject sets. (fetches via SubjectSetsController#index)
   fetchSubjectSets: (params, callback) ->
-    # Apply defaults to unset params:
-    _params = $.extend({
-      limit: 10
-      workflow_id: @getActiveWorkflow().id
-      random: true
-    }, params)
-    # Strip null params:
-    params = {}; params[k] = v for k,v of _params when v?
-
-    API.type('subject_sets').get(params).then (subject_sets) =>
-      @_handleFetchedSubjectSets subject_sets, callback
-
+    params = $.extend(workflow_id: @getActiveWorkflow().id, params)
+    callback = (sets) =>
+      @_handleFetchedSubjectSets(sets, callback)
+    SubjectSet.findBy params, callback
 
   # Used internally by mixin to update state and fire callbacks after retrieving sets
   _handleFetchedSubjectSets: (subject_sets, callback) ->
@@ -93,6 +86,3 @@ module.exports =
     @setState state
 
     callback? subject_sets
-
-    if @fetchSubjectsCallback?
-      @fetchSubjectsCallback()

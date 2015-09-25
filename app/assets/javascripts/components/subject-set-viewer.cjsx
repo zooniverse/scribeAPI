@@ -23,6 +23,10 @@ module.exports = React.createClass
     toolbar_expanded: false
     # subject_index: @props.subject_index ? 0pmark
 
+  componentDidMount: ->
+    if @props.subject_set.subjects?.length == 0
+      @props.subject_set.fetchSubjects 1, 100
+
   advancePrevious: ->
     @advance -1
 
