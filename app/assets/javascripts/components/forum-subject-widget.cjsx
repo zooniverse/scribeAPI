@@ -61,12 +61,20 @@ module.exports = React.createClass
         <form onSubmit={@handleSearchFormSubmit} method='get' action='javascript:void(0);'><input type="text" ref="search_term" placeholder="Search forum"/></form>
       }
 
-      { if search_enabled and subject_posts.length > 0
-        <ul>
-        { for post in subject_posts
-          <li><a target="_blank" href={post.url}>{post.title}</a> (Updated {post.updated_at})</li>
-        }
-        </ul>
+      { if @state.loading and search_enabled
+          <span>Searching for discussions about this {@props.project.term('subject')}...</span>
+        else if subject_posts.length > 0
+          <span>
+            Discussion about this {@props.project.term('subject')}:
+            <ul>
+            { for post,i in subject_posts
+              <li key={i}>
+                "<a target="_blank" href={post.search_url}>{post.excerpt.truncate 70}</a>"
+                <br />&ndash; {post.author}, {moment(post.updated_at).fromNow()}
+              </li>
+            }
+            </ul>
+          </span>
       }
 
       { if create_url?
