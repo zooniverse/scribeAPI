@@ -18,6 +18,8 @@ module.exports = React.createClass
   mixins: [ZoomPanListenerMethods]
 
   getInitialState: ->
+    console.log 'SUBJECT SET: ', @props.subject_set
+
     subject_set: @props.subject_set
     tool: @props.tool
     toolbar_expanded: false
@@ -74,25 +76,23 @@ module.exports = React.createClass
         toggleHideOtherMarks={@props.toggleHideOtherMarks}
       />
 
-      { for subject, index in @props.subject_set.subjects
-        <SubjectViewer
-          key={index}
-          subject={subject}
-          workflow={@props.workflow}
-          task={@props.task}
-          subjectCurrentPage={@props.subjectCurrentPage}
-          annotation={@props.annotation}
-          active={index == @props.subject_index}
-          onComplete={@props.onComplete}
-          onChange={@props.onChange}
-          onDestroy={@props.onDestroy}
-          subToolIndex={@props.subToolIndex}
-          destroyCurrentClassification={@props.destroyCurrentClassification}
-          hideOtherMarks={@props.hideOtherMarks}
-          currentSubtool={@props.currentSubtool}
-          viewBox={@state.zoomPanViewBox}
-        />
-      }
+      <SubjectViewer
+        subject={@props.subject_set.subjects[@props.subject_index]}
+        workflow={@props.workflow}
+        task={@props.task}
+        subjectCurrentPage={@props.subjectCurrentPage}
+        annotation={@props.annotation}
+        active={true}
+        onComplete={@props.onComplete}
+        onChange={@props.onChange}
+        onDestroy={@props.onDestroy}
+        subToolIndex={@props.subToolIndex}
+        destroyCurrentClassification={@props.destroyCurrentClassification}
+        hideOtherMarks={@props.hideOtherMarks}
+        currentSubtool={@props.currentSubtool}
+        viewBox={@state.zoomPanViewBox}
+      />
+
     </div>
 
 window.React = React
