@@ -8,7 +8,8 @@
   "terms_map": {
     "group": "collection",
     "subject set": "page",
-    "subject": "page"
+    "subject": "page",
+    "mark": "region"
   },
   "team_emails": [
     "brianfoo@nypl.org",
