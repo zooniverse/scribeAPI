@@ -263,18 +263,24 @@
 
         .forum-subject-widget
           > a
-            font-family: FontAwesome;
+            font-family: ProximaNova, 'Helvetica Neue'
             display block
             text-decoration none
             color #777
-            &:before
-              content "\f0e6"
-              padding: 3px
-
-            &:hover
-              &,
+            &.forum-link
               &:before
-                color #3f5765
+                font-family: FontAwesome;
+                color #aaa
+                display inline-block
+                -webkit-font-smoothing antialiased
+                -moz-osx-font-smoothing grayscale
+                vertical-align baseline
+                content "\f0e6"
+
+              &:hover
+                &,
+                &:before
+                  color #3f5765
 
 
       .social-media-container

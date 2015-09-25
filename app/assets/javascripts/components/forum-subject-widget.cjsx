@@ -78,7 +78,7 @@ module.exports = React.createClass
       }
 
       { if create_url?
-          <a target="_blank" href={create_url}>Discuss this {@props.project.term('subject set')}.</a>
+          <a target="_blank" className="forum-link" href={create_url}> Discuss this {@props.project.term('subject set')}.</a>
         else
           <a>Oops! Disscussions have not been set up for this {@props.project.term('subject set')}.</a>
       }
