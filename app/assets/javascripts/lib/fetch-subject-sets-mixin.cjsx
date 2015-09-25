@@ -64,7 +64,7 @@ module.exports =
   fetchSubjectSets: (params, callback) ->
     # Apply defaults to unset params:
     _params = $.extend({
-      limit: 2
+      limit: 1 #10 # temporary fix for large subject_sets -STI
       workflow_id: @getActiveWorkflow().id
       random: true
     }, params)
