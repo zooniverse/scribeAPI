@@ -240,6 +240,13 @@
       "next_task": null
     },
 
+    "event_other": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Describe this event or transcribe any notable text.",
+      "next_task": null
+    },
+
     "art_illustration": {
       "tool": "textTool",
       "tool_config": {},
