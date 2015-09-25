@@ -1,5 +1,5 @@
 class ProjectSerializer < ActiveModel::MongoidSerializer
-  attributes :id, :title, :short_title, :summary, :home_page_content, :organizations , :team, :pages, :logo, :background, :workflows, :forum, :tutorial, :feedback_form_url, :metadata_search, :current_user_tutorial, :terms_map, :blog_url, :talk_url
+  attributes :id, :title, :short_title, :summary, :home_page_content, :organizations , :team, :pages, :logo, :background, :workflows, :forum, :tutorial, :feedback_form_url, :metadata_search, :current_user_tutorial, :terms_map, :blog_url, :discuss_url
   has_many :workflows
 
   delegate :current_or_guest_user, to: :scope

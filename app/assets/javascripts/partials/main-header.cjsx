@@ -59,8 +59,8 @@ module.exports = React.createClass
             <a target={"_blank"} className="main-header-item" href={@props.blogUrl}>Blog</a>
         }
         { # include blog tab if defined
-          if @props.talkUrl?
-            <a target={"_blank"} className="main-header-item" href={@props.talkUrl}>Talk</a>
+          if @props.discussUrl?
+            <a target={"_blank"} className="main-header-item" href={@props.discussUrl}>Talk</a>
         }
         <Login />
 

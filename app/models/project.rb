@@ -19,7 +19,7 @@ class Project
   field  :background,        type: String
   field  :forum,             type: Hash
   field  :feedback_form_url, type: String
-  field  :talk_url, type: String
+  field  :discuss_url, type: String
   field  :blog_url, type: String
   field  :styles,            type: String
   field  :custom_js,         type: String

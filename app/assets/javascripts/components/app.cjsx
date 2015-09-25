@@ -38,7 +38,7 @@ App = React.createClass
         <MainHeader
           workflows={@state.project.workflows}
           feedbackFormUrl={@state.project.feedback_form_url}
-          talkUrl={@state.project.talk_url}
+          discussUrl={@state.project.discuss_url}
           blogUrl={@state.project.blog_url}
           pages={@state.project.pages}
           short_title={@state.project.short_title}
