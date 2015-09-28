@@ -162,8 +162,8 @@ namespace :project do
     # indexes) will create mult. indexes, which may slow query planning
     if project.metadata_search && project.metadata_search.is_a?(Hash)
       # Loop over fields array:
-      if project.metadata_search[:fields].is_a? Array
-        project.metadata_search[:fields].each do |field|
+      if project.metadata_search["fields"].is_a? Array
+        project.metadata_search["fields"].each do |field|
           SubjectSet.index("project" => 1, "metadata.#{field['field']}" => 1)
         end
       end

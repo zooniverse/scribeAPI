@@ -3,6 +3,14 @@
   background: rgba(0, 0, 0, 0.18);
 }
 
+.main-header-item.logo {
+  transform: none;
+}
+.main-header-item.logo img {
+  width: auto;
+  height: 52px;
+}
+
 .page-content{
   background-color: transparent;
   -font-size: 1.4em;
@@ -61,8 +69,10 @@ span.keyword {
 }
 /* Home Page */
 .home-page h1{
+  font-family: clarendon-text-pro;
   text-transform: none;
-  font-size: 2.4em;
+  font-weight: 900;
+  font-size: 2.5em;
   margin: 0;
   padding: 0;
   padding-top: 7%;

@@ -31,7 +31,7 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
 
 
   def child_subjects
-    object.child_subjects.map { |s| SubjectSerializer.new(s, root: false, scope: scope) }
+    object.child_subjects.not_bad.map { |s| SubjectSerializer.new(s, root: false, scope: scope) }
   end
 
   def workflow_id
