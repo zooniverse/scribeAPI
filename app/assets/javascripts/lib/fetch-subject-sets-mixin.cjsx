@@ -14,7 +14,7 @@ module.exports =
       if @props.query.selected_subject_id?
         # Get the index of the specified subject in the (presumably first & only) subject set:
         state.subject_index = (ind for subj,ind in subject_sets[0].subjects when subj.id == @props.query.selected_subject_id )[0]
-        
+
       # If taskKey specified, now's the time to set that too:
       state.taskKey = @props.query.mark_task_key if @props.query.mark_task_key
 
@@ -64,7 +64,7 @@ module.exports =
   fetchSubjectSets: (params, callback) ->
     # Apply defaults to unset params:
     _params = $.extend({
-      limit: 10
+      limit: 1 #10 # temporary fix for large subject_sets -STI
       workflow_id: @getActiveWorkflow().id
       random: true
     }, params)
