@@ -19,8 +19,9 @@ class Project
   field  :background,        type: String
   field  :forum,             type: Hash
   field  :feedback_form_url, type: String
-  field  :discuss_url, type: String
-  field  :blog_url, type: String
+  field  :discuss_url,       type: String
+  field  :blog_url,          type: String
+  field  :privacy_policy,    type: String
   field  :styles,            type: String
   field  :custom_js,         type: String
   field  :admin_email,       type: String
@@ -28,7 +29,7 @@ class Project
   field  :metadata_search,   type: Hash
   field  :tutorial,          type: Hash
   field  :terms_map,         type: Hash, default: {} # Hash mapping internal terms to project appropriate terms (e.g. 'group'=>'ship')
-  field :status,             type: String, default: 'inactive'
+  field  :status,             type: String, default: 'inactive'
 
   include CachedStats
   update_interval 30

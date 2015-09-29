@@ -6,6 +6,7 @@
   "admin_email": "andrea@zooniverse.org",
     "team_emails": [ "andrea@zooniverse.org" ],
   "logo": "/assets/anzac/logo.svg",
+  "privacy_policy":"https://www.zooniverse.org/privacy",
   "terms_map": {
     "group": "collection",
     "subject set": "personnel record",

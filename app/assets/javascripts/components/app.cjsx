@@ -47,7 +47,7 @@ App = React.createClass
         <div className="main-content">
           <RouteHandler hash={window.location.hash} project={@state.project} setTutorialComplete={@setTutorialComplete} />
         </div>
-        <Footer/>
+        <Footer privacyPolicy={ @state.project.privacy_policy }/>
       </div>
     </div>
 
