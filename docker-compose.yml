@@ -7,7 +7,7 @@ anzac:
     - mongodb:mongodb
   command: anzac
   ports:
-    - 3000:3000
+    - 3000:80
 
 whale_tales:
   build: .
@@ -15,7 +15,7 @@ whale_tales:
     - mongodb:mongodb
   command: whale_tales
   ports:
-    - 3000:3000
+    - 3000:80
 
 emigrant:
   build: .
@@ -23,4 +23,4 @@ emigrant:
     - mongodb:mongodb
   command: emigrant
   ports:
-    - 3000:3000
+    - 3000:80
