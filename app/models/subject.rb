@@ -7,11 +7,12 @@ class Subject
 
   scope :root, -> { where(type: 'root').asc(:order) }
   scope :active_root, -> { where(type: 'root', status: 'active').asc(:order) }
+  scope :by_type, -> (type) { where(type: type) }
   scope :active_non_root, -> { where(:type.ne => 'root', :status => 'active') }
   scope :active, -> { where(status: 'active').asc(:order)  }
   scope :complete, -> { where(status: 'complete').asc(:order)  }
   scope :by_workflow, -> (workflow_id) { where(workflow_id: workflow_id)  }
-  scope :by_subject_set, -> (subject_set_id) { where(subject_set_id: subject_set_id)  }
+  scope :by_subject_set, -> (subject_set_id) { where(subject_set_id: subject_set_id).asc(:order)  }
   scope :by_parent_subject, -> (parent_subject_id) { where(parent_subject_id: parent_subject_id) }
   scope :by_group, -> (group_id) { where(group_id: group_id) }
   scope :user_has_not_classified, -> (user_id) { where(:classifying_user_ids.ne => user_id)  }

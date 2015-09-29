@@ -1,5 +1,4 @@
 API              = require './api'
-SubjectSet       = require 'models/subject_set.coffee'
 
 module.exports =
 
@@ -33,20 +32,22 @@ module.exports =
         group_id:                 @props.query.group_id ? null
       @fetchSubjectSets params, postFetchCallback
 
+
+
   # this method fetches the next page of subjects in a given subject_set.
   # right now the trigger for this method is the forward or back button in the light-box
   # I am torn about whether to set the subject_index at this point? -- AMS
-  fetchNextSubjectPage: (subject_set_id, workflow_id, page_number, subject_index, callback_fn) ->
+  # fetchNextSubjectPage: (page_number, callback_fn) ->
 
     # Gather filters by which to query subject-sets
-    params =
-      subject_set_id: subject_set_id
-      workflow_id: workflow_id
-      subject_page: page_number
+    # params =
+    #  subject_set_id: subject_set_id
+    #  workflow_id: workflow_id
+    #  subject_page: page_number
 
-    @fetchSubjectSets params, () =>
-      @setState subject_index: subject_index
-      callback_fn()
+    # @fetchSubjectSets params, () =>
+    #  @setState subject_index: subject_index
+    # callback_fn()
 
   orderSubjectsByOrder: (subject_sets) ->
     for subject_set in subject_sets
@@ -58,31 +59,45 @@ module.exports =
   fetchSubjectSet: (subject_set_id, callback) ->
     request = API.type("subject_sets").get subject_set_id
 
-    request.then (subject_set) =>
-      @_handleFetchedSubjectSets [subject_set], callback
+    request.then (set) =>
+      @setState subjectSets: [set], () =>
+        @fetchSubjectsForCurrentSubjectSet 1, 18, callback
 
   # This is the main fetch method for subject sets. (fetches via SubjectSetsController#index)
   fetchSubjectSets: (params, callback) ->
     params = $.extend(workflow_id: @getActiveWorkflow().id, params)
-    callback = (sets) =>
-      @_handleFetchedSubjectSets(sets, callback)
-    SubjectSet.findBy params, callback
+    _callback = (sets) =>
 
-  # Used internally by mixin to update state and fire callbacks after retrieving sets
-  _handleFetchedSubjectSets: (subject_sets, callback) ->
+    # Apply defaults to unset params:
+    _params = $.extend({
+      limit: 10
+      random: true
+    }, params)
+    # Strip null params:
+    params = {}; params[k] = v for k,v of _params when v?
 
-    # Establish a no-results state:
-    state = subjectSets: []
+    API.type('subject_sets').get(params).then (sets) =>
+      @setState subjectSets: sets, () =>
+        @fetchSubjectsForCurrentSubjectSet()
 
-    if subject_sets.length > 0
-      state =
-        subjectSets: @orderSubjectsByOrder(subject_sets)
-        subject_set_index: 0
-        subject_sets_current_page: subject_sets[0].getMeta("current_page")
-        subject_sets_total_pages: subject_sets[0].getMeta("total_pages")
-        subjects_current_page: subject_sets[0].subjects_pagination_info.current_page
-        subjects_total_pages: subject_sets[0].subjects_pagination_info.total_pages
+  # PB: Setting default limit to 18 because it's a multiple of 3 mandated by thumb browser
+  fetchSubjectsForCurrentSubjectSet: (page=1, limit=3, callback) ->
+    ind = @state.subject_set_index
+    sets = @state.subjectSets
 
-    @setState state
+    # page & limit not passed when called this way for some reason, so we have to manually construct query:
+    # sets[ind].get('subjects', {page: page, limit: limit}).then (subjs) =>
+    params =
+      subject_set_id: sets[ind].id
+      page: page
+      limit: limit
+      type: 'root'
+    API.type('subjects').get(params).then (subjs) =>
+      sets[ind].subjects = subjs
 
-    callback? subject_sets
+      @setState
+        subjectSets:                sets
+        subjects_current_page:      subjs[0].getMeta('current_page')
+        subjects_total_pages:       subjs[0].getMeta('total_pages'), () =>
+          callback? sets
+

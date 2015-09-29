@@ -21,11 +21,6 @@ module.exports = React.createClass
     subject_set: @props.subject_set
     tool: @props.tool
     toolbar_expanded: false
-    # subject_index: @props.subject_index ? 0pmark
-
-  componentDidMount: ->
-    if @props.subject_set.subjects?.length == 0
-      @props.subject_set.fetchSubjects 1, 100
 
   advancePrevious: ->
     @advance -1
@@ -55,6 +50,7 @@ module.exports = React.createClass
     @setState toolbar_expanded: false
 
   render: ->
+    return null if ! @props.subject_set.subjects?
     # console.log 'SUBJECT-SET-VIEWER::render(), subject_index = ', @props.subject_index
     # NOTE: LightBox does not receive correct @props.subject_index. Why? --STI
     <div className={"subject-set-viewer" + if @state.toolbar_expanded then ' expand' else ''}>
