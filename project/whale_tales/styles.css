@@ -8,11 +8,8 @@
   line-height: 68px; /* Approximation due to font substitution */
   text-align: center;
 }
-.home-page h1 {
-  /*font-family: 'Roboto Slab';*/
-  color: #fff;
-  font-weight: 100;
-  margin-bottom: 0%;
+.home-page .title {
+  display: none;
 }
 .home-page p {
   font-family: SANS_SERIF;

@@ -31,7 +31,7 @@ HomePage = React.createClass
       { if @state.project?.home_page_content?
 
         <div className="page-content">
-          <h1>{@state.project?.title}</h1>
+          <h1 className="title">{@state.project?.title}</h1>
           <div dangerouslySetInnerHTML={{ __html: marked(@state.project.home_page_content) }} />
 
           {
@@ -50,7 +50,7 @@ HomePage = React.createClass
           </div>
         </div>
       }
-    
+
     </div>
 
 module.exports = HomePage
