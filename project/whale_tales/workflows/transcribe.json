@@ -124,10 +124,165 @@
       "next_task": null
     },
 
+    "sailing_condition_other": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Transcribe any text describing the ship sailing with respect to ice. ",
+      "next_task": null
+    },
+    "sailing_condition_other": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Transcribe any text describing the ship sailing with respect to ice. ",
+      "next_task": null
+    },
+    "sailing_condition_other": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Transcribe any text describing the ship sailing with respect to ice. ",
+      "next_task": null
+    },
 
 
 
+    "sea_ice_concentration_ice_field": {
+      "tool": "textTool",
+      "help": { "title": "Ice Field", "body": "**Ice fields** are sheets of ice too large to know how big they are." },
+      "tool_config": {},
+      "instruction": "Include any additional comments regarding __ice field__.",
+      "next_task": null
+    },
+    "sea_ice_concentration_floe": {
+      "tool": "textTool",
+      "help": { "title": "Floe", "body": "**Floes** are large pieces of sea ice tens to hundreds of yards across." },
+      "tool_config": {},
+      "instruction": "Include any additional comments regarding __floe__.",
+      "next_task": null
+    },
+    "sea_ice_concentration_drift_ice": {
+      "tool": "textTool",
+      "help": { "title": "Drift Ice", "body": "**Drift ice** is a mix of large and small pieces of sea ice." },
+      "tool_config": {},
+      "instruction": "Include any additional comments regarding __drift ice__.",
+      "next_task": null
+    },
+    "sea_ice_concentration_sailing_ice": {
+      "tool": "textTool",
+      "help": { "title": "Sailing Ice", "body": "**Sailing ice** is so spread out that a sailing ship can navigate with ease." },
+      "tool_config": {},
+      "instruction": "Include any additional comments regarding __sailing ice__.",
+      "next_task": null
+    },
+    "sea_ice_concentration_pack_ice": {
+      "tool": "textTool",
+      "help": { "title": "Pack Ice", "body": "**Pack ice** is a large expanse of drift ice. ('Open pack' is when pieces of ice are close but not jammed together; 'close pack' is when pieces are in contact.)" },
+      "tool_config": {},
+      "instruction": "Include any additional comments regarding __pack ice__.",
+      "next_task": null
+    },
+    "sea_ice_concentration_other": {
+      "tool": "textTool",
+      "help": { "title": "Sea Ice Concentration", "file": "sea_ice_concentration" },
+      "tool_config": {},
+      "instruction": "Include any additional comments regarding __sea ice concentration__.",
+      "next_task": null
+    },
 
+
+
+    "sea_ice_thickness_bay_ice": {
+      "tool": "textTool",
+      "tool_config": {},
+      "help": { "title": "Bay Ice", "body": "**Bay ice** is newly formed sea-ice, from near 0- to 1-foot thick. There are two forms: large, smooth sheets of thin ice, usually grey or grey-white in color; and 'pancake-ice,' circular pieces of ice of a few inches to several feet across. This may also be called 'young' or 'new' ice." },
+      "instruction": "Include any additional comments regarding __bay ice__.",
+      "next_task": null
+    },
+    "sea_ice_thickness_sludge": {
+      "tool": "textTool",
+      "help":{ "title": "Sludge", "body": "**Sludge**, also called 'oatmeal' or 'porridge' ice, is formed when the sea is agitated when freezing." },
+      "tool_config": {},
+      "instruction": "Include any additional comments regarding __sludge__.",
+      "next_task": null
+    },
+    "sea_ice_thickness_brash": {
+      "tool": "textTool",
+      "help":{ "title": "Brash", "body": "**Brash** is a patch of ice made of fragments of older ice, or flinty pieces of icebergs (glacier ice)." },
+      "tool_config": {},
+      "instruction": "Include any additional comments regarding __brash__.",
+      "next_task": null
+    },
+    "sea_ice_thickness_light_ice": {
+      "tool": "textTool",
+      "help":{ "title": "Light Ice", "body": "**Light ice** is from 1 to 3 feet in thickness." },
+      "tool_config": {},
+      "instruction": "Include any additional comments regarding __light ice__.",
+      "next_task": null
+    },
+    "sea_ice_thickness_heavy_ice": {
+      "tool": "textTool",
+      "help":{ "title": "Heavy Ice", "body": "**Heavy ice** is from 3 feet and upwards." },
+      "tool_config": {},
+      "instruction": "Include any additional comments regarding __heavy ice__.",
+      "next_task": null
+    },
+    "sea_ice_thickness_hummock": {
+      "tool": "textTool",
+      "help":{ "title": "Hummock", "body": "**Hummocks** are formed when pressure forces pieces of ice to pile up, and can be many feet thick." },
+      "tool_config": {},
+      "instruction": "Include any additional comments regarding __hummock__.",
+      "next_task": null
+    },
+    "sea_ice_thickness_other": {
+      "tool": "textTool",
+      "help":{ "title": "Sea Ice Thickness", "file": "sea_ice_thickness" },
+      "tool_config": {},
+      "instruction": "Include any additional comments regarding __sea ice thickness__.",
+      "next_task": null
+    },
+
+
+    "sea_ice_special_melt_ponds": {
+      "tool": "textTool",
+      "help":{ "title": "Melt Ponds", "body": "**Melt ponds** are pools of water on the surface of the sea ice." },
+      "tool_config": {},
+      "instruction": "Include any additional comments regarding __melt ponds__.",
+      "next_task": null
+    },
+    "sea_ice_special_snow_on_sea_ice": {
+      "tool": "textTool",
+      "help":{ "title": "Snow On Sea Ice", "body": "**Snow on sea ice** refers to any accumulation of snow atop any type of sea ice." },
+      "tool_config": {},
+      "instruction": "Include any additional comments regarding __snow on sea ice__.",
+      "next_task": null
+    },
+    "sea_ice_special_land_ice": {
+      "tool": "textTool",
+      "help":{ "title": "Land Ice", "body": "**Land ice** is sea-ice that forms fixed to the shore; now called 'fast ice.'" },
+      "tool_config": {},
+      "instruction": "Include any additional comments regarding __land ice__.",
+      "next_task": null
+    },
+    "sea_ice_special_floeberg": {
+      "tool": "textTool",
+      "help":{ "title": "Floeberg", "body": "**Floebergs** are pieces of sea-ice hummock; up to 60 feet in height." },
+      "tool_config": {},
+      "instruction": "Include any additional comments regarding __floeberg__.",
+      "next_task": null
+    },
+    "sea_ice_special_iceberg": {
+      "tool": "textTool",
+      "help":{ "title": "Iceberg", "body": "**Icebergs** are large pieces of glacier ice (uncommon in the Pacific Arctic)." },
+      "tool_config": {},
+      "instruction": "Include any additional comments regarding __iceberg__.",
+      "next_task": null
+    },
+    "sea_ice_special_other": {
+      "tool": "textTool",
+      "help":{ "title": "Special Sea Ice", "file": "sea_ice_special" },
+      "tool_config": {},
+      "instruction": "Include any additional comments regarding __special sea ice__.",
+      "next_task": null
+    },
 
 
 

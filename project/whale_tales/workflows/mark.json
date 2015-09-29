@@ -136,8 +136,8 @@
           {"type": "rectangleTool",  "label": "Occasional Ice",             "color": "#ff4400", "generates_subject_type": "sailing_condition_occasional_ice" },
           {"type": "rectangleTool",  "label": "Dodging Ice",                "color": "#0000ff", "generates_subject_type": "sailing_condition_dodging_ice" },
           {"type": "rectangleTool",  "label": "Sailing in Leads",           "color": "#00ccff", "generates_subject_type": "sailing_condition_leads" },
-          {"type": "rectangleTool",  "label": "Ramming Pack Ice",           "color": "#5ce600", "generates_subject_type": "sailing_condition_ramming" },
-          {"type": "rectangleTool",  "label": "Waiting for Opening in Ice", "color": "#0099e6", "generates_subject_type": "sailing_condition_waiting" },
+          {"type": "rectangleTool",  "label": "Forcing the Pack",           "color": "#5ce600", "generates_subject_type": "sailing_condition_ramming" },
+          {"type": "rectangleTool",  "label": "Stopped in the Ice",         "color": "#0099e6", "generates_subject_type": "sailing_condition_waiting" },
           {"type": "rectangleTool",  "label": "Beset/Trapped in Ice",       "color": "#e59900", "generates_subject_type": "sailing_condition_trapped" },
           {"type": "rectangleTool",  "label": "Nipped/Damaged",             "color": "#00cca3", "generates_subject_type": "sailing_condition_damaged" },
           {"type": "rectangleTool",  "label": "Wrecked",                    "color": "#7700b3", "generates_subject_type": "sailing_condition_wrecked" },
@@ -167,19 +167,20 @@
     },
 
     "sea_ice_concentration": {
-      "tool": "pickMany",
-      "instruction": "Select all sea ice descriptions that apply.",
+      "tool": "pickOneMarkOne",
+      "instruction": "Pick the type of description that best matches the text and draw a rectangle around it.",
       "help": {
         "title": "How much ice is near the ship?",
         "file": "sea_ice_concentration"
       },
       "tool_config": {
         "options": [
-          {"value": "ice_field",   "label": "Ice Field" },
-          {"value": "floe",        "label": "Floe" },
-          {"value": "drift_ice",   "label": "Drift Ice" },
-          {"value": "sailing_ice", "label": "Sailing Ice" },
-          {"value": "pack_ice",    "label": "Pack Ice" }
+          {"type": "rectangleTool", "generates_subject_type": "sea_ice_concentration_ice_field",   "label": "Ice Field",   "color": "#eeff00" },
+          {"type": "rectangleTool", "generates_subject_type": "sea_ice_concentration_floe",        "label": "Floe",        "color": "#ff4400" },
+          {"type": "rectangleTool", "generates_subject_type": "sea_ice_concentration_drift_ice",   "label": "Drift Ice",   "color": "#0000ff" },
+          {"type": "rectangleTool", "generates_subject_type": "sea_ice_concentration_sailing_ice", "label": "Sailing Ice", "color": "#00ccff" },
+          {"type": "rectangleTool", "generates_subject_type": "sea_ice_concentration_pack_ice",    "label": "Pack Ice",    "color": "#5ce600" },
+          {"type": "rectangleTool", "generates_subject_type": "sea_ice_concentration_other",       "label": "Other",       "color": "#0099e6" }
         ]
       },
       "next_task": "sea_ice"
@@ -187,39 +188,42 @@
 
 
     "sea_ice_thickness": {
-    "tool": "pickMany",
-    "instruction": "Select all sea ice descriptions that apply.",
+    "tool": "pickOneMarkOne",
+    "instruction": "Pick the type of description that best matches the text and draw a rectangle around it.",
     "help": {
       "title": "Words that describe ice thickness",
       "file": "sea_ice_thickness"
     },
     "tool_config": {
       "options": [
-        {"value": "bay_ice",   "label": "Bay Ice" },
-        {"value": "sludge",    "label": "Sludge" },
-        {"value": "brash",     "label": "Brash" },
-        {"value": "light_ice", "label": "Light Ice" },
-        {"value": "heavy_ice", "label": "Heavy Ice" },
-        {"value": "hummock",   "label": "Hummock" }
+        {"type": "rectangleTool", "color": "#eeff00", "generates_subject_type": "sea_ice_thickness_bay_ice",   "label": "Bay Ice" },
+        {"type": "rectangleTool", "color": "#ff4400", "generates_subject_type": "sea_ice_thickness_sludge",    "label": "Sludge" },
+        {"type": "rectangleTool", "color": "#0000ff", "generates_subject_type": "sea_ice_thickness_brash",     "label": "Brash" },
+        {"type": "rectangleTool", "color": "#5ce600", "generates_subject_type": "sea_ice_thickness_light_ice", "label": "Light Ice" },
+        {"type": "rectangleTool", "color": "#0099e6", "generates_subject_type": "sea_ice_thickness_heavy_ice", "label": "Heavy Ice" },
+        {"type": "rectangleTool", "color": "#ff40d9", "generates_subject_type": "sea_ice_thickness_hummock",   "label": "Hummock" },
+        {"type": "rectangleTool", "color": "#7700b3", "generates_subject_type": "sea_ice_thickness_other",     "label": "Other" }
+
       ]
     },
     "next_task": "sea_ice"
     },
 
     "sea_ice_special": {
-    "tool": "pickMany",
-    "instruction": "Select all sea ice descriptions that apply.",
+    "tool": "pickOneMarkOne",
+    "instruction": "Pick the type of description that best matches the text and draw a rectangle around it.",
     "help": {
       "title": "Special characteristics of sea ice types",
       "file": "sea_ice_special"
     },
     "tool_config": {
       "options": [
-        {"value": "melt_ponds",      "label": "Melt Ponds" },
-        {"value": "snow_on_sea_ice", "label": "Snow On Sea Ice" },
-        {"value": "land_ice",        "label": "Land Ice" },
-        {"value": "floeberg",        "label": "Floeberg" },
-        {"value": "iceberg",         "label": "Iceberg" }
+        {"type": "rectangleTool", "color": "#eeff00", "generates_subject_type": "sea_ice_special_melt_ponds",      "label": "Melt Ponds" },
+        {"type": "rectangleTool", "color": "#ff4400", "generates_subject_type": "sea_ice_special_snow_on_sea_ice", "label": "Snow On Sea Ice" },
+        {"type": "rectangleTool", "color": "#0000ff", "generates_subject_type": "sea_ice_special_land_ice",        "label": "Land Ice" },
+        {"type": "rectangleTool", "color": "#5ce600", "generates_subject_type": "sea_ice_special_floeberg",        "label": "Floeberg" },
+        {"type": "rectangleTool", "color": "#0099e6", "generates_subject_type": "sea_ice_special_iceberg",         "label": "Iceberg" },
+        {"type": "rectangleTool", "color": "#ff40d9", "generates_subject_type": "sea_ice_special_other",           "label": "Other" }
       ]
     },
     "next_task": "sea_ice"
