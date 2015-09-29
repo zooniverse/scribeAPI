@@ -11,7 +11,7 @@ Footer = React.createClass
 
   render: ->
     <div id="footer" className="scribe-footer">
-      <a href="http://scribe.nypl.org/" className="scribe-logo-container">
+      <a href="http://scribeproject.github.io/" className="scribe-logo-container">
         <img src={"/assets/scribe-logo-inv.png"} alt={"Scribe Logo"} ></img>
       </a>
 
