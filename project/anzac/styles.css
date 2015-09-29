@@ -4,7 +4,12 @@
 }
 
 .main-header-item.logo {
-  transform: none;
+  transform:         none;
+  -webkit-transform: none;
+  -moz-transform:    none;
+  -ms-transform:     none;
+  -o-transform:      none;
+
 }
 .main-header-item.logo img {
   width: auto;
