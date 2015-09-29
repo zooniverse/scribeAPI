@@ -1,6 +1,6 @@
 /* custom anzac styles that overwrite Scribe defaults */
 .main-header-group{
-  background: rgba(0, 0, 0, 0.18);
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .main-header-item.logo {
@@ -202,28 +202,12 @@ span.keyword {
 }
 
 #about-intro li {
-  background-image: url('../assets/bullet.svg');
-  background-repeat: no-repeat;
-  background-position: 0px 25%;
-  padding-left: 2%;
-  margin-left: 2%;
+  border-left: solid 2px #8cbc8c;
 }
 
 #about-transcription-guide li span.keyword {
   font-weight: 500;
   text-transform: capitalize;
-}
-
-
-/* Feedback Page */
-#feedback-content{
-  background-color: #efefef;
-  display: inline-block;
-  color:#2b3a42;
-  font-size: .8em;
-  line-height: 2;
-  font-weight: 300;
-  width:100%;
 }
 
 /* Field Guide */
