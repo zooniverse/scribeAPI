@@ -8,12 +8,13 @@ class GroupsController < ApplicationController
     limit         = get_int :limit, 25
     project_id    = get_objectid :project_id
 
-    @groups = Group.all
+    # @groups = Group.all
 
     # If project_id given (it always should be), filter on it:
-    if ! project_id.nil?
-      @groups = @groups.by_project project_id
-    end
+    # if ! project_id.nil?
+     #  @groups = @groups.by_project project_id
+    # end
+    @groups = Project.current.groups
 
     # Apply pagination:
     @groups = @groups.page(page).per(limit)

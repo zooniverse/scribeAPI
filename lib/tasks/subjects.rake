@@ -59,9 +59,9 @@ namespace :subjects do
     subjects_dir = Rails.root.join('project', project_key, 'subjects')
     group_file = Rails.root.join subjects_dir, "group_#{args[:group_key]}.csv"
 
-    group = Group.find_by key: args[:group_key]
-
     project = project_for_key args[:project_key]
+    group = project.groups.find_by key: args[:group_key]
+
     mark_workflow = project.workflows.find_by(name: 'mark')
 
     # Loop over contents of group file, which has one subject per row
@@ -110,11 +110,16 @@ namespace :subjects do
         # Parse order from csv if avail; otherwise default to position in csv:
         order = subj['order'].nil? ? i : subj['order'].to_i
 
-        puts "      Adding subject: #{subj['file_path']}"
+        # add zooniverse_id if exists
+        if subj.has_key?("zooniverse_id")
+          meta_data["zooniverse_id"] = subj["zooniverse_id"]
+        end
+
+        # puts "      Adding subject: #{subj['file_path']}"
         # Subject.all.where("location.standard" => "https://s3.amazonaws.com/scribe.nypl.org/emigrant-records/originals/037.jpg").count
-        
-        puts "s = SubjectSet[#{subject_set.id}].subjects.where(\"location.standard\" => \"#{subj['file_path']}\").first"
-        puts "  updating metadata: #{meta_data}"
+        # puts "s = SubjectSet[#{subject_set.id}].subjects.where(\"location.standard\" => \"#{subj['file_path']}\").first"
+        # puts "  updating metadata: #{meta_data}"
+
         subject = subject_set.subjects.where("location.standard" => subj['file_path'], type: 'root').first
         subject = subject_set.subjects.create if subject.nil?
         subject.update_attributes({
@@ -130,7 +135,7 @@ namespace :subjects do
           group: group
         })
         subject.activate!
-        puts "        - Saved subject: #{subject.location[:standard]}"
+        puts "Added subject: #{subject.location[:standard]}"
       end
 
     end

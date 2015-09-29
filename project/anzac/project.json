@@ -16,7 +16,7 @@
       "role": "developer",
       "organization": "UofM"
     },
-    { 
+    {
       "name": "Evan Roberts",
       "role": "PI",
       "organization": "UofM"
@@ -34,10 +34,13 @@
     }
   ],
   "forum": {
-    "type": "discourse",
-    "base_url": "http://scribe-forum.nypl-labs.biz"
+    "type": "talk",
+    "account_username": "asimenstad",
+    "project_name": "measuring-the-anzacs"
   },
-  "feedback_form_url": "http://goo.gl/forms/rrSAue1uuG",
+  "blog_url": "https://measuringtheanzacs.wordpress.com/",
+  "discuss_url": "https://www.zooniverse.org/projects/asimenstad/measuring-the-anzacs/talk/",
+
   "metadata_search": {
     "fields": [
       {

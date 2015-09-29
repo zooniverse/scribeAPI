@@ -172,7 +172,7 @@
         }
       },
       "instruction": "Enter the wind force/direction.",
-      "next_task": "weather_wind2"
+      "next_task": null
     },
 
 

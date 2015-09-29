@@ -16,7 +16,7 @@ CompositeTool = React.createClass
   getInitialState: ->
     annotation: @props.annotation ? {}
     viewerSize: @props.viewerSize
-    active_field_key: (key for key, value of @props.task.tool_config.options)[0]
+    active_field_key: (c.value for c in @props.task.tool_config.options)[0]
 
   getDefaultProps: ->
     annotation: {}
@@ -69,7 +69,7 @@ CompositeTool = React.createClass
 
   # User moved focus to an input:
   handleFieldFocus: (annotation_key) ->
-    console.log 'handleFieldFocus()'
+    console.log "handleFieldFocus(): #{annotation_key}"
     @setState active_field_key: annotation_key
 
   # this can go into a mixin? (common across all transcribe tools)
@@ -129,12 +129,13 @@ CompositeTool = React.createClass
       <label>{@props.task.instruction}</label>
 
       {
-        for sub_tool in @props.task.tool_config.options
+        for sub_tool, index in @props.task.tool_config.options
           ToolComponent = @props.transcribeTools[sub_tool.tool]
           annotation_key = sub_tool.value
           focus = annotation_key is @state.active_field_key
 
           <ToolComponent
+            key={index}
             task={@props.task}
             tool_config={sub_tool.tool_config}
             subject={@props.subject}

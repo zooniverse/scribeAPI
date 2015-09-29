@@ -80,9 +80,6 @@ module.exports = React.createClass # rename to Classifier
     @handleDataFromTool(annotation)
     @createAndCommitClassification(annotation)
 
-    # Initialize new classification with currently selected subToolIndex (so that right tool is selected in the right-col)
-    # @beginClassification() #AMS (8/17): this is causing issues with autosave, moving it back to commitClassification
-
 
   # Handle user selecting a pick/drawing tool:
   handleDataFromTool: (d) ->
@@ -135,7 +132,7 @@ module.exports = React.createClass # rename to Classifier
     # @props.classification.annotations.pop()
 
   completeSubjectSet: ->
-    @commitClassification()
+    @commitCurrentClassification()
     @beginClassification()
 
     # TODO: Should maybe make this workflow-configurable?
@@ -145,7 +142,7 @@ module.exports = React.createClass # rename to Classifier
         taskKey: "completion_assessment_task"
 
   completeSubjectAssessment: ->
-    @commitClassification()
+    @commitCurrentClassification()
     @beginClassification()
     @advanceToNextSubject()
 
@@ -216,13 +213,14 @@ module.exports = React.createClass # rename to Classifier
               totalSubjectPages={@state.subjects_total_pages}
               destroyCurrentClassification={@destroyCurrentClassification}
               hideOtherMarks={@state.hideOtherMarks}
+              toggleHideOtherMarks={@toggleHideOtherMarks}
               currentSubtool={currentSubtool}
               lightboxHelp={@toggleLightboxHelp}
             />
         }
       </div>
       <div className="right-column">
-        <div className="task-area">
+        <div className={"task-area " + @getActiveWorkflow().name}>
           { if @getCurrentTask()?
               <div className="task-container">
                 <TaskComponent
@@ -233,31 +231,12 @@ module.exports = React.createClass # rename to Classifier
                   onSubjectHelp={@showSubjectHelp}
                   subject={@getCurrentSubject()}
                 />
-                <div className="help-bad-subject-holder">
-                  { if @getCurrentTask().help?
-                    <HelpButton onClick={@toggleHelp} />
-                  }
-                  <HideOtherMarksButton active={@state.hideOtherMarks} onClick={@toggleHideOtherMarks} />
-                  { if onFirstAnnotation
-                    <BadSubjectButton label={"Bad " + @props.project.term('subject')} active={@state.badSubject} onClick={@toggleBadSubject} />
-                  }
-                  { if @state.badSubject
-                    <p>You&#39;ve marked this {@props.project.term('subject')} as BAD. Thanks for flagging the issue! <strong>Press DONE to continue.</strong></p>
-                  }
-                  { if @state.hideOtherMarks
-                    <p>Currently displaying only your marks. <strong>Toggle the button again to show all marks to-date.</strong></p>
-                  }
-                </div>
-
-                <div className="tutorial-holder help-button ghost" onClick={@toggleTutorial}>
-                  <HelpButton label={"Tutorial"} onClick={@toggleTutorial} />
-                </div>
 
                 <nav className="task-nav">
                   { if false
                     <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
                   }
-                  { if @getNextTask()?
+                  { if @getNextTask() and not @state.badSubject?
                       <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@advanceToNextTask}>Next</button>
                     else
                       if @state.taskKey == "completion_assessment_task"
@@ -270,39 +249,58 @@ module.exports = React.createClass # rename to Classifier
                   }
                 </nav>
 
-                {
-                  if @getActiveWorkflow()? && @getWorkflowByName('transcribe')?
-                    <p>
-                      <Link to="/transcribe/#{@getWorkflowByName('transcribe').id}/#{@getCurrentSubject().id}">Transcribe this {@props.project.term('subject')} now!</Link>
-                    </p>
-                }
+                <div className="help-bad-subject-holder">
+                  { if @getCurrentTask().help?
+                    <HelpButton onClick={@toggleHelp} label="" className="task-help-button" />
+                  }
+                  { if onFirstAnnotation
+                    <BadSubjectButton class="bad-subject-button" label={"Bad " + @props.project.term('subject')} active={@state.badSubject} onClick={@toggleBadSubject} />
+                  }
+                  { if @state.badSubject
+                    <p>You&#39;ve marked this {@props.project.term('subject')} as BAD. Thanks for flagging the issue! <strong>Press DONE to continue.</strong></p>
+                  }
+                </div>
               </div>
           }
 
-          {
-            if @getActiveWorkflow()?
-              <div className="explore">
-                <h2>Explore</h2>
+          <div className="task-secondary-area">
+
+            {
+              if @getCurrentTask()?
                 <p>
-                  <Link to="/groups/#{@getCurrentSubjectSet().group_id}">About this {@props.project.term('group')}.</Link>
+                  <a className="tutorial-link" onClick={@toggleTutorial}>View A Tutorial</a>
                 </p>
-              </div>
-          }
+            }
 
-          <div className="forum-holder">
-            <ForumSubjectWidget subject={@getCurrentSubject()} subject_set={@getCurrentSubjectSet()} project={@props.project} />
-          </div>
+            {
+              if @getCurrentTask()? && @getActiveWorkflow()? && @getWorkflowByName('transcribe')?
+                <p>
+                  <Link to="/transcribe/#{@getWorkflowByName('transcribe').id}/#{@getCurrentSubject().id}" className="transcribe-link">Transcribe this {@props.project.term('subject')} now!</Link>
+                </p>
+            }
 
-          <div className="social-media-container">
-            <a href="https://www.facebook.com/sharer.php?u=#{encodeURIComponent pageURL}" target="_blank">
-              <i className="fa fa-facebook-square"/>
-            </a>
-            <a href="https://twitter.com/home?status=#{encodeURIComponent pageURL}%0A" target="_blank">
-              <i className="fa fa-twitter-square"/>
-            </a>
-            <a href="https://plus.google.com/share?url=#{encodeURIComponent pageURL}" target="_blank">
-              <i className="fa fa-google-plus-square"/>
-            </a>
+            {
+              if @getActiveWorkflow()?
+                <p>
+                  <Link to="/groups/#{@getCurrentSubjectSet().group_id}" className="about-link">About this {@props.project.term('group')}.</Link>
+                </p>
+            }
+
+            <div className="forum-holder">
+              <ForumSubjectWidget subject={@getCurrentSubject()} subject_set={@getCurrentSubjectSet()} project={@props.project} />
+            </div>
+
+            <div className="social-media-container">
+              <a href="https://www.facebook.com/sharer.php?u=#{encodeURIComponent pageURL}" target="_blank">
+                <i className="fa fa-facebook-square"/>
+              </a>
+              <a href="https://twitter.com/home?status=#{encodeURIComponent pageURL}%0A" target="_blank">
+                <i className="fa fa-twitter-square"/>
+              </a>
+              <a href="https://plus.google.com/share?url=#{encodeURIComponent pageURL}" target="_blank">
+                <i className="fa fa-google-plus-square"/>
+              </a>
+            </div>
           </div>
 
         </div>
