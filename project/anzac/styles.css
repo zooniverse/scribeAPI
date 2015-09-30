@@ -379,14 +379,14 @@ span.keyword {
   cursor: grab;
   cursor: -webkit-grab;
   stroke-width: 1;
-  fill: rgba(0,128,0,.1);
+  fill: rgba(55,58,204,.1);
 }
 
 .tool-shape.transcribable.uncommitted{
   cursor: grab;
   cursor: -webkit-grab;
   stroke-width: 1;
-  fill: rgba(0,128,0,.1);
+  fill: rgba(55,58,204,.1);
   
 }
 
