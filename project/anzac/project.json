@@ -50,6 +50,6 @@
         "field": "name"
       }
     ],
-    "feature_on_homepage": true
+    "feature_on_homepage": false
   }
 }
