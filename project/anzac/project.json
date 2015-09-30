@@ -37,11 +37,11 @@
   ],
   "forum": {
     "type": "talk",
-    "account_username": "asimenstad",
+    "account_username": "zooniverse",
     "project_name": "measuring-the-anzacs"
   },
   "blog_url": "http://blog.measuringtheanzacs.org",
-  "discuss_url": "https://www.zooniverse.org/projects/asimenstad/measuring-the-anzacs/talk/",
+  "discuss_url": "https://www.zooniverse.org/projects/zooniverse/measuring-the-anzacs/talk",
 
   "metadata_search": {
     "fields": [
