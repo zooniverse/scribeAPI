@@ -111,6 +111,32 @@ span.keyword {
   line-height: 1.3em;
 }
 
+.home-page a.standard-button.d-left{
+  float: left;
+  text-decoration: none;
+}
+
+.home-page a.standard-button.d-right{
+  float: right;
+  text-decoration: none;
+}
+
+.home-page .home-social-media{
+  border-top: solid 1px #B1B1B1;
+  text-align: center;
+}
+
+
+.home-page .home-social-media i{
+  text-decoration: none;
+  color: #B1B1B1;
+}
+
+.home-page .home-social-media i:hover{
+  text-decoration: none;
+  color: #fff;
+}
+
 .draggable-modal{
   border-radius: 5px;
   background-color:  #ffffff;
