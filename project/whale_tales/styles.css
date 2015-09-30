@@ -198,6 +198,11 @@
   width: 70%;
 }
 
+#team-page div{
+  float: left;
+  margin-left: 60px;
+}
+
 #about-page div.selected-content, #team-page div.selected-content{
   display:inline-block;
   padding-right: 4em;
@@ -209,4 +214,26 @@
   margin-bottom: 15px;
   line-height: 25px;
   font-size: .90em
+}
+
+#team-page .team-member {
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#team-page img {
+  border: 1px solid black;
+  width: 200px;
+  height: 200px;
+  /*box-shadow: 0 0 5px 3px rgba(0,0,0,0.4);*/
+}
+
+#team-page .team-member-bio {
+  font-size: 16px;
+  text-align: justify;
+  margin-left: 20px;
+  margin-right: 20px;
 }
