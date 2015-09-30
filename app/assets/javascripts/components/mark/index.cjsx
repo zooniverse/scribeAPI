@@ -279,13 +279,6 @@ module.exports = React.createClass # rename to Classifier
                 </p>
             }
 
-            {
-              if @getActiveWorkflow()?
-                <p>
-                  <Link to="/groups/#{@getCurrentSubjectSet().group_id}" className="about-link">About this {@props.project.term('group')}.</Link>
-                </p>
-            }
-
             <div className="forum-holder">
               <ForumSubjectWidget subject={@getCurrentSubject()} subject_set={@getCurrentSubjectSet()} project={@props.project} />
             </div>
