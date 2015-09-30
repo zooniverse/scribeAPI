@@ -32,8 +32,7 @@ HomePage = React.createClass
 
         <div className="page-content">
           <h1 className="title">{@state.project?.title}</h1>
-          <div dangerouslySetInnerHTML={{ __html: marked(@state.project.home_page_content) }} />
-
+          <div dangerouslySetInnerHTML={{ __html: marked(@state.project.home_page_content) }}></div>
           {
             # Is there a metadata search configured, and should it be on the homepage?
             # TODO If mult metadata_search fields configured, maybe offer a <select> to choose between them
@@ -44,7 +43,6 @@ HomePage = React.createClass
                   <NameSearch field={field.field} />
                 </div>
           }
-
           <div className='group-area'>
             <GroupBrowser project={@props.project} />
           </div>
