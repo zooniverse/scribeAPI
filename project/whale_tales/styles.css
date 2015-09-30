@@ -21,7 +21,7 @@
 .home-page .title-container {
   position: absolute;
   left: 60px;
-  height: 600px;
+  height: 700px;
   width: 860px;
   background-image: -webkit-linear-gradient(top, #000 50%, rgba(0,0,0,0.2) 100%);
   background-image: -moz-linear-gradient(top, #000 50%, rgba(0,0,0,0.2) 100%);
@@ -65,6 +65,7 @@
   text-align: left;
   margin-left: 52px;
   margin-right: 52px;
+  margin-top: -40px;
 }
 
 .home-page .title-container .project-summary {
@@ -81,6 +82,7 @@
   text-decoration: none;
   font-size: 22px;
   margin-left: 50px;
+  z-index: 1;
 }
 
 .home-page .title-container .button-container {
@@ -99,22 +101,35 @@
   text-align: left;
 }
 
-.readymade-site-background{
-  top: -370px;
+.group-area {
+  position: absolute;
+  margin-top: 30px;
+  top: 800px;
 }
 
- /* A hack to replace the hard-coded group header */
-.groups-header span.arrow {
+.group-browser {
+  margin-left: 30px;
+  margin-right: 30px;
+}
+
+/*.group-browser {
+  margin-left: 20px;
+}*/
+
+/* A hack to replace the hard-coded group header */
+.groups-header span {
   display: none;
 }
 
 .groups-header:after {
   text-transform: none;
-  content: 'Select a Voyage'
+  margin-left: 10px;
+  content: 'Select a Voyage';
 }
 
-.home-page .page-content {
+.home-page .page-content > div {
   margin: 0px;
+  /*padding: 20px;*/
 }
 
 .custom-page > div, .group-page {
