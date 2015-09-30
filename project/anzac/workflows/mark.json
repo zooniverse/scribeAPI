@@ -212,8 +212,8 @@
       "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Unit", "color": "#373ACC", "generates_subject_type": "hs_transcribe_unit" },
-          {"type": "rectangleTool", "label": "Rank", "color": "#373ACC", "generates_subject_type": "hs_transcribe_rank" },
+          {"type": "rectangleTool", "label": "Unit", "color": "#373ACC", "generates_subject_type": "hs_transcribe_unit", "help":{"title":"Unit", "body":"Often abbreviated. See list of abbreviations <a style='text-decoration:none' target='_blank' href='http://www.measuringtheanzacs.org/#/field_guide#unit-abbreviations'>here</a>."} },
+          {"type": "rectangleTool", "label": "Rank", "color": "#373ACC", "generates_subject_type": "hs_transcribe_rank", "help":{"title":"Rank", "body":"Often abbreviated. See list of abbreviations <a style='text-decoration:none' target='_blank' href='http://www.measuringtheanzacs.org/#/field_guide#rank-abbreviations'>here</a>."} },
           {"type": "rectangleTool", "label": "Surname", "color": "#373ACC", "generates_subject_type": "hs_transcribe_surname" },
           {"type": "rectangleTool", "label": "Christian name", "color": "#373ACC", "generates_subject_type": "hs_transcribe_christian_name" },
           {"type": "rectangleTool", "label": "No.", "color": "#373ACC", "generates_subject_type": "hs_transcribe_no" },
