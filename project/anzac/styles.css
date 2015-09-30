@@ -28,7 +28,7 @@ span.keyword {
   letter-spacing: 5px;
   color:  #ffffff;
   margin-bottom: 0%;
-  text-transform: capitalize; 
+  text-transform: capitalize;
   font-size: 42px;
   padding-bottom: 0;
   background-color: transparent;
@@ -41,7 +41,7 @@ span.keyword {
   letter-spacing: 2px;
   font-size: 30px;
   text-transform: uppercase;
-  
+
 }
 
 .page-content h3{
@@ -307,7 +307,7 @@ span.keyword {
   outline: none;
 }
 
-#field-guide .ui-state-default.ui-state-hover{  
+#field-guide .ui-state-default.ui-state-hover{
   color: #2b3a42;
   background-color: rgba(144, 141, 141, 0.29);
   border-color: #8cbc8c;
@@ -317,7 +317,7 @@ span.keyword {
 
 #field-guide #accordion img{
   width 20%
-  padding-left 5%  
+  padding-left 5%
 }
 
 #field-guide li {
@@ -362,7 +362,7 @@ span.keyword {
   cursor: -webkit-grab;
   stroke-width: 1;
   fill: rgba(0,128,0,.1);
-  
+
 }
 
 
@@ -372,4 +372,79 @@ span.keyword {
   cursor: default;
 }
 
+#about-page {
+  background-color: #efefef;
+  display: inline-block;
+  color:#2b3a42;
+  -font-size: .8em;
+  line-height: 2;
+  font-weight: 300;
+  width:100%;
+}
 
+#about-page nav {
+  background-color: transparent;
+  position: fixed;
+  left: 40px;
+  height: 100%;
+  width: 20%;
+  padding-top: 2em;
+  font-family: OpenSans;
+  font-size: 20px;/* Approximation due to font substitution */
+  font-weight: 400;
+  line-height: 22px;/* Approximation due to font substitution */
+  text-align: left;
+  padding-bottom: 5%;
+}
+
+
+#about-page ul{
+  padding-left: 1%;
+}
+
+#about-page nav a {
+  color: #4d4d4d;
+  text-decoration: none;
+  padding-left: 1em;
+  font-size: 15px;
+}
+
+#about-page a.selected-content {
+  border-left: solid 2px #8cbc8c;
+  font-weight: 700;
+}
+
+
+#about-page div{
+  display: none;
+  background-color:inherit;
+  padding: 2em;
+  float: right;
+  width: 70%;
+}
+
+#about-page div.selected-content{
+  display:inline-block;
+  padding-right: 4em;
+}
+
+#about-page li {
+  list-style-type: none;
+  padding-left: 1em;
+  margin-bottom: 15px;
+  line-height: 25px;
+  font-size: .90em
+}
+
+#about-intro li {
+  background-image: url('../assets/bullet.svg');
+  background-repeat: no-repeat;
+  background-position: 0px 25%;
+  padding-left: 2%;
+  margin-left: 2%;
+}
+
+#about-transcription-guide li span.keyword {
+  font-weight: 500;
+  text-transform: capitalize;
+}

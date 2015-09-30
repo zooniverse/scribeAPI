@@ -133,10 +133,80 @@
 }
 
 .custom-page > div, .group-page {
-  background-color: #3f5765;
+  background-color: transparent;
   color: #FFF;
 }
 
 .page-content > h1 {
-  background-color: #2b3a42;
+  font-family: 'Open Sans';
+  background-color: transparent;
+  margin-left: 35px;
+}
+
+.selected-content > p {
+  font-size: 16px;
+  text-align: justify;
+}
+
+#about-page, #team-page {
+  background-color: #efefef;
+  display: inline-block;
+  color:#2b3a42;
+  -font-size: .8em;
+  line-height: 2;
+  font-weight: 300;
+  width:100%;
+}
+
+#about-page nav, #team-page nav {
+  background-color: transparent;
+  position: fixed;
+  left: 40px;
+  height: 100%;
+  width: 20%;
+  padding-top: 2em;
+  font-family: 'Open Sans';
+  font-size: 20px;/* Approximation due to font substitution */
+  font-weight: 400;
+  line-height: 22px;/* Approximation due to font substitution */
+  text-align: left;
+  padding-bottom: 5%;
+}
+
+#about-page ul, #team-page ul{
+  padding-left: 1%;
+}
+
+#about-page nav a, #team-page nav a {
+  color: #4d4d4d;
+  text-decoration: none;
+  padding-left: 1em;
+  font-size: 15px;
+}
+
+#about-page a.selected-content, #team-page a.selected-content {
+  border-left: solid 2px #8cbc8c;
+  font-weight: 700;
+}
+
+
+#about-page div, #team-page div{
+  display: none;
+  background-color:inherit;
+  padding: 2em;
+  float: right;
+  width: 70%;
+}
+
+#about-page div.selected-content, #team-page div.selected-content{
+  display:inline-block;
+  padding-right: 4em;
+}
+
+#about-page li, #team-page li {
+  list-style-type: none;
+  padding-left: 1em;
+  margin-bottom: 15px;
+  line-height: 25px;
+  font-size: .90em
 }
