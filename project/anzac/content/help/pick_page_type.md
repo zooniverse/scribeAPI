@@ -1,4 +1,4 @@
-<p>Click below to access examples and descriptions of the page types. Use the Lightbox to find specific pages within a personnel record. If a subject’s condition makes it impossible to identify (e.g. blurry image), press the Bad Subject button.</p>
+<p>Click below to access examples and descriptions of the page types. Use the Lightbox to find specific pages within a personnel record. If a page’s condition makes it impossible to identify (e.g. blurry image), press the Bad Page button.</p>
 <div id="accordion-help-modal">
   <h3>History Sheet</h3>
   <div class="modal-field-guide" >

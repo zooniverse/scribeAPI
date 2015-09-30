@@ -64,9 +64,9 @@ Login = React.createClass
 
 
   renderLoggedInAsGuest: ->
-    <span className={"login-container"} >
+    <span >
       <span className="label guest-hello">Hello Guest!</span>
-      { @renderLoginOptions('Log in to save your work:') }
+      { @renderLoginOptions('Log in to save your work:',"login-container") }
     </span>
 
   renderLoggedIn:->
@@ -78,12 +78,12 @@ Login = React.createClass
     </span>
 
 
-  renderLoginOptions: (label) ->
+  renderLoginOptions: (label,classNames) ->
     links = @state.providers.map (link) ->
       icon_id = if link.id == 'zooniverse' then 'dot-circle-o' else link.id
       <a key="login-link-#{link.id}" href={link.path} title="Log in using #{link.name}"><i className="fa fa-#{icon_id} fa-2" /></a>
 
-    <span className={"login-container"}>
+    <span className={classNames}>
       <span className="label">{ label || "Log In:" }</span>
       <div className='options'>
         { links }

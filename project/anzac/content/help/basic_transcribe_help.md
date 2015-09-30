@@ -1,5 +1,5 @@
-Please transcribe the subject presented as best you can. 
+Please transcribe the highlighted region as best you can. 
 
-If a subject is mislabeled or misplaced, press the **Bad Subject** button.
+If the highlighted region is mislabeled or misplaced, press the **Bad mark** button.
 
-If you cannot read the subject, press the **Illegible** button.
+If you cannot read the text in the highlighted region, press the **Illegible** button.
