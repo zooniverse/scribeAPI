@@ -29,6 +29,7 @@ module.exports = React.createClass
       x: 0
       y: 0
     scale: {horizontal: 1, vertical: 1}
+    sameSessionTranscriptions: []
 
   getDefaultProps: ->
     tool: null # Optional tool to place alongside subject (e.g. transcription tool placed alongside mark)
@@ -37,10 +38,12 @@ module.exports = React.createClass
 
   componentWillReceiveProps: (new_props) ->
     @setUncommittedMark null if new_props.task?.tool != 'pickOneMarkOne'
+
     if Object.keys(@props.annotation).length == 0 #prevents back-to-back mark tasks, displaying a duplicate mark from previous tasks.
       @setUncommittedMark null
 
-    @setState marks: @getMarksFromProps(new_props)
+    @setState 
+      marks: @getMarksFromProps(new_props)
 
     if new_props.subject.id == @props.subject.id
       @scrollToSubject()
@@ -64,7 +67,6 @@ module.exports = React.createClass
         @updateDimensions()
         @scrollToSubject()
 
-    
 
   componentWillUnmount: ->
     window.removeEventListener "resize", @updateDimensions

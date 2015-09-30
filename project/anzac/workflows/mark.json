@@ -85,8 +85,8 @@
         "tools": [
           {"type": "rectangleTool", "label": "Oath Year", "color": "green", "generates_subject_type": "att_transcribe_oath_year", "help":{"title":"Oath Year", "body":"Year in numbers."} },
           {"type": "rectangleTool", "label": "Age", "color": "green", "generates_subject_type": "att_transcribe_age", "help":{"title":"Age", "body":"Most aged 17-40. Please double check if older or younger."} },
-          {"type": "rectangleTool", "label": "Height", "color": "green", "generates_subject_type": "att_transcribe_height", "help":{"title":"Height", "body":"Most entries are between 5ft and 6ft. Please double check if other values."} },
-          {"type": "rectangleTool", "label": "Weight", "color": "green", "generates_subject_type": "att_transcribe_weight", "help":{"title":"Weight", "body":"Stone is 14 pounds. Include abbreviation (e.g. 'st')."}  },
+          {"type": "rectangleTool", "label": "Height", "color": "green", "generates_subject_type": "att_transcribe_height", "help":{"title":"Height", "body":"Capture both the feet and inch values with the same rectangle. Most entries are between 5ft and 6ft. Please double check if other values."} },
+          {"type": "rectangleTool", "label": "Weight", "color": "green", "generates_subject_type": "att_transcribe_weight", "help":{"title":"Weight", "body":"Sometimes weight will be recorded in stones and other times weight will be recorded in pounds. If the weight is recorded in stones, please include the abbreviation (i.e., ‘st’)."}  },
           {"type": "rectangleTool", "label": "Chest Measurement", "color": "green", "generates_subject_type": "att_transcribe_chest_measurement", "help":{"title":"Chest Measurement", "body":"Capture both min and max values with the same rectangle. Values specified in inches. Typically in the range 25-40."} },
           {"type": "rectangleTool", "label": "Complexion", "color": "green", "generates_subject_type": "att_transcribe_complexion" },
           {"type": "rectangleTool", "label": "Eye Color", "color": "green", "generates_subject_type": "att_transcribe_eye_color" },
@@ -127,7 +127,7 @@
           {"type": "rectangleTool", "label": "Varicose Veins", "color": "green", "generates_subject_type": "att_transcribe_varicose_veins" },
           {"type": "rectangleTool", "label": "Haemorrhoids", "color": "green", "generates_subject_type": "att_transcribe_haemorrhoids" },
           {"type": "rectangleTool", "label": "Skin", "color": "green", "generates_subject_type": "att_transcribe_skin" },
-          {"type": "rectangleTool", "label": "Mark", "color": "green", "generates_subject_type": "att_transcribe_mark" }
+          {"type": "rectangleTool", "label": "Mark of Vaccination", "color": "green", "generates_subject_type": "att_transcribe_mark" }
         ]
       },
       "next_task": "att_medical_form_general_recuitment"
@@ -183,24 +183,28 @@
         ]
       }
     },
-    "hs_sticky_sheet":{
-      "tool":"pickOne",
-      "instruction":"Are there any sticky notes?",
-      "next_task": null,
-      "tool_config": {
-        "options":[
-          {
-            "value":"sticky_note_present",
-            "label":"Yes",
-            "next_task":"hs_task"
-          },
-          {
-            "value":"no_sticky_note",
-            "label":"No",
-            "next_task":"hs_task"
-          }
-        ]
-      }
+    "hs_sticky_sheet": {
+        "tool": "pickOne",
+        "instruction": "Are there any sticky notes?",
+        "help":{
+          "title":"Sticky Notes",
+          "file":"help_sticky_note"
+        },
+        "next_task": null,
+        "tool_config": {
+            "options": [
+                {
+                    "value": "sticky_note_present",
+                    "label": "Yes",
+                    "next_task": "hs_task"
+                },
+                {
+                    "value": "no_sticky_note",
+                    "label": "No",
+                    "next_task": "hs_task"
+                }
+            ]
+        }
     },
     "hs_task":{
       "generates_subjects": true,
@@ -275,13 +279,17 @@
         ]
       },
       "help": {
-        "file": "hs_mark_help"
+        "file": "hs_help_last_fields"
       }
     },
     "other_data_field":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
       "instruction":"Draw a rectangle around any extra information that should be marked.",
+      "help":{
+        "title":"Unknown Data and Marginalia",
+        "file":"help_mark_other"
+      },
       "next_task":null,
       "tool_config":{
         "tools": [
