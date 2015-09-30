@@ -7,7 +7,7 @@ class SubjectSetsController < ApplicationController
     random                      = get_bool :random, false
     subject_set_id              = get_objectid :subject_set_id
 
-    subject_sets_limit          = get_int :limit, 10
+    subject_sets_limit          = get_int :limit, 2
     subject_sets_page           = get_int :page, 1
 
     subjects_limit              = get_int :subjects_limit, 100
