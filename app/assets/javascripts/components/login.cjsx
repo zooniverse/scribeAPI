@@ -40,7 +40,7 @@ Login = React.createClass
     <div className='login'>
       {@renderLoggedIn() if @state.user && ! @state.user.guest }
       {@renderLoggedInAsGuest() if @state.user && @state.user.guest }
-      {@renderLoginOptions() if !@state.user }
+      {@renderLoginOptions("Log In:","login-container") if !@state.user }
       {if @state.loading
         <span className={"login-container"} >Loading ...</span>
       }
@@ -65,7 +65,6 @@ Login = React.createClass
 
   renderLoggedInAsGuest: ->
     <span >
-      <span className="label guest-hello">Hello Guest!</span>
       { @renderLoginOptions('Log in to save your work:',"login-container") }
     </span>
 
