@@ -43,7 +43,7 @@ class Workflow
 
   def next_workflow
     if ! generates_subjects_for.nil?
-      Workflow.find_by(name: generates_subjects_for)
+      project.workflows.find_by(name: generates_subjects_for)
     end
   end
 

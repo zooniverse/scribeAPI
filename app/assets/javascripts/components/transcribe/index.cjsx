@@ -153,6 +153,7 @@ module.exports = React.createClass # rename to Classifier
                 returnToMarking={@returnToMarking}
                 transcribeMode={transcribeMode}
                 isLastSubject={isLastSubject}
+                project={@props.project}
               />
 
             </SubjectViewer>

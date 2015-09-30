@@ -18,6 +18,8 @@ module.exports = React.createClass
   mixins: [ZoomPanListenerMethods]
 
   getInitialState: ->
+    console.log 'SUBJECT SET: ', @props.subject_set
+
     subject_set: @props.subject_set
     tool: @props.tool
     toolbar_expanded: false
@@ -33,8 +35,8 @@ module.exports = React.createClass
     return if new_index < 0 || new_index >= @props.subject_set.subjects.length
 
     # Let's just deal in indexes rather than storing both objects and indexes in state, lest they drift out of sync
-    # @setState subject_index: new_index, () =>
-    @props.onViewSubject? new_index # @props.subject_index
+    @setState subject_index: new_index, () =>
+      @props.onViewSubject? new_index
 
   specificSelection: (blah, new_index) ->
     # this prevents navigating away from the subject during a workflow --AMS
@@ -74,25 +76,23 @@ module.exports = React.createClass
         toggleHideOtherMarks={@props.toggleHideOtherMarks}
       />
 
-      { for subject, index in @props.subject_set.subjects
-        <SubjectViewer
-          key={index}
-          subject={subject}
-          workflow={@props.workflow}
-          task={@props.task}
-          subjectCurrentPage={@props.subjectCurrentPage}
-          annotation={@props.annotation}
-          active={index == @props.subject_index}
-          onComplete={@props.onComplete}
-          onChange={@props.onChange}
-          onDestroy={@props.onDestroy}
-          subToolIndex={@props.subToolIndex}
-          destroyCurrentClassification={@props.destroyCurrentClassification}
-          hideOtherMarks={@props.hideOtherMarks}
-          currentSubtool={@props.currentSubtool}
-          viewBox={@state.zoomPanViewBox}
-        />
-      }
+      <SubjectViewer
+        subject={@props.subject_set.subjects[@props.subject_index]}
+        workflow={@props.workflow}
+        task={@props.task}
+        subjectCurrentPage={@props.subjectCurrentPage}
+        annotation={@props.annotation}
+        active={true}
+        onComplete={@props.onComplete}
+        onChange={@props.onChange}
+        onDestroy={@props.onDestroy}
+        subToolIndex={@props.subToolIndex}
+        destroyCurrentClassification={@props.destroyCurrentClassification}
+        hideOtherMarks={@props.hideOtherMarks}
+        currentSubtool={@props.currentSubtool}
+        viewBox={@state.zoomPanViewBox}
+      />
+
     </div>
 
 window.React = React

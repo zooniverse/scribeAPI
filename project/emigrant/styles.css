@@ -305,6 +305,12 @@ div.home-page {
 .help-modal {
   box-shadow: 0 0 0 2000px rgba(0,0,0,0.8);
 }
+.modal-body img {
+  width: 100%;
+}
+.modal-body hr {
+  border-color: #ccc;
+}
 
 /* Update cursors */
 .subject-viewer .subject-container .marking-surface .subject-viewer-svg {

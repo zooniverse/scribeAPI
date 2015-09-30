@@ -17,8 +17,7 @@
       "instruction": "Enter the record date",
       "examples": ["1867 May 11", "1867 July 30", "1875 December 31"],
       "help": {
-        "title": "Record Date",
-        "body": "The record date can generally be found in the upper left hand corner of the record."
+        "file": "t_record_date"
       },
       "generates_subject_type": "em_transcribed_date"
     },
@@ -29,8 +28,7 @@
       "instruction": "Enter the record number",
       "examples": ["287", "289"],
       "help": {
-        "title": "Record Number",
-        "body": "The record number can generally be found in the upper right hand corner of the record."
+        "file": "t_record_date"
       },
       "generates_subject_type": "em_transcribed_record_number"
     },
@@ -44,8 +42,7 @@
       "examples": ["John O'Meallia", "Trustees of St. Patrick's Cathedral"],
       "generates_subject_type": "em_transcribed_mortgager",
       "help": {
-        "title": "Mortgager Name",
-        "body": "The mortgager is often found at the top of the list of hand-entered data. The mortgager tends to be a single person or organization's name, e.g. \"John O'Meallia\" or \"Trustees of St. Patrick's Cathedral.\" If multiple names are given, enter them all separated by semi-colons. (E.g. \"Mary Smith;John O'Meallia\")"
+        "file": "t_record_mortgager"
       }
     },
 
@@ -56,8 +53,7 @@
       "examples": ["39 Mott St", "S. W. corner of 7th Avenue & 25th St. No 226 7th Avenue", "Mulberry, Mott and Prince St"],
       "generates_subject_type": "em_transcribed_address",
       "help": {
-        "title": "Street Address",
-        "body": "Enter the building address as appears e.g. \"39 Mott St\", \"S. W. corner of 7th Avenue & 25th St. No 226 7th Avenue\", \"Mulberry, Mott and Prince St\""
+        "file": "t_record_street_address"
       }
     },
 
@@ -68,8 +64,29 @@
       "examples": ["$4,500", "$50,000 and $30,000"],
       "generates_subject_type": "em_transcribed_amount_loaned",
       "help": {
-        "title": "Amount Loaned",
-        "body": "Enter the dollar amount loaned."
+        "file": "t_record_amount_loaned"
+      }
+    },
+
+    "em_record_stories": {
+      "tool": "numberTool",
+      "tool_config": {},
+      "instruction": "Enter the Number of Stories",
+      "examples": ["2", "5"],
+      "generates_subject_type": "em_transcribed_record_stories",
+      "help": {
+        "file": "t_record_stories"
+      }
+    },
+
+    "em_record_material": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Enter the building material",
+      "examples": ["brick", "frame", "Brick & stone", "bk and frame"],
+      "generates_subject_type": "em_transcribed_record_material",
+      "help": {
+        "file": "t_record_material"
       }
     },
 
@@ -83,47 +100,60 @@
             "tool_config": {"suggest": "common"},
             "label": "Date"
           },
+          "em_valuation_ground": {
+            "tool": "textTool",
+            "examples": ["$200,000"],
+            "tool_config": {},
+            "label": "Ground Value"
+          },
+          "em_valuation_building": {
+            "tool": "textTool",
+            "examples": ["$200,000"],
+            "tool_config": {},
+            "label": "Building Value"
+          },
           "em_valuation_amount": {
             "tool": "textTool",
             "examples": ["$200,000"],
             "tool_config": {},
-            "label": "Amount"
+            "label": "Total Valuation"
           }
         }
       },
 
       "help": {
-        "title": "Valuatation",
-        "body": "Sometimes records include individual, dated valuations of the property and/or building. If any exist in this record, note the most recent."
+        "file": "t_record_valuation"
       },
       "generates_subject_type": "em_transcribed_valuation",
-      "instruction": "Enter as they appear, the date and amount of the last property valuation that was recorded, if any",
+      "instruction": "Enter as they appear, the date and amounts of the last property valuation that was recorded.",
       "next_task": null
     },
 
-    "em_record_dimensions": {
-      "tool": "textTool",
-      "tool_config": {},
-      "instruction": "Enter the building dimensions",
-      "examples": ["100 x 100"],
-      "help": {
-        "title": "Record Dimensions",
-        "body": "Enter the ground dimensions of the building as they appear. These are often found below the street address in the hand-entered data in the bottom half of the records. Otherwise, they may be written in the drawing of the building footprint in the top half of the records."
-      },
-      "generates_subject_type": "em_transcribed_dimensions"
-    },
+      "em_record_survey": {
+          "tool": "compositeTool",
+          "tool_config": {
+            "tools": {
+              "em_survey_dimensions": {
+                "tool": "textTool",
+                "examples": ["100 x 100"],
+                "tool_config": {"suggest": "common"},
+                "label": "Record Dimensions"
+              },
+              "em_survey_description": {
+                "tool": "textTool",
+                "examples": ["68 x 100 Frame Edifice with Slate roof and brick basement."],
+                "tool_config": {},
+                "label": "Building Description"
+              }
+            }
+          },
 
-    "em_record_description": {
-      "tool": "textTool",
-      "tool_config": {},
-      "instruction": "Enter the building description",
-      "examples": ["68 x 100 Frame Edifice with Slate roof and brick basement."],
-      "help": {
-        "title": "Building Description",
-        "body": "The buiding description is often found in the middle of the list of hand-entered data in the bottom half of the records."
-      },
-      "generates_subject_type": "em_transcribed_description"
-    }
-
+          "help": {
+            "file": "t_survey"
+          },
+          "generates_subject_type": "em_transcribed_survey",
+          "instruction": "Enter as they appear, the building dimensions and description that was recorded.",
+          "next_task": null
+        }
   }
 }

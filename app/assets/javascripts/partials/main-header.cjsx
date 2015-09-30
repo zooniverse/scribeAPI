@@ -54,6 +54,14 @@ module.exports = React.createClass
           if @props.feedbackFormUrl? and showFeedbackTab
             <a className="main-header-item" href={@props.feedbackFormUrl}>Feedback</a>
         }
+        { # include blog tab if defined
+          if @props.blogUrl?
+            <a target={"_blank"} className="main-header-item" href={@props.blogUrl}>Blog</a>
+        }
+        { # include blog tab if defined
+          if @props.discussUrl?
+            <a target={"_blank"} className="main-header-item" href={@props.discussUrl}>Discuss</a>
+        }
         <Login />
 
       </nav>

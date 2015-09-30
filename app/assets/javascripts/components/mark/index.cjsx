@@ -129,7 +129,7 @@ module.exports = React.createClass # rename to Classifier
     # @props.classification.annotations.pop()
 
   completeSubjectSet: ->
-    @commitClassification()
+    @commitCurrentClassification()
     @beginClassification()
 
     # TODO: Should maybe make this workflow-configurable?
@@ -139,7 +139,7 @@ module.exports = React.createClass # rename to Classifier
         taskKey: "completion_assessment_task"
 
   completeSubjectAssessment: ->
-    @commitClassification()
+    @commitCurrentClassification()
     @beginClassification()
     @advanceToNextSubject()
 
@@ -231,7 +231,7 @@ module.exports = React.createClass # rename to Classifier
                   { if false
                     <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
                   }
-                  { if @getNextTask()?
+                  { if @getNextTask() and not @state.badSubject?
                       <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@advanceToNextTask}>Next</button>
                     else
                       if @state.taskKey == "completion_assessment_task"

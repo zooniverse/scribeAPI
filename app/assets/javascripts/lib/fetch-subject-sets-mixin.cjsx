@@ -13,8 +13,8 @@ module.exports =
       # If a specific subject id indicated..
       if @props.query.selected_subject_id?
         # Get the index of the specified subject in the (presumably first & only) subject set:
-        state.subject_index = (ind for subj,ind in subject_sets[0].subjects when subj.id == @props.query.selected_subject_id )[0]
-        
+        state.subject_index = (ind for subj,ind in subject_sets[0].subjects when subj.id == @props.query.selected_subject_id )[0] ? 0
+
       # If taskKey specified, now's the time to set that too:
       state.taskKey = @props.query.mark_task_key if @props.query.mark_task_key
 
@@ -61,7 +61,7 @@ module.exports =
 
     request.then (set) =>
       @setState subjectSets: [set], () =>
-        @fetchSubjectsForCurrentSubjectSet 1, 18, callback
+        @fetchSubjectsForCurrentSubjectSet 1, null, callback
 
   # This is the main fetch method for subject sets. (fetches via SubjectSetsController#index)
   fetchSubjectSets: (params, callback) ->
@@ -71,19 +71,22 @@ module.exports =
     # Apply defaults to unset params:
     _params = $.extend({
       limit: 10
+      workflow_id: @getActiveWorkflow().id
       random: true
     }, params)
     # Strip null params:
     params = {}; params[k] = v for k,v of _params when v?
 
     API.type('subject_sets').get(params).then (sets) =>
-      @setState subjectSets: sets, () =>
-        @fetchSubjectsForCurrentSubjectSet()
 
-  # PB: Setting default limit to 18 because it's a multiple of 3 mandated by thumb browser
-  fetchSubjectsForCurrentSubjectSet: (page=1, limit=3, callback) ->
+      @setState subjectSets: sets, () =>
+        @fetchSubjectsForCurrentSubjectSet 1, null, callback
+
+  # PB: Setting default limit to 120 because it's a multiple of 3 mandated by thumb browser
+  fetchSubjectsForCurrentSubjectSet: (page=1, limit=120, callback) ->
     ind = @state.subject_set_index
     sets = @state.subjectSets
+
 
     # page & limit not passed when called this way for some reason, so we have to manually construct query:
     # sets[ind].get('subjects', {page: page, limit: limit}).then (subjs) =>
@@ -92,7 +95,8 @@ module.exports =
       page: page
       limit: limit
       type: 'root'
-    API.type('subjects').get(params).then (subjs) =>
+
+    process_subjects = (subjs) =>
       sets[ind].subjects = subjs
 
       @setState
@@ -101,3 +105,13 @@ module.exports =
         subjects_total_pages:       subjs[0].getMeta('total_pages'), () =>
           callback? sets
 
+    # Since we're fetching by query, json-api-client won't cache it, so let's cache it lest we re-fetch subjects everytime something happens:
+    @_subject_queries ||= {}
+    if (subjects = @_subject_queries[params])?
+      process_subjects subjects
+
+    else
+      API.type('subjects').get(params).then (subjects) =>
+        @_subject_queries[params] = subjects
+        process_subjects subjects
+    
