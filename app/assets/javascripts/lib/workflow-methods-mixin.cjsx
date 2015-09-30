@@ -139,7 +139,7 @@ module.exports =
 
   # Add newly acquired child_subject to child_subjects array of relevant subject (i.e. after submitting a subject-generating classification)
   appendChildSubject: (subject_id, child_subject) ->
-    console.log 'appendChildSubject()'
+    # console.log 'appendChildSubject()'
     if (s = @getSubjectById(subject_id))
       s.child_subjects.push $.extend({userCreated: true}, child_subject)
 

@@ -18,7 +18,7 @@ module.exports = React.createClass
   mixins: [ZoomPanListenerMethods]
 
   getInitialState: ->
-    console.log 'SUBJECT SET: ', @props.subject_set
+    # console.log 'SUBJECT SET: ', @props.subject_set
 
     subject_set: @props.subject_set
     tool: @props.tool
