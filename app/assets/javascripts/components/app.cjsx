@@ -1,5 +1,6 @@
 React = require("react")
 MainHeader                    = require '../partials/main-header'
+Footer                    = require '../partials/footer'
 API                           = require '../lib/api'
 AppRouter                     = require './app-router'
 Project                       = require 'models/project.coffee'
@@ -46,6 +47,7 @@ App = React.createClass
         <div className="main-content">
           <RouteHandler hash={window.location.hash} project={@state.project} setTutorialComplete={@setTutorialComplete} />
         </div>
+        <Footer privacyPolicy={ @state.project.privacy_policy }/>
       </div>
     </div>
 

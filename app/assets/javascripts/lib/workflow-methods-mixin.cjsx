@@ -271,7 +271,7 @@ module.exports =
     tool: "pickOne"
     help: {
       title: "Completion Assessment",
-      body: "You do not have to complete every page, but it helps us to know, before you move on to another task, if there is any work left to do. Thanks again!"
+      body: "<p>Are all data types present on the page marked with a rectangle?</p><p>You do not have to mark every field on the page, however, it helps us to know if you think a page is fully marked. Thank you!</p>"
     },
     tool_config: {
       "options": [
