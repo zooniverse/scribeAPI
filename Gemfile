@@ -30,6 +30,8 @@ gem 'rack-streaming-proxy', '~> 2.0.1'
 gem 'kaminari'
 gem 'fastimage', '1.7.0'
 
+gem 'newrelic_rpm'
+
 group :development do
   gem 'dotenv-rails'
 end
