@@ -97,7 +97,6 @@ TextTool = React.createClass
 
     val = @state.annotation?.value ? ''
 
-    console.log '@PSOPS: ', @props
 
     if @props.subject.type is 'item_location'
       toolType = 'testComponent'

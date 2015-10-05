@@ -48,7 +48,7 @@ module.exports =
     markStatus = @state.markStatus
     return if markStatus is 'transcribe-finished'
 
-    console.log 'CURRENT MARK STATE: ', markStatus
+    # console.log 'CURRENT MARK STATE: ', markStatus
 
     # advance to next mark state
     key = MARK_STATES.indexOf(markStatus) + 1

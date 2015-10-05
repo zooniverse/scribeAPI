@@ -128,7 +128,7 @@ module.exports = React.createClass # rename to Classifier
 
   destroyCurrentAnnotation: ->
     # TODO: implement mechanism for going backwards to previous classification, potentially deleting later classifications from stack:
-    console.log "WARN: destroyCurrentAnnotation not implemented"
+    # console.log "WARN: destroyCurrentAnnotation not implemented"
     # @props.classification.annotations.pop()
 
   completeSubjectSet: ->
@@ -276,13 +276,6 @@ module.exports = React.createClass # rename to Classifier
               if @getCurrentTask()? && @getActiveWorkflow()? && @getWorkflowByName('transcribe')?
                 <p>
                   <Link to="/transcribe/#{@getWorkflowByName('transcribe').id}/#{@getCurrentSubject().id}" className="transcribe-link">Transcribe this {@props.project.term('subject')} now!</Link>
-                </p>
-            }
-
-            {
-              if @getActiveWorkflow()?
-                <p>
-                  <Link to="/groups/#{@getCurrentSubjectSet().group_id}" className="about-link">About this {@props.project.term('group')}.</Link>
                 </p>
             }
 

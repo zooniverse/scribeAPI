@@ -68,7 +68,7 @@ module.exports =
           />
         </g>
       when 'textRowTool'
-        console.log 'TEXT ROW TOOL!'
+        # console.log 'TEXT ROW TOOL!'
         <g>
           <rect
             className   = "mark-rectangle"

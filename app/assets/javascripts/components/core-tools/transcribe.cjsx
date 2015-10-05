@@ -83,7 +83,7 @@ module.exports = React.createClass
     # Summary: Summary
 
     getDefaultAnnotation: ->
-      console.log 'GET DEFAULT ANNOTATION'
+      # console.log 'GET DEFAULT ANNOTATION'
       _toolIndex: 0
       value: []
 

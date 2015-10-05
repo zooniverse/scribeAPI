@@ -20,6 +20,8 @@ module API
       g.view_specs false
       g.helper_specs false
     end
+    
+    config.middleware.use Rack::Deflater
 
     initializer 'setup_asset_pipeline', :group => :all  do |app|
       # We don't want the default of everything that isn't js or css, because it pulls too many things in
@@ -38,6 +40,8 @@ module API
 
     config.browserify_rails.commandline_options = "-t coffee-reactify --extension=\".cjsx\" "
     # config.browserify_rails.commandline_options = "-t reactify --extension=\".js.jsx\""
+    
+
 
     config.middleware.use Rack::Cors do
       allow do

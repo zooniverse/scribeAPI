@@ -139,7 +139,7 @@ module.exports =
 
   # Add newly acquired child_subject to child_subjects array of relevant subject (i.e. after submitting a subject-generating classification)
   appendChildSubject: (subject_id, child_subject) ->
-    console.log 'appendChildSubject()'
+    # console.log 'appendChildSubject()'
     if (s = @getSubjectById(subject_id))
       s.child_subjects.push $.extend({userCreated: true}, child_subject)
 
@@ -271,7 +271,7 @@ module.exports =
     tool: "pickOne"
     help: {
       title: "Completion Assessment",
-      body: "<p>Are all data types present on the page marked with a rectangle?</p><p>You do not have to mark every field on the page, however, it helps us to know if you think a page is fully marked. Thank you!</p>"
+      body: "<p>Have all requested fields on this page been marked with a rectangle?</p><p>You do not have to mark every field on the page, however, it helps us to know if you think there is more to mark. Thank you!</p>"
     },
     tool_config: {
       "options": [

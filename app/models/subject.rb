@@ -137,10 +137,11 @@ class Subject
   end
 
   def retire!
-    if status != "bad"
-      status! 'retired'
-      subject_set.subject_completed_on_workflow(workflow) if ! workflow.nil?
-    end
+    return if status == "bad"
+    return if classifying_user_ids.length < workflow.retire_limit
+    status! 'retired'
+    subject_set.subject_completed_on_workflow(workflow) if ! workflow.nil?
+    
     # subject_set.inc_complete_secondary_subject 1 if type != 'root'
   end
 
