@@ -407,7 +407,7 @@
             "next_task": null
         },
         "att_transcribe_discharged": {
-            "tool": "textTool",
+            "tool": "textAreaTool",
             "tool_config": {},
             "instruction": "Transcribe the entry for being **discharged**.",
             "help": {
@@ -711,7 +711,7 @@
             "next_task": null
         },
         "hs_rectangleTool_kia": {
-            "tool": "textTool",
+            "tool": "textAreaTool",
             "tool_config": {},
             "instruction": "Transcribe the entry for **killed in action**.",
             "help": {
@@ -722,7 +722,7 @@
             "next_task": null
         },
         "hs_rectangleTool_died_ws": {
-            "tool": "textTool",
+            "tool": "textAreaTool",
             "tool_config": {},
             "instruction": "Transcribe the entry for **died of wounds/sickness**.",
             "help": {
@@ -733,7 +733,7 @@
             "next_task": null
         },
         "hs_rectangleTool_missing": {
-            "tool": "textTool",
+            "tool": "textAreaTool",
             "tool_config": {},
             "instruction": "Transcribe the entry for **missing**.",
             "help": {
@@ -744,7 +744,7 @@
             "next_task": null
         },
         "hs_rectangleTool_prisoner": {
-            "tool": "textTool",
+            "tool": "textAreaTool",
             "tool_config": {},
             "instruction": "Transcribe the entry for **prisoner**.",
             "help": {
@@ -755,7 +755,7 @@
             "next_task": null
         },
         "hs_rectangleTool_injuries": {
-            "tool": "textTool",
+            "tool": "textAreaTool",
             "tool_config": {},
             "instruction": "Transcribe the entry for **injuries**.",
             "help": {
@@ -766,7 +766,7 @@
             "next_task": null
         },
         "hs_rectangleTool_discharge_provisional": {
-            "tool": "textTool",
+            "tool": "textAreaTool",
             "tool_config": {},
             "instruction": "Transcribe the entry for **discharge provisional**.",
             "help": {
@@ -777,7 +777,7 @@
             "next_task": null
         },
         "hs_rectangleTool_discharge_final": {
-            "tool": "textTool",
+            "tool": "textAreaTool",
             "tool_config": {},
             "instruction": "Transcribe the entry for **discharge final**.",
             "help": {

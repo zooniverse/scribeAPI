@@ -102,8 +102,8 @@
       "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Sight", "color": "#373ACC", "generates_subject_type": "att_transcribe_sight", "help":{"title":"Sight", "body":"Capture both the left and right sight values with the same rectangle. The values are often specified as x/6 or x/20, 'normal' or 'good'. ![example of marking chest measurement](assets/anzac/att_sight.gif)"} },
-          {"type": "rectangleTool", "label": "Hearing", "color": "#373ACC", "generates_subject_type": "att_transcribe_hearing", "help":{"title":"Hearing", "body":"Capture both the left and right hearing values with the same rectangle. Often described as 'normal' or 'good'. ![example of marking chest measurement](assets/anzac/att_hearing.gif)"} },
+          {"type": "rectangleTool", "label": "Sight", "color": "#373ACC", "generates_subject_type": "att_transcribe_sight", "help":{"title":"Sight", "file":"att_sight"} },
+          {"type": "rectangleTool", "label": "Hearing", "color": "#373ACC", "generates_subject_type": "att_transcribe_hearing", "help":{"title":"Hearing", "file":"att_hearing"} },
           {"type": "rectangleTool", "label": "Color Vision", "color": "#373ACC", "generates_subject_type": "att_transcribe_color_vision", "help":{"title":"Color Vision", "body":"Often described as 'normal' or 'good'."} }
         ]
       },
