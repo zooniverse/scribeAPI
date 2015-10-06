@@ -48,7 +48,7 @@
           {
             "value":"sfatt",
             "label":"South African War Attestation",
-            "next_task": null
+            "next_task": "sa_task_1"
           },
           {
             "value":"other_page_type",
@@ -57,6 +57,57 @@
             "generates_subject_type": "transcribe_other_page_type",
             "next_task": null
           }
+        ]
+      }
+    },
+    "sa_task_1":{
+      "generates_subjects": true,
+      "tool":"pickOneMarkOne",
+      "next_task": "sa_task_2",
+      "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
+      "tool_config": {
+        "tools": [
+          {"type": "rectangleTool", "label": "Regimental No.", "color": "#373ACC", "generates_subject_type": "sa_regimental_no", "help": {"title":"Regimental No.", "body": "Look for a number with the following formats: 'xx/yyyy' or 'yyyyy'"}},
+          {"type": "rectangleTool", "label": "Company", "color": "#373ACC", "generates_subject_type": "sa_company" },
+          {"type": "rectangleTool", "label": "Horse", "color": "#373ACC", "generates_subject_type": "sa_horse" },
+          {"type": "rectangleTool", "label": "Name", "color": "#373ACC", "generates_subject_type": "sa_name", "help": {"title":"Name", "body": "Given and surname of soldier. Transcribe as written. First Last order will vary."} },
+          {"type": "rectangleTool", "label": "Corps", "color": "#373ACC", "generates_subject_type": "sa_corps" },
+          {"type": "rectangleTool", "label": "Rank and length of service", "color": "#373ACC", "generates_subject_type": "sa_rank_length" },
+          {"type": "rectangleTool", "label": "Address", "color": "#373ACC", "generates_subject_type": "sa_address" },
+          {"type": "rectangleTool", "label": "Trade or calling", "color": "#373ACC", "generates_subject_type": "sa_trade", "help": {"title":"Trade or Calling", "body": "Description of job. May include two jobs. Maintain order from form."} },
+          {"type": "rectangleTool", "label": "Name and address of employer", "color": "#373ACC", "generates_subject_type": "sa_employer" }
+        ]
+      }
+    },
+    "sa_task_2":{
+      "generates_subjects": true,
+      "tool":"pickOneMarkOne",
+      "next_task": "sa_task_3",
+      "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
+      "tool_config": {
+        "tools": [
+          {"type": "rectangleTool", "label": "Age (years)", "color": "#373ACC", "generates_subject_type": "sa_age_yr"},
+          {"type": "rectangleTool", "label": "Age (months)", "color": "#373ACC", "generates_subject_type": "sa_age_month" },
+          {"type": "rectangleTool", "label": "Height (feet)", "color": "#373ACC", "generates_subject_type": "sa_height_ft" },
+          {"type": "rectangleTool", "label": "Height (inches)", "color": "#373ACC", "generates_subject_type": "sa_height_in" },
+          {"type": "rectangleTool", "label": "Chest measurement", "color": "#373ACC", "generates_subject_type": "sa_chest_measure" },
+          {"type": "rectangleTool", "label": "Weight (stone)", "color": "#373ACC", "generates_subject_type": "sa_weight_st", "help": {"title":"Weight", "body": "Stone is 14 pounds. Include abbreviation (e.g. 'st')"}},
+          {"type": "rectangleTool", "label": "Weight (lbs)", "color": "#373ACC", "generates_subject_type": "sa_weight_lbs", "help": {"title":"Weight", "body": "May follow stone in range 0-14, or specify whole weight. Will be > 100 if whole weight."} }
+        ]
+      }
+    },
+    "sa_task_3":{
+      "generates_subjects": true,
+      "tool":"pickOneMarkOne",
+      "next_task": "other_data_field",
+      "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
+      "tool_config": {
+        "tools": [
+          {"type": "rectangleTool", "label": "Religion", "color": "#373ACC", "generates_subject_type": "sa_religion", "help":{"title":"Religion", "body":"Often abbreviated. See list of abbreviations <a style='text-decoration:none' target='_blank' href='http://www.measuringtheanzacs.org/#/field_guide#religious-denominations'>here</a>."}},
+          {"type": "rectangleTool", "label": "Next of kin (name and relationship)", "color": "#373ACC", "generates_subject_type": "sa_kin_name"},
+          {"type": "rectangleTool", "label": "Next of kin (address)", "color": "#373ACC", "generates_subject_type": "sa_kin_address" },
+          {"type": "rectangleTool", "label": "Sworn before me", "color": "#373ACC", "generates_subject_type": "sa_sworn" },
+          {"type": "rectangleTool", "label": "Month and year of swearing", "color": "#373ACC", "generates_subject_type": "sa_swear_date" }
         ]
       }
     },
@@ -106,7 +157,7 @@
           {"type": "rectangleTool", "label": "Complexion", "color": "#373ACC", "generates_subject_type": "att_transcribe_complexion" },
           {"type": "rectangleTool", "label": "Eye Color", "color": "#373ACC", "generates_subject_type": "att_transcribe_eye_color" },
           {"type": "rectangleTool", "label": "Hair Color", "color": "#373ACC", "generates_subject_type": "att_transcribe_hair_color" },
-          {"type": "rectangleTool", "label": "Religious Profession", "color": "#373ACC", "generates_subject_type": "att_transcribe_religious_profession", "help":{"title":"Religious Profession", "body":"Often abbreviated. See list of abbreviations <a style='text-decoration:none' target='_blank' href='http://localhost:3000/#/field_guide#religious-denominations'>here</a>."} }
+          {"type": "rectangleTool", "label": "Religious Profession", "color": "#373ACC", "generates_subject_type": "att_transcribe_religious_profession", "help":{"title":"Religious Profession", "body":"Often abbreviated. See list of abbreviations <a style='text-decoration:none' target='_blank' href='http://www.measuringtheanzacs.org/#/field_guide#religious-denominations'>here</a>."} }
         ]
       },
       "next_task": "att_medical_sight_hearing"
