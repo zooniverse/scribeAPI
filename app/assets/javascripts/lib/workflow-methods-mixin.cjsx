@@ -236,7 +236,7 @@ module.exports =
       console.warn "WARN: Invalid tool specified in #{key}: #{task.tool}"
 
     else
-      console.log "Transcribe#advanceToTask(#{key}): tool=#{task.tool}"
+      # console.log "Transcribe#advanceToTask(#{key}): tool=#{task.tool}"
 
       @setState
         taskKey: key
