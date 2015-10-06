@@ -9,4 +9,6 @@
 
 require ::File.expand_path('../config/environment',  __FILE__)
 
+# use ActionDispatch::Static, '/Users/paulbeaudoin/projects/zoonihack/scribeAPI/project/emigrant/assets'
+
 run Rails.application

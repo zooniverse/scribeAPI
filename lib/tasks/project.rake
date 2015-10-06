@@ -33,6 +33,16 @@ namespace :project do
       puts "Done loading content for \"#{project.title}\""
     end
 
+
+    # DEPRECATED:
+    # Should deprecate this because all static assets can now be fetched directly
+    # from project/[key]/assets; There is no need to copy js, images, fonts, etc
+    # into app/assets. Serving them directly from the project/../assets folder is
+    # preferable because it doesn't clutter app/assets, which should be reserved
+    # for core application concerns.
+    # Nevertheless, I'm keeping this functionality in place so that projects can
+    # gracefully deprecate reliance on copied assets.
+    #
     # Load custom styling (css,js,images,fonts, etc):
     if ['all','style'].include? args[:area]
       load_styles project

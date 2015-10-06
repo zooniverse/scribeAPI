@@ -39,4 +39,6 @@ API::Application.configure do
   # React:
   config.react.variant = :development
   config.react.addons = true
+
+  # Rails.application.config.middleware.insert_after ActionDispatch::Static, ActionDispatch::Static, "./project/#{Project.current.key}/assets"
 end
