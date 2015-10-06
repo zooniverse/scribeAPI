@@ -119,8 +119,19 @@ namespace :project do
     # load project_file_path
     project = Project.find_or_create_by key: project_key
 
+    # Establish some defaults so that if they're note set in the project hash, we save the default instead over any previous value:
+    project_defaults = {
+      background: nil,
+      logo: nil,
+      terms_map: {},
+      team_emails: [],
+      team: [],
+      organizations: [],
+      analytics: nil,
+      forum: nil
+    }
     # Set all valid fields from hash:
-    project_hash = project_hash.inject({}) { |h, (k,v)| h[k] = v if Project.fields.keys.include?(k.to_s); h }
+    project_hash = project_hash.inject(project_defaults) { |h, (k,v)| h[k] = v if Project.fields.keys.include?(k.to_s); h }
     project.update project_hash
 
     puts "Created project: #{project.title}"
