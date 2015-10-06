@@ -43,7 +43,7 @@
           {
             "value":"death_notification",
             "label":"Death Notification",
-            "next_task": null
+            "next_task": "dn_task"
           },
           {
             "value":"sfatt",
@@ -57,6 +57,21 @@
             "generates_subject_type": "transcribe_other_page_type",
             "next_task": null
           }
+        ]
+      }
+    },
+    "dn_task":{
+      "generates_subjects": true,
+      "tool":"pickOneMarkOne",
+      "next_task": "other_data_field",
+      "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
+      "tool_config": {
+        "tools": [
+          {"type": "rectangleTool", "label": "Last Name", "color": "#373ACC", "generates_subject_type": "dn_last_name"},
+          {"type": "rectangleTool", "label": "First (Christian) Name", "color": "#373ACC", "generates_subject_type": "dn_first_name" },
+          {"type": "rectangleTool", "label": "Service No.", "color": "#373ACC", "generates_subject_type": "dn_service_no" },
+          {"type": "rectangleTool", "label": "Place of Death", "color": "#373ACC", "generates_subject_type": "dn_place_of_death" },
+          {"type": "rectangleTool", "label": "Date of Death", "color": "#373ACC", "generates_subject_type": "dn_date_of_death" }
         ]
       }
     },

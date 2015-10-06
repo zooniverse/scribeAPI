@@ -22,6 +22,61 @@
             "generates_subject_type":"transcribed_other_page_type",
             "next_task": null
         },
+        "dn_last_name": {
+            "tool": "textTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **last name**.",
+            "generates_subject_type": "dn_transcribed_last_name",
+            "next_task": null
+        },
+        "dn_first_name": {
+            "tool": "textTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **first name**.",
+            "generates_subject_type": "dn_transcribed_first_name",
+            "next_task": null
+        },
+        "dn_service_no": {
+            "tool": "textTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **service no**.",
+            "generates_subject_type": "dn_transcribed_service_no",
+            "next_task": null
+        },
+        "dn_place_of_death": {
+            "tool": "textTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **place of death**.",
+            "generates_subject_type": "dn_transcribed_place_of_death",
+            "next_task": null
+        },
+        "dn_date_of_death": {
+            "tool": "textTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **date of death**.",
+            "generates_subject_type": "dn_transcribed_date_death",
+            "next_task": null
+        },
         "att_transcribe_header": {
             "tool": "textTool",
             "tool_config": {},
