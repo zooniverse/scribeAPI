@@ -119,7 +119,7 @@ namespace :project do
     # load project_file_path
     project = Project.find_or_create_by key: project_key
 
-    # Establish some defaults so that if they're note set in the project hash, we save the default instead over any previous value:
+    # Establish some defaults so that if they're not set in the project hash, we overwrite the old value with the null default
     project_defaults = {
       background: nil,
       logo: nil,
