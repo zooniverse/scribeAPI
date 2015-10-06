@@ -54,8 +54,9 @@ module.exports =
     subject_sets
 
   # Fetch a single subject-set (i.e. via SubjectSetsController#show)
+  # Query hash added to prevent local mark from being re-transcribable.
   fetchSubjectSet: (subject_set_id, callback) ->
-    request = API.type("subject_sets").get subject_set_id
+    request = API.type("subject_sets").get subject_set_id, {}
 
     request.then (subject_set) =>
       @_handleFetchedSubjectSets [subject_set], callback
