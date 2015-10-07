@@ -8,5 +8,5 @@ module.exports = React.createClass
     label: 'Next &gt;'
  
   render: ->
-    <MajorButton {...@props} className='next'/>
+    <MajorButton key="major-button" {...@props} className='next'/>
      
