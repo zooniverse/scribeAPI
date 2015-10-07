@@ -1,6 +1,4 @@
 order,file_path,unique_record_id,file_id,width,height,name,zooniverse_id,set_key
-42,https://s3.amazonaws.com/anzac-project/R10927480/FL23603354,R10927480,FL23603354,700,1122,"MACK, Charles",1030116,R10927480
-1,https://s3.amazonaws.com/anzac-project/R10922637/FL22365192,R10922637,FL22365192,700,1116,"McCANN, Patrick",1030117,R10922637
 26,https://s3.amazonaws.com/anzac-project/R10926923/FL23603105,R10926923,FL23603105,800,1379,"McNEILL, Leonard",1027440,R10926923
 27,https://s3.amazonaws.com/anzac-project/R10926923/FL23603151,R10926923,FL23603151,800,1375,"McNEILL, Leonard",1027441,R10926923
 28,https://s3.amazonaws.com/anzac-project/R10926923/FL23603162,R10926923,FL23603162,800,1381,"McNEILL, Leonard",1027442,R10926923

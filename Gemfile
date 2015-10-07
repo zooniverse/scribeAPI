@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby '2.1.5'
 
-gem 'rails', '4.0.2'
+gem 'rails', '4.0.13'
 gem 'sass-rails', '~> 4.0.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.0.0'
@@ -31,6 +31,8 @@ gem 'kaminari'
 gem 'fastimage', '1.7.0'
 
 gem 'newrelic_rpm'
+
+gem 'puma', '~> 2.14.0'
 
 group :development do
   gem 'dotenv-rails'
