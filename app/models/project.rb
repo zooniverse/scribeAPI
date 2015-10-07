@@ -29,7 +29,8 @@ class Project
   field  :metadata_search,   type: Hash
   field  :tutorial,          type: Hash
   field  :terms_map,         type: Hash, default: {} # Hash mapping internal terms to project appropriate terms (e.g. 'group'=>'ship')
-  field  :status,             type: String, default: 'inactive'
+  field  :status,            type: String, default: 'inactive'
+  field :analytics,          type: Hash
 
   include CachedStats
   update_interval 30
