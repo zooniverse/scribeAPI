@@ -218,8 +218,8 @@ module.exports = React.createClass
   getEventOffset: (e) ->
     rect = @refs.sizeRect.getDOMNode().getBoundingClientRect()
     scale = @state.scale # @getScale()
-    x = ((e.pageX - rect.left) / scale.horizontal) + @state.viewX
-    y = ((e.pageY - rect.top) / scale.vertical) + @state.viewY
+    x = ((e.pageX - window.pageXOffset - rect.left) / scale.horizontal) + @state.viewX
+    y = ((e.pageY - window.pageYOffset - rect.top) / scale.vertical) + @state.viewY
     return {x, y}
 
   # Set mark to currently selected:

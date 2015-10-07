@@ -28,12 +28,6 @@ GIT
       rails (>= 3.1)
       react-source (~> 0.13)
 
-GIT
-  remote: https://github.com/zooniverse/omniauth-zooniverse
-  revision: d1300d7d30216a6489c7d804182719ff74990a20
-  specs:
-    omniauth-zooniverse (0.0.3)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -194,6 +188,7 @@ GEM
       multi_json (~> 1.3)
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
+    omniauth-zooniverse (0.0.3)
     optionable (0.2.0)
     origin (2.1.1)
     orm_adapter (0.5.0)
@@ -324,7 +319,7 @@ DEPENDENCIES
   moped
   omniauth-facebook
   omniauth-google-oauth2
-  omniauth-zooniverse!
+  omniauth-zooniverse (~> 0.0.3)
   pry
   quiet_assets
   rack-cors
