@@ -139,7 +139,6 @@ module.exports =
 
   # Add newly acquired child_subject to child_subjects array of relevant subject (i.e. after submitting a subject-generating classification)
   appendChildSubject: (subject_id, child_subject) ->
-    # console.log 'appendChildSubject()'
     if (s = @getSubjectById(subject_id))
       s.child_subjects.push $.extend({userCreated: true}, child_subject)
 
@@ -246,7 +245,7 @@ module.exports =
   getCurrentSubjectSet: ->
     if @state.subjectSets?[@state.subject_set_index]
       @state.subjectSets?[@state.subject_set_index]
-    else @state.subjectSets #having a hard time accounting for one subject_set
+    # else @state.subjectSets #having a hard time accounting for one subject_set
 
   # Get currently viewed subject
   getCurrentSubject: ->
@@ -344,13 +343,14 @@ module.exports =
         console.warn "NO MORE SUBJECT SETS"
       return
 
-    console.log "Mark#index Advancing to subject_set_index #{new_subject_set_index} (of #{@state.subjectSets.length}), subject_index #{new_subject_index} (of #{@state.subjectSets[new_subject_set_index].subjects.length})"
+    # console.log "Mark#index Advancing to subject_set_index #{new_subject_set_index} (of #{@state.subjectSets.length}), subject_index #{new_subject_index} (of #{@state.subjectSets[new_subject_set_index].subjects.length})"
 
     @setState
       subject_set_index: new_subject_set_index
       subject_index: new_subject_index
       taskKey: @getActiveWorkflow().first_task
-      currentSubToolIndex: 0
+      currentSubToolIndex: 0, () =>
+        @fetchSubjectsForCurrentSubjectSet(1, 100)
 
   commitClassificationAndContinue: (d) ->
     @commitCurrentClassification()

@@ -100,9 +100,6 @@ module.exports = React.createClass # rename to Classifier
       classifications = @state.classifications
       classifications[@state.classificationIndex].annotation[k] = v for k, v of d
 
-      # console.log 'classification.annotation = ', classifications[@state.classificationIndex].annotation
-
-
       # PB: Saving STI's notes here in case we decide tools should fully
       #   replace annotation hash rather than selectively update by key as above:
       # not clear whether we should replace annotations, or append to it --STI
@@ -148,13 +145,11 @@ module.exports = React.createClass # rename to Classifier
 
   nextPage: (callback_fn)->
     new_page = @state.subjects_current_page + 1
-    subject_set = @getCurrentSubjectSet()
-    @fetchNextSubjectPage(subject_set.id, @getActiveWorkflow().id, new_page, 0, callback_fn)
+    @fetchSubjectsForCurrentSubjectSet(new_page, callback_fn)
 
   prevPage: (callback_fn) ->
     new_page = @state.subjects_current_page - 1
-    subject_set = @getCurrentSubjectSet()
-    @fetchNextSubjectPage(subject_set.id, @getActiveWorkflow().id, new_page, 0, callback_fn)
+    @fetchSubjectsForCurrentSubjectSet(new_page, callback_fn)
 
   showSubjectHelp: (subject_type) ->
     @setState
@@ -168,7 +163,7 @@ module.exports = React.createClass # rename to Classifier
       activeSubjectHelper: null
 
   render: ->
-    return null unless @getCurrentSubject()? && @getActiveWorkflow()?
+    return null unless @getCurrentSubjectSet()? && @getActiveWorkflow()?
 
     currentTask = @getCurrentTask()
     TaskComponent = @getCurrentTool()
@@ -178,7 +173,7 @@ module.exports = React.createClass # rename to Classifier
     currentSubtool = if @state.currentSubtool then @state.currentSubtool else @getTasks()[firstTask]?.tool_config.tools?[0]
 
     # direct link to this page
-    pageURL = "#{location.origin}/#/mark?subject_set_id=#{@getCurrentSubjectSet().id}&selected_subject_id=#{@getCurrentSubject().id}"
+    pageURL = "#{location.origin}/#/mark?subject_set_id=#{@getCurrentSubjectSet().id}&selected_subject_id=#{@getCurrentSubject()?.id}"
 
 
     if currentTask?.tool is 'pick_one'
@@ -221,7 +216,7 @@ module.exports = React.createClass # rename to Classifier
       </div>
       <div className="right-column">
         <div className={"task-area " + @getActiveWorkflow().name}>
-          { if @getCurrentTask()?
+          { if @getCurrentTask()? && @getCurrentSubject()?
               <div className="task-container">
                 <TaskComponent
                   key={@getCurrentTask().key}
@@ -275,7 +270,7 @@ module.exports = React.createClass # rename to Classifier
             {
               if @getCurrentTask()? && @getActiveWorkflow()? && @getWorkflowByName('transcribe')?
                 <p>
-                  <Link to="/transcribe/#{@getWorkflowByName('transcribe').id}/#{@getCurrentSubject().id}" className="transcribe-link">Transcribe this {@props.project.term('subject')} now!</Link>
+                  <Link to="/transcribe/#{@getWorkflowByName('transcribe').id}/#{@getCurrentSubject()?.id}" className="transcribe-link">Transcribe this {@props.project.term('subject')} now!</Link>
                 </p>
             }
 

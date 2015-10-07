@@ -11,4 +11,4 @@ module.exports = React.createClass
     classes = ['help-button','ghost']
     classes.push @props.className if @props.className?
 
-    <SmallButton {...@props} className={classes.join ' '} />
+    <SmallButton key="help-button" {...@props} className={classes.join ' '} />
