@@ -142,7 +142,7 @@ html, body,
 
 /* Homepage */
 div.home-page {
-  padding-top: 40px;
+  padding-top: 160px;
     -webkit-touch-callout: text;
   -webkit-user-select: text;
   -khtml-user-select: text;
@@ -205,19 +205,20 @@ div.home-page {
   width: auto;
 }
 .home-page .logo {
-  font-size: 1.1em;
+  font-size: 1em;
   color: #ffffff;
   text-align: center;
+  margin: -160px 0 160px;
 }
 .home-page .logo:before {
-  content: ' ';
+  /*content: ' ';
   display: inline-block;
   width: 40px;
   height: 40px;
   background-image: url('/images/nypl-logo.svg');
   background-size: 100% 100%;
   margin-right: 12px;
-  vertical-align: text-bottom;
+  vertical-align: text-bottom;*/
 }
 .home-page .logo a {
   display: inline;
