@@ -146,5 +146,5 @@ module.exports = React.createClass
     @props.onChange e
 
   handleMouseDown: ->
-    console.log 'handleMouseDown()'
+    # console.log 'handleMouseDown()'
     # @props.onSelect @props.mark # unless @props.disabled

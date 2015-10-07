@@ -270,7 +270,7 @@ module.exports =
     tool: "pickOne"
     help: {
       title: "Completion Assessment",
-      body: "You do not have to complete every page, but it helps us to know, before you move on to another task, if there is any work left to do. Thanks again!"
+      body: "<p>Have all requested fields on this page been marked with a rectangle?</p><p>You do not have to mark every field on the page, however, it helps us to know if you think there is more to mark. Thank you!</p>"
     },
     tool_config: {
       "options": [
@@ -327,17 +327,20 @@ module.exports =
 
     # If we've exhausted all subject sets, collapse in shame
     if new_subject_set_index >= @state.subjectSets.length
-      @setState
-        taskKey: null
-        notice:
-          header: "All Done!"
-          message: "There's nothing more for you to #{@props.workflowName} here."
-          onClick: () =>
-            @transitionTo? 'mark' # "/#/mark"
-            @setState
-              notice: null
-              taskKey: @getActiveWorkflow().first_task
-      console.warn "NO MORE SUBJECT SETS"
+      if @state.subject_sets_current_page < @state.subject_sets_total_pages
+        @fetchSubjectSets page: @state.subject_sets_current_page + 1
+      else
+        @setState
+          taskKey: null
+          notice:
+            header: "All Done!"
+            message: "There's nothing more for you to #{@props.workflowName} here."
+            onClick: () =>
+              @transitionTo? 'mark' # "/#/mark"
+              @setState
+                notice: null
+                taskKey: @getActiveWorkflow().first_task
+        console.warn "NO MORE SUBJECT SETS"
       return
 
     # console.log "Mark#index Advancing to subject_set_index #{new_subject_set_index} (of #{@state.subjectSets.length}), subject_index #{new_subject_index} (of #{@state.subjectSets[new_subject_set_index].subjects.length})"

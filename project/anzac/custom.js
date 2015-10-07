@@ -1,14 +1,2 @@
-// Load Typekit
-(function(d) {
-    var config = {
-      kitId: 'iuk1miw',
-      scriptTimeout: 3000,
-      async: true
-    },
-    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(
-/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement(
-"script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";
-tk.src='//use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadyst
-atechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;
-f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
-  })(document);
+(function(a){var e={kitId:"iuk1miw",scriptTimeout:3E3,async:!0},c=a.documentElement,g=setTimeout(function(){c.className=c.className.replace(/\bwf-loading\b/g,"")+" wf-inactive"},e.scriptTimeout),b=a.createElement("script"),f=!1;a=a.getElementsByTagName("script")[0];var d;c.className+=" wf-loading";b.src="//use.typekit.net/"+e.kitId+".js";b.async=!0;b.onload=b.onreadyst;atechange=function(){d=this.readyState;if(!(f||d&&"complete"!=d&&"loaded"!=d)){f=!0;clearTimeout(g);try{Typekit.load(e)}catch(a){}}};
+a.parentNode.insertBefore(b,a)})(document);

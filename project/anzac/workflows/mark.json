@@ -66,10 +66,10 @@
       "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Number in the header", "color": "green", "generates_subject_type": "att_transcribe_header", "help": {"title":"Number in the header", "body": "Look for a number with the following formats: 'xx/yyyy' or 'yyyyy'"}},
-          {"type": "rectangleTool", "label": "One-Part Question", "color": "green", "generates_subject_type": "att_transcribe_question" },
-          {"type": "rectangleTool", "label": "Two-Part Question", "color": "green", "generates_subject_type": "att_transcribe_two_question" },
-          {"type": "rectangleTool", "label": "Three-Part Question", "color": "green", "generates_subject_type": "att_transcribe_three_question" }
+          {"type": "rectangleTool", "label": "Number in the header", "color": "#373ACC", "generates_subject_type": "att_transcribe_header", "help": {"title":"Number in the header", "body": "Look for a number with the following formats: 'xx/yyyy' or 'yyyyy'"}},
+          {"type": "rectangleTool", "label": "One-Part Question", "color": "#373ACC", "generates_subject_type": "att_transcribe_question" },
+          {"type": "rectangleTool", "label": "Two-Part Question", "color": "#373ACC", "generates_subject_type": "att_transcribe_two_question" },
+          {"type": "rectangleTool", "label": "Three-Part Question", "color": "#373ACC", "generates_subject_type": "att_transcribe_three_question" }
         ]
       },
       "help": {
@@ -83,15 +83,15 @@
       "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Oath Year", "color": "green", "generates_subject_type": "att_transcribe_oath_year", "help":{"title":"Oath Year", "body":"Year in numbers."} },
-          {"type": "rectangleTool", "label": "Age", "color": "green", "generates_subject_type": "att_transcribe_age", "help":{"title":"Age", "body":"Most aged 17-40. Please double check if older or younger."} },
-          {"type": "rectangleTool", "label": "Height", "color": "green", "generates_subject_type": "att_transcribe_height", "help":{"title":"Height", "body":"Most entries are between 5ft and 6ft. Please double check if other values."} },
-          {"type": "rectangleTool", "label": "Weight", "color": "green", "generates_subject_type": "att_transcribe_weight", "help":{"title":"Weight", "body":"Stone is 14 pounds. Include abbreviation (e.g. 'st')."}  },
-          {"type": "rectangleTool", "label": "Chest Measurement", "color": "green", "generates_subject_type": "att_transcribe_chest_measurement", "help":{"title":"Chest Measurement", "body":"Capture both min and max values with the same rectangle. Values specified in inches. Typically in the range 25-40."} },
-          {"type": "rectangleTool", "label": "Complexion", "color": "green", "generates_subject_type": "att_transcribe_complexion" },
-          {"type": "rectangleTool", "label": "Eye Color", "color": "green", "generates_subject_type": "att_transcribe_eye_color" },
-          {"type": "rectangleTool", "label": "Hair Color", "color": "green", "generates_subject_type": "att_transcribe_hair_color" },
-          {"type": "rectangleTool", "label": "Religious Profession", "color": "green", "generates_subject_type": "att_transcribe_religious_profession", "help":{"title":"Religious Profession", "body":"Often abbreviated. See list of abbreviations <a style='text-decoration:none' target='_blank' href='http://localhost:3000/#/field_guide#religious-denominations'>here</a>."} }
+          {"type": "rectangleTool", "label": "Oath Year", "color": "#373ACC", "generates_subject_type": "att_transcribe_oath_year", "help":{"title":"Oath Year", "body":"Year in numbers."} },
+          {"type": "rectangleTool", "label": "Age", "color": "#373ACC", "generates_subject_type": "att_transcribe_age", "help":{"title":"Age", "body":"Most aged 17-40. Please double check if older or younger."} },
+          {"type": "rectangleTool", "label": "Height", "color": "#373ACC", "generates_subject_type": "att_transcribe_height", "help":{"title":"Height", "body":"Capture both the feet and inch values with the same rectangle. Most entries are between 5ft and 6ft. Please double check if other values. ![example of marking chest measurement](assets/anzac/att_height.gif)"} },
+          {"type": "rectangleTool", "label": "Weight", "color": "#373ACC", "generates_subject_type": "att_transcribe_weight", "help":{"title":"Weight", "body":"Sometimes weight will be recorded in stones and other times weight will be recorded in pounds. If the weight is recorded in stones, please include the abbreviation (i.e., ‘st’)."}  },
+          {"type": "rectangleTool", "label": "Chest Measurement", "color": "#373ACC", "generates_subject_type": "att_transcribe_chest_measurement", "help":{"title":"Chest Measurement", "body":"Capture both min and max values with the same rectangle. Values specified in inches. Typically in the range 25-40. ![example of marking chest measurement](assets/anzac/att_chest_mesurement.gif)"} },
+          {"type": "rectangleTool", "label": "Complexion", "color": "#373ACC", "generates_subject_type": "att_transcribe_complexion" },
+          {"type": "rectangleTool", "label": "Eye Color", "color": "#373ACC", "generates_subject_type": "att_transcribe_eye_color" },
+          {"type": "rectangleTool", "label": "Hair Color", "color": "#373ACC", "generates_subject_type": "att_transcribe_hair_color" },
+          {"type": "rectangleTool", "label": "Religious Profession", "color": "#373ACC", "generates_subject_type": "att_transcribe_religious_profession", "help":{"title":"Religious Profession", "body":"Often abbreviated. See list of abbreviations <a style='text-decoration:none' target='_blank' href='http://localhost:3000/#/field_guide#religious-denominations'>here</a>."} }
         ]
       },
       "next_task": "att_medical_sight_hearing"
@@ -102,9 +102,9 @@
       "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Sight", "color": "green", "generates_subject_type": "att_transcribe_sight", "help":{"title":"Sight", "body":"Capture both the left and right sight values with the same rectangle. The values are often specified as x/6 or x/20, 'normal' or 'good'."} },
-          {"type": "rectangleTool", "label": "Hearing", "color": "green", "generates_subject_type": "att_transcribe_hearing", "help":{"title":"Hearing", "body":"Capture both the left and right hearing values with the same rectangle. Often described as 'normal' or 'good'."} },
-          {"type": "rectangleTool", "label": "Color Vision", "color": "green", "generates_subject_type": "att_transcribe_color_vision", "help":{"title":"Color Vision", "body":"Often described as 'normal' or 'good'."} }
+          {"type": "rectangleTool", "label": "Sight", "color": "#373ACC", "generates_subject_type": "att_transcribe_sight", "help":{"title":"Sight", "body":"Capture both the left and right sight values with the same rectangle. The values are often specified as x/6 or x/20, 'normal' or 'good'. ![example of marking chest measurement](assets/anzac/att_sight.gif)"} },
+          {"type": "rectangleTool", "label": "Hearing", "color": "#373ACC", "generates_subject_type": "att_transcribe_hearing", "help":{"title":"Hearing", "body":"Capture both the left and right hearing values with the same rectangle. Often described as 'normal' or 'good'. ![example of marking chest measurement](assets/anzac/att_hearing.gif)"} },
+          {"type": "rectangleTool", "label": "Color Vision", "color": "#373ACC", "generates_subject_type": "att_transcribe_color_vision", "help":{"title":"Color Vision", "body":"Often described as 'normal' or 'good'."} }
         ]
       },
       "next_task": "att_medical_form_specific"
@@ -115,19 +115,19 @@
       "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Limb Formation", "color": "green", "generates_subject_type": "att_transcribe_limb_formation" },
-          {"type": "rectangleTool", "label": "Joints", "color": "green", "generates_subject_type": "att_transcribe_joints" },
-          {"type": "rectangleTool", "label": "Chest", "color": "green", "generates_subject_type": "att_transcribe_chest" },
-          {"type": "rectangleTool", "label": "Heart", "color": "green", "generates_subject_type": "att_transcribe_heart" },
-          {"type": "rectangleTool", "label": "Lungs", "color": "green", "generates_subject_type": "att_transcribe_lungs" },
-          {"type": "rectangleTool", "label": "Teeth", "color": "green", "generates_subject_type": "att_transcribe_teeth" },
-          {"type": "rectangleTool", "label": "Illness", "color": "green", "generates_subject_type": "att_transcribe_illness" },
-          {"type": "rectangleTool", "label": "Hernia", "color": "green", "generates_subject_type": "att_transcribe_hernia" },
-          {"type": "rectangleTool", "label": "Varicocele", "color": "green", "generates_subject_type": "att_transcribe_varicocele" },
-          {"type": "rectangleTool", "label": "Varicose Veins", "color": "green", "generates_subject_type": "att_transcribe_varicose_veins" },
-          {"type": "rectangleTool", "label": "Haemorrhoids", "color": "green", "generates_subject_type": "att_transcribe_haemorrhoids" },
-          {"type": "rectangleTool", "label": "Skin", "color": "green", "generates_subject_type": "att_transcribe_skin" },
-          {"type": "rectangleTool", "label": "Mark", "color": "green", "generates_subject_type": "att_transcribe_mark" }
+          {"type": "rectangleTool", "label": "Limb Formation", "color": "#373ACC", "generates_subject_type": "att_transcribe_limb_formation" },
+          {"type": "rectangleTool", "label": "Joints", "color": "#373ACC", "generates_subject_type": "att_transcribe_joints" },
+          {"type": "rectangleTool", "label": "Chest", "color": "#373ACC", "generates_subject_type": "att_transcribe_chest" },
+          {"type": "rectangleTool", "label": "Heart", "color": "#373ACC", "generates_subject_type": "att_transcribe_heart" },
+          {"type": "rectangleTool", "label": "Lungs", "color": "#373ACC", "generates_subject_type": "att_transcribe_lungs" },
+          {"type": "rectangleTool", "label": "Teeth", "color": "#373ACC", "generates_subject_type": "att_transcribe_teeth" },
+          {"type": "rectangleTool", "label": "Illness", "color": "#373ACC", "generates_subject_type": "att_transcribe_illness" },
+          {"type": "rectangleTool", "label": "Hernia", "color": "#373ACC", "generates_subject_type": "att_transcribe_hernia" },
+          {"type": "rectangleTool", "label": "Varicocele", "color": "#373ACC", "generates_subject_type": "att_transcribe_varicocele" },
+          {"type": "rectangleTool", "label": "Varicose Veins", "color": "#373ACC", "generates_subject_type": "att_transcribe_varicose_veins" },
+          {"type": "rectangleTool", "label": "Haemorrhoids", "color": "#373ACC", "generates_subject_type": "att_transcribe_haemorrhoids" },
+          {"type": "rectangleTool", "label": "Skin", "color": "#373ACC", "generates_subject_type": "att_transcribe_skin" },
+          {"type": "rectangleTool", "label": "Mark of Vaccination", "color": "#373ACC", "generates_subject_type": "att_transcribe_mark" }
         ]
       },
       "next_task": "att_medical_form_general_recuitment"
@@ -139,13 +139,13 @@
       "next_task": "other_data_field",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Distinctive Marks", "color": "green", "generates_subject_type": "att_transcribe_distinctive_marks" },
-          {"type": "rectangleTool", "label": "Pension", "color": "green", "generates_subject_type": "att_transcribe_pension" },
-          {"type": "rectangleTool", "label": "Experience of fits", "color": "green", "generates_subject_type": "att_transcribe_fits" },
-          {"type": "rectangleTool", "label": "Discharged", "color": "green", "generates_subject_type": "att_transcribe_discharged" },
-          {"type": "rectangleTool", "label": "Remarks", "color": "green", "generates_subject_type": "att_transcribe_remarks" },
-          {"type": "rectangleTool", "label": "Classification", "color": "green", "generates_subject_type": "att_transcribe_classification" },
-          {"type": "rectangleTool", "label": "Date of Medical Exam", "color": "green", "generates_subject_type": "att_transcribe_date_medical_exam" }
+          {"type": "rectangleTool", "label": "Distinctive Marks", "color": "#373ACC", "generates_subject_type": "att_transcribe_distinctive_marks" },
+          {"type": "rectangleTool", "label": "Pension", "color": "#373ACC", "generates_subject_type": "att_transcribe_pension" },
+          {"type": "rectangleTool", "label": "Experience of fits", "color": "#373ACC", "generates_subject_type": "att_transcribe_fits" },
+          {"type": "rectangleTool", "label": "Discharged", "color": "#373ACC", "generates_subject_type": "att_transcribe_discharged" },
+          {"type": "rectangleTool", "label": "Remarks", "color": "#373ACC", "generates_subject_type": "att_transcribe_remarks" },
+          {"type": "rectangleTool", "label": "Classification", "color": "#373ACC", "generates_subject_type": "att_transcribe_classification" },
+          {"type": "rectangleTool", "label": "Date of Medical Exam", "color": "#373ACC", "generates_subject_type": "att_transcribe_date_medical_exam" }
         ]
       }
     },
@@ -156,7 +156,7 @@
       "next_task": "hs_conduct_sheet",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Transfer", "color": "green", "generates_subject_type": "hs_transcribe_transfer_table" }
+          {"type": "rectangleTool", "label": "Transfer", "color": "#373ACC", "generates_subject_type": "hs_transcribe_transfer_table" }
         ]
       },
       "help": {
@@ -183,24 +183,28 @@
         ]
       }
     },
-    "hs_sticky_sheet":{
-      "tool":"pickOne",
-      "instruction":"Are there any sticky notes?",
-      "next_task": null,
-      "tool_config": {
-        "options":[
-          {
-            "value":"sticky_note_present",
-            "label":"Yes",
-            "next_task":"hs_task"
-          },
-          {
-            "value":"no_sticky_note",
-            "label":"No",
-            "next_task":"hs_task"
-          }
-        ]
-      }
+    "hs_sticky_sheet": {
+        "tool": "pickOne",
+        "instruction": "Are there any sticky notes?",
+        "help":{
+          "title":"Sticky Notes",
+          "file":"help_sticky_note"
+        },
+        "next_task": null,
+        "tool_config": {
+            "options": [
+                {
+                    "value": "sticky_note_present",
+                    "label": "Yes",
+                    "next_task": "hs_task"
+                },
+                {
+                    "value": "no_sticky_note",
+                    "label": "No",
+                    "next_task": "hs_task"
+                }
+            ]
+        }
     },
     "hs_task":{
       "generates_subjects": true,
@@ -208,16 +212,16 @@
       "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Unit", "color": "green", "generates_subject_type": "hs_transcribe_unit" },
-          {"type": "rectangleTool", "label": "Rank", "color": "green", "generates_subject_type": "hs_transcribe_rank" },
-          {"type": "rectangleTool", "label": "Surname", "color": "green", "generates_subject_type": "hs_transcribe_surname" },
-          {"type": "rectangleTool", "label": "Christian name", "color": "green", "generates_subject_type": "hs_transcribe_christian_name" },
-          {"type": "rectangleTool", "label": "No.", "color": "green", "generates_subject_type": "hs_transcribe_no" },
-          {"type": "rectangleTool", "label": "Occupation", "color": "green", "generates_subject_type": "hs_transcribe_occupation" },
-          {"type": "rectangleTool", "label": "Last Employer", "color": "green", "generates_subject_type": "hs_transcribe_employer" },
-          {"type": "rectangleTool", "label": "Religion", "color": "green", "generates_subject_type": "hs_transcribe_religion", "help":{"title":"Religious Denomination", "body":"Often abbreviated. See list of abbreviations <a style='text-decoration:none' target='_blank' href='http://localhost:3000/#/field_guide#religious-denominations'>here</a>."} },
-          {"type": "rectangleTool", "label": "Last New Zealand Address", "color": "green", "generates_subject_type": "hs_transcribe_nzaddress" },
-          {"type": "rectangleTool", "label": "Next-of-Kin", "color": "green", "generates_subject_type": "hs_transcribe_kin" }
+          {"type": "rectangleTool", "label": "Unit", "color": "#373ACC", "generates_subject_type": "hs_transcribe_unit", "help":{"title":"Unit", "body":"Often abbreviated. See list of abbreviations <a style='text-decoration:none' target='_blank' href='http://www.measuringtheanzacs.org/#/field_guide#unit-abbreviations'>here</a>."} },
+          {"type": "rectangleTool", "label": "Rank", "color": "#373ACC", "generates_subject_type": "hs_transcribe_rank", "help":{"title":"Rank", "body":"Often abbreviated. See list of abbreviations <a style='text-decoration:none' target='_blank' href='http://www.measuringtheanzacs.org/#/field_guide#rank-abbreviations'>here</a>."} },
+          {"type": "rectangleTool", "label": "Surname", "color": "#373ACC", "generates_subject_type": "hs_transcribe_surname" },
+          {"type": "rectangleTool", "label": "Christian name", "color": "#373ACC", "generates_subject_type": "hs_transcribe_christian_name" },
+          {"type": "rectangleTool", "label": "No.", "color": "#373ACC", "generates_subject_type": "hs_transcribe_no" },
+          {"type": "rectangleTool", "label": "Occupation", "color": "#373ACC", "generates_subject_type": "hs_transcribe_occupation" },
+          {"type": "rectangleTool", "label": "Last Employer", "color": "#373ACC", "generates_subject_type": "hs_transcribe_employer" },
+          {"type": "rectangleTool", "label": "Religion", "color": "#373ACC", "generates_subject_type": "hs_transcribe_religion", "help":{"title":"Religious Denomination", "body":"Often abbreviated. See list of abbreviations <a style='text-decoration:none' target='_blank' href='http://www.measuringtheanzacs.org/#/field_guide#religious-denominations'>here</a>."} },
+          {"type": "rectangleTool", "label": "Last New Zealand Address", "color": "#373ACC", "generates_subject_type": "hs_transcribe_nzaddress" },
+          {"type": "rectangleTool", "label": "Next-of-Kin", "color": "#373ACC", "generates_subject_type": "hs_transcribe_kin" }
         ]
       },
       "help": {
@@ -231,7 +235,7 @@
       "instruction":"Draw a rectangle around each recorded instance under the heading **Service**. Select the whole row from **Country and Troopship** to **Total Days**",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Service", "color": "green", "generates_subject_type": "hs_transcribe_service" }
+          {"type": "rectangleTool", "label": "Service", "color": "#373ACC", "generates_subject_type": "hs_transcribe_service" }
         ]
       },
       "next_task": "hs_wounds"
@@ -242,7 +246,7 @@
       "instruction":"Draw a rectangle around each recorded instance wounds (select the whole row)",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Wounds", "color": "green", "generates_subject_type": "hs_rectangleTool_wounds" }
+          {"type": "rectangleTool", "label": "Wounds", "color": "#373ACC", "generates_subject_type": "hs_rectangleTool_wounds" }
         ]
       },
       "next_task": "hs_sick"
@@ -253,7 +257,7 @@
       "instruction":"Draw a rectangle around each recorded instance sickness (select the whole row)",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Sickness", "color": "green", "generates_subject_type": "hs_rectangleTool_sickness" }
+          {"type": "rectangleTool", "label": "Sickness", "color": "#373ACC", "generates_subject_type": "hs_rectangleTool_sickness" }
         ]
       },
       "next_task": "hs_final_questions"
@@ -265,27 +269,31 @@
       "next_task": "other_data_field",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Killed in action", "color": "green", "generates_subject_type": "hs_rectangleTool_kia", "help":{"title":"Died of wounds/sickness", "body":"Information will often include location, cause, date, details" } },
-          {"type": "rectangleTool", "label": "Died of wounds/sickness", "color": "green", "generates_subject_type": "hs_rectangleTool_died_ws", "help":{"title":"Died of wounds/sickness", "body":"Information will often include location, cause, date, details" } },
-          {"type": "rectangleTool", "label": "Missing", "color": "green", "generates_subject_type": "hs_rectangleTool_missing", "help":{"title":"Died of wounds/sickness", "body":"Information will often include location, cause, date, details" } },
-          {"type": "rectangleTool", "label": "Prisoner", "color": "green", "generates_subject_type": "hs_rectangleTool_prisoner", "help":{"title":"Died of wounds/sickness", "body":"Information will often include location, cause, date, details" } },
-          {"type": "rectangleTool", "label": "Injuries", "color": "green", "generates_subject_type": "hs_rectangleTool_injuries", "help":{"title":"Died of wounds/sickness", "body":"Information will often include location, cause, date, details" } },
-          {"type": "rectangleTool", "label": "Discharge Provisional", "color": "green", "generates_subject_type": "hs_rectangleTool_discharge_provisional" },
-          {"type": "rectangleTool", "label": "Discharge Final", "color": "green", "generates_subject_type": "hs_rectangleTool_discharge_final" }
+          {"type": "rectangleTool", "label": "Killed in action", "color": "#373ACC", "generates_subject_type": "hs_rectangleTool_kia", "help":{"title":"Died of wounds/sickness", "body":"Information will often include location, cause, date, details" } },
+          {"type": "rectangleTool", "label": "Died of wounds/sickness", "color": "#373ACC", "generates_subject_type": "hs_rectangleTool_died_ws", "help":{"title":"Died of wounds/sickness", "body":"Information will often include location, cause, date, details" } },
+          {"type": "rectangleTool", "label": "Missing", "color": "#373ACC", "generates_subject_type": "hs_rectangleTool_missing", "help":{"title":"Died of wounds/sickness", "body":"Information will often include location, cause, date, details" } },
+          {"type": "rectangleTool", "label": "Prisoner", "color": "#373ACC", "generates_subject_type": "hs_rectangleTool_prisoner", "help":{"title":"Died of wounds/sickness", "body":"Information will often include location, cause, date, details" } },
+          {"type": "rectangleTool", "label": "Injuries", "color": "#373ACC", "generates_subject_type": "hs_rectangleTool_injuries", "help":{"title":"Died of wounds/sickness", "body":"Information will often include location, cause, date, details" } },
+          {"type": "rectangleTool", "label": "Discharge Provisional", "color": "#373ACC", "generates_subject_type": "hs_rectangleTool_discharge_provisional" },
+          {"type": "rectangleTool", "label": "Discharge Final", "color": "#373ACC", "generates_subject_type": "hs_rectangleTool_discharge_final" }
         ]
       },
       "help": {
-        "file": "hs_mark_help"
+        "file": "hs_help_last_fields"
       }
     },
     "other_data_field":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
       "instruction":"Draw a rectangle around any extra information that should be marked.",
+      "help":{
+        "title":"Unknown Data and Marginalia",
+        "file":"help_mark_other"
+      },
       "next_task":null,
       "tool_config":{
         "tools": [
-          {"type":"rectangleTool", "label": "Other", "color": "green", "generates_subject_type":"transcribe_other_data_field"}
+          {"type":"rectangleTool", "label": "Other", "color": "#373ACC", "generates_subject_type":"transcribe_other_data_field"}
         ]
       }
 

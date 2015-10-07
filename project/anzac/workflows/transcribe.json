@@ -31,28 +31,6 @@
             },
             "instruction": "Transcribe the entry for **serial number**.",
             "generates_subject_type": "transcribed_number",
-            "next_task": "att_transcribe_name"
-        },
-        "att_transcribe_name": {
-            "tool": "textTool",
-            "tool_config": {},
-            "instruction": "Transcribe the entry for **name**.",
-            "help": {
-                "title": "Transcription Help",
-                "file": "basic_transcribe_help"
-            },            
-            "generates_subject_type": "transcribed_name",
-            "next_task": "att_transcribe_regiment"
-        },
-        "att_transcribe_regiment": {
-            "tool": "textTool",
-            "tool_config": {},
-            "instruction": "Transcribe the entry for **regiment.**",
-            "help": {
-                "title": "Transcription Help",
-                "file": "basic_transcribe_help"
-            },
-            "generates_subject_type": "att_transcribed_regiment",
             "next_task": null
         },
         "att_transcribe_oath_year": {

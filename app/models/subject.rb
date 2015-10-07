@@ -10,6 +10,7 @@ class Subject
   scope :by_type, -> (type) { where(type: type) }
   scope :active_non_root, -> { where(:type.ne => 'root', :status => 'active') }
   scope :active, -> { where(status: 'active').asc(:order)  }
+  scope :not_bad, -> { where(:status.ne => 'bad').asc(:order)  }
   scope :complete, -> { where(status: 'complete').asc(:order)  }
   scope :by_workflow, -> (workflow_id) { where(workflow_id: workflow_id)  }
   scope :by_subject_set, -> (subject_set_id) { where(subject_set_id: subject_set_id).asc(:order)  }
@@ -137,8 +138,11 @@ class Subject
   end
 
   def retire!
+    return if status == "bad"
+    return if classifying_user_ids.length < workflow.retire_limit
     status! 'retired'
     subject_set.subject_completed_on_workflow(workflow) if ! workflow.nil?
+    
     # subject_set.inc_complete_secondary_subject 1 if type != 'root'
   end
 

@@ -87,7 +87,7 @@ TranscribeTool = React.createClass
     if e.target.nodeName is "INPUT" or e.target.nodeName is "TEXTAREA"
       @setState preventDrag: true
       
-    console.log "[left, top] = [#{@state.dx}, #{@state.dy}]"
+    # console.log "[left, top] = [#{@state.dx}, #{@state.dy}]"
 
     @setState
       xClick: e.pageX - $('.transcribe-tool').offset().left

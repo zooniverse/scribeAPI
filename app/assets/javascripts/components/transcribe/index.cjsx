@@ -63,7 +63,7 @@ module.exports = React.createClass # rename to Classifier
         => @forceUpdate()
 
   handleTaskComplete: (d) ->
-    console.log 'TRANSCRIBE/INDEX::handleTaskComplete()'
+    # console.log 'TRANSCRIBE/INDEX::handleTaskComplete()'
     @handleDataFromTool(d)
     @commitClassificationAndContinue d
 
@@ -90,6 +90,7 @@ module.exports = React.createClass # rename to Classifier
       subject_set_id: @getCurrentSubject().subject_set_id
       selected_subject_id: @getCurrentSubject().parent_subject_id
       mark_task_key: @props.query.mark_key
+      subject_id: @getCurrentSubject().id
 
       page: @props.query.page
 

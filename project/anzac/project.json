@@ -5,6 +5,8 @@
   "background": "assets/anzac/background.png",
   "admin_email": "andrea@zooniverse.org",
     "team_emails": [ "andrea@zooniverse.org" ],
+  "logo": "/assets/anzac/logo.png",
+  "privacy_policy":"https://www.zooniverse.org/privacy",
   "terms_map": {
     "group": "collection",
     "subject set": "personnel record",
@@ -35,11 +37,11 @@
   ],
   "forum": {
     "type": "talk",
-    "account_username": "asimenstad",
+    "account_username": "zooniverse",
     "project_name": "measuring-the-anzacs"
   },
-  "blog_url": "https://measuringtheanzacs.wordpress.com/",
-  "discuss_url": "https://www.zooniverse.org/projects/asimenstad/measuring-the-anzacs/talk/",
+  "blog_url": "http://blog.measuringtheanzacs.org",
+  "discuss_url": "https://www.zooniverse.org/projects/zooniverse/measuring-the-anzacs/talk",
 
   "metadata_search": {
     "fields": [
@@ -48,6 +50,6 @@
         "field": "name"
       }
     ],
-    "feature_on_homepage": true
+    "feature_on_homepage": false
   }
 }

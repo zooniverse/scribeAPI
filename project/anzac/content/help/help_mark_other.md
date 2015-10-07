@@ -1,0 +1,1 @@
+These sheets may contain unknown, but important, fields and marginalia. If you spot anything else that you would like to transcribe, use the "Other" label to mark the area for transcription. 

@@ -51,6 +51,6 @@ module.exports = React.createClass
     else
       doneButtonLabel = "Done"
 
-    <DraggableModal header={helpContent.title ? 'Help'} doneButtonLabel={doneButtonLabel} onDone={@advanceToNextTask} width=600 classes="help-modal" progressSteps={taskKeys} currentStepIndex={@state.completedSteps} closeButton=true onClose={@completeTutorial} >
+    <DraggableModal header={helpContent.title ? 'Help'} doneButtonLabel={doneButtonLabel} onDone={@advanceToNextTask} width={800} classes="help-modal" currentStepIndex={@state.completedSteps} closeButton=true onClose={@completeTutorial} >
       <div dangerouslySetInnerHTML={{__html: marked( helpContent.body ) }} />
     </DraggableModal>

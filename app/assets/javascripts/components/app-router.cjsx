@@ -140,7 +140,7 @@ class AppRouter
           heightStyle: "content"
 
       navToggle:(e)->
-        console.log "E", e
+        # console.log "E", e
 
 
       render: ->

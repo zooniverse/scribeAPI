@@ -58,9 +58,6 @@ module.exports = React.createClass
       mark.height = Math.max mark.height, MINIMUM_SIZE
       mark
 
-
-  initCoords: null
-
   getInitialState: ->
     mark = @props.mark
     unless mark.status?

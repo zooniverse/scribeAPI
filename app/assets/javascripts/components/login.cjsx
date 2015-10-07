@@ -40,9 +40,9 @@ Login = React.createClass
     <div className='login'>
       {@renderLoggedIn() if @state.user && ! @state.user.guest }
       {@renderLoggedInAsGuest() if @state.user && @state.user.guest }
-      {@renderLoginOptions() if !@state.user }
+      {@renderLoginOptions("Log In:","login-container") if !@state.user }
       {if @state.loading
-        <p>Loading ...</p>
+        <span className={"login-container"} >Loading ...</span>
       }
     </div>
 
@@ -64,26 +64,25 @@ Login = React.createClass
 
 
   renderLoggedInAsGuest: ->
-    <span>
-      <span className="label guest-hello">Hello Guest!</span>
-      { @renderLoginOptions('Log in to save your work:') }
+    <span >
+      { @renderLoginOptions('Log in to save your work:',"login-container") }
     </span>
 
   renderLoggedIn:->
-    <p>
+    <span className={"login-container"}>
       { if @state.user.avatar
           <img src="#{@state.user.avatar}" />
       }
       <span className="label">Hello {@state.user.name} </span><a className="logout" onClick={@signOut} >Logout</a>
-    </p>
+    </span>
 
 
-  renderLoginOptions: (label) ->
+  renderLoginOptions: (label,classNames) ->
     links = @state.providers.map (link) ->
       icon_id = if link.id == 'zooniverse' then 'dot-circle-o' else link.id
       <a key="login-link-#{link.id}" href={link.path} title="Log in using #{link.name}"><i className="fa fa-#{icon_id} fa-2" /></a>
 
-    <span>
+    <span className={classNames}>
       <span className="label">{ label || "Log In:" }</span>
       <div className='options'>
         { links }

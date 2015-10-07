@@ -1,66 +1,19 @@
-order,file_path,unique_record_id,file_id,name,zooniverse_id,set_key
-1,https://s3.amazonaws.com/anzac-project/R10927559/FL9809231,R10927559,FL9809231,"MADDOCK, Alfred John Ford",927514,1
-10,https://s3.amazonaws.com/anzac-project/R10927559/FL9809118,R10927559,FL9809118,"MADDOCK, Alfred John Ford",927433,1
-11,https://s3.amazonaws.com/anzac-project/R10927559/FL9809224,R10927559,FL9809224,"MADDOCK, Alfred John Ford",927495,1
-12,https://s3.amazonaws.com/anzac-project/R10927559/FL9809119,R10927559,FL9809119,"MADDOCK, Alfred John Ford",927537,1
-13,https://s3.amazonaws.com/anzac-project/R10927559/FL9809234,R10927559,FL9809234,"MADDOCK, Alfred John Ford",927752,1
-14,https://s3.amazonaws.com/anzac-project/R10927559/FL9809121,R10927559,FL9809121,"MADDOCK, Alfred John Ford",927430,1
-15,https://s3.amazonaws.com/anzac-project/R10927559/FL9809230,R10927559,FL9809230,"MADDOCK, Alfred John Ford",927428,1
-16,https://s3.amazonaws.com/anzac-project/R10927559/FL9809233,R10927559,FL9809233,"MADDOCK, Alfred John Ford",927457,1
-17,https://s3.amazonaws.com/anzac-project/R10927559/FL9809120,R10927559,FL9809120,"MADDOCK, Alfred John Ford",927435,1
-18,https://s3.amazonaws.com/anzac-project/R10927559/FL9809235,R10927559,FL9809235,"MADDOCK, Alfred John Ford",927429,1
-2,https://s3.amazonaws.com/anzac-project/R10927559/FL9809225,R10927559,FL9809225,"MADDOCK, Alfred John Ford",927449,1
-3,https://s3.amazonaws.com/anzac-project/R10927559/FL9809226,R10927559,FL9809226,"MADDOCK, Alfred John Ford",927689,1
-4,https://s3.amazonaws.com/anzac-project/R10927559/FL9809229,R10927559,FL9809229,"MADDOCK, Alfred John Ford",927425,1
-5,https://s3.amazonaws.com/anzac-project/R10927559/FL9809228,R10927559,FL9809228,"MADDOCK, Alfred John Ford",927828,1
-6,https://s3.amazonaws.com/anzac-project/R10927559/FL9809227,R10927559,FL9809227,"MADDOCK, Alfred John Ford",927942,1
-7,https://s3.amazonaws.com/anzac-project/R10927559/FL9809222,R10927559,FL9809222,"MADDOCK, Alfred John Ford",927845,1
-8,https://s3.amazonaws.com/anzac-project/R10927559/FL9809232,R10927559,FL9809232,"MADDOCK, Alfred John Ford",927934,1
-9,https://s3.amazonaws.com/anzac-project/R10927559/FL9809223,R10927559,FL9809223,"MADDOCK, Alfred John Ford",927927,1
-1,https://s3.amazonaws.com/anzac-project/R10927558/FL23605763,R10927558,FL23605763,"MADDISON, Walter Percival",927436,2
-10,https://s3.amazonaws.com/anzac-project/R10927558/FL23605761,R10927558,FL23605761,"MADDISON, Walter Percival",927745,2
-11,https://s3.amazonaws.com/anzac-project/R10927558/FL23605756,R10927558,FL23605756,"MADDISON, Walter Percival",927440,2
-12,https://s3.amazonaws.com/anzac-project/R10927558/FL23605781,R10927558,FL23605781,"MADDISON, Walter Percival",927506,2
-13,https://s3.amazonaws.com/anzac-project/R10927558/FL23605779,R10927558,FL23605779,"MADDISON, Walter Percival",927434,2
-14,https://s3.amazonaws.com/anzac-project/R10927558/FL23605773,R10927558,FL23605773,"MADDISON, Walter Percival",927444,2
-15,https://s3.amazonaws.com/anzac-project/R10927558/FL23605752,R10927558,FL23605752,"MADDISON, Walter Percival",927443,2
-16,https://s3.amazonaws.com/anzac-project/R10927558/FL23605764,R10927558,FL23605764,"MADDISON, Walter Percival",927482,2
-17,https://s3.amazonaws.com/anzac-project/R10927558/FL23605767,R10927558,FL23605767,"MADDISON, Walter Percival",927467,2
-18,https://s3.amazonaws.com/anzac-project/R10927558/FL23605777,R10927558,FL23605777,"MADDISON, Walter Percival",927510,2
-19,https://s3.amazonaws.com/anzac-project/R10927558/FL23605769,R10927558,FL23605769,"MADDISON, Walter Percival",927468,2
-2,https://s3.amazonaws.com/anzac-project/R10927558/FL23605760,R10927558,FL23605760,"MADDISON, Walter Percival",927427,2
-20,https://s3.amazonaws.com/anzac-project/R10927558/FL23605759,R10927558,FL23605759,"MADDISON, Walter Percival",927474,2
-21,https://s3.amazonaws.com/anzac-project/R10927558/FL23605758,R10927558,FL23605758,"MADDISON, Walter Percival",927511,2
-22,https://s3.amazonaws.com/anzac-project/R10927558/FL23605748,R10927558,FL23605748,"MADDISON, Walter Percival",927469,2
-23,https://s3.amazonaws.com/anzac-project/R10927558/FL23605750,R10927558,FL23605750,"MADDISON, Walter Percival",927470,2
-24,https://s3.amazonaws.com/anzac-project/R10927558/FL23605753,R10927558,FL23605753,"MADDISON, Walter Percival",927437,2
-25,https://s3.amazonaws.com/anzac-project/R10927558/FL23605755,R10927558,FL23605755,"MADDISON, Walter Percival",927564,2
-3,https://s3.amazonaws.com/anzac-project/R10927558/FL23605782,R10927558,FL23605782,"MADDISON, Walter Percival",927432,2
-4,https://s3.amazonaws.com/anzac-project/R10927558/FL23605762,R10927558,FL23605762,"MADDISON, Walter Percival",927426,2
-5,https://s3.amazonaws.com/anzac-project/R10927558/FL23605775,R10927558,FL23605775,"MADDISON, Walter Percival",927500,2
-6,https://s3.amazonaws.com/anzac-project/R10927558/FL23605751,R10927558,FL23605751,"MADDISON, Walter Percival",927459,2
-7,https://s3.amazonaws.com/anzac-project/R10927558/FL23605754,R10927558,FL23605754,"MADDISON, Walter Percival",927479,2
-8,https://s3.amazonaws.com/anzac-project/R10927558/FL23605771,R10927558,FL23605771,"MADDISON, Walter Percival",927447,2
-9,https://s3.amazonaws.com/anzac-project/R10927558/FL23605757,R10927558,FL23605757,"MADDISON, Walter Percival",927431,2
-1,https://s3.amazonaws.com/anzac-project/R10919949/FL22624971,R10919949,FL22624971,"LITTLE, William Leslie Stewart",927688,3
-10,https://s3.amazonaws.com/anzac-project/R10919949/FL22624988,R10919949,FL22624988,"LITTLE, William Leslie Stewart",927464,3
-11,https://s3.amazonaws.com/anzac-project/R10919949/FL22624985,R10919949,FL22624985,"LITTLE, William Leslie Stewart",927792,3
-12,https://s3.amazonaws.com/anzac-project/R10919949/FL22624986,R10919949,FL22624986,"LITTLE, William Leslie Stewart",927695,3
-13,https://s3.amazonaws.com/anzac-project/R10919949/FL22624977,R10919949,FL22624977,"LITTLE, William Leslie Stewart",927725,3
-14,https://s3.amazonaws.com/anzac-project/R10919949/FL22624976,R10919949,FL22624976,"LITTLE, William Leslie Stewart",927748,3
-15,https://s3.amazonaws.com/anzac-project/R10919949/FL22624968,R10919949,FL22624968,"LITTLE, William Leslie Stewart",927706,3
-16,https://s3.amazonaws.com/anzac-project/R10919949/FL22624983,R10919949,FL22624983,"LITTLE, William Leslie Stewart",927716,3
-17,https://s3.amazonaws.com/anzac-project/R10919949/FL22624980,R10919949,FL22624980,"LITTLE, William Leslie Stewart",927755,3
-18,https://s3.amazonaws.com/anzac-project/R10919949/FL22624978,R10919949,FL22624978,"LITTLE, William Leslie Stewart",927719,3
-19,https://s3.amazonaws.com/anzac-project/R10919949/FL22624989,R10919949,FL22624989,"LITTLE, William Leslie Stewart",927709,3
-2,https://s3.amazonaws.com/anzac-project/R10919949/FL22624982,R10919949,FL22624982,"LITTLE, William Leslie Stewart",927627,3
-20,https://s3.amazonaws.com/anzac-project/R10919949/FL22624973,R10919949,FL22624973,"LITTLE, William Leslie Stewart",927635,3
-21,https://s3.amazonaws.com/anzac-project/R10919949/FL22624972,R10919949,FL22624972,"LITTLE, William Leslie Stewart",927740,3
-22,https://s3.amazonaws.com/anzac-project/R10919949/FL22624970,R10919949,FL22624970,"LITTLE, William Leslie Stewart",927690,3
-3,https://s3.amazonaws.com/anzac-project/R10919949/FL22624981,R10919949,FL22624981,"LITTLE, William Leslie Stewart",927472,3
-4,https://s3.amazonaws.com/anzac-project/R10919949/FL22624975,R10919949,FL22624975,"LITTLE, William Leslie Stewart",927634,3
-5,https://s3.amazonaws.com/anzac-project/R10919949/FL22624984,R10919949,FL22624984,"LITTLE, William Leslie Stewart",927763,3
-6,https://s3.amazonaws.com/anzac-project/R10919949/FL22624974,R10919949,FL22624974,"LITTLE, William Leslie Stewart",927625,3
-7,https://s3.amazonaws.com/anzac-project/R10919949/FL22624987,R10919949,FL22624987,"LITTLE, William Leslie Stewart",927739,3
-8,https://s3.amazonaws.com/anzac-project/R10919949/FL22624979,R10919949,FL22624979,"LITTLE, William Leslie Stewart",927439,3
-9,https://s3.amazonaws.com/anzac-project/R10919949/FL22624969,R10919949,FL22624969,"LITTLE, William Leslie Stewart",927501,3
+order,file_path,unique_record_id,file_id,width,height,name,zooniverse_id,set_key
+1,https://s3.amazonaws.com/anzac-project/R10927559/FL9809231,R10927559,FL9809231,800,1250,"MADDOCK, Alfred John Ford",927514,R10927559
+2,https://s3.amazonaws.com/anzac-project/R10927559/FL9809225,R10927559,FL9809225,800,1250,"MADDOCK, Alfred John Ford",927449,R10927559
+3,https://s3.amazonaws.com/anzac-project/R10927559/FL9809226,R10927559,FL9809226,800,196,"MADDOCK, Alfred John Ford",927689,R10927559
+4,https://s3.amazonaws.com/anzac-project/R10927559/FL9809229,R10927559,FL9809229,800,1265,"MADDOCK, Alfred John Ford",927425,R10927559
+5,https://s3.amazonaws.com/anzac-project/R10927559/FL9809228,R10927559,FL9809228,800,1268,"MADDOCK, Alfred John Ford",927828,R10927559
+6,https://s3.amazonaws.com/anzac-project/R10927559/FL9809227,R10927559,FL9809227,800,1263,"MADDOCK, Alfred John Ford",927942,R10927559
+7,https://s3.amazonaws.com/anzac-project/R10927559/FL9809222,R10927559,FL9809222,800,1264,"MADDOCK, Alfred John Ford",927845,R10927559
+8,https://s3.amazonaws.com/anzac-project/R10927559/FL9809232,R10927559,FL9809232,800,948,"MADDOCK, Alfred John Ford",927934,R10927559
+9,https://s3.amazonaws.com/anzac-project/R10927559/FL9809223,R10927559,FL9809223,800,702,"MADDOCK, Alfred John Ford",927927,R10927559
+10,https://s3.amazonaws.com/anzac-project/R10927559/FL9809118,R10927559,FL9809118,800,1270,"MADDOCK, Alfred John Ford",927433,R10927559
+11,https://s3.amazonaws.com/anzac-project/R10927559/FL9809224,R10927559,FL9809224,700,1140,"MADDOCK, Alfred John Ford",927495,R10927559
+12,https://s3.amazonaws.com/anzac-project/R10927559/FL9809119,R10927559,FL9809119,700,1125,"MADDOCK, Alfred John Ford",927537,R10927559
+13,https://s3.amazonaws.com/anzac-project/R10927559/FL9809234,R10927559,FL9809234,700,1110,"MADDOCK, Alfred John Ford",927752,R10927559
+14,https://s3.amazonaws.com/anzac-project/R10927559/FL9809121,R10927559,FL9809121,700,1119,"MADDOCK, Alfred John Ford",927430,R10927559
+15,https://s3.amazonaws.com/anzac-project/R10927559/FL9809230,R10927559,FL9809230,700,1092,"MADDOCK, Alfred John Ford",927428,R10927559
+16,https://s3.amazonaws.com/anzac-project/R10927559/FL9809233,R10927559,FL9809233,700,1120,"MADDOCK, Alfred John Ford",927457,R10927559
+17,https://s3.amazonaws.com/anzac-project/R10927559/FL9809120,R10927559,FL9809120,700,1110,"MADDOCK, Alfred John Ford",927435,R10927559
+18,https://s3.amazonaws.com/anzac-project/R10927559/FL9809235,R10927559,FL9809235,700,1105,"MADDOCK, Alfred John Ford",927429,R10927559

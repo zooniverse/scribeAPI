@@ -55,7 +55,7 @@ CompositeTool = React.createClass
   # If there are more inputs, move focus to next input
   # Otherwise commit annotation (which is default behavior when there's only one input
   handleCompletedField: ->
-    console.log 'handleCompletedField()'
+    # console.log 'handleCompletedField()'
     field_keys = (c.value for c of @props.task.tool_config.options)
     next_field_key = field_keys[ field_keys.indexOf(@state.active_field_key) + 1 ]
 
@@ -69,7 +69,7 @@ CompositeTool = React.createClass
 
   # User moved focus to an input:
   handleFieldFocus: (annotation_key) ->
-    console.log "handleFieldFocus(): #{annotation_key}"
+    # console.log "handleFieldFocus(): #{annotation_key}"
     @setState active_field_key: annotation_key
 
   # this can go into a mixin? (common across all transcribe tools)
@@ -85,7 +85,7 @@ CompositeTool = React.createClass
 
   # this can go into a mixin? (common across all transcribe tools)
   returnToMarking: ->
-    console.log 'returnToMarking()'
+    # console.log 'returnToMarking()'
     @commitAnnotation()
 
     # transition back to mark
