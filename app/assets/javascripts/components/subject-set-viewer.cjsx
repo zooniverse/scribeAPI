@@ -23,7 +23,6 @@ module.exports = React.createClass
     subject_set: @props.subject_set
     tool: @props.tool
     toolbar_expanded: false
-    # subject_index: @props.subject_index ? 0pmark
 
   advancePrevious: ->
     @advance -1
@@ -36,8 +35,8 @@ module.exports = React.createClass
     return if new_index < 0 || new_index >= @props.subject_set.subjects.length
 
     # Let's just deal in indexes rather than storing both objects and indexes in state, lest they drift out of sync
-    # @setState subject_index: new_index, () =>
-    @props.onViewSubject? new_index # @props.subject_index
+    @setState subject_index: new_index, () =>
+      @props.onViewSubject? new_index
 
   specificSelection: (blah, new_index) ->
     # this prevents navigating away from the subject during a workflow --AMS
@@ -53,6 +52,7 @@ module.exports = React.createClass
     @setState toolbar_expanded: false
 
   render: ->
+    return null if ! @props.subject_set.subjects?
     # console.log 'SUBJECT-SET-VIEWER::render(), subject_index = ', @props.subject_index
     # NOTE: LightBox does not receive correct @props.subject_index. Why? --STI
     <div className={"subject-set-viewer" + if @state.toolbar_expanded then ' expand' else ''}>
