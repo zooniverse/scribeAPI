@@ -185,7 +185,7 @@ namespace :project do
       # Loop over fields array:
       if project.metadata_search["fields"].is_a? Array
         project.metadata_search["fields"].each do |field|
-          SubjectSet.index("project" => 1, "metadata.#{field['field']}" => 1)
+          SubjectSet.index({"project" => 1, "metadata.#{field['field']}" => 1}, {background: true})
         end
       end
       SubjectSet.create_indexes
@@ -314,9 +314,9 @@ namespace :project do
     project.workflows.each do |w|
       puts "  workflow.#{w.id}"
       # Index for typical Mark query:
-      SubjectSet.index("counts.#{w.id}.active_subjects" => 1, "random_no" => 1)
+      SubjectSet.index({"counts.#{w.id}.active_subjects" => 1, "random_no" => 1}, {background: true})
       # Index for marking by group_id:
-      SubjectSet.index("counts.#{w.id}.active_subjects" => 1, "group_id" => 1)
+      SubjectSet.index({"counts.#{w.id}.active_subjects" => 1, "group_id" => 1}, {background: true})
     end
     SubjectSet.create_indexes
 

@@ -66,9 +66,9 @@ class Subject
   after_create :increment_parents_subject_count_by_one, :if => :parent_subject
 
   # Index for typical query when fetching subjects for Transcribe/Verify:
-  index "status" => 1, "workflow_id" => 1, "classifying_user_ids" => 1
+  index({"status" => 1, "workflow_id" => 1, "classifying_user_ids" => 1}, {background: true})
   # Index for Marking by subject set:
-  index "status" => 1, "type" => 1, "subject_set_id" => 1
+  index({"status" => 1, "type" => 1, "subject_set_id" => 1}, {background: true})
 
   def thumbnail
     location['thumbnail'].nil? ? location['standard'] : location['thumbnail']
