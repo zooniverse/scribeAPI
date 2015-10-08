@@ -22,7 +22,7 @@
   </div>
   <h3>South African War Attestation</h3>
   <div class="modal-field-guide" >
-    <img src="assets/anzac/sa_att_ex.jpeg" alt="death notification">
+    <img src="/images/sa_att_ex.jpeg" alt="death notification">
     <p>Includes the word "attestation," and the heading indicates service in South African war.</p>
   </div>
   <h3>Death Notifications</h3>

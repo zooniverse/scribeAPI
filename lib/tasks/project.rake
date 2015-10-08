@@ -33,6 +33,16 @@ namespace :project do
       puts "Done loading content for \"#{project.title}\""
     end
 
+
+    # DEPRECATED:
+    # Should deprecate this because all static assets can now be fetched directly
+    # from project/[key]/assets; There is no need to copy js, images, fonts, etc
+    # into app/assets. Serving them directly from the project/../assets folder is
+    # preferable because it doesn't clutter app/assets, which should be reserved
+    # for core application concerns.
+    # Nevertheless, I'm keeping this functionality in place so that projects can
+    # gracefully deprecate reliance on copied assets.
+    #
     # Load custom styling (css,js,images,fonts, etc):
     if ['all','style'].include? args[:area]
       load_styles project
@@ -109,8 +119,19 @@ namespace :project do
     # load project_file_path
     project = Project.find_or_create_by key: project_key
 
+    # Establish some defaults so that if they're not set in the project hash, we overwrite the old value with the null default
+    project_defaults = {
+      background: nil,
+      logo: nil,
+      terms_map: {},
+      team_emails: [],
+      team: [],
+      organizations: [],
+      analytics: nil,
+      forum: nil
+    }
     # Set all valid fields from hash:
-    project_hash = project_hash.inject({}) { |h, (k,v)| h[k] = v if Project.fields.keys.include?(k.to_s); h }
+    project_hash = project_hash.inject(project_defaults) { |h, (k,v)| h[k] = v if Project.fields.keys.include?(k.to_s); h }
     project.update project_hash
 
     puts "Created project: #{project.title}"
@@ -164,12 +185,18 @@ namespace :project do
       # Loop over fields array:
       if project.metadata_search["fields"].is_a? Array
         project.metadata_search["fields"].each do |field|
-          SubjectSet.index("project" => 1, "metadata.#{field['field']}" => 1)
+          SubjectSet.index({"project" => 1, "metadata.#{field['field']}" => 1}, {background: true})
         end
       end
       SubjectSet.create_indexes
     end
    
+    # Make sure project.status index exists
+    Project.create_indexes
+    # Make sure various subject indexes exist:
+    Subject.create_indexes
+    Group.create_indexes
+
     project.save
     project
   end
@@ -281,6 +308,17 @@ namespace :project do
     project.workflows.each do |w|
       w.update_attribute :order, project.workflows.size - num_downstream_workflows(w) - 1
     end
+
+    # Create workflow counts indexes:
+    puts "Creating workflow counts indexes:"
+    project.workflows.each do |w|
+      puts "  workflow.#{w.id}"
+      # Index for typical Mark query:
+      SubjectSet.index({"counts.#{w.id}.active_subjects" => 1, "random_no" => 1}, {background: true})
+      # Index for marking by group_id:
+      SubjectSet.index({"counts.#{w.id}.active_subjects" => 1, "group_id" => 1}, {background: true})
+    end
+    SubjectSet.create_indexes
 
     puts "  WARN: No mark workflow found" if project.workflows.find_by(name: 'mark').nil?
   end

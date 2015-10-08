@@ -23,7 +23,9 @@ module.exports = React.createClass
       onClick = () =>
         c?()
         window.location.href = @props.href
-      
-    <button className={classes.join " "} onClick={onClick} disabled={if @props.disabled then 'disabled'}>
+
+    key = @props.href ? @props.onClick
+
+    <button key={key} className={classes.join " "} onClick={onClick} disabled={if @props.disabled then 'disabled'}>
       { @props.label }
     </button>

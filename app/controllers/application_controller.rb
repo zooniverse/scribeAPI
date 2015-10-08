@@ -38,6 +38,13 @@ class ApplicationController < ActionController::Base
     @cached_guest_user
   end
 
+
+  def current_project
+    @current_project ||= Project.current
+  end
+
+  helper_method :current_project
+
   private
 
   # Called when guest user logs in: Handle transfering contribs to real user:

@@ -2,10 +2,10 @@
   "title": "Measuring the ANZACs",
   "short_title": "ANZAC",
   "summary": "Transcription of New Zealand World War I Personnel Files",
-  "background": "assets/anzac/background.png",
+  "background": "/images/background.png",
   "admin_email": "andrea@zooniverse.org",
     "team_emails": [ "andrea@zooniverse.org" ],
-  "logo": "/assets/anzac/logo.png",
+  "logo": "/images/logo.png",
   "privacy_policy":"https://www.zooniverse.org/privacy",
   "terms_map": {
     "group": "collection",
