@@ -1,6 +1,7 @@
 {
     "name": "transcribe",
     "label": "Transcribe Workflow",
+    "subject_fetch_limit": "50",
     "retire_limit": 3,
     "generates_subjects": true,
     "generates_subjects_for": "verify",
@@ -20,6 +21,292 @@
             "tool_config":{},
             "instruction":"Transcribe the highlighted area.",
             "generates_subject_type":"transcribed_other_page_type",
+            "next_task": null
+        },
+        "sa_regimental_no": {
+            "tool": "textTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **Regimental No.**.",
+            "generates_subject_type": "sa_transcribed_regimental_no",
+            "next_task": null
+        },
+        "sa_horse": {
+            "tool": "textTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **horse**.",
+            "generates_subject_type": "sa_transcribed_horse",
+            "next_task": null
+        },
+        "sa_name": {
+            "tool": "textTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **name**.",
+            "generates_subject_type": "sa_transcribed_name",
+            "next_task": null
+        },
+        "sa_company": {
+            "tool": "textTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **company**.",
+            "generates_subject_type": "sa_transcribed_company",
+            "next_task": null
+        },
+        "sa_corps": {
+            "tool": "textTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **corps**.",
+            "generates_subject_type": "sa_transcribed_corps",
+            "next_task": null
+        },
+        "sa_rank_length": {
+            "tool": "textTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **Rank and length of service**.",
+            "generates_subject_type": "sa_transcribed_rank_length",
+            "next_task": null
+        },
+        "sa_address": {
+            "tool": "textAreaTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **address**.",
+            "generates_subject_type": "sa_transcribed_address",
+            "next_task": null
+        },
+        "sa_trade": {
+            "tool": "textTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **trade or calling**.",
+            "generates_subject_type": "sa_transcribed_trade",
+            "next_task": null
+        },
+        "sa_employer": {
+            "tool": "textAreaTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **name and address of employer**.",
+            "generates_subject_type": "sa_transcribed_employer",
+            "next_task": null
+        },
+        "sa_age_yr": {
+            "tool": "textTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **age (years)**.",
+            "generates_subject_type": "sa_transcribed_age_yr",
+            "next_task": null
+        },
+        "sa_age_month": {
+            "tool": "textTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **age (months)**.",
+            "generates_subject_type": "sa_transcribed_age_month",
+            "next_task": null
+        },
+        "sa_height_ft": {
+            "tool": "textTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **height (ft)**.",
+            "generates_subject_type": "sa_transcribed_height_ft",
+            "next_task": null
+        },
+        "sa_height_in": {
+            "tool": "textTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **height (in)**.",
+            "generates_subject_type": "sa_transcribed_height_in",
+            "next_task": null
+        },
+        "sa_chest_measure": {
+            "tool": "textTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **chest measurement**.",
+            "generates_subject_type": "sa_transcribed_chest_measure",
+            "next_task": null
+        },
+        "sa_weight_st": {
+            "tool": "textTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **weight (stone)**.",
+            "generates_subject_type": "sa_transcribed_weight_st",
+            "next_task": null
+        },
+        "sa_weight_lbs": {
+            "tool": "textTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **weight (lbs)**.",
+            "generates_subject_type": "sa_transcribed_weight_lbs",
+            "next_task": null
+        },
+        "sa_religion": {
+            "tool": "textTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **religion**.",
+            "generates_subject_type": "sa_transcribed_religion",
+            "next_task": null
+        },
+        "sa_kin_name": {
+            "tool": "textTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **next of kin (name and relationship)**.",
+            "generates_subject_type": "sa_transcribed_kin_name",
+            "next_task": null
+        },
+        "sa_kin_address": {
+            "tool": "textAreaTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **next of kin (address)**.",
+            "generates_subject_type": "sa_transcribed_kin_address",
+            "next_task": null
+        },
+        "sa_sworn": {
+            "tool": "textTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **sworn before me**.",
+            "generates_subject_type": "sa_transcribed_sworn",
+            "next_task": null
+        },
+        "sa_swear_date": {
+            "tool": "textTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **month and year of swearing**.",
+            "generates_subject_type": "sa_transcribed_swear_date",
+            "next_task": null
+        },
+        "dn_last_name": {
+            "tool": "textTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **last name**.",
+            "generates_subject_type": "dn_transcribed_last_name",
+            "next_task": null
+        },
+        "dn_first_name": {
+            "tool": "textTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **first name**.",
+            "generates_subject_type": "dn_transcribed_first_name",
+            "next_task": null
+        },
+        "dn_service_no": {
+            "tool": "textTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **service no**.",
+            "generates_subject_type": "dn_transcribed_service_no",
+            "next_task": null
+        },
+        "dn_place_of_death": {
+            "tool": "textTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **place of death**.",
+            "generates_subject_type": "dn_transcribed_place_of_death",
+            "next_task": null
+        },
+        "dn_date_of_death": {
+            "tool": "textTool",
+            "tool_config": {},
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "instruction": "Transcribe the entry for **date of death**.",
+            "generates_subject_type": "dn_transcribed_date_death",
             "next_task": null
         },
         "att_transcribe_header": {
@@ -407,7 +694,7 @@
             "next_task": null
         },
         "att_transcribe_discharged": {
-            "tool": "textTool",
+            "tool": "textAreaTool",
             "tool_config": {},
             "instruction": "Transcribe the entry for being **discharged**.",
             "help": {
@@ -711,7 +998,7 @@
             "next_task": null
         },
         "hs_rectangleTool_kia": {
-            "tool": "textTool",
+            "tool": "textAreaTool",
             "tool_config": {},
             "instruction": "Transcribe the entry for **killed in action**.",
             "help": {
@@ -722,7 +1009,7 @@
             "next_task": null
         },
         "hs_rectangleTool_died_ws": {
-            "tool": "textTool",
+            "tool": "textAreaTool",
             "tool_config": {},
             "instruction": "Transcribe the entry for **died of wounds/sickness**.",
             "help": {
@@ -733,7 +1020,7 @@
             "next_task": null
         },
         "hs_rectangleTool_missing": {
-            "tool": "textTool",
+            "tool": "textAreaTool",
             "tool_config": {},
             "instruction": "Transcribe the entry for **missing**.",
             "help": {
@@ -744,7 +1031,7 @@
             "next_task": null
         },
         "hs_rectangleTool_prisoner": {
-            "tool": "textTool",
+            "tool": "textAreaTool",
             "tool_config": {},
             "instruction": "Transcribe the entry for **prisoner**.",
             "help": {
@@ -755,7 +1042,7 @@
             "next_task": null
         },
         "hs_rectangleTool_injuries": {
-            "tool": "textTool",
+            "tool": "textAreaTool",
             "tool_config": {},
             "instruction": "Transcribe the entry for **injuries**.",
             "help": {
@@ -766,7 +1053,7 @@
             "next_task": null
         },
         "hs_rectangleTool_discharge_provisional": {
-            "tool": "textTool",
+            "tool": "textAreaTool",
             "tool_config": {},
             "instruction": "Transcribe the entry for **discharge provisional**.",
             "help": {
@@ -777,7 +1064,7 @@
             "next_task": null
         },
         "hs_rectangleTool_discharge_final": {
-            "tool": "textTool",
+            "tool": "textAreaTool",
             "tool_config": {},
             "instruction": "Transcribe the entry for **discharge final**.",
             "help": {

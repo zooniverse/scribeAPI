@@ -7,20 +7,6 @@ Login = require '../components/login'
 module.exports = React.createClass
   displayName: 'MainHeader'
 
-  # mixins: [ Navigation ]
-
-  # mixins: [PromiseToSetState]
-
-  # componentDidMount: ->
-  #   @handleAuthChange()
-  #   auth.listen @handleAuthChange
-
-  # componentWillUnmount: ->
-  #   auth.stopListening @handleAuthChange
-
-  # handleAuthChange: ->
-  #   @promiseToSetState user: auth.checkCurrent()
-
   render: ->
     <header classNameim="main-header">
 
