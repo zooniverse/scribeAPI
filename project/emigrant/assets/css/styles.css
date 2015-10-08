@@ -1,15 +1,15 @@
 /* Fonts */
 @font-face {
   font-family: 'Kievit';
-  src: url('/assets/emigrant/KievitWeb-Book.eot'); /* IE9 Compat Modes */
-  src: url('/assets/emigrant/KievitWeb-Book.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-       url('/assets/emigrant/KievitWeb-Book.woff') format('woff'); /* Pretty Modern Browsers */
+  src: url('/fonts/KievitWeb-Book.eot'); /* IE9 Compat Modes */
+  src: url('/fonts/KievitWeb-Book.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('/fonts/KievitWeb-Book.woff') format('woff'); /* Pretty Modern Browsers */
 }
 @font-face {
   font-family: 'Kievit';
-  src: url('/assets/emigrant/KievitWeb-Medi.eot'); /* IE9 Compat Modes */
-  src: url('/assets/emigrant/KievitWeb-Medi.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-       url('/assets/emigrant/KievitWeb-Medi.woff') format('woff'); /* Pretty Modern Browsers */
+  src: url('/fonts/KievitWeb-Medi.eot'); /* IE9 Compat Modes */
+  src: url('/fonts/KievitWeb-Medi.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('/fonts/KievitWeb-Medi.woff') format('woff'); /* Pretty Modern Browsers */
   font-weight: bold;
 }
 html, body,
@@ -214,7 +214,7 @@ div.home-page {
   display: inline-block;
   width: 40px;
   height: 40px;
-  background-image: url('/assets/emigrant/nypl-logo.svg');
+  background-image: url('/images/nypl-logo.svg');
   background-size: 100% 100%;
   margin-right: 12px;
   vertical-align: text-bottom;

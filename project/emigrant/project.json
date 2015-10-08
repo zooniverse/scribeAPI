@@ -2,9 +2,9 @@
   "title": "Nation of Emigrants",
   "short_title": "Emigrant",
   "summary": "Emmmmigrannnnnt Savinnnnnnnngs Baaaaannk",
-  "background": "assets/emigrant/background.jpg",
+  "background": "/images/background.jpg",
   "admin_email": "paulbeaudoin@nypl.org",
-  "logo": "/assets/emigrant/logo.svg",
+  "logo": "/images/logo.svg",
   "terms_map": {
     "group": "collection",
     "subject set": "page",
@@ -36,6 +36,10 @@
       "logo": "http://cdn-prod.www.aws.nypl.org/sites/all/themes/nypl_new/images/main-logo.png"
     }
   ],
+
+  "analytics": {
+    "google_analytics_client_id": "UA-68522125-1"
+  },
 
   "forum": {
     "type": "discourse",
