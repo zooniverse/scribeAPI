@@ -18,6 +18,8 @@ class Group
 
   scope :by_project, -> (project_id) { where(project_id: project_id) }
 
+  index "project_id" => 1
+
   def calc_stats
 
     statuses = {
