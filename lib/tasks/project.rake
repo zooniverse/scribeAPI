@@ -191,6 +191,12 @@ namespace :project do
       SubjectSet.create_indexes
     end
    
+    # Make sure project.status index exists
+    Project.create_indexes
+    # Make sure various subject indexes exist:
+    Subject.create_indexes
+    Group.create_indexes
+
     project.save
     project
   end
@@ -302,6 +308,17 @@ namespace :project do
     project.workflows.each do |w|
       w.update_attribute :order, project.workflows.size - num_downstream_workflows(w) - 1
     end
+
+    # Create workflow counts indexes:
+    puts "Creating workflow counts indexes:"
+    project.workflows.each do |w|
+      puts "  workflow.#{w.id}"
+      # Index for typical Mark query:
+      SubjectSet.index("counts.#{w.id}.active_subjects" => 1, "random_no" => 1)
+      # Index for marking by group_id:
+      SubjectSet.index("counts.#{w.id}.active_subjects" => 1, "group_id" => 1)
+    end
+    SubjectSet.create_indexes
 
     puts "  WARN: No mark workflow found" if project.workflows.find_by(name: 'mark').nil?
   end
