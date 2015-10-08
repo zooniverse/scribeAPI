@@ -43,12 +43,12 @@
           {
             "value":"death_notification",
             "label":"Death Notification",
-            "next_task": null
+            "next_task": "dn_task"
           },
           {
             "value":"sfatt",
             "label":"South African War Attestation",
-            "next_task": null
+            "next_task": "sa_task_1"
           },
           {
             "value":"other_page_type",
@@ -57,6 +57,72 @@
             "generates_subject_type": "transcribe_other_page_type",
             "next_task": null
           }
+        ]
+      }
+    },
+    "sa_task_1":{
+      "generates_subjects": true,
+      "tool":"pickOneMarkOne",
+      "next_task": "sa_task_2",
+      "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
+      "tool_config": {
+        "tools": [
+          {"type": "rectangleTool", "label": "Regimental No.", "color": "#373ACC", "generates_subject_type": "sa_regimental_no", "help": {"title":"Regimental No.", "body": "Look for a number with the following formats: 'xx/yyyy' or 'yyyyy'"}},
+          {"type": "rectangleTool", "label": "Company", "color": "#373ACC", "generates_subject_type": "sa_company" },
+          {"type": "rectangleTool", "label": "Horse", "color": "#373ACC", "generates_subject_type": "sa_horse" },
+          {"type": "rectangleTool", "label": "Name", "color": "#373ACC", "generates_subject_type": "sa_name", "help": {"title":"Name", "body": "Given and surname of soldier. Transcribe as written. First Last order will vary."} },
+          {"type": "rectangleTool", "label": "Corps", "color": "#373ACC", "generates_subject_type": "sa_corps" },
+          {"type": "rectangleTool", "label": "Rank and length of service", "color": "#373ACC", "generates_subject_type": "sa_rank_length" },
+          {"type": "rectangleTool", "label": "Address", "color": "#373ACC", "generates_subject_type": "sa_address" },
+          {"type": "rectangleTool", "label": "Trade or calling", "color": "#373ACC", "generates_subject_type": "sa_trade", "help": {"title":"Trade or Calling", "body": "Description of job. May include two jobs. Maintain order from form."} },
+          {"type": "rectangleTool", "label": "Name and address of employer", "color": "#373ACC", "generates_subject_type": "sa_employer" }
+        ]
+      }
+    },
+    "sa_task_2":{
+      "generates_subjects": true,
+      "tool":"pickOneMarkOne",
+      "next_task": "sa_task_3",
+      "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
+      "tool_config": {
+        "tools": [
+          {"type": "rectangleTool", "label": "Age (years)", "color": "#373ACC", "generates_subject_type": "sa_age_yr"},
+          {"type": "rectangleTool", "label": "Age (months)", "color": "#373ACC", "generates_subject_type": "sa_age_month" },
+          {"type": "rectangleTool", "label": "Height (feet)", "color": "#373ACC", "generates_subject_type": "sa_height_ft" },
+          {"type": "rectangleTool", "label": "Height (inches)", "color": "#373ACC", "generates_subject_type": "sa_height_in" },
+          {"type": "rectangleTool", "label": "Chest measurement", "color": "#373ACC", "generates_subject_type": "sa_chest_measure" },
+          {"type": "rectangleTool", "label": "Weight (stone)", "color": "#373ACC", "generates_subject_type": "sa_weight_st", "help": {"title":"Weight", "body": "Stone is 14 pounds. Include abbreviation (e.g. 'st')"}},
+          {"type": "rectangleTool", "label": "Weight (lbs)", "color": "#373ACC", "generates_subject_type": "sa_weight_lbs", "help": {"title":"Weight", "body": "May follow stone in range 0-14, or specify whole weight. Will be > 100 if whole weight."} }
+        ]
+      }
+    },
+    "sa_task_3":{
+      "generates_subjects": true,
+      "tool":"pickOneMarkOne",
+      "next_task": "other_data_field",
+      "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
+      "tool_config": {
+        "tools": [
+          {"type": "rectangleTool", "label": "Religion", "color": "#373ACC", "generates_subject_type": "sa_religion", "help":{"title":"Religion", "body":"Often abbreviated. See list of abbreviations <a style='text-decoration:none' target='_blank' href='http://www.measuringtheanzacs.org/#/field_guide#religious-denominations'>here</a>."}},
+          {"type": "rectangleTool", "label": "Next of kin (name and relationship)", "color": "#373ACC", "generates_subject_type": "sa_kin_name"},
+          {"type": "rectangleTool", "label": "Next of kin (address)", "color": "#373ACC", "generates_subject_type": "sa_kin_address" },
+          {"type": "rectangleTool", "label": "Sworn before me", "color": "#373ACC", "generates_subject_type": "sa_sworn" },
+          {"type": "rectangleTool", "label": "Month and year of swearing", "color": "#373ACC", "generates_subject_type": "sa_swear_date" }
+        ]
+      }
+    },
+    "dn_task":{
+      "generates_subjects": true,
+      "tool":"pickOneMarkOne",
+      "next_task": "other_data_field",
+      "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
+      "tool_config": {
+        "tools": [
+          {"type": "rectangleTool", "label": "Last Name", "color": "#373ACC", "generates_subject_type": "dn_last_name"},
+          {"type": "rectangleTool", "label": "First (Christian) Name", "color": "#373ACC", "generates_subject_type": "dn_first_name" },
+          {"type": "rectangleTool", "label": "Service No.", "color": "#373ACC", "generates_subject_type": "dn_service_no" },
+          {"type": "rectangleTool", "label": "Place of Death", "color": "#373ACC", "generates_subject_type": "dn_place_of_death" },
+          {"type": "rectangleTool", "label": "Date of Death", "color": "#373ACC", "generates_subject_type": "dn_date_of_death" }
         ]
       }
     },
@@ -85,13 +151,13 @@
         "tools": [
           {"type": "rectangleTool", "label": "Oath Year", "color": "#373ACC", "generates_subject_type": "att_transcribe_oath_year", "help":{"title":"Oath Year", "body":"Year in numbers."} },
           {"type": "rectangleTool", "label": "Age", "color": "#373ACC", "generates_subject_type": "att_transcribe_age", "help":{"title":"Age", "body":"Most aged 17-40. Please double check if older or younger."} },
-          {"type": "rectangleTool", "label": "Height", "color": "#373ACC", "generates_subject_type": "att_transcribe_height", "help":{"title":"Height", "body":"Capture both the feet and inch values with the same rectangle. Most entries are between 5ft and 6ft. Please double check if other values. ![example of marking chest measurement](assets/anzac/att_height.gif)"} },
+          {"type": "rectangleTool", "label": "Height", "color": "#373ACC", "generates_subject_type": "att_transcribe_height", "help":{"title":"Height", "body":"Capture both the feet and inch values with the same rectangle. Most entries are between 5ft and 6ft. Please double check if other values. ![example of marking chest measurement](/images/att_height.gif)"} },
           {"type": "rectangleTool", "label": "Weight", "color": "#373ACC", "generates_subject_type": "att_transcribe_weight", "help":{"title":"Weight", "body":"Sometimes weight will be recorded in stones and other times weight will be recorded in pounds. If the weight is recorded in stones, please include the abbreviation (i.e., ‘st’)."}  },
-          {"type": "rectangleTool", "label": "Chest Measurement", "color": "#373ACC", "generates_subject_type": "att_transcribe_chest_measurement", "help":{"title":"Chest Measurement", "body":"Capture both min and max values with the same rectangle. Values specified in inches. Typically in the range 25-40. ![example of marking chest measurement](assets/anzac/att_chest_mesurement.gif)"} },
+          {"type": "rectangleTool", "label": "Chest Measurement", "color": "#373ACC", "generates_subject_type": "att_transcribe_chest_measurement", "help":{"title":"Chest Measurement", "body":"Capture both min and max values with the same rectangle. Values specified in inches. Typically in the range 25-40. ![example of marking chest measurement](/images/att_chest_mesurement.gif)"} },
           {"type": "rectangleTool", "label": "Complexion", "color": "#373ACC", "generates_subject_type": "att_transcribe_complexion" },
           {"type": "rectangleTool", "label": "Eye Color", "color": "#373ACC", "generates_subject_type": "att_transcribe_eye_color" },
           {"type": "rectangleTool", "label": "Hair Color", "color": "#373ACC", "generates_subject_type": "att_transcribe_hair_color" },
-          {"type": "rectangleTool", "label": "Religious Profession", "color": "#373ACC", "generates_subject_type": "att_transcribe_religious_profession", "help":{"title":"Religious Profession", "body":"Often abbreviated. See list of abbreviations <a style='text-decoration:none' target='_blank' href='http://localhost:3000/#/field_guide#religious-denominations'>here</a>."} }
+          {"type": "rectangleTool", "label": "Religious Profession", "color": "#373ACC", "generates_subject_type": "att_transcribe_religious_profession", "help":{"title":"Religious Profession", "body":"Often abbreviated. See list of abbreviations <a style='text-decoration:none' target='_blank' href='http://www.measuringtheanzacs.org/#/field_guide#religious-denominations'>here</a>."} }
         ]
       },
       "next_task": "att_medical_sight_hearing"
@@ -102,8 +168,8 @@
       "instruction":"Select a label and draw rectangle around any corresponding entries on the document.",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Sight", "color": "#373ACC", "generates_subject_type": "att_transcribe_sight", "help":{"title":"Sight", "body":"Capture both the left and right sight values with the same rectangle. The values are often specified as x/6 or x/20, 'normal' or 'good'. ![example of marking chest measurement](assets/anzac/att_sight.gif)"} },
-          {"type": "rectangleTool", "label": "Hearing", "color": "#373ACC", "generates_subject_type": "att_transcribe_hearing", "help":{"title":"Hearing", "body":"Capture both the left and right hearing values with the same rectangle. Often described as 'normal' or 'good'. ![example of marking chest measurement](assets/anzac/att_hearing.gif)"} },
+          {"type": "rectangleTool", "label": "Sight", "color": "#373ACC", "generates_subject_type": "att_transcribe_sight", "help":{"title":"Sight", "file":"att_sight"} },
+          {"type": "rectangleTool", "label": "Hearing", "color": "#373ACC", "generates_subject_type": "att_transcribe_hearing", "help":{"title":"Hearing", "file":"att_hearing"} },
           {"type": "rectangleTool", "label": "Color Vision", "color": "#373ACC", "generates_subject_type": "att_transcribe_color_vision", "help":{"title":"Color Vision", "body":"Often described as 'normal' or 'good'."} }
         ]
       },

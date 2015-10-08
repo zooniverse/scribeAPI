@@ -2,4 +2,4 @@ Select the type of information you are marking. Then, mark the corresponding ent
 
 If a field is already marked, you do not need to mark that field another time.
 
-![example of marking a field](assets/anzac/hs_mark_help.gif)
+![example of marking a field](/images/hs_mark_help.gif)

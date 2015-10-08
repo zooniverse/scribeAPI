@@ -2,4 +2,4 @@
 
 **Questions**: When marking a question, mark both the question and the response with the same rectangle. 
 
-![example of marking a questions](assets/anzac/1_part_att_q.gif)
+![example of marking a questions](/images/1_part_att_q.gif)

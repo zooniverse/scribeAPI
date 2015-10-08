@@ -17,7 +17,7 @@ class Classification
     @committed = false
 
   commit: (callback) ->
-    console.log 'Classification::commit()'
+    # console.log 'Classification::commit()'
     return if @committed
     @committed = true
 
@@ -36,7 +36,7 @@ class Classification
       method: 'post'
       dataType: 'json'
       complete: (resp) =>
-        console.log 'RESP: ', resp
+        # console.log 'RESP: ', resp
         callback? resp.responseJSON?.classification
 
     # $.ajax('/classifications', data: data, method: 'post', dataType: 'json').done((response)->
@@ -51,7 +51,7 @@ class Classification
     #   return
     # )
 
-    console.log 'Classification::commit() END'
+    # console.log 'Classification::commit() END'
     # # Perform other work here ...
     # # Set another completion function for the request above
     # jqxhr.always ->
