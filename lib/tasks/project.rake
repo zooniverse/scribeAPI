@@ -82,7 +82,11 @@ namespace :project do
       puts "Another project, '#{Project.active.first.title}', is currently active. To activate '#{project.title}', run:"
       puts "  rake project:activate[#{args[:project_key]}]"
     end
+
+    ApplicationController.expire_action_cache 'projects/index.json'
+    ApplicationController.expire_action_cache 'home/index'
   end
+
 
   desc "List projects and active status"
   task :list, [] => :environment do |task, args|
