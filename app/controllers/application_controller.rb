@@ -45,6 +45,13 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_project
 
+
+  # Expire a caches_action cached response:
+  def self.expire_action_cache(path)
+    Rails.cache.delete "views/#{path}"
+  end
+
+
   private
 
   # Called when guest user logs in: Handle transfering contribs to real user:
