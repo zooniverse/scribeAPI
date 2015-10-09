@@ -196,6 +196,8 @@ namespace :project do
     # Make sure various subject indexes exist:
     Subject.create_indexes
     Group.create_indexes
+    Workflow.create_indexes
+    Favourite.create_indexes
 
     project.save
     project
