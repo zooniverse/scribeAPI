@@ -87,11 +87,11 @@ class Project
 
     # retrieve subject data
     subjects_data = []
-    subject_groups = Subject.all.group_by {|d| d.status}
-    subject_groups.each do |status, subjects|
+    subject_groups = Subject.group_by_field :status
+    subject_groups.each do |(status, count)|
       subjects_data << {
         label: status,
-        value: subjects.size
+        value: count
       }
     end
 
