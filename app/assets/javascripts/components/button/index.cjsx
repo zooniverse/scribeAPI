@@ -21,7 +21,6 @@ module.export = React.createClass
         success: (data) ->
           #further thought needed
           #if a delete button it will depend on parent component?
-          # console.log "Success, here is data: #{data}" 
         error: (jqXHR, textStatus, errorThrown) ->
           console.log "Error in button action:", xhr, textStatus, errorThrown
 

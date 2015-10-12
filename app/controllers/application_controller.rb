@@ -18,7 +18,6 @@ class ApplicationController < ActionController::Base
         guest_user_logging_in
         guest_user(create_if_missing = false).try(:destroy)
         session[:guest_user_id] = nil
-        puts "destroy guest sess: #{session[:guest_user_id]}"
       end
       current_user
     else

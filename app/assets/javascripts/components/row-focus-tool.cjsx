@@ -17,9 +17,6 @@ RowFocusTool = React.createClass
       {x, y}
 
   getInitialState: ->
-    # # DEBUG CODE
-    # console.log "PROPS [#{@props.mark.yUpper},#{@props.mark.yLower}]"
-    # console.log "INITIAL (STATE.X, STATE.Y): (#{Math.round @props.mark.x},#{Math.round @props.mark.y})"
     centerX: @props.mark.x
     centerY: @props.mark.y
     markHeight: @props.defaultMarkHeight
@@ -44,14 +41,11 @@ RowFocusTool = React.createClass
 
   handleToolProgress: ->
     if @state.markComplete is false
-      # console.log 'MARK COMPLETE!'
       @setState markComplete: true
     else
-      # console.log 'TRANSCRIBE COMPLETE!'
       @setState transcribeComplete: true
 
   render: ->
-    # console.log 'mark: ', @props.mark
     markHeight = @props.mark.yLower - @props.mark.yUpper
     <g
       className = "point drawing-tool"

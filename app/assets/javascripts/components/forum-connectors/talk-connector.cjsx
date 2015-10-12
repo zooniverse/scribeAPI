@@ -16,7 +16,6 @@ module.exports =
       #   url: url
       #   dataType: "json"
       #   success: ((resp) =>
-      #     # console.log 'FETCHED posts: ', resp
       #
       #     posts = resp.topic_list?.topics ? []
       #     base_url = @options.base_url

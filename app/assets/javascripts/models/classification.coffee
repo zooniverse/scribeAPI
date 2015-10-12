@@ -17,7 +17,6 @@ class Classification
     @committed = false
 
   commit: (callback) ->
-    # console.log 'Classification::commit()'
     return if @committed
     @committed = true
 
@@ -36,7 +35,6 @@ class Classification
       method: 'post'
       dataType: 'json'
       complete: (resp) =>
-        # console.log 'RESP: ', resp
         callback? resp.responseJSON?.classification
 
     # $.ajax('/classifications', data: data, method: 'post', dataType: 'json').done((response)->

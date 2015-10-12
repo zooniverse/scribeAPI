@@ -18,7 +18,6 @@ module.exports =
         success: ((resp) =>
 
           posts = resp.posts ? []
-          # console.log 'FETCHED posts: ', resp, posts
 
           base_url = @options.base_url
           posts = posts.map (p) ->

@@ -195,12 +195,9 @@ module.exports =
 
   # Load next logical task
   advanceToNextTask: () ->
-    # console.log 'advanceToNextTask()'
     nextTaskKey = @getNextTask()?.key
     if nextTaskKey is null
-      # console.log 'NOTHING LEFT TO DO'
       return
-    # console.log 'TASK KEY: ', nextTaskKey
 
     # Commit whatever current classification is:
     @commitCurrentClassification()
@@ -212,7 +209,6 @@ module.exports =
 
   # Get next logical task
   getNextTask: ->
-    # console.log 'getNextTask()'
     task = @getTasks()[@state.taskKey]
     # PB: Moving from hash of options to an array of options
 
@@ -235,8 +231,6 @@ module.exports =
       console.warn "WARN: Invalid tool specified in #{key}: #{task.tool}"
 
     else
-      # console.log "Transcribe#advanceToTask(#{key}): tool=#{task.tool}"
-
       @setState
         taskKey: key
 

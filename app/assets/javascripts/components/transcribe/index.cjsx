@@ -45,7 +45,6 @@ module.exports = React.createClass # rename to Classifier
     @setState taskKey: @getCurrentSubject().type if @getCurrentSubject()?
 
   __DEP__handleTaskComponentChange: (val) ->
-    # console.log "handleTaskComponentChange val", val
     taskOption = @getCurrentTask().tool_config.options[val]
     if taskOption.next_task?
       @advanceToTask taskOption.next_task
@@ -63,7 +62,6 @@ module.exports = React.createClass # rename to Classifier
         => @forceUpdate()
 
   handleTaskComplete: (d) ->
-    # console.log 'TRANSCRIBE/INDEX::handleTaskComplete()'
     @handleDataFromTool(d)
     @commitClassificationAndContinue d
 

@@ -96,7 +96,6 @@ module.exports = React.createClass # rename to Classifier
       @setState currentSubtool: d.tool if d.tool?
 
     else
-      # console.log "MARK/INDEX::handleDataFromTool()", d if JSON.stringify(d) != JSON.stringify(@getCurrentClassification()?.annotation)
       classifications = @state.classifications
       classifications[@state.classificationIndex].annotation[k] = v for k, v of d
 
@@ -125,7 +124,6 @@ module.exports = React.createClass # rename to Classifier
 
   destroyCurrentAnnotation: ->
     # TODO: implement mechanism for going backwards to previous classification, potentially deleting later classifications from stack:
-    # console.log "WARN: destroyCurrentAnnotation not implemented"
     # @props.classification.annotations.pop()
 
   completeSubjectSet: ->
@@ -145,7 +143,6 @@ module.exports = React.createClass # rename to Classifier
 
   nextPage: (callback_fn)->
     new_page = @state.subjects_current_page + 1
-    console.log "Calling for next page!"
     @fetchSubjectsForCurrentSubjectSet(new_page, callback_fn)
 
   prevPage: (callback_fn) ->

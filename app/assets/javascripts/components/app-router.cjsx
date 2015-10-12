@@ -109,7 +109,6 @@ class AppRouter
       componentWillMount:->
         # pattern = new RegExp('^(field_guide#(.*))')
         # selectedID = pattern.match("#{window.location.hash}")
-        # console.log "selectedID", selectedID
         # if selectedID
         #   $('.selected-content').removeClass("selected-content")
           
@@ -143,8 +142,6 @@ class AppRouter
           heightStyle: "content"
 
       navToggle:(e)->
-        # console.log "E", e
-
 
       render: ->
         formatted_name = page.name.replace("_", " ")

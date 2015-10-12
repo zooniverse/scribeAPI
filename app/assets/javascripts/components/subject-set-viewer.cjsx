@@ -18,8 +18,6 @@ module.exports = React.createClass
   mixins: [ZoomPanListenerMethods]
 
   getInitialState: ->
-    # console.log 'SUBJECT SET: ', @props.subject_set
-
     subject_set: @props.subject_set
     tool: @props.tool
     toolbar_expanded: false
@@ -53,8 +51,6 @@ module.exports = React.createClass
 
   render: ->
     return null if ! @props.subject_set.subjects?
-    # console.log 'SUBJECT-SET-VIEWER::render(), subject_index = ', @props.subject_index
-    # NOTE: LightBox does not receive correct @props.subject_index. Why? --STI
     <div className={"subject-set-viewer" + if @state.toolbar_expanded then ' expand' else ''}>
       <SubjectSetToolbar
         workflow={@props.workflow}
