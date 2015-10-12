@@ -23,6 +23,8 @@ class Workflow
 
   embeds_many :tasks, class_name: 'WorkflowTask'
 
+  index project_id: 1, name: 1
+
   def subject_has_enough_classifications(subject)
     subject.classification_count >= self.generates_subjects_after
   end
