@@ -363,18 +363,18 @@
             },
             "tool_config": {
                 "tools": {
-                  "att_transcribe_height_in": {
-                    "tool": "textTool",
-                    "tool_config": {},
-                    "label": "Transcribe the entry for **inches**.",
-                    "generates_subject_type": "att_transcribed_height_in"
-                   },
                   "att_transcribe_height_ft": {
                     "tool": "textTool",
                     "tool_config": {},
                     "label": "Transcribe the entry for **feet**.",
                     "generates_subject_type": "att_transcribed_height_ft"
-                  }
+                  },
+                  "att_transcribe_height_in": {
+                    "tool": "textTool",
+                    "tool_config": {},
+                    "label": "Transcribe the entry for **inches**.",
+                    "generates_subject_type": "att_transcribed_height_in"
+                   }
                 }
             },
             "next_task": null
