@@ -145,7 +145,6 @@ module.exports = React.createClass # rename to Classifier
 
   nextPage: (callback_fn)->
     new_page = @state.subjects_current_page + 1
-    console.log "Calling for next page!"
     @fetchSubjectsForCurrentSubjectSet(new_page, callback_fn)
 
   prevPage: (callback_fn) ->
