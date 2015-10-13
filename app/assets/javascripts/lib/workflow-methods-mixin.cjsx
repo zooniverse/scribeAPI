@@ -308,7 +308,7 @@ module.exports =
 
     # Haz more pages of subjects?
     else if @state.subjects_next_page?
-      @fetchSubjects @getActiveWorkflow().id, @getActiveWorkflow().subject_fetch_limit, @state.subjects_next_page
+      @fetchSubjects page: @state.subjects_next_page
 
     else
       @setState
