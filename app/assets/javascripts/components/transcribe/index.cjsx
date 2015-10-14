@@ -103,7 +103,6 @@ module.exports = React.createClass # rename to Classifier
     if @state.subjects?
       isLastSubject = ( @state.subject_index >= @state.subjects.length - 1 )
     else isLastSubject = null
-    console.log "isLastSubject", isLastSubject
 
     currentAnnotation = @getCurrentClassification().annotation
     TranscribeComponent = @getCurrentTool() # @state.currentTool
@@ -112,8 +111,6 @@ module.exports = React.createClass # rename to Classifier
     <div className="classifier">
       <div className="subject-area">
         {
-          console.log "@getCurrentSubject()", @getCurrentSubject()
-          console.log "@state.noMoreSubjects", @state.noMoreSubjects
           unless @getCurrentSubject() || @state.noMoreSubjects 
             <DraggableModal
               header          = { "Loading transcription subjects." }
