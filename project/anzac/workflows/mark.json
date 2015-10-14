@@ -220,7 +220,7 @@
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
       "instruction":"Draw a rectangle around each row describing a change of status:",
-      "next_task": "hs_conduct_sheet",
+      "next_task": "hs_wife",
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Transfer", "color": "#373ACC", "generates_subject_type": "hs_transcribe_transfer_table" }
@@ -233,11 +233,22 @@
     "hs_wife":{
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Draw a rectangle around each row describing a change of status:",
+      "instruction":"Draw a rectangle around the entire table for **Particulars of Marriage**.",
+      "next_task": "hs_children",
+      "tool_config": {
+        "tools": [
+          {"type": "rectangleTool", "label": "Particulars of Marriage", "color": "#373ACC", "generates_subject_type": "hs_wife" }
+        ]
+      }
+    },
+    "hs_children":{
+      "generates_subjects": true,
+      "tool":"pickOneMarkOne",
+      "instruction":"Draw a rectangle around each row describing a child.",
       "next_task": "hs_conduct_sheet",
       "tool_config": {
         "tools": [
-          {"type": "rectangleTool", "label": "Wife", "color": "#373ACC", "generates_subject_type": "hs_wife" }
+          {"type": "rectangleTool", "label": "Child", "color": "#373ACC", "generates_subject_type": "hs_child_chain" }
         ]
       }
     },

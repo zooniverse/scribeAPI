@@ -1249,6 +1249,94 @@
             "generates_subject_type": "hs_transcribed_transfer_auth",
             "next_task": null
         },
+        "hs_wife": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Transcribe the entry for **wife's maiden name**.",
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "generates_subject_type": "hs_transcribed_wife_maiden_name",
+            "next_task": "hs_wife_marriage_place"
+        },
+        "hs_wife_marriage_place": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Transcribe the entry for **place of marriage**",
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "generates_subject_type": "hs_transcribed_wife_marriage_place",
+            "next_task": "hs_wife_marriage_date"
+        },
+        "hs_wife_marriage_date": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Transcribe the entry for **date of marriage**",
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "generates_subject_type": "hs_transcribed_wife_marriage_date",
+            "next_task": "hs_wife_marriage_official"
+        },
+        "hs_wife_marriage_official": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Transcribe the entry for **officiating clergyman or registar**.",
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "generates_subject_type": "hs_transcribed_wife_marriage_official",
+            "next_task": null
+        },
+        "hs_child_chain": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Transcribe the entry for **child's christian name**.",
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "generates_subject_type": "hs_transcribed_child_christian_name",
+            "next_task": "hs_child_birthdate_age"
+        },
+        "hs_child_birthdate_age": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Transcribe the entry for **birth date and age**.",
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "generates_subject_type": "hs_transcribed_child_birthdate_age",
+            "next_task": "hs_child_birthplace"
+        },
+        "hs_child_birthplace": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Transcribe the entry for **where born**.",
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "generates_subject_type": "hs_transcribed_child_birthplace",
+            "next_task": "hs_child_registration"
+        },
+        "hs_child_registration": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Transcribe the entry for **where registered**.",
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "generates_subject_type": "hs_transcribed_child_registration",
+            "next_task": null
+        },
         "hs_rectangleTool_sickness": {
             "tool": "textTool",
             "tool_config": {},

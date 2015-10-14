@@ -17,7 +17,9 @@ class Classification
     @committed = false
 
   commit: (callback) ->
-    return if @committed
+    # only commit the classification if it isn't already committed or 
+    # the classification is flagging a subject as bad.
+    return if @committed && @task_key != "flag_bad_subject_task"
     @committed = true
 
     @metadata.finished_at = (new Date).toISOString()

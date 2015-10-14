@@ -1,4 +1,4 @@
- # @cjsx React.DOM
+# @cjsx React.DOM
 React                         = require 'react'
 SubjectViewer                 = require './subject-viewer'
 {Router, Routes, Route, Link} = require 'react-router'
@@ -14,6 +14,9 @@ SubjectSetToolbar             = require './subject-set-toolbar'
 module.exports = React.createClass
   displayName: 'SubjectSetViewer'
   resizing: false
+
+  propTypes:
+    onDestroy: React.PropTypes.func.isRequired #hands @handleMarkDelete, which call wmm method: @flagSubjectAsUserDeleted
 
   mixins: [ZoomPanListenerMethods]
 
