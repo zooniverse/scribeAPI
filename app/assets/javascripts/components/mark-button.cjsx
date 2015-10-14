@@ -27,7 +27,6 @@ module.exports = React.createClass
     rotate: 0
 
   # componentWillReceiveProps: ->
-  #   # console.log 'component will receive props: ', @props.markStatus, @props.locked
   #
   #
   # foo: ->

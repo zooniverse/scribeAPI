@@ -211,7 +211,6 @@ module.exports = React.createClass
     vertical = rect.height / @props.subject.height
     offsetX = rect.left + $(window).scrollLeft()
     offsetY = rect.top + $(window).scrollTop()
-    # console.log "top: ", rect.top, $(window).scrollTop(), offsetY
     # PB: Adding offsetX and offsetY, which are also necessary to calculate window absolute px coordinates from source-image coordinates
     return {horizontal, vertical, offsetX, offsetY}
 
@@ -286,7 +285,6 @@ module.exports = React.createClass
       else
         otherMarks.push mark
 
-    # console.log '{transcribableMarks, otherMarks} = ', {transcribableMarks, otherMarks}
     return {transcribableMarks, otherMarks}
 
   renderMarks: (marks) ->

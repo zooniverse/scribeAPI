@@ -19,7 +19,6 @@ App = React.createClass
       API.type('projects').get().then (result)=>
 
         project = result[0]
-        # console.log "Project: ", project
 
         @setState project:           project
 

@@ -33,6 +33,7 @@ gem 'fastimage', '1.7.0'
 gem 'actionpack-action_caching'
 
 gem 'newrelic_rpm'
+gem 'newrelic_moped'
 
 gem 'puma', '~> 2.14.0'
 
