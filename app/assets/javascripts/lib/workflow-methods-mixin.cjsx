@@ -307,6 +307,7 @@ module.exports =
     else
       @setState
         subject_index: null
+        noMoreSubjects: true
         userClassifiedAll: @state.subjects.length > 0
 
   # This is the version of advanceToNextSubject for workflows that consume subject sets (mark)
