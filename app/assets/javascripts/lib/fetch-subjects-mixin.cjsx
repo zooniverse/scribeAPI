@@ -42,7 +42,7 @@ module.exports =
     }, params)
     API.type('subjects').get(_params).then (subjects) =>
       if subjects.length is 0
-        @setState noMoreSubjects: true, => console.log 'SET NO MORE SUBJECTS FLAG TO TRUE'
+        @setState noMoreSubjects: true
 
       else
         @setState

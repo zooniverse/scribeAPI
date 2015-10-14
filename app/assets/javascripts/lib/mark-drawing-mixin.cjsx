@@ -4,7 +4,6 @@ module.exports =
 
 #   PB: This appears unused. DEP
 #   showPreviousMarks: ->
-#     # console.log 'PREVIOUS MARKS FROM SERVER: ', @props.subject.child_subjects_info
 #     previousMarks =
 #       for mark, i in @props.subject.child_subjects_info
 #         toolName = mark.data.toolName
@@ -26,13 +25,8 @@ module.exports =
 #     return <g>{previousMarks}</g>
 
   highlightMark: (mark, toolName) ->
-    # DEBUG CODE
-    # console.log 'TOOL NAME: ', toolName
-    # console.log "highlightMark: ", mark
-    # TODO: Note that x, y, w h aren't scaled properly:
     switch toolName
       when 'rectangleTool'
-        # console.log "RECTANGLE TOOL FOLKS "
         <g>
           <rect
             className   = "mark-rectangle top"
@@ -68,7 +62,6 @@ module.exports =
           />
         </g>
       when 'textRowTool'
-        # console.log 'TEXT ROW TOOL!'
         <g>
           <rect
             className   = "mark-rectangle"

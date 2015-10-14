@@ -55,7 +55,6 @@ module.exports = React.createClass
 
   componentWillReceiveProps: (new_props) ->
     # if ! new_props.annotation?.subToolIndex
-      # console.log ".. set subToolIndex to 0", @state.annotation
       # @props.onChange? @state.annotation
 
     # @state.annotation
@@ -74,8 +73,6 @@ module.exports = React.createClass
     # annotation: $.extend({subToolIndex: null}, @props.annotation ? {})
 
   render: ->
-    # console.log "PickOneMarkOne rendering: ", @props.subject.child_subjects
-
     # Calculate number of existing marks for each tool instance:
     counts = {}
     for subject in @props.subject.child_subjects
@@ -135,7 +132,6 @@ module.exports = React.createClass
       @props.onChange? data
 
   handleChange: (index, e) ->
-    # console.log 'PICK-ONE-MARK-ONE::handleChange(), INDEX = ', index, @refs
     inp = @refs["inp-#{index}"]
     if inp.getDOMNode().checked
       @updateState

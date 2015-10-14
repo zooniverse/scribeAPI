@@ -4,6 +4,7 @@ class ClassificationsController < ApplicationController
   respond_to :json
 
   def create
+
     user = require_user!
 
     workflow_id      = BSON::ObjectId.from_string params["classifications"]["workflow_id"]

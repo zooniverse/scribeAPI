@@ -17,8 +17,9 @@ class Classification
     @committed = false
 
   commit: (callback) ->
-    # console.log 'Classification::commit()'
-    return if @committed
+    # only commit the classification if it isn't already committed or 
+    # the classification is flagging a subject as bad.
+    return if @committed && @task_key != "flag_bad_subject_task"
     @committed = true
 
     @metadata.finished_at = (new Date).toISOString()
@@ -36,7 +37,6 @@ class Classification
       method: 'post'
       dataType: 'json'
       complete: (resp) =>
-        # console.log 'RESP: ', resp
         callback? resp.responseJSON?.classification
 
     # $.ajax('/classifications', data: data, method: 'post', dataType: 'json').done((response)->

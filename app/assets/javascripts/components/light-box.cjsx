@@ -12,8 +12,8 @@ module.exports = React.createClass
     onSubject: React.PropTypes.func.isRequired
     nextPage: React.PropTypes.func.isRequired
     prevPage: React.PropTypes.func.isRequired
-    totalSubjectPages: React.PropTypes.number.isRequired
-    subjectCurrentPage: React.PropTypes.number.isRequired
+    totalSubjectPages: React.PropTypes.number
+    subjectCurrentPage: React.PropTypes.number
 
 
   getInitialState:->
