@@ -119,7 +119,7 @@ module.exports = React.createClass # rename to Classifier
               header          = { "Loading transcription subjects." }
               buttons         = {<GenericButton label='Back to Marking' href='/#/mark' />}
             >
-                We are currently looking subject for you to {@props.workflowName}.
+                We are currently looking for a subject for you to {@props.workflowName}.
             </DraggableModal>
         }
 
