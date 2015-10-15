@@ -1,4 +1,3 @@
-require 'pry'
 class ClassificationsController < ApplicationController
   include ActionView::Helpers::TextHelper
   respond_to :json
@@ -35,10 +34,6 @@ class ClassificationsController < ApplicationController
 
     respond_with @result
   end
-
-  # def invalid_line_ending_check(string)
-  #   string.gsub(/(?:\n\r?|\r\n?)/, '<br>')
-  # end
 
 
   def terms
