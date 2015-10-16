@@ -24,7 +24,7 @@ class Classification
   scope :having_child_subjects, -> { where(:child_subject_id.nin => ['', nil]) }
   scope :not_having_child_subjects, -> { where(:child_subject_id.in => ['', nil]) }
 
-  index({child_subject: 1}, {background: true})
+  index({child_subject_id: 1}, {background: true})
 
   def generate_new_subjects
     if workflow.generates_subjects
