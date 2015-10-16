@@ -117,6 +117,9 @@ module.exports = React.createClass
     return null if e.buttons? && e.button? && e.button > 0 # ignore right-click
     newMark = @createMark(e)
 
+    # Don't proceed as if a new mark was created if no mark was created (i.e. no drawing tool selected)
+    return if ! newMark?
+
     # submit uncommitted mark
     if @state.uncommittedMark?
       @submitMark(@state.uncommittedMark)
@@ -131,6 +134,7 @@ module.exports = React.createClass
 
     # Instantiate appropriate marking tool:
     MarkComponent = markingTools[subTool.type] # NEEDS FIXING
+    return null if ! MarkComponent?
 
     mark =
       belongsToUser: true # let users see their current mark when hiding others
