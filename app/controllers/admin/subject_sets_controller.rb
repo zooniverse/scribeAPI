@@ -5,6 +5,9 @@ class Admin::SubjectSetsController < Admin::AdminBaseController
   end
 
   def index
-    @subject_sets = SubjectSet.all
+    page        = get_int :page, 1
+    limit       = get_int :limit, 20
+
+    @subject_sets = SubjectSet.page(page).per(limit)
   end
 end

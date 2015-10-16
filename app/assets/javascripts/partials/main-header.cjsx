@@ -7,6 +7,10 @@ Login = require '../components/login'
 module.exports = React.createClass
   displayName: 'MainHeader'
 
+  getDefaultProps: ->
+    user: null
+    loginProviders: []
+
   render: ->
     <header classNameim="main-header">
 
@@ -48,7 +52,7 @@ module.exports = React.createClass
           if @props.discussUrl?
             <a target={"_blank"} className="main-header-item" href={@props.discussUrl}>Discuss</a>
         }
-        <Login />
+        <Login user={@props.user} loginProviders={@props.loginProviders} />
 
       </nav>
 

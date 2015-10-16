@@ -20,7 +20,7 @@ module.exports = React.createClass # rename to Classifier
   displayName: 'Mark'
 
   propTypes:
-    setTutorialComplete: React.PropTypes.func.isRequired
+    onCloseTutorial: React.PropTypes.func.isRequired
 
   getDefaultProps: ->
     workflowName: 'mark'
@@ -38,9 +38,20 @@ module.exports = React.createClass # rename to Classifier
     helping:             false
     hideOtherMarks:      false
     currentSubtool:      null
-    showingTutorial:     ! @props.project.current_user_tutorial # Initially show the tutorial if the user hasn't seen it
+    showingTutorial:     @showTutorialBasedOnUser @props.user
     lightboxHelp:        false
     activeSubjectHelper: null
+
+  componentWillReceiveProps: (new_props) ->
+    @setState showingTutorial: @showTutorialBasedOnUser(new_props.user)
+
+  showTutorialBasedOnUser: (user) ->
+    # Show tutorial by default
+    show = true
+    if user?.tutorial_complete?
+      # If we have a user, show tutorial if they haven't completed it:
+      show = ! user.tutorial_complete
+    show
 
   componentDidMount: ->
     @getCompletionAssessmentTask()
@@ -294,7 +305,7 @@ module.exports = React.createClass # rename to Classifier
         </div>
       </div>
       { if @props.project.tutorial? && @state.showingTutorial
-        <Tutorial tutorial={@props.project.tutorial} toggleTutorial={@toggleTutorial} setTutorialComplete={@props.setTutorialComplete} />
+        <Tutorial tutorial={@props.project.tutorial} onCloseTutorial={@props.onCloseTutorial} />
       }
       { if @state.helping
         <HelpModal help={@getCurrentTask().help} onDone={=> @setState helping: false } />

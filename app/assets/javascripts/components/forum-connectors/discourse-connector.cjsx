@@ -43,7 +43,9 @@ module.exports =
         # url = "#{window.location.protocol}//#{window.location.origin}/#/mark/?subject_set_id=#{obj.id}"
       # else
 
-      title = "#{@project.title} #{@project.term('subject')} #{obj.id}"
+      return null if ! obj?
+
+      title = "#{@project.title} #{@project.term('subject')} #{obj.id}" if @project?
       url = "#{window.location.origin}/#/mark?subject_set_id=#{obj.subject_set_id}&selected_subject_id=#{obj.id}"
   
       line = '_'.repeat [80,Math.max(title.length, url.length)].min
