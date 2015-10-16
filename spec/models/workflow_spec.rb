@@ -1,6 +1,4 @@
 require 'spec_helper'
-require 'pry'
-
 
 describe Workflow do
 

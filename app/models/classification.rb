@@ -24,7 +24,7 @@ class Classification
   scope :having_child_subjects, -> { where(:child_subject_id.nin => ['', nil]) }
   scope :not_having_child_subjects, -> { where(:child_subject_id.in => ['', nil]) }
 
-  index({"child_subject" => 1}, {background: true})
+  index({child_subject: 1}, {background: true})
 
   def generate_new_subjects
     if workflow.generates_subjects
@@ -32,9 +32,6 @@ class Classification
     end
   end
 
-    # AMS: not sure if workflow.generates_subjects_after is the best measure.
-    # =>   In addition, we only want to call this for certain subjects (not collect unique.)
-    # =>   right now, this mainly applies to workflow.generates_subjects_method == "collect-unique".
   def check_for_retirement_by_classification_count
     # PB: This isn't quite right.. Retires the *parent* subject rather than the subject generated..
     # return nil
