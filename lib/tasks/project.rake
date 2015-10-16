@@ -202,6 +202,7 @@ namespace :project do
     Group.create_indexes
     Workflow.create_indexes
     Favourite.create_indexes
+    Classification.create_indexes
 
     project.save
     project
