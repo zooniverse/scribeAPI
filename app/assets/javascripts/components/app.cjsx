@@ -9,12 +9,46 @@ Project                       = require 'models/project.coffee'
 window.API = API
 
 App = React.createClass
-
   getInitialState: ->
     routerRunning:        false
+    user:                 null
+    loginProviders:       []
 
-  setTutorialComplete:->
-    @setState project: $.extend(project, current_user_tutorial: true)
+  componentDidMount: ->
+    @fetchUser()
+
+  fetchUser:->
+    @setState
+      error: null
+    request = $.getJSON "/current_user"
+
+    request.done (result)=>
+      if result?.data
+        @setState
+          user: result.data
+      else
+
+      if result?.meta?.providers
+        @setState loginProviders: result.meta.providers
+
+    request.fail (error)=>
+      @setState
+        loading:false
+        error: "Having trouble logging you in"
+
+  setTutorialComplete: ->
+    previously_saved = @state.user?.tutorial_complete?
+
+    # Immediately ammend user object with tutorial_complete flag so that we can hide the Tutorial:
+    @setState user: $.extend(@state.user ? {}, tutorial_complete: true)
+
+    # Don't re-save user.tutorial_complete if already saved:
+    return if previously_saved
+
+    request = $.post "/tutorial_complete"
+    request.fail (error)=>
+      console.log "failed to set tutorial value for user"
+
 
   render: ->
     project = window.project
@@ -36,9 +70,12 @@ App = React.createClass
           blogUrl={project.blog_url}
           pages={project.pages}
           short_title={project.short_title}
-          logo={project.logo} />
+          logo={project.logo}
+          user={@state.user}
+          loginProviders={@state.loginProviders}
+        />
         <div className="main-content">
-          <RouteHandler hash={window.location.hash} project={project} setTutorialComplete={@setTutorialComplete} />
+          <RouteHandler hash={window.location.hash} project={project} onCloseTutorial={@setTutorialComplete} user={@state.user}/>
         </div>
         <Footer privacyPolicy={ project.privacy_policy }/>
       </div>

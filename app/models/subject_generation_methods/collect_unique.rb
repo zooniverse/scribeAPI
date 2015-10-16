@@ -31,7 +31,7 @@ module SubjectGenerationMethods
       num_parent_classifications = classification.child_subject.parent_classifications.count
 
       # If subject has enough parent classifications, activate it:
-      puts "considering activating.... if #{num_parent_classifications} >= #{classification.workflow.generates_subjects_after}"
+      # puts "considering activating.... if #{num_parent_classifications} >= #{classification.workflow.generates_subjects_after}"
       if num_parent_classifications >= classification.workflow.generates_subjects_after
         puts "Activating generated subject because now has #{num_parent_classifications} parent classifications"
 
@@ -51,7 +51,7 @@ module SubjectGenerationMethods
         end
       end
 
-      puts "Saving atts to classification: #{atts.inspect}"
+      # puts "Saving atts to classification: #{atts.inspect}"
       classification.child_subject.update_attributes atts
 
       classification.child_subject

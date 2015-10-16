@@ -269,14 +269,14 @@ module.exports =
     tool_config: {
       "options": [
         {
-          "label": "No",
-          "next_task": null,
-          "value": "complete_subject"
-        },
-        {
           "label": "Yes",
           "next_task": null,
           "value": "incomplete_subject"
+        }
+        {
+          "label": "No",
+          "next_task": null,
+          "value": "complete_subject"
         }
       ]
     }

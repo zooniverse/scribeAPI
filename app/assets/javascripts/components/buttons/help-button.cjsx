@@ -6,9 +6,10 @@ module.exports = React.createClass
 
   getDefaultProps: ->
     label: 'Need some help?' 
+    key: 'help-button'
  
   render: ->
     classes = ['help-button','ghost']
     classes.push @props.className if @props.className?
 
-    <SmallButton key="help-button" {...@props} className={classes.join ' '} />
+    <SmallButton {...@props} className={classes.join ' '} />

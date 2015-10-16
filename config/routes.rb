@@ -13,7 +13,7 @@ API::Application.routes.draw do
   get '/workflows/:id',                to: 'workflow#show',        defaults: { format: 'json' }
 
   get '/current_user',                                        to: "users#logged_in_user"
-  get '/tutorial_complete',                                   to: "users#tutorial_complete"
+  post '/tutorial_complete',                                  to: "users#tutorial_complete"
   get '/projects/stats',                                      to: 'projects#stats'
   get '/project/style.css',                                   to: 'projects#project_css',  defaults: { format: 'css' }
   get '/project/custom.js',                                   to: 'projects#project_js',  defaults: { format: 'js' }
