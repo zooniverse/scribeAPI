@@ -2,13 +2,12 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
 
   attributes :id, :type, :parent_subject_id, :workflow_id, :name, :location, :data, :region, :classification_count, :order, :meta_data
   attributes :width, :height, :region, :subject_set_id, :status
-  attributes :user_favourite, :user_has_classified, :user_has_deleted # , :classifying_user_ids
-  attributes :belongs_to_user, :created_by_user_id
+  attributes :user_favourite, :user_has_classified, :user_has_deleted
+  attributes :belongs_to_user
   attributes :child_subjects
 
   delegate :current_or_guest_user, to: :scope
   delegate :current_user, to: :scope
-  # has_many :child_subjects
 
   def attributes
     data = super

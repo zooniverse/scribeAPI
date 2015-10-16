@@ -14,7 +14,7 @@ gem 'omniauth-facebook'
 gem "omniauth-google-oauth2"
 gem 'omniauth-zooniverse', '~> 0.0.3'
 
-gem 'mongoid', :github=>"mongoid/mongoid"
+gem 'mongoid', '~> 4.0.2'
 gem 'active_model_serializers'
 gem 'mongoid-serializer'
 gem 'rack-cors', :require => 'rack/cors'
@@ -33,6 +33,7 @@ gem 'fastimage', '1.7.0'
 gem 'actionpack-action_caching'
 
 gem 'newrelic_rpm'
+gem 'newrelic_moped'
 
 gem 'puma', '~> 2.14.0'
 

@@ -15,7 +15,6 @@ FavouriteButton = React.createClass
 
   add_favourite:(e)->
     e.preventDefault()
-    console.log @, @setState, this
 
     @setState
       loading: true

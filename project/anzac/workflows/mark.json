@@ -122,7 +122,8 @@
           {"type": "rectangleTool", "label": "First (Christian) Name", "color": "#373ACC", "generates_subject_type": "dn_first_name" },
           {"type": "rectangleTool", "label": "Service No.", "color": "#373ACC", "generates_subject_type": "dn_service_no" },
           {"type": "rectangleTool", "label": "Place of Death", "color": "#373ACC", "generates_subject_type": "dn_place_of_death" },
-          {"type": "rectangleTool", "label": "Date of Death", "color": "#373ACC", "generates_subject_type": "dn_date_of_death" }
+          {"type": "rectangleTool", "label": "Date of Death", "color": "#373ACC", "generates_subject_type": "dn_date_of_death" },
+          {"type": "rectangleTool", "label": "Next of Kin", "color": "#373ACC", "generates_subject_type": "dn_next_kin" }
         ]
       }
     },
@@ -219,7 +220,7 @@
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
       "instruction":"Draw a rectangle around each row describing a change of status:",
-      "next_task": "hs_conduct_sheet",
+      "next_task": "hs_wife",
       "tool_config": {
         "tools": [
           {"type": "rectangleTool", "label": "Transfer", "color": "#373ACC", "generates_subject_type": "hs_transcribe_transfer_table" }
@@ -227,6 +228,28 @@
       },
       "help": {
         "file": "hs_transfer_help"
+      }
+    },
+    "hs_wife":{
+      "generates_subjects": true,
+      "tool":"pickOneMarkOne",
+      "instruction":"Draw a rectangle around the entire table for **Particulars of Marriage**.",
+      "next_task": "hs_children",
+      "tool_config": {
+        "tools": [
+          {"type": "rectangleTool", "label": "Particulars of Marriage", "color": "#373ACC", "generates_subject_type": "hs_wife" }
+        ]
+      }
+    },
+    "hs_children":{
+      "generates_subjects": true,
+      "tool":"pickOneMarkOne",
+      "instruction":"Draw a rectangle around each row describing a child.",
+      "next_task": "hs_conduct_sheet",
+      "tool_config": {
+        "tools": [
+          {"type": "rectangleTool", "label": "Child", "color": "#373ACC", "generates_subject_type": "hs_child_chain" }
+        ]
       }
     },
     "hs_conduct_sheet":{
@@ -341,7 +364,8 @@
           {"type": "rectangleTool", "label": "Prisoner", "color": "#373ACC", "generates_subject_type": "hs_rectangleTool_prisoner", "help":{"title":"Died of wounds/sickness", "body":"Information will often include location, cause, date, details" } },
           {"type": "rectangleTool", "label": "Injuries", "color": "#373ACC", "generates_subject_type": "hs_rectangleTool_injuries", "help":{"title":"Died of wounds/sickness", "body":"Information will often include location, cause, date, details" } },
           {"type": "rectangleTool", "label": "Discharge Provisional", "color": "#373ACC", "generates_subject_type": "hs_rectangleTool_discharge_provisional" },
-          {"type": "rectangleTool", "label": "Discharge Final", "color": "#373ACC", "generates_subject_type": "hs_rectangleTool_discharge_final" }
+          {"type": "rectangleTool", "label": "Discharge Final", "color": "#373ACC", "generates_subject_type": "hs_rectangleTool_discharge_final" },
+          {"type": "rectangleTool", "label": "Pension", "color": "#373ACC", "generates_subject_type": "hs_pension" }
         ]
       },
       "help": {

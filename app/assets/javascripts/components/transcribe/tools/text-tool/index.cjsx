@@ -145,7 +145,6 @@ TextTool = React.createClass
     @handleChange(e) # updates any autocomplete values
 
     if (! @state.autocompleting && [13].indexOf(e.keyCode) >= 0) && !e.shiftKey# ENTER
-      # console.log "ENTERING ON TRANSCRIPTION:", e.keyCode
       @commitAnnotation()
     else if e.keyCode == 13 && e.shiftKey
       text_area =  $("textarea")

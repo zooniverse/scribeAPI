@@ -10,7 +10,6 @@ HomePage = React.createClass
   mixins: [Navigation]
 
   componentWillReceiveProps: (new_props) ->
-    console.log "home got new props: ", new_props
     @setState project: new_props.project
 
   markClick: ->
