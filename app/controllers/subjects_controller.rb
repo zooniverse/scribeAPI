@@ -12,8 +12,15 @@ class SubjectsController < ApplicationController
     random                = get_bool :random, false
     limit                 = get_int :limit, 10
     page                  = get_int :page, 1
+    type                  = params[:type]
 
-    @subjects = Subject.by_workflow(workflow_id).active.page(page).per(limit)
+    @subjects = Subject.active.page(page).per(limit)
+
+    # Filter by subject type (e.g. 'root')
+    @subjects = @subjects.by_type(type) if type
+
+    # Filter by workflow (There should almost always be a workflow_id filter)
+    @subjects = @subjects.by_workflow(workflow_id) if workflow_id
 
     # Filter by subject?
     @subjects = @subjects.by_parent_subject(parent_subject_id) if parent_subject_id
@@ -24,13 +31,15 @@ class SubjectsController < ApplicationController
     # Filter by subject set?
     @subjects = @subjects.by_subject_set(subject_set_id) if subject_set_id
 
-    # Randomize?
-    # @subjects = @subjects.random(limit: limit) if random
-    # PB: Above randomization method produces better randomness, but inconsistent totals
-    @subjects = @subjects.random_order if random
+    if ! subject_set_id
+      # Randomize?
+      # @subjects = @subjects.random(limit: limit) if random
+      # PB: Above randomization method produces better randomness, but inconsistent totals
+      @subjects = @subjects.random_order if random
 
-    # If user/guest active, filter out anything already classified:
-    @subjects = @subjects.user_has_not_classified user.id.to_s if ! user.nil?
+      # If user/guest active, filter out anything already classified:
+      @subjects = @subjects.user_has_not_classified user.id.to_s if ! user.nil?
+    end
 
     links = {
       "next" => {

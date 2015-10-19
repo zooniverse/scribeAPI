@@ -18,7 +18,6 @@ class ApplicationController < ActionController::Base
         guest_user_logging_in
         guest_user(create_if_missing = false).try(:destroy)
         session[:guest_user_id] = nil
-        puts "destroy guest sess: #{session[:guest_user_id]}"
       end
       current_user
     else
@@ -37,6 +36,20 @@ class ApplicationController < ActionController::Base
     end
     @cached_guest_user
   end
+
+
+  def current_project
+    @current_project ||= Project.current
+  end
+
+  helper_method :current_project
+
+
+  # Expire a caches_action cached response:
+  def self.expire_action_cache(path)
+    Rails.cache.delete "views/#{path}"
+  end
+
 
   private
 

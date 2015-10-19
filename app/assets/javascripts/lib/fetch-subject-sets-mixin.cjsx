@@ -1,4 +1,4 @@
-API = require './api'
+API              = require './api'
 
 module.exports =
 
@@ -13,7 +13,7 @@ module.exports =
       # If a specific subject id indicated..
       if @props.query.selected_subject_id?
         # Get the index of the specified subject in the (presumably first & only) subject set:
-        state.subject_index = (ind for subj,ind in subject_sets[0].subjects when subj.id == @props.query.selected_subject_id )[0]
+        state.subject_index = (ind for subj,ind in subject_sets[0].subjects when subj.id == @props.query.selected_subject_id )[0] ? 0
 
       # If taskKey specified, now's the time to set that too:
       state.taskKey = @props.query.mark_task_key if @props.query.mark_task_key
@@ -32,20 +32,22 @@ module.exports =
         group_id:                 @props.query.group_id ? null
       @fetchSubjectSets params, postFetchCallback
 
+
+
   # this method fetches the next page of subjects in a given subject_set.
   # right now the trigger for this method is the forward or back button in the light-box
   # I am torn about whether to set the subject_index at this point? -- AMS
-  fetchNextSubjectPage: (subject_set_id, workflow_id, page_number, subject_index, callback_fn) ->
+  # fetchNextSubjectPage: (page_number, callback_fn) ->
 
     # Gather filters by which to query subject-sets
-    params =
-      subject_set_id: subject_set_id
-      workflow_id: workflow_id
-      subject_page: page_number
+    # params =
+    #  subject_set_id: subject_set_id
+    #  workflow_id: workflow_id
+    #  subject_page: page_number
 
-    @fetchSubjectSets params, () =>
-      @setState subject_index: subject_index
-      callback_fn()
+    # @fetchSubjectSets params, () =>
+    #  @setState subject_index: subject_index
+    # callback_fn()
 
   orderSubjectsByOrder: (subject_sets) ->
     for subject_set in subject_sets
@@ -54,45 +56,63 @@ module.exports =
     subject_sets
 
   # Fetch a single subject-set (i.e. via SubjectSetsController#show)
+  # Query hash added to prevent local mark from being re-transcribable.
   fetchSubjectSet: (subject_set_id, callback) ->
-    request = API.type("subject_sets").get subject_set_id
+    request = API.type("subject_sets").get subject_set_id, {}
 
-    request.then (subject_set) =>
-      @_handleFetchedSubjectSets [subject_set], callback
+    request.then (set) =>
+      @setState subjectSets: [set], () =>
+        @fetchSubjectsForCurrentSubjectSet 1, null, callback
 
   # This is the main fetch method for subject sets. (fetches via SubjectSetsController#index)
   fetchSubjectSets: (params, callback) ->
+    params = $.extend(workflow_id: @getActiveWorkflow().id, params)
+    _callback = (sets) =>
+
     # Apply defaults to unset params:
     _params = $.extend({
-      limit: 1 #10 # temporary fix for large subject_sets -STI
+      limit: 10
       workflow_id: @getActiveWorkflow().id
       random: true
     }, params)
     # Strip null params:
     params = {}; params[k] = v for k,v of _params when v?
 
-    API.type('subject_sets').get(params).then (subject_sets) =>
-      @_handleFetchedSubjectSets subject_sets, callback
+    API.type('subject_sets').get(params).then (sets) =>
+
+      @setState subjectSets: sets, () =>
+        @fetchSubjectsForCurrentSubjectSet 1, null, callback
+
+  # PB: Setting default limit to 120 because it's a multiple of 3 mandated by thumb browser
+  fetchSubjectsForCurrentSubjectSet: (page=1, limit=120, callback) ->
+    ind = @state.subject_set_index
+    sets = @state.subjectSets
 
 
-  # Used internally by mixin to update state and fire callbacks after retrieving sets
-  _handleFetchedSubjectSets: (subject_sets, callback) ->
+    # page & limit not passed when called this way for some reason, so we have to manually construct query:
+    # sets[ind].get('subjects', {page: page, limit: limit}).then (subjs) =>
+    params =
+      subject_set_id: sets[ind].id
+      page: page
+      limit: limit
+      type: 'root'
 
-    # Establish a no-results state:
-    state = subjectSets: []
+    process_subjects = (subjs) =>
+      sets[ind].subjects = subjs
 
-    if subject_sets.length > 0
-      state =
-        subjectSets: @orderSubjectsByOrder(subject_sets)
-        subject_set_index: 0
-        subject_sets_current_page: subject_sets[0].getMeta("current_page")
-        subject_sets_total_pages: subject_sets[0].getMeta("total_pages")
-        subjects_current_page: subject_sets[0].subjects_pagination_info.current_page
-        subjects_total_pages: subject_sets[0].subjects_pagination_info.total_pages
+      @setState
+        subjectSets:                sets
+        subjects_current_page:      subjs[0].getMeta('current_page')
+        subjects_total_pages:       subjs[0].getMeta('total_pages'), () =>
+          callback? sets
 
-    @setState state
+    # Since we're fetching by query, json-api-client won't cache it, so let's cache it lest we re-fetch subjects everytime something happens:
+    @_subject_queries ||= {}
+    if (subjects = @_subject_queries[params])?
+      process_subjects subjects
 
-    callback? subject_sets
-
-    if @fetchSubjectsCallback?
-      @fetchSubjectsCallback()
+    else
+      API.type('subjects').get(params).then (subjects) =>
+        @_subject_queries[params] = subjects
+        process_subjects subjects
+    

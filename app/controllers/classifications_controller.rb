@@ -1,9 +1,9 @@
-require 'pry'
 class ClassificationsController < ApplicationController
   include ActionView::Helpers::TextHelper
   respond_to :json
 
   def create
+
     user = require_user!
 
     workflow_id      = BSON::ObjectId.from_string params["classifications"]["workflow_id"]
@@ -34,10 +34,6 @@ class ClassificationsController < ApplicationController
 
     respond_with @result
   end
-
-  # def invalid_line_ending_check(string)
-  #   string.gsub(/(?:\n\r?|\r\n?)/, '<br>')
-  # end
 
 
   def terms

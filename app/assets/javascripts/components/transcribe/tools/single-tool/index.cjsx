@@ -34,7 +34,6 @@ TextTool = React.createClass
     @props.clickOffsetY = e.nativeEvent.offsetY + e.nativeEvent.srcElement.offsetParent.offsetTop
 
   handleInitDrag: (e, d) ->
-    # console.log 'handleInitDrag()'
     return if @state.preventDrag # not too happy about this one
 
     dx = e.clientX - @props.clickOffsetX + window.scrollX
@@ -97,7 +96,6 @@ TextTool = React.createClass
 
     val = @state.annotation?.value ? ''
 
-    console.log '@PSOPS: ', @props
 
     if @props.subject.type is 'item_location'
       toolType = 'testComponent'

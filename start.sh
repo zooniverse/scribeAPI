@@ -14,6 +14,4 @@ then
     source $env_configs
 fi
 
-rake project:load[$1]
-
 exec bundle exec rails server -p 80

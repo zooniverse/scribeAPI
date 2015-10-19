@@ -20,7 +20,7 @@ module.exports = React.createClass # rename to Classifier
   displayName: 'Mark'
 
   propTypes:
-    setTutorialComplete: React.PropTypes.func.isRequired
+    onCloseTutorial: React.PropTypes.func.isRequired
 
   getDefaultProps: ->
     workflowName: 'mark'
@@ -38,9 +38,20 @@ module.exports = React.createClass # rename to Classifier
     helping:             false
     hideOtherMarks:      false
     currentSubtool:      null
-    showingTutorial:     ! @props.project.current_user_tutorial # Initially show the tutorial if the user hasn't seen it
+    showingTutorial:     @showTutorialBasedOnUser @props.user
     lightboxHelp:        false
     activeSubjectHelper: null
+
+  componentWillReceiveProps: (new_props) ->
+    @setState showingTutorial: @showTutorialBasedOnUser(new_props.user)
+
+  showTutorialBasedOnUser: (user) ->
+    # Show tutorial by default
+    show = true
+    if user?.tutorial_complete?
+      # If we have a user, show tutorial if they haven't completed it:
+      show = ! user.tutorial_complete
+    show
 
   componentDidMount: ->
     @getCompletionAssessmentTask()
@@ -96,12 +107,8 @@ module.exports = React.createClass # rename to Classifier
       @setState currentSubtool: d.tool if d.tool?
 
     else
-      # console.log "MARK/INDEX::handleDataFromTool()", d if JSON.stringify(d) != JSON.stringify(@getCurrentClassification()?.annotation)
       classifications = @state.classifications
       classifications[@state.classificationIndex].annotation[k] = v for k, v of d
-
-      # console.log 'classification.annotation = ', classifications[@state.classificationIndex].annotation
-
 
       # PB: Saving STI's notes here in case we decide tools should fully
       #   replace annotation hash rather than selectively update by key as above:
@@ -128,7 +135,6 @@ module.exports = React.createClass # rename to Classifier
 
   destroyCurrentAnnotation: ->
     # TODO: implement mechanism for going backwards to previous classification, potentially deleting later classifications from stack:
-    console.log "WARN: destroyCurrentAnnotation not implemented"
     # @props.classification.annotations.pop()
 
   completeSubjectSet: ->
@@ -148,13 +154,11 @@ module.exports = React.createClass # rename to Classifier
 
   nextPage: (callback_fn)->
     new_page = @state.subjects_current_page + 1
-    subject_set = @getCurrentSubjectSet()
-    @fetchNextSubjectPage(subject_set.id, @getActiveWorkflow().id, new_page, 0, callback_fn)
+    @fetchSubjectsForCurrentSubjectSet(new_page, callback_fn)
 
   prevPage: (callback_fn) ->
     new_page = @state.subjects_current_page - 1
-    subject_set = @getCurrentSubjectSet()
-    @fetchNextSubjectPage(subject_set.id, @getActiveWorkflow().id, new_page, 0, callback_fn)
+    @fetchSubjectsForCurrentSubjectSet(new_page, callback_fn)
 
   showSubjectHelp: (subject_type) ->
     @setState
@@ -168,7 +172,7 @@ module.exports = React.createClass # rename to Classifier
       activeSubjectHelper: null
 
   render: ->
-    return null unless @getCurrentSubject()? && @getActiveWorkflow()?
+    return null unless @getCurrentSubjectSet()? && @getActiveWorkflow()?
 
     currentTask = @getCurrentTask()
     TaskComponent = @getCurrentTool()
@@ -178,7 +182,7 @@ module.exports = React.createClass # rename to Classifier
     currentSubtool = if @state.currentSubtool then @state.currentSubtool else @getTasks()[firstTask]?.tool_config.tools?[0]
 
     # direct link to this page
-    pageURL = "#{location.origin}/#/mark?subject_set_id=#{@getCurrentSubjectSet().id}&selected_subject_id=#{@getCurrentSubject().id}"
+    pageURL = "#{location.origin}/#/mark?subject_set_id=#{@getCurrentSubjectSet().id}&selected_subject_id=#{@getCurrentSubject()?.id}"
 
 
     if currentTask?.tool is 'pick_one'
@@ -221,7 +225,7 @@ module.exports = React.createClass # rename to Classifier
       </div>
       <div className="right-column">
         <div className={"task-area " + @getActiveWorkflow().name}>
-          { if @getCurrentTask()?
+          { if @getCurrentTask()? && @getCurrentSubject()?
               <div className="task-container">
                 <TaskComponent
                   key={@getCurrentTask().key}
@@ -275,14 +279,7 @@ module.exports = React.createClass # rename to Classifier
             {
               if @getCurrentTask()? && @getActiveWorkflow()? && @getWorkflowByName('transcribe')?
                 <p>
-                  <Link to="/transcribe/#{@getWorkflowByName('transcribe').id}/#{@getCurrentSubject().id}" className="transcribe-link">Transcribe this {@props.project.term('subject')} now!</Link>
-                </p>
-            }
-
-            {
-              if @getActiveWorkflow()?
-                <p>
-                  <Link to="/groups/#{@getCurrentSubjectSet().group_id}" className="about-link">About this {@props.project.term('group')}.</Link>
+                  <Link to="/transcribe/#{@getWorkflowByName('transcribe').id}/#{@getCurrentSubject()?.id}" className="transcribe-link">Transcribe this {@props.project.term('subject')} now!</Link>
                 </p>
             }
 
@@ -306,14 +303,14 @@ module.exports = React.createClass # rename to Classifier
         </div>
       </div>
       { if @props.project.tutorial? && @state.showingTutorial
-        <Tutorial tutorial={@props.project.tutorial} toggleTutorial={@toggleTutorial} setTutorialComplete={@props.setTutorialComplete} />
+        <Tutorial tutorial={@props.project.tutorial} onCloseTutorial={@props.onCloseTutorial} />
       }
       { if @state.helping
         <HelpModal help={@getCurrentTask().help} onDone={=> @setState helping: false } />
       }
       {
         if @state.lightboxHelp
-          <HelpModal help={{title: "The Lightbox", body: "Use the Lightbox to navigate through a set of documents. You can select any of the images in the Lighbox by clicking on the thumbnail. Once selected, you can start submitting classifications. You do not need to go through the images in order. However, once you start classifying an image, the Lightbox will be deactivated until that classification is done."}} onDone={=> @setState lightboxHelp: false } />
+          <HelpModal help={{title: "The Lightbox", body: "<p>This Lightbox displays a complete set of documents in order. You can use it to go through the documents sequentially—but feel free to do them in any order that you like! Just click any thumbnail to open that document and begin marking it.</p><p>However, please note that **once you start marking a page, the Lightbox becomes locked ** until you finish marking that page! You can select a new page once you have finished.</p>"}} onDone={=> @setState lightboxHelp: false } />
       }
       {
         if @getCurrentTask()?

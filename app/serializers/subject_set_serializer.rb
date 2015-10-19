@@ -1,7 +1,9 @@
 class SubjectSetSerializer < ActiveModel::MongoidSerializer
 
 
-  attributes :id, :selected_subject_id, :type, :name, :thumbnail, :meta_data, :subjects, :state, :counts, :group_id, :subjects_pagination_info
+  # attributes :id, :selected_subject_id, :type, :name, :thumbnail, :meta_data, :subjects, :state, :counts, :group_id, :subjects_pagination_info
+  attributes :id, :selected_subject_id, :type, :name, :thumbnail, :meta_data, :state, :counts, :group_id
+  attributes :subjects_count
 
   # PB: Can't seem to get serialization_options set correctly when instantiated by
   # another serializer unless I declare constructor thusly:
@@ -30,6 +32,11 @@ class SubjectSetSerializer < ActiveModel::MongoidSerializer
     serialization_options[:subject_id] if serialization_options[:subject_id]
   end
 
+  def subjects_count
+    object.subjects.count
+  end
+
+=begin
   def subjects_pagination_info
     {
       current_page: _subjects.current_page,
@@ -57,5 +64,5 @@ class SubjectSetSerializer < ActiveModel::MongoidSerializer
       subjs = object.subjects.root.page(subjects_page).limit(subjects_limit)
     )
   end
-
+=end
 end

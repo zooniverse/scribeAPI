@@ -106,7 +106,6 @@ TextAreaTool = React.createClass
   updatePosition: ->
     if @state.viewerSize? && ! @state.dragged
       dy = (parseFloat(@props.subject.data.y) + parseFloat(@props.subject.data.height)) * @state.viewerSize.scale.vertical
-      console.log "text tool update pos: ", dy, @props.subject.data.y, @props.subject.data.height, @state.viewerSize.scale.vertical
       @setState
         dx: @props.subject.data.x * @state.viewerSize.scale.horizontal
         dy: dy

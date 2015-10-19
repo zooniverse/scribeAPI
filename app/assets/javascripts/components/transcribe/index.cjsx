@@ -45,7 +45,6 @@ module.exports = React.createClass # rename to Classifier
     @setState taskKey: @getCurrentSubject().type if @getCurrentSubject()?
 
   __DEP__handleTaskComponentChange: (val) ->
-    # console.log "handleTaskComponentChange val", val
     taskOption = @getCurrentTask().tool_config.options[val]
     if taskOption.next_task?
       @advanceToTask taskOption.next_task
@@ -63,7 +62,6 @@ module.exports = React.createClass # rename to Classifier
         => @forceUpdate()
 
   handleTaskComplete: (d) ->
-    console.log 'TRANSCRIBE/INDEX::handleTaskComplete()'
     @handleDataFromTool(d)
     @commitClassificationAndContinue d
 
@@ -90,6 +88,7 @@ module.exports = React.createClass # rename to Classifier
       subject_set_id: @getCurrentSubject().subject_set_id
       selected_subject_id: @getCurrentSubject().parent_subject_id
       mark_task_key: @props.query.mark_key
+      subject_id: @getCurrentSubject().id
 
       page: @props.query.page
 
@@ -111,8 +110,17 @@ module.exports = React.createClass # rename to Classifier
 
     <div className="classifier">
       <div className="subject-area">
+        {
+          unless @getCurrentSubject() || @state.noMoreSubjects 
+            <DraggableModal
+              header          = { "Loading transcription subjects." }
+              buttons         = {<GenericButton label='Back to Marking' href='/#/mark' />}
+            >
+                We are currently looking for a subject for you to {@props.workflowName}.
+            </DraggableModal>
+        }
 
-        { unless @getCurrentSubject()
+        { if @state.noMoreSubjects
             <DraggableModal
               header          = { if @state.userClassifiedAll then "Thanks for transcribing!" else "Nothing to transcribe" }
               buttons         = {<GenericButton label='Continue' href='/#/mark' />}
@@ -120,6 +128,7 @@ module.exports = React.createClass # rename to Classifier
                 Currently, there are no {@props.project.term('subject')}s for you to {@props.workflowName}. Try <a href="/#/mark">marking</a> instead!
             </DraggableModal>
 
+          
           else if @getCurrentSubject()? and @getCurrentTask()?
 
             <SubjectViewer

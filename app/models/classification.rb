@@ -24,24 +24,20 @@ class Classification
   scope :having_child_subjects, -> { where(:child_subject_id.nin => ['', nil]) }
   scope :not_having_child_subjects, -> { where(:child_subject_id.in => ['', nil]) }
 
+  index({child_subject_id: 1}, {background: true})
+
   def generate_new_subjects
     if workflow.generates_subjects
       workflow.create_secondary_subjects(self)
     end
   end
 
-    # AMS: not sure if workflow.generates_subjects_after is the best measure.
-    # =>   In addition, we only want to call this for certain subjects (not collect unique.)
-    # =>   right now, this mainly applies to workflow.generates_subjects_method == "collect-unique".
   def check_for_retirement_by_classification_count
     # PB: This isn't quite right.. Retires the *parent* subject rather than the subject generated..
     # return nil
-    puts "RETIRE CHECK"
 
-    workflow = subject.workflow
     if workflow.generates_subjects_method == "collect-unique"
       if subject.classification_count >= workflow.generates_subjects_after
-        puts "retiring because clasification count > ..."
         subject.retire!
       end
     end
@@ -90,7 +86,6 @@ class Classification
 
     if self.task_key == "flag_bad_subject_task"
       subject.increment_flagged_bad_count_by_one
-
       # Push user_id onto Subject.deleting_user_ids if appropriate
       Subject.where({id: subject.id}).find_and_modify({"$addToSet" => {deleting_user_ids: user_id.to_s}})
     end

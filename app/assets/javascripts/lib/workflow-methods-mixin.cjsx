@@ -139,7 +139,6 @@ module.exports =
 
   # Add newly acquired child_subject to child_subjects array of relevant subject (i.e. after submitting a subject-generating classification)
   appendChildSubject: (subject_id, child_subject) ->
-    console.log 'appendChildSubject()'
     if (s = @getSubjectById(subject_id))
       s.child_subjects.push $.extend({userCreated: true}, child_subject)
 
@@ -196,12 +195,9 @@ module.exports =
 
   # Load next logical task
   advanceToNextTask: () ->
-    # console.log 'advanceToNextTask()'
     nextTaskKey = @getNextTask()?.key
     if nextTaskKey is null
-      # console.log 'NOTHING LEFT TO DO'
       return
-    # console.log 'TASK KEY: ', nextTaskKey
 
     # Commit whatever current classification is:
     @commitCurrentClassification()
@@ -213,7 +209,6 @@ module.exports =
 
   # Get next logical task
   getNextTask: ->
-    # console.log 'getNextTask()'
     task = @getTasks()[@state.taskKey]
     # PB: Moving from hash of options to an array of options
 
@@ -236,8 +231,6 @@ module.exports =
       console.warn "WARN: Invalid tool specified in #{key}: #{task.tool}"
 
     else
-      console.log "Transcribe#advanceToTask(#{key}): tool=#{task.tool}"
-
       @setState
         taskKey: key
 
@@ -246,7 +239,7 @@ module.exports =
   getCurrentSubjectSet: ->
     if @state.subjectSets?[@state.subject_set_index]
       @state.subjectSets?[@state.subject_set_index]
-    else @state.subjectSets #having a hard time accounting for one subject_set
+    # else @state.subjectSets #having a hard time accounting for one subject_set
 
   # Get currently viewed subject
   getCurrentSubject: ->
@@ -271,19 +264,19 @@ module.exports =
     tool: "pickOne"
     help: {
       title: "Completion Assessment",
-      body: "You do not have to complete every page, but it helps us to know, before you move on to another task, if there is any work left to do. Thanks again!"
+      body: "<p>Have all requested fields on this page been marked with a rectangle?</p><p>You do not have to mark every field on the page, however, it helps us to know if you think there is more to mark. Thank you!</p>"
     },
     tool_config: {
       "options": [
         {
-          "label": "No",
-          "next_task": null,
-          "value": "complete_subject"
-        },
-        {
           "label": "Yes",
           "next_task": null,
           "value": "incomplete_subject"
+        }
+        {
+          "label": "No",
+          "next_task": null,
+          "value": "complete_subject"
         }
       ]
     }
@@ -309,11 +302,12 @@ module.exports =
 
     # Haz more pages of subjects?
     else if @state.subjects_next_page?
-      @fetchSubjects @getActiveWorkflow().id, @getActiveWorkflow().subject_fetch_limit, @state.subjects_next_page
+      @fetchSubjects page: @state.subjects_next_page
 
     else
       @setState
         subject_index: null
+        noMoreSubjects: true
         userClassifiedAll: @state.subjects.length > 0
 
   # This is the version of advanceToNextSubject for workflows that consume subject sets (mark)
@@ -328,26 +322,30 @@ module.exports =
 
     # If we've exhausted all subject sets, collapse in shame
     if new_subject_set_index >= @state.subjectSets.length
-      @setState
-        taskKey: null
-        notice:
-          header: "All Done!"
-          message: "There's nothing more for you to #{@props.workflowName} here."
-          onClick: () =>
-            @transitionTo? 'mark' # "/#/mark"
-            @setState
-              notice: null
-              taskKey: @getActiveWorkflow().first_task
-      console.warn "NO MORE SUBJECT SETS"
+      if @state.subject_sets_current_page < @state.subject_sets_total_pages
+        @fetchSubjectSets page: @state.subject_sets_current_page + 1
+      else
+        @setState
+          taskKey: null
+          notice:
+            header: "All Done!"
+            message: "There's nothing more for you to #{@props.workflowName} here."
+            onClick: () =>
+              @transitionTo? 'mark' # "/#/mark"
+              @setState
+                notice: null
+                taskKey: @getActiveWorkflow().first_task
+        console.warn "NO MORE SUBJECT SETS"
       return
 
-    console.log "Mark#index Advancing to subject_set_index #{new_subject_set_index} (of #{@state.subjectSets.length}), subject_index #{new_subject_index} (of #{@state.subjectSets[new_subject_set_index].subjects.length})"
+    # console.log "Mark#index Advancing to subject_set_index #{new_subject_set_index} (of #{@state.subjectSets.length}), subject_index #{new_subject_index} (of #{@state.subjectSets[new_subject_set_index].subjects.length})"
 
     @setState
       subject_set_index: new_subject_set_index
       subject_index: new_subject_index
       taskKey: @getActiveWorkflow().first_task
-      currentSubToolIndex: 0
+      currentSubToolIndex: 0, () =>
+        @fetchSubjectsForCurrentSubjectSet(1, 100)
 
   commitClassificationAndContinue: (d) ->
     @commitCurrentClassification()

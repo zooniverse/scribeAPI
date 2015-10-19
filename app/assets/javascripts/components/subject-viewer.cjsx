@@ -29,6 +29,7 @@ module.exports = React.createClass
       x: 0
       y: 0
     scale: {horizontal: 1, vertical: 1}
+    sameSessionTranscriptions: []
 
   getDefaultProps: ->
     tool: null # Optional tool to place alongside subject (e.g. transcription tool placed alongside mark)
@@ -37,10 +38,12 @@ module.exports = React.createClass
 
   componentWillReceiveProps: (new_props) ->
     @setUncommittedMark null if new_props.task?.tool != 'pickOneMarkOne'
+
     if Object.keys(@props.annotation).length == 0 #prevents back-to-back mark tasks, displaying a duplicate mark from previous tasks.
       @setUncommittedMark null
 
-    @setState marks: @getMarksFromProps(new_props)
+    @setState 
+      marks: @getMarksFromProps(new_props)
 
     if new_props.subject.id == @props.subject.id
       @scrollToSubject()
@@ -64,7 +67,6 @@ module.exports = React.createClass
         @updateDimensions()
         @scrollToSubject()
 
-    
 
   componentWillUnmount: ->
     window.removeEventListener "resize", @updateDimensions
@@ -78,6 +80,17 @@ module.exports = React.createClass
           h: scale.vertical * @props.subject.height
 
       @props.onLoad props
+
+    # Fix for IE: On resize, manually set dims of svg because otherwise it displays as a tiny tiny thumb
+    if $('.subject-viewer')
+      w = parseInt($('.subject-viewer').width())
+      w = Math.min w, $('body').width() - 300
+      h = (w / @props.subject.width) * @props.subject.height
+      $('.subject-viewer svg').width w
+      $('.subject-viewer svg').height h
+
+      # Also a fix for IE:
+      @setState scale: @getScale()
 
   loadImage: (url) ->
     @setState loading: true, =>
@@ -104,6 +117,9 @@ module.exports = React.createClass
     return null if e.buttons? && e.button? && e.button > 0 # ignore right-click
     newMark = @createMark(e)
 
+    # Don't proceed as if a new mark was created if no mark was created (i.e. no drawing tool selected)
+    return if ! newMark?
+
     # submit uncommitted mark
     if @state.uncommittedMark?
       @submitMark(@state.uncommittedMark)
@@ -118,6 +134,7 @@ module.exports = React.createClass
 
     # Instantiate appropriate marking tool:
     MarkComponent = markingTools[subTool.type] # NEEDS FIXING
+    return null if ! MarkComponent?
 
     mark =
       belongsToUser: true # let users see their current mark when hiding others
@@ -153,6 +170,7 @@ module.exports = React.createClass
       initMoveValues = MarkComponent.initMove mouseCoords, mark, e
       for key, value of initMoveValues
         mark[key] = value
+    
 
     @props.onChange? mark
     @setState uncommittedMark: mark
@@ -197,15 +215,14 @@ module.exports = React.createClass
     vertical = rect.height / @props.subject.height
     offsetX = rect.left + $(window).scrollLeft()
     offsetY = rect.top + $(window).scrollTop()
-    # console.log "top: ", rect.top, $(window).scrollTop(), offsetY
     # PB: Adding offsetX and offsetY, which are also necessary to calculate window absolute px coordinates from source-image coordinates
     return {horizontal, vertical, offsetX, offsetY}
 
   getEventOffset: (e) ->
     rect = @refs.sizeRect.getDOMNode().getBoundingClientRect()
     scale = @state.scale # @getScale()
-    x = ((e.pageX - pageXOffset - rect.left) / scale.horizontal) + @state.viewX
-    y = ((e.pageY - pageYOffset - rect.top) / scale.vertical) + @state.viewY
+    x = ((e.pageX - window.pageXOffset - rect.left) / scale.horizontal) + @state.viewX
+    y = ((e.pageY - window.pageYOffset - rect.top) / scale.vertical) + @state.viewY
     return {x, y}
 
   # Set mark to currently selected:
@@ -272,7 +289,6 @@ module.exports = React.createClass
       else
         otherMarks.push mark
 
-    # console.log '{transcribableMarks, otherMarks} = ', {transcribableMarks, otherMarks}
     return {transcribableMarks, otherMarks}
 
   renderMarks: (marks) ->

@@ -8,8 +8,7 @@ module.exports = React.createClass
 
   propTypes:
     tutorial: React.PropTypes.object.isRequired
-    toggleTutorial: React.PropTypes.func.isRequired
-    setTutorialComplete: React.PropTypes.func.isRequired
+    onCloseTutorial: React.PropTypes.func.isRequired
 
   getInitialState:->
     currentTask: @props.tutorial.first_task
@@ -17,30 +16,15 @@ module.exports = React.createClass
     completedSteps: 0
     doneButtonLabel: "Next"
 
-  setCompleteTutorial:->
-    request = $.getJSON "/tutorial_complete"
-
-    request.done (result)=>
-      @props.toggleTutorial()
-
-    request.fail (error)=>
-      console.log "failed to set tutorial value for user"
-
-
   advanceToNextTask:->
     if @props.tutorial.tasks[@state.currentTask].next_task == null
-      @setCompleteTutorial()
-      @props.setTutorialComplete()
+      @props.onCloseTutorial()
 
     else
       @setState
         currentTask: @state.nextTask
         nextTask: @props.tutorial.tasks[@state.nextTask].next_task
         completedSteps: @state.completedSteps + 1
-
-  completeTutorial:->
-    @setCompleteTutorial()
-    @props.setTutorialComplete()
 
   render:->
     helpContent = @props.tutorial.tasks[@state.currentTask].help
@@ -51,6 +35,6 @@ module.exports = React.createClass
     else
       doneButtonLabel = "Done"
 
-    <DraggableModal header={helpContent.title ? 'Help'} doneButtonLabel={doneButtonLabel} onDone={@advanceToNextTask} width=600 classes="help-modal" progressSteps={taskKeys} currentStepIndex={@state.completedSteps} closeButton=true onClose={@completeTutorial} >
+    <DraggableModal header={helpContent.title ? 'Help'} doneButtonLabel={doneButtonLabel} onDone={@advanceToNextTask} width={800} classes="help-modal" currentStepIndex={@state.completedSteps} closeButton=true onClose={@props.onCloseTutorial} >
       <div dangerouslySetInnerHTML={{__html: marked( helpContent.body ) }} />
     </DraggableModal>
