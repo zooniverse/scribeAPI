@@ -24,8 +24,8 @@ HomePage = React.createClass
       { if @props.project?.home_page_content?
 
         <div className="page-content">
-          <h1 className="title">{@state.project?.title}</h1>
-          <div dangerouslySetInnerHTML={{ __html: marked(@state.project.home_page_content) }}></div>
+          <h1 className="title">{@props.project?.title}</h1>
+          <div dangerouslySetInnerHTML={{ __html: marked(@props.project.home_page_content) }}></div>
           {
             # Is there a metadata search configured, and should it be on the homepage?
             # TODO If mult metadata_search fields configured, maybe offer a <select> to choose between them

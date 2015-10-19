@@ -1,4 +1,5 @@
 /* Custom Old Weather: Whaling styles that overwrite Scribe defaults */
+
 .home-page {
   background-color: inherit;
   color: #efefef;
@@ -19,10 +20,10 @@
 }
 
 .home-page .title-container {
-  position: absolute;
-  left: 60px;
-  height: 700px;
-  width: 860px;
+  position: relative;
+  left: 30px;
+  height: 545px;
+  width: 722px;
   background-image: -webkit-linear-gradient(top, #000 50%, rgba(0,0,0,0.2) 100%);
   background-image: -moz-linear-gradient(top, #000 50%, rgba(0,0,0,0.2) 100%);
   background-image: -ms-linear-gradient(top, #000 50%, rgba(0,0,0,0.2) 100%);
@@ -34,7 +35,7 @@
   display: inline-block;
   line-height: 0px;
   font-family: 'Garamond';
-  font-size: 100px;
+  font-size: 70px;
   text-align: left;
   margin-left: 52px;
 }
@@ -45,7 +46,7 @@
 
 .whaling-text {
   font-family: 'Garamond';
-  font-size: 60px;
+  font-size: 42px;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
   display: inline-flex;}
@@ -57,7 +58,7 @@
 }
 
 .home-page .title-container .tagline {
-  font-size: 24px;
+  font-size: 19px;
   font-weight: 500;
   color: #fff;
   font-style: italic;
@@ -69,7 +70,7 @@
 }
 
 .home-page .title-container .project-summary {
-  font-size: 24px;
+  font-size: 19px;
   color: #fff;
   text-align: justify;
   line-height: 1.5em;
@@ -80,7 +81,7 @@
 
 .home-page .title-container a {
   text-decoration: none;
-  font-size: 22px;
+  font-size: 19px;
   margin-left: 50px;
   z-index: 1;
 }
@@ -102,9 +103,10 @@
 }
 
 .group-area {
-  position: absolute;
+  position: relative;
   margin-top: 30px;
-  top: 800px;
+  /*top: 560px;
+  height: 1900px;*/
 }
 
 .group-browser {
@@ -123,7 +125,7 @@
 
 .groups-header:after {
   text-transform: none;
-  margin-left: 10px;
+  margin-left: 52px;
   content: 'Select a Voyage';
 }
 
