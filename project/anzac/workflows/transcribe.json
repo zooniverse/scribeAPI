@@ -1,7 +1,7 @@
 {
     "name": "transcribe",
     "label": "Transcribe Workflow",
-    "subject_fetch_limit": "1",
+    "subject_fetch_limit": "50",
     "retire_limit": 3,
     "generates_subjects": true,
     "generates_subjects_for": "verify",
@@ -477,18 +477,18 @@
             },
             "tool_config": {
                 "tools": {
-                  "att_transcribe_sight_l": {
-                    "tool": "textTool",
-                    "tool_config": {},
-                    "label": "Transcribe the entry for **left eye**",
-                    "generates_subject_type": "att_transcribed_sight_l"
-                  },
                   "att_transcribe_sight_r": {
                     "tool": "textTool",
                     "tool_config": {},
                     "label": "Transcribe the entry for **right eye**",
                     "generates_subject_type": "att_transcribed_sight_r"
-                   }
+                   },
+                  "att_transcribe_sight_l": {
+                    "tool": "textTool",
+                    "tool_config": {},
+                    "label": "Transcribe the entry for **left eye**",
+                    "generates_subject_type": "att_transcribed_sight_l"
+                  }
                 }
             },
             "next_task": null
@@ -501,18 +501,18 @@
             },
             "tool_config": {
                 "tools": {
-                  "att_transcribe_hearing_l": {
-                    "tool": "textTool",
-                    "tool_config": {},
-                    "label": "Transcribe the entry for **left ear**",
-                    "generates_subject_type": "att_transcribed_hearing_l"
-                  },
                   "att_transcribe_hearing_r": {
                     "tool": "textTool",
                     "tool_config": {},
                     "label": "Transcribe the entry for **right ear**",
                     "generates_subject_type": "att_transcribed_hearing_r"
-                   }
+                   },
+                  "att_transcribe_hearing_l": {
+                    "tool": "textTool",
+                    "tool_config": {},
+                    "label": "Transcribe the entry for **left ear**",
+                    "generates_subject_type": "att_transcribed_hearing_l"
+                  }
                 }
             },
             "next_task": null
