@@ -155,12 +155,10 @@ module.exports = React.createClass
     return if @props.subjectCurrentPage == @props.totalSubjectPages && (third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || second == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
     # # if the current page of subjects is NOT the last page of the subject_set and the 2nd or 3rd <li> is the last <li> contain the last subjects in the subject_set
     if @props.subjectCurrentPage < @props.totalSubjectPages && (third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || second == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
-      @props.nextPage( =>
-        @setState first: @props.subject_set.subjects[0]
-        , => @forceUpdate() )
+      @props.nextPage( => @setState first: @props.subject_set.subjects[0])
       # NOTE: for some reason, LightBox does not receive correct value for @props.subject_index, which has led to this awkard callback function above --STI
       # @setState first: @props.subject_set.subjects[0], => @forceUpdate()
 
     # there are further subjects to see in the currently loaded page
     else
-      @setState first: @props.subject_set.subjects[indexOfFirst+3], => @forceUpdate()
+      @setState first: @props.subject_set.subjects[indexOfFirst+3]
