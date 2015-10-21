@@ -154,19 +154,10 @@ module.exports = React.createClass # rename to Classifier
     @advanceToNextSubject()
 
   nextPage: (callback_fn)->
-    console.log 'nextPage(), callback_fn = ', callback_fn
-    console.log 'subjectCurrentPage (before) = ', @state.subjectCurrentPage
     new_page = @state.subjectCurrentPage + 1
-    @setState
-      subjectCurrentPage: new_page
-        , =>
-          console.log '@STATE.subjectCurrentPage (after) ', @state.subjectCurrentPage
-          console.log 'NEW PAGE = ', new_page
-          @forceUpdate()
-          @fetchSubjectsForCurrentSubjectSet(new_page, null, callback_fn)
+    @setState subjectCurrentPage: new_page, => @fetchSubjectsForCurrentSubjectSet(new_page, null, callback_fn)
 
   prevPage: (callback_fn) ->
-    console.log 'prevPage()'
     new_page = @state.subjectCurrentPage - 1
     @setState subjectCurrentPage: new_page
     @fetchSubjectsForCurrentSubjectSet(new_page, null, callback_fn)
