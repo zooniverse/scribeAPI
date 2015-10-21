@@ -84,7 +84,7 @@ module.exports =
         @fetchSubjectsForCurrentSubjectSet 1, null, callback
 
   # PB: Setting default limit to 120 because it's a multiple of 3 mandated by thumb browser
-  fetchSubjectsForCurrentSubjectSet: (page=1, limit=6, callback) ->
+  fetchSubjectsForCurrentSubjectSet: (page=1, limit=120, callback) ->
     ind = @state.subject_set_index
     sets = @state.subjectSets
 
@@ -106,13 +106,16 @@ module.exports =
         subjects_total_pages:       subjs[0].getMeta('total_pages'), () =>
           callback? sets
 
+
+    # Couldn't get this code to work with the changes. Commenting for now. --STI
     # # Since we're fetching by query, json-api-client won't cache it, so let's cache it lest we re-fetch subjects everytime something happens:
     # @_subject_queries ||= {}
     # console.log '@_subject_queries[params] = ', @_subject_queries[params]
-    # if (subjects is @_subject_queries[params])?
+    # if (subjects = @_subject_queries[params])?
     #   process_subjects subjects
     #
     # else
+
     @_subject_queries ||= {}
     API.type('subjects').get(params).then (subjects) =>
       @_subject_queries[params] = subjects
