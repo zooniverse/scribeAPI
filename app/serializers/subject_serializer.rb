@@ -2,7 +2,7 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
 
   attributes :id, :type, :parent_subject_id, :workflow_id, :name, :location, :data, :region, :classification_count, :order, :meta_data
   attributes :width, :height, :region, :subject_set_id, :status
-  attributes :user_favourite, :user_has_classified, :user_has_deleted
+  attributes :user_has_classified, :user_has_deleted
   attributes :belongs_to_user
   attributes :child_subjects
 
