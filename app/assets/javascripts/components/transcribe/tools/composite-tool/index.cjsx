@@ -88,7 +88,7 @@ CompositeTool = React.createClass
     @transitionTo 'mark', {},
       subject_set_id: @props.subject.subject_set_id
       selected_subject_id: @props.subject.parent_subject_id
-      page: @props.subjectCurrentPage
+      page: @props.subjectsubjectCurrentPage
 
   render: ->
     buttons = []
