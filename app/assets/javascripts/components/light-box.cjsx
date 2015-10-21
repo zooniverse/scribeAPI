@@ -19,8 +19,6 @@ module.exports = React.createClass
     first: @props.subject_set.subjects[0]
     folded: false
 
-  componentWillReceiveProps: (new_props) ->
-
   handleFoldClick: (e)->
 
     @setState folded: !@state.folded
