@@ -16,7 +16,9 @@ class Classification
   belongs_to    :subject, foreign_key: "subject_id", inverse_of: :classifications
   belongs_to    :child_subject, class_name: "Subject", inverse_of: :parent_classifications
 
-  after_create  :increment_subject_classification_count, :increment_subject_set_classification_count, :check_for_retirement_by_classification_count
+  after_create  :increment_subject_classification_count, :check_for_retirement_by_classification_count
+  # removing this after create until we have a use case for the information
+  # after_create  :increment_subject_set_classification_count, 
   after_create  :generate_new_subjects
   after_create  :generate_terms
 
@@ -74,6 +76,7 @@ class Classification
     end
   end
 
+  # removing this from the after create hook in interest of speed
   def increment_subject_set_classification_count
     subject.subject_set.inc classification_count: 1
   end

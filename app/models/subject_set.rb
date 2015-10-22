@@ -13,7 +13,7 @@ class SubjectSet
   field :meta_data,              type: Hash
   field :counts,                 type: Hash
   # Just for admin filtering
-  field :classification_count,   type: Integer, default: 0
+  # field :classification_count,   type: Integer, default: 0 #until we have a use case, let us not record this info
 
   field :complete_secondary_subject_count,    type: Integer, default: 0
   field :active_secondary_subject_count,      type: Integer, default: 0
