@@ -38,7 +38,6 @@ class Classification
   def check_for_retirement_by_classification_count(subject)
     if workflow.generates_subjects_method == "collect-unique"
       if subject.classification_count >= workflow.generates_subjects_after
-        binding.pry
         subject.retire!
       end
     end
