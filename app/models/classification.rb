@@ -81,7 +81,7 @@ class Classification
   def increment_subject_classification_count
     # TODO: Probably wrong place to be reacting to completion_assessment_task & flag_bad_subject_task
     # tasks; Should perhaps generalize and place elsewhere
-    if self.task_key == "completion_assessment_task" && self.annotation["value"] == "complete_subjectexit"
+    if self.task_key == "completion_assessment_task" && self.annotation["value"] == "complete_subject"
       subject.increment_retire_count_by_one
     end
 
@@ -96,7 +96,7 @@ class Classification
     end
     # subject.inc classification_count: 1
     # Push user_id onto Subject.user_ids using mongo's fast addToSet feature, which ensures uniqueness
-    subject_returned = Subject.where({id: subject.id}).find_and_modify({"$addToSet" => {classifying_user_ids: user_id.to_s}, "$inc" => {classification_count: 1}}, new: true)
+    subject_returned = Subject.where({id: subject_id}).find_and_modify({"$addToSet" => {classifying_user_ids: user_id.to_s}, "$inc" => {classification_count: 1}}, new: true)
     
     #Passing the returned subject as parameters so that we eval the correct classification_count
     check_for_retirement_by_classification_count(subject_returned)
