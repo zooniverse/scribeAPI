@@ -42,5 +42,6 @@ API::Application.routes.draw do
     get 'data/download' => 'data#download'
     get 'signin' => 'auth#signin'
   end
-
+  get 'admin' => 'admin/dashboard#index'
+  
 end
