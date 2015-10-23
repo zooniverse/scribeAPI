@@ -26,7 +26,6 @@ API::Application.routes.draw do
   get '/workflows/:workflow_id/subject_sets/:subject_set_id/subjects/:subject_id',    to: 'subject_sets#show',     defaults: { format: 'json' }
   
   # Subject_sets
-  get '/subject_sets/:subject_set_id',                        to: 'subject_sets#show',     defaults: { format: 'json' }
   resources :subject_sets, only: [:show, :index], :defaults => { :format => 'json' }  # we are using the _url helper for show, so opting to keep this as resources for now
   get '/subject_sets/terms/:field',                           to: 'subject_sets#name_search'
   

@@ -54,7 +54,7 @@ class SubjectSetsController < ApplicationController
   end
 
   def show
-    subject_set_id              = get_objectid :subject_set_id || params[:subject_set_id]
+    subject_set_id              = get_objectid :id
     subjects_limit              = get_int :subjects_limit, 100
     subjects_page               = get_int :subjects_page, 1
     @subject_set = SubjectSet.find subject_set_id
