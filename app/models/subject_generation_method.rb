@@ -43,7 +43,10 @@ class SubjectGenerationMethod
       # Otherwise, it's a later workflow and we should copy `region` from parent subject
       region = classification.subject.region
     end
-    region[:label] = task.tool_label classification
+    # If marking tool has a label, save it:
+    if (label = task.tool_label(classification))
+      region[:label] = label
+    end
 
     {
       parent_subject: classification.subject,
@@ -55,7 +58,7 @@ class SubjectGenerationMethod
       location: {
         standard: classification.subject.location[:standard]
       },
-      region: region,
+      region: region.empty? ? nil : region,
       width: classification.subject.width,
       height: classification.subject.height
     }
