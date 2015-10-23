@@ -62,9 +62,9 @@ end
 
 # Updates out_path csv with given subjects rows
 def update_csv(rows)
-  CSV.open($out_path, "wb", headers:true) do |csv| 
+  CSV.open($out_path, "wb") do |csv| 
 
-    csv << rows.first.keys
+    # csv << rows.headers
 
     rows.each do |row| 
       csv << row
@@ -106,6 +106,23 @@ def upload_derivs(img, filename)
 end
 
 $rows = []
+$rows = CSV.read($out_path, headers: true)
+puts "existing rows: #{$rows.size}"
+
+def add_row(row)
+
+  # puts "add row: #{row.inspect}"
+  if ! $rows.select { |r| r['file_path'] == row['file_path'] }.empty?
+    puts "Overwriting existing row in csv"
+  end
+  $rows.delete_if { |r| r['file_path'] == row['file_path'] }
+  $rows << row
+
+  puts "write #{$rows.size} to csv"
+
+  update_csv($rows)
+  
+end
 
 # Crop given image 
 def make_crop(img, row, name, coords)
@@ -123,7 +140,7 @@ def make_crop(img, row, name, coords)
   urls =  upload_derivs crop, "#{_row['capture_uuid']}.#{name}.jpg"
   _row.merge! urls
 
-  $rows << _row
+  add_row _row
 end
 
 # Perform appropriate crops:
@@ -169,7 +186,7 @@ end
 $existing_paths = $bucket.objects.select { |b| b.key.match /#{BUCKET_FOLDER}\// }.map { |b| b.key }
 
 CSV.foreach($in_path, headers: true) do |row| 
-  # next if $. < 600
+  next if $. < 520
 
   puts "#{$.}: Processing #{row['file_path']}"
   row = row.to_h
@@ -194,9 +211,9 @@ CSV.foreach($in_path, headers: true) do |row|
   # Make crops:
   make_crops img, row
 
-  update_csv($rows)
+  # update_csv($rows)
 
-  # break if $rows.size >= 10
+  break if $. >= 521
 end
 
 puts "Done"
