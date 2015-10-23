@@ -64,10 +64,11 @@ end
 def update_csv(rows)
   CSV.open($out_path, "wb") do |csv| 
 
-    # csv << rows.headers
+    # `rows` is just an array of hashes; the first will be the headers
+    csv << rows.first.keys
 
     rows.each do |row| 
-      csv << row
+      csv << row.values
     end
   end
 end
@@ -106,22 +107,18 @@ def upload_derivs(img, filename)
 end
 
 $rows = []
-$rows = CSV.read($out_path, headers: true)
-puts "existing rows: #{$rows.size}"
+$rows = CSV.read($out_path, headers: true).map { |r| r.to_h }
+$headers = CSV.read($out_path).first
 
+# Add row to csv
 def add_row(row)
 
-  # puts "add row: #{row.inspect}"
-  if ! $rows.select { |r| r['file_path'] == row['file_path'] }.empty?
-    puts "Overwriting existing row in csv"
-  end
+  # Delete row if it already exists
   $rows.delete_if { |r| r['file_path'] == row['file_path'] }
   $rows << row
 
-  puts "write #{$rows.size} to csv"
-
+  # rewrite csv:
   update_csv($rows)
-  
 end
 
 # Crop given image 
@@ -210,8 +207,6 @@ CSV.foreach($in_path, headers: true) do |row|
 
   # Make crops:
   make_crops img, row
-
-  # update_csv($rows)
 
   break if $. >= 521
 end
