@@ -15,10 +15,10 @@ API::Application.routes.draw do
   get '/current_user',                                        to: "users#logged_in_user"
   post '/tutorial_complete',                                  to: "users#tutorial_complete"
   get '/projects/stats',                                      to: 'projects#stats'
-  get '/project/style.css',                                   to: 'projects#project_css',  defaults: { format: 'css' }
-  get '/project/custom.js',                                   to: 'projects#project_js',  defaults: { format: 'js' }
+  
   get '/workflows/:workflow_id/subjects',                     to: 'subjects#index'
   get '/workflows/:workflow_id/subject_sets',                 to: 'subject_sets#index'
+  
   get '/subjects/:subject_id',                                to: 'subjects#show',         defaults: { format: 'json' }
   get '/subject_sets/:subject_set_id',                        to: 'subject_sets#show',     defaults: { format: 'json' }
   get '/workflows/:workflow_id/subject_sets/:subject_set_id/subjects/:subject_id',    to: 'subject_sets#show',     defaults: { format: 'json' }
@@ -33,8 +33,7 @@ API::Application.routes.draw do
   resources :subject_sets, :defaults => { :format => 'json' }
   resources :classifications, :defaults => { :format => 'json' }
   resources :groups, :defaults => { :format => 'json' }
-  resources :favourites, defaults: {format: 'json'}
-  resources :favourites, only: [:index, :create, :destroy]
+
 
   namespace :admin do
     resources :subject_sets, :subjects, :classifications, :users
@@ -44,5 +43,5 @@ API::Application.routes.draw do
     get 'signin' => 'auth#signin'
   end
   get 'admin' => 'admin/dashboard#index'
-
+  
 end
