@@ -15,7 +15,7 @@ require 'net/http'
 require 'rmagick'
 require "s3"
 
-RECUT                   = false               # Set to true to re-upload even if the file already exists
+RECUT                   = true                # Set to true to re-upload even if the file already exists
 DESKEW                  = true                # Set to true to attempt to deskew images before splitting
 BUCKET_NAME             = 'scribe.nypl.org'   # S3 Bucket name
 BUCKET_FOLDER           = 'emigrant'          # Folder within bucket to place uploaded files
@@ -96,8 +96,8 @@ def upload_derivs(img, filename)
   upload_image img, full_path
   ret['file_path'] = "https://s3.amazonaws.com/#{BUCKET_NAME}/#{full_path}"
 
-  # Thumb (300px wide by however tall):
-  img = img.resize 300, 1000 
+  # Thumb (exactly 150px wide by however tall):
+  img.change_geometry("150") { |cols, rows, img| img.resize!(cols, rows) }
   thumb_path = "#{BUCKET_FOLDER}/thumb/#{filename}"
   upload_image img, thumb_path
   ret['thumbnail'] = "https://s3.amazonaws.com/#{BUCKET_NAME}/#{thumb_path}"
