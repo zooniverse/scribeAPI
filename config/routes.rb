@@ -43,5 +43,5 @@ API::Application.routes.draw do
     get 'signin' => 'auth#signin'
   end
   get 'admin' => 'admin/dashboard#index'
-
+  
 end
