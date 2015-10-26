@@ -25,7 +25,7 @@ SPLIT_OVERLAP           = 0.03                # When splitting pages cut each si
 S3_API_FAILURE_RETRY    = 3                   # S3 connection failures are common. Retry this many times
 
 $in_path = "#{File.dirname(File.dirname(__FILE__))}/subjects/subjects_from_api.csv"
-$out_path = "#{File.dirname(File.dirname(__FILE__))}/subjects/group_only_one_group.csv"
+$out_path = "#{File.dirname(File.dirname(__FILE__))}/subjects/group_only_one_group.building.csv"
 
 $s3 = S3::Service.new(access_key_id: ENV['S3_ID'], secret_access_key: ENV['S3_SECRET'])
 $bucket = $s3.buckets.find BUCKET_NAME
@@ -169,7 +169,7 @@ end
 $existing_paths = $bucket.objects.select { |b| b.key.match /#{BUCKET_FOLDER}\// }.map { |b| b.key }
 
 CSV.foreach($in_path, headers: true) do |row| 
-  # next if $. < 600
+  next if $. < 2306
 
   puts "#{$.}: Processing #{row['file_path']}"
   row = row.to_h
@@ -194,9 +194,7 @@ CSV.foreach($in_path, headers: true) do |row|
   # Make crops:
   make_crops img, row
 
-  update_csv($rows)
-
-  # break if $rows.size >= 10
+  # break if $. >= 1454
 end
 
 puts "Done"
