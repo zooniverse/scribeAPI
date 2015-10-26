@@ -24,8 +24,11 @@ SPLIT_OVERLAP           = 0.03                # When splitting pages cut each si
                                               #   midline)
 S3_API_FAILURE_RETRY    = 3                   # S3 connection failures are common. Retry this many times
 
-$in_path = "#{File.dirname(File.dirname(__FILE__))}/subjects/subjects_from_api.csv"
-$out_path = "#{File.dirname(File.dirname(__FILE__))}/subjects/group_only_one_group.csv"
+START_AT = ARGV[0].nil? ? nil : ARGV[0].to_i
+STOP_AT = ARGV[1].nil? ? nil : ARGV[1].to_i
+
+$in_path = "#{File.dirname(File.dirname(__FILE__))}/subjects/subjects_from_api.building.csv"
+$out_path = "#{File.dirname(File.dirname(__FILE__))}/subjects/group_only_one_group.building.csv"
 
 $s3 = S3::Service.new(access_key_id: ENV['S3_ID'], secret_access_key: ENV['S3_SECRET'])
 $bucket = $s3.buckets.find BUCKET_NAME
@@ -182,14 +185,15 @@ end
 # Get list of existing paths in 
 $existing_paths = $bucket.objects.select { |b| b.key.match /#{BUCKET_FOLDER}\// }.map { |b| b.key }
 
+puts "Processing #{START_AT} - #{STOP_AT} in #{CSV.foreach($in_path, headers: true).size} line input"
 CSV.foreach($in_path, headers: true) do |row| 
-  next if $. < 520
+  next if ! START_AT.nil? && $. < START_AT
+  break if ! STOP_AT.nil? && $. > STOP_AT
 
   puts "#{$.}: Processing #{row['file_path']}"
   row = row.to_h
 
   crops = {}
-
 
   # Load image from std url:
   img = load_image row['file_path']
@@ -208,7 +212,6 @@ CSV.foreach($in_path, headers: true) do |row|
   # Make crops:
   make_crops img, row
 
-  break if $. >= 521
 end
 
 puts "Done"
