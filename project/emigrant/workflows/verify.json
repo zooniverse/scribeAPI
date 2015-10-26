@@ -74,6 +74,15 @@
       "generates_subject_type": "consensus_record_material"
     },
 
+    "em_transcribed_valuation_date": {
+      "instruction": "Choose the best transcription or enter your own!",
+      "tool": "verifyTool",
+      "tool_config": {
+        "displays_transcribe_button": true
+      },
+      "generates_subject_type": "consensus_valuation_date"
+    },
+
     "em_transcribed_valuation": {
       "instruction": "Choose the best transcription or enter your own!",
       "tool": "verifyTool",
