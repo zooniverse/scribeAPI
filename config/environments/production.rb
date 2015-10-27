@@ -95,6 +95,9 @@ API::Application.configure do
   # Enable the logstasher logs for the current environment
   config.logstasher.enabled = true
 
+  # Enable the logstasher logs for the current environment
+  config.logstasher.enabled = true
+
   # React:
   config.react.variant = :production
   config.react.addons = true
