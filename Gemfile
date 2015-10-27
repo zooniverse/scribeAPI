@@ -37,6 +37,8 @@ gem 'newrelic_moped'
 
 gem 'puma', '~> 2.14.0'
 
+gem 'logstasher', '~> 0.6'
+
 group :development do
   gem 'dotenv-rails'
 end
