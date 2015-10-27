@@ -352,3 +352,15 @@ div.home-page {
 .classifier .right-column .task-area .help-bad-subject-holder .task-help-button {
   display: none;
 }
+
+/* Introduction */
+.video-wrapper {
+  margin: 30px -20px;
+  padding: 20px 0 10px;
+  background: #ccc;
+  text-align: center;
+}
+.video-wrapper video {
+  display: inline-block;
+  box-shadow: 0 2px 2px rgba(0,0,0,0.3);
+}
