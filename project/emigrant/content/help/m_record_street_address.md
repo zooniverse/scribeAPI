@@ -1,10 +1,20 @@
 # Street Address
-
-The street address is often found at the top of the list of hand-entered data in the bottom half of the records. This field can appear as "No. of Street or Avenue", "House Number", "Premises", and "Location".  
-
-![record_street_address_image_1](/images/street_address_1.png)  
-***
-![record_street_address_image_2](/images/street_address_2.png)  
-***
-![record_street_address_image_3](/images/street_address_3.png)  
-***
+<p>The street address is often found at the top of the list of hand-entered data in the bottom half of the records.</p>
+<div id="accordion-help-modal">
+  <h3>Sample Image One</h3>
+  <div class="modal-field-guide" >
+    <img src="/images/street_address_1.png" alt="record_street_address_image_1">
+  </div>
+  <h3>Sample Image Two</h3>
+  <div class="modal-field-guide" >
+    <img src="/images/street_address_2.png" alt="record_street_address_image_2">
+  </div>
+  <h3>Sample Image Three</h3>
+  <div class="modal-field-guide" >
+    <img src="/images/street_address_3.png" alt="record_street_address_image_3">
+  </div>
+  <h3>Naming Variants</h3>
+  <div>
+    <p class="other-form" >No. of Street or Avenue</p> <p class="other-form" >House Number</p> <p class="other-form" >Premises</p> <p class="other-form" >Location</p>
+  </div>
+</div>
