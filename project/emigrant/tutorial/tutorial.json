@@ -33,33 +33,33 @@
               "next_task": null,
               "help": {
                   "title": "Marking Regions",
-                  "file": "learn_marking"
+                  "file": "tutorial_mark_1"
               }
           }
         }
       },
       "transcribe": {
         "name": "Transcribe Tutorial",
-        "first_task": "learn_transcribing",
+        "first_task": "tutorial_transcribe_1",
         "tasks": {
           "learn_transcribing": {
               "next_task": null,
               "help": {
                   "title": "Transcribing Fields",
-                  "file": "learn_transcribing"
+                  "file": "tutorial_transcribe_1"
               }
           }
         }
       },
       "verify": {
         "name": "Verify Tutorial",
-        "first_task": "learn_verifying",
+        "first_task": "tutorial_verify_1",
         "tasks": {
           "learn_verifying": {
               "next_task": null,
               "help": {
                   "title": "Verifying Fields",
-                  "file": "learn_verifying"
+                  "file": "tutorial_verify_1"
               }
           }
         }
