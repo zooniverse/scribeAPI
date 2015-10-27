@@ -76,14 +76,16 @@ module.exports = React.createClass
     # Calculate number of existing marks for each tool instance:
     counts = {}
     for subject in @props.subject.child_subjects
-      counts[subject.type] ?= 0
-      counts[subject.type] += 1 unless subject.user_has_deleted
+      # Append tool index to type just in case generates_subject_type is duplicated:
+      k = "#{subject.type}-#{subject.data.subToolIndex}"
+      counts[k] ?= 0
+      counts[k] += 1 unless subject.user_has_deleted
 
     tools = for tool, i in @props.task.tool_config.options
       tool._key ?= Math.random()
 
       # How many prev marks? (i.e. child_subjects with same generates_subject_type)
-      count = counts[tool.generates_subject_type] ? 0
+      count = counts["#{tool.generates_subject_type}-#{i}"] ? 0
       classes = ['answer']
       classes.push 'active' if i is @getSubToolIndex()
       classes.push 'has-help' if tool.help && tool.generates_subject_type

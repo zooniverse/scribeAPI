@@ -82,29 +82,56 @@
       width 200px
 
 .group-page
-  box-model: border-box
+  overflow hidden
+  padding 0 !important
+  display flex
+
+  .group-information
+    max-width 440px
+    padding 20px
+    flex false 1
+
+  .group-stats
+    padding 20px
+    background #3f5765
+    color #fff
+    flex false 1
 
   .group-image
-    max-width 400px
-    max-height 500px
-    float right
-    margin-bottom 10px
+    width 90%
+    height auto
+    margin-top 12px
   p
     font-size 1.3em
 
-.subject_set
-  margin: 0px 20px
-  img
-    width: 200px
-
-.subject_sets
-  width: 100%
-  display: flex
-  margin-top: 20px
+  button
+    background #28373f
+    font-size 1.6em
 
 dl.metadata-list
+  > div
+    width 70%
+    margin-bottom 12px
   dt
     text-transform capitalize
+    font-weight bold
+    border-bottom 1px solid #ccc
+    margin-bottom 6px
+
+dl.stats-list
+  > div
+    display inline-block
+    margin 0 20px 20px 0
+    background rgba(255,255,255,0.1)
+    padding 1em 1em 2em
+  dt
+    font-weight bold
+    color #ccc
+  dd
+    margin 20px 0 0
+    text-align center
+    font-size 4em
+    font-weight bold
 
 .mark-transcribe-buttons
   button

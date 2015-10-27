@@ -16,9 +16,11 @@ class Classification
   belongs_to    :subject, foreign_key: "subject_id", inverse_of: :classifications
   belongs_to    :child_subject, class_name: "Subject", inverse_of: :parent_classifications
 
-  after_create  :increment_subject_classification_count, :increment_subject_set_classification_count, :check_for_retirement_by_classification_count
+  after_create  :increment_subject_classification_count #, :check_for_retirement_by_classification_count
   after_create  :generate_new_subjects
   after_create  :generate_terms
+  # removing this after create until we have a use case for the information
+  # after_create  :increment_subject_set_classification_count, 
 
   scope :by_child_subject, -> (id) { where(child_subject_id: id) }
   scope :having_child_subjects, -> { where(:child_subject_id.nin => ['', nil]) }
@@ -33,10 +35,7 @@ class Classification
     end
   end
 
-  def check_for_retirement_by_classification_count
-    # PB: This isn't quite right.. Retires the *parent* subject rather than the subject generated..
-    # return nil
-
+  def check_for_retirement_by_classification_count(subject)
     if workflow.generates_subjects_method == "collect-unique"
       if subject.classification_count >= workflow.generates_subjects_after
         subject.retire!
@@ -74,6 +73,7 @@ class Classification
     end
   end
 
+  # removing this from the after_create hook in interest of speed. 10/22/15
   def increment_subject_set_classification_count
     subject.subject_set.inc classification_count: 1
   end
@@ -94,10 +94,12 @@ class Classification
     if self.task_key == "flag_illegible_subject_task"
       subject.increment_flagged_illegible_count_by_one
     end
-    subject.inc classification_count: 1
-
+    # subject.inc classification_count: 1
     # Push user_id onto Subject.user_ids using mongo's fast addToSet feature, which ensures uniqueness
-    Subject.where({id: subject.id}).find_and_modify({"$addToSet" => {classifying_user_ids: user_id.to_s}})
+    subject_returned = Subject.where({id: subject_id}).find_and_modify({"$addToSet" => {classifying_user_ids: user_id.to_s}, "$inc" => {classification_count: 1}}, new: true)
+    
+    #Passing the returned subject as parameters so that we eval the correct classification_count
+    check_for_retirement_by_classification_count(subject_returned)
   end
 
   def to_s

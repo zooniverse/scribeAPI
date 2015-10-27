@@ -23,5 +23,46 @@
                 "file": "learn_verifying"
             }
         }
+    },
+    "workflows": {
+      "mark": {
+        "name": "Mark Tutorial",
+        "first_task": "learn_marking",
+        "tasks": {
+          "learn_marking": {
+              "next_task": null,
+              "help": {
+                  "title": "Marking Regions",
+                  "file": "learn_marking"
+              }
+          }
+        }
+      },
+      "transcribe": {
+        "name": "Transcribe Tutorial",
+        "first_task": "learn_transcribing",
+        "tasks": {
+          "learn_transcribing": {
+              "next_task": null,
+              "help": {
+                  "title": "Transcribing Fields",
+                  "file": "learn_transcribing"
+              }
+          }
+        }
+      },
+      "verify": {
+        "name": "Verify Tutorial",
+        "first_task": "learn_verifying",
+        "tasks": {
+          "learn_verifying": {
+              "next_task": null,
+              "help": {
+                  "title": "Verifying Fields",
+                  "file": "learn_verifying"
+              }
+          }
+        }
+      }
     }
 }
