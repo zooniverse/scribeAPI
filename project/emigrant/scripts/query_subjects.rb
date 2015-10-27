@@ -45,7 +45,7 @@ item_uuids.each do |item_uuid|
   end
 end
 
-out_path = "#{File.dirname(File.dirname(__FILE__))}/subjects/subjects_from_api.csv"
+out_path = "#{File.dirname(File.dirname(__FILE__))}/subjects/subjects_from_api.building.csv"
 CSV.open(out_path, "wb") do |csv| 
   csv << subjects.first.keys
 
