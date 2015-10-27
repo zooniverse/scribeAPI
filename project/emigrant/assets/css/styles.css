@@ -124,6 +124,10 @@ html, body,
   font-weight: 400;
   text-align: center;
 }
+.page-content h3 {
+  font-size: 28px;
+  margin-top: 2em;
+}
 .page-content hr {
   border: none;
   border-top: 1px solid rgba(255,255,255,0.3);
@@ -363,4 +367,28 @@ div.home-page {
 .video-wrapper video {
   display: inline-block;
   box-shadow: 0 2px 2px rgba(0,0,0,0.3);
+}
+.columns ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  zoom: 1;
+}
+.columns li {
+  background: #ddd;
+  box-sizing: border-box;
+  width: 32%;
+  float: left;
+  font-size: 22px;
+  line-height: 36px;
+  box-sizing: border-box;
+  padding: 1em;
+  margin-right: 1%;
+  min-height: 264px;
+  border-radius: 6px;
+}
+.columns li .major-button {
+  display: block;
+  margin-bottom: 1em;
 }
