@@ -35,13 +35,13 @@ API::Application.routes.draw do
 
   resources :groups, only: [:show, :index], :defaults => { :format => 'json' }
 
-  namespace :admin do
-    resources :subject_sets, :subjects, :classifications, :users
-    get 'dashboard' => 'dashboard#index'
-    get 'data' => 'data#index'
-    get 'data/download' => 'data#download'
-    get 'signin' => 'auth#signin'
-  end
-  get 'admin' => 'admin/dashboard#index'
+  # namespace :admin do
+  #   resources :subject_sets, :subjects, :classifications, :users
+  #   get 'dashboard' => 'dashboard#index'
+  #   get 'data' => 'data#index'
+  #   get 'data/download' => 'data#download'
+  #   get 'signin' => 'auth#signin'
+  # end
+  # get 'admin' => 'admin/dashboard#index'
   
 end
