@@ -32,8 +32,9 @@ class Project
   field  :status,            type: String, default: 'inactive'
   field :analytics,          type: Hash
 
-  include CachedStats
-  update_interval 180
+  # 10.27.15 until we can sort out a better time to call this method, lets comment it out.
+  # include CachedStats
+  # update_interval 180
 
   has_many :groups, dependent: :destroy
   has_many :subject_sets
