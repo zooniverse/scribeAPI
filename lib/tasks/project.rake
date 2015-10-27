@@ -170,11 +170,19 @@ namespace :project do
           end
         end
 
+        # Check if we should include group browser content
+        group_match = /<!\-\-[\s]*require groups:[\s]*(.*)\-\->/.match(content)
+        group_browser = ''
+        if group_match && !group_match.captures.empty?
+          group_browser = group_match.captures[0]
+        end
+
         project.pages << {
           key: page_key,
           name: name,
           content: content,
-          updated_at: updated_at
+          updated_at: updated_at,
+          group_browser: group_browser
         }
       end
     end
