@@ -26,4 +26,3 @@ We are launching Scribe with three very different projects by [Zooniverse](https
 
 Coming soon...
 
-
