@@ -129,9 +129,10 @@ html, body,
   margin-top: 2em;
 }
 .page-content hr {
+  display: block;
   border: none;
-  border-top: 1px solid rgba(255,255,255,0.3);
-  margin: 1em auto 1.8em;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  margin: 3em auto 0;
   width: 80%;
 }
 .page-content#Team img {
@@ -240,6 +241,9 @@ div.home-page {
 }
 .home-page .logo a:hover {
   color: #c9eac9;
+}
+.home-page .group-area {
+  display: none;
 }
 .group-area .groups {
   text-align: center;
