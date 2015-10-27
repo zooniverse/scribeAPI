@@ -82,7 +82,11 @@ namespace :project do
       puts "Another project, '#{Project.active.first.title}', is currently active. To activate '#{project.title}', run:"
       puts "  rake project:activate[#{args[:project_key]}]"
     end
+
+    ApplicationController.expire_action_cache 'projects/index.json'
+    ApplicationController.expire_action_cache 'home/index'
   end
+
 
   desc "List projects and active status"
   task :list, [] => :environment do |task, args|
@@ -185,12 +189,21 @@ namespace :project do
       # Loop over fields array:
       if project.metadata_search["fields"].is_a? Array
         project.metadata_search["fields"].each do |field|
-          SubjectSet.index("project" => 1, "metadata.#{field['field']}" => 1)
+          SubjectSet.index({"project" => 1, "metadata.#{field['field']}" => 1}, {background: true})
         end
       end
       SubjectSet.create_indexes
     end
    
+    # Make sure project.status index exists
+    Project.create_indexes
+    # Make sure various subject indexes exist:
+    Subject.create_indexes
+    Group.create_indexes
+    Workflow.create_indexes
+    Favourite.create_indexes
+    Classification.create_indexes
+
     project.save
     project
   end
@@ -302,6 +315,17 @@ namespace :project do
     project.workflows.each do |w|
       w.update_attribute :order, project.workflows.size - num_downstream_workflows(w) - 1
     end
+
+    # Create workflow counts indexes:
+    puts "Creating workflow counts indexes:"
+    project.workflows.each do |w|
+      puts "  workflow.#{w.id}"
+      # Index for typical Mark query:
+      SubjectSet.index({"counts.#{w.id}.active_subjects" => 1, "random_no" => 1}, {background: true})
+      # Index for marking by group_id:
+      SubjectSet.index({"counts.#{w.id}.active_subjects" => 1, "group_id" => 1}, {background: true})
+    end
+    SubjectSet.create_indexes
 
     puts "  WARN: No mark workflow found" if project.workflows.find_by(name: 'mark').nil?
   end

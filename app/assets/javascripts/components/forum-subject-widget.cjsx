@@ -34,7 +34,7 @@ module.exports = React.createClass
 
     if connector?
       @setState connector: connector, () =>
-        @fetchPosts 'subject', new_props.subject.id
+        @fetchPosts 'subject', new_props.subject.id if new_props.subject?
 
   fetchPosts: (type, id) ->
     # If we've already fetched or are fetching posts for this type & id, abort

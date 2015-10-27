@@ -20,7 +20,7 @@ module.exports = React.createClass # rename to Classifier
   displayName: 'Mark'
 
   propTypes:
-    setTutorialComplete: React.PropTypes.func.isRequired
+    onCloseTutorial: React.PropTypes.func.isRequired
 
   getDefaultProps: ->
     workflowName: 'mark'
@@ -38,9 +38,20 @@ module.exports = React.createClass # rename to Classifier
     helping:             false
     hideOtherMarks:      false
     currentSubtool:      null
-    showingTutorial:     ! @props.project.current_user_tutorial # Initially show the tutorial if the user hasn't seen it
+    showingTutorial:     @showTutorialBasedOnUser @props.user
     lightboxHelp:        false
     activeSubjectHelper: null
+
+  componentWillReceiveProps: (new_props) ->
+    @setState showingTutorial: @showTutorialBasedOnUser(new_props.user)
+
+  showTutorialBasedOnUser: (user) ->
+    # Show tutorial by default
+    show = true
+    if user?.tutorial_complete?
+      # If we have a user, show tutorial if they haven't completed it:
+      show = ! user.tutorial_complete
+    show
 
   componentDidMount: ->
     @getCompletionAssessmentTask()
@@ -96,7 +107,6 @@ module.exports = React.createClass # rename to Classifier
       @setState currentSubtool: d.tool if d.tool?
 
     else
-      # console.log "MARK/INDEX::handleDataFromTool()", d if JSON.stringify(d) != JSON.stringify(@getCurrentClassification()?.annotation)
       classifications = @state.classifications
       classifications[@state.classificationIndex].annotation[k] = v for k, v of d
 
@@ -125,7 +135,6 @@ module.exports = React.createClass # rename to Classifier
 
   destroyCurrentAnnotation: ->
     # TODO: implement mechanism for going backwards to previous classification, potentially deleting later classifications from stack:
-    # console.log "WARN: destroyCurrentAnnotation not implemented"
     # @props.classification.annotations.pop()
 
   completeSubjectSet: ->
@@ -294,7 +303,12 @@ module.exports = React.createClass # rename to Classifier
         </div>
       </div>
       { if @props.project.tutorial? && @state.showingTutorial
-        <Tutorial tutorial={@props.project.tutorial} toggleTutorial={@toggleTutorial} setTutorialComplete={@props.setTutorialComplete} />
+          # Check for workflow-specific tutorial
+          if @props.project.tutorial.workflows? && @props.project.tutorial.workflows[@getActiveWorkflow()?.name]
+            <Tutorial tutorial={@props.project.tutorial.workflows[@getActiveWorkflow().name]} onCloseTutorial={@props.onCloseTutorial} />
+          # Otherwise just show general tutorial
+          else
+            <Tutorial tutorial={@props.project.tutorial} onCloseTutorial={@props.onCloseTutorial} />
       }
       { if @state.helping
         <HelpModal help={@getCurrentTask().help} onDone={=> @setState helping: false } />

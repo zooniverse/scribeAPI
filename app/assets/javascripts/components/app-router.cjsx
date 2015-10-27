@@ -12,10 +12,13 @@ Verify                        = require './verify'
 GroupPage                     = require './group-page'
 GroupBrowser                  = require './group-browser'
 
+Project                       = require 'models/project.coffee'
+
 class AppRouter
   constructor: ->
     API.type('projects').get().then (result)=>
-      @runRoutes result[0]
+      window.project = new Project(result[0])
+      @runRoutes window.project
 
   runRoutes: (project) ->
     routes =
@@ -23,7 +26,7 @@ class AppRouter
 
         <Redirect from="_=_" to="/" />
 
-        <Route name="home" path="/home" handler={HomePage} />
+        <Route name="home" path="/home" handler={HomePage}/>
 
         { (w for w in project.workflows when w.name in ['mark','transcribe','verify']).map (workflow, key) =>
             handler = eval workflow.name.charAt(0).toUpperCase() + workflow.name.slice(1)
@@ -106,7 +109,6 @@ class AppRouter
       componentWillMount:->
         # pattern = new RegExp('^(field_guide#(.*))')
         # selectedID = pattern.match("#{window.location.hash}")
-        # console.log "selectedID", selectedID
         # if selectedID
         #   $('.selected-content').removeClass("selected-content")
           
@@ -140,8 +142,6 @@ class AppRouter
           heightStyle: "content"
 
       navToggle:(e)->
-        # console.log "E", e
-
 
       render: ->
         formatted_name = page.name.replace("_", " ")

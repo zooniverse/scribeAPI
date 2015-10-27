@@ -10,7 +10,7 @@
 
     "date_present": {
       "tool": "pickOne",
-      "instruction": "Are there any date entries present?",
+      "instruction": "Are there any *unmarked* date entries present?",
       "help": {
         "title": "Dates",
         "body": "Typically each log entry begins with a date. The year may only appear at the top of the page. Select 'yes' if you see any date mentioned anywhere on the page."
@@ -27,7 +27,7 @@
     "date": {
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Draw a rectangle around the date.",
+      "instruction":"Draw a rectangle around each *unmarked* date.",
       "help": {
         "title": "Dates",
         "body": "Typically each log entry begins with a date. The year may only appear at the top of the page. Select 'yes' if you see any date mentioned anywhere on the page."
@@ -42,7 +42,7 @@
 
     "location_present": {
       "tool": "pickOne",
-      "instruction": "Is there location/position information present?",
+      "instruction": "Is there location or position information present that *has not been marked*?",
       "help": {
         "title": "Whaling ground, position, port-of-call",
         "body": "Select the type of location, then draw a rectangle around each location of that type. Mark both the ocean region or whaling ground (typically at the top of the page) and any specific positions or geographic references that you see further down on the page."
@@ -59,7 +59,7 @@
     "location": {
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Pick a position/location option. Draw a rectangle around the corresponding text.",
+      "instruction":"Pick a position or location option. Draw a rectangle around each corresponding text region that *has not been marked*.",
       "help": {
         "title": "Ship Location and Position",
         "body": "This can be any geographic reference, from the name of a port or landmark seen, to latitude/longitude coordinates. Often the whaling ground or ocean that the ship was in can be found written at the top of the page."
@@ -78,7 +78,7 @@
 
     "sea_ice_present": {
       "tool": "pickOne",
-      "instruction": "Are there any mentions of sea ice?",
+      "instruction": "Are there any *unmarked* mentions of sea ice?",
       "help": {
         "title": "Ice ahead!",
         "body": "Knowing where sea ice is present is important for climate studies. Even knowing that sea ice was mentioned is useful. Often, descriptions of the sailing conditions allow us to make inferences about nearby sea ice. Scan the document and select 'yes' if there are any mentions of sea ice. (You will then be prompted to continue on to tag specific technical descriptions.)"
@@ -101,7 +101,7 @@
 
     "sailing_condition_present": {
       "tool": "pickOne",
-      "instruction": "Are there any descriptions of the sailing conditions with respect to sea ice?",
+      "instruction": "Are there any *unmarked* descriptions of the sailing conditions with respect to sea ice?",
       "help": {
         "title": "Sailing Description and Sea Ice",
         "body": "Look for any reference to how the ship is sailing through ice (including if the ship is sailing in leads, beset, nipped/damaged, or even wrecked). How the ship is being sailed tells us a lot about the sea ice around it, even if there isn’t any specific description of the ice noted in the log. If you don’t see any reference to sailing near or through ice, select 'no.'"
@@ -125,7 +125,7 @@
 
     "sailing_condition": {
       "tool": "pickOneMarkOne",
-      "instruction": "Pick the type of description that best matches the text and draw a rectangle around it.",
+      "instruction": "Pick the type of description that best matches the corresponding text. Draw a rectangle around each *unmarked* instance.",
       "help": {
         "title": "How is the ship sailing?",
         "body": "Look for remarks on how the ship is being handled. Is ship sailing free, or are there constant changes of direction to get around pieces of ice? In the western Arctic, ships often sailed down leads (river-like channels) between the land and the main ice pack. Sometime ships would have to ‘force the pack’ by ramming between the floes. Select the description of how the ship is sailing, then draw a rectangle around each location of that type."
@@ -136,8 +136,8 @@
           {"type": "rectangleTool",  "label": "Occasional Ice",             "color": "#ff4400", "generates_subject_type": "sailing_condition_occasional_ice" },
           {"type": "rectangleTool",  "label": "Dodging Ice",                "color": "#0000ff", "generates_subject_type": "sailing_condition_dodging_ice" },
           {"type": "rectangleTool",  "label": "Sailing in Leads",           "color": "#00ccff", "generates_subject_type": "sailing_condition_leads" },
-          {"type": "rectangleTool",  "label": "Ramming Pack Ice",           "color": "#5ce600", "generates_subject_type": "sailing_condition_ramming" },
-          {"type": "rectangleTool",  "label": "Waiting for Opening in Ice", "color": "#0099e6", "generates_subject_type": "sailing_condition_waiting" },
+          {"type": "rectangleTool",  "label": "Forcing the Pack",           "color": "#5ce600", "generates_subject_type": "sailing_condition_ramming" },
+          {"type": "rectangleTool",  "label": "Stopped in the Ice",         "color": "#0099e6", "generates_subject_type": "sailing_condition_waiting" },
           {"type": "rectangleTool",  "label": "Beset/Trapped in Ice",       "color": "#e59900", "generates_subject_type": "sailing_condition_trapped" },
           {"type": "rectangleTool",  "label": "Nipped/Damaged",             "color": "#00cca3", "generates_subject_type": "sailing_condition_damaged" },
           {"type": "rectangleTool",  "label": "Wrecked",                    "color": "#7700b3", "generates_subject_type": "sailing_condition_wrecked" },
@@ -150,7 +150,7 @@
 
     "sea_ice": {
       "tool": "pickOne",
-      "instruction": "Is there a specific description of sea ice?",
+      "instruction": "Is there a specific description of sea ice that *has not* been marked?",
       "next_task": "weather_present",
       "help": {
         "title": "What is the sea ice like?",
@@ -167,19 +167,20 @@
     },
 
     "sea_ice_concentration": {
-      "tool": "pickMany",
-      "instruction": "Select all sea ice descriptions that apply.",
+      "tool": "pickOneMarkOne",
+      "instruction": "Pick the type of description that best matches the corresponding text. Draw a rectangle around each *unmarked* instance.",
       "help": {
         "title": "How much ice is near the ship?",
         "file": "sea_ice_concentration"
       },
       "tool_config": {
         "options": [
-          {"value": "ice_field",   "label": "Ice Field" },
-          {"value": "floe",        "label": "Floe" },
-          {"value": "drift_ice",   "label": "Drift Ice" },
-          {"value": "sailing_ice", "label": "Sailing Ice" },
-          {"value": "pack_ice",    "label": "Pack Ice" }
+          {"type": "rectangleTool", "generates_subject_type": "sea_ice_concentration_ice_field",   "label": "Ice Field",   "color": "#eeff00" },
+          {"type": "rectangleTool", "generates_subject_type": "sea_ice_concentration_floe",        "label": "Floe",        "color": "#ff4400" },
+          {"type": "rectangleTool", "generates_subject_type": "sea_ice_concentration_drift_ice",   "label": "Drift Ice",   "color": "#0000ff" },
+          {"type": "rectangleTool", "generates_subject_type": "sea_ice_concentration_sailing_ice", "label": "Sailing Ice", "color": "#00ccff" },
+          {"type": "rectangleTool", "generates_subject_type": "sea_ice_concentration_pack_ice",    "label": "Pack Ice",    "color": "#5ce600" },
+          {"type": "rectangleTool", "generates_subject_type": "sea_ice_concentration_other",       "label": "Other",       "color": "#0099e6" }
         ]
       },
       "next_task": "sea_ice"
@@ -187,39 +188,42 @@
 
 
     "sea_ice_thickness": {
-    "tool": "pickMany",
-    "instruction": "Select all sea ice descriptions that apply.",
+    "tool": "pickOneMarkOne",
+    "instruction": "Pick the type of description that best matches the corresponding text. Draw a rectangle around each *unmarked* instance.",
     "help": {
       "title": "Words that describe ice thickness",
       "file": "sea_ice_thickness"
     },
     "tool_config": {
       "options": [
-        {"value": "bay_ice",   "label": "Bay Ice" },
-        {"value": "sludge",    "label": "Sludge" },
-        {"value": "brash",     "label": "Brash" },
-        {"value": "light_ice", "label": "Light Ice" },
-        {"value": "heavy_ice", "label": "Heavy Ice" },
-        {"value": "hummock",   "label": "Hummock" }
+        {"type": "rectangleTool", "color": "#eeff00", "generates_subject_type": "sea_ice_thickness_bay_ice",   "label": "Bay Ice" },
+        {"type": "rectangleTool", "color": "#ff4400", "generates_subject_type": "sea_ice_thickness_sludge",    "label": "Sludge" },
+        {"type": "rectangleTool", "color": "#0000ff", "generates_subject_type": "sea_ice_thickness_brash",     "label": "Brash" },
+        {"type": "rectangleTool", "color": "#5ce600", "generates_subject_type": "sea_ice_thickness_light_ice", "label": "Light Ice" },
+        {"type": "rectangleTool", "color": "#0099e6", "generates_subject_type": "sea_ice_thickness_heavy_ice", "label": "Heavy Ice" },
+        {"type": "rectangleTool", "color": "#ff40d9", "generates_subject_type": "sea_ice_thickness_hummock",   "label": "Hummock" },
+        {"type": "rectangleTool", "color": "#7700b3", "generates_subject_type": "sea_ice_thickness_other",     "label": "Other" }
+
       ]
     },
     "next_task": "sea_ice"
     },
 
     "sea_ice_special": {
-    "tool": "pickMany",
-    "instruction": "Select all sea ice descriptions that apply.",
+    "tool": "pickOneMarkOne",
+    "instruction": "Pick the type of description that best matches the corresponding text. Draw a rectangle around each *unmarked* instance.",
     "help": {
       "title": "Special characteristics of sea ice types",
       "file": "sea_ice_special"
     },
     "tool_config": {
       "options": [
-        {"value": "melt_ponds",      "label": "Melt Ponds" },
-        {"value": "snow_on_sea_ice", "label": "Snow On Sea Ice" },
-        {"value": "land_ice",        "label": "Land Ice" },
-        {"value": "floeberg",        "label": "Floeberg" },
-        {"value": "iceberg",         "label": "Iceberg" }
+        {"type": "rectangleTool", "color": "#eeff00", "generates_subject_type": "sea_ice_special_melt_ponds",      "label": "Melt Ponds" },
+        {"type": "rectangleTool", "color": "#ff4400", "generates_subject_type": "sea_ice_special_snow_on_sea_ice", "label": "Snow On Sea Ice" },
+        {"type": "rectangleTool", "color": "#0000ff", "generates_subject_type": "sea_ice_special_land_ice",        "label": "Land Ice" },
+        {"type": "rectangleTool", "color": "#5ce600", "generates_subject_type": "sea_ice_special_floeberg",        "label": "Floeberg" },
+        {"type": "rectangleTool", "color": "#0099e6", "generates_subject_type": "sea_ice_special_iceberg",         "label": "Iceberg" },
+        {"type": "rectangleTool", "color": "#ff40d9", "generates_subject_type": "sea_ice_special_other",           "label": "Other" }
       ]
     },
     "next_task": "sea_ice"
@@ -227,7 +231,7 @@
 
     "weather_present": {
       "tool": "pickOne",
-      "instruction": "Are there any descriptions of the weather?",
+      "instruction": "Are there any *unmarked* descriptions of the weather?",
       "next_task": "optional_entries",
       "help": {
         "title": "Weather",
@@ -244,7 +248,7 @@
     "weather": {
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Pick a weather description. Draw a rectangle around the corresponding text.",
+      "instruction":"Pick a weather description. Draw a rectangle around each corresponding text region that *has not been marked*.",
       "help": {
         "title": "A record of wind and wave",
         "file": "weather"
@@ -265,7 +269,7 @@
 
     "optional_entries": {
       "tool": "pickOne",
-      "instruction": "Select any additional items that are present/mentioned.",
+      "instruction": "Select any additional *unmarked* items that are present/mentioned.",
       "next_task": null,
       "help": {
         "title": "More than weather and ice",
@@ -290,7 +294,7 @@
     "events": {
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Pick a type of event and draw a rectangle around it.",
+      "instruction":"Pick the type of event that best matches the corresponding text. Draw a rectangle around each *unmarked* instance.",
       "help": {
         "title": "Ship’s logs tell all kinds of stories",
         "body": "Select the description of the type of event, then draw a rectangle around each event of that type. All sorts of notable events are recorded in the ship’s logbook. If you see anything from the list, please mark it. You can also mark any other kind of happening that is interesting to you. And if there is a special story told in the log you can discuss it with the community on Talk."
@@ -310,7 +314,7 @@
     "art": {
       "generates_subjects": true,
       "tool":"pickOneMarkOne",
-      "instruction":"Pick a type of art and draw a rectangle around it.",
+      "instruction":"Pick the type of art that best matches the corresponding text. Draw a rectangle around each *unmarked* instance.",
       "help": {
         "title": "Arts and crafts",
         "body": "Select the description of the type of art, then draw a rectangle around each artwork (or mention of art) of that type. Please mark arts and crafts from the list, or any other artwork you find in the logbook. Some artwork, scrimshaw for example, might also be reported as an item of informal trade in the logbook. Please mark these mentions as well."
@@ -325,47 +329,7 @@
         ]
       },
       "next_task": "optional_entries"
-    },
-    "debug": {
-      "generates_subjects": true,
-      "tool":"pickOneMarkOne",
-      "instruction":"Generates textTool transcribe subjects:",
-      "tool_config": {
-        "options": [
-          {"type": "pointTool",     "label": "Point Tool",      "color": "pink",   "generates_subject_type": "transcribe_point_with_text_tool" },
-          {"type": "rectangleTool", "label": "Rectangle Tool",  "color": "brown", "generates_subject_type": "transcribe_rectangle_with_text_tool" },
-          {"type": "textRowTool",   "label": "Text Row Tool",   "color": "magenta",  "generates_subject_type": "transcribe_text_row_with_text_tool" }
-        ]
-      },
-      "next_task": "debug_with_text_area_tool"
-    },
-    "debug_with_text_area_tool": {
-      "generates_subjects": true,
-      "tool":"pickOneMarkOne",
-      "instruction":"Generates textAreaTool transcribe subjects:",
-      "tool_config": {
-        "options": [
-          {"type": "pointTool",     "label": "Point Tool",      "color": null,   "generates_subject_type": "transcribe_point_with_text_area_tool" },
-          {"type": "rectangleTool", "label": "Rectangle Tool",  "color": null, "generates_subject_type": "transcribe_rectangle_with_text_area_tool" },
-          {"type": "textRowTool",   "label": "Text Row Tool",   "color": null,  "generates_subject_type": "transcribe_text_row_with_text_area_tool" }
-        ]
-      },
-      "next_task": "debug_with_composite_text_tool_and_text_area_tool"
-    },
-    "debug_with_composite_text_tool_and_text_area_tool": {
-      "generates_subjects": true,
-      "tool":"pickOneMarkOne",
-      "instruction":"Generates composite tool (textTool and textAreaTool) transcribe subjects:",
-      "tool_config": {
-        "options": [
-          {"type": "pointTool",     "label": "Point Tool",      "color": null,   "generates_subject_type": "transcribe_point_with_composite_text_tool_and_text_area_tool" },
-          {"type": "rectangleTool", "label": "Rectangle Tool",  "color": null, "generates_subject_type": "transcribe_rectangle_with_composite_text_tool_and_text_area_tool" },
-          {"type": "textRowTool",   "label": "Text Row Tool",   "color": null,  "generates_subject_type": "transcribe_text_row_with_composite_text_tool_and_text_area_tool" }
-        ]
-      },
-      "next_task": null
     }
-
 
   }
 }

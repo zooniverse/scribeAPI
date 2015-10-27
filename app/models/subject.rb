@@ -11,6 +11,7 @@ class Subject
   scope :active_non_root, -> { where(:type.ne => 'root', :status => 'active') }
   scope :active, -> { where(status: 'active').asc(:order)  }
   scope :not_bad, -> { where(:status.ne => 'bad').asc(:order)  }
+  scope :visible_marks, -> { where(:status.ne => 'bad', :region.ne => nil).asc(:order)  }
   scope :complete, -> { where(status: 'complete').asc(:order)  }
   scope :by_workflow, -> (workflow_id) { where(workflow_id: workflow_id)  }
   scope :by_subject_set, -> (subject_set_id) { where(subject_set_id: subject_set_id).asc(:order)  }
@@ -64,6 +65,13 @@ class Subject
 
   after_create :update_subject_set_stats
   after_create :increment_parents_subject_count_by_one, :if => :parent_subject
+
+  # Index for typical query when fetching subjects for Transcribe/Verify:
+  index({"status" => 1, "workflow_id" => 1, "classifying_user_ids" => 1}, {background: true})
+  # Index for Marking by subject set:
+  index({"status" => 1, "type" => 1, "subject_set_id" => 1}, {background: true})
+  # Index for fetching child subjects for a parent subject, optionally filtering by region NOT NULL
+  index({parent_subject_id: 1, status: 1, region: 1})
 
   def thumbnail
     location['thumbnail'].nil? ? location['standard'] : location['thumbnail']
@@ -169,6 +177,18 @@ class Subject
   end
 
 
+  # Returns hash mapping distinct values for given field to matching count:
+  def self.group_by_field(field, match={})
+    self.collection.aggregate([
+      {"$group" => { "_id" => "$#{field.to_s}", count: {"$sum" =>  1} }}
+
+    ]).inject({}) do |h, p|
+      h[p["_id"]] = p["count"]
+      h
+    end
+  end
+
+  # Same as above, but restricted to Group:
   def self.group_by_field_for_group(group, field, match={})
     self.collection.aggregate([
       {"$match" => { "group_id" => group.id }.merge(match)}, 

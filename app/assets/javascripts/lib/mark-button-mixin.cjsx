@@ -48,8 +48,6 @@ module.exports =
     markStatus = @state.markStatus
     return if markStatus is 'transcribe-finished'
 
-    # console.log 'CURRENT MARK STATE: ', markStatus
-
     # advance to next mark state
     key = MARK_STATES.indexOf(markStatus) + 1
     markStatus = MARK_STATES[key]
@@ -64,11 +62,11 @@ module.exports =
     switch markStatus
       when 'mark-committed'
         # @setState locked: true
-        console.log '''
-          1) disable mark editing
-          2) submit mark
-          3) wait for post confirmation
-        '''
+        # console.log '''
+        #   1) disable mark editing
+        #   2) submit mark
+        #   3) wait for post confirmation
+        # '''
         @setState locked: true
         @props.submitMark(@props.mark)
         # console.log 'Mark submitted. Click TRANSCRIBE to begin transcribing.'
@@ -87,8 +85,8 @@ module.exports =
         # @submitTranscription()
         console.log 'Transcription submitted.'
       when 'transcribe-finished'
-        console.log 'TRANSCRIBING MARK WITH ID: ', @props #.mark.child_subject_id
-        console.log 'STATE: ', @state
+        # console.log 'TRANSCRIBING MARK WITH ID: ', @props #.mark.child_subject_id
+        # console.log 'STATE: ', @state
         location.replace "/#/transcribe/#{@props.subject_id}?scrollX=#{window.scrollX}&scrollY=#{window.scrollY}&page=#{@props.subjectCurrentPage}&mark_key=#{@props.taskKey}"
         @forceUpdate()
         # @setState locked: true

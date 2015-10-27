@@ -34,11 +34,13 @@ GroupBrowser = React.createClass
       onMouseOver={@showButtonsForGroup.bind this, group}
       onMouseOut={@hideButtonsForGroup.bind this, group}
       className='group'
-      style={backgroundImage: "url(#{group.cover_image_url})"} >
+      style={backgroundImage: "url(#{group.cover_image_url})"}
+      key={group.id}
+      >
       <div className="button-container #{buttonContainerClasses.join ' '}">
         { for workflow in @props.project.workflows
             if (group.stats.workflow_counts?[workflow.id]?.active_subjects ? 0) > 0
-              <a href={"/#/#{workflow.name}?group_id=#{group.id}"} className="button small-button">{workflow.name.capitalize()}</a>
+              <a href={"/#/#{workflow.name}?group_id=#{group.id}"} className="button small-button" key={workflow.id} >{workflow.name.capitalize()}</a>
         }
         <a href="/#/groups/#{group.id}" className="button small-button ghost">More info</a>
       </div>

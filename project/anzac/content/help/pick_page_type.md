@@ -22,13 +22,19 @@
   </div>
   <h3>South African War Attestation</h3>
   <div class="modal-field-guide" >
-    <img src="assets/anzac/sa_att_ex.jpeg" alt="death notification">
+    <img src="/images/sa_att_ex.jpeg" alt="death notification">
     <p>Includes the word "attestation," and the heading indicates service in South African war.</p>
   </div>
   <h3>Death Notifications</h3>
   <div class="modal-field-guide" >
-    <img src="https://s3.amazonaws.com/anzac-project/R10920991/FL22335668" alt="death notification">
-    <p>Headed with words “Death Notification” or slight variants, and logo of Registrar of Deaths or Department of Internal Affairs.</p>
+    <div>
+      <img src="https://s3.amazonaws.com/anzac-project/R10920991/FL22335668" alt="death notification">
+      <img src="https://s3.amazonaws.com/anzac-project/R10923112/FL22387788" alt="death notification example 2">
+    </div>
+    <div>
+      <p class="inner-help-p" >Headed with words “Death Notification” or slight variants, and logo of Registrar of Deaths or Department of Internal Affairs.</p>
+      <p class="inner-help-p" >Many files also include a notification of death for men who died during the war. These documents are often headed "Field Service" in large text, and follow with text indicating they are reporting the "Death of a Soldier". They contain the same basic information on deaths as post-war deaths, and can be marked and transcribed in the same way.</p>
+    </div>
   </div> 
   <h3>Other Forms</h3>
   <div>

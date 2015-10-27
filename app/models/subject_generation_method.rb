@@ -16,6 +16,7 @@ class SubjectGenerationMethod
     raise "Invalid subject generation method: Attempted to use abstract SubjectGenerationMethod#process_classification"
   end
 
+  # This is the `super` implementation, which generates the base subject, which the more specific generation methods adapt
   def subject_attributes_from_classification(classification)
 
     workflow = classification.subject.workflow
@@ -28,6 +29,13 @@ class SubjectGenerationMethod
     task = workflow.task_by_key classification.task_key
     subject_type = task.subject_type classification
 
+    # Now that we know what the subject_type will be, let's make sure that type corresponds with a task key
+    # in the next workflow (i.e. a Transcribe key). If it does NOT, do not associate this generated subject
+    # with the workflow (lest the subject show up in a workflow with no corresponding task)
+    if ! workflow_for_new_subject.nil? && workflow_for_new_subject.task_by_key(subject_type).nil?
+      workflow_for_new_subject = nil
+    end
+
     # If this is the mark workflow, create region:
     if classification.workflow.name == 'mark'
       region = build_mark_region(classification)
@@ -35,7 +43,10 @@ class SubjectGenerationMethod
       # Otherwise, it's a later workflow and we should copy `region` from parent subject
       region = classification.subject.region
     end
-    region[:label] = task.tool_label classification
+    # If marking tool has a label, save it:
+    if (label = task.tool_label(classification))
+      region[:label] = label
+    end
 
     {
       parent_subject: classification.subject,
@@ -47,7 +58,7 @@ class SubjectGenerationMethod
       location: {
         standard: classification.subject.location[:standard]
       },
-      region: region,
+      region: region.empty? ? nil : region,
       width: classification.subject.width,
       height: classification.subject.height
     }

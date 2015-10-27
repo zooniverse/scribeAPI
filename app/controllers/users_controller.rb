@@ -8,9 +8,11 @@ class UsersController < ApplicationController
   end
 
   def tutorial_complete
+
     user = require_user!
     user.tutorial_complete!
-    respond_with user.tutorial_complete
+
+    render json: AuthStateSerializer.new(user: current_or_guest_user, providers: User.auth_providers), status: 200
   end
 
 end

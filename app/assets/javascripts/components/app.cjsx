@@ -1,8 +1,7 @@
 React = require("react")
 MainHeader                    = require '../partials/main-header'
-Footer                    = require '../partials/footer'
+Footer                        = require '../partials/footer'
 API                           = require '../lib/api'
-AppRouter                     = require './app-router'
 Project                       = require 'models/project.coffee'
 
 {RouteHandler}                = require 'react-router'
@@ -10,25 +9,53 @@ Project                       = require 'models/project.coffee'
 window.API = API
 
 App = React.createClass
-
   getInitialState: ->
-    project:              null
     routerRunning:        false
+    user:                 null
+    loginProviders:       []
 
   componentDidMount: ->
-    if ! @state.project?
-      API.type('projects').get().then (result)=>
-        project = new Project(result[0])
-        @setState project: project
+    @fetchUser()
 
-  setTutorialComplete:->
-    @setState project: $.extend(@state.project, current_user_tutorial: true)
+  fetchUser:->
+    @setState
+      error: null
+    request = $.getJSON "/current_user"
+
+    request.done (result)=>
+      if result?.data
+        @setState
+          user: result.data
+      else
+
+      if result?.meta?.providers
+        @setState loginProviders: result.meta.providers
+
+    request.fail (error)=>
+      @setState
+        loading:false
+        error: "Having trouble logging you in"
+
+  setTutorialComplete: ->
+    previously_saved = @state.user?.tutorial_complete?
+
+    # Immediately ammend user object with tutorial_complete flag so that we can hide the Tutorial:
+    @setState user: $.extend(@state.user ? {}, tutorial_complete: true)
+
+    # Don't re-save user.tutorial_complete if already saved:
+    return if previously_saved
+
+    request = $.post "/tutorial_complete"
+    request.fail (error)=>
+      console.log "failed to set tutorial value for user"
+
 
   render: ->
-    return null if ! @state.project?
+    project = window.project
+    return null if ! project?
 
     style = {}
-    style.backgroundImage = "url(#{@state.project.background})" if @state.project.background?
+    style.backgroundImage = "url(#{project.background})" if project.background?
 
     <div>
       <div className="readymade-site-background" style={style}>
@@ -37,17 +64,20 @@ App = React.createClass
       <div className="panoptes-main">
 
         <MainHeader
-          workflows={@state.project.workflows}
-          feedbackFormUrl={@state.project.feedback_form_url}
-          discussUrl={@state.project.discuss_url}
-          blogUrl={@state.project.blog_url}
-          pages={@state.project.pages}
-          short_title={@state.project.short_title}
-          logo={@state.project.logo} />
+          workflows={project.workflows}
+          feedbackFormUrl={project.feedback_form_url}
+          discussUrl={project.discuss_url}
+          blogUrl={project.blog_url}
+          pages={project.pages}
+          short_title={project.short_title}
+          logo={project.logo}
+          user={@state.user}
+          loginProviders={@state.loginProviders}
+        />
         <div className="main-content">
-          <RouteHandler hash={window.location.hash} project={@state.project} setTutorialComplete={@setTutorialComplete} />
+          <RouteHandler hash={window.location.hash} project={project} onCloseTutorial={@setTutorialComplete} user={@state.user}/>
         </div>
-        <Footer privacyPolicy={ @state.project.privacy_policy }/>
+        <Footer privacyPolicy={ project.privacy_policy }/>
       </div>
     </div>
 

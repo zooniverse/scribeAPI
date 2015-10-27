@@ -33,7 +33,7 @@ class Project
   field :analytics,          type: Hash
 
   include CachedStats
-  update_interval 30
+  update_interval 180
 
   has_many :groups, dependent: :destroy
   has_many :subject_sets
@@ -42,6 +42,8 @@ class Project
 
   scope :most_recent, -> { order(updated_at: -1) }
   scope :active, -> { where(status: 'active') }
+
+  index "status" => 1
 
   def activate!
     return if self.status == 'active'
@@ -59,7 +61,7 @@ class Project
   def calc_stats
     # amount of days to calculate statistics for
     range_in_days = 60
-    datetime_format = "%Y-%m-%d %H:00"
+    datetime_format = "%Y-%m-%d %H:%M"
 
     # determine date range
     current_time = Time.now.utc # Time.new
@@ -85,11 +87,11 @@ class Project
 
     # retrieve subject data
     subjects_data = []
-    subject_groups = Subject.all.group_by {|d| d.status}
-    subject_groups.each do |status, subjects|
+    subject_groups = Subject.group_by_field :status
+    subject_groups.each do |(status, count)|
       subjects_data << {
         label: status,
-        value: subjects.size
+        value: count
       }
     end
 

@@ -117,6 +117,9 @@ module.exports = React.createClass
     return null if e.buttons? && e.button? && e.button > 0 # ignore right-click
     newMark = @createMark(e)
 
+    # Don't proceed as if a new mark was created if no mark was created (i.e. no drawing tool selected)
+    return if ! newMark?
+
     # submit uncommitted mark
     if @state.uncommittedMark?
       @submitMark(@state.uncommittedMark)
@@ -131,6 +134,7 @@ module.exports = React.createClass
 
     # Instantiate appropriate marking tool:
     MarkComponent = markingTools[subTool.type] # NEEDS FIXING
+    return null if ! MarkComponent?
 
     mark =
       belongsToUser: true # let users see their current mark when hiding others
@@ -211,7 +215,6 @@ module.exports = React.createClass
     vertical = rect.height / @props.subject.height
     offsetX = rect.left + $(window).scrollLeft()
     offsetY = rect.top + $(window).scrollTop()
-    # console.log "top: ", rect.top, $(window).scrollTop(), offsetY
     # PB: Adding offsetX and offsetY, which are also necessary to calculate window absolute px coordinates from source-image coordinates
     return {horizontal, vertical, offsetX, offsetY}
 
@@ -286,7 +289,6 @@ module.exports = React.createClass
       else
         otherMarks.push mark
 
-    # console.log '{transcribableMarks, otherMarks} = ', {transcribableMarks, otherMarks}
     return {transcribableMarks, otherMarks}
 
   renderMarks: (marks) ->

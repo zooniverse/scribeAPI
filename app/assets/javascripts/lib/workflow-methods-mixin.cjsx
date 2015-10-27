@@ -195,12 +195,9 @@ module.exports =
 
   # Load next logical task
   advanceToNextTask: () ->
-    # console.log 'advanceToNextTask()'
     nextTaskKey = @getNextTask()?.key
     if nextTaskKey is null
-      # console.log 'NOTHING LEFT TO DO'
       return
-    # console.log 'TASK KEY: ', nextTaskKey
 
     # Commit whatever current classification is:
     @commitCurrentClassification()
@@ -212,7 +209,6 @@ module.exports =
 
   # Get next logical task
   getNextTask: ->
-    # console.log 'getNextTask()'
     task = @getTasks()[@state.taskKey]
     # PB: Moving from hash of options to an array of options
 
@@ -235,8 +231,6 @@ module.exports =
       console.warn "WARN: Invalid tool specified in #{key}: #{task.tool}"
 
     else
-      console.log "Transcribe#advanceToTask(#{key}): tool=#{task.tool}"
-
       @setState
         taskKey: key
 
@@ -275,14 +269,14 @@ module.exports =
     tool_config: {
       "options": [
         {
-          "label": "No",
-          "next_task": null,
-          "value": "complete_subject"
-        },
-        {
           "label": "Yes",
           "next_task": null,
           "value": "incomplete_subject"
+        }
+        {
+          "label": "No",
+          "next_task": null,
+          "value": "complete_subject"
         }
       ]
     }
@@ -308,11 +302,12 @@ module.exports =
 
     # Haz more pages of subjects?
     else if @state.subjects_next_page?
-      @fetchSubjects @getActiveWorkflow().id, @getActiveWorkflow().subject_fetch_limit, @state.subjects_next_page
+      @fetchSubjects page: @state.subjects_next_page
 
     else
       @setState
         subject_index: null
+        noMoreSubjects: true
         userClassifiedAll: @state.subjects.length > 0
 
   # This is the version of advanceToNextSubject for workflows that consume subject sets (mark)

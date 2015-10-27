@@ -58,7 +58,6 @@ module.exports = React.createClass # rename to Classifier
 
     onFirstAnnotation = currentAnnotation?.task is @getActiveWorkflow().first_task
 
-    # console.log "viewer size: ", @state.viewerSize
     <div className="classifier">
       <div className="subject-area">
         { if ! @getCurrentSubject()?
