@@ -348,6 +348,9 @@ div.home-page {
 .classifier .right-column .task-area .workflow-task .answer.active {
   border-color: #3f5765;
 }
+.classifier .right-column .task-area .help-bad-subject-holder .task-help-button {
+  display: none;
+}
 
 /* Introduction */
 .video-wrapper {
