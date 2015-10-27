@@ -1,7 +1,7 @@
 {
     "name": "transcribe",
     "label": "Transcribe Workflow",
-    "subject_fetch_limit": "1",
+    "subject_fetch_limit": "50",
     "retire_limit": 3,
     "generates_subjects": true,
     "generates_subjects_for": "verify",
