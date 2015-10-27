@@ -48,7 +48,7 @@ namespace :project do
       load_styles project
       puts "Done loading style for \"#{project.title}\""
     end
-      
+
     # Load workflows:
     if ['all','workflows'].include? args[:area]
       begin
@@ -182,7 +182,7 @@ namespace :project do
     project.tutorial = load_tutorial(project_key)
 
     # Metadata search configured? Create indexes:
-    # TODO Note that indexes created this way must be manually removed. 
+    # TODO Note that indexes created this way must be manually removed.
     # Loading lots of different projects (or the same project with different
     # indexes) will create mult. indexes, which may slow query planning
     if project.metadata_search && project.metadata_search.is_a?(Hash)
@@ -194,7 +194,7 @@ namespace :project do
       end
       SubjectSet.create_indexes
     end
-   
+
     # Make sure project.status index exists
     Project.create_indexes
     # Make sure various subject indexes exist:
@@ -209,7 +209,7 @@ namespace :project do
   end
 
   def load_styles(project)
- 
+
     load_images(project.key)
     load_fonts(project.key)
 
@@ -239,7 +239,7 @@ namespace :project do
     Dir.foreach(image_path).each do |file|
       path = Rails.root.join image_path, file
       next if File.directory? path
-      next if ! ['.png','.gif','.jpg', '.jpeg', '.svg'].include? path.extname
+      next if ! ['.png','.gif','.jpg', '.jpeg', '.svg', '.mp4'].include? path.extname
       puts " -- #{file}"
       image_dest = Rails.root.join("app/assets/images/#{project_key}/")
       Dir.mkdir(image_dest) unless File.exists?(image_dest)
