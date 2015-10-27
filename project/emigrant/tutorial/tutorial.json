@@ -10,7 +10,7 @@
             }
         },
         "learn_transcribing": {
-            "next_task": "learn_verifying",
+            "next_task": "learn_transcribing",
             "help": {
                 "title": "Transcribing",
                 "file": "learn_transcribing"
