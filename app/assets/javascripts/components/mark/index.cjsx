@@ -57,6 +57,7 @@ module.exports = React.createClass # rename to Classifier
   componentDidMount: ->
     @getCompletionAssessmentTask()
     @fetchSubjectSetsBasedOnProps()
+    @fetchGroups()
 
   componentWillMount: ->
     @setState taskKey: @getActiveWorkflow().first_task
@@ -282,6 +283,13 @@ module.exports = React.createClass # rename to Classifier
               if @getCurrentTask()? && @getActiveWorkflow()? && @getWorkflowByName('transcribe')?
                 <p>
                   <Link to="/transcribe/#{@getWorkflowByName('transcribe').id}/#{@getCurrentSubject()?.id}" className="transcribe-link">Transcribe this {@props.project.term('subject')} now!</Link>
+                </p>
+            }
+
+            {
+              if @getActiveWorkflow()? and @state.groups?.length > 1
+                <p>
+                  <Link to="/groups/#{@getCurrentSubjectSet().group_id}" className="about-link">About this {@props.project.term('group')}.</Link>
                 </p>
             }
 

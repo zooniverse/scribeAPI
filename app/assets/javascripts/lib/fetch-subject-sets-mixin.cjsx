@@ -2,6 +2,11 @@ API              = require './api'
 
 module.exports =
 
+  fetchGroups: ->
+    API.type("groups").get(project_id: @props.project.id).then (groups)=>
+      group.showButtons = false for group in groups  # hide buttons by default
+      @setState groups: groups
+
   fetchSubjectSetsBasedOnProps: ->
 
     # Establish a callback for after subjects are fetched - to apply additional state changes:
