@@ -10,10 +10,6 @@ class ClassificationsController < ApplicationController
     task_key         = params["classifications"]["task_key"]
 
     annotation       = params["classifications"]["annotation"]
-    # if annotation.keys().include?("value")
-    #   annotation["value"] = invalid_line_ending_check(annotation["value"])
-    # end
-    
     annotation       = {} if annotation.nil?
     started_at       = params["classifications"]["metadata"]["started_at"]
     finished_at      = params["classifications"]["metadata"]["finished_at"]
@@ -31,8 +27,7 @@ class ClassificationsController < ApplicationController
       task_key: task_key,
       user: user
     )
-
-    respond_with @result
+    render json: @result
   end
 
 

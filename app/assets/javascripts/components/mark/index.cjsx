@@ -313,7 +313,12 @@ module.exports = React.createClass # rename to Classifier
         </div>
       </div>
       { if @props.project.tutorial? && @state.showingTutorial
-        <Tutorial tutorial={@props.project.tutorial} onCloseTutorial={@props.onCloseTutorial} />
+          # Check for workflow-specific tutorial
+          if @props.project.tutorial.workflows? && @props.project.tutorial.workflows[@getActiveWorkflow()?.name]
+            <Tutorial tutorial={@props.project.tutorial.workflows[@getActiveWorkflow().name]} onCloseTutorial={@props.onCloseTutorial} />
+          # Otherwise just show general tutorial
+          else
+            <Tutorial tutorial={@props.project.tutorial} onCloseTutorial={@props.onCloseTutorial} />
       }
       { if @state.helping
         <HelpModal help={@getCurrentTask().help} onDone={=> @setState helping: false } />
