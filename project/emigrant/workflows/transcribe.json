@@ -91,15 +91,33 @@
     },
 
     "em_record_valuation": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Enter the date of the valuation (if one is given)",
+      "examples": ["1879 November"],
+      "help": {
+        "file": "t_record_valuation"
+      },
+      "generates_subject_type": "em_transcribed_valuation_date",
+      "next_task": "em_record_valuation_total"
+    },
+
+    "em_record_valuation_total": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Enter the valuation ***total*** (if one is given)",
+      "examples": ["$200,000"],
+      "help": {
+        "file": "t_record_valuation"
+      },
+      "generates_subject_type": "em_transcribed_valuation_date",
+      "next_task": "em_record_valuation_ground_building"
+    },
+
+    "em_record_valuation_ground_building": {
       "tool": "compositeTool",
       "tool_config": {
         "tools": {
-          "em_valuation_date": {
-            "tool": "textTool",
-            "examples": ["1879 November"],
-            "tool_config": {"suggest": "common"},
-            "label": "Date"
-          },
           "em_valuation_ground": {
             "tool": "textTool",
             "examples": ["$200,000"],
@@ -111,12 +129,6 @@
             "examples": ["$200,000"],
             "tool_config": {},
             "label": "Building Value"
-          },
-          "em_valuation_amount": {
-            "tool": "textTool",
-            "examples": ["$200,000"],
-            "tool_config": {},
-            "label": "Total Valuation"
           }
         }
       },
@@ -125,35 +137,35 @@
         "file": "t_record_valuation"
       },
       "generates_subject_type": "em_transcribed_valuation",
-      "instruction": "Enter as they appear, the date and amounts of the last property valuation that was recorded.",
+      "instruction": "Sometimes valuations include itemized dollar values for \"ground\" and \"building\". Enter these amounts if you can find them.",
       "next_task": null
     },
 
-      "em_record_survey": {
-          "tool": "compositeTool",
-          "tool_config": {
-            "tools": {
-              "em_survey_dimensions": {
-                "tool": "textTool",
-                "examples": ["100 x 100"],
-                "tool_config": {"suggest": "common"},
-                "label": "Record Dimensions"
-              },
-              "em_survey_description": {
-                "tool": "textTool",
-                "examples": ["68 x 100 Frame Edifice with Slate roof and brick basement."],
-                "tool_config": {},
-                "label": "Building Description"
-              }
-            }
+    "em_record_survey": {
+      "tool": "compositeTool",
+      "tool_config": {
+        "tools": {
+          "em_survey_dimensions": {
+            "tool": "textTool",
+            "examples": ["100 x 100"],
+            "tool_config": {"suggest": "common"},
+            "label": "Record Dimensions"
           },
-
-          "help": {
-            "file": "t_survey"
-          },
-          "generates_subject_type": "em_transcribed_survey",
-          "instruction": "Enter as they appear, the building dimensions and description that was recorded.",
-          "next_task": null
+          "em_survey_description": {
+            "tool": "textTool",
+            "examples": ["68 x 100 Frame Edifice with Slate roof and brick basement."],
+            "tool_config": {},
+            "label": "Building Description"
+          }
         }
+      },
+
+      "help": {
+        "file": "t_survey"
+      },
+      "generates_subject_type": "em_transcribed_survey",
+      "instruction": "Enter as they appear, the building dimensions and description that was recorded.",
+      "next_task": null
+    }
   }
 }
