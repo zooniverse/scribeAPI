@@ -90,17 +90,6 @@
       }
     },
 
-    "em_record_valuation_date": {
-      "tool": "textTool",
-      "tool_config": {},
-      "instruction": "Enter the valuation date",
-      "examples": ["1867 May 11", "1867 July 30", "1875 December 31"],
-      "help": {
-        "file": "t_record_valuation_date"
-      },
-      "generates_subject_type": "em_transcribed_valuation_date"
-    },
-
     "em_record_valuation": {
       "tool": "textTool",
       "tool_config": {},

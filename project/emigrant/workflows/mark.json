@@ -25,7 +25,6 @@
           {"type": "rectangleTool", "label": "Amount Loaned", "color": "teal", "generates_subject_type": "em_record_amount_loaned", "help": {"file": "m_record_amount_loaned"}},
           {"type": "rectangleTool", "label": "Number of Stories", "color": "deeppink ", "generates_subject_type": "em_record_stories", "help": {"file": "m_record_stories"}},
           {"type": "rectangleTool", "label": "Building Material", "color": "purple", "generates_subject_type": "em_record_material", "help": {"file": "m_record_material"}},
-          {"type": "rectangleTool", "label": "Valuation Date", "color": "black", "generates_subject_type": "em_record_valuation_date", "help": {"file": "m_record_valuation_date"}},
           {"type": "rectangleTool", "label": "Valuation", "color": "sienna", "generates_subject_type": "em_record_valuation", "help": {"file": "m_record_valuation"}},
           {"type": "rectangleTool", "label": "Dimension and Description", "color": "blueviolet", "generates_subject_type": "em_record_survey", "help": {"file": "m_record_survey"}}
         ]
