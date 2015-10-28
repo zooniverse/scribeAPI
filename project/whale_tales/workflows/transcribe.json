@@ -302,13 +302,6 @@
       "next_task": null
     },
 
-    "sea_ice_other_description": {
-      "tool": "textAreaTool",
-      "tool_config": {},
-      "instruction": "Include any additional comments regarding the sea ice.",
-      "next_task": null
-    },
-
 
     "weather_wind": {
       "tool": "compositeTool",
@@ -395,6 +388,13 @@
       "next_task": null
     },
 
+    "event_social": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Briefly describe the social event.",
+      "next_task": null
+    },
+
     "event_other": {
       "tool": "textTool",
       "tool_config": {},
@@ -437,13 +437,6 @@
       "next_task": null
     },
 
-
-    "sea_ice_other_description": {
-      "tool": "textTool",
-      "tool_config": {},
-      "instruction": "Enter the sea ice description.",
-      "next_task": null
-    },
 
 
 
