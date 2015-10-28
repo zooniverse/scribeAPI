@@ -1,36 +1,20 @@
 {
   "title": "Old Weather: Whaling",
   "short_title": "Old Weather: Whaling",
-  "summary": "We want to see if (yes obviously) cats are better than animals",
   "logo": "images/logo.svg",
   "background": "images/background_cropped.jpg",
-
   "admin_email": "sascha@zooniverse.org",
   "team_emails": [
     "sascha@zooniverse.org",
-    "cs@zooniverse.org"
+    "cs@zooniverse.org",
+    "trouille@zooniverse.org"
   ],
 
   "team": [
     {
-      "name": "Stuart Lynn",
-      "role": "Cat lover",
-      "image": "http://stuart.com/stuart.jpg",
-      "organization": "zooniverse"
-    },
-
-    {
-      "name": "Sascha Ishikawa",
-      "role": "Cat",
-      "image": "http://sascha.com/cat.jpg",
-      "organization": "zooniverse"
-    },
-
-    {
-      "name": "Andrea Simenstad",
-      "role": "Not a cat(probably)",
-      "image": "http://Andrea.com/Andrea.jpg",
-      "organization": "UofM"
+      "name": "Sascha T. Ishikawa",
+      "role": "Lead Developer",
+      "organization": "Zooniverse/Adler Planetarium"
     }
   ],
 
@@ -42,10 +26,16 @@
      "logo": "http://zooniverse.org/logo.png"
     },
     {
-     "title": "UofM",
-     "description": "A very cold university",
-     "url":"http://umn.edu",
-     "logo": "http://umn.edu/logo.png"
+      "title": "UofM",
+      "description": "A very cold university",
+      "url":"http://umn.edu",
+      "logo": "http://umn.edu/logo.png"
+    },
+    {
+     "title": "NYPL",
+     "description": "Books, mostly.",
+     "url":"http://nypl.org",
+     "logo": "http://cdn-prod.www.aws.nypl.org/sites/all/themes/nypl_new/images/main-logo.png"
     }
   ],
 
@@ -62,7 +52,7 @@
 
   "terms_map": {
     "group": "ship",
-    "subject set": "logbook",
+    "subject set": "page",
     "subject": "page"
   }
 
