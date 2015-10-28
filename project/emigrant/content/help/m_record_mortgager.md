@@ -15,6 +15,9 @@
   </div>
   <h3>Naming Variants</h3>
   <div>
-    <p class="other-form" >Mortgager</p> <p class="other-form" >Applicant</p>
+    <ul>
+      <li>Mortgager</li>
+      <li>Applicant</li>
+    </ul>
   </div>
 </div>

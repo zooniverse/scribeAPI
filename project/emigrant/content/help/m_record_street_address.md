@@ -15,6 +15,11 @@
   </div>
   <h3>Naming Variants</h3>
   <div>
-    <p class="other-form" >No. of Street or Avenue</p> <p class="other-form" >House Number</p> <p class="other-form" >Premises</p> <p class="other-form" >Location</p>
+    <ul>
+      <li>No. of Street or Avenue</li>
+      <li>House Number</li>
+      <li>Premises</li>
+      <li>Location</li>
+    </ul>
   </div>
 </div>

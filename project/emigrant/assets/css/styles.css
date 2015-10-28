@@ -360,6 +360,20 @@ div.home-page {
 .classifier .right-column .task-area .help-bad-subject-holder .task-help-button {
   display: none;
 }
+#accordion-help-modal .ui-accordion-content {
+  padding: 0.5em;
+  overflow: hidden;
+  display: block;
+}
+#accordion-help-modal img {
+  width: 100%;
+  float: none;
+}
+#accordion-help-modal ul,
+#accordion-help-modal li {
+  width: 100%;
+  float: none;
+}
 
 /* Introduction */
 .video-wrapper {

@@ -7,6 +7,9 @@
   </div>
   <h3>Naming Variants</h3>
   <div>
-    <p class="other-form" >Description of Building and Dimensions of Ground</p> <p class="other-form" >Size of Building ______ x ______ feet and Size of Ground ______ x ______ feet</p>
+    <ul>
+      <li>Description of Building and Dimensions of Ground</li>
+      <li>Size of Building ______ x ______ feet and Size of Ground ______ x ______ feet</li>
+    </ul>
   </div>
 </div>

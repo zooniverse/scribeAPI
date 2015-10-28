@@ -15,6 +15,10 @@
   </div>
   <h3>Naming Variants</h3>
   <div>
-    <p class="other-form" >Date of Approval</p> <p class="other-form" >Dated</p> <p class="other-form" >Record Date</p>
+    <ul>
+      <li>Date of Approval</li>
+      <li>Dated</li>
+      <li>Record Date</li>
+    </ul>
   </div>
 </div>
