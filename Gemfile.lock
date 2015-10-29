@@ -94,6 +94,8 @@ GEM
       rails (>= 3, < 5)
     database_cleaner (1.0.1)
     debug_inspector (0.0.2)
+    delayed_job (4.0.6)
+      activesupport (>= 3.0, < 5.0)
     devise (3.4.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -141,6 +143,13 @@ GEM
       activesupport (>= 3.0.0)
     launchy (2.4.3)
       addressable (~> 2.3)
+    logstash-event (1.2.02)
+    logstasher (0.8.0)
+      activerecord (>= 3.0)
+      activesupport (>= 3.0)
+      delayed_job (~> 4.0.2)
+      logstash-event (~> 1.2.0)
+      request_store
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
     method_source (0.8.2)
@@ -222,6 +231,7 @@ GEM
       thor (>= 0.18.1, < 2.0)
     rake (10.4.2)
     react-source (0.13.1)
+    request_store (1.2.0)
     responders (1.1.2)
       railties (>= 3.2, < 4.2)
     rspec (3.2.0)
@@ -311,6 +321,7 @@ DEPENDENCIES
   jquery-ui-sass-rails
   kaminari
   launchy
+  logstasher (~> 0.6)
   mongoid (~> 4.0.2)
   mongoid-rspec (>= 1.6.0)!
   mongoid-serializer
