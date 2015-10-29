@@ -1,10 +1,10 @@
 {
-  "title": "Nation of Emigrants",
+  "title": "Emigrant City",
   "short_title": "Emigrant",
-  "summary": "Emmmmigrannnnnt Savinnnnnnnngs Baaaaannk",
+  "summary": "Join us in transcribing 19th century real estate records from the Emigrant Savings Bank.",
   "background": "/images/background.jpg",
   "admin_email": "paulbeaudoin@nypl.org",
-  "logo": "/images/logo.svg",
+  "logo": "/images/logo.png",
   "terms_map": {
     "group": "collection",
     "subject set": "page",

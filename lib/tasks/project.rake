@@ -48,7 +48,7 @@ namespace :project do
       load_styles project
       puts "Done loading style for \"#{project.title}\""
     end
-      
+
     # Load workflows:
     if ['all','workflows'].include? args[:area]
       begin
@@ -173,25 +173,31 @@ namespace :project do
           end
         end
 
+        # Check if we should include group browser content
+        group_match = /<!\-\-[\s]*require groups:[\s]*(.*)\-\->/.match(content)
+        group_browser = ''
+        if group_match && !group_match.captures.empty?
+          group_browser = group_match.captures[0]
+        end
+
         project.pages << {
           key: page_key,
           name: name,
           content: content,
-          updated_at: updated_at
+          updated_at: updated_at,
+          group_browser: group_browser
         }
       end
     end
 
     project.tutorial = load_tutorial(project_key)
 
-   
-
     project.save
     project
   end
 
   def load_styles(project)
- 
+
     load_images(project.key)
     load_fonts(project.key)
 
@@ -221,7 +227,7 @@ namespace :project do
     Dir.foreach(image_path).each do |file|
       path = Rails.root.join image_path, file
       next if File.directory? path
-      next if ! ['.png','.gif','.jpg', '.jpeg', '.svg'].include? path.extname
+      next if ! ['.png','.gif','.jpg', '.jpeg', '.svg', '.mp4'].include? path.extname
       puts " -- #{file}"
       image_dest = Rails.root.join("app/assets/images/#{project_key}/")
       Dir.mkdir(image_dest) unless File.exists?(image_dest)
@@ -329,7 +335,7 @@ namespace :project do
     end
 
     # Metadata search configured? Create indexes:
-    # TODO Note that indexes created this way must be manually removed. 
+    # TODO Note that indexes created this way must be manually removed.
     # Loading lots of different projects (or the same project with different
     # indexes) will create mult. indexes, which may slow query planning
     if project.metadata_search && project.metadata_search.is_a?(Hash)
