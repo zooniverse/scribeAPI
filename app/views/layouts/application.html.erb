@@ -7,9 +7,12 @@
 <title><%= current_project && current_project.title ? current_project.title: 'Scribe' %></title>
 
 <% if current_project %>
-<meta property="og:title" content="<%= current_project.title %>" />
-<meta name="twitter:title" value="<%= current_project.title %>">
-<meta name="description" content="<%= current_project.summary %>">
+<meta property="og:title" content="<%= current_project.title %>"/>
+<meta name="twitter:title" content="<%= current_project.title %>"/>
+<meta name="description" content="<%= current_project.summary %>"/>
+<meta name="author" content="<%= current_project.author %>"/>
+<meta name="keywords" content="<%= current_project.keywords %>"/>
+
 <% end %>
 
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
@@ -24,6 +27,16 @@
 
 </head>
 <body>
+
+<noscript>
+  <div class="browser-warning noscript">
+    <h1>Hi!</h1>
+    <p><%= current_project && current_project.title ? current_project.title: 'Scribe' %> requires JavaScript.</p>
+    <p>Looks like JavaScript is disabled in your browser. <i class="fa fa-frown-o"></i></p>
+    <p><a href="http://www.enable-javascript.com/" target="_blank">
+      Enable JavaScript to participate <i class="fa fa-smile-o"></i></a></p>
+  </div>
+</noscript>
 
 <%= yield %>
 

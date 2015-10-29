@@ -1,65 +1,23 @@
 {
   "title": "Old Weather: Whaling",
   "short_title": "Old Weather: Whaling",
-  "summary": "We want to see if (yes obviously) cats are better than animals",
+  "summary": "Explore the Arctic of the past from the deck of a whaling ship.",
+  "description": "Whalers have sought their quarry in perilous Arctic waters for centuries. Discover in their ships' logbooks new clues about climate and history. Scientists and historians alike have much to learn from these logs - but first they need your help to mark and transcribe them.",
   "logo": "images/logo.svg",
   "background": "images/background_cropped.jpg",
-
   "admin_email": "sascha@zooniverse.org",
   "team_emails": [
     "sascha@zooniverse.org",
-    "cs@zooniverse.org"
+    "cs@zooniverse.org",
+    "trouille@zooniverse.org"
   ],
-
-  "team": [
-    {
-      "name": "Stuart Lynn",
-      "role": "Cat lover",
-      "image": "http://stuart.com/stuart.jpg",
-      "organization": "zooniverse"
-    },
-
-    {
-      "name": "Sascha Ishikawa",
-      "role": "Cat",
-      "image": "http://sascha.com/cat.jpg",
-      "organization": "zooniverse"
-    },
-
-    {
-      "name": "Andrea Simenstad",
-      "role": "Not a cat(probably)",
-      "image": "http://Andrea.com/Andrea.jpg",
-      "organization": "UofM"
-    }
-  ],
-
-  "organizations": [
-    {
-     "title": "Zooniverse",
-     "description": "Zooniversing the universe one zoo at a time",
-     "url":"http://zooniverse.org",
-     "logo": "http://zooniverse.org/logo.png"
-    },
-    {
-     "title": "UofM",
-     "description": "A very cold university",
-     "url":"http://umn.edu",
-     "logo": "http://umn.edu/logo.png"
-    }
-  ],
-
   "forum": {
     "type": "talk",
     "account_username": "zooniverse",
     "project_name": "old-weather"
   },
-
-
   "discuss_url": "https://www.zooniverse.org/projects/zooniverse/old-weather/talk/",
-
   "feedback_form_url": "https://docs.google.com/forms/d/12FTryz5oTuzJE-UtbuMYCH5M77lLo-H74wiN35ORc8U/viewform",
-
   "terms_map": {
     "group": "ship",
     "subject set": "logbook",
