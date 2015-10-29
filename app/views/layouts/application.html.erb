@@ -28,6 +28,16 @@
 </head>
 <body>
 
+<noscript>
+  <div class="browser-warning noscript">
+    <h1>Hi!</h1>
+    <p><%= current_project && current_project.title ? current_project.title: 'Scribe' %> requires JavaScript.</p>
+    <p>Looks like JavaScript is disabled in your browser. <i class="fa fa-frown-o"></i></p>
+    <p><a href="http://www.enable-javascript.com/" target="_blank">
+      Enable JavaScript to participate <i class="fa fa-smile-o"></i></a></p>
+  </div>
+</noscript>
+
 <%= yield %>
 
 <% if current_project && ! current_project.analytics.nil? && ! current_project.analytics[:google_analytics_client_id].nil? %>
