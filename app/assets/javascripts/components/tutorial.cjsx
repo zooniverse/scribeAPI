@@ -2,7 +2,6 @@ React     = require 'react'
 HelpModal = require './help-modal'
 DraggableModal  = require 'components/draggable-modal'
 
-
 module.exports = React.createClass
   displayName: 'Tutorial'
 
@@ -26,6 +25,32 @@ module.exports = React.createClass
         nextTask: @props.tutorial.tasks[@state.nextTask].next_task
         completedSteps: @state.completedSteps + 1
 
+  onClose: ->
+    @animateClose()
+    @props.onCloseTutorial()
+
+
+  animateClose: ->
+    $modal = $(@refs.tutorialModal.getDOMNode())
+    $clone = $modal.clone()
+    $link = $('.tutorial-link').first()
+    if $link.length
+      x1 = $modal.offset().left - $(window).scrollLeft()
+      y1 = $modal.offset().top - $(window).scrollTop()
+      x2 = $link.offset().left - $(window).scrollLeft()
+      y2 = $link.offset().top - $(window).scrollTop()
+      xdiff = x2 - x1
+      ydiff = y2 - y1
+      $modal.parent().append($clone)
+      $clone.animate {
+          opacity: 0
+          left: '+=' + xdiff
+          top: '+=' + ydiff
+          width: 'toggle'
+          height: 'toggle'
+        }, 500, ->
+          $clone.remove()
+
   render:->
     helpContent = @props.tutorial.tasks[@state.currentTask].help
     taskKeys = Object.keys(@props.tutorial.tasks)
@@ -35,6 +60,6 @@ module.exports = React.createClass
     else
       doneButtonLabel = "Done"
 
-    <DraggableModal header={helpContent.title ? 'Help'} doneButtonLabel={doneButtonLabel} onDone={@advanceToNextTask} width={800} classes="help-modal" currentStepIndex={@state.completedSteps} closeButton=true onClose={@props.onCloseTutorial} >
+    <DraggableModal ref="tutorialModal" header={helpContent.title ? 'Help'} doneButtonLabel={doneButtonLabel} onDone={@advanceToNextTask} width={800} classes="help-modal" currentStepIndex={@state.completedSteps} closeButton=true onClose={@onClose} >
       <div dangerouslySetInnerHTML={{__html: marked( helpContent.body ) }} />
     </DraggableModal>
