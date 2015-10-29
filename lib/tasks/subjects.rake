@@ -68,13 +68,17 @@ namespace :subjects do
 
     subjects_by_set = {}
 
-    puts "    Reding subjects from: #{group_file}"
-    CSV.foreach(group_file, :headers=>true, :header_converters=> lambda {|f| f.strip}, :converters=> lambda {|f| f ? f.strip : nil}) do |row|
-      data = row.to_hash
-      key = data['set_key']
-      key = "_autogen_set_key_#{$.}" if key.blank?
-      subjects_by_set[key] ||= []
-      subjects_by_set[key] << data
+    puts "    Reading subjects from: #{group_file}"
+    if ! File.exist? group_file
+      puts "Couldn't find #{group_file}"
+    else
+      CSV.foreach(group_file, :headers=>true, :header_converters=> lambda {|f| f.strip}, :converters=> lambda {|f| f ? f.strip : nil}) do |row|
+        data = row.to_hash
+        key = data['set_key']
+        key = "_autogen_set_key_#{$.}" if key.blank?
+        subjects_by_set[key] ||= []
+        subjects_by_set[key] << data
+      end
     end
 
     subjects_by_set.each do |(set_key, subjects)|

@@ -107,6 +107,9 @@ namespace :project do
       puts "Activating #{project.title}"
       project.activate!
     end
+
+    # Rebuild subject-set indexes based on current project:
+    Rake::Task['project:create_indexes'].invoke
   end
 
   def get_project(project_key)
@@ -181,28 +184,7 @@ namespace :project do
 
     project.tutorial = load_tutorial(project_key)
 
-    # Metadata search configured? Create indexes:
-    # TODO Note that indexes created this way must be manually removed. 
-    # Loading lots of different projects (or the same project with different
-    # indexes) will create mult. indexes, which may slow query planning
-    if project.metadata_search && project.metadata_search.is_a?(Hash)
-      # Loop over fields array:
-      if project.metadata_search["fields"].is_a? Array
-        project.metadata_search["fields"].each do |field|
-          SubjectSet.index({"project" => 1, "metadata.#{field['field']}" => 1}, {background: true})
-        end
-      end
-      SubjectSet.create_indexes
-    end
    
-    # Make sure project.status index exists
-    Project.create_indexes
-    # Make sure various subject indexes exist:
-    Subject.create_indexes
-    Group.create_indexes
-    Workflow.create_indexes
-    Favourite.create_indexes
-    Classification.create_indexes
 
     project.save
     project
@@ -316,18 +298,51 @@ namespace :project do
       w.update_attribute :order, project.workflows.size - num_downstream_workflows(w) - 1
     end
 
+
+    puts "  WARN: No mark workflow found" if project.workflows.find_by(name: 'mark').nil?
+  end
+
+  desc "Rebuilds all required indexes. Should be run any time project.metadata changes or workflows ids change (after reload or when switching activated project)"
+  task :create_indexes, [] => :environment do |task, args|
+    puts "Rebuilding indexes"
+
+    # Make sure project.status index exists
+    Project.create_indexes
+    # Make sure various subject indexes exist:
+    Subject.create_indexes
+    Group.create_indexes
+    Workflow.create_indexes
+    Favourite.create_indexes
+    Classification.create_indexes
+
+    # Create a bunch of project-specific indexes:
+    project = Project.current
+
+    SubjectSet.collection.indexes.drop
+
     # Create workflow counts indexes:
-    puts "Creating workflow counts indexes:"
     project.workflows.each do |w|
-      puts "  workflow.#{w.id}"
       # Index for typical Mark query:
       SubjectSet.index({"counts.#{w.id}.active_subjects" => 1, "random_no" => 1}, {background: true})
       # Index for marking by group_id:
       SubjectSet.index({"counts.#{w.id}.active_subjects" => 1, "group_id" => 1}, {background: true})
     end
+
+    # Metadata search configured? Create indexes:
+    # TODO Note that indexes created this way must be manually removed. 
+    # Loading lots of different projects (or the same project with different
+    # indexes) will create mult. indexes, which may slow query planning
+    if project.metadata_search && project.metadata_search.is_a?(Hash)
+      # Loop over fields array:
+      if project.metadata_search["fields"].is_a? Array
+        project.metadata_search["fields"].each do |field|
+          SubjectSet.index({"project" => 1, "metadata.#{field['field']}" => 1}, {background: true})
+        end
+      end
+    end
+
     SubjectSet.create_indexes
 
-    puts "  WARN: No mark workflow found" if project.workflows.find_by(name: 'mark').nil?
   end
 
   desc "Drop a project by key"
@@ -354,6 +369,7 @@ namespace :project do
 
     Rake::Task['project:drop'].invoke(args[:project_key])
     Rake::Task['project:load'].invoke(args[:project_key])
+    Rake::Task['project:create_indexes'].invoke
 
   end
 
