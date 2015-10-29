@@ -42,7 +42,7 @@ module.exports = React.createClass
     if Object.keys(@props.annotation).length == 0 #prevents back-to-back mark tasks, displaying a duplicate mark from previous tasks.
       @setUncommittedMark null
 
-    @setState 
+    @setState
       marks: @getMarksFromProps(new_props)
 
     if new_props.subject.id == @props.subject.id
@@ -170,7 +170,7 @@ module.exports = React.createClass
       initMoveValues = MarkComponent.initMove mouseCoords, mark, e
       for key, value of initMoveValues
         mark[key] = value
-    
+
 
     @props.onChange? mark
     @setState uncommittedMark: mark

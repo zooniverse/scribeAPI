@@ -124,10 +124,15 @@ html, body,
   font-weight: 400;
   text-align: center;
 }
+.page-content h3 {
+  font-size: 28px;
+  margin-top: 2em;
+}
 .page-content hr {
+  display: block;
   border: none;
-  border-top: 1px solid rgba(255,255,255,0.3);
-  margin: 1em auto 1.8em;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  margin: 3em auto 0;
   width: 80%;
 }
 .page-content#Team img {
@@ -142,7 +147,7 @@ html, body,
 
 /* Homepage */
 div.home-page {
-  padding-top: 40px;
+  padding-top: 160px;
     -webkit-touch-callout: text;
   -webkit-user-select: text;
   -khtml-user-select: text;
@@ -205,19 +210,20 @@ div.home-page {
   width: auto;
 }
 .home-page .logo {
-  font-size: 1.1em;
+  font-size: 1em;
   color: #ffffff;
   text-align: center;
+  margin: -160px 0 160px;
 }
 .home-page .logo:before {
-  content: ' ';
+  /*content: ' ';
   display: inline-block;
   width: 40px;
   height: 40px;
   background-image: url('/images/nypl-logo.svg');
   background-size: 100% 100%;
   margin-right: 12px;
-  vertical-align: text-bottom;
+  vertical-align: text-bottom;*/
 }
 .home-page .logo a {
   display: inline;
@@ -235,6 +241,9 @@ div.home-page {
 }
 .home-page .logo a:hover {
   color: #c9eac9;
+}
+.home-page .group-area {
+  display: none;
 }
 .group-area .groups {
   text-align: center;
@@ -350,4 +359,54 @@ div.home-page {
 }
 .classifier .right-column .task-area .help-bad-subject-holder .task-help-button {
   display: none;
+}
+#accordion-help-modal .ui-accordion-content {
+  padding: 0.5em;
+  overflow: hidden;
+  display: block;
+}
+#accordion-help-modal img {
+  width: 100%;
+  float: none;
+}
+#accordion-help-modal ul,
+#accordion-help-modal li {
+  width: 100%;
+  float: none;
+}
+
+/* Introduction */
+.video-wrapper {
+  margin: 30px -20px;
+  padding: 20px 0 10px;
+  background: #ccc;
+  text-align: center;
+}
+.video-wrapper video {
+  display: inline-block;
+  box-shadow: 0 2px 2px rgba(0,0,0,0.3);
+}
+.columns ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  zoom: 1;
+}
+.columns li {
+  background: #ddd;
+  box-sizing: border-box;
+  width: 32%;
+  float: left;
+  font-size: 22px;
+  line-height: 36px;
+  box-sizing: border-box;
+  padding: 1em;
+  margin-right: 1%;
+  min-height: 264px;
+  border-radius: 6px;
+}
+.columns li .major-button {
+  display: block;
+  margin-bottom: 1em;
 }
