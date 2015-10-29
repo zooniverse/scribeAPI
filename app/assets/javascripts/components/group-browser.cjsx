@@ -53,7 +53,14 @@ GroupBrowser = React.createClass
 
     groups = [@renderGroup(group) for group in @state.groups]
     <div className="group-browser">
-      <h3 className="groups-header"><span>Select a {@props.project.term('group')}</span></h3>
+      <h3 className="groups-header">
+        {
+          if @props.title?
+            <span>{@props.title}</span>
+          else
+            <span>Select a {@props.project.term('group')}</span>
+        }
+      </h3>
       <div className="groups">
         {groups}
       </div>

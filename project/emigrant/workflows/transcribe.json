@@ -122,13 +122,19 @@
             "tool": "textTool",
             "examples": ["$200,000"],
             "tool_config": {},
-            "label": "Ground Value"
+            "label": "Land Value"
           },
           "em_valuation_building": {
             "tool": "textTool",
             "examples": ["$200,000"],
             "tool_config": {},
             "label": "Building Value"
+          },
+          "em_valuation_amount": {
+            "tool": "textTool",
+            "examples": ["$200,000"],
+            "tool_config": {},
+            "label": "Total Value"
           }
         }
       },

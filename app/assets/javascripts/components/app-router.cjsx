@@ -111,10 +111,10 @@ class AppRouter
         # selectedID = pattern.match("#{window.location.hash}")
         # if selectedID
         #   $('.selected-content').removeClass("selected-content")
-          
+
         #   $("div#" + selectedID).addClass("selected-content"))
         #   $("a#" + selectedID).addClass("selected-content"))
-        
+
 
       componentDidMount: ->
         pattern = new RegExp('#/[A-z]*#(.*)')
@@ -122,7 +122,7 @@ class AppRouter
 
         if selectedID
           $('.selected-content').removeClass("selected-content")
-          
+
           $("div#" + selectedID[1]).addClass("selected-content")
           $("a#" + selectedID[1]).addClass("selected-content")
 
@@ -148,6 +148,12 @@ class AppRouter
         <div className="page-content custom-page" id="#{page.name}">
           <h1>{formatted_name}</h1>
           <div dangerouslySetInnerHTML={{__html: marked(page.content)}} />
+          {
+            if page.group_browser? && page.group_browser != ''
+              <div className='group-area'>
+                <GroupBrowser project={project} title={page.group_browser} />
+              </div>
+          }
           <div className="updated-at">Last Update {page.updated_at}</div>
         </div>
 
