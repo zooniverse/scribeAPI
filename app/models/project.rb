@@ -4,16 +4,17 @@ class Project
   include Mongoid::Timestamps
 
   field  :key ,              type: String # unique key identifying project (subfolder under /projects holding project jsons)
-  field  :producer ,         type: String, default: "Adler"
-  field  :title ,            type: String, default: "ZooZoo"
-  field  :short_title,       type: String, default: "Scribe 2.0"
-  field  :team,              type: Array
-  field  :summary ,          type: String, default: "Classify pictures of zoo's"
-  field  :description,       type: String, default: "We need your help to understand zoo's better"
-  field  :home_page_content, type: String, default: "<p>Page content goes here</p>"
-  field  :organizations,     type: Array,  default: [{name: "zooniverse", location: "Chicago IL", description: "provides opportunities for people around the world to contribute to real discoveries", url:["https://www.zooniverse.org/"]}]
-  field  :scientists,        type: Array,  default: [{name: "Stuart Lynn", location: "Chicago, IL", description: "me", url:["https://github.com/brian-c"]}]
-  field  :developers,        type: Array,  default: [{name: "Stuart Lynn", location: "Chicago, IL", description: "me", url:["https://github.com/brian-c"]}]
+  field  :author,            type: String, default: "NYPL/Zooniverse"
+  field  :title,             type: String, default: "Project X: A Scribe Project"
+  field  :short_title,       type: String, default: "Project X"
+  field  :team,              type: Array,  default: []
+  field  :summary ,          type: String, default: "Scribe is a crowdsourcing framework for transcribing handwritten or OCR-resistant documents."
+  field  :description,       type: String, default: "Scribe is particularly geared toward digital humanities, library, and citizen science projects seeking to extract highly structured, normalizable data from a set of digitized materials (e.g. historical manuscripts, account ledgers, or maritime logbooks) in order to enable further analysis, metadata enrichment, and discovery. Scribe is not a crowdsourcing project in a box, but it establishes the foundation for a developer to configure and launch a project far more easily than if starting from scratch."
+  field  :keywords,          type: String, default: "transcription, digital humanities, citizen science, crowdsourcing, metadata"
+  field  :home_page_content, type: String, default: "<p>There is currently no content on the home page.</p>"
+  field  :organizations,     type: Array,  default: []
+  field  :scientists,        type: Array,  default: []
+  field  :developers,        type: Array,  default: []
   field  :pages,             type: Array,  default: []
   field  :logo,              type: String
   field  :background,        type: String
