@@ -51,17 +51,24 @@
               }
           },
           "tutorial_mark_4": {
-              "next_task": null,
+              "next_task": "tutorial_mark_5",
               "help": {
                   "title": "Existing Marks",
                   "file": "tutorial_mark_4"
+              }
+          },
+          "tutorial_mark_5": {
+              "next_task": null,
+              "help": {
+                  "title": "Additional Help",
+                  "file": "tutorial_mark_5"
               }
           }
         }
       },
       "transcribe": {
         "name": "Transcribe Tutorial",
-        "first_task": "tutorial_transcribe_1",
+        "first_task": "learn_transcribing",
         "tasks": {
           "learn_transcribing": {
               "next_task": null,
@@ -74,7 +81,7 @@
       },
       "verify": {
         "name": "Verify Tutorial",
-        "first_task": "tutorial_verify_1",
+        "first_task": "learn_verifying",
         "tasks": {
           "learn_verifying": {
               "next_task": null,
