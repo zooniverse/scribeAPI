@@ -68,7 +68,7 @@
       },
       "transcribe": {
         "name": "Transcribe Tutorial",
-        "first_task": "tutorial_transcribe_1",
+        "first_task": "learn_transcribing",
         "tasks": {
           "learn_transcribing": {
               "next_task": null,
@@ -81,7 +81,7 @@
       },
       "verify": {
         "name": "Verify Tutorial",
-        "first_task": "tutorial_verify_1",
+        "first_task": "learn_verifying",
         "tasks": {
           "learn_verifying": {
               "next_task": null,
