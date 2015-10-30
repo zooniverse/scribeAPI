@@ -17,7 +17,7 @@ module.exports = React.createClass
 
   advanceToNextTask:->
     if @props.tutorial.tasks[@state.currentTask].next_task == null
-      @props.onCloseTutorial()
+      @onClose()
 
     else
       @setState

@@ -19,6 +19,10 @@
 <%= stylesheet_link_tag "application", media: "all" %>
 <link rel="stylesheet" href="/css/styles.css" media="screen" title="no title" charset="utf-8">
 
+<% if current_project && current_project.favicon  %>
+  <link rel="shortcut icon" href="<%= current_project.favicon %>">
+<% end %>
+
 <script src="https://cdn.polyfill.io/v1/polyfill.min.js?features=default,es6,Promise,fetch&amp;flags=gated"></script>
 <%= javascript_include_tag "application" %>
 <script src='/js/custom.js' charset="utf-8"></script>

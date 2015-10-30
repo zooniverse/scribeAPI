@@ -91,6 +91,7 @@ module.exports = React.createClass
         hideOtherMarks={@props.hideOtherMarks}
         currentSubtool={@props.currentSubtool}
         viewBox={@state.zoomPanViewBox}
+        interimMarks={@props.interimMarks}
       />
 
     </div>
