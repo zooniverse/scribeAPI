@@ -66,7 +66,8 @@ class User
   end
 
   def set_subject_bookmark(subject_set_id,page)
-    self.subject_set_bookmarks = {subject_set_id => page}
+    self.subject_set_bookmarks = {subject_set_id.to_s => page}
+    save!(:validate => false)
     # update_attribute subject_set_bookmarks[:subject_set_id] = page
     puts 'BOOKMARKS = ', self.subject_set_bookmarks
   end
