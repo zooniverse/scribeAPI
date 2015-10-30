@@ -19,7 +19,7 @@ class Classification
   after_create  :increment_subject_classification_count #, :check_for_retirement_by_classification_count
   after_create  :generate_new_subjects
   after_create  :generate_terms
-  after_create  :set_subject_bookmark
+  after_create  :place_bookmark
   # removing this after create until we have a use case for the information
   # after_create  :increment_subject_set_classification_count,
 
@@ -74,15 +74,9 @@ class Classification
     end
   end
 
-  def set_subject_bookmark
-    puts 'set_subject_bookmark()'
-    puts 'THIS CLASSIFICATION IS: ', self.subject.subject_set_id
-
-    subject_set_id = self.subject.subject_set_id
-    page = self.subject.order
-
-    user.set_subject_bookmark(subject_set_id,page)
-
+  def place_bookmark
+    return if self.subject.subject_set_id.nil? || self.subject.order.nil?
+    user.place_bookmark(self.subject.subject_set_id,self.subject.order)
   end
 
   # removing this from the after_create hook in interest of speed. 10/22/15
