@@ -5,6 +5,7 @@
   "background": "/images/background.jpg",
   "admin_email": "paulbeaudoin@nypl.org",
   "logo": "/images/logo.png",
+  "favicon": "/images/favicon.ico",
   "privacy_policy": "http://www.nypl.org/help/about-nypl/legal-notices/privacy-policy",
   "terms_map": {
     "group": "collection",

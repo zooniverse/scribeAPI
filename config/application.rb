@@ -34,6 +34,7 @@ module API
           '.png',  '.gif', '.jpg', '.jpeg',         # Images
           '.eot',  '.otf', '.svc', '.woff', '.ttf', # Fonts
           '.mp4',                                   # Video
+          '.ico',                                   # Icon
           '.cjsx'
         ]
       end)

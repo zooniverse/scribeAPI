@@ -18,6 +18,7 @@ class Project
   field  :pages,             type: Array,  default: []
   field  :logo,              type: String
   field  :background,        type: String
+  field  :favicon,           type: String
   field  :forum,             type: Hash
   field  :feedback_form_url, type: String
   field  :discuss_url,       type: String
