@@ -130,6 +130,7 @@ namespace :project do
     project_defaults = {
       background: nil,
       logo: nil,
+      favicon: nil,
       terms_map: {},
       team_emails: [],
       team: [],
@@ -227,7 +228,7 @@ namespace :project do
     Dir.foreach(image_path).each do |file|
       path = Rails.root.join image_path, file
       next if File.directory? path
-      next if ! ['.png','.gif','.jpg', '.jpeg', '.svg', '.mp4'].include? path.extname
+      next if ! ['.png','.gif','.jpg', '.jpeg', '.svg', '.mp4', '.ico'].include? path.extname
       puts " -- #{file}"
       image_dest = Rails.root.join("app/assets/images/#{project_key}/")
       Dir.mkdir(image_dest) unless File.exists?(image_dest)

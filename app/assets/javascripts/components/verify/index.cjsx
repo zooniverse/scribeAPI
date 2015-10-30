@@ -10,6 +10,7 @@ BaseWorkflowMethods     = require 'lib/workflow-methods-mixin'
 
 DraggableModal          = require 'components/draggable-modal'
 GenericButton           = require 'components/buttons/generic-button'
+Tutorial                = require 'components/tutorial'
 
 # Hash of core tools:
 coreTools          = require 'components/core-tools'
@@ -31,6 +32,7 @@ module.exports = React.createClass # rename to Classifier
     classifications:              []
     classificationIndex:          0
     subject_index:                0
+    showingTutorial:              false
 
   componentWillMount: ->
     @beginClassification()
@@ -51,6 +53,12 @@ module.exports = React.createClass # rename to Classifier
   handleTaskComplete: (d) ->
     @handleDataFromTool(d)
     @commitClassificationAndContinue d
+
+  toggleTutorial: ->
+    @setState showingTutorial: not @state.showingTutorial
+
+  hideTutorial: ->
+    @setState showingTutorial: false
 
   render: ->
     currentAnnotation = @getCurrentClassification().annotation
@@ -89,25 +97,34 @@ module.exports = React.createClass # rename to Classifier
 
       { if @getCurrentSubject()?
           <div className="right-column">
-            <div style={display: "none"} className="task-area">
+            <div className="task-area verify">
 
-              <div className="task-container">
-                <nav className="task-nav">
-                  <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
-                  { if nextTask?
-                      <button type="button" className="continue major-button" onClick={@advanceToTask.bind(@, nextTask)}>Next</button>
-                    else
-                      <button type="button" className="continue major-button" onClick={@completeClassification}>Done</button>
-                  }
-                </nav>
-              </div>
+              <div className="task-secondary-area">
 
-              <div className="forum-holder">
-                <ForumSubjectWidget subject=@getCurrentSubject() project={@props.project} />
+                {
+                  if @getCurrentTask()?
+                    <p>
+                      <a className="tutorial-link" onClick={@toggleTutorial}>View A Tutorial</a>
+                    </p>
+                }
+
+                <div className="forum-holder">
+                  <ForumSubjectWidget subject=@getCurrentSubject() project={@props.project} />
+                </div>
+
               </div>
 
             </div>
           </div>
+      }
+
+      { if @props.project.tutorial? && @state.showingTutorial
+          # Check for workflow-specific tutorial
+          if @props.project.tutorial.workflows? && @props.project.tutorial.workflows[@getActiveWorkflow()?.name]
+            <Tutorial tutorial={@props.project.tutorial.workflows[@getActiveWorkflow().name]} onCloseTutorial={@hideTutorial} />
+          # Otherwise just show general tutorial
+          else
+            <Tutorial tutorial={@props.project.tutorial} onCloseTutorial={@hideTutorial} />
       }
     </div>
 
