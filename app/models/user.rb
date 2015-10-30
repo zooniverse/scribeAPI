@@ -41,7 +41,7 @@ class User
   field :tutorial_complete,  :type => Boolean, :default => false
 
   # for remembering users' last viewed subject
-  field :subject_set_bookmarks, :type => Hash
+  field :subject_set_bookmarks, :type => Hash, :default => {}
 
   has_many :favourites
   has_many :classifications
@@ -66,7 +66,8 @@ class User
   end
 
   def set_subject_bookmark(subject_set_id,page)
-    self.subject_set_bookmarks = {subject_set_id.to_s => page}
+    subject_set_id = subject_set_id.to_s
+    self.subject_set_bookmarks[subject_set_id] = page
     save!(:validate => false)
     # update_attribute subject_set_bookmarks[:subject_set_id] = page
     puts 'BOOKMARKS = ', self.subject_set_bookmarks
