@@ -147,7 +147,7 @@ html, body,
 
 /* Homepage */
 div.home-page {
-  padding-top: 160px;
+  padding-top: 80px;
     -webkit-touch-callout: text;
   -webkit-user-select: text;
   -khtml-user-select: text;
@@ -170,6 +170,8 @@ div.home-page {
 .home-page li {
   font-size: 28px;
   text-align: center;
+  margin-left: 30px;
+  margin-right: 30px;
 }
 .home-page p > a:first-child {
   font-size: 30px;
@@ -213,7 +215,7 @@ div.home-page {
   font-size: 1em;
   color: #ffffff;
   text-align: center;
-  margin: -160px 0 160px;
+  margin: -160px 0 130px;
 }
 .home-page .logo:before {
   /*content: ' ';
