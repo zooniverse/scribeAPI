@@ -41,11 +41,18 @@ module.exports =
 
   commitClassification: (classification) ->
     return unless classification?
+
+    # Create visual interim mark just in case POST takes a while
+    interim_mark = @addInterimMark classification
+
     # Commit classification to backend
     classification.commit (classification) =>
       # Did this generate a child_subject? Update local copy:
       if classification.child_subject
         @appendChildSubject classification.subject_id, classification.child_subject
+
+        # Now that we have the real mark, hide the interim mark:
+        @hideInterimMark(interim_mark) if interim_mark?
 
       if @state.badSubject
         @toggleBadSubject =>
@@ -54,6 +61,37 @@ module.exports =
       if @state.illegibleSubject
         @toggleIllegibleSubject =>
           @advanceToNextSubject()
+
+  # Called immediately before saving a classification, adds a fake mark in lieu
+  # of the real generated mark:
+  addInterimMark: (classification) ->
+    # Uniquely identify local interim marks:
+    @interim_mark_id ||= 0
+
+    # Interim mark is the region (the mark classification's annotation hash) with extras:
+    interim_mark = $.extend({
+      show:           true                        # Default to show. We'll disable this when classification saved
+      interim_id:     (@interim_mark_id += 1)     # Unique id
+      subject_id :    classification.subject_id   # Keep subject_id so we know which subject to show it over
+    }, classification.annotation)
+
+    # Add interim mark to array in @state
+    interimMarks = @state.interimMarks ? []
+    interimMarks.push interim_mark
+    @setState interimMarks: interimMarks
+
+    interim_mark
+
+  # Counterpart to addInterimMark, hides the given interim mark
+  hideInterimMark: (interim_mark) ->
+    interimMarks = @state.interimMarks
+    for m, i in interimMarks
+      # If this is the interim mark to hide, hide it:
+      if m.interim_id == interim_mark.interim_id
+        m.show = false
+        @setState interimMarks: interimMarks
+        # We found it, move on:
+        break
 
   # used to commit task-level classifications, i.e. not from marking tools
   commitCurrentClassification: () ->
