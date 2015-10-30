@@ -10,7 +10,7 @@
   "tasks": {
     "mark_primary": {
       "tool": "pickOneMarkOne",
-      "instruction": "First, let's identify the fields for transcription. For each of the following, draw a box on the image.",
+      "instruction": "",
       "generates_subjects": true,
       "help": {
         "file": "mark_primary"
