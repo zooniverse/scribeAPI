@@ -51,7 +51,7 @@
               }
           },
           "tutorial_mark_4": {
-              "next_task": "tutorial_mark_5  v   ",
+              "next_task": "tutorial_mark_5",
               "help": {
                   "title": "Existing Marks",
                   "file": "tutorial_mark_4"
