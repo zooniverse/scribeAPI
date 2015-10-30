@@ -51,6 +51,9 @@ module SubjectGenerationMethods
         end
       end
 
+      # By the nature of task employing collect-unique (i.e. verify), we should add the authors of the submitted classifications to the generated subject so that they're not allowed to classify (i.e. not allowed to vote on their own transcription)
+      classification.child_subject.classifying_user_ids ||= []
+
       # puts "Saving atts to classification: #{atts.inspect}"
       classification.child_subject.update_attributes atts
 
