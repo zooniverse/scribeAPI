@@ -3,30 +3,22 @@
 <div id="accordion-help-modal">
   <h3>Sample One</h3>
   <div class="modal-field-guide" >
-    <img src="/images/m_address_1.png" alt="record_street_address_image_1">
-  </div>
-  <div>
+    <img src="/images/t_address_1.png" alt="record_street_address_image_1">
   <p></p>
   </div>
   <h3>Sample Two</h3>
   <div class="modal-field-guide" >
-    <img src="/images/m_address_2.png" alt="record_street_address_image_2">
-  </div>
-  <div>
-  <p>250 W 55</p>
+    <img src="/images/t_address_2.png" alt="record_street_address_image_2">
+  <p>Enter: <em>250 W 55</em></p>
   </div>
   <h3>Sample Three</h3>
   <div class="modal-field-guide" >
-    <img src="/images/m_address_3.png" alt="record_street_address_image_3">
-  </div>
-  <div>
-  <p>75 Perry St</p>
+    <img src="/images/t_address_3.png" alt="record_street_address_image_3">
+  <p>Enter: <em>75 Perry St</em></p>
   </div>
   <h3>Sample Four</h3>
   <div class="modal-field-guide" >
-    <img src="/images/m_address_3.png" alt="record_street_address_image_4">
-  </div>
-  <div>
-  <p>202 N. 149 Dr</p>
+    <img src="/images/t_address_3.png" alt="record_street_address_image_4">
+  <p>Enter: <em>202 N. 149 Dr</em></p>
   </div>
 </div>

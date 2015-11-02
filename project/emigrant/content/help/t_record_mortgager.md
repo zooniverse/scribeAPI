@@ -5,29 +5,21 @@
   <h3>Sample One</h3>
   <div class="modal-field-guide" >
     <img src="/images/record_mortgager_1.png" alt="record_mortgager_image_1">
-  </div>
-  <div>
   <p></p>
   </div>
   <h3>Sample Two</h3>
   <div class="modal-field-guide" >
     <img src="/images/record_mortgager_2.png" alt="record_mortgager_image_2">
-  </div>
-  <div>
-  <p>Eunice R. Waterbury; Eloise B. Crothers</p>
+  <p>Enter: <em>Eunice R. Waterbury; Eloise B. Crothers</em></p>
   </div>
   <h3>Sample Three</h3>
   <div class="modal-field-guide" >
     <img src="/images/record_mortgager_3.png" alt="record_mortgager_image_3">
-  </div>
-  <div>
-  <p>Catherine</p>
+  <p>Enter: <em>Catherine</em></p>
   </div>
   <h3>Sample Four</h3>
   <div class="modal-field-guide" >
     <img src="/images/street_mortgager_4.png" alt="record_mortgager_image_3">
-  </div>
-  <div>
-  <p>Hickory Realty Leo. (Max Marx)</p>
+  <p>Enter: <em>Hickory Realty Leo. (Max Marx)</em></p>
   </div>
 </div>

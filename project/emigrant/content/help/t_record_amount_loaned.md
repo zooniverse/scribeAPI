@@ -3,30 +3,22 @@
 <div id="accordion-help-modal">
   <h3>Sample One</h3>
   <div class="modal-field-guide" >
-    <img src="/images/m_loan_1.png" alt="record_loan_1">
-  </div>
-  <div>
-  <p>20000</p>
+    <img src="/images/t_loan_1.png" alt="record_loan_1">
+  <p>Enter: <em>20000</em></p>
   </div>
   <h3>Sample Two</h3>
   <div class="modal-field-guide" >
-    <img src="/images/m_loan_2.png" alt="record_loan_2">
-  </div>
-  <div>
-  <p>10000</p>
+    <img src="/images/t_loan_2.png" alt="record_loan_2">
+  <p>Enter: <em>10000</em></p>
   </div>
   <h3>Sample Three</h3>
   <div class="modal-field-guide" >
-    <img src="/images/m_loan_3.png" alt="record_loan_3">
-  </div>
-  <div>
-  <p>9000</p>
+    <img src="/images/t_loan_3.png" alt="record_loan_3">
+  <p>Enter: <em>9000</em></p>
   </div>
   <h3>Sample Four</h3>
   <div class="modal-field-guide" >
-    <img src="/images/m_loan_4.png" alt="record_loan_4">
-  </div>
-  <div>
-  <p>1500</p>
+    <img src="/images/t_loan_4.png" alt="record_loan_4">
+  <p>Enter: <em>1500</em></p>
   </div>
 </div>
