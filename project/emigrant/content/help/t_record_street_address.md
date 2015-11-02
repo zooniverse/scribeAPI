@@ -4,6 +4,7 @@
   <h3>Sample One</h3>
   <div class="modal-field-guide" >
     <img src="/images/t_address_1.png" alt="record_street_address_image_1">
+    <p>Enter: <em></em></p>
   <p></p>
   </div>
   <h3>Sample Two</h3>
@@ -18,7 +19,7 @@
   </div>
   <h3>Sample Four</h3>
   <div class="modal-field-guide" >
-    <img src="/images/t_address_3.png" alt="record_street_address_image_4">
+    <img src="/images/t_address_4.png" alt="record_street_address_image_4">
   <p>Enter: <em>202 N. 149 Dr</em></p>
   </div>
 </div>

@@ -28,7 +28,7 @@
       "instruction": "Enter the record number",
       "examples": ["287", "289"],
       "help": {
-        "file": "t_record_date"
+        "file": "t_record_number"
       },
       "generates_subject_type": "em_transcribed_record_number"
     },
