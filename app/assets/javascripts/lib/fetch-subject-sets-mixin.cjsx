@@ -96,6 +96,7 @@ module.exports =
       page: page
       limit: limit
       type: 'root'
+      status: 'any'
 
     process_subjects = (subjs) =>
       sets[ind].subjects = subjs
