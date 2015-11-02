@@ -52,7 +52,7 @@ module.exports = React.createClass
           if @props.discussUrl?
             <a target={"_blank"} className="main-header-item" href={@props.discussUrl}>Discuss</a>
         }
-        <Login user={@props.user} loginProviders={@props.loginProviders} />
+        <Login user={@props.user} loginProviders={@props.loginProviders} onLogout={@props.onLogout} />
 
       </nav>
 

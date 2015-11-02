@@ -3,7 +3,7 @@ class WorkflowTask
 
   field    :key,                                     type: String
   field    :tool,                                    type: String
-  field    :instruction,                             type: String
+  field    :instruction,                             type: String, default: ''
   field    :help,                                    type: String
   field    :generates_subject_type,                  type: String
   field    :tool_config,                             type: Hash

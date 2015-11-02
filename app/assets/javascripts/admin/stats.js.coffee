@@ -327,6 +327,13 @@ class Stats
 			@updateUI()
 			@addChartListeners()
 
+	recalculateStats: () ->
+		$('.chart').empty()
+		$.post "/admin/stats/recalculate.json", (data) =>
+			@data = @parseData(data.stats)
+			@updateUI()
+			@addChartListeners()
+
 	getFakeData: (amount, min, max) ->
 		fake_data = []
 		date = new Date(2015, 1, 1)
@@ -458,4 +465,4 @@ class Stats
 		return d.getFullYear() + '-' + Math.ceil((((d-new Date(d.getFullYear(),0,1))/8.64e7)+1)/7)
 
 $ ->
-	new Stats()
+	window.stats = new Stats()

@@ -76,6 +76,7 @@ App = React.createClass
           logo={project.logo}
           user={@state.user}
           loginProviders={@state.loginProviders}
+          onLogout={() => @setState user: null}
         />
 
         <div className="main-content">
