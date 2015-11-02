@@ -1,10 +1,33 @@
 # Mortgager Name
 
-The mortgager name is often found at the top of the list of hand-entered data in the bottom half of the records. This field also appears on records as "Mortgager" and "Applicant." The mortgager tends to be a single person or organization's name. If multiple names are provided, enter them all separated by semi-colons. (E.g. "Mary Smith;John O'Meallia")
-
-![record_mortgager_image_1](/images/record_mortgager_1.png)  
-***
-![record_mortgager_image_2](/images/record_mortgager_2.png)  
-***
-![record_mortgager_image_3](/images/record_mortgager_3.png)  
-***
+<p>The mortgager tends to be a single person or organization's name. If multiple names are provided, enter them all separated by semi-colons. (E.g. "Mary Smith;John O'Meallia")</p>
+<div id="accordion-help-modal">
+  <h3>Sample One</h3>
+  <div class="modal-field-guide" >
+    <img src="/images/record_mortgager_1.png" alt="record_mortgager_image_1">
+  </div>
+  <div>
+  <p></p>
+  </div>
+  <h3>Sample Two</h3>
+  <div class="modal-field-guide" >
+    <img src="/images/record_mortgager_2.png" alt="record_mortgager_image_2">
+  </div>
+  <div>
+  <p>Eunice R. Waterbury; Eloise B. Crothers</p>
+  </div>
+  <h3>Sample Three</h3>
+  <div class="modal-field-guide" >
+    <img src="/images/record_mortgager_3.png" alt="record_mortgager_image_3">
+  </div>
+  <div>
+  <p>Catherine</p>
+  </div>
+  <h3>Sample Four</h3>
+  <div class="modal-field-guide" >
+    <img src="/images/street_mortgager_4.png" alt="record_mortgager_image_3">
+  </div>
+  <div>
+  <p>Hickory Realty Leo. (Max Marx)</p>
+  </div>
+</div>
