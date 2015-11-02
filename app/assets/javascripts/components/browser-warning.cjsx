@@ -44,12 +44,12 @@ module.exports = React.createClass
 
     <div className="browser-warning">
       <a className="modal-close-button" onClick={@closeModal}></a>
-      <p>Please note: Your browser/device may not work well with {project.title}.</p>
       { if @state.isTouchDevice
-          <p>Touch interfaces aren't well supported.</p>
+          <p>Welcome! Thanks for your interest in {project.title}. The app is designed for desktops. For the full experience, come back later from your laptop or desktop.</p>
+
         else
           <div>
-            <p>For the best experience, please use the most recent version of one of the following supported browsers:</p>
+            <p>Welcome! Thanks for your interest in {project.title}. Please note that your browser may not work well here. For the best experience, please use the most recent version of one of the following supported browsers:</p>
             <ul>
               <li><a href="https://www.mozilla.org/en-US/firefox/new/">Firefox</a></li>
               <li><a href="https://www.google.com/chrome/browser/desktop/index.html">Chrome</a></li>
