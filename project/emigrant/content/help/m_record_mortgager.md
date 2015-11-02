@@ -3,19 +3,19 @@
 <div id="accordion-help-modal">
   <h3>Sample Image One</h3>
   <div class="modal-field-guide" >
-    <img src="/images/record_mortgager_1.png" alt="record_mortgager_image_1">
+    <img src="/images/m_mortgager_1.png" alt="record_mortgager_image_1">
   </div>
   <h3>Sample Image Two</h3>
   <div class="modal-field-guide" >
-    <img src="/images/record_mortgager_2.png" alt="record_mortgager_image_2">
+    <img src="/images/m_mortgager_2.png" alt="record_mortgager_image_2">
   </div>
   <h3>Sample Image Three</h3>
   <div class="modal-field-guide" >
-    <img src="/images/record_mortgager_3.png" alt="record_mortgager_image_3">
+    <img src="/images/m_mortgager_3.png" alt="record_mortgager_image_3">
   </div>
   <h3>Sample Image Four</h3>
   <div class="modal-field-guide" >
-    <img src="/images/street_mortgager_4.png" alt="record_mortgager_image_3">
+    <img src="/images/m_mortgager_4.png" alt="record_mortgager_image_3">
   </div>
   <h3>Naming Variants</h3>
   <div>

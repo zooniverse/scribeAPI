@@ -3,18 +3,18 @@
 <div id="accordion-help-modal">
   <h3>Sample Image One</h3>
   <div class="modal-field-guide" >
-    <img src="/images/record_value_1.png" alt="record_value_image_1">
+    <img src="/images/m_value_1.png" alt="record_value_image_1">
   </div>
   <h3>Sample Image Two</h3>
   <div class="modal-field-guide" >
-    <img src="/images/record_value_2.png" alt="record_value_image_2">
+    <img src="/images/m_value_2.png" alt="record_value_image_2">
   </div>
   <h3>Sample Image Three</h3>
   <div class="modal-field-guide" >
-    <img src="/images/record_value_4.png" alt="record_value_image_4">
+    <img src="/images/m_value_4.png" alt="record_value_image_4">
   </div>
   <h3>Sample Image Four</h3>
   <div class="modal-field-guide" >
-    <img src="/images/record_value_4.png" alt="record_value_image_4">
+    <img src="/images/m_value_4.png" alt="record_value_image_4">
   </div>
 </div>
