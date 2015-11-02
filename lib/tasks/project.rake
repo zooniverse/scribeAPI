@@ -384,7 +384,7 @@ namespace :project do
 
 
   def translate_pick_one_tool_config(task_hash)
-    config = task_hash[:tool_config]
+    config = task_hash[:tool_config] || {}
 
     # In Pick-one-mark-one and compositeTool, rename 'tools' to 'options'
     if ['pickOneMarkOne', 'compositeTool'].include? task_hash[:tool]
