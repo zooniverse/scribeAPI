@@ -38,9 +38,14 @@ Footer = React.createClass
           {
             if @props.menus? && @props.menus.footer?
               for item, i in @props.menus.footer
-                <div className="scribe-footer-category custom-footer-link">
-                  <a href={item.url}>{item.label}</a>
-                </div>
+                if item.url?
+                  <div className="scribe-footer-category custom-footer-link">
+                    <a href={item.url}>{item.label}</a>
+                  </div>
+                else
+                  <div className="scribe-footer-category custom-footer-link">
+                    {item.label}
+                  </div>
             else
               <div>
                 <div className="scribe-footer-category">
