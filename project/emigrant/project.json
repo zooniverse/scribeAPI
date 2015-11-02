@@ -46,5 +46,21 @@
   "forum": {
     "type": "discourse",
     "base_url": "http://scribe-forum.nypl-labs.biz"
+  },
+
+  "menus": {
+    "main": [
+      {"label": "Intro", "page": "intro"},
+      {"label": "Data", "page": "data"},
+      {"label": "About", "page": "about"}
+    ],
+    "footer": [
+      {"label": "Privacy Policy", "url": "http://www.nypl.org/help/about-nypl/legal-notices/privacy-policy"},
+      {"label": "Rules and Regulations", "url": "http://www.nypl.org/help/about-nypl/legal-notices/rules-and-regulations"},
+      {"label": "Policy on Patron-Generated Web Content", "url": "http://www.nypl.org/policy-patron-generated-web-content"},
+      {"label": "Terms and Conditions", "url": "http://www.nypl.org/help/about-nypl/legal-notices/website-terms-and-conditions"},
+      {"label": "Source & Bugs", "url": "https://github.com/zooniverse/ScribeAPI"},
+      {"label": "© The New York Public Library, Astor, Lennox, and Tilden Foundation 2013-2015"}
+    ]
   }
 }

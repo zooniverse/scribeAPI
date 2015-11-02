@@ -16,7 +16,7 @@ Footer = React.createClass
       </a>
 
       <div className="scribe-footer-content">
-        <div className="scribe-footer-heading">This project is built using Scribe, a framework for crowdsourcing the transcription of text-based documents.</div>
+        <div className="scribe-footer-heading">This project is built using Scribe: Document transcription, crowdsourced</div>
 
         {if @state.categories?
           <div className="scribe-footer-projects">
@@ -35,13 +35,20 @@ Footer = React.createClass
         }
 
         <div className="scribe-footer-general">
-          <div className="scribe-footer-category">
-            <a href={@props.privacyPolicy}>Privacy Policy</a>
-          </div>
-
-          <div className="scribe-footer-category">
-            <a href="https://github.com/zooniverse/ScribeAPI">Source & Bugs</a>
-          </div>
+          {
+            if @props.menus? && @props.menus.footer?
+              for item, i in @props.menus.footer
+                <div className="scribe-footer-category custom-footer-link">
+                  <a href={item.url}>{item.label}</a>
+                </div>
+            else
+              <div className="scribe-footer-category half">
+                <a href={@props.privacyPolicy}>Privacy Policy</a>
+              </div>
+              <div className="scribe-footer-category half">
+                <a href="https://github.com/zooniverse/ScribeAPI">Source & Bugs</a>
+              </div>
+          }
         </div>
 
 

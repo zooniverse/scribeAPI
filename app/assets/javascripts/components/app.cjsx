@@ -74,6 +74,7 @@ App = React.createClass
           pages={project.pages}
           short_title={project.short_title}
           logo={project.logo}
+          menus={project.menus}
           user={@state.user}
           loginProviders={@state.loginProviders}
         />
@@ -82,7 +83,7 @@ App = React.createClass
           <BrowserWarning />
           <RouteHandler hash={window.location.hash} project={project} onCloseTutorial={@setTutorialComplete} user={@state.user}/>
         </div>
-        <Footer privacyPolicy={ project.privacy_policy }/>
+        <Footer privacyPolicy={ project.privacy_policy } menus={project.menus} />
       </div>
     </div>
 
