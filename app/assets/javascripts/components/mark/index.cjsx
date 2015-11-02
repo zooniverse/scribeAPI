@@ -46,6 +46,23 @@ module.exports = React.createClass # rename to Classifier
   componentWillReceiveProps: (new_props) ->
     @setState showingTutorial: @showTutorialBasedOnUser(new_props.user)
 
+    currentSubjectSet = @state.subjectSets[@state.subject_set_index]
+
+    if new_props.user?.subject_set_bookmarks[currentSubjectSet.id.toString()]?
+      page = new_props.user.subject_set_bookmarks[currentSubjectSet.id]
+      @setState subjectCurrentPage: page
+        , =>
+          console.log 'ADVANCING TO PAGE: ', page
+          console.log 'STATE = ', @state
+          @forceUpdate()
+
+    else
+      console.log 'NO BOOKMARKS ON THIS PAGE!'
+
+      # window.foo = new_props.user.subject_set_bookmarks
+      # window.bar = subject_set_id
+      # window.subject_set = @state.subjectSets[@state.subject_set_index]
+      #
   showTutorialBasedOnUser: (user) ->
     # Show tutorial by default
     show = true

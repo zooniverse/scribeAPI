@@ -15,8 +15,4 @@ class UsersController < ApplicationController
     render json: AuthStateSerializer.new(user: current_or_guest_user, providers: User.auth_providers), status: 200
   end
 
-  def set_subject_bookmark
-    puts 'users_controller#set_subject_bookmark'
-  end
-
 end

@@ -19,7 +19,8 @@ class Classification
   after_create  :increment_subject_classification_count #, :check_for_retirement_by_classification_count
   after_create  :generate_new_subjects
   after_create  :generate_terms
-  after_create  :place_bookmark
+  after_create  :place_bookmark # save subject_set id and page number to user model
+
   # removing this after create until we have a use case for the information
   # after_create  :increment_subject_set_classification_count,
 
