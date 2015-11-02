@@ -83,7 +83,7 @@ App = React.createClass
           <BrowserWarning />
           <RouteHandler hash={window.location.hash} project={project} onCloseTutorial={@setTutorialComplete} user={@state.user}/>
         </div>
-        <Footer privacyPolicy={ project.privacy_policy } menus={project.menus} />
+        <Footer privacyPolicy={ project.privacy_policy } menus={project.menus} partials={project.partials} />
       </div>
     </div>
 

@@ -42,11 +42,13 @@ Footer = React.createClass
                   <a href={item.url}>{item.label}</a>
                 </div>
             else
-              <div className="scribe-footer-category half">
-                <a href={@props.privacyPolicy}>Privacy Policy</a>
-              </div>
-              <div className="scribe-footer-category half">
-                <a href="https://github.com/zooniverse/ScribeAPI">Source & Bugs</a>
+              <div>
+                <div className="scribe-footer-category">
+                  <a href={@props.privacyPolicy}>Privacy Policy</a>
+                </div>
+                <div className="scribe-footer-category">
+                  <a href="https://github.com/zooniverse/ScribeAPI">Source & Bugs</a>
+                </div>
               </div>
           }
         </div>
@@ -54,15 +56,10 @@ Footer = React.createClass
 
       </div>
 
-      <div className="scribe-footer-credits">
-        <div>
-          <p>A collaboration between
-            <a href="http://www.nypl.org/collections/labs"><img src="/assets/nypllabs_logo.png" className="inline" alt="New York Public Library Labs" title="New York Public Library Labs" /></a>
-            and <a href="https://www.zooniverse.org/"><img src="/assets/zooniverse_logo.png" className="inline" alt="Zooniverse" title="Zooniverse" /></a>
-            with generous support from:</p>
-          <p><a href="http://www.neh.gov/"><img src="/assets/neh_logo.png" alt="National Endowment for the Humanities" title="National Endowment for the Humanities" /></a></p>
-        </div>
-      </div>
+      {
+        if @props.partials? && @props.partials["footer"]?
+          <div className="custom-footer" dangerouslySetInnerHTML={{__html: marked(@props.partials["footer"])}} />
+      }
 
     </div>
 

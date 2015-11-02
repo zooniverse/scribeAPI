@@ -17,6 +17,7 @@ class Project
   field  :developers,        type: Array,  default: []
   field  :pages,             type: Array,  default: []
   field  :menus,             type: Hash,   default: {}
+  field  :partials,          type: Hash,   default: {}
   field  :logo,              type: String
   field  :background,        type: String
   field  :favicon,           type: String
