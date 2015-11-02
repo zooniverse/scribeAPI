@@ -10,7 +10,8 @@ module.exports =
     fetchPosts: (type, id, callback) ->
       # fetchPosts: (terms, callback) ->
 
-      url = '/proxy/forum'
+      # url = '/proxy/forum'
+      url = @options.base_url
       url += '/search.json?q=' + id
       $.ajax
         url: url

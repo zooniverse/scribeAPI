@@ -45,7 +45,7 @@
 
   "forum": {
     "type": "discourse",
-    "base_url": "http://scribe-forum.nypl-labs.biz"
+    "base_url": "http://forum.emigrantcity.nypl.org"
   },
 
   "menus": {

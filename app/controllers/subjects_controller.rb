@@ -13,8 +13,13 @@ class SubjectsController < ApplicationController
     limit                 = get_int :limit, 10
     page                  = get_int :page, 1
     type                  = params[:type]
+    # `status` filter must be one of: 'active', 'any'
+    status                = ['active','any'].include?(params[:status]) ? params[:status] : 'active'
 
-    @subjects = Subject.active.page(page).per(limit)
+    @subjects = Subject.page(page).per(limit)
+
+    # Only active subjects?
+    @subjects = @subjects.active if status == 'active'
 
     # Filter by subject type (e.g. 'root')
     @subjects = @subjects.by_type(type) if type
