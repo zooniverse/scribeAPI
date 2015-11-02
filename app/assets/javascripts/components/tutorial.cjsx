@@ -29,7 +29,6 @@ module.exports = React.createClass
     @animateClose()
     @props.onCloseTutorial()
 
-
   animateClose: ->
     $modal = $(@refs.tutorialModal.getDOMNode())
     $clone = $modal.clone()
@@ -51,6 +50,15 @@ module.exports = React.createClass
         }, 500, ->
           $clone.remove()
 
+  onClickStep: (index) ->
+    taskKeys = Object.keys(@props.tutorial.tasks)
+    taskKey = taskKeys[index]
+    task = @props.tutorial.tasks[taskKey]
+    @setState
+      currentTask: taskKey
+      nextTask: task.next_task
+      completedSteps: index
+
   render:->
     helpContent = @props.tutorial.tasks[@state.currentTask].help
     taskKeys = Object.keys(@props.tutorial.tasks)
@@ -60,6 +68,10 @@ module.exports = React.createClass
     else
       doneButtonLabel = "Done"
 
-    <DraggableModal ref="tutorialModal" header={helpContent.title ? 'Help'} doneButtonLabel={doneButtonLabel} onDone={@advanceToNextTask} width={800} classes="help-modal" currentStepIndex={@state.completedSteps} closeButton=true onClose={@onClose} >
+    progressSteps = []
+    for key, step of @props.tutorial.tasks
+      progressSteps.push step
+
+    <DraggableModal ref="tutorialModal" header={helpContent.title ? 'Help'} doneButtonLabel={doneButtonLabel} onDone={@advanceToNextTask} width={800} classes="help-modal" currentStepIndex={@state.completedSteps} closeButton=true onClose={@onClose} progressSteps={progressSteps} onClickStep={@onClickStep} >
       <div dangerouslySetInnerHTML={{__html: marked( helpContent.body ) }} />
     </DraggableModal>
