@@ -50,12 +50,10 @@ module.exports = React.createClass # rename to Classifier
 
     if new_props.user?.subject_set_bookmarks[currentSubjectSet.id.toString()]?
       page = new_props.user.subject_set_bookmarks[currentSubjectSet.id]
-      @setState subjectCurrentPage: page
+      @setState subject_index: page
         , =>
           console.log 'ADVANCING TO PAGE: ', page
           console.log 'STATE = ', @state
-          @forceUpdate()
-
     else
       console.log 'NO BOOKMARKS ON THIS PAGE!'
 
