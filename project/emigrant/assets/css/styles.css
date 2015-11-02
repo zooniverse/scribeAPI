@@ -382,7 +382,8 @@ div.home-page {
   float: none;
 }
 #accordion-help-modal ul,
-#accordion-help-modal li {
+#accordion-help-modal li,
+#accordion-help-modal p {
   width: 100%;
   float: none;
 }

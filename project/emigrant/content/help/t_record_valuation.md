@@ -4,37 +4,29 @@
   <h3>Sample One</h3>
   <div class="modal-field-guide" >
     <img src="/images/record_value_1.png" alt="record_value_image_1">
-  </div>
-  <div>
-  <p>Land: 20,000</p>
-  <p>Building: 20,000</p>
-  <p>Total: 40,000</p>
+    <p>Land: <em>20,000</em><br />
+       Building: <em>20,000</em><br />
+       Total: <em>40,000</em></p>
   </div>
   <h3>Sample Two</h3>
   <div class="modal-field-guide" >
     <img src="/images/record_value_2.png" alt="record_value_image_2">
-  </div>
-  <div>
-  <p>Land: 9000</p>
-  <p>Building: 11000</p>
-  <p>Total: ---</p>
+    <p>Land: <em>9000</em><br />
+       Building: <em>11000</em><br />
+       Total: <em>---</em></p>
   </div>
   <h3>Sample Three</h3>
   <div class="modal-field-guide" >
     <img src="/images/record_value_4.png" alt="record_value_image_4">
-  </div>
-  <div>
-  <p>Land: 12000</p>
-  <p>Building: 5000</p>
-  <p>Total: ---</p>
+    <p>Land: <em>12000</em><br />
+       Building: <em>5000</em><br />
+       Total: <em>---</em></p>
   </div>
   <h3>Sample Four</h3>
   <div class="modal-field-guide" >
     <img src="/images/record_value_4.png" alt="record_value_image_4">
-  </div>
-  <div>
-  <p>Land: ---</p>
-  <p>Building: ---</p>
-  <p>Total: 19000</p>
+    <p>Land: <em>---</em><br />
+       Building: <em>---</em><br />
+       Total: <em>19000</em></p>
   </div>
 </div>
