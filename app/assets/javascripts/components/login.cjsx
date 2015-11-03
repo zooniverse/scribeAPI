@@ -12,7 +12,6 @@ Login = React.createClass
     loginProviders: []
 
   render:->
-    console.log 'USER = ', @props.user
     <div className='login'>
       {@renderLoggedIn() if @props.user?.name? && ! @props.user.guest }
       {@renderLoggedInAsGuest() if @props.user && @props.user.guest }

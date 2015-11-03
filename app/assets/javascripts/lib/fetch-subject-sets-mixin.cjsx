@@ -4,8 +4,17 @@ module.exports =
 
   fetchGroups: ->
     API.type("groups").get(project_id: @props.project.id).then (groups)=>
+
+      # set page to current bookmark, if exists
+      if @props.user?.subject_set_bookmarks[@getCurrentSubjectSet().id]?
+        page = @props.user.subject_set_bookmarks[@getCurrentSubjectSet().id]
+
       group.showButtons = false for group in groups  # hide buttons by default
-      @setState groups: groups
+      @setState
+        groups: groups
+        subject_index: page-1 || 0
+          , =>
+            console.log 'SKIPPING TO PAGE: ', @state.subject_index + 1
 
   fetchSubjectSetsBasedOnProps: ->
 
@@ -36,8 +45,6 @@ module.exports =
       params =
         group_id:                 @props.query.group_id ? null
       @fetchSubjectSets params, postFetchCallback
-
-
 
   # this method fetches the next page of subjects in a given subject_set.
   # right now the trigger for this method is the forward or back button in the light-box

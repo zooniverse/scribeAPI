@@ -107,7 +107,7 @@ module.exports =
           @forceUpdate()
           window.classifications = @state.classifications # make accessible to console
           callback() if callback?
-    
+
     @commitClassification(classification)
 
   toggleBadSubject: (e, callback) ->
