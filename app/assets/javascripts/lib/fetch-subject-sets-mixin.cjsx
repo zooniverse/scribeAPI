@@ -6,7 +6,7 @@ module.exports =
     API.type("groups").get(project_id: @props.project.id).then (groups)=>
 
       # set page to current bookmark, if exists
-      if @props.user?.subject_set_bookmarks[@getCurrentSubjectSet().id]?
+      if @props.user?.subject_set_bookmarks[@getCurrentSubjectSet()?.id]?
         page = @props.user.subject_set_bookmarks[@getCurrentSubjectSet().id]
 
       group.showButtons = false for group in groups  # hide buttons by default
