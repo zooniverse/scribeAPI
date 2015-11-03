@@ -98,12 +98,14 @@ class User
   # Called after_create, assigns role=admin if email matches admin_email in project.json
   # Assigns role=team if email is in team_emails
   def apply_configured_user_role
+    return if (project = Project.current).nil? 
+
     # Make admin?
-    if email == Project.current.admin_email
+    if email == project.admin_email
       update_attribute :role, 'admin'
 
     # Make the team?
-    elsif Project.current.team_emails.include? email
+    elsif project.team_emails.include? email
       update_attribute :role, 'team'
     end
   end

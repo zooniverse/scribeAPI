@@ -2,12 +2,15 @@
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
-require 'email_spec'
-require 'rspec/autorun'
+# require 'email_spec'
+# require 'rspec/autorun'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
+
+require 'factory_girl'
+FactoryGirl.find_definitions
 
 RSpec.configure do |config|
   config.include(EmailSpec::Helpers)
@@ -38,7 +41,10 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = "random"
-  
+
+  # Required to specify orm explicitly per https://github.com/DatabaseCleaner/database_cleaner
+  DatabaseCleaner[:mongoid].strategy = :truncation
+
   config.before(:suite) do
     DatabaseCleaner.strategy = :truncation
   end
@@ -47,5 +53,17 @@ RSpec.configure do |config|
   end
   config.after(:each) do
     DatabaseCleaner.clean
+  end
+
+  config.include Mongoid::Matchers, type: :model
+
+  config.include FactoryGirl::Syntax::Methods
+  config.before(:suite) do
+    begin
+      DatabaseCleaner.start
+      FactoryGirl.lint
+    ensure
+      DatabaseCleaner.clean
+    end
   end
 end

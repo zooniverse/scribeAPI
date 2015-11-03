@@ -55,13 +55,13 @@ group :assets do
 end
 
 group :test do
-  gem 'capybara'
-  gem 'cucumber-rails', :require=>false
+  # gem 'capybara'
+  # gem 'cucumber-rails', :require=>false
   gem 'database_cleaner', '1.0.1'
   gem 'rspec-rails', '~> 3.0'
-  gem 'shoulda-matchers'
+  # gem 'shoulda-matchers'
   gem 'email_spec'
-  gem 'launchy'
+  # gem 'launchy'
   gem 'factory_girl'
-  gem 'mongoid-rspec', '>= 1.6.0', :github=>"mongoid-rspec/mongoid-rspec"
+  gem 'mongoid-rspec', '~> 2.1.0'
 end
