@@ -16,7 +16,7 @@ Footer = React.createClass
       </a>
 
       <div className="scribe-footer-content">
-        <div className="scribe-footer-heading">This project is built using Scribe: Document transcription, crowdsourced</div>
+        <div className="scribe-footer-heading">This project is built using Scribe: document transcription, crowdsourced.</div>
 
         {if @state.categories?
           <div className="scribe-footer-projects">
