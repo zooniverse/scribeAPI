@@ -3,7 +3,7 @@ class Workflow
 
   field    :name,                                            type: String
   #TODO: can we delete :key field? --AMS
-  field    :key, 				                                     type: String
+  # field    :key, 				                                     type: String
   field    :label,                                           type: String
   field    :first_task,                                      type: String
   field    :retire_limit,                                    type: Integer,   default: 3

@@ -58,7 +58,6 @@ class Project
   end
 
   def self.current
-    puts "getting current"
     active.first
   end
 
