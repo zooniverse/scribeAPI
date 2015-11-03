@@ -28,16 +28,13 @@
       "instruction": "Enter the record number",
       "examples": ["287", "289"],
       "help": {
-        "file": "t_record_date"
+        "file": "t_record_number"
       },
       "generates_subject_type": "em_transcribed_record_number"
     },
 
     "em_record_mortgager": {
       "tool": "textTool",
-      "tool_config": {
-        "suggest": "common"
-      },
       "instruction": "Enter the mortgager's name",
       "examples": ["John O'Meallia", "Trustees of St. Patrick's Cathedral"],
       "generates_subject_type": "em_transcribed_mortgager",
@@ -140,7 +137,7 @@
         "file": "t_survey"
       },
       "generates_subject_type": "em_transcribed_survey",
-      "instruction": "Enter as they appear, the building dimensions and description that was recorded.",
+      "instruction": "Enter, as they appear, any land and building dimensions that were recorded.",
       "next_task": "em_record_survey_stories_materials"
     },
 
@@ -156,7 +153,7 @@
           "em_record_material": {
             "tool": "textTool",
             "label": "Enter the building material",
-            "examples": ["brick", "Brick & stone", "Frame Edifice with Slate roof and brick basement."]
+            "examples": ["Br", "Brick & stone", "Frame Edifice with Slate roof and brick basement."]
           }
         }
       },
@@ -165,7 +162,7 @@
         "file": "t_record_survey_stories_materials"
       },
       "generates_subject_type": "em_transcribed_stories_materials",
-      "instruction": "Enter as they appear, the number of stories and the building materials.",
+      "instruction": "Enter, as they appear, the number of stories and the building materials.",
       "next_task": "em_record_survey_additional_info"
     },
 

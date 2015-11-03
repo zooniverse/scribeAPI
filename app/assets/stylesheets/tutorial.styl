@@ -9,17 +9,18 @@
   background-color: transparent;
   border: solid 1px #8CBC98;
   display: inline-block
-  height: 5px;
-  width: 5px;
-  margin: 3px;
+  height: 10px;
+  width: 10px;
+  margin: 0 5px;
   vertically-align: middle
+  cursor: pointer
 
-.tutorial-progress-ind-active
+.tutorial-progress-ind.active,
+.tutorial-progress-ind.completed
   background-color: #8CBC98;
   border: solid 1px #8CBC98;
-  display: inline-block
-  height: 5px;
-  width: 5px;
-  margin: 3px;
-  vertically-align: middle
+  cursor: default
 
+.tutorial-progress-ind.completed
+  opacity: 0.6
+  cursor: pointer

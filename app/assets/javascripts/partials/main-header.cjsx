@@ -33,10 +33,20 @@ module.exports = React.createClass
             title = workflow.name.charAt(0).toUpperCase() + workflow.name.slice(1)
             <Link key={key} to="/#{workflow.name}" activeClassName="selected" className="main-header-item">{title}</Link>
         }
-        { # Page tabs:
-          @props.pages?.map (page, key) =>
-            formatted_name = page.name.replace("_", " ")
-            <Link key={key} to="/#{page.name.toLowerCase()}" activeClassName="selected" className="main-header-item">{formatted_name}</Link>
+        { # Page tabs, check for main menu
+          if @props.menus? && @props.menus.main?
+            for item, i in @props.menus.main
+              if item.page?
+                <Link key={item.page} to="/#{item.page}" activeClassName="selected" className="main-header-item">{item.label}</Link>
+              else if item.url?
+                <a href="#{item.url}" className="main-header-item">{item.label}</a>
+              else
+                <a className="main-header-item">{item.label}</a>
+          # Otherwise, just list all the pages in default order
+          else
+            @props.pages?.map (page, key) =>
+              formatted_name = page.name.replace("_", " ")
+              <Link key={key} to="/#{page.name.toLowerCase()}" activeClassName="selected" className="main-header-item">{formatted_name}</Link>
         }
 
         { # include feedback tab if defined
@@ -52,7 +62,7 @@ module.exports = React.createClass
           if @props.discussUrl?
             <a target={"_blank"} className="main-header-item" href={@props.discussUrl}>Discuss</a>
         }
-        <Login user={@props.user} loginProviders={@props.loginProviders} />
+        <Login user={@props.user} loginProviders={@props.loginProviders} onLogout={@props.onLogout} />
 
       </nav>
 

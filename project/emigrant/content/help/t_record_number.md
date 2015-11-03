@@ -1,3 +1,14 @@
 # Record Number
-
-The record number can generally be found in the upper right hand corner of the record.
+<p></p>
+<div id="accordion-help-modal">
+  <h3>Sample One</h3>
+  <div class="modal-field-guide" >
+    <img src="/images/t_number_1.png" alt="record_number_image_1">
+  <p>Enter: <em>1566</em></p>
+  </div>
+  <h3>Sample Two</h3>
+  <div class="modal-field-guide" >
+    <img src="/images/t_number_2.png" alt="record_number_image_2">
+  <p>Enter: <em>3758</em></p>
+  </div>
+</div>

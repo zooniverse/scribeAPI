@@ -16,7 +16,7 @@ Footer = React.createClass
       </a>
 
       <div className="scribe-footer-content">
-        <div className="scribe-footer-heading">This project is built using Scribe, a framework for crowdsourcing the transcription of text-based documents.</div>
+        <div className="scribe-footer-heading">This project is built using Scribe: document transcription, crowdsourced.</div>
 
         {if @state.categories?
           <div className="scribe-footer-projects">
@@ -35,27 +35,36 @@ Footer = React.createClass
         }
 
         <div className="scribe-footer-general">
-          <div className="scribe-footer-category">
-            <a href={@props.privacyPolicy}>Privacy Policy</a>
-          </div>
-
-          <div className="scribe-footer-category">
-            <a href="https://github.com/zooniverse/ScribeAPI">Source & Bugs</a>
-          </div>
+          {
+            if @props.menus? && @props.menus.footer?
+              for item, i in @props.menus.footer
+                if item.url?
+                  <div className="scribe-footer-category custom-footer-link">
+                    <a href={item.url}>{item.label}</a>
+                  </div>
+                else
+                  <div className="scribe-footer-category custom-footer-link">
+                    {item.label}
+                  </div>
+            else
+              <div>
+                <div className="scribe-footer-category">
+                  <a href={@props.privacyPolicy}>Privacy Policy</a>
+                </div>
+                <div className="scribe-footer-category">
+                  <a href="https://github.com/zooniverse/ScribeAPI">Source & Bugs</a>
+                </div>
+              </div>
+          }
         </div>
 
 
       </div>
 
-      <div className="scribe-footer-credits">
-        <div>
-          <p>A collaboration between
-            <a href="http://www.nypl.org/collections/labs"><img src="/assets/nypllabs_logo.png" className="inline" alt="New York Public Library Labs" title="New York Public Library Labs" /></a>
-            and <a href="https://www.zooniverse.org/"><img src="/assets/zooniverse_logo.png" className="inline" alt="Zooniverse" title="Zooniverse" /></a>
-            with generous support from:</p>
-          <p><a href="http://www.neh.gov/"><img src="/assets/neh_logo.png" alt="National Endowment for the Humanities" title="National Endowment for the Humanities" /></a></p>
-        </div>
-      </div>
+      {
+        if @props.partials? && @props.partials["footer"]?
+          <div className="custom-footer" dangerouslySetInnerHTML={{__html: marked(@props.partials["footer"])}} />
+      }
 
     </div>
 

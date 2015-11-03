@@ -382,7 +382,8 @@ div.home-page {
   float: none;
 }
 #accordion-help-modal ul,
-#accordion-help-modal li {
+#accordion-help-modal li,
+#accordion-help-modal p {
   width: 100%;
   float: none;
 }
@@ -437,4 +438,8 @@ div.home-page {
     float: none;
     margin: 1em;
   }
+}
+
+.scribe-footer .scribe-footer-general {
+  padding-bottom: 10px;
 }

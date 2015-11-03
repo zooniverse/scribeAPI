@@ -16,6 +16,8 @@ class Project
   field  :scientists,        type: Array,  default: []
   field  :developers,        type: Array,  default: []
   field  :pages,             type: Array,  default: []
+  field  :menus,             type: Hash,   default: {}
+  field  :partials,          type: Hash,   default: {}
   field  :logo,              type: String
   field  :background,        type: String
   field  :favicon,           type: String
@@ -35,8 +37,8 @@ class Project
   field :analytics,          type: Hash
 
   # 10.27.15 until we can sort out a better time to call this method, lets comment it out.
-  # include CachedStats
-  # update_interval 180
+  include CachedStats
+  update_interval 180
 
   has_many :groups, dependent: :destroy
   has_many :subject_sets

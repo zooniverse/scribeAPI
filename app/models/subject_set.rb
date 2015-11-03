@@ -12,8 +12,6 @@ class SubjectSet
   field :thumbnail,              type: String
   field :meta_data,              type: Hash
   field :counts,                 type: Hash
-  # Just for admin filtering
-  # field :classification_count,   type: Integer, default: 0 #until we have a use case, let us not record this info
 
   field :complete_secondary_subject_count,    type: Integer, default: 0
   field :active_secondary_subject_count,      type: Integer, default: 0
@@ -22,8 +20,7 @@ class SubjectSet
   belongs_to :project
   has_many :subjects, dependent: :destroy, :order => [:order, :asc]
 
-  # AMS: should a subject_set belong to a workflow, or do we get that throught the subject?
-  # I think this is being used in the rake load_group_subjects around line133
+
   def activate!
     state = "active"
     workflows.each{|workflow| workflow.inc(:active_subjects => 1 )}
@@ -73,7 +70,6 @@ class SubjectSet
     self.inc("counts.#{workflow.id.to_s}.active_subjects" => -1)
   end
 
-  # AMS: what is this for?
   def active_subjects_for_workflow(workflow)
     subject.active.for_workflow(workflow)
   end
