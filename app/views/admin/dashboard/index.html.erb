@@ -2,6 +2,7 @@
 <div class="dashboard">
   
   <div class="row">
+    <%= link_to '#', onclick: "window.stats.recalculateStats();", class: 'recalculate-stats' do %>Recalculate Stats<% end %>
     
     <div class="classifications category">
       <h3 class="title">Classifications</h3>

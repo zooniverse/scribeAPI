@@ -3,7 +3,10 @@ module CachedStats
 
   included do
     field :stats, type: Hash, default: {}
-    set_callback :find, :after, :check_and_update_stats
+    # PB: Detaching this callback because it really complicates performance 
+    #   measures and punishes random users needlessly. Going forward let's
+    #   require code to explicitly call `project.check_and_update_stats`
+    # set_callback :find, :after, :check_and_update_stats
     class_attribute :interval
   end
 

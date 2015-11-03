@@ -35,9 +35,6 @@
 
     "em_record_mortgager": {
       "tool": "textTool",
-      "tool_config": {
-        "suggest": "common"
-      },
       "instruction": "Enter the mortgager's name",
       "examples": ["John O'Meallia", "Trustees of St. Patrick's Cathedral"],
       "generates_subject_type": "em_transcribed_mortgager",
@@ -154,7 +151,6 @@
           "em_survey_dimensions": {
             "tool": "textTool",
             "examples": ["100 x 100"],
-            "tool_config": {"suggest": "common"},
             "label": "Record Dimensions"
           },
           "em_survey_description": {

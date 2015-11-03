@@ -77,6 +77,7 @@ App = React.createClass
           menus={project.menus}
           user={@state.user}
           loginProviders={@state.loginProviders}
+          onLogout={() => @setState user: null}
         />
 
         <div className="main-content">
