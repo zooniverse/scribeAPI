@@ -1,6 +1,6 @@
 # Building Stories & Material
 ## Number of Stories
-Some records contain a field for a hand-written annotation of the number of stories in a building and/or the building material. Enter the number of stories as it appears, e.g. "3" or "4." Enter the building material as appears, e.g. "brick," "frame," "Brick & stone," "bk and frame."
+Some records contain a field for a hand-written annotation of the number of stories in a building and/or the building material. Enter the number of stories as it appears, e.g., "3" or "4." Enter the building material as appears, e.g., "brick," "frame," "Brick & stone," "bk and frame."
 ## Sample Transcriptions  
 <div id="accordion-help-modal">
   <h3>Sample One</h3>
