@@ -19,6 +19,6 @@
   <h3>Sample Four</h3>
   <div class="modal-field-guide" >
     <img src="/images/t_loan_4.png" alt="record_loan_4">
-  <p>Enter: <em>1500</em></p>
+  <p>Enter: <em>15000</em></p>
   </div>
 </div>

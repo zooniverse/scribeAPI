@@ -17,10 +17,10 @@
   </div>
   <h3>Sample Three</h3>
   <div class="modal-field-guide" >
-    <img src="/images/t_value_4.png" alt="record_value_image_4">
-    <p>Land: <em>12000</em><br />
-       Building: <em>5000</em><br />
-       Total: <em>---</em></p>
+    <img src="/images/t_value_3.png" alt="record_value_image_4">
+    <p>Land: <em>14000</em><br />
+       Building: <em>4000</em><br />
+       Total: <em>18000</em></p>
   </div>
   <h3>Sample Four</h3>
   <div class="modal-field-guide" >

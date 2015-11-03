@@ -15,7 +15,7 @@
   </div>
   <h3>Sample Image Four</h3>
   <div class="modal-field-guide" >
-    <img src="/images/m_address_3.png" alt="record_street_address_image_4">
+    <img src="/images/m_address_4.png" alt="record_street_address_image_4">
   </div>
   <h3>Naming Variants</h3>
   <div>
