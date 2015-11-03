@@ -439,3 +439,7 @@ div.home-page {
     margin: 1em;
   }
 }
+
+.scribe-footer .scribe-footer-general {
+  padding-bottom: 10px;
+}

@@ -136,7 +136,9 @@ namespace :project do
       team: [],
       organizations: [],
       analytics: nil,
-      forum: nil
+      forum: nil,
+      menus: {},
+      partials: {}
     }
     # Set all valid fields from hash:
     project_hash = project_hash.inject(project_defaults) { |h, (k,v)| h[k] = v if Project.fields.keys.include?(k.to_s); h }
@@ -188,6 +190,23 @@ namespace :project do
           updated_at: updated_at,
           group_browser: group_browser
         }
+      end
+    end
+
+    # load partial content if exists
+    project.partials = {}
+    partials_path = Rails.root.join('project', project_key, 'content', 'partials')
+    if File.directory? partials_path
+      Dir.foreach(partials_path).each do |file|
+        path = Rails.root.join partials_path, file
+        next if File.directory? path
+        next if ! ['.html','.erb','.md'].include? path.extname
+
+        key = file.split('.').first
+        content = File.read path
+        puts "  Loading partial: \"#{key}\" (#{content.size}b)"
+
+        project.partials[key] = content
       end
     end
 
