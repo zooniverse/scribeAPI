@@ -68,7 +68,7 @@
     "em_record_valuation": {
       "tool": "textTool",
       "tool_config": {},
-      "instruction": "Enter the date of the valuation (if one is given)",
+      "instruction": "Enter the date of the valuation (if one is given). In the next screen, you'll enter the valuation's dollar amounts.",
       "examples": ["1879 November"],
       "help": {
         "file": "t_record_valuation"
@@ -100,7 +100,7 @@
         "file": "t_record_valuation"
       },
       "generates_subject_type": "em_transcribed_valuation_itemized",
-      "instruction": "Sometimes valuations include itemized dollar values for \"ground\" and \"building\". Enter these amounts if you can find them.",
+      "instruction": "Sometimes valuations include itemized dollar values for \"ground\" and \"building\". Enter these amounts if you can find them. In the next screen, you'll enter the total valuation.",
       "next_task": "em_record_valuation_total"
     },
 
@@ -137,7 +137,7 @@
         "file": "t_survey"
       },
       "generates_subject_type": "em_transcribed_survey",
-      "instruction": "Enter, as they appear, any land and building dimensions that were recorded.",
+      "instruction": "Enter, as they appear, any land and building dimensions that were recorded. In the next screen, you'll enter the descriptive information.",
       "next_task": "em_record_survey_stories_materials"
     },
 

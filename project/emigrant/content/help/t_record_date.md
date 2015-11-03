@@ -9,7 +9,7 @@
   <h3>Sample Two</h3>
   <div class="modal-field-guide" >
     <img src="/images/t_date_2.png" alt="record_date_image_2">
-    <p>Enter: <em>Sept 21/91</em></p>
+    <p>Enter: <em>Sept. 21/91</em></p>
   </div>
   <h3>Sample Three</h3>
   <div class="modal-field-guide" >

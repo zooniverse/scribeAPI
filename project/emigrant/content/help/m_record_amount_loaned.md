@@ -20,7 +20,6 @@
   <h3>Naming Variants</h3>
   <div>
     <ul>
-    <ul>
       <li>Amount Loaned</li>
       <li>Approved by the Finance Committee for $_____</li>
       <li>Approved by the Executive Committee for $_____</li>

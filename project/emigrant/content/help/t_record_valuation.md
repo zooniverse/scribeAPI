@@ -1,5 +1,5 @@
 # Valuation  
-<p>Some records include valuations comprised of an assessment date and dollar values. Valuations can be of the land, the building, the total, or a combination of the three.</p>
+<p>Some records include valuations comprised of an assessment date and dollar values. Valuations can be of the land, the building, the total, or a combination of the three. In the next few windows, you'll have the opportunity to transcribe the date, valuation total, and valuations of building and land.</p>
 <div id="accordion-help-modal">
   <h3>Sample One</h3>
   <div class="modal-field-guide" >
