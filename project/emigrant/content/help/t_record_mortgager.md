@@ -1,6 +1,6 @@
 # Mortgager Name
 
-<p>The mortgager tends to be a single person or organization's name. If multiple names are provided, enter them all separated by semi-colons. (E.g. "Mary Smith;John O'Meallia")</p>
+<p>The mortgager tends to be a single person or organization's name. If multiple names are provided, enter them all separated by semi-colons. (E.g. "Mary Smith; John O'Meallia")</p>
 <div id="accordion-help-modal">
   <h3>Sample One</h3>
   <div class="modal-field-guide" >

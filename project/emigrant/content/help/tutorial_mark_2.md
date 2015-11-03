@@ -1,9 +1,5 @@
-# Making Your Mark
+# Fields
 
-To mark a field, click and drag the mark around the desired area. Once you have the mark around the area you want it, select the "Done" check-box. Once you've clicked on "Done," your mark is saved. You can close your browser window or move on to a new task and all your work will be saved.  
+Use the menu on the right to select a field (e.g. "Record Date"). Then, use your mouse to draw a box on the image around each place that the field appears. As an aid, the fields and their corresponding marks are color coded.
 
-If you'd like to remove one of your marks, click on it and then on the red delete button in the upper-right corner of the mark.  
-
-<div class="video-wrapper">
-  <video width="445" height="138.7" loop autoplay src="/images/mark_task.mp4"></video>
-</div>
+For additional, field specific guidance select the question marks next to each field label.

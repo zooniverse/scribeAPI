@@ -1,5 +1,5 @@
 # Valuation  
-<p>Some records include valuations comprised of an assessment date and dollar values. Valuations can be of the land, the building, the total, or a combination of the three. Draw one box around all the valuations.</p>
+<p>Some records include valuations comprised of an assessment date and dollar values. Valuations can be of the land, the building, the total, or a combination of the three. Draw one box around all the valuations. Be sure to include the valuation date, one appears.</p>
 <div id="accordion-help-modal">
   <h3>Sample Image One</h3>
   <div class="modal-field-guide" >
