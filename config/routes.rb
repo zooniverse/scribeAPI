@@ -37,10 +37,11 @@ API::Application.routes.draw do
 
   namespace :admin do
     resources :subject_sets, :subjects, :classifications, :users
-    # get 'dashboard' => 'dashboard#index'
+    get 'dashboard' => 'dashboard#index'
     get 'data' => 'data#index'
     get 'data/download' => 'data#download'
     get 'signin' => 'auth#signin'
+    post 'stats/recalculate' => 'dashboard#recalculate_stats'
   end
   get 'admin' => 'admin/dashboard#index'
   
