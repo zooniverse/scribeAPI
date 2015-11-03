@@ -1,5 +1,5 @@
 # Amount Loaned
-<p>The amount loaned is typically found at or near the bottom of the record.</p>
+<p>Enter the total amount loaned.</p>
 <div id="accordion-help-modal">
   <h3>Sample One</h3>
   <div class="modal-field-guide" >

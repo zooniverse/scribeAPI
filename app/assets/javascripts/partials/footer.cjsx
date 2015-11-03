@@ -34,29 +34,31 @@ Footer = React.createClass
           </div>
         }
 
-        <div className="scribe-footer-general">
-          {
-            if @props.menus? && @props.menus.footer?
-              for item, i in @props.menus.footer
-                if item.url?
-                  <div className="scribe-footer-category custom-footer-link">
-                    <a href={item.url}>{item.label}</a>
-                  </div>
-                else
-                  <div className="scribe-footer-category custom-footer-link">
-                    {item.label}
-                  </div>
-            else
-              <div>
-                <div className="scribe-footer-category">
-                  <a href={@props.privacyPolicy}>Privacy Policy</a>
-                </div>
-                <div className="scribe-footer-category">
-                  <a href="https://github.com/zooniverse/ScribeAPI">Source & Bugs</a>
-                </div>
+
+        {
+          if @props.menus? && @props.menus.footer?
+            if @props.menus.footer.length > 0
+              <div className="scribe-footer-general">
+                for item, i in @props.menus.footer
+                  if item.url?
+                    <div className="scribe-footer-category custom-footer-link">
+                      <a href={item.url}>{item.label}</a>
+                    </div>
+                  else
+                    <div className="scribe-footer-category custom-footer-link">
+                      {item.label}
+                    </div>
               </div>
-          }
-        </div>
+          else
+            <div className="scribe-footer-general">
+              <div className="scribe-footer-category">
+                <a href={@props.privacyPolicy}>Privacy Policy</a>
+              </div>
+              <div className="scribe-footer-category">
+                <a href="https://github.com/zooniverse/ScribeAPI">Source & Bugs</a>
+              </div>
+            </div>
+        }
 
 
       </div>

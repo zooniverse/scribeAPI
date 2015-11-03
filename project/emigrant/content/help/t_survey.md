@@ -1,5 +1,5 @@
 # Dimensions & Description
-<p>Some records include dimensions and/or descriptions of the mortgage's land and building. Include both the dimensions and the description when you draw a box. If they appear, short descriptions, number of stories, and building material should all be marked. There may be several marks per record for this page.</p>
+<p>Some records include dimensions and/or descriptions of the mortgage's land and building. Enter any dimensions you see. In the next window, you'll have the opportunity to enter additional information, like the building's description.</p>
 <div id="accordion-help-modal">
   <h3>Sample One</h3>
   <div class="modal-field-guide" >
