@@ -4,7 +4,7 @@
   <h3>Sample One</h3>
   <div class="modal-field-guide" >
     <img src="/images/t_address_1.png" alt="record_street_address_image_1">
-    <p>Enter: <em></em></p>
+    <p>Enter: <em>Rivington St. near 2nd St.</em></p>
   <p></p>
   </div>
   <h3>Sample Two</h3>

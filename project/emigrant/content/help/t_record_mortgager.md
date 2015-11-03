@@ -5,7 +5,7 @@
   <h3>Sample One</h3>
   <div class="modal-field-guide" >
     <img src="/images/t_mortgager_1.png" alt="record_mortgager_image_1">
-  <p>Enter: <em></em></p>
+  <p>Shan Hashomain Synagogue</p>
   </div>
   <h3>Sample Two</h3>
   <div class="modal-field-guide" >
