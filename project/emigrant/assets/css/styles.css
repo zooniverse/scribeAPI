@@ -443,3 +443,19 @@ div.home-page {
 .scribe-footer .scribe-footer-general {
   padding-bottom: 10px;
 }
+.emigrants-footer-links {
+  background: #111;
+  padding: 0px 0 30px;
+  text-align: center;
+  margin: 0 -20px;
+
+}
+.emigrants-footer-links > div {
+  max-width: 920px;
+  margin: 0 auto;
+  border-top: 1px solid #333;
+}
+.emigrants-footer-links a {
+  display: inline-block;
+  padding: 10px 20px;
+}
