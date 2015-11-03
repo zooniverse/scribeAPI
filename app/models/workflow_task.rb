@@ -5,6 +5,7 @@ class WorkflowTask
   field    :tool,                                    type: String
   field    :instruction,                             type: String
   field    :help,                                    type: String
+  field    :generates_subjects,                      type: Boolean, default: true
   field    :generates_subject_type,                  type: String
   field    :tool_config,                             type: Hash
   field    :next_task,                               type: String
