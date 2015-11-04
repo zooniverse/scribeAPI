@@ -4,18 +4,26 @@ RSpec.describe ClassificationsController, type: :controller do
 
   before(:each) do 
     @project = create(:basic_project)
+    create(:transcribe_workflow)
+    puts "created project: #{@project.workflows.map { |w| w.name }}", @project.workflows.find_by(name: 'transcribe').name
   end
 
   describe "POST #create" do
     it "creates a classification" do
-      vals = {
-        classifications: attributes_for(:mark_rectangle_classification)
-      }
-      vals[:meta_data] = {}
-      vals[:meta_data][:started_at] = vals.delete :started_at
-      vals[:meta_data][:finished_at] = vals.delete :finished_at
+      vals = attributes_for(:mark_rectangle_classification)
+      vals[:metadata] = {}
+      vals[:metadata][:started_at] = vals.delete :started_at
+      vals[:metadata][:finished_at] = vals.delete :finished_at
 
-      post :create, vals
+      # Not sure why the `association` call inside classification factory doesn't take care of this:
+      vals[:workflow_id] = create(:mark_workflow).id
+      vals[:subject_id] = create(:root_subject).id
+
+      vals[:task_key] = create(:mark_workflow).tasks.first.key
+
+      puts "POST: #{vals.inspect}"
+
+      post :create, classifications: vals
       expect(response).to be_success
       expect(response).to have_http_status(200)
       puts "got resp: #{response.body}"

@@ -22,9 +22,11 @@ FactoryGirl.define do
   }')
 
   factory :workflow do
+    project
 
     factory :mark_workflow do
       name 'mark'
+      generates_subjects_for 'transcribe'
 
       after(:build) do |workflow|
         mark_tasks.each do |(key,h)|

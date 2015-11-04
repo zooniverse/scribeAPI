@@ -6,8 +6,8 @@ FactoryGirl.define do
 
     factory :basic_project do
       after(:create) do |project|
-        project.workflows << create(:mark_workflow)
-        project.workflows << create(:transcribe_workflow)
+        create :mark_workflow, project: project
+        create :transcribe_workflow, project: project
       end
     end
 

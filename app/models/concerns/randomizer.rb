@@ -39,9 +39,9 @@ module Randomizer
     end
   end
 
-  def save
+  def save(*args)
     self.random_no = rand
-    super
+    super *args
   end
 
   def create
