@@ -4,6 +4,8 @@ Footer                        = require '../partials/footer'
 API                           = require '../lib/api'
 Project                       = require 'models/project.coffee'
 
+BrowserWarning                = require './browser-warning'
+
 {RouteHandler}                = require 'react-router'
 
 window.API = API
@@ -16,6 +18,7 @@ App = React.createClass
 
   componentDidMount: ->
     @fetchUser()
+
 
   fetchUser:->
     @setState
@@ -71,13 +74,17 @@ App = React.createClass
           pages={project.pages}
           short_title={project.short_title}
           logo={project.logo}
+          menus={project.menus}
           user={@state.user}
           loginProviders={@state.loginProviders}
+          onLogout={() => @setState user: null}
         />
+
         <div className="main-content">
+          <BrowserWarning />
           <RouteHandler hash={window.location.hash} project={project} onCloseTutorial={@setTutorialComplete} user={@state.user}/>
         </div>
-        <Footer privacyPolicy={ project.privacy_policy }/>
+        <Footer privacyPolicy={ project.privacy_policy } menus={project.menus} partials={project.partials} />
       </div>
     </div>
 

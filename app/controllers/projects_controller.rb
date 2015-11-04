@@ -8,7 +8,7 @@ class ProjectsController < ApplicationController
   end
 
   def stats
-    project = Project.first
+    project = Project.current
     render :json => {:project => project, :stats => project.stats}
   end
 

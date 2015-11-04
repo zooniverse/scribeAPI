@@ -224,6 +224,7 @@ module.exports = React.createClass # rename to Classifier
               toggleHideOtherMarks={@toggleHideOtherMarks}
               currentSubtool={currentSubtool}
               lightboxHelp={@toggleLightboxHelp}
+              interimMarks={@state.interimMarks}
             />
         }
       </div>

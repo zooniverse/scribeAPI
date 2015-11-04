@@ -197,11 +197,8 @@ div.home-page
     background-color: transparent
 
 #footer
-  min-height: 395px;
-  max-height: 450px;
-  height: 100%;
 
-  img
+  .scribe-logo-container img
     width: 10%
     min-width: 200px
 
@@ -216,6 +213,7 @@ div.home-page
   background-color: #192426
   color: #eae9e9
   padding: 20px
+  padding-bottom: 0
   position: relative;
   bottom: 0;
   left: 0;
@@ -233,11 +231,17 @@ div.home-page
   .scribe-footer-general
     border-top: solid #808080 1px;
     padding-top: 10px
+    padding-bottom: 40px
+    text-align: center
 
   .scribe-footer-category
-    float: left;
-    width: 50%;
-    text-align: center;
+    display: inline-block
+    width: 49%
+    text-align: center
+
+    &.custom-footer-link
+      width: auto
+      padding: 6px 20px
 
   .scribe-footer-content
     float: none
@@ -250,6 +254,26 @@ div.home-page
       margin: 0 auto 20px
       text-align: center
       font-size: 16px
+
+  .scribe-footer-credits
+    text-align: center
+    font-size: 16px
+    background: #111
+    padding: 20px 0
+    margin: 20px -20px 0
+
+    > div
+      max-width: 920px
+      margin: 0 auto
+
+    img
+      display: inline-block
+
+    img.inline
+      height: 40px
+      width: auto
+      margin: 0 10px
+      vertical-align: middle
 
 
 

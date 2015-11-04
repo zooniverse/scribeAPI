@@ -28,7 +28,6 @@
       "generates_subject_type": "consensus_record_number"
     },
 
-
     "em_transcribed_mortgager": {
       "instruction": "Choose the best transcription or enter your own!",
       "tool": "verifyTool",
@@ -56,31 +55,31 @@
       "generates_subject_type": "consensus_amount_loaned"
     },
 
-    "em_transcribed_record_stories": {
+    "em_transcribed_valuation_date": {
       "instruction": "Choose the best transcription or enter your own!",
       "tool": "verifyTool",
       "tool_config": {
         "displays_transcribe_button": true
       },
-      "generates_subject_type": "consensus_record_stories"
+      "generates_subject_type": "consensus_valuation_date"
     },
 
-    "em_transcribed_record_material": {
+    "em_transcribed_valuation_itemized": {
       "instruction": "Choose the best transcription or enter your own!",
       "tool": "verifyTool",
       "tool_config": {
         "displays_transcribe_button": true
       },
-      "generates_subject_type": "consensus_record_material"
+      "generates_subject_type": "consensus_valuation_itemized"
     },
 
-    "em_transcribed_valuation": {
+    "em_transcribed_valuation_total": {
       "instruction": "Choose the best transcription or enter your own!",
       "tool": "verifyTool",
       "tool_config": {
         "displays_transcribe_button": true
       },
-      "generates_subject_type": "consensus_valuation"
+      "generates_subject_type": "consensus_valuation_total"
     },
 
     "em_transcribed_survey": {
@@ -90,6 +89,15 @@
         "displays_transcribe_button": true
       },
       "generates_subject_type": "consensus_survey"
+    },
+
+    "em_transcribed_stories_materials": {
+      "instruction": "Choose the best transcription or enter your own!",
+      "tool": "verifyTool",
+      "tool_config": {
+        "displays_transcribe_button": true
+      },
+      "generates_subject_type": "consensus_stories_materials"
     }
   }
 }

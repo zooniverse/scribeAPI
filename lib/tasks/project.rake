@@ -48,7 +48,7 @@ namespace :project do
       load_styles project
       puts "Done loading style for \"#{project.title}\""
     end
-      
+
     # Load workflows:
     if ['all','workflows'].include? args[:area]
       begin
@@ -130,12 +130,15 @@ namespace :project do
     project_defaults = {
       background: nil,
       logo: nil,
+      favicon: nil,
       terms_map: {},
       team_emails: [],
       team: [],
       organizations: [],
       analytics: nil,
-      forum: nil
+      forum: nil,
+      menus: {},
+      partials: {}
     }
     # Set all valid fields from hash:
     project_hash = project_hash.inject(project_defaults) { |h, (k,v)| h[k] = v if Project.fields.keys.include?(k.to_s); h }
@@ -173,25 +176,48 @@ namespace :project do
           end
         end
 
+        # Check if we should include group browser content
+        group_match = /<!\-\-[\s]*require groups:[\s]*(.*)\-\->/.match(content)
+        group_browser = ''
+        if group_match && !group_match.captures.empty?
+          group_browser = group_match.captures[0]
+        end
+
         project.pages << {
           key: page_key,
           name: name,
           content: content,
-          updated_at: updated_at
+          updated_at: updated_at,
+          group_browser: group_browser
         }
       end
     end
 
-    project.tutorial = load_tutorial(project_key)
+    # load partial content if exists
+    project.partials = {}
+    partials_path = Rails.root.join('project', project_key, 'content', 'partials')
+    if File.directory? partials_path
+      Dir.foreach(partials_path).each do |file|
+        path = Rails.root.join partials_path, file
+        next if File.directory? path
+        next if ! ['.html','.erb','.md'].include? path.extname
 
-   
+        key = file.split('.').first
+        content = File.read path
+        puts "  Loading partial: \"#{key}\" (#{content.size}b)"
+
+        project.partials[key] = content
+      end
+    end
+
+    project.tutorial = load_tutorial(project_key)
 
     project.save
     project
   end
 
   def load_styles(project)
- 
+
     load_images(project.key)
     load_fonts(project.key)
 
@@ -221,7 +247,7 @@ namespace :project do
     Dir.foreach(image_path).each do |file|
       path = Rails.root.join image_path, file
       next if File.directory? path
-      next if ! ['.png','.gif','.jpg', '.jpeg', '.svg'].include? path.extname
+      next if ! ['.png','.gif','.jpg', '.jpeg', '.svg', '.mp4', '.ico'].include? path.extname
       puts " -- #{file}"
       image_dest = Rails.root.join("app/assets/images/#{project_key}/")
       Dir.mkdir(image_dest) unless File.exists?(image_dest)
@@ -329,7 +355,7 @@ namespace :project do
     end
 
     # Metadata search configured? Create indexes:
-    # TODO Note that indexes created this way must be manually removed. 
+    # TODO Note that indexes created this way must be manually removed.
     # Loading lots of different projects (or the same project with different
     # indexes) will create mult. indexes, which may slow query planning
     if project.metadata_search && project.metadata_search.is_a?(Hash)
@@ -377,7 +403,7 @@ namespace :project do
 
 
   def translate_pick_one_tool_config(task_hash)
-    config = task_hash[:tool_config]
+    config = task_hash[:tool_config] || {}
 
     # In Pick-one-mark-one and compositeTool, rename 'tools' to 'options'
     if ['pickOneMarkOne', 'compositeTool'].include? task_hash[:tool]

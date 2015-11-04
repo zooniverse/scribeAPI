@@ -28,16 +28,13 @@
       "instruction": "Enter the record number",
       "examples": ["287", "289"],
       "help": {
-        "file": "t_record_date"
+        "file": "t_record_number"
       },
       "generates_subject_type": "em_transcribed_record_number"
     },
 
     "em_record_mortgager": {
       "tool": "textTool",
-      "tool_config": {
-        "suggest": "common"
-      },
       "instruction": "Enter the mortgager's name",
       "examples": ["John O'Meallia", "Trustees of St. Patrick's Cathedral"],
       "generates_subject_type": "em_transcribed_mortgager",
@@ -68,45 +65,11 @@
       }
     },
 
-    "em_record_stories": {
-      "tool": "numberTool",
-      "tool_config": {},
-      "instruction": "Enter the Number of Stories",
-      "examples": ["2", "5"],
-      "generates_subject_type": "em_transcribed_record_stories",
-      "help": {
-        "file": "t_record_stories"
-      }
-    },
-
-    "em_record_material": {
-      "tool": "textTool",
-      "tool_config": {},
-      "instruction": "Enter the building material",
-      "examples": ["brick", "frame", "Brick & stone", "bk and frame"],
-      "generates_subject_type": "em_transcribed_record_material",
-      "help": {
-        "file": "t_record_material"
-      }
-    },
-
     "em_record_valuation": {
       "tool": "textTool",
       "tool_config": {},
-      "instruction": "Enter the date of the valuation (if one is given)",
+      "instruction": "Enter the date of the valuation (if one is given). In the next screen, you'll enter the valuation's dollar amounts.",
       "examples": ["1879 November"],
-      "help": {
-        "file": "t_record_valuation"
-      },
-      "generates_subject_type": "em_transcribed_valuation_date",
-      "next_task": "em_record_valuation_total"
-    },
-
-    "em_record_valuation_total": {
-      "tool": "textTool",
-      "tool_config": {},
-      "instruction": "Enter the valuation ***total*** (if one is given)",
-      "examples": ["$200,000"],
       "help": {
         "file": "t_record_valuation"
       },
@@ -122,7 +85,7 @@
             "tool": "textTool",
             "examples": ["$200,000"],
             "tool_config": {},
-            "label": "Ground Value"
+            "label": "Land Value"
           },
           "em_valuation_building": {
             "tool": "textTool",
@@ -136,8 +99,20 @@
       "help": {
         "file": "t_record_valuation"
       },
-      "generates_subject_type": "em_transcribed_valuation",
-      "instruction": "Sometimes valuations include itemized dollar values for \"ground\" and \"building\". Enter these amounts if you can find them.",
+      "generates_subject_type": "em_transcribed_valuation_itemized",
+      "instruction": "Sometimes valuations include itemized dollar values for \"ground\" and \"building\". Enter these amounts if you can find them. In the next screen, you'll enter the total valuation.",
+      "next_task": "em_record_valuation_total"
+    },
+
+    "em_record_valuation_total": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Enter the valuation ***total*** (if one is given)",
+      "examples": ["$200,000"],
+      "help": {
+        "file": "t_record_valuation"
+      },
+      "generates_subject_type": "em_transcribed_valuation_total",
       "next_task": null
     },
 
@@ -145,17 +120,15 @@
       "tool": "compositeTool",
       "tool_config": {
         "tools": {
-          "em_survey_dimensions": {
+          "em_survey_land_dimensions": {
             "tool": "textTool",
             "examples": ["100 x 100"],
-            "tool_config": {"suggest": "common"},
-            "label": "Record Dimensions"
+            "label": "Land Dimensions"
           },
-          "em_survey_description": {
+          "em_survey_building_dimensions": {
             "tool": "textTool",
-            "examples": ["68 x 100 Frame Edifice with Slate roof and brick basement."],
-            "tool_config": {},
-            "label": "Building Description"
+            "examples": ["68 x 100"],
+            "label": "Building Dimensions"
           }
         }
       },
@@ -164,7 +137,44 @@
         "file": "t_survey"
       },
       "generates_subject_type": "em_transcribed_survey",
-      "instruction": "Enter as they appear, the building dimensions and description that was recorded.",
+      "instruction": "Enter, as they appear, any land and building dimensions that were recorded. In the next screen, you'll enter the descriptive information.",
+      "next_task": "em_record_survey_stories_materials"
+    },
+
+    "em_record_survey_stories_materials": {
+      "tool": "compositeTool",
+      "tool_config": {
+        "tools": {
+          "em_record_stories": {
+            "tool": "numberTool",
+            "label": "Enter the Number of Stories",
+            "examples": ["2", "5"]
+          },
+          "em_record_material": {
+            "tool": "textTool",
+            "label": "Enter the building material",
+            "examples": ["Br", "Brick & stone", "Frame Edifice with Slate roof and brick basement."]
+          }
+        }
+      },
+
+      "help": {
+        "file": "t_record_survey_stories_materials"
+      },
+      "generates_subject_type": "em_transcribed_stories_materials",
+      "instruction": "Enter, as they appear, the number of stories and the building materials.",
+      "next_task": "em_record_survey_additional_info"
+    },
+
+    "em_record_survey_additional_info": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Enter any additional information you find about the building's construction or significance.",
+      "examples": ["Church"],
+      "help": {
+        "file": "t_record_additional_info"
+      },
+      "generates_subject_type": null,
       "next_task": null
     }
   }

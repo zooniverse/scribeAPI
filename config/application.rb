@@ -20,7 +20,7 @@ module API
       g.view_specs false
       g.helper_specs false
     end
-    
+
     # config.middleware.use Rack::Deflater
 
     initializer 'setup_asset_pipeline', :group => :all  do |app|
@@ -33,6 +33,8 @@ module API
           '.html', '.erb', '.haml',                 # Templates
           '.png',  '.gif', '.jpg', '.jpeg',         # Images
           '.eot',  '.otf', '.svc', '.woff', '.ttf', # Fonts
+          '.mp4',                                   # Video
+          '.ico',                                   # Icon
           '.cjsx'
         ]
       end)
@@ -40,7 +42,7 @@ module API
 
     config.browserify_rails.commandline_options = "-t coffee-reactify --extension=\".cjsx\" "
     # config.browserify_rails.commandline_options = "-t reactify --extension=\".js.jsx\""
-    
+
 
 
     config.middleware.use Rack::Cors do
