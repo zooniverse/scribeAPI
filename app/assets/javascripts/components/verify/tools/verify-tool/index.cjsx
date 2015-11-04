@@ -100,7 +100,10 @@ VerifyTool = React.createClass
                 { for k,v of data
                     # Label should be the key in the data hash unless it's a single-value hash with key 'value':
                     label = if k != 'value' or (_k for _k,_v of data).length > 1 then k else ''
-                    <li key={k}><span>{label}</span> {v}</li>
+                    # TODO: hack to approximate a friendly label in emigrant; should pull from original label:
+                    label = label.replace(/em_/,'')
+                    label = label.replace(/_/g, ' ')
+                    <li key={k}><span className="label">{label}</span> {v}</li>
                 }
                 </ul>
               </a>
