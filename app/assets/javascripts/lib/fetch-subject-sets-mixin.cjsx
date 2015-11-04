@@ -3,18 +3,19 @@ API              = require './api'
 module.exports =
 
   fetchGroups: ->
+    console.log 'fetchGroups()'
     API.type("groups").get(project_id: @props.project.id).then (groups)=>
-
-      # set page to current bookmark, if exists
-      if @props.user?.subject_set_bookmarks[@getCurrentSubjectSet()?.id]?
-        page = @props.user.subject_set_bookmarks[@getCurrentSubjectSet().id]
-
       group.showButtons = false for group in groups  # hide buttons by default
-      @setState
-        groups: groups
-        subject_index: page-1 || 0
-          , =>
-            console.log 'SKIPPING TO PAGE: ', @state.subject_index + 1
+      @setState groups: groups
+
+  # set page to current bookmark, if exists
+  goToBookmark: ->
+    console.log 'USER = ', @props.user
+    if @props.user?.subject_set_bookmarks[@getCurrentSubjectSet()?.id]?
+      page = @props.user.subject_set_bookmarks[@getCurrentSubjectSet().id]
+
+    @setState subject_index: page-1 || 0
+      , => console.log 'SKIPPING TO PAGE: ', @state.subject_index + 1
 
   fetchSubjectSetsBasedOnProps: ->
 
@@ -97,9 +98,11 @@ module.exports =
 
   # PB: Setting default limit to 120 because it's a multiple of 3 mandated by thumb browser
   fetchSubjectsForCurrentSubjectSet: (page=1, limit=120, callback) ->
+    console.log 'fetxhSubjectsForCurrentSubjectSet()'
     ind = @state.subject_set_index
     sets = @state.subjectSets
 
+    @goToBookmark()
 
     # page & limit not passed when called this way for some reason, so we have to manually construct query:
     # sets[ind].get('subjects', {page: page, limit: limit}).then (subjs) =>
