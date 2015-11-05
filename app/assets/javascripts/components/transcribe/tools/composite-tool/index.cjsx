@@ -95,13 +95,13 @@ CompositeTool = React.createClass
     # TK: buttons.push <PrevButton onClick={=> console.log "Prev button clicked!"} />
 
     if @props.onShowHelp?
-      buttons.push <HelpButton onClick={@props.onShowHelp}/>
+      buttons.push <HelpButton onClick={@props.onShowHelp} key="help-button"/>
 
     if @props.onBadSubject?
-      buttons.push <BadSubjectButton active={@props.badSubject} onClick={@props.onBadSubject} />
+      buttons.push <BadSubjectButton active={@props.badSubject} onClick={@props.onBadSubject} key="bad-subject-button"/>
 
     if @props.onIllegibleSubject?
-      buttons.push <IllegibleSubjectButton active={@props.illegibleSubject} onClick={@props.onIllegibleSubject} />
+      buttons.push <IllegibleSubjectButton active={@props.illegibleSubject} onClick={@props.onIllegibleSubject} key="illegible-subject-button"/>
 
     buttonLabel =
       if @props.task.next_task?
