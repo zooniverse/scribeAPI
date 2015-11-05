@@ -7,6 +7,7 @@
   "generates_subjects_after": 3,
   "generates_subjects_max": 10,
   "generates_subjects_agreement": 0.75,
+  "subjects_classifiable_by_creator": false,
 
   "tasks": {
 
