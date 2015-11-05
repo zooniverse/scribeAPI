@@ -1,10 +1,12 @@
 {
-  "title": "Nation of Emigrants",
+  "title": "Emigrant City",
   "short_title": "Emigrant",
-  "summary": "Emmmmigrannnnnt Savinnnnnnnngs Baaaaannk",
+  "summary": "Join us in transcribing 19th century real estate records from the Emigrant Savings Bank.",
   "background": "/images/background.jpg",
   "admin_email": "paulbeaudoin@nypl.org",
-  "logo": "/images/logo.svg",
+  "logo": "/images/logo.png",
+  "favicon": "/images/favicon.ico",
+  "privacy_policy": "http://www.nypl.org/help/about-nypl/legal-notices/privacy-policy",
   "terms_map": {
     "group": "collection",
     "subject set": "page",
@@ -13,7 +15,8 @@
   },
   "team_emails": [
     "brianfoo@nypl.org",
-    "willaarmstrong@nypl.org"
+    "willaarmstrong@nypl.org",
+    "benjaminvershbow@nypl.org"
   ],
   "team": [
     {
@@ -38,11 +41,20 @@
   ],
 
   "analytics": {
-    "google_analytics_client_id": "UA-68522125-1"
+    "google_analytics_client_id": "UA-69673163-1"
   },
 
   "forum": {
     "type": "discourse",
-    "base_url": "http://scribe-forum.nypl-labs.biz"
+    "base_url": "http://forum.emigrantcity.nypl.org"
+  },
+
+  "menus": {
+    "main": [
+      {"label": "Intro", "page": "intro"},
+      {"label": "Data", "page": "data"},
+      {"label": "About", "page": "about"}
+    ],
+    "footer": []
   }
 }

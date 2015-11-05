@@ -27,8 +27,7 @@ Login = React.createClass
       dataType: "json"
 
     request.done =>
-      @setState
-        user: null
+      @props.onLogout()
 
     request.error (request,error)=>
       @setState

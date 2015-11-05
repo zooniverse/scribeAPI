@@ -48,7 +48,7 @@ namespace :project do
       load_styles project
       puts "Done loading style for \"#{project.title}\""
     end
-      
+
     # Load workflows:
     if ['all','workflows'].include? args[:area]
       begin
@@ -107,6 +107,9 @@ namespace :project do
       puts "Activating #{project.title}"
       project.activate!
     end
+
+    # Rebuild subject-set indexes based on current project:
+    Rake::Task['project:create_indexes'].invoke
   end
 
   def get_project(project_key)
@@ -127,12 +130,15 @@ namespace :project do
     project_defaults = {
       background: nil,
       logo: nil,
+      favicon: nil,
       terms_map: {},
       team_emails: [],
       team: [],
       organizations: [],
       analytics: nil,
-      forum: nil
+      forum: nil,
+      menus: {},
+      partials: {}
     }
     # Set all valid fields from hash:
     project_hash = project_hash.inject(project_defaults) { |h, (k,v)| h[k] = v if Project.fields.keys.include?(k.to_s); h }
@@ -170,46 +176,48 @@ namespace :project do
           end
         end
 
+        # Check if we should include group browser content
+        group_match = /<!\-\-[\s]*require groups:[\s]*(.*)\-\->/.match(content)
+        group_browser = ''
+        if group_match && !group_match.captures.empty?
+          group_browser = group_match.captures[0]
+        end
+
         project.pages << {
           key: page_key,
           name: name,
           content: content,
-          updated_at: updated_at
+          updated_at: updated_at,
+          group_browser: group_browser
         }
       end
     end
 
-    project.tutorial = load_tutorial(project_key)
+    # load partial content if exists
+    project.partials = {}
+    partials_path = Rails.root.join('project', project_key, 'content', 'partials')
+    if File.directory? partials_path
+      Dir.foreach(partials_path).each do |file|
+        path = Rails.root.join partials_path, file
+        next if File.directory? path
+        next if ! ['.html','.erb','.md'].include? path.extname
 
-    # Metadata search configured? Create indexes:
-    # TODO Note that indexes created this way must be manually removed. 
-    # Loading lots of different projects (or the same project with different
-    # indexes) will create mult. indexes, which may slow query planning
-    if project.metadata_search && project.metadata_search.is_a?(Hash)
-      # Loop over fields array:
-      if project.metadata_search["fields"].is_a? Array
-        project.metadata_search["fields"].each do |field|
-          SubjectSet.index({"project" => 1, "metadata.#{field['field']}" => 1}, {background: true})
-        end
+        key = file.split('.').first
+        content = File.read path
+        puts "  Loading partial: \"#{key}\" (#{content.size}b)"
+
+        project.partials[key] = content
       end
-      SubjectSet.create_indexes
     end
-   
-    # Make sure project.status index exists
-    Project.create_indexes
-    # Make sure various subject indexes exist:
-    Subject.create_indexes
-    Group.create_indexes
-    Workflow.create_indexes
-    Favourite.create_indexes
-    Classification.create_indexes
+
+    project.tutorial = load_tutorial(project_key)
 
     project.save
     project
   end
 
   def load_styles(project)
- 
+
     load_images(project.key)
     load_fonts(project.key)
 
@@ -239,7 +247,7 @@ namespace :project do
     Dir.foreach(image_path).each do |file|
       path = Rails.root.join image_path, file
       next if File.directory? path
-      next if ! ['.png','.gif','.jpg', '.jpeg', '.svg'].include? path.extname
+      next if ! ['.png','.gif','.jpg', '.jpeg', '.svg', '.mp4', '.ico'].include? path.extname
       puts " -- #{file}"
       image_dest = Rails.root.join("app/assets/images/#{project_key}/")
       Dir.mkdir(image_dest) unless File.exists?(image_dest)
@@ -316,18 +324,51 @@ namespace :project do
       w.update_attribute :order, project.workflows.size - num_downstream_workflows(w) - 1
     end
 
+
+    puts "  WARN: No mark workflow found" if project.workflows.find_by(name: 'mark').nil?
+  end
+
+  desc "Rebuilds all required indexes. Should be run any time project.metadata changes or workflows ids change (after reload or when switching activated project)"
+  task :create_indexes, [] => :environment do |task, args|
+    puts "Rebuilding indexes"
+
+    # Make sure project.status index exists
+    Project.create_indexes
+    # Make sure various subject indexes exist:
+    Subject.create_indexes
+    Group.create_indexes
+    Workflow.create_indexes
+    Favourite.create_indexes
+    Classification.create_indexes
+
+    # Create a bunch of project-specific indexes:
+    project = Project.current
+
+    SubjectSet.collection.indexes.drop
+
     # Create workflow counts indexes:
-    puts "Creating workflow counts indexes:"
     project.workflows.each do |w|
-      puts "  workflow.#{w.id}"
       # Index for typical Mark query:
       SubjectSet.index({"counts.#{w.id}.active_subjects" => 1, "random_no" => 1}, {background: true})
       # Index for marking by group_id:
       SubjectSet.index({"counts.#{w.id}.active_subjects" => 1, "group_id" => 1}, {background: true})
     end
+
+    # Metadata search configured? Create indexes:
+    # TODO Note that indexes created this way must be manually removed.
+    # Loading lots of different projects (or the same project with different
+    # indexes) will create mult. indexes, which may slow query planning
+    if project.metadata_search && project.metadata_search.is_a?(Hash)
+      # Loop over fields array:
+      if project.metadata_search["fields"].is_a? Array
+        project.metadata_search["fields"].each do |field|
+          SubjectSet.index({"project" => 1, "metadata.#{field['field']}" => 1}, {background: true})
+        end
+      end
+    end
+
     SubjectSet.create_indexes
 
-    puts "  WARN: No mark workflow found" if project.workflows.find_by(name: 'mark').nil?
   end
 
   desc "Drop a project by key"
@@ -354,6 +395,7 @@ namespace :project do
 
     Rake::Task['project:drop'].invoke(args[:project_key])
     Rake::Task['project:load'].invoke(args[:project_key])
+    Rake::Task['project:create_indexes'].invoke
 
   end
 
@@ -361,7 +403,7 @@ namespace :project do
 
 
   def translate_pick_one_tool_config(task_hash)
-    config = task_hash[:tool_config]
+    config = task_hash[:tool_config] || {}
 
     # In Pick-one-mark-one and compositeTool, rename 'tools' to 'options'
     if ['pickOneMarkOne', 'compositeTool'].include? task_hash[:tool]

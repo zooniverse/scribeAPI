@@ -35,6 +35,7 @@ module.exports = React.createClass
     tool: null # Optional tool to place alongside subject (e.g. transcription tool placed alongside mark)
     onLoad: null
     annotationIsComplete: false
+    interimMarks: {}
 
   componentWillReceiveProps: (new_props) ->
     @setUncommittedMark null if new_props.task?.tool != 'pickOneMarkOne'
@@ -42,7 +43,7 @@ module.exports = React.createClass
     if Object.keys(@props.annotation).length == 0 #prevents back-to-back mark tasks, displaying a duplicate mark from previous tasks.
       @setUncommittedMark null
 
-    @setState 
+    @setState
       marks: @getMarksFromProps(new_props)
 
     if new_props.subject.id == @props.subject.id
@@ -170,7 +171,7 @@ module.exports = React.createClass
       initMoveValues = MarkComponent.initMove mouseCoords, mark, e
       for key, value of initMoveValues
         mark[key] = value
-    
+
 
     @props.onChange? mark
     @setState uncommittedMark: mark
@@ -271,12 +272,16 @@ module.exports = React.createClass
     marks = []
     currentSubtool = props.currentSubtool
     for child_subject, i in props.subject.child_subjects
+      continue if ! child_subject?
       marks[i] = child_subject.region
       marks[i].subject_id = child_subject.id # child_subject.region.subject_id = child_subject.id # copy id field into region (not ideal)
       marks[i].isTranscribable = !child_subject.user_has_classified && child_subject.status != "retired"
       marks[i].belongsToUser = child_subject.belongs_to_user
       marks[i].groupActive = currentSubtool?.generates_subject_type == child_subject.type
       marks[i].user_has_deleted = child_subject.user_has_deleted
+
+    # Also present visible 'interim mark's for this subject:
+    marks.push(m) for m in (@props.interimMarks ? []) when m.show && m.subject_id == props.subject.id
 
     marks
 
@@ -319,7 +324,9 @@ module.exports = React.createClass
             xScale={scale.horizontal}
             yScale={scale.vertical}
             disabled={! mark.userCreated}
+            disabled={! mark.userCreated}
             isTranscribable={mark.isTranscribable}
+            interim={mark.interim_id?}
             isPriorMark={isPriorMark}
             subjectCurrentPage={@props.subjectCurrentPage}
             selected={mark is @state.selectedMark}

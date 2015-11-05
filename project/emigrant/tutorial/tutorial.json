@@ -10,7 +10,7 @@
             }
         },
         "learn_transcribing": {
-            "next_task": "learn_verifying",
+            "next_task": "learn_transcribing",
             "help": {
                 "title": "Transcribing",
                 "file": "learn_transcribing"
@@ -30,10 +30,38 @@
         "first_task": "learn_marking",
         "tasks": {
           "learn_marking": {
+              "next_task":"tutorial_mark_2",
+              "help": {
+                  "title": "Task",
+                  "file": "tutorial_mark_1"
+              }
+          },
+          "tutorial_mark_2": {
+              "next_task": "tutorial_mark_3",
+              "help": {
+                  "title": "Making Your Mark",
+                  "file": "tutorial_mark_2"
+              }
+          },
+          "tutorial_mark_3": {
+              "next_task": "tutorial_mark_4",
+              "help": {
+                  "title": "Fields",
+                  "file": "tutorial_mark_3"
+              }
+          },
+          "tutorial_mark_4": {
+              "next_task": "tutorial_mark_5",
+              "help": {
+                  "title": "Existing Marks",
+                  "file": "tutorial_mark_4"
+              }
+          },
+          "tutorial_mark_5": {
               "next_task": null,
               "help": {
-                  "title": "Marking Regions",
-                  "file": "learn_marking"
+                  "title": "Additional Help",
+                  "file": "tutorial_mark_5"
               }
           }
         }
@@ -46,7 +74,7 @@
               "next_task": null,
               "help": {
                   "title": "Transcribing Fields",
-                  "file": "learn_transcribing"
+                  "file": "tutorial_transcribe_1"
               }
           }
         }
@@ -59,7 +87,7 @@
               "next_task": null,
               "help": {
                   "title": "Verifying Fields",
-                  "file": "learn_verifying"
+                  "file": "tutorial_verify_1"
               }
           }
         }

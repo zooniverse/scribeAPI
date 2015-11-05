@@ -41,6 +41,7 @@ module.exports = React.createClass # rename to Classifier
     showingTutorial:     @showTutorialBasedOnUser @props.user
     lightboxHelp:        false
     activeSubjectHelper: null
+    subjectCurrentPage:  1
 
   componentWillReceiveProps: (new_props) ->
     @setState showingTutorial: @showTutorialBasedOnUser(new_props.user)
@@ -153,12 +154,13 @@ module.exports = React.createClass # rename to Classifier
     @advanceToNextSubject()
 
   nextPage: (callback_fn)->
-    new_page = @state.subjects_current_page + 1
-    @fetchSubjectsForCurrentSubjectSet(new_page, callback_fn)
+    new_page = @state.subjectCurrentPage + 1
+    @setState subjectCurrentPage: new_page, => @fetchSubjectsForCurrentSubjectSet(new_page, null, callback_fn)
 
   prevPage: (callback_fn) ->
-    new_page = @state.subjects_current_page - 1
-    @fetchSubjectsForCurrentSubjectSet(new_page, callback_fn)
+    new_page = @state.subjectCurrentPage - 1
+    @setState subjectCurrentPage: new_page
+    @fetchSubjectsForCurrentSubjectSet(new_page, null, callback_fn)
 
   showSubjectHelp: (subject_type) ->
     @setState
@@ -213,13 +215,14 @@ module.exports = React.createClass # rename to Classifier
               subToolIndex={@state.currentSubToolIndex}
               nextPage={@nextPage}
               prevPage={@prevPage}
-              subjectCurrentPage={@state.subjects_current_page}
+              subjectCurrentPage={@state.subjectCurrentPage}
               totalSubjectPages={@state.subjects_total_pages}
               destroyCurrentClassification={@destroyCurrentClassification}
               hideOtherMarks={@state.hideOtherMarks}
               toggleHideOtherMarks={@toggleHideOtherMarks}
               currentSubtool={currentSubtool}
               lightboxHelp={@toggleLightboxHelp}
+              interimMarks={@state.interimMarks}
             />
         }
       </div>

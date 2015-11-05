@@ -15,7 +15,6 @@ module.exports = React.createClass
     totalSubjectPages: React.PropTypes.number
     subjectCurrentPage: React.PropTypes.number
 
-
   getInitialState:->
     first: @props.subject_set.subjects[0]
     folded: false
@@ -109,8 +108,8 @@ module.exports = React.createClass
           </ul>
 
           <ActionButton type={"back"} text="BACK" onClick={@moveBack.bind(this, indexOfFirst)} classes={@backButtonDisable(indexOfFirst)} />
-
           <ActionButton type={"next"} text="NEXT" onClick={@moveForward.bind(this, indexOfFirst, third, second)} classes={@forwardButtonDisable(third if third?)} />
+
         </div>
 
       </div>
@@ -156,7 +155,7 @@ module.exports = React.createClass
     return if @props.subjectCurrentPage == @props.totalSubjectPages && (third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || second == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
     # # if the current page of subjects is NOT the last page of the subject_set and the 2nd or 3rd <li> is the last <li> contain the last subjects in the subject_set
     if @props.subjectCurrentPage < @props.totalSubjectPages && (third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || second == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
-      @props.nextPage( => @setState first: @props.subject_set.subjects[0] )
+      @props.nextPage( => @setState first: @props.subject_set.subjects[0])
       # NOTE: for some reason, LightBox does not receive correct value for @props.subject_index, which has led to this awkard callback function above --STI
       # @setState first: @props.subject_set.subjects[0], => @forceUpdate()
 

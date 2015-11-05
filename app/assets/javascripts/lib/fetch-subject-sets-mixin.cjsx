@@ -96,6 +96,7 @@ module.exports =
       page: page
       limit: limit
       type: 'root'
+      status: 'any'
 
     process_subjects = (subjs) =>
       sets[ind].subjects = subjs
@@ -106,13 +107,17 @@ module.exports =
         subjects_total_pages:       subjs[0].getMeta('total_pages'), () =>
           callback? sets
 
-    # Since we're fetching by query, json-api-client won't cache it, so let's cache it lest we re-fetch subjects everytime something happens:
-    @_subject_queries ||= {}
-    if (subjects = @_subject_queries[params])?
-      process_subjects subjects
 
-    else
-      API.type('subjects').get(params).then (subjects) =>
-        @_subject_queries[params] = subjects
-        process_subjects subjects
-    
+    # Couldn't get this code to work with the changes. Commenting for now. --STI
+    # # Since we're fetching by query, json-api-client won't cache it, so let's cache it lest we re-fetch subjects everytime something happens:
+    # @_subject_queries ||= {}
+    # console.log '@_subject_queries[params] = ', @_subject_queries[params]
+    # if (subjects = @_subject_queries[params])?
+    #   process_subjects subjects
+    #
+    # else
+
+    @_subject_queries ||= {}
+    API.type('subjects').get(params).then (subjects) =>
+      @_subject_queries[params] = subjects
+      process_subjects subjects

@@ -18,6 +18,7 @@ class Subject
   scope :by_parent_subject, -> (parent_subject_id) { where(parent_subject_id: parent_subject_id) }
   scope :by_group, -> (group_id) { where(group_id: group_id) }
   scope :user_has_not_classified, -> (user_id) { where(:classifying_user_ids.ne => user_id)  }
+  scope :user_did_not_create, -> (user_id) { where(:creating_user_ids.ne => user_id)  }
 
   # This is a hash with one entry per deriv; `standard', 'thumbnail', etc
   field :location,                    type: Hash
@@ -49,7 +50,8 @@ class Subject
 
   # Denormalized array of user ids that have classified this subject for quick filtering
   field :classifying_user_ids,        type: Array, default: []
-  field :deleting_user_ids,        type: Array, default: []
+  field :deleting_user_ids,           type: Array, default: []
+  field :creating_user_ids,           type: Array, default: []
 
   belongs_to :workflow
   belongs_to :group
@@ -69,9 +71,10 @@ class Subject
   # Index for typical query when fetching subjects for Transcribe/Verify:
   index({"status" => 1, "workflow_id" => 1, "classifying_user_ids" => 1}, {background: true})
   # Index for Marking by subject set:
-  index({"status" => 1, "type" => 1, "subject_set_id" => 1}, {background: true})
+  index({"type" => 1, "subject_set_id" => 1}, {background: true})
   # Index for fetching child subjects for a parent subject, optionally filtering by region NOT NULL
   index({parent_subject_id: 1, status: 1, region: 1})
+  
 
   def thumbnail
     location['thumbnail'].nil? ? location['standard'] : location['thumbnail']

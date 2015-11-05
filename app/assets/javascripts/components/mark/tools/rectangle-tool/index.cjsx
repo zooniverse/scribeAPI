@@ -198,6 +198,7 @@ module.exports = React.createClass
   render: ->
     classes = []
     classes.push 'transcribable' if @props.isTranscribable
+    classes.push 'interim' if @props.interim
     classes.push if @props.disabled then 'committed' else 'uncommitted'
     classes.push "tanscribing" if @checkLocation()
 
