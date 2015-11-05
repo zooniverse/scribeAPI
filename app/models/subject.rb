@@ -180,10 +180,10 @@ class Subject
 
   # Returns hash mapping distinct values for given field to matching count:
   def self.group_by_field(field, match={})
-    self.collection.aggregate([
-      {"$group" => { "_id" => "$#{field.to_s}", count: {"$sum" =>  1} }}
-
-    ]).inject({}) do |h, p|
+    agg = []
+    agg << {"$match" => match } if match
+    agg << {"$group" => { "_id" => "$#{field.to_s}", count: {"$sum" =>  1} }}
+    self.collection.aggregate(agg).inject({}) do |h, p|
       h[p["_id"]] = p["count"]
       h
     end

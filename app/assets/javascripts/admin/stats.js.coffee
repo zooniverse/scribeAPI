@@ -391,7 +391,7 @@ class Stats
 		newItem.data = newData
 		newItem.unit = group_by
 		return newItem
-	
+
 	parseData: (data) ->		
 		# parse data
 		parseDate = d3.time.format("%Y-%m-%d %H:%M").parse
@@ -404,7 +404,7 @@ class Stats
 			d.date = parseDate(d.date)
 			d.value = +d.value
 		
-		return [
+		components = [
 			{
 				'id': 'classifications',
 				'count': data.classifications.count,
@@ -423,13 +423,17 @@ class Stats
 						'label': 'Users',
 						'values': data.users.data
 					}]
-			},{
-				'id': 'subjects',
-				'count': data.subjects.count,
-				'type': 'pie',
-				'data': data.subjects.data
 			}
 		]
+		
+		for name, d of data.workflow_counts
+			components.push {
+				'id': "#{name}-subjects",
+				'count': d.total
+				'type': 'pie',
+				'data': d.data
+			}
+		components
 
 	updateUI: () ->
 		data = @data

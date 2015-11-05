@@ -1,8 +1,8 @@
 
 <div class="dashboard">
+  <%= link_to '#', onclick: "window.stats.recalculateStats();", class: 'recalculate-stats' do %>Recalculate Stats<% end %>
   
   <div class="row">
-    <%= link_to '#', onclick: "window.stats.recalculateStats();", class: 'recalculate-stats' do %>Recalculate Stats<% end %>
     
     <div class="classifications category">
       <h3 class="title">Classifications</h3>
@@ -60,9 +60,31 @@
       
     </div> -->
     
-    <div class="subjects category">
+    <div class="mark-subjects category">
       
-      <h3 class="title">Subjects</h3>
+      <h3 class="title">Pages Being Marked</h3>
+      <div class="total">
+        <span class="count">0</span>
+        <span class="label">Total</span>
+      </div>
+      
+      <div class="chart"></div>
+
+      <div>
+        <dl>
+          <dt>Active:</dt>
+          <dd>Pages being actively marked</dd>
+          <dt>Bad:</dt>
+          <dd>Pages that have been marked as invalid by sufficient users</dd>
+          <dt>Retired:</dt>
+          <dd>Pages that no longer appear in Mark because sufficient people have state there is nothing more to mark.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="transcribe-subjects category">
+      
+      <h3 class="title">Marks Being Transcribed</h3>
       <div class="total">
         <span class="count">0</span>
         <span class="label">Total</span>
@@ -70,8 +92,42 @@
       
       <div class="chart"></div>
       
+      <div>
+        <dl>
+          <dt>Active:</dt>
+          <dd>Marks being actively transcribed</dd>
+          <dt>Bad:</dt>
+          <dd>Marks that have been marked as invalid by sufficient users</dd>
+          <dt>Retired:</dt>
+          <dd>Marks that are no longer shown because they've received sufficient transcriptions.</dd>
+        </dl>
+      </div>
     </div>
-    
+
+    <div class="verify-subjects category">
+      
+      <h3 class="title">Verify</h3>
+      <div class="total">
+        <span class="count">0</span>
+        <span class="label">Total</span>
+      </div>
+      
+      <div class="chart"></div>
+      
+      <div>
+        <dl>
+          <dt>Active:</dt>
+          <dd>Verify subjects actively being voted upon</dd>
+          <dt>Inactive:</dt>
+          <dd>Verify subjects waiting for one or more transcriptions before being activated</dd>
+          <dt>Complete:</dt>
+          <dd>Verify subjects that have received sufficient votes to choose one best transcription</dd>
+        </dl>
+      </div>
+    </div>
+
+
+
   </div>
   
 </div>
