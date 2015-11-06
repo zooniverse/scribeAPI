@@ -31,23 +31,32 @@ module SubjectGenerationMethods
       num_parent_classifications = classification.child_subject.parent_classifications.count
 
       # If subject has enough parent classifications, activate it:
-      # puts "considering activating.... if #{num_parent_classifications} >= #{classification.workflow.generates_subjects_after}"
       if num_parent_classifications >= classification.workflow.generates_subjects_after
-        puts "Activating generated subject because now has #{num_parent_classifications} parent classifications"
 
         # Get number of distinct classifications:
         num_vals = classification.child_subject.data['values'].nil? ? -1 : classification.child_subject.data['values'].size
 
-        # Get subject-generation method type (presumably for Verify workflow) (which is likely 'most-popular')
-        verify_method = classification.child_subject.workflow.generates_subjects_method
+        # Where will this generated subject appear, if anywhere?
+        next_workflow = classification.child_subject.workflow
 
-        if num_vals == 1 && verify_method == 'most-popular'
-          puts "Auto upgrading verify subject to complete because only one val: #{classification.child_subject.data}"
+        # If there is no next workflow, this subject is done. Presumably the retire_limit caused the parent subject to be retired as well.
+        if next_workflow.nil? 
           atts[:status] = 'complete'
 
+        # There is a next workfllow (probably Verify)
         else
-          classification.child_subject.activate! # atts[:status] = 'active'
-          atts.delete :status
+          # Get subject-generation method type (presumably for Verify workflow) (which is likely 'most-popular')
+          verify_method = next_workflow.generates_subjects_method
+
+          # If next workflow's generation method is most-popular and everyone transcribed the same thing, auto upgrade to 'complete':
+          if num_vals == 1 && verify_method == 'most-popular'
+            atts[:status] = 'complete'
+
+          # .. Otherwise, activate the generated subject into the next workflow:
+          else
+            classification.child_subject.activate!
+            atts.delete :status
+          end
         end
       end
 
