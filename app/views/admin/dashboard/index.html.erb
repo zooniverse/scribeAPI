@@ -1,76 +1,76 @@
 
 <div class="dashboard">
   <%= link_to '#', onclick: "window.stats.recalculateStats();", class: 'recalculate-stats' do %>Recalculate Stats<% end %>
-  
+
   <div class="row">
-    
+
     <div class="classifications category">
       <h3 class="title">Classifications</h3>
-      
+
       <div class="units">
         <button class="active" data-category="classifications" data-group-by="hour">Hourly</button>
         <button data-category="classifications" data-group-by="day">Daily</button>
         <button data-category="classifications" data-group-by="week">Weekly</button>
       </div>
-      
+
       <div class="total">
         <span class="count">0</span>
         <span class="label">Total</span>
       </div>
-      
+
       <div class="chart"></div>
     </div>
-    
+
     <div class="users category">
       <h3 class="title">Users</h3>
-      
+
       <div class="units">
         <button data-category="users" class="active" data-group-by="hour">Hourly</button>
         <button data-category="users" data-group-by="day">Daily</button>
         <button data-category="users" data-group-by="week">Weekly</button>
       </div>
-      
+
       <div class="total">
         <span class="count">0</span>
         <span class="label">Total</span>
-      </div>     
-      
+      </div>
+
       <div class="chart"></div>
     </div>
-    
+
   </div>
-  
+
   <div class="row">
-    
-    <!-- <div class="analytics category">      
+
+    <!-- <div class="analytics category">
       <h3 class="title">Site Traffic</h3>
-      
+
       <div class="units">
         <button data-category="analytics" class="active" data-group-by="hour">Hourly</button>
         <button data-category="analytics" data-group-by="day">Daily</button>
         <button data-category="analytics" data-group-by="week">Weekly</button>
       </div>
-          
+
       <div class="total">
         <span class="count">0</span>
         <span class="label">Total pageviews in the last 30 days</span>
       </div>
-      
+
       <div class="chart"></div>
-      
+
     </div> -->
-    
+
     <div class="mark-subjects category">
-      
+
       <h3 class="title">Pages Being Marked</h3>
       <div class="total">
         <span class="count">0</span>
         <span class="label">Total</span>
       </div>
-      
+
       <div class="chart"></div>
 
-      <div>
+      <div class="chart-key">
         <dl>
           <dt>Active:</dt>
           <dd>Pages being actively marked</dd>
@@ -83,16 +83,16 @@
     </div>
 
     <div class="transcribe-subjects category">
-      
+
       <h3 class="title">Marks Being Transcribed</h3>
       <div class="total">
         <span class="count">0</span>
         <span class="label">Total</span>
       </div>
-      
+
       <div class="chart"></div>
-      
-      <div>
+
+      <div class="chart-key">
         <dl>
           <dt>Active:</dt>
           <dd>Marks being actively transcribed</dd>
@@ -105,16 +105,16 @@
     </div>
 
     <div class="verify-subjects category">
-      
+
       <h3 class="title">Verify</h3>
       <div class="total">
         <span class="count">0</span>
         <span class="label">Total</span>
       </div>
-      
+
       <div class="chart"></div>
-      
-      <div>
+
+      <div class="chart-key">
         <dl>
           <dt>Active:</dt>
           <dd>Verify subjects actively being voted upon</dd>
@@ -129,5 +129,5 @@
 
 
   </div>
-  
+
 </div>
