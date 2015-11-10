@@ -44,6 +44,12 @@ class SubjectsController < ApplicationController
 
       # If user/guest active, filter out anything already classified:
       @subjects = @subjects.user_has_not_classified user.id.to_s if ! user.nil?
+
+      # Should we filter out subjects that the user herself created?
+      if ! user.nil? && ! (workflow = Workflow.find(workflow_id)).nil? && ! workflow.subjects_classifiable_by_creator
+        # Note: creating_user_ids are stored as ObjectIds, so no need to filter on user.id.to_s:
+        @subjects = @subjects.user_did_not_create user.id if ! user.nil?
+      end
     end
 
     links = {
