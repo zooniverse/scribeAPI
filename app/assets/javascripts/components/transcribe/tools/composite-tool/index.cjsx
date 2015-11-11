@@ -98,7 +98,7 @@ CompositeTool = React.createClass
       buttons.push <HelpButton onClick={@props.onShowHelp} key="help-button"/>
 
     if @props.onBadSubject?
-      buttons.push <BadSubjectButton active={@props.badSubject} onClick={@props.onBadSubject} key="bad-subject-button"/>
+      buttons.push <BadSubjectButton key="bad-subject-button" label={"Bad #{@props.project.term('mark')}"} active={@props.badSubject} onClick={@props.onBadSubject} />
 
     if @props.onIllegibleSubject?
       buttons.push <IllegibleSubjectButton active={@props.illegibleSubject} onClick={@props.onIllegibleSubject} key="illegible-subject-button"/>

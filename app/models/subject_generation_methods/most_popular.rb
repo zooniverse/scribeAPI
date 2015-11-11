@@ -21,13 +21,21 @@ module SubjectGenerationMethods
 
       if has_min_classifications
 
+        # Determine whether or not to deactivate parent subject due to generated subject being complete or contentious
+        deactivate_parent = false
+
         if has_min_agreement
           atts[:status] = 'complete'
+          deactivate_parent = true
 
         # No agreement yet. Enough to mark contentious?
         elsif num_parent_classifications > classification.workflow.generates_subjects_max
           atts[:status] = 'contentious'
+          deactivate_parent = true
         end
+
+        # Child subj is complete (or contentious) so retire parent:
+        classification.subject.retire! if deactivate_parent
       end
 
       # Don't update attributes already saved/initialized in subject:

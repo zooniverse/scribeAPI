@@ -11,6 +11,7 @@ BaseWorkflowMethods     = require 'lib/workflow-methods-mixin'
 DraggableModal          = require 'components/draggable-modal'
 GenericButton           = require 'components/buttons/generic-button'
 Tutorial                = require 'components/tutorial'
+HelpModal               = require 'components/help-modal'
 
 # Hash of core tools:
 coreTools          = require 'components/core-tools'
@@ -33,6 +34,7 @@ module.exports = React.createClass # rename to Classifier
     classificationIndex:          0
     subject_index:                0
     showingTutorial:              false
+    helping:                      false
 
   componentWillMount: ->
     @beginClassification()
@@ -60,9 +62,11 @@ module.exports = React.createClass # rename to Classifier
   hideTutorial: ->
     @setState showingTutorial: false
 
+  toggleHelp: ->
+    @setState helping: not @state.helping
+
   render: ->
     currentAnnotation = @getCurrentClassification().annotation
-
 
     onFirstAnnotation = currentAnnotation?.task is @getActiveWorkflow().first_task
 
@@ -85,6 +89,7 @@ module.exports = React.createClass # rename to Classifier
                   viewerSize={@state.viewerSize}
                   task={@getCurrentTask()}
                   annotation={@getCurrentClassification().annotation}
+                  onShowHelp={@toggleHelp if @getCurrentTask().help?}
                   subject={@getCurrentSubject()}
                   onChange={@handleTaskComponentChange}
                   onComplete={@handleTaskComplete}
@@ -125,6 +130,10 @@ module.exports = React.createClass # rename to Classifier
           # Otherwise just show general tutorial
           else
             <Tutorial tutorial={@props.project.tutorial} onCloseTutorial={@hideTutorial} />
+      }
+
+      { if @state.helping
+        <HelpModal help={@getCurrentTask().help} onDone={=> @setState helping: false } />
       }
     </div>
 
