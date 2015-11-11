@@ -40,7 +40,7 @@ App = React.createClass
         error: "Having trouble logging you in"
 
   setTutorialComplete: ->
-    previously_saved = @state.user?.tutorial_complete?
+    previously_saved = @state.user?.tutorial_complete
 
     # Immediately ammend user object with tutorial_complete flag so that we can hide the Tutorial:
     @setState user: $.extend(@state.user ? {}, tutorial_complete: true)
