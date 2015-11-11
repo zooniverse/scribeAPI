@@ -65,7 +65,7 @@ class Project
 
   def calc_stats
     # amount of days to calculate statistics for
-    range_in_days = 60
+    range_in_days = 7
     datetime_format = "%Y-%m-%d %H:%M"
 
     # determine date range

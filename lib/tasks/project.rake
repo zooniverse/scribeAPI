@@ -340,6 +340,7 @@ namespace :project do
     Workflow.create_indexes
     Favourite.create_indexes
     Classification.create_indexes
+    User.create_indexes
 
     # Create a bunch of project-specific indexes:
     project = Project.current
