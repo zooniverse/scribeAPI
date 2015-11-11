@@ -45,6 +45,7 @@ class User
 
   after_create :apply_configured_user_role
 
+  index({created_at: 1}, {background: true})
 
   ## Confirmable
   # field :confirmation_token,   :type => String
