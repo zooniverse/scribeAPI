@@ -4,9 +4,9 @@
   <h3>Sample One</h3>
   <div class="modal-field-guide" >
     <img src="/images/t_value_1.png" alt="record_value_image_1">
-    <p>Land: <em>20,000</em><br />
-       Building: <em>20,000</em><br />
-       Total: <em>40,000</em></p>
+    <p>Land: <em>$20,000</em><br />
+       Building: <em>$20,000</em><br />
+       Total: <em>$40,000</em></p>
   </div>
   <h3>Sample Two</h3>
   <div class="modal-field-guide" >
