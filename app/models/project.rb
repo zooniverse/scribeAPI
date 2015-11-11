@@ -90,14 +90,14 @@ class Project
       }
     end
 
-    # retrieve subject data
-    subjects_data = []
-    subject_groups = Subject.group_by_field :status
-    subject_groups.each do |(status, count)|
-      subjects_data << {
-        label: status,
-        value: count
-      }
+    # retrieve subject statuses by workflow:
+    workflow_counts = {}
+    workflows.each do |workflow|
+      workflow_counts[workflow.name] = {total: workflow.subjects.count, data: []}
+      groups = Subject.group_by_field(:status, {workflow_id: workflow.id})
+      groups.each do |(v, count)|
+        workflow_counts[workflow.name][:data] << { label: v, value: count }
+      end
     end
 
     # retrieve classification data in range
@@ -120,10 +120,7 @@ class Project
         count: total_users,
         data: users_data
       },
-      subjects: {
-        count: total_subjects,
-        data: subjects_data
-      },
+      workflow_counts: workflow_counts,
       classifications: {
         count: total_classifications,
         data: classifications_data
