@@ -45,6 +45,7 @@ class User
 
   after_create :apply_configured_user_role
 
+  index({created_at: 1}, {background: true})
 
   ## Confirmable
   # field :confirmation_token,   :type => String
@@ -202,5 +203,23 @@ class User
     end
   end
 
+  # Returns hash mapping distinct values for given field to matching count:
+  def self.group_by_hour(match={})
+    agg = []
+    agg << {"$match" => match } if match
+    agg << {"$group" => { 
+      "_id" => {
+        "y" => { '$year' => '$created_at' },
+        "m" => { '$month' => '$created_at' },
+        "d" => { '$dayOfMonth' => '$created_at' },
+        "h" => { '$hour' => '$created_at' }
+      },
+      "count" => {"$sum" =>  1} 
+    }}
+    self.collection.aggregate(agg).inject({}) do |h, p|
+      h[p["_id"]] = p["count"]
+      h
+    end
+  end
 
 end
