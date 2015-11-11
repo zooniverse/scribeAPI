@@ -38,7 +38,7 @@ class Project
 
   # 10.27.15 until we can sort out a better time to call this method, lets comment it out.
   include CachedStats
-  update_interval 180
+  update_interval 300
 
   has_many :groups, dependent: :destroy
   has_many :subject_sets
@@ -66,7 +66,7 @@ class Project
   def calc_stats
     # amount of days to calculate statistics for
     range_in_days = 7
-    datetime_format = "%Y-%m-%d %H:%M"
+    datetime_format = "%Y-%m-%d %H:00"
 
     # determine date range
     current_time = Time.now.utc # Time.new
@@ -101,14 +101,19 @@ class Project
     end
 
     # retrieve classification data in range
+    classifications_in_range = Classification.group_by_hour({"created_at" => {"$gte" => start_date}}).inject({}) do |h,(rec,total)|
+      hour = "#{rec['y']}-#{rec['m']}-#{'%02d' % rec['d']} #{rec['h']}:00"
+      h[hour] = total
+      h
+    end
+
     classifications_data = []
-    classifications_in_range = Classification.where(:created_at => start_date..end_date).group_by {|d| d.created_at.strftime(datetime_format)}
     (start_date.to_i..end_date.to_i).step(1.hour) do |i_date|
       n_date = Time.at(i_date).utc
       hour = n_date.strftime(datetime_format)
       classifications_data << {
         date: hour,
-        value: classifications_in_range[hour] ? classifications_in_range[hour].size : 0
+        value: classifications_in_range[hour] ? classifications_in_range[hour] : 0
       }
     end
 
