@@ -16,6 +16,9 @@
     "account_username": "zooniverse",
     "project_name": "old-weather"
   },
+  "analytics": {
+    "google_analytics_client_id": "GTM-WDW6V4"
+  },
   "discuss_url": "https://www.zooniverse.org/projects/zooniverse/old-weather/talk/",
   "feedback_form_url": "https://docs.google.com/forms/d/12FTryz5oTuzJE-UtbuMYCH5M77lLo-H74wiN35ORc8U/viewform",
   "terms_map": {

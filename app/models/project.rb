@@ -38,7 +38,7 @@ class Project
 
   # 10.27.15 until we can sort out a better time to call this method, lets comment it out.
   include CachedStats
-  update_interval 180
+  update_interval 300
 
   has_many :groups, dependent: :destroy
   has_many :subject_sets
@@ -65,8 +65,8 @@ class Project
 
   def calc_stats
     # amount of days to calculate statistics for
-    range_in_days = 60
-    datetime_format = "%Y-%m-%d %H:%M"
+    range_in_days = 7
+    datetime_format = "%Y-%m-%d %H:00"
 
     # determine date range
     current_time = Time.now.utc # Time.new
@@ -90,25 +90,30 @@ class Project
       }
     end
 
-    # retrieve subject data
-    subjects_data = []
-    subject_groups = Subject.group_by_field :status
-    subject_groups.each do |(status, count)|
-      subjects_data << {
-        label: status,
-        value: count
-      }
+    # retrieve subject statuses by workflow:
+    workflow_counts = {}
+    workflows.each do |workflow|
+      workflow_counts[workflow.name] = {total: workflow.subjects.count, data: []}
+      groups = Subject.group_by_field(:status, {workflow_id: workflow.id})
+      groups.each do |(v, count)|
+        workflow_counts[workflow.name][:data] << { label: v, value: count }
+      end
     end
 
     # retrieve classification data in range
+    classifications_in_range = Classification.group_by_hour({"created_at" => {"$gte" => start_date}}).inject({}) do |h,(rec,total)|
+      hour = "#{rec['y']}-#{rec['m']}-#{'%02d' % rec['d']} #{rec['h']}:00"
+      h[hour] = total
+      h
+    end
+
     classifications_data = []
-    classifications_in_range = Classification.where(:created_at => start_date..end_date).group_by {|d| d.created_at.strftime(datetime_format)}
     (start_date.to_i..end_date.to_i).step(1.hour) do |i_date|
       n_date = Time.at(i_date).utc
       hour = n_date.strftime(datetime_format)
       classifications_data << {
         date: hour,
-        value: classifications_in_range[hour] ? classifications_in_range[hour].size : 0
+        value: classifications_in_range[hour] ? classifications_in_range[hour] : 0
       }
     end
 
@@ -120,10 +125,7 @@ class Project
         count: total_users,
         data: users_data
       },
-      subjects: {
-        count: total_subjects,
-        data: subjects_data
-      },
+      workflow_counts: workflow_counts,
       classifications: {
         count: total_classifications,
         data: classifications_data
