@@ -1340,7 +1340,7 @@
         "hs_rectangleTool_sickness": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Transcribe the entry for **cable no.**",
+            "instruction": "Transcribe the entry for **sickness**",
             "help": {
                 "title": "Transcription Help",
                 "file": "basic_transcribe_help"
