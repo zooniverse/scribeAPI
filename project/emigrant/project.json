@@ -15,7 +15,8 @@
   },
   "team_emails": [
     "brianfoo@nypl.org",
-    "willaarmstrong@nypl.org"
+    "willaarmstrong@nypl.org",
+    "benjaminvershbow@nypl.org"
   ],
   "team": [
     {
@@ -40,7 +41,7 @@
   ],
 
   "analytics": {
-    "google_analytics_client_id": "UA-68522125-1"
+    "google_analytics_client_id": "UA-69673163-1"
   },
 
   "forum": {

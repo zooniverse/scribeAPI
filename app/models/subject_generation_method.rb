@@ -50,7 +50,7 @@ class SubjectGenerationMethod
 
     {
       parent_subject: classification.subject,
-      created_by_user_id: classification.user.id,
+      created_by_user_id: classification.user.id, # Note this doesn't work if mult users' classifications contribute to generating a single subject
       subject_set: classification.subject.subject_set,
       group_id: classification.subject.subject_set.group_id,
       workflow: workflow_for_new_subject,
