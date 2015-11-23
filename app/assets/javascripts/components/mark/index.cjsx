@@ -44,7 +44,12 @@ module.exports = React.createClass # rename to Classifier
     subjectCurrentPage:  1
 
   componentWillReceiveProps: (new_props) ->
+    console.log 'INDEX::componentWillReceiveProps()'
     @setState showingTutorial: @showTutorialBasedOnUser(new_props.user)
+
+    if new_props.user?
+      console.log 'GOINT TO BOOKMARK'
+
 
   showTutorialBasedOnUser: (user) ->
     # Show tutorial by default
@@ -223,7 +228,6 @@ module.exports = React.createClass # rename to Classifier
               toggleHideOtherMarks={@toggleHideOtherMarks}
               currentSubtool={currentSubtool}
               lightboxHelp={@toggleLightboxHelp}
-              interimMarks={@state.interimMarks}
             />
         }
       </div>
