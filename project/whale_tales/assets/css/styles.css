@@ -1,5 +1,11 @@
 /* Custom Old Weather: Whaling styles that overwrite Scribe defaults */
 
+
+.main-header-item.logo{
+  transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  -ms-transform: rotate(0deg);
+}
 .home-page {
   background-color: inherit;
   color: #efefef;
