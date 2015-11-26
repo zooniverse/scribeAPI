@@ -23,9 +23,9 @@ Would you like to contribute to the codebase? Check out these technical resource
 
 We are launching Scribe with three very different projects by [Zooniverse](https://www.zooniverse.org/) and [The New York Public Library](http://www.nypl.org/):
 
-* [Emigrant City](http://emigrantcity.nypl.org)
-* [Measuring the Anzacs](http://measuringtheanzacs.org)
-* [Old Weather: Whaling] (coming soon)
+* [Emigrant City (NYPL)](http://emigrantcity.nypl.org)
+* [Measuring the Anzacs (Zooniverse)](http://measuringtheanzacs.org)
+* [Old Weather: Whaling (Zooniverse - coming soon)]
 
 
 
