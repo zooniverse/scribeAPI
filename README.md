@@ -1,6 +1,6 @@
 # Scribe 
 
-[Scribe](http://scribeproject.github.io/) is a framework for crowdsourcing the transcription of text-based documents, particularly documents that are not well suited for Optical Character Recognition. It is a collaboration between [Zooniverse](https://www.zooniverse.org/) and [The New York Public Library](http://www.nypl.org/) with generous support from [The National Endowment for the Humanities (NEH)](http://www.neh.gov/).
+[Scribe](http://scribeproject.github.io/) is a framework for crowdsourcing the transcription of text-based documents, particularly documents that are not well suited for Optical Character Recognition. It is a collaboration between [Zooniverse](https://www.zooniverse.org/) and [The New York Public Library Labs](http://labs.nypl.org/) with generous support from [The National Endowment for the Humanities (NEH), Office of Digital Humanities](http://www.neh.gov/divisions/odh).
 
 ## For Project Creators
 
@@ -23,5 +23,9 @@ Would you like to contribute to the codebase? Check out these technical resource
 
 We are launching Scribe with three very different projects by [Zooniverse](https://www.zooniverse.org/) and [The New York Public Library](http://www.nypl.org/):
 
-Coming soon...
+*[Emigrant City](http://emigrantcity.nypl.org)
+*[Measuring the Anzacs](http://measuringtheanzacs.org)
+*[Old Weather: Whaling] (coming soon)
+
+
 
