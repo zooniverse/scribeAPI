@@ -25,7 +25,7 @@ We are launching Scribe with three very different projects by [Zooniverse](https
 
 * [Emigrant City (NYPL)](http://emigrantcity.nypl.org)
 * [Measuring the Anzacs (Zooniverse)](http://measuringtheanzacs.org)
-* [Old Weather: Whaling (Zooniverse - coming soon)]
+* Old Weather: Whaling (Zooniverse - coming soon)
 
 
 
