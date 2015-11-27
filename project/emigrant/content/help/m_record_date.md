@@ -1,5 +1,5 @@
 # Record Date
-<p>Sometimes record dates are hand-written in the form's left-hand margin. Be careful not to confuse the date of valuation with the record date.</p>
+<p>Sometimes record dates are hand-written in the form's left-hand margin. Be careful not to confuse the date of valuation with the record date. If a record notes multiple record dates, mark each individually.</p>
 <div id="accordion-help-modal">
   <h3>Sample Image One</h3>
   <div class="modal-field-guide" >
@@ -16,6 +16,10 @@
   <h3>Sample Image Four</h3>
   <div class="modal-field-guide" >
     <img src="/images/m_date_4.png" alt="record_date_image_4">
+  </div>
+  <h3>Sample Image Five</h3>
+  <div class="modal-field-guide" >
+    <img src="/images/m_date_5.png" alt="record_date_image_5">
   </div>
   <h3>Naming Variants</h3>
   <div>

@@ -16,9 +16,9 @@
     <img src="/images/t_mortgager_3.png" alt="record_mortgager_image_3">
   <p>Enter: <em>Catherine Viemeister</em></p>
   </div>
-  <h3>Sample Three</h3>
-  <div class="modal-field-guide" >
-    <img src="/images/t_mortgager_4.png" alt="record_mortgager_image_3">
-  <p>Enter: <em>Hickory Realty Leo. (Max Marx)</em></p>
-  </div>
+<!--    <h3>Sample Three</h3>-->
+<!--    <div class="modal-field-guide" >-->
+<!--      <img src="/images/t_mortgager_4.png" alt="record_mortgager_image_3">-->
+<!--    <p>Enter: <em>Hickory Realty Leo. (Max Marx)</em></p>-->
+<!--    </div>-->
 </div>

@@ -1,5 +1,5 @@
 # Amount Loaned
-<p>The amount loaned is typically found at or near the bottom of the record.</p>
+<p>The amount loaned is typically found at or near the bottom of the record. If a record notes multiple amounts loaned, mark each individually.</p>
 <div id="accordion-help-modal">
   <h3>Sample Image One</h3>
   <div class="modal-field-guide" >
@@ -16,6 +16,10 @@
   <h3>Sample Image Four</h3>
   <div class="modal-field-guide" >
     <img src="/images/m_loan_4.png" alt="record_loan_4">
+  </div>
+  <h3>Sample Image Five</h3>
+  <div class="modal-field-guide" >
+    <img src="/images/m_loan_5.png" alt="record_loan_5">
   </div>
   <h3>Naming Variants</h3>
   <div>
