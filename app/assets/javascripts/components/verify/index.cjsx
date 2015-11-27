@@ -90,10 +90,13 @@ module.exports = React.createClass # rename to Classifier
                   task={@getCurrentTask()}
                   annotation={@getCurrentClassification().annotation}
                   onShowHelp={@toggleHelp if @getCurrentTask().help?}
+                  badSubject={@state.badSubject}
+                  onBadSubject={@toggleBadSubject}
                   subject={@getCurrentSubject()}
                   onChange={@handleTaskComponentChange}
                   onComplete={@handleTaskComplete}
                   workflow={@getActiveWorkflow()}
+                  project={@props.project}
                 />
               }
             </SubjectViewer>
