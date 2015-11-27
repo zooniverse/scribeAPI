@@ -1,5 +1,5 @@
 # Building Stories & Material
-<p>Some records contain information about the number of stories in a building and/or the building material. Enter the number of stories as it appears, e.g., "3" or "4." Enter the building material as appears, e.g., "brick," "frame," "Brick & stone," "bk and frame." In the next window, you'll have the opportunity to enter additional descriptive information you see.</p>
+<p>Enter the number of stories exactly as it appears, e.g., "3" or "4." Enter the building material exactly as it appears, e.g., "brick," "frame," "Brick & stone," "bk and frame." In the next window, you'll have the opportunity to enter additional descriptive information you see. If a word is abbreviated, transcribe the abbreviation. Include punctuation as it appears on the document.</p>
 <div id="accordion-help-modal">
   <h3>Sample One</h3>
   <div class="modal-field-guide" >

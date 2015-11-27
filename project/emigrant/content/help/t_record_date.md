@@ -1,5 +1,5 @@
 # Record Date
-<p></p>
+<p>Enter the total amount loaned exactly as you see it. If a month or year is abbreviated, transcribe the abbreviation. Include commas, dashes, slashes, periods, and other punctuation as it appears on the document.</p>
 <div id="accordion-help-modal">
   <h3>Sample One</h3>
   <div class="modal-field-guide" >
