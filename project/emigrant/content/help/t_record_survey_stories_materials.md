@@ -26,7 +26,7 @@
        Building Material: <em>Brick</em><br />
   </div>
   <div class="modal-field-guide" >
-    <p>Transcribe the written text exactly as you see it, including whether or not a currency symbol or other punctuation was written. For example, if a dollar sign was printed on the form (but not written), do not transcribe the dollar sign. If a comma or dash appears in the value as written, transcribe the comma or dash. If a word is abbreviated, transcribe the abbreviation.<br />
-    If there is no information to transcribe or if the selected region isn't appropriate for the prompt, select Bad region and move on to the next entry.</p>
+    <p>Transcribe the written text exactly as you see it, including whether or not a currency symbol or other punctuation was written. For example, if a dollar sign was printed on the form (but not written), do not transcribe the dollar sign. If a comma or dash appears in the value as written, transcribe the comma or dash. If a word is abbreviated, transcribe the abbreviation.</p>
+    <p>If there is no information to transcribe or if the selected region isn't appropriate for the prompt, select Bad region and move on to the next entry.</p>
   </div>
 </div>
