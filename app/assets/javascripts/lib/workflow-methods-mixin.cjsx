@@ -172,8 +172,6 @@ module.exports =
       for c, i in s.child_subjects
         if c.id == child_subject_id
           c[k] = v for k,v of props
-    else
-      console.warn "WorkflowMethodsMixin#appendChildSubject: couldn't find subject by ", subject_id
 
   # Add newly acquired child_subject to child_subjects array of relevant subject (i.e. after submitting a subject-generating classification)
   appendChildSubject: (subject_id, child_subject) ->
@@ -183,12 +181,14 @@ module.exports =
       # We've updated an internal object in @state.subjectSets, but framework doesn't notice, so tell it to update:
       @forceUpdate()
 
-    else
-      console.warn "WorkflowMethodsMixin#appendChildSubject: couldn't find subject by ", subject_id
-
   # Get a reference to the local copy of a subject by id regardless of whether viewing subject-sets or just subjects
   getSubjectById: (id) ->
     if @state.subjectSets?
+
+      # If current subject set has no subjects, we're likely in between one subject set
+      # and the next (for which we're currently fetching subjects), so return null:
+      return null if ! @getCurrentSubjectSet().subjects?
+
       for s in @getCurrentSubjectSet().subjects
         return s if s.id == id
     else
