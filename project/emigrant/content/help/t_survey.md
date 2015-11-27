@@ -25,4 +25,8 @@
     <p>Land Dimensions: <em>25 x 100</em><br />
        Building Dimensions: <em>25 x 88</em><br />
   </div>
+  <div class="modal-field-guide" >
+    <p>Transcribe the written text exactly as you see it, including whether or not a currency symbol or other punctuation was written. For example, if a dollar sign was printed on the form (but not written), do not transcribe the dollar sign. If a comma or dash appears in the value as written, transcribe the comma or dash. If a number appears as superscript, transcribe it as a decimal, see Sample Two for an example of this.<br />
+    If there is no information to transcribe or if the selected region isn't appropriate for the prompt, select Bad region and move on to the next entry.</p>
+  </div>
 </div>

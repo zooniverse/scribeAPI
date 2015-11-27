@@ -39,21 +39,21 @@
           "tutorial_mark_2": {
               "next_task": "tutorial_mark_3",
               "help": {
-                  "title": "Making Your Mark",
+                  "title": "Fields",
                   "file": "tutorial_mark_2"
               }
           },
           "tutorial_mark_3": {
               "next_task": "tutorial_mark_4",
               "help": {
-                  "title": "Fields",
+                  "title": "Making Your Mark",
                   "file": "tutorial_mark_3"
               }
           },
           "tutorial_mark_4": {
               "next_task": "tutorial_mark_5",
               "help": {
-                  "title": "Existing Marks",
+                  "title": "Multiple Marks",
                   "file": "tutorial_mark_4"
               }
           },
@@ -65,10 +65,17 @@
               }
           },
           "tutorial_mark_6": {
+              "next_task": "tutorial_mark_7",
+              "help": {
+                  "title": "Turning the Page",
+                  "file": "tutorial_mark_6"
+              }
+          },
+          "tutorial_mark_7": {
               "next_task": null,
               "help": {
                   "title": "Additional Help",
-                  "file": "tutorial_mark_6"
+                  "file": "tutorial_mark_7"
               }
           }
         }
