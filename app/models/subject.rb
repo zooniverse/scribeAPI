@@ -18,6 +18,7 @@ class Subject
   scope :by_parent_subject, -> (parent_subject_id) { where(parent_subject_id: parent_subject_id) }
   scope :by_group, -> (group_id) { where(group_id: group_id) }
   scope :user_has_not_classified, -> (user_id) { where(:classifying_user_ids.ne => user_id)  }
+  scope :user_did_not_create, -> (user_id) { where(:creating_user_ids.ne => user_id)  }
 
   # This is a hash with one entry per deriv; `standard', 'thumbnail', etc
   field :location,                    type: Hash
@@ -49,7 +50,8 @@ class Subject
 
   # Denormalized array of user ids that have classified this subject for quick filtering
   field :classifying_user_ids,        type: Array, default: []
-  field :deleting_user_ids,        type: Array, default: []
+  field :deleting_user_ids,           type: Array, default: []
+  field :creating_user_ids,           type: Array, default: []
 
   belongs_to :workflow
   belongs_to :group
@@ -180,10 +182,10 @@ class Subject
 
   # Returns hash mapping distinct values for given field to matching count:
   def self.group_by_field(field, match={})
-    self.collection.aggregate([
-      {"$group" => { "_id" => "$#{field.to_s}", count: {"$sum" =>  1} }}
-
-    ]).inject({}) do |h, p|
+    agg = []
+    agg << {"$match" => match } if match
+    agg << {"$group" => { "_id" => "$#{field.to_s}", count: {"$sum" =>  1} }}
+    self.collection.aggregate(agg).inject({}) do |h, p|
       h[p["_id"]] = p["count"]
       h
     end
