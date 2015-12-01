@@ -151,7 +151,7 @@
                 "title": "Transcription Help",
                 "file": "basic_transcribe_help"
             },
-            "instruction": "Transcribe the entry for **height (ft)**.",
+            "instruction": "Transcribe the entry for **height (feet)**.",
             "generates_subject_type": "sa_transcribed_height_ft",
             "next_task": null
         },
@@ -162,7 +162,7 @@
                 "title": "Transcription Help",
                 "file": "basic_transcribe_help"
             },
-            "instruction": "Transcribe the entry for **height (in)**.",
+            "instruction": "Transcribe the entry for **height (inches)**.",
             "generates_subject_type": "sa_transcribed_height_in",
             "next_task": null
         },
@@ -1340,7 +1340,7 @@
         "hs_rectangleTool_sickness": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Transcribe the entry for **sickness**",
+            "instruction": "Transcribe the entry for **sickness**.",
             "help": {
                 "title": "Transcription Help",
                 "file": "basic_transcribe_help"
