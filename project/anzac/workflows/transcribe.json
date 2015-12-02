@@ -737,6 +737,28 @@
             "generates_subject_type": "att_transcribed_classification",
             "next_task": null
         },
+        "att_transcribe_m_b_health": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Transcribe the entry for **mental and bodily health**.",
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "generates_subject_type": "att_transcribed_m_b_health",
+            "next_task": null
+        },
+        "att_transcribe_slight_defects": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Transcribe the entry for **slight defects**.",
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "generates_subject_type": "att_transcribed_slight_defects",
+            "next_task": null
+        },
         "att_transcribe_date_medical_exam": {
             "tool": "textTool",
             "tool_config": {},

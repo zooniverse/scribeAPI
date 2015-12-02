@@ -212,6 +212,8 @@
           {"type": "rectangleTool", "label": "Discharged", "color": "#373ACC", "generates_subject_type": "att_transcribe_discharged" },
           {"type": "rectangleTool", "label": "Remarks", "color": "#373ACC", "generates_subject_type": "att_transcribe_remarks" },
           {"type": "rectangleTool", "label": "Classification", "color": "#373ACC", "generates_subject_type": "att_transcribe_classification" },
+          {"type": "rectangleTool", "label": "Mental and Bodily Health", "color": "#373ACC", "generates_subject_type": "att_transcribe_m_b_health" },
+          {"type": "rectangleTool", "label": "Slight Defects", "color": "#373ACC", "generates_subject_type": "att_transcribe_slight_defects" },
           {"type": "rectangleTool", "label": "Date of Medical Exam", "color": "#373ACC", "generates_subject_type": "att_transcribe_date_medical_exam" }
         ]
       }
