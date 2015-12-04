@@ -14,7 +14,7 @@ module.exports =
         groups: groups
         subject_index: page-1 || 0
           , =>
-            console.log 'SKIPPING TO PAGE: ', @state.subject_index + 1
+            # console.log 'SKIPPING TO PAGE: ', @state.subject_index + 1
 
   fetchSubjectSetsBasedOnProps: ->
 
