@@ -14,25 +14,24 @@ API::Application.routes.draw do
 
   get '/current_user',                                        to: "users#logged_in_user"
   post '/tutorial_complete',                                  to: "users#tutorial_complete"
-  post '/subject_set_bookmarks',                              to: "users#subject_set_bookmarks"
-
+  
   get '/projects/stats',                                      to: 'projects#stats'
 
   get '/workflows/:workflow_id/subjects',                     to: 'subjects#index'
   get '/workflows/:workflow_id/subject_sets',                 to: 'subject_sets#index'
-
+  
   # Subjects
   get '/subjects/:subject_id',                                to: 'subjects#show',         defaults: { format: 'json' }
   get '/subjects',                                            to: 'subjects#index',        defaults: { format: 'json' }
   get '/workflows/:workflow_id/subject_sets/:subject_set_id/subjects/:subject_id',    to: 'subject_sets#show',     defaults: { format: 'json' }
-
+  
   # Subject_sets
   resources :subject_sets, only: [:show, :index], :defaults => { :format => 'json' }  # we are using the _url helper for show, so opting to keep this as resources for now
   get '/subject_sets/terms/:field',                           to: 'subject_sets#name_search'
-
+  
   # Classifications
   get '/classifications/terms/:workflow_id/:annotation_key',  to: 'classifications#terms'
-  post '/classifications',                                    to: 'classifications#create'
+  post '/classifications',                                    to: 'classifications#create'  
 
   resources :groups, only: [:show, :index], :defaults => { :format => 'json' }
 
@@ -45,5 +44,5 @@ API::Application.routes.draw do
     post 'stats/recalculate' => 'dashboard#recalculate_stats'
   end
   get 'admin' => 'admin/dashboard#index'
-
+  
 end
