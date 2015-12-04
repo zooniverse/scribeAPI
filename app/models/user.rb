@@ -1,4 +1,4 @@
-class User
+class User 
   include Mongoid::Document
   include Mongoid::Timestamps
   # Include default devise modules. Others available are:
@@ -34,14 +34,11 @@ class User
 
   field :avatar,             :type => String    # URI of image if any
   field :profile_url,        :type => String    # URI of user profile, if any
-
+  
   field :status,             :type => String, :default => 'active'
   field :role,               :type => String, :default => 'user'  # user, admin, team
   field :guest,              :type => Boolean, :default => false
   field :tutorial_complete,  :type => Boolean, :default => false
-
-  # for remembering users' last viewed subject
-  field :subject_set_bookmarks, :type => Hash
 
   has_many :favourites
   has_many :classifications
@@ -86,8 +83,8 @@ class User
     name
   end
 
-  # Steal all the contributions of the given user (e.g. visitor made some
-  # contribs as a guest, then logged in with a real acct and we want to
+  # Steal all the contributions of the given user (e.g. visitor made some 
+  # contribs as a guest, then logged in with a real acct and we want to 
   # transfer the guest contribs to the real acct
   def steal_contributions(other_user)
     [:classifications, :favourites].each do |relation|
@@ -180,7 +177,7 @@ class User
       provider: access_token["provider"]
     }
   end
-
+  
   def self.create_guest_user
     u = create({
       name: 'Guest',
