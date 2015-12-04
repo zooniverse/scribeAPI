@@ -47,10 +47,6 @@ module.exports = React.createClass # rename to Classifier
     console.log 'INDEX::componentWillReceiveProps()'
     @setState showingTutorial: @showTutorialBasedOnUser(new_props.user)
 
-    if new_props.user?
-      console.log 'GOINT TO BOOKMARK'
-
-
   showTutorialBasedOnUser: (user) ->
     # Show tutorial by default
     show = true
