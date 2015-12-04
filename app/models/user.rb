@@ -66,10 +66,12 @@ class User
     self.save!(:validate => false)
   end
 
-  def place_bookmark(subject_set_id,page)
+  def set_subject_bookmark(subject_set_id,page)
     subject_set_id = subject_set_id.to_s
     self.subject_set_bookmarks[subject_set_id] = page
     save!(:validate => false)
+    # update_attribute subject_set_bookmarks[:subject_set_id] = page
+    puts 'BOOKMARKS = ', self.subject_set_bookmarks
   end
 
   def has_favourite?(subject)
