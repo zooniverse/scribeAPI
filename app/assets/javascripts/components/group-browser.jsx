@@ -6,7 +6,7 @@ import { AppContext } from "./app.jsx";
 export default class GroupBrowser extends React.Component {
   constructor() {
     super();
-    this.state = { groups: [] };
+    this.state = { counts: {}, groups: [] };
   }
 
   componentDidMount() {
@@ -19,6 +19,18 @@ export default class GroupBrowser extends React.Component {
           group.showButtons = false;
         }
         this.setState({ groups });
+
+        for (let group of this.state.groups) {
+          API.type("subject_sets")
+            .get({ group_id: group.id })
+            .then(sets => {
+              const counts = {
+                [group.id]: sets[0].counts,
+                ... this.state.counts
+              };
+              this.setState({ counts });
+            });
+        }
       });
   }
 
@@ -54,21 +66,24 @@ export default class GroupBrowser extends React.Component {
         <div className={`button-container ${buttonContainerClasses.join(" ")}`}>
           {(() => {
             const result = [];
-            for (let workflow of this.props.project.workflows) {
-              const workflowCounts = group.stats.workflow_counts != null &&
-                group.stats.workflow_counts[workflow.id];
-              if ((workflowCounts && workflowCounts.active_subjects != null
-                ? workflowCounts.active_subjects
-                : 0) > 0) {
-                result.push(
-                  <a href={`/#/${workflow.name}?group_id=${group.id}`}
-                    className="button small-button"
-                    key={workflow.id}>
-                    {workflow.name.capitalize()}
-                  </a>
-                );
-              } else {
-                result.push(undefined);
+            const groupCounts = this.state.counts[group.id] != null &&
+              this.state.counts[group.id];
+            if (groupCounts) {
+              for (let workflow of this.props.project.workflows) {
+                const workflowCounts = groupCounts[workflow.id] != null &&
+                  groupCounts[workflow.id];
+                if ((workflowCounts != null && workflowCounts.active_subjects
+                  ? workflowCounts.active_subjects
+                  : 0) > 0
+                ) {
+                  result.push(
+                    <a href={`/#/${workflow.name}?group_id=${group.id}`}
+                      className="button small-button"
+                      key={workflow.id}>
+                      {workflow.name.capitalize()}
+                    </a>
+                  );
+                }
               }
             }
 
