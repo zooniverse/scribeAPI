@@ -33,7 +33,7 @@ module.exports =
       #   ).bind(this)
 
     create_url: (subject) ->
-      unless subject.meta_data.zooniverse_id?
+      unless subject?.meta_data.zooniverse_id?
         console.warn "Warning: Meta data field, zooniverse_id, does not exist for this subject."
         return null
       url = "https://www.zooniverse.org/projects/#{@options.account_username}/#{@options.project_name}/talk/subjects/#{subject.meta_data.zooniverse_id}/"
