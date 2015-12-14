@@ -6,10 +6,10 @@ namespace :project do
   task :load, [:project_key, :area] => :environment do |task, args|
     args.with_defaults area: 'all'
 
-    # temproarily
-    Rake::Task['project:create_indexes'].invoke
-    puts "All done!"
-    exit
+    # # temproarily
+    # Rake::Task['project:create_indexes'].invoke
+    # puts "All done!"
+    # exit
 
     # Validate AREA arg:
     if ! ['all','content','style','workflows','subjects'].include? args[:area]
