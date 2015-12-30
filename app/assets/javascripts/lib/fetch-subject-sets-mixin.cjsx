@@ -3,12 +3,14 @@ API              = require './api'
 module.exports =
 
   fetchSubjectSetsBasedOnProps: ->
-
     # Establish a callback for after subjects are fetched - to apply additional state changes:
     postFetchCallback = (subject_sets) =>
       return if subject_sets.length == 0
 
       state = {}
+      # CHECK FOR BOOKMARKS AND DETERMINE THE CURRENT SUBJECT AND PAGE
+      # state.subject_index = 4
+      # state.subjectCurrentPage = 7 #parseInt( state.subject_index / 3 )
 
       # If a specific subject id indicated..
       if @props.query.selected_subject_id?
