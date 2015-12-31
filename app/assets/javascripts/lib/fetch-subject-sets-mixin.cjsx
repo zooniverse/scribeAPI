@@ -11,7 +11,6 @@ module.exports =
 
       state = {}
       state.subject_index = parseInt( Cookies.get(@getCurrentSubject().subject_set_id) - 1 ) || 0
-      console.log 'state.subject_index = ', state.subject_index
 
       # If a specific subject id indicated..
       if @props.query.selected_subject_id?
@@ -20,7 +19,6 @@ module.exports =
 
       # If a specific page is indicated
       else if @props.query.page?
-        console.log '@props.query.page = ', @props.query.page
         state.subject_index = parseInt( @props.query.page - 1 )
 
       # If taskKey specified, now's the time to set that too:
@@ -74,6 +72,7 @@ module.exports =
 
   # This is the main fetch method for subject sets. (fetches via SubjectSetsController#index)
   fetchSubjectSets: (params, callback) ->
+    console.log 'fetchSubjectSets()'
     params = $.extend(workflow_id: @getActiveWorkflow().id, params)
     _callback = (sets) =>
 
@@ -93,6 +92,7 @@ module.exports =
 
   # PB: Setting default limit to 120 because it's a multiple of 3 mandated by thumb browser
   fetchSubjectsForCurrentSubjectSet: (page=1, limit=120, callback) ->
+    console.log 'fetchSubjectsForCurrentSubjectSet()'
     ind = @state.subject_set_index
     sets = @state.subjectSets
 
