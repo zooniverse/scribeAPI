@@ -18,6 +18,11 @@ module.exports =
         # Get the index of the specified subject in the (presumably first & only) subject set:
         state.subject_index = (ind for subj,ind in subject_sets[0].subjects when subj.id == @props.query.selected_subject_id )[0] ? 0
 
+      # If a specific page is indicated
+      else if @props.query.page?
+        console.log '@props.query.page = ', @props.query.page
+        state.subject_index = parseInt( @props.query.page - 1 )
+
       # If taskKey specified, now's the time to set that too:
       state.taskKey = @props.query.mark_task_key if @props.query.mark_task_key
 
