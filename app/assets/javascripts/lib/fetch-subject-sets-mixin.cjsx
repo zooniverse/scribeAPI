@@ -1,4 +1,5 @@
-API              = require './api'
+API     = require './api'
+Cookies = require 'cookies-js'
 
 module.exports =
 
@@ -8,9 +9,8 @@ module.exports =
       return if subject_sets.length == 0
 
       state = {}
-      # CHECK FOR BOOKMARKS AND DETERMINE THE CURRENT SUBJECT AND PAGE
-      # state.subject_index = 4
-      # state.subjectCurrentPage = 7 #parseInt( state.subject_index / 3 )
+      state.subject_index = parseInt( Cookies.get(@getCurrentSubject().subject_set_id) - 1 ) || 0
+      console.log 'state.subject_index = ', state.subject_index
 
       # If a specific subject id indicated..
       if @props.query.selected_subject_id?
