@@ -10,7 +10,7 @@ module.exports =
       return if subject_sets.length == 0
 
       state = {}
-      state.subject_index = parseInt Cookies.get(@getCurrentSubject().subject_set_id)
+      state.subject_index = parseInt Cookies.get(@getCurrentSubject().subject_set_id) || 0
       console.log 'state.subject_index = ', state.subject_index
 
       # If a specific subject id indicated..
