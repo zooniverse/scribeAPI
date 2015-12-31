@@ -5,6 +5,8 @@ markTools               = require 'components/mark/tools'
 transcribeTools         = require 'components/transcribe/tools'
 verifyTools             = require 'components/verify/tools'
 
+Cookies = require 'cookies-js'
+
 module.exports =
 
   # Convenience method for selecting currently active workflow based on active controller
@@ -115,6 +117,8 @@ module.exports =
 
   # used for committing marking tools (by passing annotation)
   createAndCommitClassification: (annotation) ->
+    console.log 'createAndCommitClassification(): SUBJECT = ', @getCurrentSubject()
+    Cookies.set( @getCurrentSubject().subject_set_id, @getCurrentSubject().order )
     classifications = @state.classifications
     classification = new Classification()
     classification.annotation = annotation ? annotation : {} # initialize annotation
@@ -145,7 +149,7 @@ module.exports =
           @forceUpdate()
           window.classifications = @state.classifications # make accessible to console
           callback() if callback?
-    
+
     @commitClassification(classification)
 
   toggleBadSubject: (e, callback) ->

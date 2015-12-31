@@ -1,4 +1,5 @@
-API              = require './api'
+API     = require './api'
+Cookies = require 'cookies-js'
 
 module.exports =
 
@@ -9,6 +10,8 @@ module.exports =
       return if subject_sets.length == 0
 
       state = {}
+      state.subject_index = parseInt Cookies.get(@getCurrentSubject().subject_set_id)
+      console.log 'state.subject_index = ', state.subject_index
 
       # If a specific subject id indicated..
       if @props.query.selected_subject_id?
