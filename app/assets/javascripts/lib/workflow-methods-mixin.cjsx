@@ -95,8 +95,16 @@ module.exports =
         # We found it, move on:
         break
 
+  setBookmarkCookie: () ->
+    expiration = new Date
+    expiration.setMonth( expiration.getMonth() + 6 ) # set to expire after 6 months
+    key = @getActiveWorkflow().name + "_" + @getCurrentSubject().subject_set_id
+    Cookies.set( key, @getCurrentSubject().order, {expires: expiration} )
+
   # used to commit task-level classifications, i.e. not from marking tools
   commitCurrentClassification: () ->
+    # console.log 'commitCurrentClassification()'
+    @setBookmarkCookie()
     classification = @getCurrentClassification()
     classification.subject_id = @getCurrentSubject()?.id
     classification.subject_set_id = @getCurrentSubjectSet().id if @getCurrentSubjectSet()?
@@ -117,8 +125,8 @@ module.exports =
 
   # used for committing marking tools (by passing annotation)
   createAndCommitClassification: (annotation) ->
-    console.log 'createAndCommitClassification(): SUBJECT = ', @getCurrentSubject()
-    Cookies.set( @getCurrentSubject().subject_set_id, @getCurrentSubject().order )
+    # console.log 'createAndCommitClassification()'
+    @setBookmarkCookie()
     classifications = @state.classifications
     classification = new Classification()
     classification.annotation = annotation ? annotation : {} # initialize annotation
@@ -354,16 +362,20 @@ module.exports =
 
   # This is the version of advanceToNextSubject for workflows that consume subject sets (mark)
   _advanceToNextSubjectInSubjectSets: ->
+    console.log '_advanceToNextSubjectInSubjectSets()'
     new_subject_set_index = @state.subject_set_index
     new_subject_index = @state.subject_index + 1
 
     # If we've exhausted pages in this subject set, move to next one:
     if new_subject_index >= @getCurrentSubjectSet().subjects.length
+      console.log '@getCurrentSubjectSet().subjects.length = ', @getCurrentSubjectSet().subjects.length
+      console.log 'exhausted pages in this subject set, move to next one...'
       new_subject_set_index += 1
       new_subject_index = 0
 
     # If we've exhausted all subject sets, collapse in shame
     if new_subject_set_index >= @state.subjectSets.length
+      console.log 'exhausted all subject sets, collapse in shame...'
       if @state.subject_sets_current_page < @state.subject_sets_total_pages
         @fetchSubjectSets page: @state.subject_sets_current_page + 1
       else
@@ -380,13 +392,14 @@ module.exports =
         console.warn "NO MORE SUBJECT SETS"
       return
 
-    # console.log "Mark#index Advancing to subject_set_index #{new_subject_set_index} (of #{@state.subjectSets.length}), subject_index #{new_subject_index} (of #{@state.subjectSets[new_subject_set_index].subjects.length})"
+    console.log "Mark#index Advancing to subject_set_index #{new_subject_set_index} (of #{@state.subjectSets.length}), subject_index #{new_subject_index} (of #{@state.subjectSets[new_subject_set_index].subjects.length})"
 
     @setState
       subject_set_index: new_subject_set_index
       subject_index: new_subject_index
       taskKey: @getActiveWorkflow().first_task
       currentSubToolIndex: 0, () =>
+        console.log 'calling fetchSubjectsForCurrentSubjectSet()'
         @fetchSubjectsForCurrentSubjectSet(1, 100)
 
   commitClassificationAndContinue: (d) ->
