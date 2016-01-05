@@ -10,7 +10,10 @@ module.exports =
       return if subject_sets.length == 0
 
       state = {}
-      state.subject_index = parseInt( Cookies.get(@getCurrentSubject().subject_set_id) - 1 ) || 0
+
+      # retrieve any existing bookmark for current subject set
+      key = @getActiveWorkflow().name + '_' + @getCurrentSubject().subject_set_id
+      state.subject_index = parseInt( Cookies.get(key) - 1 ) || 0
 
       # If a specific subject id indicated..
       if @props.query.selected_subject_id?

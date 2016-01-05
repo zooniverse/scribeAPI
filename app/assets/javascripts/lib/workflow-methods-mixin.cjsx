@@ -103,6 +103,8 @@ module.exports =
 
   # used to commit task-level classifications, i.e. not from marking tools
   commitCurrentClassification: () ->
+    # console.log 'commitCurrentClassification()'
+    @setBookmarkCookie()
     classification = @getCurrentClassification()
     classification.subject_id = @getCurrentSubject()?.id
     classification.subject_set_id = @getCurrentSubjectSet().id if @getCurrentSubjectSet()?
@@ -123,6 +125,7 @@ module.exports =
 
   # used for committing marking tools (by passing annotation)
   createAndCommitClassification: (annotation) ->
+    # console.log 'createAndCommitClassification()'
     @setBookmarkCookie()
     classifications = @state.classifications
     classification = new Classification()
