@@ -72,7 +72,6 @@ module.exports =
 
   # This is the main fetch method for subject sets. (fetches via SubjectSetsController#index)
   fetchSubjectSets: (params, callback) ->
-    console.log 'fetchSubjectSets()'
     params = $.extend(workflow_id: @getActiveWorkflow().id, params)
     _callback = (sets) =>
 
@@ -92,7 +91,6 @@ module.exports =
 
   # PB: Setting default limit to 120 because it's a multiple of 3 mandated by thumb browser
   fetchSubjectsForCurrentSubjectSet: (page=1, limit=120, callback) ->
-    console.log 'fetchSubjectsForCurrentSubjectSet()'
     ind = @state.subject_set_index
     sets = @state.subjectSets
 

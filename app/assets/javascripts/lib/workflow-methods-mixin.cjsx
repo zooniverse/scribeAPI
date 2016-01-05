@@ -95,6 +95,12 @@ module.exports =
         # We found it, move on:
         break
 
+  setBookmarkCookie: () ->
+    expiration = new Date
+    expiration.setMonth( expiration.getMonth() + 6 ) # set to expire after 6 months
+    key = @getActiveWorkflow().name + "_" + @getCurrentSubject().subject_set_id
+    Cookies.set( key, @getCurrentSubject().order, {expires: expiration} )
+
   # used to commit task-level classifications, i.e. not from marking tools
   commitCurrentClassification: () ->
     classification = @getCurrentClassification()
@@ -117,7 +123,7 @@ module.exports =
 
   # used for committing marking tools (by passing annotation)
   createAndCommitClassification: (annotation) ->
-    Cookies.set( @getCurrentSubject().subject_set_id, @getCurrentSubject().order )
+    @setBookmarkCookie()
     classifications = @state.classifications
     classification = new Classification()
     classification.annotation = annotation ? annotation : {} # initialize annotation
@@ -359,6 +365,7 @@ module.exports =
 
     # If we've exhausted pages in this subject set, move to next one:
     if new_subject_index >= @getCurrentSubjectSet().subjects.length
+      console.log '@getCurrentSubjectSet().subjects.length = ', @getCurrentSubjectSet().subjects.length
       console.log 'exhausted pages in this subject set, move to next one...'
       new_subject_set_index += 1
       new_subject_index = 0
@@ -389,6 +396,7 @@ module.exports =
       subject_index: new_subject_index
       taskKey: @getActiveWorkflow().first_task
       currentSubToolIndex: 0, () =>
+        console.log 'calling fetchSubjectsForCurrentSubjectSet()'
         @fetchSubjectsForCurrentSubjectSet(1, 100)
 
   commitClassificationAndContinue: (d) ->
