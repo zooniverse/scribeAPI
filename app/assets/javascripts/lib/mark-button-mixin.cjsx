@@ -93,7 +93,7 @@ module.exports =
         console.log 'All done. Nothing left to do here.'
       else
         # @setState locked: true
-        console.log 'WARNING: Unknown state in respondToMarkState()'
+        # console.log 'WARNING: Unknown state in respondToMarkState()'
 
   getMarkStyle: (mark, selected, is_prior_mark) ->
     atts =
