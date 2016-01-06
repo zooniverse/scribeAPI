@@ -33,6 +33,7 @@ module.exports =
       #   ).bind(this)
 
     create_url: (subject) ->
+      return unless subject?
       unless subject.meta_data.zooniverse_id?
         console.warn "Warning: Meta data field, zooniverse_id, does not exist for this subject."
         return null
