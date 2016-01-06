@@ -1362,7 +1362,7 @@
         "hs_rectangleTool_sickness": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Transcribe the entry for **sickness**.",
+            "instruction": "Transcribe the cable no. for **sickness**.",
             "help": {
                 "title": "Transcription Help",
                 "file": "basic_transcribe_help"
@@ -1373,7 +1373,7 @@
         "hs_service_sickness_date": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Transcribe the entry for **date of the wound**.",
+            "instruction": "Transcribe the entry for **date of the sickness**.",
             "help": {
                 "title": "Transcription Help",
                 "file": "basic_transcribe_help"
@@ -1389,18 +1389,19 @@
                 "title": "Transcription Help",
                 "file": "basic_transcribe_help"
             },
-            "generates_subject_type": "hs_transcribed_wounds_location.",
+            "generates_subject_type": "hs_transcribed_sickness_location.",
             "next_task": "hs_sickness_mssg_remarks"
         },
         "hs_sickness_mssg_remarks": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Transcribe any **messages or remarks** associated with the wound.",
+            "instruction": "Transcribe any **messages or remarks** associated with the sickness.",
             "help": {
                 "title": "Transcription Help",
                 "file": "basic_transcribe_help"
             },
-            "generates_subject_type": null
+            "generates_subject_type": "hs_transcribed_sickness_mssg_remarks",
+            "next_task": null
         }
     }
 }
