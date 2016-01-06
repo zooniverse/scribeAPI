@@ -14,6 +14,7 @@ namespace :project do
     puts "Creating new indexes"
     Subject.create_indexes
     puts "Done with index task"
+    puts "Time finished", Time.now
     exit
 
     # Validate AREA arg:
