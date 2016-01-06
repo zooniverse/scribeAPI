@@ -11,7 +11,7 @@ class Subject
   scope :active_non_root, -> { where(:type.ne => 'root', :status => 'active') }
   scope :active, -> { where(status: 'active').asc(:order)  }
   scope :not_bad, -> { where(:status.ne => 'bad').asc(:order)  }
-  scope :visible_marks, -> { where(:status.in => {'active', 'retired'}, :region.ne => nil).asc(:order)  }
+  scope :visible_marks, -> { where(:status.in => ['active', 'retired'], :region.ne => nil).asc(:order)  }
   scope :complete, -> { where(status: 'complete').asc(:order)  }
   scope :by_workflow, -> (workflow_id) { where(workflow_id: workflow_id)  }
   scope :by_subject_set, -> (subject_set_id) { where(subject_set_id: subject_set_id).asc(:order)  }
