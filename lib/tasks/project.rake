@@ -6,6 +6,16 @@ namespace :project do
   task :load, [:project_key, :area] => :environment do |task, args|
     args.with_defaults area: 'all'
 
+    # temporary
+    puts "Starting", Time.now
+    puts "Removing Subject Indexes"
+    Subject.remove_indexes
+
+    puts "Creating new indexes"
+    Subject.create_indexes
+    puts "Done with index task"
+    exit
+
     # Validate AREA arg:
     if ! ['all','content','style','workflows','subjects'].include? args[:area]
       puts "Unknown AREA given: #{args[:area]}"

@@ -69,7 +69,7 @@ class Subject
   after_create :increment_parents_subject_count_by_one, :if => :parent_subject
 
   # Index for typical query when fetching subjects for Transcribe/Verify:
-  index({workflow_id: 1, status: 1, order:1, classifying_user_ids: 1}, {background: true})
+  index({workflow_id: 1, status: 1, order: 1, classifying_user_ids: 1}, {background: true})
 
   # # Index for Marking by subject set:
   index({subject_set_id: 1, status: 1})
