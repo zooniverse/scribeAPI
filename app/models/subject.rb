@@ -69,11 +69,15 @@ class Subject
   after_create :increment_parents_subject_count_by_one, :if => :parent_subject
 
   # Index for typical query when fetching subjects for Transcribe/Verify:
-  index({"status" => 1, "workflow_id" => 1, "classifying_user_ids" => 1}, {background: true})
-  # Index for Marking by subject set:
-  index({"type" => 1, "subject_set_id" => 1}, {background: true})
+  index({workflow_id: 1, status: 1, order:1, classifying_user_ids: 1}, {background: true})
+
+  # # Index for Marking by subject set:
+  index({subject_set_id: 1, status: 1})
+  index({subject_set_id: 1, type: 1, order: 1})
+  index({subject_set_id: 1, order: 1})
+  
   # Index for fetching child subjects for a parent subject, optionally filtering by region NOT NULL
-  index({parent_subject_id: 1, status: 1, region: 1})
+  index( { parent_subject_id: 1, status: 1, region: 1, order: 1 } )
   
 
   def thumbnail
