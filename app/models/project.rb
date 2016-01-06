@@ -34,7 +34,7 @@ class Project
   field  :tutorial,          type: Hash
   field  :terms_map,         type: Hash, default: {} # Hash mapping internal terms to project appropriate terms (e.g. 'group'=>'ship')
   field  :status,            type: String, default: 'inactive'
-  field :analytics,          type: Hash
+  field  :analytics,          type: Hash
 
   # 10.27.15 until we can sort out a better time to call this method, lets comment it out.
   include CachedStats

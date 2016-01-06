@@ -43,7 +43,7 @@
   "blog_url": "http://blog.measuringtheanzacs.org",
   "discuss_url": "https://www.zooniverse.org/projects/zooniverse/measuring-the-anzacs/talk",
   "analytics": {
-    "google_analytics_client_id": "GTM-WDW6V4"
+    "google_tag_manager_client_id": "GTM-WDW6V4"
   },
   "metadata_search": {
     "fields": [
