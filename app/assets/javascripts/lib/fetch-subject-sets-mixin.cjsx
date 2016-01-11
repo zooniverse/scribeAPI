@@ -4,7 +4,6 @@ Cookies = require 'cookies-js'
 module.exports =
 
   fetchSubjectSetsBasedOnProps: ->
-
     # Establish a callback for after subjects are fetched - to apply additional state changes:
     postFetchCallback = (subject_sets) =>
       return if subject_sets.length == 0

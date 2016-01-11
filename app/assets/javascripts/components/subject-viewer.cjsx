@@ -271,7 +271,7 @@ module.exports = React.createClass
     # Previous marks are really just the region hashes of all child subjects
     marks = []
     currentSubtool = props.currentSubtool
-    for child_subject, i in props.subject.child_subjects
+    for child_subject, i in props.subject?.child_subjects
       continue if ! child_subject?
       marks[i] = child_subject.region
       marks[i].subject_id = child_subject.id # child_subject.region.subject_id = child_subject.id # copy id field into region (not ideal)

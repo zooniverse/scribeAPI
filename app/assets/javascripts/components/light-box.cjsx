@@ -19,8 +19,11 @@ module.exports = React.createClass
     first: @props.subject_set.subjects[0]
     folded: false
 
-  handleFoldClick: (e)->
+  componentWillReceiveProps: ->
+    page = Math.floor( @props.subject_index/3 )
+    @setState first: @props.subject_set.subjects[ 3 * page ]
 
+  handleFoldClick: (e)->
     @setState folded: !@state.folded
 
   lightBoxMessage:=>
