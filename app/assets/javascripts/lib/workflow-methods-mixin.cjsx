@@ -104,7 +104,7 @@ module.exports =
   # used to commit task-level classifications, i.e. not from marking tools
   commitCurrentClassification: () ->
     # console.log 'commitCurrentClassification()'
-    @setBookmarkCookie()
+    # @setBookmarkCookie()
     classification = @getCurrentClassification()
     classification.subject_id = @getCurrentSubject()?.id
     classification.subject_set_id = @getCurrentSubjectSet().id if @getCurrentSubjectSet()?
