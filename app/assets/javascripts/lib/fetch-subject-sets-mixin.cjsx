@@ -1,4 +1,5 @@
-API              = require './api'
+API     = require './api'
+Cookies = require 'cookies-js'
 
 module.exports =
 
@@ -10,10 +11,18 @@ module.exports =
 
       state = {}
 
+      # retrieve any existing bookmark for current subject set
+      key = @getActiveWorkflow().name + '_' + @getCurrentSubject().subject_set_id
+      state.subject_index = parseInt( Cookies.get(key) - 1 ) || 0
+
       # If a specific subject id indicated..
       if @props.query.selected_subject_id?
         # Get the index of the specified subject in the (presumably first & only) subject set:
         state.subject_index = (ind for subj,ind in subject_sets[0].subjects when subj.id == @props.query.selected_subject_id )[0] ? 0
+
+      # If a specific page is indicated
+      else if @props.query.page?
+        state.subject_index = parseInt( @props.query.page - 1 )
 
       # If taskKey specified, now's the time to set that too:
       state.taskKey = @props.query.mark_task_key if @props.query.mark_task_key
