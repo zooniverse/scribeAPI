@@ -13,7 +13,7 @@ module.exports = React.createClass
     nextPage: React.PropTypes.func.isRequired
     prevPage: React.PropTypes.func.isRequired
     totalSubjectPages: React.PropTypes.number
-    subjectCurrentPage: React.PropTypes.number
+    currentSubjectPage: React.PropTypes.number
 
   getInitialState:->
     first: @props.subject_set.subjects[0]
@@ -129,14 +129,14 @@ module.exports = React.createClass
 
   # determines the back button css
   backButtonDisable:(indexOfFirst) ->
-    if @props.subjectCurrentPage == 1 && @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
+    if @props.currentSubjectPage == 1 && @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
       return "disabled"
     else
       return ""
 
   # determines the forward button css
   forwardButtonDisable: (third) ->
-    if @props.subjectCurrentPage == @props.totalSubjectPages && (@props.subject_set.subjects.length <= 3 || third == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
+    if @props.currentSubjectPage == @props.totalSubjectPages && (@props.subject_set.subjects.length <= 3 || third == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
       return "disabled"
     else
       return ""
@@ -151,10 +151,10 @@ module.exports = React.createClass
   # # controlls navigation of current page of subjects as well as the method that pull a new page of subjects
   moveBack: (indexOfFirst)->
     # if the current page of subjects is the first page of subjects, and the first <li> is the first subject in the page of subjects.
-    if @props.subjectCurrentPage == 1 && @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
+    if @props.currentSubjectPage == 1 && @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
       console.log 'moveBackward: A'
       return
-    else if @props.subjectCurrentPage > 1 && @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
+    else if @props.currentSubjectPage > 1 && @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
       console.log 'moveBackward: A'
       @props.prevPage( => @setState first: @props.subject_set.subjects[0] )
     else
@@ -163,12 +163,12 @@ module.exports = React.createClass
 
   moveForward: (indexOfFirst, third, second, first)->
     console.log 'TOTAL SUBJECT PAGES = ', @props.totalSubjectPages
-    console.log 'CURRENT SUBJECT PAGE = ', @props.subjectCurrentPage
+    console.log 'CURRENT SUBJECT PAGE = ', @props.currentSubjectPage
 
 
 
     # if the current page of subjects is the last page of the subject_set and the 2nd or 3rd <li> is the last <li> contain the last subjects in the subject_set
-    if @props.subjectCurrentPage == @props.totalSubjectPages && (third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || second == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || first == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
+    if @props.currentSubjectPage == @props.totalSubjectPages && (third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || second == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || first == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
       console.log 'TOTAL SUBJECT PAGES = ', @props.totalSubjectPages
       console.log 'moveForward: A'
       console.log 'THAT WAS THE LAST PAGE IN THE LOGBOOK!'
@@ -176,7 +176,7 @@ module.exports = React.createClass
 
     # FETCH SUBJECTS FROM NEXT PAGINATION
     # if the current page of subjects is NOT the last page of the subject_set and the 2nd or 3rd <li> is the last <li> contain the last subjects in the subject_set
-    else if @props.subjectCurrentPage < @props.totalSubjectPages && (third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || second == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
+    else if @props.currentSubjectPage < @props.totalSubjectPages && (third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || second == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
       console.log 'moveForward: B'
       @props.nextPage( => @setState first: @props.subject_set.subjects[0])
       # NOTE: for some reason, LightBox does not receive correct value for @props.subject_index, which has led to this awkard callback function above --STI

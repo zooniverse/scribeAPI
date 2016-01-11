@@ -110,9 +110,9 @@ module.exports =
       sets[ind].subjects = subjs
 
       @setState
-        subjectSets:                sets
-        subject_current_page:       subjs[0].getMeta('current_page')
-        subjects_total_pages:       subjs[0].getMeta('total_pages'), () =>
+        subjectSets:          sets
+        current_subject_page: subjs[0].getMeta('current_page')
+        total_subject_pages:  subjs[0].getMeta('total_pages'), () =>
           callback? sets
 
 
