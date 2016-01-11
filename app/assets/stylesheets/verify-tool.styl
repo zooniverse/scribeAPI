@@ -10,11 +10,21 @@
     text-align left
 
     li
+
+      button.edit-button
+        z-index 2
+        position absolute
+        right 0
+        top 0
+
       a
         color black
         text-decoration none
+        position relative
+        display block
 
         ul.choice
+          z-index 1
           margin 1em 0
           padding 0.5em
 
@@ -26,9 +36,13 @@
           span
             font-weight bold
 
+            &.value
+              font-family "courier new", "courier", monospace
+
             &.label
               padding-right 10px
               font-weight normal
 
           &:hover
             opacity 1
+

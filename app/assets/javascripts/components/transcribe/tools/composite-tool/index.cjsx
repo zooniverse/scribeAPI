@@ -55,7 +55,7 @@ CompositeTool = React.createClass
   # If there are more inputs, move focus to next input
   # Otherwise commit annotation (which is default behavior when there's only one input
   handleCompletedField: ->
-    field_keys = (c.value for c of @props.task.tool_config.options)
+    field_keys = (c.value for c in @props.task.tool_config.options)
     next_field_key = field_keys[ field_keys.indexOf(@state.active_field_key) + 1 ]
 
     if next_field_key?
@@ -63,7 +63,9 @@ CompositeTool = React.createClass
         , =>
           @forceUpdate()
     else
-      @commitAnnotation()
+      # Default to first field key (in case we're repeating this task)
+      @setState active_field_key: field_keys[0], () =>
+        @commitAnnotation()
 
   # User moved focus to an input:
   handleFieldFocus: (annotation_key) ->
@@ -79,6 +81,8 @@ CompositeTool = React.createClass
     if @props.transcribeMode is 'page' or @props.transcribeMode is 'single'
       if @props.isLastSubject and not @props.task.next_task?
         @props.returnToMarking()
+    else if @props.transcribeMode == 'verify'
+      @transitionTo 'verify'
 
   # this can go into a mixin? (common across all transcribe tools)
   returnToMarking: ->
@@ -109,6 +113,8 @@ CompositeTool = React.createClass
       else
         if @props.isLastSubject and ( @props.transcribeMode is 'page' or @props.transcribeMode is 'single' )
           'Return to Marking'
+        else if @props.transcribeMode is 'verify'
+          'Return to Verify'
         else 'Next Entry'
 
     buttons.push <SmallButton label={buttonLabel} key="done-button" onClick={@commitAnnotation} />

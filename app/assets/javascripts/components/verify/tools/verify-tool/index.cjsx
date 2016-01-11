@@ -64,6 +64,11 @@ VerifyTool = React.createClass
         y = data.y + yPad
     return {x,y}
 
+  editAnnotation: (ann) ->
+    url = "/#/transcribe/#{@props.subject.parent_subject_id}?scrollX=#{window.scrollX}&scrollY=#{window.scrollY}&from=verify"
+    url += "&" + ("annotation[#{k}]=#{v}" for k,v of ann).join('&')
+    window.location.href = url
+
   render: ->
     # return null unless @props.viewerSize? && @props.subject?
     # return null if ! @props.scale? || ! @props.scale.horizontal?
@@ -115,7 +120,7 @@ VerifyTool = React.createClass
                     # TODO: hack to approximate a friendly label in emigrant; should pull from original label:
                     label = label.replace(/em_/,'')
                     label = label.replace(/_/g, ' ')
-                    <li key={k}><span className="label">{label}</span> {v}</li>
+                    <li key={k}><span className="label">{label}</span> <span className="value">{v}</span></li>
                 }
                 </ul>
               </a>

@@ -28,12 +28,12 @@ module.exports =
       markStatus: markStatus
       locked: ''
 
-  checkLocation: ()->
+  inTranscribeWorkflow: ()->
     pattern = new RegExp('^(#\/transcribe)')
     pattern.test("#{window.location.hash}")
 
   renderMarkButton: ->
-    return null if @checkLocation()
+    return null if @inTranscribeWorkflow()
     <MarkButton
       tool={this}
       onDrag={@onClickMarkButton}
