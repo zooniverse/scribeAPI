@@ -341,6 +341,7 @@ module.exports =
 
   # This is the version of advanceToNextSubject for workflows that consume subjects (transcribe,verify)
   _advanceToNextSubjectInSubjects: ->
+    # console.log '_advanceToNextSubjectInSubjects()'
     if @state.subject_index + 1 < @state.subjects.length
       next_index = @state.subject_index + 1
       next_subject = @state.subjects[next_index]
@@ -362,19 +363,27 @@ module.exports =
 
   # This is the version of advanceToNextSubject for workflows that consume subject sets (mark)
   _advanceToNextSubjectInSubjectSets: ->
-    console.log '_advanceToNextSubjectInSubjectSets()'
+    # console.log '_advanceToNextSubjectInSubjectSets()'
     new_subject_set_index = @state.subject_set_index
     new_subject_index = @state.subject_index + 1
 
     # If we've exhausted pages in this subject set, move to next one:
+    # modified to handle paginations better -STI
     if new_subject_index >= @getCurrentSubjectSet().subjects.length
-      console.log '@getCurrentSubjectSet().subjects.length = ', @getCurrentSubjectSet().subjects.length
-      console.log 'exhausted pages in this subject set, move to next one...'
+      # console.log '@getCurrentSubjectSet().subjects.length = ', @getCurrentSubjectSet().subjects.length
+      # console.log 'exhausted pages in this subject set, move to next one...'
       new_subject_set_index += 1
       new_subject_index = 0
 
+      @setState
+        subject_index: new_subject_index
+        current_subject_page: @state.current_subject_page + 1
+        taskKey: @getActiveWorkflow().first_task, =>
+          @fetchSubjectsForCurrentSubjectSet @state.current_subject_page, 3
+      return
+
     # If we've exhausted all subject sets, collapse in shame
-    if new_subject_set_index >= @state.subjectSets.length
+    else if new_subject_set_index >= @state.subjectSets.length
       console.log 'exhausted all subject sets, collapse in shame...'
       if @state.subject_sets_current_page < @state.subject_sets_total_pages
         @fetchSubjectSets page: @state.subject_sets_current_page + 1
@@ -392,15 +401,14 @@ module.exports =
         console.warn "NO MORE SUBJECT SETS"
       return
 
-    console.log "Mark#index Advancing to subject_set_index #{new_subject_set_index} (of #{@state.subjectSets.length}), subject_index #{new_subject_index} (of #{@state.subjectSets[new_subject_set_index].subjects.length})"
+    # console.log "Mark#index Advancing to subject_set_index #{new_subject_set_index} (of #{@state.subjectSets.length}), subject_index #{new_subject_index} (of #{@state.subjectSets[new_subject_set_index].subjects.length})"
 
     @setState
       subject_set_index: new_subject_set_index
       subject_index: new_subject_index
       taskKey: @getActiveWorkflow().first_task
       currentSubToolIndex: 0, () =>
-        console.log 'calling fetchSubjectsForCurrentSubjectSet()'
-        @fetchSubjectsForCurrentSubjectSet(1, 100)
+        @fetchSubjectsForCurrentSubjectSet(@state.current_subject_page, 3)
 
   commitClassificationAndContinue: (d) ->
     @commitCurrentClassification()

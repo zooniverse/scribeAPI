@@ -13,15 +13,11 @@ module.exports = React.createClass
     nextPage: React.PropTypes.func.isRequired
     prevPage: React.PropTypes.func.isRequired
     totalSubjectPages: React.PropTypes.number
-    subjectCurrentPage: React.PropTypes.number
+    currentSubjectPage: React.PropTypes.number
 
   getInitialState:->
     first: @props.subject_set.subjects[0]
     folded: false
-
-  componentWillReceiveProps: ->
-    page = Math.floor( @props.subject_index/3 )
-    @setState first: @props.subject_set.subjects[ 3 * page ]
 
   handleFoldClick: (e)->
     @setState folded: !@state.folded
@@ -33,9 +29,11 @@ module.exports = React.createClass
       text = "Hide Lightbox"
 
   render: ->
+    # console.log 'LIGHT-BOX::render(), @state.first = ', @state.first
     # window.subjects = @props.subject_set.subjects # pb ?
     return null if @props.subject_set.subjects.length <= 1
     indexOfFirst = @findSubjectIndex(@state.first)
+    first = @props.subject_set.subjects[indexOfFirst]
     second = @props.subject_set.subjects[indexOfFirst+1]
     third = @props.subject_set.subjects[indexOfFirst+2]
 
@@ -111,7 +109,7 @@ module.exports = React.createClass
           </ul>
 
           <ActionButton type={"back"} text="BACK" onClick={@moveBack.bind(this, indexOfFirst)} classes={@backButtonDisable(indexOfFirst)} />
-          <ActionButton type={"next"} text="NEXT" onClick={@moveForward.bind(this, indexOfFirst, third, second)} classes={@forwardButtonDisable(third if third?)} />
+          <ActionButton type={"next"} text="NEXT" onClick={@moveForward.bind(this, indexOfFirst, third, second, first)} classes={@forwardButtonDisable(third if third?)} />
 
         </div>
 
@@ -125,14 +123,14 @@ module.exports = React.createClass
 
   # determines the back button css
   backButtonDisable:(indexOfFirst) ->
-    if @props.subjectCurrentPage == 1 && @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
+    if @props.currentSubjectPage == 1 && @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
       return "disabled"
     else
       return ""
 
   # determines the forward button css
   forwardButtonDisable: (third) ->
-    if @props.subjectCurrentPage == @props.totalSubjectPages && (@props.subject_set.subjects.length <= 3 || third == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
+    if @props.currentSubjectPage == @props.totalSubjectPages && (@props.subject_set.subjects.length <= 3 || third == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
       return "disabled"
     else
       return ""
@@ -146,22 +144,28 @@ module.exports = React.createClass
   # allows user to naviagate back though a subject_set
   # # controlls navigation of current page of subjects as well as the method that pull a new page of subjects
   moveBack: (indexOfFirst)->
-    # if the current page of subjects is the first page of subjects, and the first <li> is the first subject in the page of subjects.
-    return if @props.subjectCurrentPage == 1 && @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
-    else if @props.subjectCurrentPage > 1 && @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
+    # ALREADY AT FIRST SUBJECT!
+    if @props.currentSubjectPage == 1 && @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
+      return
+
+    # GO BACK ONE PAGINATION
+    else if @props.currentSubjectPage > 1 && @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
       @props.prevPage( => @setState first: @props.subject_set.subjects[0] )
+
+    # JUMP BACK 3 SUBJECTS
     else
       @setState first: @props.subject_set.subjects[indexOfFirst-3]
 
-  moveForward: (indexOfFirst, third, second)->
-    # if the current page of subjects is the last page of the subject_set and the 2nd or 3rd <li> is the last <li> contain the last subjects in the subject_set
-    return if @props.subjectCurrentPage == @props.totalSubjectPages && (third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || second == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
-    # # if the current page of subjects is NOT the last page of the subject_set and the 2nd or 3rd <li> is the last <li> contain the last subjects in the subject_set
-    if @props.subjectCurrentPage < @props.totalSubjectPages && (third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || second == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
+  moveForward: (indexOfFirst, third, second, first)->
+    # REACHED LAST PAGE IN SUBJECT SET!
+    return if @props.currentSubjectPage == @props.totalSubjectPages && (third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || second == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || first == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
+
+    # FETCH SUBJECTS FROM NEXT PAGINATION
+    else if @props.currentSubjectPage < @props.totalSubjectPages && (third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || second == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
       @props.nextPage( => @setState first: @props.subject_set.subjects[0])
       # NOTE: for some reason, LightBox does not receive correct value for @props.subject_index, which has led to this awkard callback function above --STI
       # @setState first: @props.subject_set.subjects[0], => @forceUpdate()
 
-    # there are further subjects to see in the currently loaded page
+    # LOAD NEXT 3 SUBJECTS INTO LIGHT BOX
     else
       @setState first: @props.subject_set.subjects[indexOfFirst+3]
