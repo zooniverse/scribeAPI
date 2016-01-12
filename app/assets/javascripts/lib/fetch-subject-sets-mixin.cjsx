@@ -107,7 +107,6 @@ module.exports =
     ind = @state.subject_set_index
     sets = @state.subjectSets
 
-
     # page & limit not passed when called this way for some reason, so we have to manually construct query:
     # sets[ind].get('subjects', {page: page, limit: limit}).then (subjs) =>
     params =
@@ -119,7 +118,6 @@ module.exports =
 
     process_subjects = (subjs) =>
       sets[ind].subjects = subjs
-
       @setState
         subjectSets:          sets
         current_subject_page: subjs[0].getMeta('current_page')

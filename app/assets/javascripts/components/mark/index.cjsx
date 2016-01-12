@@ -41,7 +41,7 @@ module.exports = React.createClass # rename to Classifier
     showingTutorial:     @showTutorialBasedOnUser @props.user
     lightboxHelp:        false
     activeSubjectHelper: null
-    currentSubjectPage:  1
+    current_subject_page:  1
 
   componentWillReceiveProps: (new_props) ->
     @setState showingTutorial: @showTutorialBasedOnUser(new_props.user)
@@ -154,12 +154,12 @@ module.exports = React.createClass # rename to Classifier
     @advanceToNextSubject()
 
   nextPage: (callback_fn)->
-    new_page = @state.currentSubjectPage + 1
-    @setState currentSubjectPage: new_page, => @fetchSubjectsForCurrentSubjectSet(new_page, null, callback_fn)
+    new_page = @state.current_subject_page + 1
+    @setState current_subject_page: new_page, => @fetchSubjectsForCurrentSubjectSet(new_page, null, callback_fn)
 
   prevPage: (callback_fn) ->
-    new_page = @state.currentSubjectPage - 1
-    @setState currentSubjectPage: new_page
+    new_page = @state.current_subject_page - 1
+    @setState current_subject_page: new_page
     @fetchSubjectsForCurrentSubjectSet(new_page, null, callback_fn)
 
   showSubjectHelp: (subject_type) ->
