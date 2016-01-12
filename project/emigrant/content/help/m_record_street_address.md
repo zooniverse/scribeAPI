@@ -1,5 +1,5 @@
 # Street Address
-<p>Put a box around the street address of the mortgage's property.</p>
+<p>Put a box around the street address of the mortgage's property. If a record notes multiple addresses, mark each individually.</p>
 <div id="accordion-help-modal">
   <h3>Sample Image One</h3>
   <div class="modal-field-guide" >

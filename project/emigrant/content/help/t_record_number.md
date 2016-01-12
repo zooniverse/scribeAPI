@@ -1,5 +1,5 @@
 # Record Number
-<p></p>
+<p>Transcribe the record number as it appears.</p>
 <div id="accordion-help-modal">
   <h3>Sample One</h3>
   <div class="modal-field-guide" >
