@@ -10,9 +10,16 @@ module.exports =
 
       state = {}
 
-      # retrieve any existing bookmark for current subject set
+      # HANDLE BOOKMARK ON SUBJECT SET
       key = @getActiveWorkflow().name + '_' + @getCurrentSubject().subject_set_id
       state.subject_index = parseInt( Cookies.get(key) - 1 ) || 0
+
+      if state.subject_index > (3-1)*@state.current_subject_page
+        pagination = Math.floor( 1 + state.subject_index / 3 )
+        @fetchSubjectSetByPagination @getCurrentSubject().subject_set_id, pagination, =>
+          state.subject_index = state.subject_index % 3
+          @setState state
+        return
 
       # If a specific subject id indicated..
       if @props.query.selected_subject_id?
@@ -25,8 +32,8 @@ module.exports =
 
       # If taskKey specified, now's the time to set that too:
       state.taskKey = @props.query.mark_task_key if @props.query.mark_task_key
-
       @setState state if state
+    # END CALLBACK
 
     # Fetch by subject-set id?
     subject_set_id = @props.params.subject_set_id ? @props.query.subject_set_id
@@ -37,10 +44,9 @@ module.exports =
     else
       # Gather filters by which to query subject-sets
       params =
-        group_id:                 @props.query.group_id ? null
+        group_id: @props.query.group_id ? null
+        random: false # should this be set to true? -STI
       @fetchSubjectSets params, postFetchCallback
-
-
 
   # this method fetches the next page of subjects in a given subject_set.
   # right now the trigger for this method is the forward or back button in the light-box
@@ -67,10 +73,16 @@ module.exports =
   # Query hash added to prevent local mark from being re-transcribable.
   fetchSubjectSet: (subject_set_id, callback) ->
     request = API.type("subject_sets").get subject_set_id, {}
-
     request.then (set) =>
       @setState subjectSets: [set], () =>
         @fetchSubjectsForCurrentSubjectSet 1, null, callback
+
+  # added to fix cross-pagination bookmarks -STI
+  fetchSubjectSetByPagination: (subject_set_id, pagination, callback) ->
+    request = API.type("subject_sets").get subject_set_id, {}
+    request.then (set) =>
+      @setState subjectSets: [set], () =>
+        @fetchSubjectsForCurrentSubjectSet pagination, null, callback
 
   # This is the main fetch method for subject sets. (fetches via SubjectSetsController#index)
   fetchSubjectSets: (params, callback) ->
@@ -87,12 +99,11 @@ module.exports =
     params = {}; params[k] = v for k,v of _params when v?
 
     API.type('subject_sets').get(params).then (sets) =>
-
       @setState subjectSets: sets, () =>
         @fetchSubjectsForCurrentSubjectSet 1, null, callback
 
   # PB: Setting default limit to 120 because it's a multiple of 3 mandated by thumb browser
-  fetchSubjectsForCurrentSubjectSet: (page=1, limit=120, callback) ->
+  fetchSubjectsForCurrentSubjectSet: (page=1, limit=3, callback) ->
     ind = @state.subject_set_index
     sets = @state.subjectSets
 

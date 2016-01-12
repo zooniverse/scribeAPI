@@ -19,12 +19,6 @@ module.exports = React.createClass
     first: @props.subject_set.subjects[0]
     folded: false
 
-  componentWillReceiveProps: ->
-    console.log 'SUBJECT INDEX = ', @props.subject_index
-    page = Math.floor( @props.subject_index/3 )
-    # console.log 'PAGE = ', page
-    @setState first: @props.subject_set.subjects[ 3 * page ]
-
   handleFoldClick: (e)->
     @setState folded: !@state.folded
 
@@ -150,40 +144,28 @@ module.exports = React.createClass
   # allows user to naviagate back though a subject_set
   # # controlls navigation of current page of subjects as well as the method that pull a new page of subjects
   moveBack: (indexOfFirst)->
-    # if the current page of subjects is the first page of subjects, and the first <li> is the first subject in the page of subjects.
+    # ALREADY AT FIRST SUBJECT!
     if @props.currentSubjectPage == 1 && @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
-      console.log 'moveBackward: A'
       return
+
+    # GO BACK ONE PAGINATION
     else if @props.currentSubjectPage > 1 && @props.subject_set.subjects[indexOfFirst] == @props.subject_set.subjects[0]
-      console.log 'moveBackward: A'
       @props.prevPage( => @setState first: @props.subject_set.subjects[0] )
+
+    # JUMP BACK 3 SUBJECTS
     else
-      console.log 'moveBackward: A'
       @setState first: @props.subject_set.subjects[indexOfFirst-3]
 
   moveForward: (indexOfFirst, third, second, first)->
-    console.log 'TOTAL SUBJECT PAGES = ', @props.totalSubjectPages
-    console.log 'CURRENT SUBJECT PAGE = ', @props.currentSubjectPage
-
-
-
-    # if the current page of subjects is the last page of the subject_set and the 2nd or 3rd <li> is the last <li> contain the last subjects in the subject_set
-    if @props.currentSubjectPage == @props.totalSubjectPages && (third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || second == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || first == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
-      console.log 'TOTAL SUBJECT PAGES = ', @props.totalSubjectPages
-      console.log 'moveForward: A'
-      console.log 'THAT WAS THE LAST PAGE IN THE LOGBOOK!'
-      return
+    # REACHED LAST PAGE IN SUBJECT SET!
+    return if @props.currentSubjectPage == @props.totalSubjectPages && (third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || second == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || first == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
 
     # FETCH SUBJECTS FROM NEXT PAGINATION
-    # if the current page of subjects is NOT the last page of the subject_set and the 2nd or 3rd <li> is the last <li> contain the last subjects in the subject_set
     else if @props.currentSubjectPage < @props.totalSubjectPages && (third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || second == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
-      console.log 'moveForward: B'
       @props.nextPage( => @setState first: @props.subject_set.subjects[0])
       # NOTE: for some reason, LightBox does not receive correct value for @props.subject_index, which has led to this awkard callback function above --STI
       # @setState first: @props.subject_set.subjects[0], => @forceUpdate()
 
     # LOAD NEXT 3 SUBJECTS INTO LIGHT BOX
-    # there are further subjects to see in the currently loaded page
     else
-      console.log 'moveForward: C'
       @setState first: @props.subject_set.subjects[indexOfFirst+3]
