@@ -4,34 +4,45 @@
   label
     margin 1em
 
-  ul
+  & > ul
     padding-left 0
     list-style none
     text-align left
 
-    li
+    & > li
+
+      position relative
+      flexbox(flex)
+      flex-direction(row)
+      flex-wrap(nowrap)
+      padding-bottom 1em
 
       button.edit-button
         z-index 2
-        position absolute
-        right 0
-        top 0
+        opacity 0.6
+        padding 0.2em 0.6em
+        margin-left 10px
+
+        flex(shrink: 0)
+
+        &:hover
+          opacity 1
 
       a
         color black
         text-decoration none
-        position relative
-        display block
+        // display block
+        flex(grow: 1, shrink: 1)
+        background-color white
+        border-radius 6px
+
+        opacity 0.7
 
         ul.choice
           z-index 1
-          margin 1em 0
+          // margin 1em 0
           padding 0.5em
-
-          background-color white
-          border-radius 6px
-
-          opacity 0.7
+          list-style none
 
           span
             font-weight bold
@@ -43,6 +54,12 @@
               padding-right 10px
               font-weight normal
 
-          &:hover
-            opacity 1
+        &:hover
+          opacity 1
+          box-shadow 0 0 3px 3px rgba(0,0,0,.1)
+
+          ul
+            background-image url(/assets/checkmark.png)
+            background-repeat no-repeat
+            background-position 96% center
 

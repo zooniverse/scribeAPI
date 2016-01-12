@@ -124,6 +124,9 @@ VerifyTool = React.createClass
                 }
                 </ul>
               </a>
+              { if @props.workflow.subjects_editable
+                 <SmallButton label='Edit' className="edit-button" key="edit-button" onClick={@editAnnotation.bind @, data} />
+              }
             </li>
         }
         </ul>
