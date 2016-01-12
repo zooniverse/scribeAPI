@@ -25,7 +25,7 @@ class Subject
   field :type,                        type: String,  default: "root" #options: "root", "secondary"
   field :status,                      type: String,  default: "active" #options: "active", "inactive", "bad", "retired", "complete", "contentious"
 
-  field :meta_data,                   type: Hash
+  field :meta_data,                   type: Hash,    default: {}
   field :classification_count,        type: Integer, default: 0
   field :random_no,                   type: Float
   field :secondary_subject_count,     type: Integer, default: 0
@@ -75,6 +75,15 @@ class Subject
   # Index for fetching child subjects for a parent subject, optionally filtering by region NOT NULL
   index({parent_subject_id: 1, status: 1, region: 1})
   
+  def created_by_robot?
+    created_solely_by? User.robot
+  end
+
+  def created_solely_by?(user)
+    created_by = created_by_user_id == user.id.to_s
+    created_by ||= creating_user_ids.size == 1 && creating_user_ids.first == user.id.to_s
+    created_by
+  end
 
   def thumbnail
     location['thumbnail'].nil? ? location['standard'] : location['thumbnail']
@@ -131,7 +140,7 @@ class Subject
   # calculate the percetage vote for retirement (pvr)
   # if pvr is equal or greater than retire_limit, set self.status == retired.
   def check_retire_by_vote
-    assesment_classifications = classifications.where(task_key: "completion_assessment_task").count
+    assesment_classifications = number_of_completion_assessments
     if assesment_classifications > 2
       percentage_for_retire = retire_count / assesment_classifications.to_f
       if percentage_for_retire >= workflow.retire_limit
@@ -139,6 +148,10 @@ class Subject
         increment_parents_subject_count_by -1 if parent_subject
       end
     end
+  end
+
+  def number_of_completion_assessments
+    classifications.where(task_key: "completion_assessment_task").count || 0
   end
 
 
@@ -150,7 +163,6 @@ class Subject
 
   def retire!
     return if status == "bad"
-    return if classifying_user_ids.length < workflow.retire_limit
     status! 'retired'
     subject_set.subject_completed_on_workflow(workflow) if ! workflow.nil?
     
@@ -172,6 +184,10 @@ class Subject
     end
     buckets = buckets.sort_by { |(k,v)| - v }
     buckets.map { |(k,v)| {ann: k, percentage: v.to_f / parent_classifications.count } }.first
+  end
+
+  def parent_workflow
+    parent_classifications.limit(1).first.workflow
   end
 
 
@@ -201,6 +217,34 @@ class Subject
       h[p["_id"]] = p["count"]
       h
     end
+  end
+
+
+  def self.find_or_create_root_by_standard_url(standard_url)
+    subject = Subject.find_by type: 'root', "location.standard" => standard_url
+    if subject.nil?
+      subject = Subject.create_root_for_url standard_url
+    end
+    subject
+  end
+
+  def self.create_root_for_url(standard_url)
+
+    require 'fastimage'
+    width, height = FastImage.size(standard_url,:raise_on_failure=>false, :timeout=>10.0)
+
+    subject = Subject.create({
+      type: 'root',
+      subject_set: SubjectSet.create({project: Project.current, group: Project.current.groups.first, state: 'active'}),
+      location: {
+        standard: standard_url
+      },
+      width: width,
+      height: height
+    })
+    subject.workflow = Workflow.find_by name: 'mark'
+    subject.activate!
+    subject
   end
 
 

@@ -400,6 +400,68 @@ namespace :project do
 
   end
 
+  task :export, [:project_key, :rebuild] => :environment do |task, args|
+    args.with_defaults rebuild: true
+    rebuild = args[:rebuild] != 'false'
+
+    project = Project.find_by key: args[:project_key]
+
+    puts "Rebuild? #{rebuild}"
+
+    export_base = "tmp/export/#{project.key}"
+    Dir.mkdir(export_base) unless File.exists?(export_base)
+
+    start = Time.now
+    count = project.subject_sets.count
+    limit = 100
+    built = 0
+    (0..count).step(limit).each do |offset|
+      sets = project.subject_sets.offset(offset).limit(limit).each_with_index do |set, i|
+        path = "#{export_base}/#{set.id}.json"
+        next if File.exist?(path) && ! rebuild
+
+        content = nil
+        begin
+          content = FinalDataSubjectSetSerializer.new(set).to_json
+        rescue 
+          puts "Error building #{set.id}"
+        end
+
+        if ! content.nil?
+          File.open path, "w" do |f|
+            f << content
+          end
+          built += 1
+        end
+
+        # puts "Wrote #{i+1} of #{count}: #{content.size}b to #{path}"
+        ellapsed = Time.now - start
+        per_set = ellapsed / built
+        remaining = per_set * (count - (offset + i+1)) / 60 / 60
+        complete = (offset + i+1).to_f / count * 100
+        # puts "Est time remaining: #{ellapsed} (#{per_set}) #{remaining}h"
+        $stderr.print "\r#{'%.8f' % complete}% complete. #{'%.1f' % remaining}h remaining. Built #{offset +i+1} of #{count}"
+
+      end
+    end
+
+    `zip -r public/exports.zip tmp/export`
+    puts "Finished building exports. Download at: /exports.zip"
+  end
+
+  task :import_assertions, [:project_key] => :environment do |task, args|
+    project_key = args[:project_key]
+
+    FinalSubjectSet.destroy_all
+
+    Dir.glob("tmp/export/#{project_key}/*.json").each do |file|
+      h = JSON.parse File.read(file)
+      h = h['final_data_subject_set']
+      set = FinalSubjectSet.find_or_initialize_by id: h['id']
+      set.update_attributes h
+      puts "Saved #{h['id']}"
+    end
+  end
 
 
 

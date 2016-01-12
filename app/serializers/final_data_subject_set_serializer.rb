@@ -3,7 +3,7 @@ class FinalDataSubjectSetSerializer < ActiveModel::MongoidSerializer
   attributes :id
   attributes :name
   attributes :meta_data
-  attributes :classification_count
+  # attributes :classification_count
   attributes :subjects
 
   def subjects

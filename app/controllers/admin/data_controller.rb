@@ -17,8 +17,14 @@ class Admin::DataController < Admin::AdminBaseController
           format.json {render json: CompleteSubjectsSerializer.new(@subjects)}
         end
 
+      elsif params[:download_status] == 'flat'
+        @subjects = Subject.all.skip(100).limit(1).first.child_subjects.where(workflow_id: nil)
+        respond_to do |format|
+          format.json {render json: @subjects.map { |s| FinalDataSubjectSerializer.new(s, root: false) }}
+        end
+
       else
-        @sets = SubjectSet.all
+        @sets = SubjectSet.all.skip(101).limit 1
         respond_to do |format|
           format.json {render json: FinalDataSerializer.new(@sets)}
         end

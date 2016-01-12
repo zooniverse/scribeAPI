@@ -6,7 +6,7 @@ class Workflow
   field    :key, 				                                     type: String
   field    :label,                                           type: String
   field    :first_task,                                      type: String
-  field    :retire_limit,                                    type: Integer,   default: 3
+  field    :retire_limit,                                    type: Float,     default: 0.75
   field    :subject_fetch_limit,                             type: Integer,   default: 10
   field    :generates_subjects,                              type: Boolean,   default: true
   field    :generates_subjects_after,                        type: Integer,   default: 0

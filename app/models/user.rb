@@ -36,7 +36,7 @@ class User
   field :profile_url,        :type => String    # URI of user profile, if any
   
   field :status,             :type => String, :default => 'active'
-  field :role,               :type => String, :default => 'user'  # user, admin, team
+  field :role,               :type => String, :default => 'user'  # user, admin, team, robot
   field :guest,              :type => Boolean, :default => false
   field :tutorial_complete,  :type => Boolean, :default => false
 
@@ -220,6 +220,18 @@ class User
       h[p["_id"]] = p["count"]
       h
     end
+  end
+
+  def self.robot
+    @robot_user ||= (
+      find_by(role: 'robot')
+    )
+  end
+
+  def self.bot_user_by_auth(auth)
+    user = User.find_or_create_by name: 'Robot', role: 'robot'
+    user.save! validate: false
+    user
   end
 
 end
