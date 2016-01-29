@@ -126,25 +126,10 @@ namespace :project do
     # load project_file_path
     project = Project.find_or_create_by key: project_key
 
-    # Establish some defaults so that if they're not set in the project hash, we overwrite the old value with the null default
-    project_defaults = {
-      background: nil,
-      logo: nil,
-      favicon: nil,
-      terms_map: {},
-      team_emails: [],
-      team: [],
-      organizations: [],
-      analytics: nil,
-      forum: nil,
-      menus: {},
-      partials: {}
-    }
     # Set all valid fields from hash:
-    project_hash = project_hash.inject(project_defaults) { |h, (k,v)| h[k] = v if Project.fields.keys.include?(k.to_s); h }
+    project_hash = project_hash.inject({}) { |h, (k,v)| h[k] = v if Project.fields.keys.include?(k.to_s); h }
     project.update project_hash
 
-    puts "Created project: #{project.title}"
 
     # Load pages from content/*:
     content_path = Rails.root.join('project', project_key, 'content')
@@ -400,39 +385,68 @@ namespace :project do
 
   end
 
-  task :export, [:project_key, :rebuild] => :environment do |task, args|
+  task :build_final_data, [:project_key, :rebuild] => :environment do |task, args|
     args.with_defaults rebuild: true
     rebuild = args[:rebuild] != 'false'
 
-    project = Project.find_by key: args[:project_key]
-
-    puts "Rebuild? #{rebuild}"
-
-    export_base = "tmp/export/#{project.key}"
-    Dir.mkdir(export_base) unless File.exists?(export_base)
+    project = project_by_key args[:project_key]
 
     start = Time.now
     count = project.subject_sets.count
     limit = 100
     built = 0
+
+    # Rebuild indexes
+    FinalSubjectSet.rebuild_indexes Project.current
+
     (0..count).step(limit).each do |offset|
       sets = project.subject_sets.offset(offset).limit(limit).each_with_index do |set, i|
-        path = "#{export_base}/#{set.id}.json"
-        next if File.exist?(path) && ! rebuild
 
-        content = nil
-        begin
-          content = FinalDataSubjectSetSerializer.new(set).to_json
-        rescue 
-          puts "Error building #{set.id}"
-        end
+        final_set = FinalSubjectSet.assert_for_set set, rebuild
 
-        if ! content.nil?
-          File.open path, "w" do |f|
-            f << content
-          end
-          built += 1
+        ellapsed = Time.now - start
+        per_set = ellapsed / built
+        remaining = per_set * (count - (offset + i+1)) / 60 / 60
+        complete = (offset + i+1).to_f / count * 100
+        # puts "Est time remaining: #{ellapsed} (#{per_set}) #{remaining}h"
+        $stderr.print "\r#{'%.8f' % complete}% complete. #{'%.1f' % remaining}h remaining. Built #{offset +i+1} of #{count}"
+      end
+    end
+
+  end
+
+  task :export_final_data, [:project_key] => :environment do |task, args|
+    project = project_by_key args[:project_key]
+
+    # Make sure user has run build_final_data first:
+    if project.final_subject_sets.empty?
+      puts "No FinalSubjectSets found. Invoking project:build_final_data"
+      Rake::Task['project:build_final_data'].invoke(args[:project_key])
+      puts "----------------"
+    end
+
+    export_base = "tmp/export/#{project.key}"
+
+    # Remove previous:
+    `rm -rf #{export_base}` if File.exists?(export_base)
+
+    Dir.mkdir(export_base) unless File.exists?(export_base)
+
+    start = Time.now
+    built = 0
+    limit = 10 # 100
+    count = FinalSubjectSet.count
+    count = 9
+
+    (0..count).step(limit).each do |offset|
+      project.final_subject_sets.offset(offset).limit(limit).each_with_index do |set, i|
+        path = "#{export_base}/#{set.subject_set_id}.json"
+        content = FinalSubjectSetSerializer.new(set, root:false).to_json
+        puts "content: #{content}"
+        File.open path, "w" do |f|
+          f << content
         end
+        built += 1
 
         # puts "Wrote #{i+1} of #{count}: #{content.size}b to #{path}"
         ellapsed = Time.now - start
@@ -441,28 +455,23 @@ namespace :project do
         complete = (offset + i+1).to_f / count * 100
         # puts "Est time remaining: #{ellapsed} (#{per_set}) #{remaining}h"
         $stderr.print "\r#{'%.8f' % complete}% complete. #{'%.1f' % remaining}h remaining. Built #{offset +i+1} of #{count}"
-
       end
     end
 
-    `zip -r public/exports.zip tmp/export`
-    puts "Finished building exports. Download at: /exports.zip"
+    # Generate timestamped filename with random suffix so it can't be guessed:
+    rand_suffix = (('a'..'z').to_a + (0..9).to_a).shuffle[0,16].join
+    max_updated = project.final_subject_sets.max(:updated_at)
+    filename = "scribe-#{project.key}-#{max_updated.strftime("%F")}-#{rand_suffix}"
+
+    path = "/#{filename}.zip"
+    puts "Zipping #{path}"
+    `zip --junk-paths -r public#{path} #{export_base}`
+    puts "Finished building exports. Download at: /#{filename}.zip"
+
+    FinalDataExport.create path: path, num_final_subject_sets: count
+
+    puts "Done."
   end
-
-  task :import_assertions, [:project_key] => :environment do |task, args|
-    project_key = args[:project_key]
-
-    FinalSubjectSet.destroy_all
-
-    Dir.glob("tmp/export/#{project_key}/*.json").each do |file|
-      h = JSON.parse File.read(file)
-      h = h['final_data_subject_set']
-      set = FinalSubjectSet.find_or_initialize_by id: h['id']
-      set.update_attributes h
-      puts "Saved #{h['id']}"
-    end
-  end
-
 
 
   def translate_pick_one_tool_config(task_hash)
@@ -549,5 +558,10 @@ namespace :project do
     end
   end
 
+  def project_by_key(key, default=Project.current)
+    p = Project.find_by key: key
+    p = default if ! p
+    p
+  end
 
 end

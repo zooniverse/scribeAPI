@@ -91,8 +91,8 @@ class Classification
     end
 
     if self.task_key == "flag_bad_subject_task"
-      # If deleting user is creator (or a robot), immediately change status to bad
-      if subject.created_solely_by?(user) || subject.created_by_robot?
+      # If deleting user is creator, immediately change status to bad
+      if subject.created_solely_by?(user) 
         subject.bad!
 
       else

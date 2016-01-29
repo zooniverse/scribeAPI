@@ -12,14 +12,5 @@ class ProjectsController < ApplicationController
     render :json => {:project => project, :stats => project.stats}
   end
 
-=begin
-  def project_css
-    render text: Project.current.styles
-  end
-
-  def project_js
-    render text: Project.current.custom_js
-  end
-=end
 
 end

@@ -74,10 +74,6 @@ class Subject
   index({"type" => 1, "subject_set_id" => 1}, {background: true})
   # Index for fetching child subjects for a parent subject, optionally filtering by region NOT NULL
   index({parent_subject_id: 1, status: 1, region: 1})
-  
-  def created_by_robot?
-    created_solely_by? User.robot
-  end
 
   def created_solely_by?(user)
     created_by = created_by_user_id == user.id.to_s
@@ -124,6 +120,13 @@ class Subject
     if ! (_classifications = parent_classifications.limit(1)).empty?
       _classifications.first.workflow_task
     end
+  end
+
+  def export_name
+    return nil if parent_workflow.nil?
+
+    transcribe_subject = parent_workflow.name == 'transcribe' ? self : parent_subject
+    transcribe_subject.parent_workflow_task.export_name if transcribe_subject && transcribe_subject.parent_workflow_task
   end
 
   # find all the classifications for subject where task_key == compleletion_assesment_task
@@ -187,7 +190,7 @@ class Subject
   end
 
   def parent_workflow
-    parent_classifications.limit(1).first.workflow
+    parent_classifications.limit(1).first.workflow if ! parent_classifications.empty?
   end
 
 

@@ -10,6 +10,7 @@ class WorkflowTask
   field    :next_task,                               type: String
   field    :help,                                    type: Hash
   field    :examples,                                type: Array
+  field    :export_name,                             type: String
 
   embedded_in :workflow
 

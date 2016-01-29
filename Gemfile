@@ -14,7 +14,7 @@ gem 'omniauth-facebook'
 gem "omniauth-google-oauth2"
 gem 'omniauth-zooniverse', '~> 0.0.3'
 
-gem 'mongoid', '~> 4.0.2'
+gem 'mongoid' # , '~> 4.0.2'
 gem 'active_model_serializers'
 gem 'mongoid-serializer'
 gem 'rack-cors', :require => 'rack/cors'
@@ -37,6 +37,8 @@ gem 'newrelic_moped'
 gem 'puma', '~> 2.14.0'
 
 gem 'logstasher', '~> 0.6'
+
+# gem 'mongoid_fulltext'
 
 group :development do
   gem 'dotenv-rails'

@@ -5,10 +5,7 @@ class ClassificationsController < ApplicationController
   def create
 
     # Is it a bot?
-    user = nil
-    if request.headers["HTTP_ROBOT_AUTH"]
-      user = User.bot_user_by_auth request.headers["HTTP_ROBOT_AUTH"]
-    end
+    user = get_bot_user_from_request request
 
     user = require_user! if user.nil?
 
@@ -31,6 +28,7 @@ class ClassificationsController < ApplicationController
     subject_id       = params["classifications"]["subject_id"]
     user_agent       = request.headers["HTTP_USER_AGENT"]
 
+    # If workflow not found by id, maybe it was specified by name?
     if workflow_id.nil? && ! params["workflow"].nil?
       workflow = Workflow.find_by name: params["workflow"]["name"]
       workflow_id = workflow.id
@@ -38,7 +36,8 @@ class ClassificationsController < ApplicationController
 
     workflow_id = BSON::ObjectId.from_string workflow_id if ! workflow_id.nil?
 
-    if subject_id.nil? && (standard_url = params["subject"]["location"]["standard"])
+    # If user is a bot, consider creating the subject on the fly:
+    if user.is_a?(BotUser) && subject_id.nil? && (standard_url = params["subject"]["location"]["standard"])
       subject_id = Subject.find_or_create_root_by_standard_url(standard_url).id
     end
 

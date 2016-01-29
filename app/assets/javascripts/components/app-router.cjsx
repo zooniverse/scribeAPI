@@ -11,6 +11,8 @@ Verify                        = require './verify'
 # TODO Group routes currently not implemented
 GroupPage                     = require './group-page'
 GroupBrowser                  = require './group-browser'
+FinalSubjectSetBrowser        = require './final-subject-set-browser'
+FinalSubjectSetPage           = require './final-subject-set-page'
 
 Project                       = require 'models/project.coffee'
 
@@ -74,6 +76,20 @@ class AppRouter
               name={workflow.name + '_entire_page'}
             />
         }
+
+        <Route
+          path='data/exports'
+          handler={FinalSubjectSetBrowser}
+          name='final_subject_sets'
+        />
+        { if project.downloadable_data
+          <Route
+            path='data/exports/:final_subject_set_id'
+            handler={FinalSubjectSetPage}
+            name='final_subject_set_page'
+          />
+        }
+
         { # Project-configured pages:
           project.pages?.map (page, key) =>
             <Route
