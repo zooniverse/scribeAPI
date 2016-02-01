@@ -19,7 +19,8 @@
       "help": {
         "file": "t_record_date"
       },
-      "generates_subject_type": "em_transcribed_date"
+      "generates_subject_type": "em_transcribed_date",
+      "export_name": "Record Date"
     },
 
     "em_record_number": {
@@ -30,7 +31,8 @@
       "help": {
         "file": "t_record_number"
       },
-      "generates_subject_type": "em_transcribed_record_number"
+      "generates_subject_type": "em_transcribed_record_number",
+      "export_name": "Record Number"
     },
 
     "em_record_mortgager": {
@@ -40,7 +42,8 @@
       "generates_subject_type": "em_transcribed_mortgager",
       "help": {
         "file": "t_record_mortgager"
-      }
+      },
+      "export_name": "Mortgager"
     },
 
     "em_record_street_address": {
@@ -51,7 +54,8 @@
       "generates_subject_type": "em_transcribed_address",
       "help": {
         "file": "t_record_street_address"
-      }
+      },
+      "export_name": "Street Address"
     },
 
     "em_record_amount_loaned": {
@@ -62,7 +66,8 @@
       "generates_subject_type": "em_transcribed_amount_loaned",
       "help": {
         "file": "t_record_amount_loaned"
-      }
+      },
+      "export_name": "Amount Loaned"
     },
 
     "em_record_valuation": {
@@ -74,7 +79,8 @@
         "file": "t_record_valuation"
       },
       "generates_subject_type": "em_transcribed_valuation_date",
-      "next_task": "em_record_valuation_ground_building"
+      "next_task": "em_record_valuation_ground_building",
+      "export_name": "Valuation Date"
     },
 
     "em_record_valuation_ground_building": {
@@ -101,7 +107,8 @@
       },
       "generates_subject_type": "em_transcribed_valuation_itemized",
       "instruction": "Sometimes valuations include itemized dollar values for \"ground\" and \"building\". Enter these amounts if you can find them. In the next screen, you'll enter the total valuation.",
-      "next_task": "em_record_valuation_total"
+      "next_task": "em_record_valuation_total",
+      "export_name": "Land & Building Value"
     },
 
     "em_record_valuation_total": {
@@ -113,7 +120,8 @@
         "file": "t_record_valuation"
       },
       "generates_subject_type": "em_transcribed_valuation_total",
-      "next_task": null
+      "next_task": null,
+      "export_name": "Total Value"
     },
 
     "em_record_survey": {
@@ -138,7 +146,8 @@
       },
       "generates_subject_type": "em_transcribed_survey",
       "instruction": "Enter, as they appear, any land and building dimensions that were recorded. In the next screen, you'll enter the descriptive information.",
-      "next_task": "em_record_survey_stories_materials"
+      "next_task": "em_record_survey_stories_materials",
+      "export_name": "Land & Building Dimensions"
     },
 
     "em_record_survey_stories_materials": {
@@ -163,7 +172,8 @@
       },
       "generates_subject_type": "em_transcribed_stories_materials",
       "instruction": "Enter, as they appear, the number of stories and the building materials.",
-      "next_task": "em_record_survey_additional_info"
+      "next_task": "em_record_survey_additional_info",
+      "export_name": "Stories & Materials"
     },
 
     "em_record_survey_additional_info": {
@@ -175,7 +185,8 @@
         "file": "t_record_additional_info"
       },
       "generates_subject_type": null,
-      "next_task": null
+      "next_task": null,
+      "export_name": "Additional Info"
     }
   }
 }

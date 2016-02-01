@@ -25,7 +25,7 @@ class Subject
   field :type,                        type: String,  default: "root" #options: "root", "secondary"
   field :status,                      type: String,  default: "active" #options: "active", "inactive", "bad", "retired", "complete", "contentious"
 
-  field :meta_data,                   type: Hash
+  field :meta_data,                   type: Hash,    default: {}
   field :classification_count,        type: Integer, default: 0
   field :random_no,                   type: Float
   field :secondary_subject_count,     type: Integer, default: 0
@@ -74,7 +74,12 @@ class Subject
   index({"type" => 1, "subject_set_id" => 1}, {background: true})
   # Index for fetching child subjects for a parent subject, optionally filtering by region NOT NULL
   index({parent_subject_id: 1, status: 1, region: 1})
-  
+
+  def created_solely_by?(user)
+    created_by = created_by_user_id == user.id.to_s
+    created_by ||= creating_user_ids.size == 1 && creating_user_ids.first == user.id.to_s
+    created_by
+  end
 
   def thumbnail
     location['thumbnail'].nil? ? location['standard'] : location['thumbnail']
@@ -117,6 +122,13 @@ class Subject
     end
   end
 
+  def export_name
+    return nil if parent_workflow.nil?
+
+    transcribe_subject = parent_workflow.name == 'transcribe' ? self : parent_subject
+    transcribe_subject.parent_workflow_task.export_name if transcribe_subject && transcribe_subject.parent_workflow_task
+  end
+
   # find all the classifications for subject where task_key == compleletion_assesment_task
   # calculate the percetage vote for retirement (pvr)
   # if pvr is equal or greater than retire_limit, set self.status == retired.
@@ -131,13 +143,17 @@ class Subject
   # calculate the percetage vote for retirement (pvr)
   # if pvr is equal or greater than retire_limit, set self.status == retired.
   def check_retire_by_vote
-    assesment_classifications = classifications.where(task_key: "completion_assessment_task").count
+    assesment_classifications = number_of_completion_assessments
     if assesment_classifications > 2
       percentage_for_retire = retire_count / assesment_classifications.to_f
       if percentage_for_retire >= workflow.retire_limit
         increment_parents_subject_count_by -1 if self.retire! && parent_subject
       end
     end
+  end
+
+  def number_of_completion_assessments
+    classifications.where(task_key: "completion_assessment_task").count || 0
   end
 
 
@@ -174,6 +190,10 @@ class Subject
     buckets.map { |(k,v)| {ann: k, percentage: v.to_f / parent_classifications.count } }.first
   end
 
+  def parent_workflow
+    parent_classifications.limit(1).first.workflow if ! parent_classifications.empty?
+  end
+
 
   def to_s
     "#{status != 'active' ? "[#{status.capitalize}] " : ''}#{workflow.nil? ? 'Final' : workflow.name.capitalize} Subject (#{type})"
@@ -201,6 +221,34 @@ class Subject
       h[p["_id"]] = p["count"]
       h
     end
+  end
+
+
+  def self.find_or_create_root_by_standard_url(standard_url)
+    subject = Subject.find_by type: 'root', "location.standard" => standard_url
+    if subject.nil?
+      subject = Subject.create_root_for_url standard_url
+    end
+    subject
+  end
+
+  def self.create_root_for_url(standard_url)
+
+    require 'fastimage'
+    width, height = FastImage.size(standard_url,:raise_on_failure=>false, :timeout=>10.0)
+
+    subject = Subject.create({
+      type: 'root',
+      subject_set: SubjectSet.create({project: Project.current, group: Project.current.groups.first, state: 'active'}),
+      location: {
+        standard: standard_url
+      },
+      width: width,
+      height: height
+    })
+    subject.workflow = Workflow.find_by name: 'mark'
+    subject.activate!
+    subject
   end
 
 

@@ -121,3 +121,10 @@ module.exports =
     API.type('subjects').get(params).then (subjects) =>
       @_subject_queries[params] = subjects
       process_subjects subjects
+
+
+  # used by "About this {group}" link on Mark interface
+  fetchGroups: ->
+    API.type("groups").get(project_id: @props.project.id).then (groups)=>
+      group.showButtons = false for group in groups  # hide buttons by default
+      @setState groups: groups

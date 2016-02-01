@@ -1,0 +1,111 @@
+.final-subject-set-browser
+  ul
+    list-style none
+    padding-left 0
+
+  .json-link
+    width auto
+    float right
+    margin-left 10px
+
+
+  // Search page:
+
+  form
+    padding-bottom 1em
+
+    input
+      vertical-align middle
+
+    input#data-search
+      font-size 2em
+      margin-right 10px
+
+  ul.results
+    li
+      display inline-block
+      margin 0 10px 10px 0
+      width 400px
+      height 150px
+      overflow hidden
+
+      a
+        color #2b3a42
+        text-decoration none
+
+      .image
+        width 170px
+        float left
+
+      .matches
+        width 200px
+        float left
+
+        .match
+          padding-bottom 0.5em
+          line-height 1.5em
+
+          .field
+            font-weight bold
+
+            &:after
+              content ":"
+
+          .term
+            padding-left 1em
+
+            em
+              font-weight bold
+              color TERTIARY_NORMAL
+
+
+  // Set page:
+  .final-subject-set-page
+    img.standard-image
+      max-width 600px
+
+    h3
+      clear both
+      margin-bottom 0
+
+    .confidence
+      opacity 0.5
+
+      &:after
+        content "% confidence"
+
+
+    ul.assertion-data
+      clear left
+
+      li
+        color gray
+
+        span.value
+          font-weight bold
+          color #2b3a42
+
+        span.data-key
+          margin-left 20px
+
+    dl.assertion-properties
+      clear left
+
+      dt,dd
+        display inline
+        color gray
+
+      dt
+        &:after
+          content ":"
+        
+      dd
+        margin-left 10px
+        margin-right 40px
+
+    .image-crop
+      opacity 0.7
+
+      &:hover
+        opacity 1
+    
