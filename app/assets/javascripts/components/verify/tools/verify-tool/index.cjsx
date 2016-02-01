@@ -110,7 +110,7 @@ VerifyTool = React.createClass
           <span>Original prompt: <em>{ @props.subject.data.task_prompt }</em></span>
         }
         <ul>
-        { for data,i in @props.subject.data['values']
+        { for data,i in @props.subject.data['values'][0..3]
             <li key={i}>
               <a href="javascript:void(0);" onClick={@chooseOption} data-value_index={i}>
                 <ul className="choice clickable" >

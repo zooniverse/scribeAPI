@@ -22,6 +22,7 @@ HelpModal               = require 'components/help-modal'
 Tutorial                = require 'components/tutorial'
 DraggableModal          = require 'components/draggable-modal'
 GenericButton           = require 'components/buttons/generic-button'
+NoMoreSubjectsModal     = require 'components/no-more-subjects-modal'
 
 module.exports = React.createClass # rename to Classifier
   displayName: 'Transcribe'
@@ -132,14 +133,8 @@ module.exports = React.createClass # rename to Classifier
         }
 
         { if @state.noMoreSubjects
-            <DraggableModal
-              header          = { if @state.userClassifiedAll then "Thanks for transcribing!" else "Nothing to transcribe" }
-              buttons         = {<GenericButton label='Continue' href='/#/mark' />}
-            >
-                Currently, there are no {@props.project.term('subject')}s for you to {@props.workflowName}. Try <a href="/#/mark">marking</a> instead!
-            </DraggableModal>
-
-
+            <NoMoreSubjectsModal header={ if @state.userClassifiedAll then "Thanks for transcribing!" else "Nothing to transcribe" } workflowName={@props.workflowName} project={@props.project} />
+            
           else if @getCurrentSubject()? and @getCurrentTask()?
 
             <SubjectViewer

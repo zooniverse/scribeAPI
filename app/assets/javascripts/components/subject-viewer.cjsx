@@ -365,6 +365,8 @@ module.exports = React.createClass
     marks = @state.marks
     marks = marks.concat @state.uncommittedMark if @state.uncommittedMark?
 
+    console.info "SubjectViewer view: #{@props.subject.id}: ", @props.subject
+
     {transcribableMarks, otherMarks} = @separateTranscribableMarks(marks)
 
     actionButton =
