@@ -70,6 +70,7 @@ class SubjectsController < ApplicationController
       self: url_for(@subject)
     }
     @subject = Subject.find subject_id
+
     respond_with SubjectResultSerializer.new(@subject, scope: self.view_context), links: links
   end
 

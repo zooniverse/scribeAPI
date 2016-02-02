@@ -15,6 +15,7 @@ HideOtherMarksButton    = require 'components/buttons/hide-other-marks-button'
 DraggableModal          = require 'components/draggable-modal'
 Draggable               = require 'lib/draggable'
 {Link}                  = require 'react-router'
+NoMoreSubjectsModal     = require 'components/no-more-subjects-modal'
 
 module.exports = React.createClass # rename to Classifier
   displayName: 'Mark'
@@ -175,7 +176,7 @@ module.exports = React.createClass # rename to Classifier
       activeSubjectHelper: null
 
   render: ->
-    return null unless @getCurrentSubjectSet()? && @getActiveWorkflow()?
+    return null unless @getActiveWorkflow()?
 
     currentTask = @getCurrentTask()
     TaskComponent = @getCurrentTool()
@@ -183,9 +184,6 @@ module.exports = React.createClass # rename to Classifier
     firstTask = activeWorkflow.first_task
     onFirstAnnotation = @state.taskKey == firstTask
     currentSubtool = if @state.currentSubtool then @state.currentSubtool else @getTasks()[firstTask]?.tool_config.tools?[0]
-
-    # direct link to this page
-    pageURL = "#{location.origin}/#/mark?subject_set_id=#{@getCurrentSubjectSet().id}&selected_subject_id=#{@getCurrentSubject()?.id}"
 
 
     if currentTask?.tool is 'pick_one'
@@ -196,13 +194,16 @@ module.exports = React.createClass # rename to Classifier
 
       <div className="subject-area">
         { if @state.noMoreSubjectSets
-            style = marginTop: "50px"
-            <p style={style}>There is nothing left to do. Thanks for your work and please check back soon!</p>
+            <NoMoreSubjectsModal header="Nothing more to mark" workflowName={@props.workflowName} project={@props.project} />
 
           else if @state.notice
             <DraggableModal header={@state.notice.header} onDone={@state.notice.onClick}>{@state.notice.message}</DraggableModal>
 
           else if @getCurrentSubjectSet()?
+
+            # direct link to this page
+            pageURL = "#{location.origin}/#/mark?subject_set_id=#{@getCurrentSubjectSet().id}&selected_subject_id=#{@getCurrentSubject()?.id}"
+
             <SubjectSetViewer
               subject_set={@getCurrentSubjectSet()}
               subject_index={@state.subject_index}

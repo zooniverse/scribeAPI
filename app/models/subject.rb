@@ -143,13 +143,14 @@ class Subject
   # calculate the percetage vote for retirement (pvr)
   # if pvr is equal or greater than retire_limit, set self.status == retired.
   def check_retire_by_vote
-    assesment_classifications = number_of_completion_assessments
-    if assesment_classifications > 2
-      percentage_for_retire = retire_count / assesment_classifications.to_f
-      if percentage_for_retire >= workflow.retire_limit
-        increment_parents_subject_count_by -1 if self.retire! && parent_subject
-      end
+    if number_of_completion_assessments > 2 && percentage_for_retire >= workflow.retire_limit
+      increment_parents_subject_count_by -1 if self.retire! && parent_subject
     end
+  end
+
+  def percentage_for_retire
+    assesment_classifications = number_of_completion_assessments
+    retire_count.to_f / assesment_classifications.to_f
   end
 
   def number_of_completion_assessments
@@ -179,7 +180,7 @@ class Subject
     # subject_set.inc_active_secondary_subject 1 if type != 'root'
   end
 
-  def calculate_most_popular_parent_classification
+  def parent_classifications_grouped
     annotations = parent_classifications.map { |c| c.annotation }
     buckets = annotations.inject({}) do |h, ann|
       h[ann] ||= 0
@@ -187,7 +188,46 @@ class Subject
       h
     end
     buckets = buckets.sort_by { |(k,v)| - v }
-    buckets.map { |(k,v)| {ann: k, percentage: v.to_f / parent_classifications.count } }.first
+    buckets.map { |(k,v)| {ann: k, percentage: v.to_f / parent_classifications.count } }
+  end
+
+  def parent_and_descendent_classifications_grouped
+    # Take peer classifications...
+    classification_weights = parent_classifications_grouped_with_counts
+    # and descendent classifications (those made upon child subjects) ...
+    sub_classification_weights = classifications_grouped_with_counts
+
+    # and combine them into a single hash mapping distinct annotations to vote counts:
+    combined_weights = classification_weights
+    total = 0
+    classification_weights.keys.each do |k|
+      combined_weights[k] += sub_classification_weights[k] if sub_classification_weights[k]
+      total += combined_weights[k]
+    end
+
+    combined_weights = combined_weights.sort_by { |(k,v)| - v }
+    combined_weights.map { |(k,v)| {ann: k, percentage: v.to_f / total, votes: v } }
+  end
+
+  def parent_classifications_grouped_with_counts
+    self.class.classifications_grouped_with_counts parent_classifications
+  end
+
+  def classifications_grouped_with_counts
+    self.class.classifications_grouped_with_counts classifications
+  end
+
+  def self.classifications_grouped_with_counts(classifications)
+    classifications.inject({}) do |h, classification| 
+      ann = classification.annotation.except(:key, :tool, :generates_subject_type)
+      h[ann] = 0 if h[ann].nil?
+      h[ann] += 1
+      h
+    end
+  end
+
+  def calculate_most_popular_parent_classification
+    parent_classifications_grouped.first
   end
 
   def parent_workflow
