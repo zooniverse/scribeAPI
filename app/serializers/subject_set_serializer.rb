@@ -31,7 +31,7 @@ class SubjectSetSerializer < ActiveModel::MongoidSerializer
   end
 
   def subjects_count
-    object.subjects.count
+    object.subjects.root.count
   end
 
 =begin
