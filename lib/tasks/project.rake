@@ -385,6 +385,7 @@ namespace :project do
 
   end
 
+  desc "Build final_subject* data in database"
   task :build_final_data, [:project_key, :rebuild] => :environment do |task, args|
     args.with_defaults rebuild: true
     rebuild = args[:rebuild] != 'false'
@@ -396,6 +397,10 @@ namespace :project do
     limit = 100
     built = 0
 
+    # Do any of this project's workflow tasks have configured export_names? If not, warn:
+    has_export_names = ! project.workflows.map { |w| w.tasks }.flatten.select { |t| ! t.export_name.blank? }.empty? 
+    puts "WARNING: No export_names found in workflow configuration. This may make it tricky to interpret the field-level data. See `export_name` documentation in https://github.com/zooniverse/scribeAPI/wiki/Project-Workflows#tasks" if ! has_export_names
+
     # Rebuild indexes
     FinalSubjectSet.rebuild_indexes Project.current
 
@@ -403,26 +408,26 @@ namespace :project do
       sets = project.subject_sets.offset(offset).limit(limit).each_with_index do |set, i|
 
         final_set = FinalSubjectSet.assert_for_set set, rebuild
+        built += 1
 
         ellapsed = Time.now - start
         per_set = ellapsed / built
         remaining = per_set * (count - (offset + i+1)) / 60 / 60
         complete = (offset + i+1).to_f / count * 100
-        # puts "Est time remaining: #{ellapsed} (#{per_set}) #{remaining}h"
         $stderr.print "\r#{'%.8f' % complete}% complete. #{'%.1f' % remaining}h remaining. Built #{offset +i+1} of #{count}"
       end
     end
 
   end
 
+  desc "Using data in final_subject* collections, generate a series of JSON exports and attempt to create a downloadable ZIP"
   task :export_final_data, [:project_key] => :environment do |task, args|
     project = project_by_key args[:project_key]
 
     # Make sure user has run build_final_data first:
     if project.final_subject_sets.empty?
-      puts "No FinalSubjectSets found. Invoking project:build_final_data"
-      Rake::Task['project:build_final_data'].invoke(args[:project_key])
-      puts "----------------"
+      puts "No FinalSubjectSets found."
+      exit
     end
 
     export_base = "tmp/export/#{project.key}"
@@ -434,15 +439,13 @@ namespace :project do
 
     start = Time.now
     built = 0
-    limit = 10 # 100
+    limit = 100
     count = FinalSubjectSet.count
-    count = 9
 
     (0..count).step(limit).each do |offset|
       project.final_subject_sets.offset(offset).limit(limit).each_with_index do |set, i|
         path = "#{export_base}/#{set.subject_set_id}.json"
         content = FinalSubjectSetSerializer.new(set, root:false).to_json
-        puts "content: #{content}"
         File.open path, "w" do |f|
           f << content
         end
@@ -451,10 +454,9 @@ namespace :project do
         # puts "Wrote #{i+1} of #{count}: #{content.size}b to #{path}"
         ellapsed = Time.now - start
         per_set = ellapsed / built
-        remaining = per_set * (count - (offset + i+1)) / 60 / 60
+        remaining = per_set * (count - (offset + i+1)) / 60
         complete = (offset + i+1).to_f / count * 100
-        # puts "Est time remaining: #{ellapsed} (#{per_set}) #{remaining}h"
-        $stderr.print "\r#{'%.8f' % complete}% complete. #{'%.1f' % remaining}h remaining. Built #{offset +i+1} of #{count}"
+        $stderr.print "\r#{'%.8f' % complete}% complete. #{'%.1f' % remaining}m remaining. Built #{offset +i+1} of #{count}"
       end
     end
 
@@ -473,6 +475,11 @@ namespace :project do
     puts "Done."
   end
 
+  desc "Convenience method that, in one call, builds all data JSONs and zips them up into a single ZIP release"
+  task :build_and_export_final_data, [:project_key, :rebuild] => :environment do |task, args|
+    Rake::Task['project:build_final_data'].invoke(args[:project_key], args[:rebuild])
+    Rake::Task['project:export_final_data'].invoke(args[:project_key])
+  end
 
   def translate_pick_one_tool_config(task_hash)
     config = task_hash[:tool_config] || {}

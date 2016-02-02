@@ -73,7 +73,7 @@ class FinalSubjectSet
   end
 
   def self.rebuild_indexes(for_project)
-    collection.indexes.drop
+    collection.indexes.drop unless self.count == 0  # If no records yet saved, moped will error when dropping indexes
     for_project.export_names.each do |(key,name)|
       index({"search_terms_by_field.#{key}" => 1}, {background: true})
     end

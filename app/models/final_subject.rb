@@ -21,9 +21,9 @@ class FinalSubject
 
   def fulltext_terms_by_field
     assertions.select { |assertion| ! assertion.data.blank? && assertion.created_in_workflow != 'mark' }.inject({}) do |h, a| 
-      puts "collected: #{a.name}"
-      h[a.name] = [] if h[a.name].nil?
-      h[a.name] = a.data.values.select { |v| ! v.empty? }
+      field_name = a.name.blank? ? '_' : a.name
+      h[field_name] = [] if h[field_name].nil?
+      h[field_name] += a.data.values.select { |v| ! v.empty? }
       h
     end
   end
