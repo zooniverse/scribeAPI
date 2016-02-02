@@ -1,5 +1,3 @@
-require 'fileutils'
-
 namespace :bot do
 
   desc "Create Bot with name, printing out token to use in HTTP_BOT_AUTH"
