@@ -21,7 +21,7 @@ class Workflow
   field    :subjects_classifiable_by_creator,                type: Boolean,   default: true
   # Controls whether the user-generated subject shown may be "edited" (cloned, really)
   # Currently only implemented as an EDIT button in Verify (user can transcribe using a prev transcription as a basis)
-  field    :subjects_editable,                               type: Boolean,   default: true
+  field    :subjects_editable,                               type: Boolean,   default: false
   field    :order,                                           type: Integer,   default: 0
 
   has_many     :subjects
