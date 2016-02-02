@@ -7,14 +7,14 @@ module SubjectGenerationMethods
       atts = subject_attributes_from_classification(classification)
       atts[:status] = 'inactive'
 
-      classification.child_subject = Subject.find_or_create_by(workflow: atts[:workflow], parent_subject: atts[:parent_subject], type: atts[:type])
+      classification.child_subject = Subject.find_or_create_by(workflow: atts[:workflow], parent_subject: atts[:parent_subject], type: atts[:type], subject_set: classification.subject.subject_set)
       classification.save
 
       # Collect unique annotations into data hash
       classifications = nil
       if classification.child_subject.persisted?
 
-        values = classification.child_subject.data['values'].nil? ? [] : classification.child_subject.data['values']
+        values = classification.child_subject.data.nil? || classification.child_subject.data['values'].nil? ? [] : classification.child_subject.data['values']
         classifications = classification.child_subject.parent_classifications
 
       else
