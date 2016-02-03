@@ -88,23 +88,30 @@ module.exports = React.createClass
           
         else
           <div>
-            <a className="standard-button json-link" href="/data/latest" target="_blank">Download Latest Raw Data</a>
-            <a className="standard-button json-link" href="/data.atom" target="_blank" title="ATOM Feed of Data Releases"><i className="fa fa-rss-square"></i></a>
+            { if @state.project.latest_export?
+                <div>
+                  <a className="standard-button json-link" href="/data/latest" target="_blank">Download Latest Raw Data</a> <a className="standard-button json-link" href="/data.atom" target="_blank" title="ATOM Feed of Data Releases"><i className="fa fa-rss-square"></i></a>
 
-            <h2>Data Exports</h2>
+                  <h2>Data Exports</h2>
 
-            { if ! @state.searched_keyword
-              <div>
-                <h3>Download</h3>
+                  { if ! @state.searched_keyword
+                    <div>
+                      <h3>Download</h3>
 
-                <p>Participants have made {@state.project.classification_count.toLocaleString()} contributions to {@state.project.title} to date. This project periodically builds a merged, anonymized dump of that data, which is made public here.</p>
-                
-                <p>You can download the latest using the button in the upper-right. For help interpretting the data, see <a href="https://github.com/zooniverse/scribeAPI/wiki/Data-Exports" target="_blank">Scribe WIKI on Data Exports</a>.</p>
+                      <p>Participants have made {@state.project.classification_count.toLocaleString()} contributions to {@state.project.title} to date. This project periodically builds a merged, anonymized dump of that data, which is made public here.</p>
+                      
+                      <p>You can download the latest using the button in the upper-right. For help interpretting the data, see <a href="https://github.com/zooniverse/scribeAPI/wiki/Data-Exports#user-content-data-model" target="_blank">Scribe WIKI on Data Exports</a>.</p>
 
-                <h3>Browse</h3>
+                      <h3>Browse</h3>
 
-                <p>Preview the data by searching by keyword below:</p>
-              </div>
+                      <p>Preview the data by searching by keyword below:</p>
+                    </div>
+                  }
+                </div>
+              else
+                <div>
+                  <p>Participants have made {@state.project.classification_count.toLocaleString()} contributions to {@state.project.title} to date. This project periodically builds a merged, anonymized snapshot of that data, which can be browsed here.</p>
+                </div>
             }
 
             <form>

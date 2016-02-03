@@ -430,13 +430,20 @@ namespace :project do
       exit
     end
 
-    export_base = "tmp/export/#{project.key}"
+    missing_env_keys = ['S3_EXPORT_BUCKET','S3_EXPORT_PATH','S3KEY','S3SECRET'].select { |k| ENV[k].nil? }
+    if ! missing_env_keys.empty?
+      puts "Can not export data without setting #{missing_env_keys.join ", "}"
+      exit
+    end
+
+    s3client = Aws::S3::Client.new
+
+    local_export_base = "#{Rails.root}/tmp/export/#{project.key}"
 
     # Remove previous:
-    `rm -rf #{export_base}` if File.exists?(export_base)
+    # `rm -rf #{local_export_base}` if File.exists?(local_export_base)
 
-    Dir.mkdir(export_base) unless File.exists?(export_base)
-
+    Dir.mkdir(local_export_base) unless File.exists?(local_export_base)
     start = Time.now
     built = 0
     limit = 100
@@ -444,7 +451,7 @@ namespace :project do
 
     (0..count).step(limit).each do |offset|
       project.final_subject_sets.offset(offset).limit(limit).each_with_index do |set, i|
-        path = "#{export_base}/#{set.subject_set_id}.json"
+        path = "#{local_export_base}/#{set.subject_set_id}.json"
         content = FinalSubjectSetSerializer.new(set, root:false).to_json
         File.open path, "w" do |f|
           f << content
@@ -463,16 +470,35 @@ namespace :project do
     # Generate timestamped filename with random suffix so it can't be guessed:
     rand_suffix = (('a'..'z').to_a + (0..9).to_a).shuffle[0,16].join
     max_updated = project.final_subject_sets.max(:updated_at)
-    filename = "scribe-#{project.key}-#{max_updated.strftime("%F")}-#{rand_suffix}"
+    filename = "scribe-#{project.key}-#{max_updated.strftime("%F")}-#{rand_suffix}.tar.gz"
 
-    path = "/#{filename}.zip"
-    puts "Zipping #{path}"
-    `zip --junk-paths -r public#{path} #{export_base}`
-    puts "Finished building exports. Download at: /#{filename}.zip"
+    # Zip it up
+    Rails.logger.info "Rake Complete, Begin GZIP, Go to S3"
+    sh %{cd #{local_export_base}; tar cfvz #{filename} --exclude '*.gz' .;}
+    Rails.logger.info "Tar-ing Complete"
 
-    FinalDataExport.create path: path, num_final_subject_sets: count
+    # Upload it to S3
+    s3client = Aws::S3::Client.new
+    local_path = "#{local_export_base}/#{filename}"
+    remote_path = "#{ENV['S3_EXPORT_PATH']}/#{filename}"
 
-    puts "Done."
+    Rails.logger.info "Uploading #{local_path} to #{ENV['S3_EXPORT_BUCKET']}#{remote_path}"
+    s3client.put_object({
+      acl:        'public-read',
+      bucket:     ENV['S3_EXPORT_BUCKET'],
+      key:        remote_path,
+      body:       File.read(local_path)
+    })
+
+    # Remove local temp files
+    sh %{rm -rf #{local_export_base};}
+
+    # Create the final-data-export record so it appears on /#/data/exports
+    s3_url = "http://#{ENV['S3_EXPORT_BUCKET']}/#{remote_path}"
+    FinalDataExport.create path: s3_url, num_final_subject_sets: count, project: project
+
+    puts "Finished building exports. Download at: #{s3_url}"
+
   end
 
   desc "Convenience method that, in one call, builds all data JSONs and zips them up into a single ZIP release"
