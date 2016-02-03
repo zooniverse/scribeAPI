@@ -443,7 +443,7 @@ namespace :project do
     # Remove previous:
     # `rm -rf #{local_export_base}` if File.exists?(local_export_base)
 
-    Dir.mkdir(local_export_base) unless File.exists?(local_export_base)
+    FileUtils.mkdir_p(local_export_base) unless File.exists?(local_export_base)
     start = Time.now
     built = 0
     limit = 100
