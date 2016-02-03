@@ -46,6 +46,7 @@ class Project
   has_many :workflows, dependent: :destroy, order: "order ASC"
   has_many :subjects
   has_many :final_subject_sets
+  has_many :final_data_exports
 
   scope :most_recent, -> { order(updated_at: -1) }
   scope :active, -> { where(status: 'active') }
