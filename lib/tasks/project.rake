@@ -430,7 +430,7 @@ namespace :project do
       exit
     end
 
-    missing_env_keys = ['S3_EXPORT_BUCKET','S3_EXPORT_PATH','S3KEY','S3SECRET'].select { |k| ENV[k].nil? }
+    missing_env_keys = ['S3_EXPORT_BUCKET','S3_EXPORT_PATH','AWS_REGION','AWS_ACCESS_KEY_ID','AWS_SECRET_ACCESS_KEY'].select { |k| ENV[k].nil? }
     if ! missing_env_keys.empty?
       puts "Can not export data without setting #{missing_env_keys.join ", "}"
       exit
