@@ -18,7 +18,11 @@ module.exports = React.createClass
     return null if ! @state.set
 
     <div className="page-content final-subject-set-browser">
+
       <div className="final-subject-set-page">
+
+        <a href={"/#/data/exports?keyword=#{@props.query.keyword}"}>Back</a>
+
         <a className="standard-button json-link" href="/final_subject_sets/#{@state.set.id}.json" target="_blank">Download Raw Data</a>
         <h2>Set {@state.set.id}</h2>
 
