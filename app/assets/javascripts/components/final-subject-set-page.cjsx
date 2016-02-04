@@ -1,7 +1,7 @@
 React = require 'react'
 API   = require '../lib/api'
 
-GenericButton   = require('components/buttons/generic-button')
+FinalSubjectAssertion = require('components/final-subject-assertion')
 
 module.exports = React.createClass
   displayName: 'FinalSubjectSetPage'
@@ -28,6 +28,7 @@ module.exports = React.createClass
                 <img src={subject.location.standard} className="standard-image"/>
                 <ul>
                   {
+                    # Sort assertions by order they appear in document:
                     assertions = subject.assertions.sort (a1,a2) ->
                       if a1.region.y < a2.region.y
                         -1
@@ -37,36 +38,7 @@ module.exports = React.createClass
                   }
                   { for assertion,i in assertions when assertion.name
                       <li key={i}>
-                        <h3>{assertion.name}</h3>
-
-                        <ul className="assertion-data">
-                        { for k of assertion.data
-                            console.log "assertion data: ", k, assertion.data
-                            <li key={k}>
-                              <span className="value">{assertion.data[k]}</span>
-                              { if k != 'value'
-                                  <span className="data-key">({k.replace /_/g, ' '})</span>
-                              }
-                            </li>
-                        }
-                        </ul>
-                        <dl className="assertion-properties">
-                          <dt>Confidence</dt>
-                          <dd>{Math.round(100 * assertion.confidence)}%</dd>
-                          <dt>Status</dt>
-                          <dd>{assertion.status.replace /_/, ' '}</dd>
-                          <dt>Distinct Classifications</dt>
-                          <dd>{assertion.classifications?.length || 0}</dd>
-                        </dl>
-                        {
-                          viewer_width = assertion.region.width
-                          scale = viewer_width / assertion.region.width
-                          s =
-                            background: "url(#{subject.location.standard}) no-repeat -#{Math.round(assertion.region.x * scale)}px -#{Math.round(assertion.region.y * scale)}px"
-                            width: viewer_width + 'px'
-                            height: Math.round(assertion.region.height * scale) + 'px'
-                          <div className="image-crop" src={subject.location.standard} style={s} />
-                        }
+                        <FinalSubjectAssertion subject={subject} assertion={assertion} project={@props.project} />
                       </li>
                   }
                 </ul>

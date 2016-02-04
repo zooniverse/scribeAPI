@@ -103,8 +103,17 @@
         margin-left 10px
         margin-right 40px
 
+    .show-region-link
+      font-size 12px
+
     .image-crop
       opacity 0.7
+
+      transition: height 0.3s ease-out
+
+      &.showing
+        border solid gray 1px
+
 
       &:hover
         opacity 1
