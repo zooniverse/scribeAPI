@@ -15,7 +15,16 @@ module.exports = React.createClass
     @setState showingRegion: ! @state.showingRegion
 
   render: ->
-    <div>
+
+    confidence = Math.round(100 * @props.assertion.confidence)
+    confidence_label = 'low'
+    confidence_label = 'med' if confidence >= 50
+    confidence_label = 'high' if confidence >= 66
+    confidence_label = 'max' if confidence == 100
+
+    status_label = @props.assertion.status.replace /_/, ' '
+
+    <div className="confidence-#{confidence_label} status-#{@props.assertion.status}">
       <h3>{@props.assertion.name}</h3>
 
       <ul className="assertion-data">
@@ -29,10 +38,10 @@ module.exports = React.createClass
       }
       </ul>
       <dl className="assertion-properties">
-        <dt>Confidence</dt>
-        <dd>{Math.round(100 * @props.assertion.confidence)}%</dd>
-        <dt>Status</dt>
-        <dd>{@props.assertion.status.replace /_/, ' '}</dd>
+        <dt className="confidence">Confidence</dt>
+        <dd className="confidence">{confidence}%</dd>
+        <dt className="status">Status</dt>
+        <dd className="status">{status_label}</dd>
         <dt>Distinct Transcriptions</dt>
         <dd>{@props.assertion.versions?.length || 0}</dd>
       </dl>

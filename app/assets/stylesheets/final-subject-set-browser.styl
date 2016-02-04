@@ -21,6 +21,13 @@
       font-size 2em
       margin-right 10px
 
+  .loading-indicator
+    width 100px
+    margin 100px auto
+    color black
+    position inherit
+    display block
+
   ul.results
     li
       display inline-block
@@ -68,13 +75,6 @@
       clear both
       margin-bottom 0
 
-    .confidence
-      opacity 0.5
-
-      &:after
-        content "% confidence"
-
-
     ul.assertion-data
       clear left
 
@@ -98,10 +98,16 @@
       dt
         &:after
           content ":"
-        
+
       dd
         margin-left 10px
         margin-right 40px
+
+        &.confidence-med
+          background-color yellow
+
+        &.status-complete, &.confidence-max, &.confidence-high
+          background-color lime
 
     .show-region-link
       font-size 12px
