@@ -126,10 +126,11 @@ namespace :project do
     # load project_file_path
     project = Project.find_or_create_by key: project_key
 
+    load_export_specs(project, project_hash['export_specs']) if project_hash['export_specs']
+
     # Set all valid fields from hash:
     project_hash = project_hash.inject({}) { |h, (k,v)| h[k] = v if Project.fields.keys.include?(k.to_s); h }
     project.update project_hash
-
 
     # Load pages from content/*:
     content_path = Rails.root.join('project', project_key, 'content')
@@ -199,6 +200,12 @@ namespace :project do
 
     project.save
     project
+  end
+
+  def load_export_specs(project, config)
+    project.export_document_specs = config.map do |h|
+      ExportDocumentSpec.from_hash h, project
+    end
   end
 
   def load_styles(project)
@@ -386,16 +393,24 @@ namespace :project do
   end
 
   desc "Build final_subject* data in database"
-  task :build_final_data, [:project_key, :rebuild] => :environment do |task, args|
-    args.with_defaults rebuild: true
+  task :build_final_data, [:project_key, :rebuild, :start, :limit] => :environment do |task, args|
+    args.with_defaults rebuild: true, start: 0, limit: Float::INFINITY
     rebuild = args[:rebuild] != 'false'
+    start = args[:start].to_i
+    limit = args[:limit].to_f
 
     project = project_by_key args[:project_key]
 
-    start = Time.now
+    start_time = Time.now
     count = project.subject_sets.count
-    limit = 100
+    last_index = [count, start + limit - 1].min
+    step = [100, limit].min
     built = 0
+
+    # puts "set: #{SubjectSet.find("5637a11432623300030a0100").inspect}"
+    # FinalSubjectSet.assert_for_set SubjectSet.find("56b115677061755afb539701"), rebuild
+    # FinalSubjectSet.assert_for_set FinalSubjectSet.find('56b118e07061755afbfcd801').subject_set, rebuild
+    # exit
 
     # Do any of this project's workflow tasks have configured export_names? If not, warn:
     has_export_names = ! project.workflows.map { |w| w.tasks }.flatten.select { |t| ! t.export_name.blank? }.empty? 
@@ -404,17 +419,17 @@ namespace :project do
     # Rebuild indexes
     FinalSubjectSet.rebuild_indexes Project.current
 
-    (0..count).step(limit).each do |offset|
-      sets = project.subject_sets.offset(offset).limit(limit).each_with_index do |set, i|
+    (start..last_index).step(step).each do |offset|
+      sets = project.subject_sets.offset(offset).limit(step).each_with_index do |set, i|
 
         final_set = FinalSubjectSet.assert_for_set set, rebuild
         built += 1
 
-        ellapsed = Time.now - start
+        ellapsed = Time.now - start_time
         per_set = ellapsed / built
         remaining = per_set * (count - (offset + i+1)) / 60 / 60
         complete = (offset + i+1).to_f / count * 100
-        $stderr.print "\r#{'%.8f' % complete}% complete. #{'%.1f' % remaining}h remaining. Built #{offset +i+1} of #{count}"
+        $stderr.print "\r#{'%.8f' % complete}% complete. #{'%.1f' % remaining}h remaining. Built item #{offset +i+1} of #{count}"
       end
     end
 

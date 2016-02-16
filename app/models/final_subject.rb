@@ -108,7 +108,6 @@ class FinalSubject
         ret += flattened_subjects(s.child_subjects, parents + [s])
 
       else
-        # ret << FinalSubjectAssertionSerializer.new(subject: s, parents: parents)
         ret << {subject: s, parents: parents} if s.status != 'bad'
       end
     end

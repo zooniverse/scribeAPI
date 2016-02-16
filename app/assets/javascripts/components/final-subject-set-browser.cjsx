@@ -12,7 +12,8 @@ module.exports = React.createClass
 
   getInitialState:->
     entered_keyword: @props.query.keyword
-    searched_keyword: null
+    selected_field: @props.query.field
+    searched_query: {}
     fetching_keyword: null
     current_page: 1
     more_pages: false
@@ -30,19 +31,20 @@ module.exports = React.createClass
 
   checkKeyword: (props = @props) ->
     if props.query.keyword
-      @fetch props.query.keyword
+      @fetch({keyword: props.query.keyword, field: props.query.field})
 
-  fetch: (keyword, page = 1) ->
+  fetch: (query, page = 1) ->
     return if ! @isMounted()
 
-    if keyword != @state.fetching_keyword
+    if query.keyword != @state.fetching_keyword || query.field != @state.selected_field
 
       results = @state.results
-      results = [] if @state.searched_keyword != keyword
-      @setState fetching_keyword: keyword, fetching_page: page, results: results, () =>
+      results = [] if @state.searched_query?.keyword != query.keyword
+      @setState fetching_keyword: query.keyword, fetching_page: page, results: results, () =>
         per_page = 20
         params =
-          keyword: keyword
+          keyword: query.keyword
+          field: query.field
           per_page: per_page
           page: @state.fetching_page
 
@@ -53,7 +55,9 @@ module.exports = React.createClass
             results[i + offset] = s
           @setState
             results: results
-            searched_keyword: @props.query.keyword
+            searched_query:
+              keyword: @props.query.keyword
+              field: @props.query.field
             current_page: page
             fetching_page: null
             more_pages: sets?[0]?.getMeta('next_page')
@@ -65,16 +69,21 @@ module.exports = React.createClass
       if [13].indexOf(e.keyCode) >= 0 # ENTER:
         @search e.target.value
 
-  search: (keyword) ->
-    keyword = @refs.search_input?.getDOMNode().value.trim() unless keyword?
+  search: (keyword, search_field) ->
+    keyword = @state.entered_keyword # refs.search_input?.getDOMNode().value.trim() unless keyword?
+    field = @state.selected_field # @refs.search_field?.getDOMNode().value.trim()
 
-    @transitionTo "final_subject_sets", null, {keyword: keyword}
+    @transitionTo "final_subject_sets", null, {keyword: keyword, field: field}
 
   loadMore: ->
-    @fetch @state.searched_keyword, @state.current_page + 1
+    @fetch @state.searched_query, @state.current_page + 1
 
   handleChange: (e) ->
     @setState entered_keyword: e.target.value
+
+  handleFieldSelect: (e) ->
+    @setState selected_field: e.target.value
+
 
   renderSearch: ->
     <div>
@@ -82,27 +91,48 @@ module.exports = React.createClass
 
       <p>Preview the data by searching by keyword below:</p>
       <form>
-        <input id="data-search" type="text" placeholder="Enter keyword" ref="search-input" value={@state.entered_keyword} onChange={@handleChange} onKeyDown={@handleKeyPress} />
-        <input className="standard-button" type="submit" value="Search" onclick={@search} />
+        { if @state.project.export_document_specs?[0]?.spec_fields
+            <select ref="search_field" value={@state.selected_field} onChange={@handleFieldSelect}>
+              <option value="">All Fields</option>
+              { for field in @state.project.export_document_specs[0].spec_fields when typeof(field.format)== 'string'
+                  <option key={field.name} value={field.name}>{field.name}</option>
+              }
+            </select>
+        }
+        <div>
+          <input id="data-search" type="text" placeholder="Enter keyword" ref="search_input" value={@state.entered_keyword} onChange={@handleChange} onKeyDown={@handleKeyPress} />
+          <button className="standard-button" onClick={@search}>Search</button>
+        </div>
       </form>
 
-      { if @state.fetching_keyword && @state.fetching_keyword != @state.searched_keyword
+      { if @state.fetching_keyword && @state.fetching_keyword != @state.searched_query?.keyword
           <LoadingIndicator />
         
-        else if @state.searched_keyword && @state.results.length == 0
-          <p>No matches yet for "{@state.searched_keyword}"</p>
+        else if @state.searched_query?.keyword && @state.results.length == 0
+          <p>No matches yet for "{@state.searched_query.keyword}"</p>
 
         else if @state.results.length > 0
           <div>
             <p>Found {@state.results[0].getMeta('total')} matches</p>
             <ul className="results">
             { for set in @state.results
-                url = "/#/data/exports/#{set.id}?keyword=#{@state.searched_keyword}"
+                url = "/#/data/exports/#{set.id}?keyword=#{@state.searched_query.keyword}&field=#{@state.searched_query.field}"
                 matches = []
-                safe_keyword = (w.replace(/\W/g, "\\$&") for w in @state.searched_keyword.toLowerCase().replace(/"/g,'').split(' ')).join("|")
+
+                safe_keyword = (w.replace(/\W/g, "\\$&") for w in @state.searched_query.keyword.toLowerCase().replace(/"/g,'').split(' ')).join("|")
+                safe_keyword = (c for c in safe_keyword).join ",?"
                 regex = new RegExp("(#{safe_keyword})", 'gi')
-                for k of set.search_terms_by_field
-                  matches.push(field: k, term: v) for v in set.search_terms_by_field[k] when v.match(regex)
+
+                # If a specific field searched, always show that:
+                if @state.searched_query?.field
+                  term = set.search_terms_by_field[@state.searched_query.field]?.join("; ")
+                  matches.push(field: @state.searched_query.field, term: term) if term
+
+                # Otherwise show all fields that match
+                else
+                  for k of set.search_terms_by_field
+                    matches.push(field: k, term: v) for v in set.search_terms_by_field[k] when v.match(regex)
+
                 <li key={set.id}>
                   <div className="image">
                     <a href={url}>
@@ -122,7 +152,7 @@ module.exports = React.createClass
                 </li>
             }
             </ul>
-            { if @state.fetching_keyword && @state.fetching_keyword == @state.searched_keyword
+            { if @state.fetching_keyword && @state.fetching_keyword == @state.searched_query?.keyword
                 <LoadingIndicator />
 
               else if @state.more_pages
@@ -135,7 +165,7 @@ module.exports = React.createClass
   renderDownloadCopy: ->
     <div>
 
-      { if ! @state.fetching_keyword && ! @state.searched_keyword
+      { if ! @state.fetching_keyword && ! @state.searched_query?.keyword
         <div>
           <h3>Download</h3>
 
@@ -169,13 +199,13 @@ module.exports = React.createClass
                 <p>Participants have made {@state.project.classification_count.toLocaleString()} contributions to {@state.project.title} to date. This project periodically builds a merged, anonymized snapshot of that data, which can be browsed here.</p>
             }
 
-            { if ! @state.searched_keyword
+            { if ! @state.searched_query?.keyword
                 <p>Participants have made {@state.project.classification_count.toLocaleString()} contributions to {@state.project.title} to date. This project periodically builds a merged, anonymized dump of that data, which is made public here.</p>
             }
 
             { @renderSearch() }
 
-            { if ! @state.searched_keyword
+            { if ! @state.searched_query?.keyword
                 @renderDownloadCopy()
             }
 

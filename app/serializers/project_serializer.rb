@@ -3,6 +3,8 @@ class ProjectSerializer < ActiveModel::MongoidSerializer
   attributes :classification_count
   has_many :workflows
 
+  has_many :export_document_specs
+
   def latest_export
     FinalDataExportSerializer.new FinalDataExport.most_recent.first, root: false
   end
