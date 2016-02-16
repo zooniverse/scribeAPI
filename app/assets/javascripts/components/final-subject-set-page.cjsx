@@ -43,16 +43,20 @@ module.exports = React.createClass
         <a className="standard-button json-link" href="/final_subject_sets/#{@state.set.id}.json" target="_blank">Download Raw Data</a>
         { if @state.set.export_document? && (display_field = @state.set.export_document.export_fields[0])?
             <h2>{display_field.name} {display_field.value}</h2>
+          else
+            <h2>Record {@state.set.id}</h2>
         }
 
         <img src={@state.set.subjects[0].location.standard} className="standard-image"/>
 
-        <ul className="tabs">
-        { if @state.tabs.indexOf('export-doc') >= 0
-            <li className={ if @state.tab == 'export-doc' then 'active' else '' }><a href="javascript:void(0);" onClick={@showExportDoc}>Best Data</a></li>
+        { if @state.tabs.length == 2
+            <ul className="tabs">
+            { if @state.tabs.indexOf('export-doc') >= 0
+                <li className={ if @state.tab == 'export-doc' then 'active' else '' }><a href="javascript:void(0);" onClick={@showExportDoc}>Best Data</a></li>
+            }
+            <li className={ if @state.tab == 'assertions' then 'active' else '' }><a href="javascript:void(0);" onClick={@showAssertions}>All Data</a></li>
+            </ul>
         }
-        <li className={ if @state.tab == 'assertions' then 'active' else '' }><a href="javascript:void(0);" onClick={@showAssertions}>All Data</a></li>
-        </ul>
 
         { if @state.tab == 'export-doc'
             if @state.set.export_document

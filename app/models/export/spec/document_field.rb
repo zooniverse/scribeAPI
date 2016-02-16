@@ -7,8 +7,8 @@ class Export::Spec::DocumentField
   field :format_options,          type: Hash # e.g. "format_options": {"range": [1850,1950]}
   field :repeats,                 type: Boolean
   embeds_many :sub_fields, class_name: 'Export::Spec::DocumentField'
-  embedded_in :export_document_spec
-  embedded_in :export_document_spec_field
+  embedded_in :export_document_spec, class_name: 'Export::Spec::Document'
+  embedded_in :export_document_spec_field, class_name: 'Export::Spec::DocumentField'
 
   def to_s
     name + (select.nil? ? '' : " (select: \"#{select}\")")

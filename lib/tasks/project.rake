@@ -204,7 +204,7 @@ namespace :project do
 
   def load_export_specs(project, config)
     project.export_document_specs = config.map do |h|
-      ExportDocumentSpec.from_hash h, project
+      Export::Spec::Document.from_hash h, project
     end
   end
 
@@ -415,6 +415,11 @@ namespace :project do
     # Do any of this project's workflow tasks have configured export_names? If not, warn:
     has_export_names = ! project.workflows.map { |w| w.tasks }.flatten.select { |t| ! t.export_name.blank? }.empty? 
     puts "WARNING: No export_names found in workflow configuration. This may make it tricky to interpret the field-level data. See `export_name` documentation in https://github.com/zooniverse/scribeAPI/wiki/Project-Workflows#tasks" if ! has_export_names
+
+    if project.export_document_specs.blank?
+      puts "No export_spec configured; Add one before building"
+      exit
+    end
 
     # Rebuild indexes
     FinalSubjectSet.rebuild_indexes Project.current

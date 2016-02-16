@@ -36,7 +36,7 @@ class Export::DocumentBuilder
 
   def all_for_field_spec(spec, base_assertion=nil)
     assertions = assertions_for_field_spec(spec, base_assertion).sort_by { |a| - a.confidence }
-    puts "[Nothing found for #{spec.name}...]" if assertions.blank?
+    # puts "[Nothing found for #{spec.name}...]" if assertions.blank?
     return nil if assertions.blank?
 
     fields = assertions.map do |assertion|
