@@ -11,6 +11,8 @@ class FinalSubjectAssertion
   field :task_key,                      type: String
   field :instructions,                  type: Hash
 
+  belongs_to :root_subject, class_name: "Subject"
+
   embedded_in :final_subject, inverse_of: :assertions
 
   def self.create_from_subject(subject, parents)

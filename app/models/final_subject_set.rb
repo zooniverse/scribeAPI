@@ -1,7 +1,31 @@
 class FinalSubjectSet
   include Mongoid::Document
   include Mongoid::Timestamps
-  # include Mongoid::FullTextSearch
+
+  scope :by_export_field, -> (name, value, exact) do
+    where({
+      "export_document.export_fields" => {
+        '$elemMatch' => {
+          name: name,
+          value: ( exact ? value : { "$regex" => /#{value}/i } )
+        }
+      }
+    })
+  end
+
+  scope :by_export_field_range, -> (name, values) do
+    where({
+      "export_document.export_fields" => {
+        '$elemMatch' => {
+          name: name,
+          value: { 
+            "$gte" => values.first,
+            "$lte" => values.last
+          }
+        }
+      }
+    })
+  end
 
   belongs_to :project
   belongs_to :subject_set
@@ -17,22 +41,29 @@ class FinalSubjectSet
   index({"project_id" => 1}, {background: true})
 
   index({"search_terms" => "text"})
-  # can't create two...
-  # index({"search_terms_by_field" => "text"})
 
   [:total, :complete, :awaiting_votes, :in_progress, :awaiting_transcriptions].each do |field|
     index({"subjects.assertions_breakdown.all_workflows.#{field}" => 1}, {background: true})
   end
 
   embeds_many :subjects, class_name: 'FinalSubject'
-
-  # fulltext_search_in :fulltext_terms
+  embeds_one :export_document, class_name: "Export::Document"
 
   def build_search_terms
     update_attributes({
       search_terms: compute_fulltext_terms,
       search_terms_by_field: compute_fulltext_terms_by_field
     })
+  end
+
+  def self.export_spec_fields
+    Project.current.export_document_specs.map do |spec|
+      spec.spec_fields
+    end.flatten
+  end
+
+  def build_export_document
+    self.export_document = Export::Document.from_set self, Project.current.export_document_specs
   end
 
   def compute_fulltext_terms
@@ -60,6 +91,8 @@ class FinalSubjectSet
     inst.meta_data = set.meta_data
     inst.update_subjects
     inst.build_search_terms
+    inst.build_export_document
+    puts "Saving final subject set: #{inst.id}"
     inst.save! 
   end
 
@@ -76,6 +109,7 @@ class FinalSubjectSet
     collection.indexes.drop unless self.count == 0  # If no records yet saved, moped will error when dropping indexes
     for_project.export_names.each do |(key,name)|
       index({"search_terms_by_field.#{key}" => 1}, {background: true})
+      index({"export_document.export_fields.name" => 1, "export_document.export_fields.value" => 1})
     end
     create_indexes
   end

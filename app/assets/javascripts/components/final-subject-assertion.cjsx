@@ -30,7 +30,16 @@ module.exports = React.createClass
       <ul className="assertion-data">
       { for k of @props.assertion.data
           <li key={k}>
+            {
+              cleaned_version = null
+              if @props.field && @props.field.value
+                cleaned_version = if (typeof @props.field.value) == 'object' then @props.field.value[k] else @props.field.value
+              null
+            }
             <span className="value">{@props.assertion.data[k]}</span>
+            { if cleaned_version && ('' + cleaned_version) != @props.assertion.data[k]
+                <span className="cleaned-version">( Interpretted as <em>{if (typeof cleaned_version) == 'object' then cleaned_version.join(' x ') else cleaned_version }</em> )</span>
+            }
             { if k != 'value'
                 <span className="data-key">({k.replace /_/g, ' '})</span>
             }

@@ -48,6 +48,8 @@ class Project
   has_many :final_subject_sets
   has_many :final_data_exports
 
+  embeds_many :export_document_specs, class_name: "Export::Spec::Document"
+
   scope :most_recent, -> { order(updated_at: -1) }
   scope :active, -> { where(status: 'active') }
 
