@@ -44,7 +44,7 @@ class FinalSubjectAssertion
     parents.each do |s|
       next if s.parent_workflow.nil?
 
-      if s.parent_workflow.name == 'mark' && subject.region[:label]
+      if s.parent_workflow.name == 'mark' && subject.region && subject.region[:label]
         ret[s.parent_workflow.name] = subject.region[:label]
 
       else

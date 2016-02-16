@@ -63,7 +63,11 @@ class FinalSubjectSet
   end
 
   def build_export_document
-    self.export_document = Export::Document.from_set self, Project.current.export_document_specs
+    if ! Project.current.export_document_specs.blank?
+      self.export_document = Export::Document.from_set self, Project.current.export_document_specs
+    else
+      puts "No export_document_specs configured for #{Project.current.title}"
+    end
   end
 
   def compute_fulltext_terms
