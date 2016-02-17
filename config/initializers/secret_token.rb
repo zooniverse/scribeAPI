@@ -9,4 +9,4 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-API::Application.config.secret_key_base = 'a98063c8376671a76f96df307c219e7a0abc48931f4abbc3aacac874d525da6451f7997b50a224a55a075739af1c549eff33badb200448e3d76bf5d0fae35490'
+API::Application.config.secret_key_base = ENV['SECRET_KEY_BASE_TOKEN']
