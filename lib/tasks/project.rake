@@ -522,7 +522,15 @@ namespace :project do
   end
 
   desc "Convenience method that, in one call, builds all data JSONs and zips them up into a single ZIP release"
-  task :build_and_export_final_data, [:project_key, :rebuild] => :environment do |task, args|
+  task :build_and_export_final_data, [:project_key, :rebuild, :ensure_day_of_week_is] => :environment do |task, args|
+    # If ensure_day_of_week_is given, proceed with execution only if weekday matches value
+    # (Important for heroku scheduler, which can schedule daily but not weekly)
+    if ! args[:ensure_day_of_week_is].blank? 
+      if Date.today.strftime("%A").downcase != args[:ensure_day_of_week_is].downcase
+        puts "Aborting because today is not #{args[:ensure_day_of_week_is]}"
+        exit
+      end
+    end
     Rake::Task['project:build_final_data'].invoke(args[:project_key], args[:rebuild])
     Rake::Task['project:export_final_data'].invoke(args[:project_key])
   end

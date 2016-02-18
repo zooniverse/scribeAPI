@@ -1,5 +1,29 @@
 .final-subject-set-browser
 
+  .pagination
+    list-style none
+
+    li
+      display inline-block
+      margin-right 0.5em
+      line-height 1.2em
+
+      a, span
+        @extends .standard-button
+        font-weight bold
+        color white
+        padding 0.2em 0.6em
+
+      a
+        text-decoration none
+
+      &.disabled
+        opacity 0.5
+
+      &.divider:after
+        content "..."
+
+
   .tabs
     padding 0
     margin 0
@@ -11,8 +35,8 @@
       display inline-block
       border solid #bbb
       border-width 1px 1px 0 1px
-      margin 0 20px 0 0
-      font-size 1.5em
+      margin 0 0 0 10px
+      font-size 1.4em
       border-radius 5px 5px 0 0
 
       a
@@ -21,13 +45,11 @@
         color gray
 
       &.active
-        background-color rgba(255,255,255,0.50)
+        background-color rgba(255,255,255,0.30)
         
         a
           font-weight bold
           color TERTIARY_NORMAL
-     
-
 
   &.page-content
     h2
@@ -199,4 +221,13 @@
       &:before
         content "<"
 
+  dl.source-metadata
+    dl
+      margin-top 10px
 
+    dt
+      font-size 20px
+
+    dd
+      margin-left 0
+      margin-bottom 10px

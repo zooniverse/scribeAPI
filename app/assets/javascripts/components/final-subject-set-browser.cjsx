@@ -4,6 +4,7 @@ API                       = require '../lib/api'
 Project                   = require 'models/project.coffee'
 GenericButton             = require('components/buttons/generic-button')
 LoadingIndicator          = require('components/loading-indicator')
+Pagination                = require('components/pagination')
 
 module.exports = React.createClass
   displayName: 'FinalSubjectSetBrowser'
@@ -15,28 +16,28 @@ module.exports = React.createClass
     selected_field: @props.query.field
     searched_query: {}
     fetching_keyword: null
-    current_page: 1
+    current_page: @props.query.page ? 1
     more_pages: false
     results: []
     project: null
 
   componentDidMount: ->
-    @checkKeyword()
+    @checkQueryString()
 
     API.type('projects').get().then (result)=>
       @setState project: new Project(result[0])
 
   componentWillReceiveProps: (new_props) ->
-    @checkKeyword new_props
+    @checkQueryString new_props
 
-  checkKeyword: (props = @props) ->
+  checkQueryString: (props = @props) ->
     if props.query.keyword
-      @fetch({keyword: props.query.keyword, field: props.query.field})
+      @fetch({keyword: props.query.keyword, field: props.query.field}, props.query.page)
 
   fetch: (query, page = 1) ->
     return if ! @isMounted()
 
-    if query.keyword != @state.fetching_keyword || query.field != @state.selected_field
+    if query.keyword != @state.searched_keyword || query.field != @state.selected_field || @props.current_page != page
 
       results = @state.results
       results = [] if @state.searched_query?.keyword != query.keyword
@@ -49,12 +50,8 @@ module.exports = React.createClass
           page: @state.fetching_page
 
         API.type('final_subject_sets').get(params).then (sets) =>
-          results = @state.results
-          offset = (@state.fetching_page-1) * per_page
-          for s,i in sets
-            results[i + offset] = s
           @setState
-            results: results
+            results: sets
             searched_query:
               keyword: @props.query.keyword
               field: @props.query.field
@@ -85,6 +82,15 @@ module.exports = React.createClass
     @setState selected_field: e.target.value
 
 
+  renderPagination: ->
+    <Pagination
+      total_pages       = {@state.results[0]?.getMeta('total_pages')}
+      current_page      = {@state.results[0]?.getMeta('current_page')}
+      next_page         = {@state.results[0]?.getMeta('next_page')}
+      prev_page         = {@state.results[0]?.getMeta('prev_page')}
+      onClick           = {@goToPage}
+    />
+
   renderSearch: ->
     <div>
       <h3>Browse</h3>
@@ -105,7 +111,7 @@ module.exports = React.createClass
         </div>
       </form>
 
-      { if @state.fetching_keyword && @state.fetching_keyword != @state.searched_query?.keyword
+      { if @state.fetching_keyword
           <LoadingIndicator />
         
         else if @state.searched_query?.keyword && @state.results.length == 0
@@ -114,9 +120,10 @@ module.exports = React.createClass
         else if @state.results.length > 0
           <div>
             <p>Found {@state.results[0].getMeta('total')} matches</p>
+
             <ul className="results">
             { for set in @state.results
-                url = "/#/data/exports/#{set.id}?keyword=#{@state.searched_query.keyword}&field=#{@state.searched_query.field}"
+                url = "/#/data/exports/#{set.id}?keyword=#{@state.searched_query.keyword}&field=#{@state.searched_query.field ? ''}"
                 matches = []
 
                 safe_keyword = (w.replace(/\W/g, "\\$&") for w in @state.searched_query.keyword.toLowerCase().replace(/"/g,'').split(' ')).join("|")
@@ -136,7 +143,7 @@ module.exports = React.createClass
                 <li key={set.id}>
                   <div className="image">
                     <a href={url}>
-                      <img src={set.subjects[0].location.thumbnail} />
+                      <img src={set.subjects[0]?.location.thumbnail} />
                     </a>
                   </div>
                   <div className="matches">
@@ -152,12 +159,8 @@ module.exports = React.createClass
                 </li>
             }
             </ul>
-            { if @state.fetching_keyword && @state.fetching_keyword == @state.searched_query?.keyword
-                <LoadingIndicator />
 
-              else if @state.more_pages
-                <GenericButton className="load-more" onClick={@loadMore} label="More" />
-            }
+            { @renderPagination() if @state.results.length > 0 }
           </div>
       }
     </div>
