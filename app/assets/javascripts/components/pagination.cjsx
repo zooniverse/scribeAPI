@@ -31,6 +31,9 @@ module.exports = React.createClass
         # Bookend with last few pages:
         pages.push p if p > @props.total_pages - chunk_size && pages.indexOf(p)<0
 
+    # Don't show anything if no usable links:
+    return null if pages.length < 2
+
     page_links = []
 
     # Add leading < link
@@ -44,6 +47,7 @@ module.exports = React.createClass
 
     # Add final > link
     page_links.push({label: "&gt;", page: @props.next_page, title: "Next", disabled: false}) if @props.next_page?
+
 
     <ul className="pagination">
     { for link, i in page_links
