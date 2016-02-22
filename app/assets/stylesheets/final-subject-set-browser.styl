@@ -1,4 +1,6 @@
 .final-subject-set-browser
+  flex(grow: 1)
+  max-width 700px
 
   .pagination
     list-style none
@@ -91,7 +93,7 @@
     li
       display inline-block
       margin 0 10px 10px 0
-      width 400px
+      width 330px
       height 150px
       overflow hidden
 
@@ -100,12 +102,13 @@
         text-decoration none
 
       .image
-        width 170px
+        width 160px
         float left
 
       .matches
-        width 200px
+        width 160px
         float left
+        font-size 14px
 
         .match
           padding-bottom 0.5em
@@ -135,7 +138,6 @@
       border-left none
       padding 0
       line-height normal
-      width auto
       font-size 28px
       clear both
       margin-bottom 0
@@ -204,6 +206,7 @@
     .image-crop
       opacity 0.7
       margin-left 10px
+      max-width 700px
 
       transition: height 0.3s ease-out
 

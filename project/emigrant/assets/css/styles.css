@@ -98,6 +98,7 @@ html, body,
   width: 960px;
   margin: 20px auto;
   box-sizing: border-box;
+  padding: 0px;
 }
 @media screen and (max-width: 999px) {
   .page-content {
@@ -121,6 +122,10 @@ html, body,
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
   text-align: center;
+}
+
+.page-content.custom-page .with-nav {
+  padding-left: 20px;
 }
 
 .page-content.custom-page .with-nav h2 {
