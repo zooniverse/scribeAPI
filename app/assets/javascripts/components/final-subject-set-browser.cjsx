@@ -120,7 +120,7 @@ module.exports = React.createClass
 
             <ul className="results">
             { for set in @state.results
-                url = "/#/data/browse/#{set.id}?keyword=#{@state.searched_query.keyword}&field=#{@state.searched_query.field ? ''}"
+                url = "/#/#{@state.project.data_url_base}/browse/#{set.id}?keyword=#{@state.searched_query.keyword}&field=#{@state.searched_query.field ? ''}"
                 matches = []
 
                 safe_keyword = (w.replace(/\W/g, "\\$&") for w in @state.searched_query.keyword.toLowerCase().replace(/"/g,'').split(' ')).join("|")
@@ -166,9 +166,9 @@ module.exports = React.createClass
   render: ->
     return null if ! @state.project?
 
-    data_nav = @state.project.page_navs['data']
+    data_nav = @state.project.page_navs[@state.project.data_url_base]
 
-    <GenericPage key='final-subject-set-browser' title="Data Exports" nav={data_nav} current_nav="/#/data/browse">
+    <GenericPage key='final-subject-set-browser' title="Data Exports" nav={data_nav} current_nav="/#/#{@state.project.data_url_base}/browse">
       <div className="final-subject-set-browser">
 
         <h2>Browse</h2>

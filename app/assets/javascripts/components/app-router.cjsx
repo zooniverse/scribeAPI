@@ -91,19 +91,19 @@ class AppRouter
         }
 
         <Route
-          path='data/browse'
+          path="#{project.data_url_base}/browse"
           handler={FinalSubjectSetBrowser}
           name='final_subject_sets'
         />
         { if project.downloadable_data
           <Route
-            path='data/browse/:final_subject_set_id'
+            path="#{project.data_url_base}/browse/:final_subject_set_id"
             handler={FinalSubjectSetPage}
             name='final_subject_set_page'
           />
         }
         <Route
-          path='data/download'
+          path="#{project.data_url_base}/download"
           handler={FinalSubjectSetDownload}
           name='final_subject_sets_download'
         />

@@ -1,10 +1,8 @@
 ## Data exports
 
-Participants have made {{project.classification_count}} contributions to Emigrant City to date. This project periodically builds a merged, anonymized dump of that data, which is made public here. This is an active project and we’re continuing to gather data from the records. The data made available here is refreshed weekly.
+With help from volunteers like yourself, we are extracting structured, building-level information from about 6,400 mortgages contained in the Emigrant Savings Bank Records at The New York Public Library. Of course, the ultimate goal is to make this data publicly available. Having a keyword-searchable and structured index of names and mortgage details will of great use to genealogists, historians, digital humanities researchers, and others interested in exploring historical data sources.
 
-
-## Source Assets
-Feel free to explore the collection assets themselves on the Library's [Digital Collections](http://digitalcollections.nypl.org/collections/emigrant-savings-bank-records) website. In this project, we're working with the subset of these digitized materials, the volumes containing Mortgage and Bond records. The volumes appearing in Emigrant City are:
+After enough transcriptions are made, our team will determine the best way to get the data to you in an easy and accessible way. In the meantime, feel free to explore the collection assets themselves on the Library's [Digital Collections](http://digitalcollections.nypl.org/collections/emigrant-savings-bank-records) website. In this project, we're working with the subset of these digitized materials, the volumes containing Mortgage and Bond records. The volumes appearing in Emigrant City are:
 * [Bond and Mortgage Record Book 1 (1 to 1,555)](http://digitalcollections.nypl.org/items/df712aa0-00b1-0133-fbd7-58d385a7bbd0)
 * [Bond and Mortgage Record Book 2 (1,556 to 2, 721)](http://digitalcollections.nypl.org/items/c0c38370-015a-0133-065e-58d385a7bbd0)
 * [Bond and Mortgage Record Book 3 (2,722 to 3,699)](http://digitalcollections.nypl.org/items/5bb969d0-0241-0133-f196-58d385a7b928)
