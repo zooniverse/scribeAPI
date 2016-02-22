@@ -47,7 +47,7 @@ class FinalSubjectSetsController < FinalDataController
       @sets = @sets.where({"$text" => {"$search" => keyword} } ) if keyword
     end
 
-    respond_with GenericResultSerializer.new(@sets)
+    respond_with GenericResultSerializer.new(@sets).serializable_hash base_url: request.url
   end
 
   def parse_range(values, format)

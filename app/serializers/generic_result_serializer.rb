@@ -39,6 +39,14 @@ class GenericResultSerializer < ActiveModel::MongoidSerializer
   end
 
   def links
-    serialization_options[:links]
+    m = {}
+    if serialization_options[:base_url]
+      base_url,query = serialization_options[:base_url].split '?'
+      query = Rack::Utils.parse_nested_query query
+      m[:next_page_uri] = "#{base_url}?#{query.merge({"page" => object.next_page}).to_query}" if object.next_page
+      m[:prev_page_uri] = "#{base_url}?#{query.merge({"page" => object.prev_page}).to_query}" if object.prev_page
+    end
+    m.merge! serialization_options[:links] if serialization_options[:links]
+    m
   end
 end
