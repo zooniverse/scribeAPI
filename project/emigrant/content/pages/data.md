@@ -1,6 +1,6 @@
 ## Data exports
 
-Participants have made {{project.classification_count}} contributions to Emigrant City to date. This project periodically builds a merged, anonymized dump of that data, which is made public here. This is an active project and we’re continuing to gather data from the records. The data made available here is refreshed weekly.
+Participants have made {{project.classification_count}} contributions to Emigrant City to date. This project periodically builds a merged, anonymized dump of that data, which is made public here. This is an active project and we’re continuing to gather data from the records. (You can [help](/#/intro)!) The data made available here is refreshed weekly.
 
 
 ## Source Assets
@@ -17,6 +17,6 @@ Feel free to explore the collection assets themselves on the Library's [Digital 
 * [Real Estate Loans No. 13](http://digitalcollections.nypl.org/items/3edf3050-24cd-0133-e6df-58d385a7b928)
 
 
-You may also be interested to explore how we’ve been experimenting with opening up data from other crowdsourcing projects:
+You may also be interested to explore how we’ve been experimenting with opening up data from other participatory projects:
 * [What's on the Menu?](http://menus.nypl.org/data)
 * [Building Inspector](http://buildinginspector.nypl.org/data)
