@@ -8,6 +8,7 @@ API::Application.routes.draw do
 
 
   get '/projects',                                            to: 'projects#index',       defaults: { format: 'json' }
+  get '/projects/current',                                    to: 'projects#current',     defaults: { format: 'json' }
 
   get '/workflows',                                           to: 'workflow#index',       defaults: { format: 'json' }
   get '/workflows/:id',                                       to: 'workflow#show',        defaults: { format: 'json' }

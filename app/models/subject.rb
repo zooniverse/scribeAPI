@@ -57,6 +57,7 @@ class Subject
   belongs_to :group
   belongs_to :parent_subject, :class_name => "Subject", :foreign_key => "parent_subject_id"
   belongs_to :subject_set, :class_name => "SubjectSet", :foreign_key => "subject_set_id"
+  belongs_to :project
 
   has_many :child_subjects, :class_name => "Subject"
   has_many :classifications, inverse_of: :subject

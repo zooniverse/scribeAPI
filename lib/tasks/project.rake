@@ -136,46 +136,24 @@ namespace :project do
     content_path = Rails.root.join('project', project_key, 'content')
     puts "Loading pages from #{content_path}:"
 
-    prev_pages = project.pages
     project.pages = []
 
-    Dir.foreach(content_path).each do |file|
-      path = Rails.root.join content_path, file
-      next if File.directory? path
-      next if ! ['.html','.erb','.md'].include? path.extname
-      ext = path.extname
-      page_key = file.split('.').first
-      name = page_key.capitalize
-      content = File.read path
-
-      puts "  Loading page: \"#{name}\" (#{content.size}b)"
-      if page_key == 'home'
-        project.home_page_content = content
-
+    # Dir.foreach(content_path).each do |file|
+     #  path = Rails.root.join content_path, file
+      # next if File.directory? path
+      # next if ! ['.html','.erb','.md'].include? path.extname
+    
+    # Load legacy pages from content folder directly:
+    Dir.glob("#{content_path}/*.{erb,html,md}").each do |path|
+      load_page project, path
+    end
+    
+    # Also load anything inside content/pages:
+    Dir.glob("#{content_path}/pages/*").each do |path|
+      if File.directory?(path)
+        load_page_group project, path
       else
-        # Set updated at if content changed:
-        updated_at = Time.now
-        if ! prev_pages.nil? && ! prev_pages.empty?
-          previous_page = prev_pages.select { |p| p[:key] == page_key }
-          if ! previous_page.empty? && (previous_page = previous_page.first)
-            updated_at = ! previous_page[:updated_at].nil? && previous_page[:content] == content ? previous_page[:updated_at] : Time.now
-          end
-        end
-
-        # Check if we should include group browser content
-        group_match = /<!\-\-[\s]*require groups:[\s]*(.*)\-\->/.match(content)
-        group_browser = ''
-        if group_match && !group_match.captures.empty?
-          group_browser = group_match.captures[0]
-        end
-
-        project.pages << {
-          key: page_key,
-          name: name,
-          content: content,
-          updated_at: updated_at,
-          group_browser: group_browser
-        }
+        load_page project, path
       end
     end
 
@@ -200,6 +178,66 @@ namespace :project do
 
     project.save
     project
+  end
+
+  def load_page_group(project, path)
+    base_key = File.basename path
+
+    nav_content = nil
+    nav_path = File.join(path, "_nav.md")
+    if File.exist?(nav_path)
+      nav_content = File.read nav_path
+      puts "got nav: #{nav_content}"
+    end
+
+    Dir.glob("#{path}/*.{erb,html,md}").each do |path|
+      load_page project, path, {base_key: base_key, nav: nav_content} unless File.basename(path).match(/^_/)
+    end
+  end
+
+  def load_page(project, path, options = {})
+    filename = File.basename path
+
+    page_key = filename.split('.').first
+    name = page_key.capitalize
+    name = "#{options[:base_key].capitalize} | #{name}" if options[:base_key]
+    content = File.read path
+
+    if page_key == 'home'
+      project.home_page_content = content
+
+    else
+      # Set updated at if content changed:
+      updated_at = Time.now
+      if ! project.pages.nil? && ! project.pages.empty?
+        previous_page = project.pages.select { |p| p[:key] == page_key }
+        if ! previous_page.empty? && (previous_page = previous_page.first)
+          updated_at = ! previous_page[:updated_at].nil? && previous_page[:content] == content ? previous_page[:updated_at] : Time.now
+        end
+      end
+
+      # PB 20160219 deprecating this cause doesn't appear in use
+      # Check if we should include group browser content
+      # group_match = /<!\-\-[\s]*require groups:[\s]*(.*)\-\->/.match(content)
+      # group_browser = ''
+      # if group_match && !group_match.captures.empty?
+      #   group_browser = group_match.captures[0]
+      # end
+
+      # Place page nav in special page_navs hash by base key:
+      project.page_navs = {} if options[:nav]
+      project.page_navs[options[:base_key]] = options[:nav] if options[:nav]
+
+      project.pages << {
+        key: ( options[:base_key].nil? ? '' : "#{options[:base_key]}/" ) + page_key,
+        name: name,
+        content: content,
+        updated_at: updated_at
+        # group_browser: group_browser
+      }
+    end
+    puts "  Loaded page: \"#{options[:base_key]}/#{name}\" (#{content.size}b)"
+
   end
 
   def load_export_specs(project, config)

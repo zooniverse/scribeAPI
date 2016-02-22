@@ -5,11 +5,13 @@ Project                   = require 'models/project.coffee'
 GenericButton             = require('components/buttons/generic-button')
 LoadingIndicator          = require('components/loading-indicator')
 Pagination                = require('components/pagination')
+GenericPage               = require './generic-page'
+FetchProjectMixin         = require 'lib/fetch-project-mixin'
 
 module.exports = React.createClass
   displayName: 'FinalSubjectSetBrowser'
 
-  mixins: [Navigation]
+  mixins: [Navigation, FetchProjectMixin]
 
   getInitialState:->
     entered_keyword: @props.query.keyword
@@ -23,9 +25,6 @@ module.exports = React.createClass
 
   componentDidMount: ->
     @checkQueryString()
-
-    API.type('projects').get().then (result)=>
-      @setState project: new Project(result[0])
 
   componentWillReceiveProps: (new_props) ->
     @checkQueryString new_props
@@ -93,8 +92,6 @@ module.exports = React.createClass
 
   renderSearch: ->
     <div>
-      <h3>Browse</h3>
-
       <p>Preview the data by searching by keyword below:</p>
       <form>
         { if @state.project.export_document_specs?[0]?.spec_fields
@@ -123,7 +120,7 @@ module.exports = React.createClass
 
             <ul className="results">
             { for set in @state.results
-                url = "/#/data/exports/#{set.id}?keyword=#{@state.searched_query.keyword}&field=#{@state.searched_query.field ? ''}"
+                url = "/#/data/browse/#{set.id}?keyword=#{@state.searched_query.keyword}&field=#{@state.searched_query.field ? ''}"
                 matches = []
 
                 safe_keyword = (w.replace(/\W/g, "\\$&") for w in @state.searched_query.keyword.toLowerCase().replace(/"/g,'').split(' ')).join("|")
@@ -165,54 +162,33 @@ module.exports = React.createClass
       }
     </div>
     
-  renderDownloadCopy: ->
-    <div>
-
-      { if ! @state.fetching_keyword && ! @state.searched_query?.keyword
-        <div>
-          <h3>Download</h3>
-
-          <p>You can download the latest using the button in the upper-right. For help interpretting the data, see <a href="https://github.com/zooniverse/scribeAPI/wiki/Data-Exports#user-content-data-model" target="_blank">Scribe WIKI on Data Exports</a>.</p>
-
-        </div>
-      }
-    </div>
 
   render: ->
     return null if ! @state.project?
 
-    <div className="page-content final-subject-set-browser">
-      <h2>Data Exports</h2>
+    data_nav = @state.project.page_navs['data']
 
+    <GenericPage key='final-subject-set-browser' title="Data Exports" nav={data_nav} current_nav="/#/data/browse">
+      <div className="final-subject-set-browser">
 
-      { if ! @state.project.downloadable_data
-          <div>
-            <h3>Data Exports Not Available</h3>
-            <p>Sorry, but public data exports are not enabled for this project yet.</p>
-          </div>
-          
-        else
-          <div>
-            { if @state.project.latest_export?
-                <div>
-                  <a className="standard-button json-link" href="/data/latest" target="_blank">Download Latest Raw Data</a> <a className="standard-button json-link" href="/data.atom" target="_blank" title="ATOM Feed of Data Releases"><i className="fa fa-rss-square"></i></a>
-                </div>
+        <h2>Browse</h2>
 
-              else
-                <p>Participants have made {@state.project.classification_count.toLocaleString()} contributions to {@state.project.title} to date. This project periodically builds a merged, anonymized snapshot of that data, which can be browsed here.</p>
-            }
+        { if ! @state.project.downloadable_data
+            <div>
+              <h3>Data Exports Not Available</h3>
+              <p>Sorry, but public data exports are not enabled for this project yet.</p>
+            </div>
+            
+          else
+            <div>
+              { if ! @state.searched_query?.keyword
+                  <p>Participants have made {@state.project.classification_count.toLocaleString()} contributions to {@state.project.title} to date. This project periodically builds a merged, anonymized dump of that data, which is made public here.</p>
+              }
 
-            { if ! @state.searched_query?.keyword
-                <p>Participants have made {@state.project.classification_count.toLocaleString()} contributions to {@state.project.title} to date. This project periodically builds a merged, anonymized dump of that data, which is made public here.</p>
-            }
+              { @renderSearch() }
 
-            { @renderSearch() }
-
-            { if ! @state.searched_query?.keyword
-                @renderDownloadCopy()
-            }
-
-          </div>
+            </div>
         }
       </div>
+    </GenericPage>
 

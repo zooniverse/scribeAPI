@@ -3,7 +3,12 @@ class ProjectsController < ApplicationController
 
   caches_action :index, :cache_path => "projects/index"
 
+  # TODO deprecate this nonsensical usage. Use /projects/current instead
   def index
+    current
+  end
+
+  def current
     respond_with Project.current
   end
 

@@ -16,6 +16,7 @@ class Project
   field  :scientists,        type: Array,  default: []
   field  :developers,        type: Array,  default: []
   field  :pages,             type: Array,  default: []
+  field  :page_navs,         type: Hash,  default: {}
   field  :menus,             type: Hash,   default: {}
   field  :partials,          type: Hash,   default: {}
   field  :logo,              type: String,  default: nil
