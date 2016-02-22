@@ -38,15 +38,15 @@ module.exports = React.createClass
 
 
   render: ->
-    return null if ! @state.set
+    return null if ! @state.set || ! @state.project
 
-    data_nav = @state.project.page_navs['data']
+    data_nav = @state.project.page_navs[@state.project.data_url_base]
 
-    <GenericPage key='final-subject-set-browser' title="Data Exports" nav={data_nav} current_nav="/#/data/browse">
+    <GenericPage key='final-subject-set-browser' title="Data Exports" nav={data_nav} current_nav="/#/#{@state.project.data_url_base}/browse">
       <div className="final-subject-set-browser">
         <div className="final-subject-set-page">
 
-          <a href={"/#/data/browse?keyword=#{@props.query.keyword}&field=#{@props.query.field ? ''}"} className="back">Back</a>
+          <a href={"/#/#{@state.project.data_url_base}/browse?keyword=#{@props.query.keyword}&field=#{@props.query.field ? ''}"} className="back">Back</a>
 
           <a className="standard-button json-link" href="/final_subject_sets/#{@state.set.id}.json" target="_blank">Download Raw Data</a>
           { if @state.set.export_document? && (display_field = @state.set.export_document.export_fields[0])?
@@ -69,7 +69,7 @@ module.exports = React.createClass
 
           { if @state.tab == 'export-doc' && @state.set.export_document
               <div>
-                <p>These data points represent numerous individual classifications that have been merged and lightly cleaned up to adhere to {@props.project.title}'s data model.</p>
+                <p>These data points represent numerous individual classifications that have been merged and lightly cleaned up to adhere to {@state.project.title}'s data model.</p>
 
                 { for field,i in @state.set.export_document.export_fields
                     if field.assertion_ids
@@ -81,7 +81,7 @@ module.exports = React.createClass
                             subject = s
                       if assertion && subject
                         <div key={i}>
-                          <FinalSubjectAssertion subject={subject} assertion={assertion} project={@props.project} field={field}/>
+                          <FinalSubjectAssertion subject={subject} assertion={assertion} project={@state.project} field={field}/>
                         </div>
                 }
               </div>
@@ -123,7 +123,7 @@ module.exports = React.createClass
               
               <dl className="source-metadata">
               { for k,v of @state.set.meta_data
-                  <div>
+                  <div key={k}>
                     <dt>{k.split('_').map( (v) => v.capitalize() ).join(' ')}</dt>
                     { if v.match(/https?:\/\//)
                         <dd><a href={v} target="_blank">{v}</a></dd>

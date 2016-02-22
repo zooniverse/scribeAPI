@@ -66,11 +66,9 @@
     {
       "name": "Record",
       "spec_fields": [
-        {"name": "Record Number", "format": "numeric", "repeats": false},
-        {"name": "Amount Loaned", "format": "monetary", "repeats": false},
-        {"name": "Record Date", "format": "date", "format_options": {"range": [1850,1950]}, "repeats": false},
         {"name": "Mortgager", "repeats": false},
         {"name": "Street Address", "format": "address", "repeats": false},
+        {"name": "Record Date", "format": "date", "format_options": {"range": [1850,1950]}, "repeats": false},
         {
           "name": "Land & Building Dimensions", 
           "format": {
@@ -79,6 +77,7 @@
           },
           "repeats": false
         },
+        {"name": "Amount Loaned", "format": "monetary", "repeats": false},
         {"name": "Stories & Materials", "format": {"em_record_stories": "numeric"}, "repeats": false},
         {
           "name": "Valuation", 
@@ -95,6 +94,7 @@
             }
           ]
         },
+        {"name": "Record Number", "format": "numeric", "repeats": false},
         {"name": "Additional Info", "repeats": true}
       ]
     }

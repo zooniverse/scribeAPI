@@ -3,6 +3,7 @@ class Project
   constructor: (obj) ->
     for k,v of obj
       @[k] = v
+    @data_url_base = 'data_new'
 
   term: (t) ->
     @terms_map[t] ? t
