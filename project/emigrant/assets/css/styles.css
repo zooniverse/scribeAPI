@@ -133,7 +133,7 @@ html, body,
   color: #3f5765;
   text-align: left;
   margin: 0;
-  padding: 10px 0 0 0;
+  padding: 10px 0;
 }
 
 .page-content > div.updated-at {

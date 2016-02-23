@@ -48,7 +48,7 @@ module.exports = React.createClass
 
           <a href={"/#/#{@state.project.data_url_base}/browse?keyword=#{@props.query.keyword}&field=#{@props.query.field ? ''}"} className="back">Back</a>
 
-          <a className="standard-button json-link" href="/final_subject_sets/#{@state.set.id}.json" target="_blank">Download Raw Data</a>
+          <a className="standard-button json-link" href="/final_subject_sets/#{@state.set.id}.json" target="_blank">Download Item Raw Data</a>
           { if @state.set.export_document? && (display_field = @state.set.export_document.export_fields[0])?
               <h2>{display_field.name} {display_field.value}</h2>
             else
@@ -95,12 +95,17 @@ module.exports = React.createClass
                       <li key={subject.id}>
                         <ul>
                           {
-                            # Sort assertions by order they appear in document:
+                            # Sort assertions by ExportDocumentSpec field order:
+                            field_name_order = (field.name for field in @props.project.export_document_specs[0].spec_fields)
                             assertions = subject.assertions.sort (a1,a2) ->
-                              if a1.region.y < a2.region.y
+                              # If field name doesn't appear in spec, sort it last (i.e. index 1000):
+                              ord1 = if field_name_order.indexOf(a1.name) >= 0 then field_name_order.indexOf(a1.name) else 1000
+                              ord2 = if field_name_order.indexOf(a2.name) >= 0 then field_name_order.indexOf(a2.name) else 1000
+                              if ord1 < ord2
                                 -1
                               else
                                 1
+
                             null
                           }
                           { for assertion,i in assertions when assertion.name
