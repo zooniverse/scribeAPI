@@ -27,4 +27,3 @@ We are launching Scribe with three very different projects by [Zooniverse](https
 * [Measuring the Anzacs (Zooniverse)](http://measuringtheanzacs.org)
 * [Old Weather: Whaling (Zooniverse)](http://whaling.oldweather.org)
 
-
