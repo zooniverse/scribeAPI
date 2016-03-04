@@ -13,6 +13,7 @@ GenericButton           = require 'components/buttons/generic-button'
 Tutorial                = require 'components/tutorial'
 HelpModal               = require 'components/help-modal'
 NoMoreSubjectsModal     = require 'components/no-more-subjects-modal'
+LoadingIndicator        = require('components/loading-indicator')
 
 # Hash of core tools:
 coreTools          = require 'components/core-tools'
@@ -67,13 +68,17 @@ module.exports = React.createClass # rename to Classifier
     @setState helping: not @state.helping
 
   render: ->
+
     currentAnnotation = @getCurrentClassification().annotation
 
     onFirstAnnotation = currentAnnotation?.task is @getActiveWorkflow().first_task
 
     <div className="classifier">
       <div className="subject-area">
-        { if ! @getCurrentSubject()?
+        { if ! @state.subjects?
+            <LoadingIndicator />
+          
+          else if ! @getCurrentSubject()?
 
             <NoMoreSubjectsModal header={ if @state.userClassifiedAll then "You verified them all!" else "Nothing to verify" } workflowName={@props.workflowName} project={@props.project} />
 
