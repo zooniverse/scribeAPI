@@ -16,18 +16,36 @@ module.exports = React.createClass
   render: ->
     next_workflow = @props.project.workflowWithMostActives @props.workflowName
     next_href = "/"
+
+    next_label = 'Continue'
+
     if next_workflow?
       next_href = "/#/" + next_workflow.name
 
+    else if @props.project.downloadable_data
+      next_href = "/#/data"
+      next_label = "Explore Data"
+      
     <DraggableModal
       header          = {@props.header}
-      buttons         = {<GenericButton label='Continue' href={next_href} />}
+      buttons         = {<GenericButton label={next_label} href={next_href} />}
     >
-      Currently, there are no {@props.project.term('subject')}s for you to {@props.workflowName}.
       { if next_workflow?
-          <span> Try <a href={next_href}>{next_workflow.name.capitalize()}</a> instead!</span>
+          <p>
+            Currently, there are no {@props.project.term('subject')}s for you to {@props.workflowName}.
+            Try <a href={next_href}>{next_workflow.name.capitalize()}</a> instead!
+          </p>
+     
         else
-          <span> Looks like there's no work do do right now. Please come back later.</span>
+          <div>
+            <p>There's nothing more to transcribe in {@props.project.title}!!  🎉 🎉 🎉
+            </p>
+            <p>Thank you to all the amazing volunteers who worked on this project.</p>
+            
+            { if @props.project.downloadable_data 
+              <p>The {@props.project.root_subjects_count.toLocaleString()} records can be explored via the <a href="/#/data">Data tab</a>.</p>
+            }
+          </div>
       }
     </DraggableModal>
 
