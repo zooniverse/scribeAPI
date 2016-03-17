@@ -42,7 +42,8 @@ class Classification
 
   def check_for_retirement_by_classification_count(subject)
     if workflow.generates_subjects_method == "collect-unique"
-      if subject.classification_count >= workflow.generates_subjects_after
+      # Must divide number of classifications by the number of distinct generated subjects (otherwise 3 generated subjects may hang out 'inactive' in verify waiting for 3 additional classifications that will never come..)
+      if subject.classification_count / subject.secondary_subject_count >= workflow.generates_subjects_after
         subject.retire!
       end
     end
