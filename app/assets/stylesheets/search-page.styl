@@ -1,0 +1,50 @@
+#search-page
+  background-color: #efefef;
+  
+  div
+    display: none
+  
+  div.search-info
+    width 100%
+    display: inline-block
+    padding: 0 5%;
+
+  div.selected-content
+    width 100%
+    display: inline-block
+    font-size: 1.5em;
+    padding: 5%;
+    a
+      width: 100%;
+      text-decoration: none;
+      color: #3f5765;
+      &:hover
+        background-color: #ddd
+        text-decoration: underline
+
+#alphabet-nav {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-around;
+  flex-flow: wrap row;
+  background: #ddd;
+}
+
+#alphabet-nav a
+  display: flex;
+  justify-content: center;
+  text-decoration: none;
+  padding: 1em;
+  border-radius: .2em;
+  color: #2B3A42;
+  font-weight: 700;
+  &:hover
+    background-color: #ccc
+  &.selected-content
+    background-color: #aaa;
+    color: #efefef
+
+
+
+  
