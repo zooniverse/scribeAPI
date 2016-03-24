@@ -5,45 +5,55 @@
     display: none
   
   div.search-info
-    width 100%
     display: inline-block
+    font-size: 1.5em;
     padding: 0 5%;
+    width 100%
 
   div.selected-content
-    width 100%
     display: inline-block
     font-size: 1.5em;
     padding: 5%;
+    width 100%
     a
-      width: 100%;
-      text-decoration: none;
       color: #3f5765;
+      text-decoration: none;
+      width: 100%;
       &:hover
         background-color: #ddd
         text-decoration: underline
+  div.no-individuals
+    a
+      color: #3f5765;
+      text-decoration: underline;
+      width: 100%;
+      &:hover
+        background-color: #ddd
+        text-decoration: underline
+    
 
 #alphabet-nav {
-  width: 100%;
-  display: flex;
   align-items: flex-start;
-  justify-content: space-around;
+  display: flex;
   flex-flow: wrap row;
+  justify-content: space-around;
   background: #ddd;
+  width: 100%;
 }
 
 #alphabet-nav a
-  display: flex;
-  justify-content: center;
-  text-decoration: none;
-  padding: 1em;
   border-radius: .2em;
   color: #2B3A42;
+  display: flex;
   font-weight: 700;
+  justify-content: center;
+  padding: 1em;
+  text-decoration: none;
   &:hover
     background-color: #ccc
   &.selected-content
-    background-color: #aaa;
     color: #efefef
+    background-color: #aaa;
 
 
 
