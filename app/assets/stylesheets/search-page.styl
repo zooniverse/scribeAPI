@@ -1,50 +1,38 @@
 #search-page
   background-color: #efefef;
+  width:100%
   
   div
     display: none
-  
+    font-size: 1.5em;
+    padding: 1% 5%;
+    width 100%
   div.search-info
     display: inline-block
-    font-size: 1.5em;
-    padding: 0 5%;
-    width 100%
-
   div.selected-content
     display: inline-block
-    font-size: 1.5em;
-    padding: 5%;
-    width 100%
-    a
-      color: #3f5765;
-      text-decoration: none;
-      width: 100%;
-      &:hover
-        background-color: #ddd
-        text-decoration: underline
-  div.no-individuals
     a
       color: #3f5765;
       text-decoration: underline;
-      width: 100%;
+      display: block
       &:hover
-        background-color: #ddd
+        color: black
         text-decoration: underline
-    
+  div.no-individuals a
+    display: inline-block
 
-#alphabet-nav {
+#alphabet-nav 
   align-items: flex-start;
   display: flex;
+  display: -webkit-flex; /* Safari */
   flex-flow: wrap row;
   justify-content: space-around;
   background: #ddd;
   width: 100%;
-}
 
 #alphabet-nav a
   border-radius: .2em;
   color: #2B3A42;
-  display: flex;
   font-weight: 700;
   justify-content: center;
   padding: 1em;
