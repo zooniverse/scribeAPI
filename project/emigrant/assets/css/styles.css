@@ -161,6 +161,11 @@ html, body,
   padding: 10px 0 10px 10px;
   width: 60%;
 }
+.page-content h4 {
+  font-size: 18px;
+  line-height: 18px;
+  margin-top: 2em;
+}
 .page-content hr {
   display: block;
   border: none;

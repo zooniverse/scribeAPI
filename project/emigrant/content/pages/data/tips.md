@@ -46,3 +46,5 @@ Contributions are still actively being made to Emigrant City. The records availa
 
 <!-- * **What geographic areas are covered?** -->
 <!-- Will including this confuse? In this mortgage, the mortgage date appears three times. The project is structured to allow for multiple fields on one page. Multiple users marked the same field which resulted in the same date, “Mar. 23/03,” being transcribed several times.-->
+
+
