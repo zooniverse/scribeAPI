@@ -5,6 +5,9 @@ class Admin::UsersController < Admin::AdminBaseController
   end
 
   def index
-    @users = User.all
+    page        = get_int :page, 1
+    limit       = get_int :limit, 20
+
+    @users = User.page(page).per(limit)
   end
 end

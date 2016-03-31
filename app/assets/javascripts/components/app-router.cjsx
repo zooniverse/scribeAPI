@@ -12,10 +12,13 @@ Verify                        = require './verify'
 GroupPage                     = require './group-page'
 GroupBrowser                  = require './group-browser'
 
+Project                       = require 'models/project.coffee'
+
 class AppRouter
   constructor: ->
     API.type('projects').get().then (result)=>
-      @runRoutes result[0]
+      window.project = new Project(result[0])
+      @runRoutes window.project
 
   runRoutes: (project) ->
     routes =
@@ -23,7 +26,7 @@ class AppRouter
 
         <Redirect from="_=_" to="/" />
 
-        <Route name="home" path="/home" handler={HomePage} />
+        <Route name="home" path="/home" handler={HomePage}/>
 
         { (w for w in project.workflows when w.name in ['mark','transcribe','verify']).map (workflow, key) =>
             handler = eval workflow.name.charAt(0).toUpperCase() + workflow.name.slice(1)
@@ -96,14 +99,33 @@ class AppRouter
         <DefaultRoute name="home-default" handler={HomePage} />
       </Route>
 
-    Router.run routes, (Handler) ->
+    Router.run routes, (Handler, state) ->
       React.render <Handler />, document.body
 
   controllerForPage: (page) ->
     React.createClass
       displayName: "#{page.name}Page"
 
+      componentWillMount:->
+        # pattern = new RegExp('^(field_guide#(.*))')
+        # selectedID = pattern.match("#{window.location.hash}")
+        # if selectedID
+        #   $('.selected-content').removeClass("selected-content")
+
+        #   $("div#" + selectedID).addClass("selected-content"))
+        #   $("a#" + selectedID).addClass("selected-content"))
+
+
       componentDidMount: ->
+        pattern = new RegExp('#/[A-z]*#(.*)')
+        selectedID = "#{window.location.hash}".match(pattern)
+
+        if selectedID
+          $('.selected-content').removeClass("selected-content")
+
+          $("div#" + selectedID[1]).addClass("selected-content")
+          $("a#" + selectedID[1]).addClass("selected-content")
+
         elms = $(React.findDOMNode(this)).find('a.about-nav')
         elms.on "click", (e) ->
           e.preventDefault()
@@ -120,14 +142,18 @@ class AppRouter
           heightStyle: "content"
 
       navToggle:(e)->
-        console.log "E", e
-
 
       render: ->
         formatted_name = page.name.replace("_", " ")
-        <div className="page-content" id="#{page.name}">
+        <div className="page-content custom-page" id="#{page.name}">
           <h1>{formatted_name}</h1>
           <div dangerouslySetInnerHTML={{__html: marked(page.content)}} />
+          {
+            if page.group_browser? && page.group_browser != ''
+              <div className='group-area'>
+                <GroupBrowser project={project} title={page.group_browser} />
+              </div>
+          }
           <div className="updated-at">Last Update {page.updated_at}</div>
         </div>
 

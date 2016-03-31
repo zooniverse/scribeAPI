@@ -1,5 +1,5 @@
-**Header**: Only capture the header, if it contains fields that need transcription. 
+**Header**: Although the number may be in a designated field, the number can appear anywhere in the header.
 
-**Questions**: Select the area of both a question and its response with the same rectangle. 
+**Questions**: When marking a question, mark both the question and the response with the same rectangle. 
 
-![example of marking a questions](assets/anzac/att_q_ex.gif)
+![example of marking a questions](/images/1_part_att_q.gif)

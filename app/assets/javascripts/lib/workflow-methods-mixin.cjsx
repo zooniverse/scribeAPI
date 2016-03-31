@@ -25,41 +25,99 @@ module.exports =
   beginClassification: (annotation = {}, callback) ->
     classifications = @state.classifications
     classification = new Classification()
-    classification.annotation[k] = v for k, v of annotation
+
+    if annotation?
+      classification.annotation[k] = v for k, v of annotation
+
     classifications.push classification
+
     @setState
       classifications: classifications
       classificationIndex: classifications.length-1
         , =>
+          @forceUpdate()
           window.classifications = @state.classifications # make accessible to console
           callback() if callback?
 
-  toggleBadSubject: (e, callback) ->
-    @setState badSubject: not @state.badSubject, =>
-      callback?()
+  commitClassification: (classification) ->
+    return unless classification?
 
+    # Create visual interim mark just in case POST takes a while
+    interim_mark = @addInterimMark classification
 
-  toggleIllegibleSubject: (e, callback) ->
-    @setState illegibleSubject: not @state.illegibleSubject, =>
-      callback?()
-
-  flagSubjectAsUserDeleted: (subject_id) ->
-    classification = @getCurrentClassification()
-    classification.subject_id = subject_id # @getCurrentSubject()?.id
-    classification.workflow_id = @getActiveWorkflow().id
-    classification.task_key = 'flag_bad_subject_task'
-
+    # Commit classification to backend
     classification.commit (classification) =>
-      @updateChildSubject @getCurrentSubject().id, classification.subject_id, user_has_deleted: true
+      # Did this generate a child_subject? Update local copy:
+      if classification.child_subject
+        @appendChildSubject classification.subject_id, classification.child_subject
 
-      @beginClassification()
+        # Now that we have the real mark, hide the interim mark:
+        @hideInterimMark(interim_mark) if interim_mark?
 
-  # Push current classification to server:
-  commitClassification: ->
-    console.log 'COMMITTING CLASSIFICATION: ', @getCurrentClassification()
+      if @state.badSubject
+        @toggleBadSubject =>
+          @advanceToNextSubject()
+
+      if @state.illegibleSubject
+        @toggleIllegibleSubject =>
+          @advanceToNextSubject()
+
+  # Called immediately before saving a classification, adds a fake mark in lieu
+  # of the real generated mark:
+  addInterimMark: (classification) ->
+    # Uniquely identify local interim marks:
+    @interim_mark_id ||= 0
+
+    # Interim mark is the region (the mark classification's annotation hash) with extras:
+    interim_mark = $.extend({
+      show:           true                        # Default to show. We'll disable this when classification saved
+      interim_id:     (@interim_mark_id += 1)     # Unique id
+      subject_id :    classification.subject_id   # Keep subject_id so we know which subject to show it over
+    }, classification.annotation)
+
+    # Add interim mark to array in @state
+    interimMarks = @state.interimMarks ? []
+    interimMarks.push interim_mark
+    @setState interimMarks: interimMarks
+
+    interim_mark
+
+  # Counterpart to addInterimMark, hides the given interim mark
+  hideInterimMark: (interim_mark) ->
+    interimMarks = @state.interimMarks
+    for m, i in interimMarks
+      # If this is the interim mark to hide, hide it:
+      if m.interim_id == interim_mark.interim_id
+        m.show = false
+        @setState interimMarks: interimMarks
+        # We found it, move on:
+        break
+
+  # used to commit task-level classifications, i.e. not from marking tools
+  commitCurrentClassification: () ->
     classification = @getCurrentClassification()
-    # checking for empty classification.annotation, we don't want to commit those classifications -- AMS
+    classification.subject_id = @getCurrentSubject()?.id
+    classification.subject_set_id = @getCurrentSubjectSet().id if @getCurrentSubjectSet()?
+    classification.workflow_id = @getActiveWorkflow().id
 
+    # If user activated 'Bad Subject' button, override task:
+    if @state.badSubject
+      classification.task_key = 'flag_bad_subject_task'
+    else if @state.illegibleSubject
+      classification.task_key = 'flag_illegible_subject_task'
+    # Otherwise, classification is for active task:
+    else
+      classification.task_key = @state.taskKey
+      return if Object.keys(classification.annotation).length == 0
+
+    @commitClassification(classification)
+    @beginClassification()
+
+  # used for committing marking tools (by passing annotation)
+  createAndCommitClassification: (annotation) ->
+    classifications = @state.classifications
+    classification = new Classification()
+    classification.annotation = annotation ? annotation : {} # initialize annotation
     classification.subject_id = @getCurrentSubject()?.id
     classification.subject_set_id = @getCurrentSubjectSet().id if @getCurrentSubjectSet()?
     classification.workflow_id = @getActiveWorkflow().id
@@ -76,25 +134,37 @@ module.exports =
       classification.task_key = @state.taskKey
       return if Object.keys(classification.annotation).length == 0
 
-    # Commit classification to backend
+    classifications = @state.classifications
+
+    classifications.push classification
+
+    @setState
+      classifications: classifications
+      classificationIndex: classifications.length-1
+        , =>
+          @forceUpdate()
+          window.classifications = @state.classifications # make accessible to console
+          callback() if callback?
+    
+    @commitClassification(classification)
+
+  toggleBadSubject: (e, callback) ->
+    @setState badSubject: not @state.badSubject, =>
+      callback?()
+
+  toggleIllegibleSubject: (e, callback) ->
+    @setState illegibleSubject: not @state.illegibleSubject, =>
+      callback?()
+
+  flagSubjectAsUserDeleted: (subject_id) ->
+    classification = @getCurrentClassification()
+    classification.subject_id = subject_id # @getCurrentSubject()?.id
+    classification.workflow_id = @getActiveWorkflow().id
+    classification.task_key = 'flag_bad_subject_task'
+
     classification.commit (classification) =>
-      # Did this generate a child_subject? Update local copy:
-      if classification.child_subject
-        @appendChildSubject classification.subject_id, classification.child_subject
-
-      if @state.badSubject
-        @toggleBadSubject =>
-          @advanceToNextSubject()
-
-      if @state.illegibleSubject
-        @toggleIllegibleSubject =>
-          @advanceToNextSubject()
-
+      @updateChildSubject @getCurrentSubject().id, classification.subject_id, user_has_deleted: true
       @beginClassification()
-
-    console.log 'COMMITTED CLASSIFICATION: ', classification
-    console.log '(ALL CLASSIFICATIONS): ', @state.classifications
-
 
   # Update specified child_subject with given properties (e.g. after submitting a delete flag)
   updateChildSubject: (parent_subject_id, child_subject_id, props) ->
@@ -102,8 +172,6 @@ module.exports =
       for c, i in s.child_subjects
         if c.id == child_subject_id
           c[k] = v for k,v of props
-    else
-      console.warn "WorkflowMethodsMixin#appendChildSubject: couldn't find subject by ", subject_id
 
   # Add newly acquired child_subject to child_subjects array of relevant subject (i.e. after submitting a subject-generating classification)
   appendChildSubject: (subject_id, child_subject) ->
@@ -113,12 +181,14 @@ module.exports =
       # We've updated an internal object in @state.subjectSets, but framework doesn't notice, so tell it to update:
       @forceUpdate()
 
-    else
-      console.warn "WorkflowMethodsMixin#appendChildSubject: couldn't find subject by ", subject_id
-
   # Get a reference to the local copy of a subject by id regardless of whether viewing subject-sets or just subjects
   getSubjectById: (id) ->
     if @state.subjectSets?
+
+      # If current subject set has no subjects, we're likely in between one subject set
+      # and the next (for which we're currently fetching subjects), so return null:
+      return null if ! @getCurrentSubjectSet().subjects?
+
       for s in @getCurrentSubjectSet().subjects
         return s if s.id == id
     else
@@ -128,7 +198,7 @@ module.exports =
   # Get current classification:
   getCurrentClassification: ->
     @state.classifications[@state.classificationIndex]
-        
+
 
   # Get current task:
   getCurrentTask: ->
@@ -163,25 +233,20 @@ module.exports =
 
   # Load next logical task
   advanceToNextTask: () ->
-    # console.log 'advanceToNextTask()'
     nextTaskKey = @getNextTask()?.key
     if nextTaskKey is null
-      # console.log 'NOTHING LEFT TO DO'
       return
-    # console.log 'TASK KEY: ', nextTaskKey
 
     # Commit whatever current classification is:
-    @commitClassification()
+    @commitCurrentClassification()
     # start a new one:
-    @beginClassification {}
-
+    # @beginClassification {} # this keps adding empty (uncommitted) classifications to @state.classifications --STI
 
     # After classification ready with empty annotation, proceed to next task:
     @advanceToTask nextTaskKey
 
   # Get next logical task
   getNextTask: ->
-    # console.log 'getNextTask()'
     task = @getTasks()[@state.taskKey]
     # PB: Moving from hash of options to an array of options
 
@@ -204,8 +269,6 @@ module.exports =
       console.warn "WARN: Invalid tool specified in #{key}: #{task.tool}"
 
     else
-      console.log "Transcribe#advanceToTask(#{key}): tool=#{task.tool}"
-
       @setState
         taskKey: key
 
@@ -214,7 +277,7 @@ module.exports =
   getCurrentSubjectSet: ->
     if @state.subjectSets?[@state.subject_set_index]
       @state.subjectSets?[@state.subject_set_index]
-    else @state.subjectSets #having a hard time accounting for one subject_set
+    # else @state.subjectSets #having a hard time accounting for one subject_set
 
   # Get currently viewed subject
   getCurrentSubject: ->
@@ -239,19 +302,19 @@ module.exports =
     tool: "pickOne"
     help: {
       title: "Completion Assessment",
-      body: "You do not have to complete every page, but it helps us to know, before you move on to another task, if there is any work left to do. Thanks again!"
+      body: "<p>Have all requested fields on this page been marked with a rectangle?</p><p>You do not have to mark every field on the page, however, it helps us to know if you think there is more to mark. Thank you!</p>"
     },
     tool_config: {
       "options": [
         {
-          "label": "No",
-          "next_task": null,
-          "value": "complete_subject"
-        },
-        {
           "label": "Yes",
           "next_task": null,
           "value": "incomplete_subject"
+        }
+        {
+          "label": "No",
+          "next_task": null,
+          "value": "complete_subject"
         }
       ]
     }
@@ -277,11 +340,12 @@ module.exports =
 
     # Haz more pages of subjects?
     else if @state.subjects_next_page?
-      @fetchSubjects @getActiveWorkflow().id, @getActiveWorkflow().subject_fetch_limit, @state.subjects_next_page
+      @fetchSubjects page: @state.subjects_next_page
 
     else
       @setState
         subject_index: null
+        noMoreSubjects: true
         userClassifiedAll: @state.subjects.length > 0
 
   # This is the version of advanceToNextSubject for workflows that consume subject sets (mark)
@@ -296,27 +360,35 @@ module.exports =
 
     # If we've exhausted all subject sets, collapse in shame
     if new_subject_set_index >= @state.subjectSets.length
-      @setState
-        notice:
-          header: "All Done!"
-          message: "There's nothing more to #{@props.workflowName} here."
-          onClick: @transitionTo? 'mark' # "/#/mark"
-      console.warn "NO MORE SUBJECT SETS"
+      if @state.subject_sets_current_page < @state.subject_sets_total_pages
+        @fetchSubjectSets page: @state.subject_sets_current_page + 1
+      else
+        @setState
+          taskKey: null
+          notice:
+            header: "All Done!"
+            message: "There's nothing more for you to #{@props.workflowName} here."
+            onClick: () =>
+              @transitionTo? 'mark' # "/#/mark"
+              @setState
+                notice: null
+                taskKey: @getActiveWorkflow().first_task
+        console.warn "NO MORE SUBJECT SETS"
       return
 
-    console.log "Mark#index Advancing to subject_set_index #{new_subject_set_index} (of #{@state.subjectSets.length}), subject_index #{new_subject_index} (of #{@state.subjectSets[new_subject_set_index].subjects.length})"
+    # console.log "Mark#index Advancing to subject_set_index #{new_subject_set_index} (of #{@state.subjectSets.length}), subject_index #{new_subject_index} (of #{@state.subjectSets[new_subject_set_index].subjects.length})"
 
     @setState
       subject_set_index: new_subject_set_index
       subject_index: new_subject_index
       taskKey: @getActiveWorkflow().first_task
-      currentSubToolIndex: 0
-
+      currentSubToolIndex: 0, () =>
+        @fetchSubjectsForCurrentSubjectSet(1, 100)
 
   commitClassificationAndContinue: (d) ->
-    @commitClassification()
+    @commitCurrentClassification()
     @beginClassification {}, () =>
-      if @getCurrentTask().next_task?
+      if @getCurrentTask()?.next_task?
         @advanceToTask @getCurrentTask().next_task
 
       else

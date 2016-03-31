@@ -1,3 +1,4 @@
+
 # @cjsx React.DOM
 React                   = require 'react'
 {Navigation}            = require 'react-router'
@@ -18,6 +19,7 @@ RowFocusTool            = require '../row-focus-tool'
 API                     = require '../../lib/api'
 
 HelpModal               = require 'components/help-modal'
+Tutorial                = require 'components/tutorial'
 DraggableModal          = require 'components/draggable-modal'
 GenericButton           = require 'components/buttons/generic-button'
 
@@ -32,7 +34,7 @@ module.exports = React.createClass # rename to Classifier
     subject_index:                0
     helping:                      false
     last_mark_task_key:           @props.query.mark_key
-
+    showingTutorial:              false
 
   getDefaultProps: ->
     workflowName: 'transcribe'
@@ -44,7 +46,6 @@ module.exports = React.createClass # rename to Classifier
     @setState taskKey: @getCurrentSubject().type if @getCurrentSubject()?
 
   __DEP__handleTaskComponentChange: (val) ->
-    # console.log "handleTaskComponentChange val", val
     taskOption = @getCurrentTask().tool_config.options[val]
     if taskOption.next_task?
       @advanceToTask taskOption.next_task
@@ -62,7 +63,6 @@ module.exports = React.createClass # rename to Classifier
         => @forceUpdate()
 
   handleTaskComplete: (d) ->
-    console.log 'TRANSCRIBE/INDEX::handleTaskComplete()'
     @handleDataFromTool(d)
     @commitClassificationAndContinue d
 
@@ -80,7 +80,14 @@ module.exports = React.createClass # rename to Classifier
   toggleHelp: ->
     @setState helping: not @state.helping
 
+  toggleTutorial: ->
+    @setState showingTutorial: not @state.showingTutorial
+
+  hideTutorial: ->
+    @setState showingTutorial: false
+
   componentWillUnmount:->
+    # PB: What's intended here? Docs state `void componentWillUnmount()`, so not sure what this serves:
     not @state.badSubject
 
   # transition back to mark workflow
@@ -89,6 +96,7 @@ module.exports = React.createClass # rename to Classifier
       subject_set_id: @getCurrentSubject().subject_set_id
       selected_subject_id: @getCurrentSubject().parent_subject_id
       mark_task_key: @props.query.mark_key
+      subject_id: @getCurrentSubject().id
 
       page: @props.query.page
 
@@ -110,14 +118,24 @@ module.exports = React.createClass # rename to Classifier
 
     <div className="classifier">
       <div className="subject-area">
+        {
+          unless @getCurrentSubject() || @state.noMoreSubjects
+            <DraggableModal
+              header          = { "Loading transcription subjects." }
+              buttons         = {<GenericButton label='Back to Marking' href='/#/mark' />}
+            >
+                We are currently looking for a subject for you to {@props.workflowName}.
+            </DraggableModal>
+        }
 
-        { unless @getCurrentSubject()
+        { if @state.noMoreSubjects
             <DraggableModal
               header          = { if @state.userClassifiedAll then "Thanks for transcribing!" else "Nothing to transcribe" }
               buttons         = {<GenericButton label='Continue' href='/#/mark' />}
             >
-                Currently, there are no {@props.project.term('subject')}s to {@props.workflowName}. Try <a href="/#/mark">marking</a> instead!
+                Currently, there are no {@props.project.term('subject')}s for you to {@props.workflowName}. Try <a href="/#/mark">marking</a> instead!
             </DraggableModal>
+
 
           else if @getCurrentSubject()? and @getCurrentTask()?
 
@@ -152,6 +170,7 @@ module.exports = React.createClass # rename to Classifier
                 returnToMarking={@returnToMarking}
                 transcribeMode={transcribeMode}
                 isLastSubject={isLastSubject}
+                project={@props.project}
               />
 
             </SubjectViewer>
@@ -166,14 +185,34 @@ module.exports = React.createClass # rename to Classifier
               @getCurrentTask().next_task
 
           <div className="right-column">
-            <div className="task-area">
+            <div className="task-area transcribe">
 
-              <div className="forum-holder">
-                <ForumSubjectWidget subject=@getCurrentSubject() project={@props.project} />
+              <div className="task-secondary-area">
+
+                {
+                  if @getCurrentTask()?
+                    <p>
+                      <a className="tutorial-link" onClick={@toggleTutorial}>View A Tutorial</a>
+                    </p>
+                }
+
+                <div className="forum-holder">
+                  <ForumSubjectWidget subject=@getCurrentSubject() project={@props.project} />
+                </div>
+
               </div>
 
             </div>
           </div>
+      }
+
+      { if @props.project.tutorial? && @state.showingTutorial
+          # Check for workflow-specific tutorial
+          if @props.project.tutorial.workflows? && @props.project.tutorial.workflows[@getActiveWorkflow()?.name]
+            <Tutorial tutorial={@props.project.tutorial.workflows[@getActiveWorkflow().name]} onCloseTutorial={@hideTutorial} />
+          # Otherwise just show general tutorial
+          else
+            <Tutorial tutorial={@props.project.tutorial} onCloseTutorial={@hideTutorial} />
       }
 
       { if @state.helping

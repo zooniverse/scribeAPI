@@ -57,19 +57,31 @@
   .right-column
     width 250px
     flex(shrink: 0)
-    // flex-shrink 0
     padding 0 10px
 
     .task-area
       position fixed
-      background-color #EFEFEF
+      background-color #ffffff
       color SECONDARY_NORMAL
       padding 20px
       border-radius 5px
       border-top-right-radius 0px
       border-bottom-right-radius 0px
+      z-index 50
 
-      box-shadow: 0 0 5px 3px rgba(0,0,0,0.4);
+      &.mark
+        padding 20px 20px 0
+        height 100vh
+        display flex
+        flex-direction(column)
+        overflow hidden
+        overflow-y auto
+
+      a
+        cursor pointer
+
+      box-shadow 0 0 5px 3px rgba(0,0,0,0.4)
+
 
       // prevent highlighting/selecting
       -webkit-touch-callout none
@@ -79,19 +91,48 @@
       -ms-user-select none
       user-select none
 
+      .task-container
+        width 220px
+        flex(grow: 1)
+        padding-bottom 10%
+
       .help-bad-subject-holder
-        padding: 10px 0
+        margin 10px 0 15px 0
 
         button
           margin 10px 10px 0 0
+          width 100%
 
-      & > div:nth-child(2)
-        margin-top 20px
-        padding-top 20px
-        border-top solid #999 1px
+        .task-help-button
+          position absolute
+          top 0
+          right 0
+          font-family FontAwesome
+          background #bbb
+          color #fff
+          width 24px
+          height 24px
+          line-height 24px
+          text-align center
+          border none
+          border-radius 12px
+          padding 0
+          font-weight normal
+          font-size 14px
+          margin: 2%
+          -webkit-font-smoothing antialiased
+          -moz-osx-font-smoothing grayscale
+          &:hover
+            background #3f5765
+
+          &:before
+            content "\f128"
 
       .workflow-task
         margin-bottom 10px
+        > span:first-child > p:first-child
+          margin-top 0
+          padding-right 10px
         .pick-one-dropdown
           font-size 1.5em
           transition opacity 0.250s
@@ -110,14 +151,16 @@
           opacity 0.75
 
         .answer
-          width: 90%
           @extends .standard-button
           background-color #ddd
           color #333
           font-size 12px
 
           align-items: center
-          display: flex
+          flexbox(flex)
+          flex-direction(row)
+          flex-wrap(nowrap)
+
           margin: 0.5em 0
           text-align: left
           position relative
@@ -125,9 +168,11 @@
           input
             visibility: hidden
           .drawing-tool-icon
-            flex-shrink: 0
+            flex(shrink: 0)
             line-height: 1
             margin-right: 0.5em
+            width 2em
+
           .markdown > p:first-child:last-child
             margin: 0
           .tool-count
@@ -165,49 +210,126 @@
               color black
               font-weight normal
             &:hover:before
-              display block
+              // display block
 
           &:hover, &.active
             color white
             .help
               display block
           &.active
-            background-color SECONDARY_NORMAL
+            background-color rgba(160, 180, 188, 50);
             z-index 100
           &:hover
-            background-color SECONDARY_HOVER
+            background-color rgba(160, 180, 188, 50);
             z-index 101
 
-      .explore
-        margin-bottom 20px
-        border-bottom: solid #999 1px;
-        h2
-          font-size 20px
-          margin-top 0
+      .task-secondary-area
+        width 260px
+        margin-left -20px
+        margin-right -20px
+        box-sizing border-box
+        border-top solid #999 1px
+        background #ddd
+        margin-bottom 110px
+        flex nil none
+
+        > p
+          margin 0
+          > a
+            display block
+            padding 8px 16px
+            text-decoration none
+            color #777
+            border-bottom 1px solid #bbb
+
+            &:before
+              font-family FontAwesome
+              color #aaa
+              display inline-block
+              margin-right 6px
+              -webkit-font-smoothing antialiased
+              -moz-osx-font-smoothing grayscale
+              font-size 16px
+              vertical-align baseline
+
+            &.tutorial-link
+              background-color #BEDBE8
+              color #3C6C8E
+              border-color #999
+
+            &.tutorial-link:before
+              content "\f059"
+              color #3C6C8E
+
+            &.transcribe-link:before
+              content "\f14b"
+
+            &.about-link:before
+              content "\f05a"
+
+            &:hover
+              &,
+              &:before
+                color #3f5765
+
+        .forum-subject-widget
+          > a
+            font-family: ProximaNova, 'Helvetica Neue'
+            display block
+            text-decoration none
+            color #777
+            &.forum-link
+              &:before
+                font-family: FontAwesome;
+                color #aaa
+                display inline-block
+                -webkit-font-smoothing antialiased
+                -moz-osx-font-smoothing grayscale
+                vertical-align baseline
+                content "\f0e6"
+
+              &:hover
+                &,
+                &:before
+                  color #3f5765
+
+      &.transcribe,
+      &.verify
+        .task-secondary-area
+          margin-bottom 0
+          border-bottom solid #999 1px
 
       .social-media-container
-        padding-top 20px
+        margin 10px 0 -10px
+        padding-top 8px
+        padding-bottom 4px
         font-size 26px
         text-align center
         transition color 0.2s
+        background #3f5765
+        line-height 1
+        width 100%
 
         i
-          color #3f5765
+          color #ddd
           cursor pointer
-          padding 2px
+          padding 0 2px
           &:hover
             transition color 0.2s
-            color #8cbc8c
+            color #fff
 
       .task-nav
-        display: flex
-        margin-top: 1em
+        flexbox(flex)
+        margin-top: 20px
+        width 220px
         .back
-          flex: 1 0
+          // PB don't think these flex-grow values are needed?
+          // flex: 1 0
         .talk
-          flex: 2 0
+          // flex: 2 0
         .continue
-          flex: 3 0
+          // flex: 3 0
+          width 100%
         :not(:first-child)
           margin-left: 0.5em
 
@@ -246,25 +368,59 @@
   z-index 10
   text-align left
 
-  .modal-header, .modal-body, .modal-buttons
+  .modal-body, .modal-buttons
     padding 20px 20px 10px
 
   .modal-header
     font-size 1.6em
+    background-color #3f5765
+    color white
+    padding 14px 20px
 
   .modal-body
     overflow hidden
 
+    p:first-of-type
+      margin-top 0
+
+    p:last-of-type
+      margin-bottom 0
+
   .modal-buttons
     text-align right
     padding-bottom 20px
+    overflow hidden
 
-    .help-button, .bad-subject
+    .help-button, .bad-subject, .floated-left
       float left
       margin-right 10px
 
       &:last
         margin-right 0
+
+  .modal-close-button
+    position absolute
+    top -10px
+    right -10px
+    width 40px
+    height 40px
+    line-height 40px
+    text-align center
+    border-radius 20px
+    background #8cbc8c
+    color white
+    font-size 30px
+    cursor pointer
+
+    &:hover
+      background lighten(#8cbc8c, 15%)
+
+    &:before
+      content "\f00d"
+      font-family 'FontAwesome'
+      display inline-block
+      margin-top -1px
+
 
 // currently used for the "Bad Subject" and "Hide Other Marks" buttons
 .toggle-button
@@ -279,6 +435,8 @@
 
   &.toggled:before
     content '\2713   '
+
+
 
 
 .help-modal

@@ -3,7 +3,7 @@ class WorkflowTask
 
   field    :key,                                     type: String
   field    :tool,                                    type: String
-  field    :instruction,                             type: String
+  field    :instruction,                             type: String, default: ''
   field    :help,                                    type: String
   field    :generates_subject_type,                  type: String
   field    :tool_config,                             type: Hash
@@ -58,7 +58,21 @@ class WorkflowTask
     end
   end
 
+  # Given a classification, returns true if we should generate a subject from it
+  # .. which is true if:
+  #  1) there's a task-level generates_subject_type, OR:
+  #  2) there's a subtool (i.e. pick-one-mark-one) with a marking tool specific generates_subject_type
+  #  3) okay, really:any time we're at the end of a chain of tasks (but not the completion_assessment_task
   def generates_subjects?(classification = nil)
+
+    # This would normally be unnecessary because completion_assessment_task tends
+    # to be a dynamically added task not officially found in workflow json. That
+    # fact should normally cause subject generation to fail because the task
+    # can't be found. Just in case the admin has specified completion_assessment_task
+    # explicitly in their workflow json, let's be sure to skip over it lest we 
+    # create useless subjects with null `type`
+    # return false if classification.task_key == 'completion_assessment_task'
+
     subtool_generates_subjects = subject_type classification
     ! generates_subject_type.nil? || subtool_generates_subjects || ! has_next_task?
   end

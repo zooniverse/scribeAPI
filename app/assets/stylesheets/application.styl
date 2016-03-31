@@ -1,9 +1,7 @@
+// To import Non-stylus (i.e. plain css), must use sprockets include:
+//= require 'jquery-ui.min'
 
-
-// Why is this not importing it...?
-@import 'jquery-ui.min.css'
-@import url("//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css")
-
+@import './mixins/gradients.styl'
 // Cross-browser flexbox functions from https://github.com/lswest/flexbox-stylus
 @import './flexbox.styl'
 
@@ -13,7 +11,9 @@
 @import './light-box.styl'
 @import './home-page.styl'
 @import './subject-set-viewer.styl'
+@import './subject-set-toolbar.styl'
 @import './subject-viewer.styl'
+@import './subject-zoom-pan.styl'
 @import './loading-indicator.styl'
 @import './subject-metadata.styl'
 @import './verify-tool.styl'
@@ -21,7 +21,8 @@
 @import './accordian'
 @import './tutorial'
 
-@import './about'
+// "About" is a project-specific custom page; If it has special styling, that should go in project's style.css
+// @import './about'
 
 @import './panoptes-common.styl'
 @import './buttons.styl'
@@ -29,6 +30,7 @@
 
 @import './forum-subject-widget'
 @import './groups.styl'
+@import './group-browser.styl'
 
 /* MARK STYLES */
 @import './components/mark/point-tool.styl'

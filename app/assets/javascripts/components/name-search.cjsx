@@ -43,7 +43,6 @@ NameSearch = React.createClass
 
         select: (e, ui) =>
           e.target.value
-          console.log "ui.item.value.id", ui.item.value.id
           @transitionTo 'mark', {},
             subject_set_id: ui.item.value.id
            

@@ -10,6 +10,8 @@ BaseWorkflowMethods     = require 'lib/workflow-methods-mixin'
 
 DraggableModal          = require 'components/draggable-modal'
 GenericButton           = require 'components/buttons/generic-button'
+Tutorial                = require 'components/tutorial'
+HelpModal               = require 'components/help-modal'
 
 # Hash of core tools:
 coreTools          = require 'components/core-tools'
@@ -31,6 +33,8 @@ module.exports = React.createClass # rename to Classifier
     classifications:              []
     classificationIndex:          0
     subject_index:                0
+    showingTutorial:              false
+    helping:                      false
 
   componentWillMount: ->
     @beginClassification()
@@ -52,13 +56,20 @@ module.exports = React.createClass # rename to Classifier
     @handleDataFromTool(d)
     @commitClassificationAndContinue d
 
+  toggleTutorial: ->
+    @setState showingTutorial: not @state.showingTutorial
+
+  hideTutorial: ->
+    @setState showingTutorial: false
+
+  toggleHelp: ->
+    @setState helping: not @state.helping
+
   render: ->
     currentAnnotation = @getCurrentClassification().annotation
 
-
     onFirstAnnotation = currentAnnotation?.task is @getActiveWorkflow().first_task
 
-    # console.log "viewer size: ", @state.viewerSize
     <div className="classifier">
       <div className="subject-area">
         { if ! @getCurrentSubject()?
@@ -67,7 +78,7 @@ module.exports = React.createClass # rename to Classifier
               header          = { if @state.userClassifiedAll then "You verified them all!" else "Nothing to verify" }
               buttons         = {<GenericButton label='Continue' href='/#/mark' />}
             >
-              Currently, there are no {@props.project.term('subject')}s to {@props.workflowName}. Try <a href="/#/mark">marking</a> instead!
+              Currently, there are no {@props.project.term('subject')}s for you to {@props.workflowName}. Try <a href="/#/mark">marking</a> instead!
             </DraggableModal>
 
           else if @getCurrentSubject()?
@@ -78,10 +89,14 @@ module.exports = React.createClass # rename to Classifier
                   viewerSize={@state.viewerSize}
                   task={@getCurrentTask()}
                   annotation={@getCurrentClassification().annotation}
+                  onShowHelp={@toggleHelp if @getCurrentTask().help?}
+                  badSubject={@state.badSubject}
+                  onBadSubject={@toggleBadSubject}
                   subject={@getCurrentSubject()}
                   onChange={@handleTaskComponentChange}
                   onComplete={@handleTaskComplete}
                   workflow={@getActiveWorkflow()}
+                  project={@props.project}
                 />
               }
             </SubjectViewer>
@@ -90,25 +105,38 @@ module.exports = React.createClass # rename to Classifier
 
       { if @getCurrentSubject()?
           <div className="right-column">
-            <div style={display: "none"} className="task-area">
+            <div className="task-area verify">
 
-              <div className="task-container">
-                <nav className="task-nav">
-                  <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
-                  { if nextTask?
-                      <button type="button" className="continue major-button" onClick={@advanceToTask.bind(@, nextTask)}>Next</button>
-                    else
-                      <button type="button" className="continue major-button" onClick={@completeClassification}>Done</button>
-                  }
-                </nav>
-              </div>
+              <div className="task-secondary-area">
 
-              <div className="forum-holder">
-                <ForumSubjectWidget subject=@getCurrentSubject() project={@props.project} />
+                {
+                  if @getCurrentTask()?
+                    <p>
+                      <a className="tutorial-link" onClick={@toggleTutorial}>View A Tutorial</a>
+                    </p>
+                }
+
+                <div className="forum-holder">
+                  <ForumSubjectWidget subject=@getCurrentSubject() project={@props.project} />
+                </div>
+
               </div>
 
             </div>
           </div>
+      }
+
+      { if @props.project.tutorial? && @state.showingTutorial
+          # Check for workflow-specific tutorial
+          if @props.project.tutorial.workflows? && @props.project.tutorial.workflows[@getActiveWorkflow()?.name]
+            <Tutorial tutorial={@props.project.tutorial.workflows[@getActiveWorkflow().name]} onCloseTutorial={@hideTutorial} />
+          # Otherwise just show general tutorial
+          else
+            <Tutorial tutorial={@props.project.tutorial} onCloseTutorial={@hideTutorial} />
+      }
+
+      { if @state.helping
+        <HelpModal help={@getCurrentTask().help} onDone={=> @setState helping: false } />
       }
     </div>
 

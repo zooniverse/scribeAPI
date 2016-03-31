@@ -1,11 +1,13 @@
 <h1>All Subject Sets</h1>
 
+<%= paginate @subject_sets %>
+
 <table class="dashboard-table" id="subject-sets-table" width="100%">
   <tr>
     <th></th> 
     <th>Status</th>
     <th>Pages</th>
-    <th>Classifications</th>
+    <th>Secondary Subjects</th>
   </tr>
 
 <% @subject_sets.each do |set| %>
@@ -13,8 +15,9 @@
     <td><%= link_to admin_subject_set_path(set) do %><img src="<%= set.thumbnail %>" width="100"/><% end %></td>
     <td><%= link_to admin_subject_set_path(set) do %><%= set.state %><% end %></td>
     <td> <%= set.subjects.root.count %> </td> 
-    <td> <%= set.classification_count %> </td> 
+    <td> <%= set.active_secondary_subject_count %> </td> 
   </tr>
 <% end %>
 </table>
 
+<%= paginate @subject_sets %>

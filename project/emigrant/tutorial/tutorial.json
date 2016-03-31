@@ -10,7 +10,7 @@
             }
         },
         "learn_transcribing": {
-            "next_task": "learn_verifying",
+            "next_task": "learn_transcribing",
             "help": {
                 "title": "Transcribing",
                 "file": "learn_transcribing"
@@ -23,5 +23,74 @@
                 "file": "learn_verifying"
             }
         }
+    },
+    "workflows": {
+      "mark": {
+        "name": "Mark Tutorial",
+        "first_task": "learn_marking",
+        "tasks": {
+          "learn_marking": {
+              "next_task":"tutorial_mark_2",
+              "help": {
+                  "title": "Task",
+                  "file": "tutorial_mark_1"
+              }
+          },
+          "tutorial_mark_2": {
+              "next_task": "tutorial_mark_3",
+              "help": {
+                  "title": "Making Your Mark",
+                  "file": "tutorial_mark_2"
+              }
+          },
+          "tutorial_mark_3": {
+              "next_task": "tutorial_mark_4",
+              "help": {
+                  "title": "Fields",
+                  "file": "tutorial_mark_3"
+              }
+          },
+          "tutorial_mark_4": {
+              "next_task": "tutorial_mark_5",
+              "help": {
+                  "title": "Existing Marks",
+                  "file": "tutorial_mark_4"
+              }
+          },
+          "tutorial_mark_5": {
+              "next_task": null,
+              "help": {
+                  "title": "Additional Help",
+                  "file": "tutorial_mark_5"
+              }
+          }
+        }
+      },
+      "transcribe": {
+        "name": "Transcribe Tutorial",
+        "first_task": "learn_transcribing",
+        "tasks": {
+          "learn_transcribing": {
+              "next_task": null,
+              "help": {
+                  "title": "Transcribing Fields",
+                  "file": "tutorial_transcribe_1"
+              }
+          }
+        }
+      },
+      "verify": {
+        "name": "Verify Tutorial",
+        "first_task": "learn_verifying",
+        "tasks": {
+          "learn_verifying": {
+              "next_task": null,
+              "help": {
+                  "title": "Verifying Fields",
+                  "file": "tutorial_verify_1"
+              }
+          }
+        }
+      }
     }
 }

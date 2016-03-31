@@ -3,13 +3,16 @@
   padding 0
   margin 0
   list-style none
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-flex-flow: row wrap;
-  justify-content: space-around;
+
+
+  flexbox(flex)
+  flex-direction(row)
+  flex-wrap(wrap)
+  flex-flow row wrap
+  // flex-wrap(nowrap)
+
+  justify-content space-around
+  -webkit-justify-content space-around
 
   // prevent highlighting/selecting
   -webkit-touch-callout none
@@ -26,7 +29,7 @@
   height: 200px;
   margin-bottom: 10px;
   margin-left: 10px;
-  line-height: 150px;
+  // line-height: 150px;
   color: white;
   font-weight: bold;
   font-size: 3em;
@@ -56,10 +59,16 @@
     width 310px
     background rgba(43,58,66,0.90)
     transition opacity .3s
+
     &.active
       transition opacity .3s
       opacity 1
+
     a
+      letter-spacing: .03em;
+      border-radius: 4px;
+      font-weight: 80;
+      text-align: center;
       border-color #8CBC8B
       color #fff
       display block
@@ -67,30 +76,62 @@
       margin-right auto
       margin-top 20px
       margin-bottom 20px
+      line-height 20px
+      font-size 20px
+      padding 10px
+      width 200px
 
 .group-page
-  box-model: border-box
-  padding: 50px
-  margin-top:100px
+  overflow hidden
+  padding 0 !important
+  display flex
+
+  .group-information
+    max-width 440px
+    padding 20px
+    flex false 1
+
+  .group-stats
+    padding 20px
+    background #3f5765
+    color #fff
+    flex false 1
 
   .group-image
-    max-width 400px
-    max-height 500px
-    float right
+    width 90%
+    height auto
+    margin-top 12px
+  p
+    font-size 1.3em
 
-.subject_set
-  margin: 0px 20px
-  img
-    width: 200px
-
-.subject_sets
-  width: 100%
-  display: flex
-  margin-top: 20px
+  button
+    background #28373f
+    font-size 1.6em
 
 dl.metadata-list
+  > div
+    width 70%
+    margin-bottom 12px
   dt
     text-transform capitalize
+    font-weight bold
+    border-bottom 1px solid #ccc
+    margin-bottom 6px
+
+dl.stats-list
+  > div
+    display inline-block
+    margin 0 20px 20px 0
+    background rgba(255,255,255,0.1)
+    padding 1em 1em 2em
+  dt
+    font-weight bold
+    color #ccc
+  dd
+    margin 20px 0 0
+    text-align center
+    font-size 4em
+    font-weight bold
 
 .mark-transcribe-buttons
   button

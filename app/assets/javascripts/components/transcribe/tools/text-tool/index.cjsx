@@ -145,7 +145,6 @@ TextTool = React.createClass
     @handleChange(e) # updates any autocomplete values
 
     if (! @state.autocompleting && [13].indexOf(e.keyCode) >= 0) && !e.shiftKey# ENTER
-      # console.log "ENTERING ON TRANSCRIPTION:", e.keyCode
       @commitAnnotation()
     else if e.keyCode == 13 && e.shiftKey
       text_area =  $("textarea")
@@ -165,6 +164,7 @@ TextTool = React.createClass
 
     unless @props.standalone
       label = @props.label ? ''
+      label = label[0] if Array.isArray(label)
     else
       label = @props.task.instruction
 
@@ -181,8 +181,8 @@ TextTool = React.createClass
 
         { if examples
           <ul className="task-examples">
-          { for ex in examples
-              <li>{ex}</li>
+          { for ex,i in examples
+              <li key={i}>{ex}</li>
           }
           </ul>
         }
@@ -221,13 +221,13 @@ TextTool = React.createClass
       buttons = []
 
       if @props.onShowHelp?
-        buttons.push <HelpButton onClick={@props.onShowHelp}/>
+        buttons.push <HelpButton key="help-button" onClick={@props.onShowHelp}/>
 
       if @props.onBadSubject?
-        buttons.push <BadSubjectButton label={"Bad mark"} active={@props.badSubject} onClick={@props.onBadSubject} />
+        buttons.push <BadSubjectButton key="bad-subject-button" label={"Bad #{@props.project.term('mark')}"} active={@props.badSubject} onClick={@props.onBadSubject} />
 
       if @props.onIllegibleSubject?
-        buttons.push <IllegibleSubjectButton active={@props.illegibleSubject} onClick={@props.onIllegibleSubject} />
+        buttons.push <IllegibleSubjectButton key="illegal-subject-button" active={@props.illegibleSubject} onClick={@props.onIllegibleSubject} />
 
       buttonLabel =
         if @props.task.next_task?

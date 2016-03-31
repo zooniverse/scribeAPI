@@ -17,8 +17,7 @@
       "instruction": "Enter the record date",
       "examples": ["1867 May 11", "1867 July 30", "1875 December 31"],
       "help": {
-        "title": "Record Date",
-        "body": "The record date can generally be found in the upper left hand corner of the record."
+        "file": "t_record_date"
       },
       "generates_subject_type": "em_transcribed_date"
     },
@@ -29,23 +28,18 @@
       "instruction": "Enter the record number",
       "examples": ["287", "289"],
       "help": {
-        "title": "Record Number",
-        "body": "The record number can generally be found in the upper right hand corner of the record."
+        "file": "t_record_number"
       },
       "generates_subject_type": "em_transcribed_record_number"
     },
 
     "em_record_mortgager": {
       "tool": "textTool",
-      "tool_config": {
-        "suggest": "common"
-      },
       "instruction": "Enter the mortgager's name",
       "examples": ["John O'Meallia", "Trustees of St. Patrick's Cathedral"],
       "generates_subject_type": "em_transcribed_mortgager",
       "help": {
-        "title": "Mortgager Name",
-        "body": "The mortgager is often found at the top of the list of hand-entered data. The mortgager tends to be a single person or organization's name, e.g. \"John O'Meallia\" or \"Trustees of St. Patrick's Cathedral.\" If multiple names are given, enter them all separated by semi-colons. (E.g. \"Mary Smith;John O'Meallia\")"
+        "file": "t_record_mortgager"
       }
     },
 
@@ -56,8 +50,7 @@
       "examples": ["39 Mott St", "S. W. corner of 7th Avenue & 25th St. No 226 7th Avenue", "Mulberry, Mott and Prince St"],
       "generates_subject_type": "em_transcribed_address",
       "help": {
-        "title": "Street Address",
-        "body": "Enter the building address as appears e.g. \"39 Mott St\", \"S. W. corner of 7th Avenue & 25th St. No 226 7th Avenue\", \"Mulberry, Mott and Prince St\""
+        "file": "t_record_street_address"
       }
     },
 
@@ -68,38 +61,121 @@
       "examples": ["$4,500", "$50,000 and $30,000"],
       "generates_subject_type": "em_transcribed_amount_loaned",
       "help": {
-        "title": "Amount Loaned",
-        "body": "Enter the dollar amount loaned."
+        "file": "t_record_amount_loaned"
       }
     },
 
     "em_record_valuation": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Enter the date of the valuation (if one is given). In the next screen, you'll enter the valuation's dollar amounts.",
+      "examples": ["1879 November"],
+      "help": {
+        "file": "t_record_valuation"
+      },
+      "generates_subject_type": "em_transcribed_valuation_date",
+      "next_task": "em_record_valuation_ground_building"
+    },
+
+    "em_record_valuation_ground_building": {
       "tool": "compositeTool",
       "tool_config": {
         "tools": {
-          "em_valuation_date": {
-            "tool": "textTool",
-            "examples": ["1879 November"],
-            "tool_config": {"suggest": "common"},
-            "label": "Date"
-          },
-          "em_valuation_amount": {
+          "em_valuation_ground": {
             "tool": "textTool",
             "examples": ["$200,000"],
             "tool_config": {},
-            "label": "Amount"
+            "label": "Land Value"
+          },
+          "em_valuation_building": {
+            "tool": "textTool",
+            "examples": ["$200,000"],
+            "tool_config": {},
+            "label": "Building Value"
           }
         }
       },
 
       "help": {
-        "title": "Valuatation",
-        "body": "Sometimes records include individual, dated valuations of the property and/or building. If any exist in this record, note the most recent."
+        "file": "t_record_valuation"
       },
-      "generates_subject_type": "em_transcribed_valuation",
-      "instruction": "Enter as they appear, the date and amount of the last property valuation that was recorded, if any",
+      "generates_subject_type": "em_transcribed_valuation_itemized",
+      "instruction": "Sometimes valuations include itemized dollar values for \"ground\" and \"building\". Enter these amounts if you can find them. In the next screen, you'll enter the total valuation.",
+      "next_task": "em_record_valuation_total"
+    },
+
+    "em_record_valuation_total": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Enter the valuation ***total*** (if one is given)",
+      "examples": ["$200,000"],
+      "help": {
+        "file": "t_record_valuation"
+      },
+      "generates_subject_type": "em_transcribed_valuation_total",
+      "next_task": null
+    },
+
+    "em_record_survey": {
+      "tool": "compositeTool",
+      "tool_config": {
+        "tools": {
+          "em_survey_land_dimensions": {
+            "tool": "textTool",
+            "examples": ["100 x 100"],
+            "label": "Land Dimensions"
+          },
+          "em_survey_building_dimensions": {
+            "tool": "textTool",
+            "examples": ["68 x 100"],
+            "label": "Building Dimensions"
+          }
+        }
+      },
+
+      "help": {
+        "file": "t_survey"
+      },
+      "generates_subject_type": "em_transcribed_survey",
+      "instruction": "Enter, as they appear, any land and building dimensions that were recorded. In the next screen, you'll enter the descriptive information.",
+      "next_task": "em_record_survey_stories_materials"
+    },
+
+    "em_record_survey_stories_materials": {
+      "tool": "compositeTool",
+      "tool_config": {
+        "tools": {
+          "em_record_stories": {
+            "tool": "numberTool",
+            "label": "Enter the Number of Stories",
+            "examples": ["2", "5"]
+          },
+          "em_record_material": {
+            "tool": "textTool",
+            "label": "Enter the building material",
+            "examples": ["Br", "Brick & stone", "Frame Edifice with Slate roof and brick basement."]
+          }
+        }
+      },
+
+      "help": {
+        "file": "t_record_survey_stories_materials"
+      },
+      "generates_subject_type": "em_transcribed_stories_materials",
+      "instruction": "Enter, as they appear, the number of stories and the building materials.",
+      "next_task": "em_record_survey_additional_info"
+    },
+
+    "em_record_survey_additional_info": {
+      "tool": "textTool",
+      "tool_config": {},
+      "instruction": "Enter any additional information you find about the building's construction or significance.",
+      "examples": ["Church"],
+      "help": {
+        "file": "t_record_additional_info"
+      },
+      "generates_subject_type": null,
       "next_task": null
     }
-
   }
 }

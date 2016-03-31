@@ -10,7 +10,7 @@
   "tasks": {
     "mark_primary": {
       "tool": "pickOneMarkOne",
-      "instruction": "First, let's identify the core fields. For each of the following, draw a box on the image.",
+      "instruction": "",
       "generates_subjects": true,
       "help": {
         "file": "mark_primary"
@@ -18,14 +18,13 @@
       "tool_config" : {
         "displays_transcribe_button": false,
         "options": [
-          {"type": "rectangleTool", "label": "Record Date", "color": "red", "generates_subject_type": "em_record_date", "help": "The record date can generally be found in the upper left hand corner of the record. If multiple dates appear, draw a box around each."},
-          {"type": "rectangleTool", "label": "Record Number", "color": "blue", "generates_subject_type": "em_record_number", "help": "The record number can generally be found in the upper right hand corner of the record."},
-          {"type": "rectangleTool", "label": "Mortgager Name", "color": "darkorange", "generates_subject_type": "em_record_mortgager", "help": "The mortgager name is often found at the top of the list of hand-entered data in the bottom half of the records. The mortgager tends to be a single person’s name. If multiple names are provided, draw one box around all of them."},
-          {"type": "rectangleTool", "label": "Street Address", "color": "magenta", "generates_subject_type": "em_record_street_address", "help":"The street address is often found at the top of the list of hand-entered data in the bottom half of the records."},
-          {"type": "rectangleTool", "label": "Amount Loaned", "color": "teal", "generates_subject_type": "em_record_amount_loaned", "help":"The amount loaned is typically found at or near the bottom of the record."},
-          {"type": "rectangleTool", "label": "Valuation", "color": "sienna", "generates_subject_type": "em_record_valuation", "help":"Some records include valuations comprised of an assessment date and a dollar value. These are hand-written and are typically found at or near the bottom of the record. If there are multiple valuations, draw one box around all of them."},
-          {"type": "rectangleTool", "label": "Dimensions", "color": "blueviolet", "generates_subject_type": "em_record_dimensions", "help":"Some records include the ground dimensions of the building. These are often found below the street address in the hand-entered data in the bottom half of the records. Otherwise, they may be written in the drawing of the building footprint in the top half of the records."},
-          {"type": "rectangleTool", "label": "Building Description", "color": "darkgreen", "generates_subject_type": "em_record_description", "help":"The buiding description is often found in the middle of the list of hand-entered data in the bottom half of the records."}
+          {"type": "rectangleTool", "label": "Record Date", "color": "red", "generates_subject_type": "em_record_date", "help": {"file": "m_record_date"}},
+          {"type": "rectangleTool", "label": "Record Number", "color": "blue", "generates_subject_type": "em_record_number", "help":  {"file": "m_record_number"}},
+          {"type": "rectangleTool", "label": "Mortgager Name", "color": "darkorange", "generates_subject_type": "em_record_mortgager", "help": {"file": "m_record_mortgager"}},
+          {"type": "rectangleTool", "label": "Street Address", "color": "magenta", "generates_subject_type": "em_record_street_address", "help": {"file": "m_record_street_address"}},
+          {"type": "rectangleTool", "label": "Amount Loaned", "color": "teal", "generates_subject_type": "em_record_amount_loaned", "help": {"file": "m_record_amount_loaned"}},
+          {"type": "rectangleTool", "label": "Valuation", "color": "sienna", "generates_subject_type": "em_record_valuation", "help": {"file": "m_record_valuation"}},
+          {"type": "rectangleTool", "label": "Dimension & Description", "color": "purple", "generates_subject_type": "em_record_survey", "help": {"file": "m_record_survey"}}
         ]
       },
       "next_task": null

@@ -20,88 +20,123 @@ module.exports = React.createClass
   mixins: [MarkDrawingMixin] # load helper methods to draw marks and highlights
 
   getInitialState: ->
-    imageWidth: @props.subject.width
-    imageHeight: @props.subject.height
     subject: @props.subject
     marks: @getMarksFromProps(@props)
     selectedMark: null
     active: @props.active
+    zoom:
+      level: 1
+      x: 0
+      y: 0
+    scale: {horizontal: 1, vertical: 1}
+    sameSessionTranscriptions: []
 
   getDefaultProps: ->
     tool: null # Optional tool to place alongside subject (e.g. transcription tool placed alongside mark)
     onLoad: null
     annotationIsComplete: false
+    interimMarks: {}
 
   componentWillReceiveProps: (new_props) ->
     @setUncommittedMark null if new_props.task?.tool != 'pickOneMarkOne'
+
     if Object.keys(@props.annotation).length == 0 #prevents back-to-back mark tasks, displaying a duplicate mark from previous tasks.
       @setUncommittedMark null
 
-    @setState marks: @getMarksFromProps(new_props)
+    @setState
+      marks: @getMarksFromProps(new_props)
+
+    if new_props.subject.id == @props.subject.id
+      @scrollToSubject()
 
   componentDidMount: ->
     @setView 0, 0, @props.subject.width, @props.subject.height
     @loadImage @props.subject.location.standard
     window.addEventListener "resize", this.updateDimensions
 
+  scrollToSubject: ->
     # scroll to mark when transcribing
     if @props.workflow.name is 'transcribe'
-      yPos = (@props.subject.data.y - @props.subject.data.height?) * @getScale().vertical - 100
-      $('html, body').animate({scrollTop: yPos}, 500)
+      yPos = (@props.subject.data.y - @props.subject.data.height?) * @state.scale.vertical - 100
+      $('html, body').stop().animate({scrollTop: yPos}, 500)
+
+  componentDidUpdate: ->
+    scale = @getScale()
+    changed = scale.horizontal != @state.scale.horizontal && scale.vertical != @state.scale.vertical
+    if changed
+      @setState scale: scale, () =>
+        @updateDimensions()
+        @scrollToSubject()
+
 
   componentWillUnmount: ->
-    window.removeEventListener "resize", this.updateDimensions
+    window.removeEventListener "resize", @updateDimensions
 
   updateDimensions: ->
-    @setState
-      windowInnerWidth: window.innerWidth
-      windowInnerHeight: window.innerHeight
-
-    if ! @state.loading && @getScale()? && @props.onLoad?
-      scale = @getScale()
+    if ! @state.loading && @state.scale? && @props.onLoad?
+      scale = @state.scale
       props =
         size:
           w: scale.horizontal * @props.subject.width
           h: scale.vertical * @props.subject.height
-          scale: scale
 
       @props.onLoad props
+
+    # Fix for IE: On resize, manually set dims of svg because otherwise it displays as a tiny tiny thumb
+    if $('.subject-viewer')
+      w = parseInt($('.subject-viewer').width())
+      w = Math.min w, $('body').width() - 300
+      h = (w / @props.subject.width) * @props.subject.height
+      $('.subject-viewer svg').width w
+      $('.subject-viewer svg').height h
+
+      # Also a fix for IE:
+      @setState scale: @getScale()
 
   loadImage: (url) ->
     @setState loading: true, =>
       img = new Image()
       img.src = url
       img.onload = =>
-        # if @isMounted()
-
         @setState
           url: url
-          # imageWidth: img.width
-          # imageHeight: img.height
           loading: false
-        @updateDimensions()
+          scale: @getScale(), () =>
+            @updateDimensions()
+            @scrollToSubject()
 
   # VARIOUS EVENT HANDLERS
 
+  # Commit mark
+  submitMark: (mark) ->
+    return unless mark?
+    @props.onComplete? mark
+    @setUncommittedMark null # reset uncommitted mark
+
   # Handle initial mousedown:
   handleInitStart: (e) ->
-    # Ignore right-click
-    return null if e.buttons? && e.button? && e.button > 0
+    return null if e.buttons? && e.button? && e.button > 0 # ignore right-click
+    newMark = @createMark(e)
 
-    subToolIndex = @props.subToolIndex
-    return null if ! subToolIndex?
-    subTool = @props.task.tool_config?.options?[subToolIndex]
-    return null if ! subTool?
+    # Don't proceed as if a new mark was created if no mark was created (i.e. no drawing tool selected)
+    return if ! newMark?
 
-    # If there's a current, uncommitted mark, commit it:
+    # submit uncommitted mark
     if @state.uncommittedMark?
-      @submitMark()
+      @submitMark(@state.uncommittedMark)
+
+    @props.onChange? newMark
+    @setUncommittedMark newMark
+    # @selectMark newMark
+
+  createMark: (e) ->
+    return null if ! (subToolIndex = @props.subToolIndex)?
+    return null if ! (subTool = @props.task.tool_config?.options?[subToolIndex])?
 
     # Instantiate appropriate marking tool:
     MarkComponent = markingTools[subTool.type] # NEEDS FIXING
+    return null if ! MarkComponent?
 
-    # Create an initial mark instance, which will soon gather coords:
-    # mark = toolName: subTool.type, userCreated: true, subToolIndex: @state.uncommittedMark?.subToolIndex ? @props.annotation?.subToolIndex
     mark =
       belongsToUser: true # let users see their current mark when hiding others
       toolName: subTool.type
@@ -123,20 +158,13 @@ module.exports = React.createClass
       for key, value of initValues
         mark[key] = value
 
-    @props.onChange? mark
-
-    @setUncommittedMark mark
-
-    # @selectMark mark
+    return mark
 
   # Handle mouse dragging
   handleInitDrag: (e) ->
     return null if ! @state.uncommittedMark?
-
     mark = @state.uncommittedMark
-
-    # Instantiate appropriate marking tool:
-    MarkComponent = markingTools[mark.toolName]
+    MarkComponent = markingTools[mark.toolName] # instantiate appropriate marking tool
 
     if MarkComponent.initMove?
       mouseCoords = @getEventOffset e
@@ -144,10 +172,9 @@ module.exports = React.createClass
       for key, value of initMoveValues
         mark[key] = value
 
-    @props.onChange? mark
 
-    @setState
-      uncommittedMark: mark
+    @props.onChange? mark
+    @setState uncommittedMark: mark
 
   # Handle mouseup at end of drag:
   handleInitRelease: (e) ->
@@ -174,7 +201,7 @@ module.exports = React.createClass
   setUncommittedMark: (mark) ->
     @setState
       uncommittedMark: mark,
-      selectedMark: mark
+      selectedMark: mark #, => @forceUpdate() # not sure if this is needed?
 
   setView: (viewX, viewY, viewWidth, viewHeight) ->
     @setState {viewX, viewY, viewWidth, viewHeight}
@@ -182,21 +209,21 @@ module.exports = React.createClass
   # PB This is not returning anything but 0, 0 for me; Seems like @refs.sizeRect is empty when evaluated (though nonempty later)
   getScale: ->
     rect = @refs.sizeRect?.getDOMNode().getBoundingClientRect()
+
     return {horizontal: 1, vertical: 1} if ! rect? || ! rect.width?
     rect ?= width: 0, height: 0
     horizontal = rect.width / @props.subject.width
     vertical = rect.height / @props.subject.height
     offsetX = rect.left + $(window).scrollLeft()
     offsetY = rect.top + $(window).scrollTop()
-    # console.log "top: ", rect.top, $(window).scrollTop(), offsetY
     # PB: Adding offsetX and offsetY, which are also necessary to calculate window absolute px coordinates from source-image coordinates
     return {horizontal, vertical, offsetX, offsetY}
 
   getEventOffset: (e) ->
     rect = @refs.sizeRect.getDOMNode().getBoundingClientRect()
-    scale = @getScale()
-    x = ((e.pageX - pageXOffset - rect.left) / scale.horizontal) + @state.viewX
-    y = ((e.pageY - pageYOffset - rect.top) / scale.vertical) + @state.viewY
+    scale = @state.scale # @getScale()
+    x = ((e.pageX - window.pageXOffset - rect.left) / scale.horizontal) + @state.viewX
+    y = ((e.pageY - window.pageYOffset - rect.top) / scale.vertical) + @state.viewY
     return {x, y}
 
   # Set mark to currently selected:
@@ -234,16 +261,7 @@ module.exports = React.createClass
     else if mark is @state.uncommittedMark
       @props.destroyCurrentClassification()
 
-  # Commit mark
-  submitMark: (callback) ->
-    mark = @state.uncommittedMark
-    # console.log "SubjectViewer: Submit mark: ", mark.subToolIndex, mark
-    @setUncommittedMark null
-    @props.onComplete? mark
-    callback?()
-
   handleChange: (mark) ->
-    console.log "HANDLE CHANGE IN SUBJECT VIEWER"
     @setState
       selectedMark: mark
         , =>
@@ -254,12 +272,16 @@ module.exports = React.createClass
     marks = []
     currentSubtool = props.currentSubtool
     for child_subject, i in props.subject.child_subjects
+      continue if ! child_subject?
       marks[i] = child_subject.region
       marks[i].subject_id = child_subject.id # child_subject.region.subject_id = child_subject.id # copy id field into region (not ideal)
       marks[i].isTranscribable = !child_subject.user_has_classified && child_subject.status != "retired"
       marks[i].belongsToUser = child_subject.belongs_to_user
       marks[i].groupActive = currentSubtool?.generates_subject_type == child_subject.type
       marks[i].user_has_deleted = child_subject.user_has_deleted
+
+    # Also present visible 'interim mark's for this subject:
+    marks.push(m) for m in (@props.interimMarks ? []) when m.show && m.subject_id == props.subject.id
 
     marks
 
@@ -272,13 +294,12 @@ module.exports = React.createClass
       else
         otherMarks.push mark
 
-    # console.log '{transcribableMarks, otherMarks} = ', {transcribableMarks, otherMarks}
     return {transcribableMarks, otherMarks}
 
   renderMarks: (marks) ->
-
     return unless marks.length > 0
-    scale = @getScale()
+    # scale = @getScale()
+    scale = @state.scale
 
     marksToRender = for mark in marks
       mark._key ?= Math.random()
@@ -298,12 +319,14 @@ module.exports = React.createClass
           <ToolComponent
             key={mark._key}
             subject_id={mark.subject_id}
-            taskKey={@props.task.key}
+            taskKey={@props.task?.key}
             mark={mark}
             xScale={scale.horizontal}
             yScale={scale.vertical}
             disabled={! mark.userCreated}
+            disabled={! mark.userCreated}
             isTranscribable={mark.isTranscribable}
+            interim={mark.interim_id?}
             isPriorMark={isPriorMark}
             subjectCurrentPage={@props.subjectCurrentPage}
             selected={mark is @state.selectedMark}
@@ -321,12 +344,11 @@ module.exports = React.createClass
 
     return marksToRender
 
-
   render: ->
     return null if ! @props.active
 
-    viewBox = [0, 0, @props.subject.width, @props.subject.height]
-    scale = @getScale()
+    viewBox = @props.viewBox ? [0, 0, @props.subject.width, @props.subject.height]
+    scale = @state.scale # @getScale()
 
     # marks = @getCurrentMarks()
     marks = @state.marks
@@ -377,6 +399,8 @@ module.exports = React.createClass
                   { @highlightMark(mark, toolName) }
                   <ToolComponent
                     key={@props.subject.id}
+                    xBound={@props.subject.width}
+                    yBound={@props.subject.height}
                     mark={mark}
                     xScale={scale.horizontal}
                     yScale={scale.vertical}

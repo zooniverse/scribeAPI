@@ -12,9 +12,8 @@ module.exports = React.createClass
     onSubject: React.PropTypes.func.isRequired
     nextPage: React.PropTypes.func.isRequired
     prevPage: React.PropTypes.func.isRequired
-    totalSubjectPages: React.PropTypes.number.isRequired
-    subjectCurrentPage: React.PropTypes.number.isRequired
-
+    totalSubjectPages: React.PropTypes.number
+    subjectCurrentPage: React.PropTypes.number
 
   getInitialState:->
     first: @props.subject_set.subjects[0]
@@ -31,7 +30,7 @@ module.exports = React.createClass
       text = "Hide Lightbox"
 
   render: ->
-    window.subjects = @props.subject_set.subjects
+    # window.subjects = @props.subject_set.subjects # pb ?
     return null if @props.subject_set.subjects.length <= 1
     indexOfFirst = @findSubjectIndex(@state.first)
     second = @props.subject_set.subjects[indexOfFirst+1]
@@ -61,19 +60,10 @@ module.exports = React.createClass
     <div className={containerClasses.join ' '}>
       <div className="carousel" >
         <div id="visibility-button" >
-          <svg onClick={@handleFoldClick} width="10px" height="10px" viewBox="0 0 10 10">
-            <path fillRule="evenodd" d="M 9.24 7.83C 9.24 7.83 7.83 9.24 7.83 9.24 7.83 9.24 5 6.41 5 6.41 5 6.41 2.17 9.24 2.17 9.24 2.17 9.24 0.76 7.83 0.76 7.83 0.76 7.83 3.59 5 3.59 5 3.59 5 0.76 2.17 0.76 2.17 0.76 2.17 2.17 0.76 2.17 0.76 2.17 0.76 5 3.59 5 3.59 5 3.59 7.83 0.76 7.83 0.76 7.83 0.76 9.24 2.17 9.24 2.17 9.24 2.17 6.41 5 6.41 5 6.41 5 9.24 7.83 9.24 7.83Z" fill="rgb(187,191,195)"/>
-          </svg>
-          <span onClick={@handleFoldClick} >{text}</span>
 
-          {
-            if @state.folded
-              <i className="fa fa-angle-double-right" onClick={@handleFoldClick}></i>
-            else
-              <svg onClick={@props.toggleLightboxHelp} id="questions-tip" width="14px" height="14px" viewBox="0 0 14 14">
-                <path fillRule="evenodd" d="M 7 0C 3.13 0-0 3.13-0 7-0 10.87 3.13 14 7 14 10.87 14 14 10.87 14 7 14 3.13 10.87 0 7 0ZM 7.04 11.13C 6.51 11.13 6.07 10.68 6.07 10.15 6.07 9.63 6.51 9.18 7.04 9.18 7.57 9.18 8.01 9.63 8.01 10.15 8.01 10.68 7.57 11.13 7.04 11.13ZM 7.56 7.66C 7.56 7.85 7.65 8.06 7.77 8.16 7.77 8.16 6.47 8.55 6.47 8.55 6.21 8.27 6.07 7.91 6.07 7.49 6.07 6.06 7.82 5.9 7.82 5.07 7.82 4.7 7.54 4.39 6.89 4.39 6.29 4.39 5.78 4.69 5.41 5.13 5.41 5.13 4.44 4.04 4.44 4.04 5.07 3.29 6.03 2.87 7.07 2.87 8.61 2.87 9.56 3.65 9.56 4.77 9.56 6.52 7.56 6.65 7.56 7.66Z" fill="rgb(187,191,195)"/>
-              </svg>
-          }
+          <svg onClick={@props.toggleLightboxHelp} id="questions-tip" width="14px" height="14px" viewBox="0 0 14 14">
+            <path fillRule="evenodd" d="M 7 0C 3.13 0-0 3.13-0 7-0 10.87 3.13 14 7 14 10.87 14 14 10.87 14 7 14 3.13 10.87 0 7 0ZM 7.04 11.13C 6.51 11.13 6.07 10.68 6.07 10.15 6.07 9.63 6.51 9.18 7.04 9.18 7.57 9.18 8.01 9.63 8.01 10.15 8.01 10.68 7.57 11.13 7.04 11.13ZM 7.56 7.66C 7.56 7.85 7.65 8.06 7.77 8.16 7.77 8.16 6.47 8.55 6.47 8.55 6.21 8.27 6.07 7.91 6.07 7.49 6.07 6.06 7.82 5.9 7.82 5.07 7.82 4.7 7.54 4.39 6.89 4.39 6.29 4.39 5.78 4.69 5.41 5.13 5.41 5.13 4.44 4.04 4.44 4.04 5.07 3.29 6.03 2.87 7.07 2.87 8.61 2.87 9.56 3.65 9.56 4.77 9.56 6.52 7.56 6.65 7.56 7.66Z" fill="rgb(187,191,195)"/>
+          </svg>
 
         </div>
 
@@ -84,7 +74,7 @@ module.exports = React.createClass
 
               <svg className="light-box-subject" width={125} height={125} viewBox={viewBox} >
                   <SVGImage
-                    src = {if @state.first.location.thumbnail then @state.first.location.thumbnail else @state.first.location.standard}
+                    src = {if @state.first.location.thumbnail? then @state.first.location.thumbnail else @state.first.location.standard}
                     width = {100}
                     height = {100}
                   />
@@ -95,7 +85,7 @@ module.exports = React.createClass
                 <span className="page-number">{second.order}</span>
                 <svg className="light-box-subject" width={125} height={125} viewBox={viewBox} >
                     <SVGImage
-                      src = {if second.location.thumbnail then second.location.thumbnail else second.location.standard}
+                      src = {if second.location.thumbnail? then second.location.thumbnail else second.location.standard}
                       width = {100}
                       height = {100}
                     />
@@ -108,7 +98,7 @@ module.exports = React.createClass
                 <span className="page-number">{third.order}</span>
                 <svg className="light-box-subject" width={125} height={125} viewBox={viewBox} >
                     <SVGImage
-                      src = {if third.location.thumbnail then third.location.thumbnail else third.location.standard}
+                      src = {if third.location.thumbnail? then third.location.thumbnail else third.location.standard}
                       width = {100}
                       height = {100}
                     />
@@ -118,8 +108,8 @@ module.exports = React.createClass
           </ul>
 
           <ActionButton type={"back"} text="BACK" onClick={@moveBack.bind(this, indexOfFirst)} classes={@backButtonDisable(indexOfFirst)} />
-
           <ActionButton type={"next"} text="NEXT" onClick={@moveForward.bind(this, indexOfFirst, third, second)} classes={@forwardButtonDisable(third if third?)} />
+
         </div>
 
       </div>
@@ -146,7 +136,9 @@ module.exports = React.createClass
 
   # finds the index of a given subject within the current page of the subject_set
   findSubjectIndex: (subject_arg)->
-    return @props.subject_set.subjects.indexOf subject_arg
+    # PB sometimes equality is failing on subjects, so let's try just matching id
+    # return @props.subject_set.subjects.indexOf subject_arg
+    return (s.id for s in @props.subject_set.subjects).indexOf subject_arg.id
 
   # allows user to naviagate back though a subject_set
   # # controlls navigation of current page of subjects as well as the method that pull a new page of subjects
@@ -163,7 +155,7 @@ module.exports = React.createClass
     return if @props.subjectCurrentPage == @props.totalSubjectPages && (third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || second == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
     # # if the current page of subjects is NOT the last page of the subject_set and the 2nd or 3rd <li> is the last <li> contain the last subjects in the subject_set
     if @props.subjectCurrentPage < @props.totalSubjectPages && (third == @props.subject_set.subjects[@props.subject_set.subjects.length-1] || second == @props.subject_set.subjects[@props.subject_set.subjects.length-1])
-      @props.nextPage( => @setState first: @props.subject_set.subjects[0] )
+      @props.nextPage( => @setState first: @props.subject_set.subjects[0])
       # NOTE: for some reason, LightBox does not receive correct value for @props.subject_index, which has led to this awkard callback function above --STI
       # @setState first: @props.subject_set.subjects[0], => @forceUpdate()
 

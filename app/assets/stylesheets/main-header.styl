@@ -1,7 +1,7 @@
 
 .main-header-group
-  // background: rgba(0, 0, 0, 0.35);
-  background linear-gradient( 0, rgba(0,0,0,0.2), rgba(0,0,0,0.5), rgba(0,0,0,0.9), rgba(0,0,0,0.9), rgba(0,0,0,1.0) );
+  // defined in mixin:  background-linear-gradient(startPoint, startColor, startInterval, endColor, endInterval)
+  background-linear-gradient top, rgba(0,0,0,1), 50%, rgba(0,0,0,0.2), 100% 
   max-heigth: 50px
   position fixed
   top 0px
@@ -58,6 +58,8 @@
     // line-height: 36px;
     text-align: center;
     transform: rotate(-11.719deg)
+    -webkit-transform: rotate(-11.719deg)
+    -ms-transform:rotate(-11.719deg)
     &:hover
       background: transparent
     &.selected
@@ -83,12 +85,18 @@
 
 .login
   @extends $reset-button
-  flex(grow: 10)
+  flex(grow: 14)
   color rgba(255, 255, 255, 0.4)
   overflow: hidden
   align-items: center
   text-transform: uppercase
-  line-height 4.5em
+  line-height 72px
+
+  .login-container
+    padding-right: 2%;
+    float:right
+
+
 
   img
     max-height 20px

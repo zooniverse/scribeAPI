@@ -1,7 +1,8 @@
 API::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-
+  # config.middleware.insert_before ActionDispatch::Static, Rack::Deflater
+  
   # Code is not reloaded between requests.
   config.cache_classes = true
 
@@ -90,6 +91,9 @@ API::Application.configure do
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
+
+  # Enable the logstasher logs for the current environment
+  config.logstasher.enabled = true
 
   # React:
   config.react.variant = :production

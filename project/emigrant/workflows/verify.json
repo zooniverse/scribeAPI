@@ -5,8 +5,9 @@
   "generates_subjects": true,
   "generates_subjects_method": "most-popular",
   "generates_subjects_after": 3,
-  "generates_subjects_max": 10,
+  "generates_subjects_max": 20,
   "generates_subjects_agreement": 0.75,
+  "subjects_classifiable_by_creator": false,
 
   "tasks": {
 
@@ -16,6 +17,7 @@
       "tool_config": {
         "displays_transcribe_button": true
       },
+      "help": { "file": "v_date" },
       "generates_subject_type": "consensus_date"
     },
 
@@ -25,9 +27,9 @@
       "tool_config": {
         "displays_transcribe_button": true
       },
+      "help": { "file": "v_text" },
       "generates_subject_type": "consensus_record_number"
     },
-
 
     "em_transcribed_mortgager": {
       "instruction": "Choose the best transcription or enter your own!",
@@ -35,6 +37,7 @@
       "tool_config": {
         "displays_transcribe_button": true
       },
+      "help": { "file": "v_text" },
       "generates_subject_type": "consensus_mortgager"
     },
 
@@ -44,6 +47,7 @@
       "tool_config": {
         "displays_transcribe_button": true
       },
+      "help": { "file": "v_text" },
       "generates_subject_type": "consensus_address"
     },
 
@@ -53,16 +57,58 @@
       "tool_config": {
         "displays_transcribe_button": true
       },
+      "help": { "file": "v_currency" },
       "generates_subject_type": "consensus_amount_loaned"
     },
 
-    "em_transcribed_valuation": {
+    "em_transcribed_valuation_date": {
       "instruction": "Choose the best transcription or enter your own!",
       "tool": "verifyTool",
       "tool_config": {
         "displays_transcribe_button": true
       },
-      "generates_subject_type": "consensus_valuation"
+      "help": { "file": "v_date" },
+      "generates_subject_type": "consensus_valuation_date"
+    },
+
+    "em_transcribed_valuation_itemized": {
+      "instruction": "Choose the best transcription or enter your own!",
+      "tool": "verifyTool",
+      "tool_config": {
+        "displays_transcribe_button": true
+      },
+      "help": { "file": "v_currency" },
+      "generates_subject_type": "consensus_valuation_itemized"
+    },
+
+    "em_transcribed_valuation_total": {
+      "instruction": "Choose the best transcription or enter your own!",
+      "tool": "verifyTool",
+      "tool_config": {
+        "displays_transcribe_button": true
+      },
+      "help": { "file": "v_currency" },
+      "generates_subject_type": "consensus_valuation_total"
+    },
+
+    "em_transcribed_survey": {
+      "instruction": "Choose the best transcription or enter your own!",
+      "tool": "verifyTool",
+      "tool_config": {
+        "displays_transcribe_button": true
+      },
+      "help": { "file": "v_text" },
+      "generates_subject_type": "consensus_survey"
+    },
+
+    "em_transcribed_stories_materials": {
+      "instruction": "Choose the best transcription or enter your own!",
+      "tool": "verifyTool",
+      "tool_config": {
+        "displays_transcribe_button": true
+      },
+      "help": { "file": "v_text" },
+      "generates_subject_type": "consensus_stories_materials"
     }
   }
 }

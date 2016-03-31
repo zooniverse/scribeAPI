@@ -16,7 +16,7 @@ CompositeTool = React.createClass
   getInitialState: ->
     annotation: @props.annotation ? {}
     viewerSize: @props.viewerSize
-    active_field_key: (key for key, value of @props.task.tool_config.options)[0]
+    active_field_key: (c.value for c in @props.task.tool_config.options)[0]
 
   getDefaultProps: ->
     annotation: {}
@@ -55,21 +55,18 @@ CompositeTool = React.createClass
   # If there are more inputs, move focus to next input
   # Otherwise commit annotation (which is default behavior when there's only one input
   handleCompletedField: ->
-    console.log 'handleCompletedField()'
     field_keys = (c.value for c of @props.task.tool_config.options)
     next_field_key = field_keys[ field_keys.indexOf(@state.active_field_key) + 1 ]
 
     if next_field_key?
       @setState active_field_key: next_field_key
         , =>
-          console.log '@state.active_field_key = ', @state.active_field_key
           @forceUpdate()
     else
       @commitAnnotation()
 
   # User moved focus to an input:
   handleFieldFocus: (annotation_key) ->
-    console.log 'handleFieldFocus()'
     @setState active_field_key: annotation_key
 
   # this can go into a mixin? (common across all transcribe tools)
@@ -85,7 +82,6 @@ CompositeTool = React.createClass
 
   # this can go into a mixin? (common across all transcribe tools)
   returnToMarking: ->
-    console.log 'returnToMarking()'
     @commitAnnotation()
 
     # transition back to mark
@@ -99,13 +95,13 @@ CompositeTool = React.createClass
     # TK: buttons.push <PrevButton onClick={=> console.log "Prev button clicked!"} />
 
     if @props.onShowHelp?
-      buttons.push <HelpButton onClick={@props.onShowHelp}/>
+      buttons.push <HelpButton onClick={@props.onShowHelp} key="help-button"/>
 
     if @props.onBadSubject?
-      buttons.push <BadSubjectButton active={@props.badSubject} onClick={@props.onBadSubject} />
+      buttons.push <BadSubjectButton key="bad-subject-button" label={"Bad #{@props.project.term('mark')}"} active={@props.badSubject} onClick={@props.onBadSubject} />
 
     if @props.onIllegibleSubject?
-      buttons.push <IllegibleSubjectButton active={@props.illegibleSubject} onClick={@props.onIllegibleSubject} />
+      buttons.push <IllegibleSubjectButton active={@props.illegibleSubject} onClick={@props.onIllegibleSubject} key="illegible-subject-button"/>
 
     buttonLabel =
       if @props.task.next_task?
@@ -129,12 +125,13 @@ CompositeTool = React.createClass
       <label>{@props.task.instruction}</label>
 
       {
-        for sub_tool in @props.task.tool_config.options
+        for sub_tool, index in @props.task.tool_config.options
           ToolComponent = @props.transcribeTools[sub_tool.tool]
           annotation_key = sub_tool.value
           focus = annotation_key is @state.active_field_key
 
           <ToolComponent
+            key={index}
             task={@props.task}
             tool_config={sub_tool.tool_config}
             subject={@props.subject}

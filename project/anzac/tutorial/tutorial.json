@@ -3,47 +3,12 @@
     "first_task": "welcome",
     "tasks": {
         "welcome": {
-            "next_task": "mark_or_transcribe",
-            "help" :{
-                "title":"Welcome to Measuring the ANZACs!",
-                "file": "welcome"
-            }
-
-        },
-        "mark_or_transcribe":{
-            "next_task":"learn_marking",
-            "help":{
-                "title":"Mark, transcribe, or do both",
-                "file":"mark_or_transcribe"
-            }
-        },
-        "learn_marking": {
-            "next_task": "transcribe_while_mark",
-            "help": {
-                "title": "Learn To Mark",
-                "file": "learn_marking"
-            }
-        },
-        "transcribe_while_mark":{
-            "next_task":"learn_transcribing",
-            "help":{
-                "title":"How to transcribe while marking",
-                "file":"transcribe_while_mark"
-            }
-        },
-        "learn_transcribing": {
-            "next_task": "explore",
-            "help": {
-                "title": "How to just transcribe",
-                "file": "learn_transcribing"
-            }
-        },
-        "explore": {
             "next_task": null,
             "help": {
-                "title": "You’re ready to start exploring!",
-                "file": "explore"
+                "title": "Welcome to Measuring the ANZACs!",
+                "file": "one_slide_tutorial"
             }
         }
+
     }
 }

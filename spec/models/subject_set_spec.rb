@@ -1,11 +1,9 @@
 require 'spec_helper'
-require 'pry'
 
 describe SubjectSet do
 
   context 'associations' do
     it { should have_many(:subjects) }
-
     it { should belong_to(:group) }
     it { should belong_to(:project) }
 
@@ -29,42 +27,43 @@ describe SubjectSet do
       ) 
     }
 
-    describe '#activate!' do
-      it 'activate_subject count of the workflow' do
-        pending("are we actually using this method? -- AMS").error("maybe in the rake project_load")
-      end
-    end
+    # describe '#activate!' do
+    #   it 'activate_subject count of the workflow' do
+    #     pending("are we actually using this method")
+    #   end
+    # end
     
     describe '#inc_subject_count_for_workflow' do
       it 'should increment a specific workflows total_subjects key by 1' do
         subject_set.inc_subject_count_for_workflow(workflow)
+        binding.pr
         subject_set.reload
         expect(subject_set.counts["#{workflow.id.to_s}"]["total_subjects"]).to eq(1)
       end
     end
 
-    describe '#subject_activated_on_workflow' do
-      it 'should increment a specific workflows active_subjects key by 1' do
-        subject_set.subject_activated_on_workflow(workflow)
-        subject_set.reload
-        expect(subject_set.counts["#{workflow.id.to_s}"]["active_subjects"]).to eq(1)
-      end
-    end
+    # describe '#subject_activated_on_workflow' do
+    #   it 'should increment a specific workflows active_subjects key by 1' do
+    #     subject_set.subject_activated_on_workflow(workflow)
+    #     subject_set.reload
+    #     expect(subject_set.counts["#{workflow.id.to_s}"]["active_subjects"]).to eq(1)
+    #   end
+    # end
 
-    describe '#subject_completed_on_workflow' do
-      it 'to increment self.count.worklowid.complete_subjects by 1' do
-        subject_set.subject_completed_on_workflow(workflow)
-        subject_set.reload
-        expect(subject_set.counts["#{workflow.id.to_s}"]["complete_subjects"]).to eq(1)
-      end
+    # describe '#subject_completed_on_workflow' do
+    #   it 'to increment self.count.worklowid.complete_subjects by 1' do
+    #     subject_set.subject_completed_on_workflow(workflow)
+    #     subject_set.reload
+    #     expect(subject_set.counts["#{workflow.id.to_s}"]["complete_subjects"]).to eq(1)
+    #   end
 
-      it 'to decrement self.count.worklowid.active_subjects by 1' do
-        subject_set.subject_completed_on_workflow(workflow)
-        subject_set.reload
-        expect(subject_set.counts["#{workflow.id.to_s}"]["active_subjects"]).to eq(-1)
+    #   it 'to decrement self.count.worklowid.active_subjects by 1' do
+    #     subject_set.subject_completed_on_workflow(workflow)
+    #     subject_set.reload
+    #     expect(subject_set.counts["#{workflow.id.to_s}"]["active_subjects"]).to eq(-1)
 
-      end
-    end
+    #   end
+    # end
 
   end
 end

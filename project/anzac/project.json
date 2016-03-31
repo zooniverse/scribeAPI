@@ -2,9 +2,11 @@
   "title": "Measuring the ANZACs",
   "short_title": "ANZAC",
   "summary": "Transcription of New Zealand World War I Personnel Files",
-  "background": "assets/anzac/background.png",
+  "background": "/images/background.png",
   "admin_email": "andrea@zooniverse.org",
     "team_emails": [ "andrea@zooniverse.org" ],
+  "logo": "/images/logo.png",
+  "privacy_policy":"https://www.zooniverse.org/privacy",
   "terms_map": {
     "group": "collection",
     "subject set": "personnel record",
@@ -16,7 +18,7 @@
       "role": "developer",
       "organization": "UofM"
     },
-    { 
+    {
       "name": "Evan Roberts",
       "role": "PI",
       "organization": "UofM"
@@ -34,10 +36,15 @@
     }
   ],
   "forum": {
-    "type": "discourse",
-    "base_url": "http://scribe-forum.nypl-labs.biz"
+    "type": "talk",
+    "account_username": "zooniverse",
+    "project_name": "measuring-the-anzacs"
   },
-  "feedback_form_url": "http://goo.gl/forms/rrSAue1uuG",
+  "blog_url": "http://blog.measuringtheanzacs.org",
+  "discuss_url": "https://www.zooniverse.org/projects/zooniverse/measuring-the-anzacs/talk",
+  "analytics": {
+    "google_tag_manager_client_id": "GTM-WDW6V4"
+  },
   "metadata_search": {
     "fields": [
       {
@@ -45,6 +52,6 @@
         "field": "name"
       }
     ],
-    "feature_on_homepage": true
+    "feature_on_homepage": false
   }
 }

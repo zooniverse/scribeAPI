@@ -6,6 +6,7 @@ module.exports = React.createClass
 
   getDefaultProps: ->
     label: 'Need some help?' 
+    key: 'help-button'
  
   render: ->
     classes = ['help-button','ghost']

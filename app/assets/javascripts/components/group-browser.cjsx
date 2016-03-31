@@ -1,7 +1,7 @@
-# @cjsx React.DOM
-
 React = require 'react'
 API   = require '../lib/api'
+
+SmallButton   = require('components/buttons/small-button')
 
 GroupBrowser = React.createClass
   displayName: 'GroupBrowser'
@@ -23,7 +23,6 @@ GroupBrowser = React.createClass
     @forceUpdate() # trigger re-render to update buttons
 
   renderGroup: (group) ->
-    # console.log 'renderGroup(): GROUP =  ', group
     buttonContainerClasses = []
     groupNameClasses = []
     if group.showButtons
@@ -31,18 +30,18 @@ GroupBrowser = React.createClass
     else
       groupNameClasses.push "active"
 
-    divStyle=
-      backgroundImage: "url(#{group.cover_image_url})"
-      backgroundSize: "300px"
-
     <div
       onMouseOver={@showButtonsForGroup.bind this, group}
       onMouseOut={@hideButtonsForGroup.bind this, group}
       className='group'
-      style={divStyle} >
+      style={backgroundImage: "url(#{group.cover_image_url})"}
+      key={group.id}
+      >
       <div className="button-container #{buttonContainerClasses.join ' '}">
-        <a href="/#/mark/#{group.subject_sets[0].id}" className="button small-button">Mark</a>
-        <a href="/#/transcribe/#{group.subject_sets[0].id}" className="button small-button">Transcribe</a>
+        { for workflow in @props.project.workflows
+            if (group.stats.workflow_counts?[workflow.id]?.active_subjects ? 0) > 0
+              <a href={"/#/#{workflow.name}?group_id=#{group.id}"} className="button small-button" key={workflow.id} >{workflow.name.capitalize()}</a>
+        }
         <a href="/#/groups/#{group.id}" className="button small-button ghost">More info</a>
       </div>
       <p className="group-name #{groupNameClasses.join ' '}">{group.name}</p>
@@ -53,8 +52,15 @@ GroupBrowser = React.createClass
     return null if @state.groups.length <= 1
 
     groups = [@renderGroup(group) for group in @state.groups]
-    <div>
-      <h3 className="groups-header"><span>Select a {@props.project.term('group')}</span></h3>
+    <div className="group-browser">
+      <h3 className="groups-header">
+        {
+          if @props.title?
+            <span>{@props.title}</span>
+          else
+            <span>Select a {@props.project.term('group')}</span>
+        }
+      </h3>
       <div className="groups">
         {groups}
       </div>

@@ -2,13 +2,12 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
 
   attributes :id, :type, :parent_subject_id, :workflow_id, :name, :location, :data, :region, :classification_count, :order, :meta_data
   attributes :width, :height, :region, :subject_set_id, :status
-  attributes :user_favourite, :user_has_classified, :user_has_deleted # , :classifying_user_ids
-  attributes :belongs_to_user, :created_by_user_id
+  attributes :user_has_classified, :user_has_deleted
+  attributes :belongs_to_user
   attributes :child_subjects
 
   delegate :current_or_guest_user, to: :scope
   delegate :current_user, to: :scope
-  # has_many :child_subjects
 
   def attributes
     data = super
@@ -25,9 +24,13 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
     data
   end
 
-  # Let's override default has_many so that we can restrict to active (i.e. to hide retired marks)
+  def type
+    object.type.nil? ? 'subjects' : object.type
+  end
+
+
   def child_subjects
-    object.child_subjects.active.map { |s| SubjectSerializer.new(s, root: false, scope: scope) }
+    object.child_subjects.visible_marks.map { |s| SubjectSerializer.new(s, root: false, scope: scope) }
   end
 
   def workflow_id
@@ -71,6 +74,14 @@ class SubjectSerializer < ActiveModel::MongoidSerializer
     user = scope.nil? ? nil : current_or_guest_user
     unless user == nil
       return object.created_by_user_id == user.id.to_s
+    end
+  end
+
+  def meta_data
+    if object[:meta_data] == nil
+      meta_data = object.parent_subject.meta_data
+    else 
+      object[:meta_data]
     end
   end
 

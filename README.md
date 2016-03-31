@@ -1,33 +1,31 @@
-<h1> Scribe API </h1>
-Scribe is a framework for crowdsourcing the transcription of text-based documents, particularly documents that are not well suited for Optical Character Recognition.
+# Scribe 
 
-Check out the <a href="http://docs.scribeapi1.apiary.io/#reference">documentation</a> and the <a href="https://github.com/zooniverse/ScribeAPI/wiki">wiki</a> for further resources.
+[Scribe](http://scribeproject.github.io/) is a framework for crowdsourcing the transcription of text-based documents, particularly documents that are not well suited for Optical Character Recognition. It is a collaboration between [Zooniverse](https://www.zooniverse.org/) and [The New York Public Library Labs](http://labs.nypl.org/) with generous support from [The National Endowment for the Humanities (NEH), Office of Digital Humanities](http://www.neh.gov/divisions/odh).
 
-<h1>Quick Start</h1>
-Copy example project folder:
-`cp -R project/example_project project/%PROJECT_KEY%`
+## For Project Creators
 
-Edit your project files - in particular:
- * Project properties (project.rb)
- * Workflows (workflows/*.json )
- * Groups and subjects (subjects/groups.csv, each 'name' of which refers to subjects/group_%NAME%.csv)
- * Pages (content/*.html.erb)
+Are you an organization or individual interested in using Scribe for your next crowdsourced transcription project? Start here!
 
-Build project:
-`rake project_load[%PROJECT_KEY%]`
+* What is Scribe and is it for me? Read our [Scribe Primer](https://github.com/zooniverse/scribeAPI/wiki/Getting-started)
+* Ready to set up your project? Head over to our [Project Setup page](https://github.com/zooniverse/scribeAPI/wiki/Setting-up-your-project)
 
-<h1>Tests</h1>
-`npm test` to run the Jest test suite
+## For Contributors
 
-<h1>Background</h1>
+Would you like to contribute to the codebase? Check out these technical resources about the Scribe framework and make your first pull request!
 
-This application was generated with the rails_apps_composer gem:
-https://github.com/RailsApps/rails_apps_composer
-provided by the RailsApps Project:
-http://railsapps.github.io/
+* [Terms and Keywords](https://github.com/zooniverse/scribeAPI/wiki/Terms-and-Keywords)
+* Setting up your environment on [Mac OSX](https://github.com/zooniverse/scribeAPI/wiki/Setup-Mac-OSX), [Windows](https://github.com/zooniverse/scribeAPI/wiki/Setup-in-Windows-Vagrant), or [Unix](https://github.com/zooniverse/scribeAPI/wiki/Setup-Unix)
+* [Data Model & Tools Config](https://github.com/zooniverse/scribeAPI/wiki/Data-Model-%26-Tools-Config)
+* [Creating Custom Marking Tools](https://github.com/zooniverse/scribeAPI/wiki/Creating-Custom-Marking-Tools)
+* [Setting up OAuth & Deploying](https://github.com/zooniverse/scribeAPI/wiki/Setting-up-OAuth-%26-Deploying)
 
-Recipes:
-["apps4", "controllers", "core", "email", "extras", "frontend", "gems", "git", "init", "models", "prelaunch", "railsapps", "readme", "routes", "saas", "setup", "testing", "views"]
+## Example Projects
 
-Preferences:
-{:git=>true, :apps4=>"none", :dev_webserver=>"webrick", :prod_webserver=>"same", :database=>"mongodb", :orm=>"mongoid", :templates=>"erb", :unit_test=>"rspec", :integration=>"cucumber", :continuous_testing=>"none", :fixtures=>"none", :frontend=>"none", :email=>"gmail", :authentication=>"devise", :devise_modules=>"default", :authorization=>"none", :form_builder=>"none", :starter_app=>"users_app", :rvmrc=>false, :quiet_assets=>true, :better_errors=>true}
+We are launching Scribe with three very different projects by [Zooniverse](https://www.zooniverse.org/) and [The New York Public Library](http://www.nypl.org/):
+
+* [Emigrant City (NYPL)](http://emigrantcity.nypl.org)
+* [Measuring the Anzacs (Zooniverse)](http://measuringtheanzacs.org)
+* [Old Weather: Whaling (Zooniverse)](http://whaling.oldweather.org)
+
+
+

@@ -14,6 +14,11 @@ class Workflow
   field    :generates_subjects_max,                          type: Integer
   field    :generates_subjects_method,                       type: String,    default: 'one-per-classification'
   field    :generates_subjects_agreement,                    type: Float,     default: 0.75
+  # Controls whether or not subjects in this workflow may be classified by same
+  # users who created the subjects. For example, verify workflows should make
+  # this `false` to prevent a user's transcriptions from being verified by same
+  # user:
+  field    :subjects_classifiable_by_creator,                type: Boolean,   default: true
   field    :active_subjects,                                 type: Integer,   default: 0
   field    :order,                                           type: Integer,   default: 0
 
@@ -22,6 +27,8 @@ class Workflow
   belongs_to   :project
 
   embeds_many :tasks, class_name: 'WorkflowTask'
+
+  index project_id: 1, name: 1
 
   def subject_has_enough_classifications(subject)
     subject.classification_count >= self.generates_subjects_after
@@ -43,7 +50,7 @@ class Workflow
 
   def next_workflow
     if ! generates_subjects_for.nil?
-      Workflow.find_by(name: generates_subjects_for)
+      project.workflows.find_by(name: generates_subjects_for)
     end
   end
 

@@ -17,11 +17,12 @@ class Classification
     @committed = false
 
   commit: (callback) ->
-    return if @committed
+    # only commit the classification if it isn't already committed or 
+    # the classification is flagging a subject as bad.
+    return if @committed && @task_key != "flag_bad_subject_task"
     @committed = true
 
     @metadata.finished_at = (new Date).toISOString()
-
     data =
       classifications:
         annotation: @annotation
@@ -38,16 +39,34 @@ class Classification
       complete: (resp) =>
         callback? resp.responseJSON?.classification
 
-    """
-    rec.save()
-    rec = API.type('classifications').create
-      annotation: @annotation
-      subject_id: @subject_id
-      subject_set_id: @subject_set_id
-      task_key: @task_key
-      metadata: @metadata
-      workflow_id: @workflow_id
-    rec.save()
-    """
+    # $.ajax('/classifications', data: data, method: 'post', dataType: 'json').done((response)->
+    #   console.log 'success: ', response
+    #   callback? response.responseJSON?.classification
+    #   return
+    # ).fail(->
+    #   console.log 'error'
+    #   return
+    # ).always(->
+    #   console.log 'complete (always)'
+    #   return
+    # )
+
+    # console.log 'Classification::commit() END'
+    # # Perform other work here ...
+    # # Set another completion function for the request above
+    # jqxhr.always ->
+    #   alert 'second complete'
+    #   return
+
+
+    # rec.save()
+    # rec = API.type('classifications').create
+    #   annotation: @annotation
+    #   subject_id: @subject_id
+    #   subject_set_id: @subject_set_id
+    #   task_key: @task_key
+    #   metadata: @metadata
+    #   workflow_id: @workflow_id
+    # rec.save()
 
 module.exports = Classification

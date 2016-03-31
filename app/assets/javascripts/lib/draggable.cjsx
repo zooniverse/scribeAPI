@@ -39,15 +39,12 @@ module.exports = React.createClass
       style =
         left: @state.x
         top: @state.y
-      # console.log "Draggable[#{@props.inst}] render: ", style
       React.cloneElement @props.children,
         className: "#{@props.children.props?.className} draggable"
         onMouseDown: @handleStart
         style: style
 
   _rememberCoords: (e) ->
-    # console.log "remCoord event", e
-    # console.log "e.pageX", e.pageX
     @_previousEventCoords =
       x: e.pageX
       y: e.pageY
@@ -55,8 +52,6 @@ module.exports = React.createClass
   handleStart: (e) ->
 
     return if e.button != 0
-    # console.log "Draggable: handleStart", @props.disableDragIn.indexOf(e.target.nodeName), e.target.nodeName
-
     return if @props.disableDragIn.indexOf(e.target.nodeName) >= 0
     return if $(e.target).parents(@props.disableDragIn.join(',')).length > 0
 
@@ -77,7 +72,6 @@ module.exports = React.createClass
         max_y: $(document).height() - $el.height() - parent_top
 
     @_rememberCoords e
-    # console.log "previous coords", @_previousEventCoords
 
     # Prefix with this class to switch from `cursor:grab` to `cursor:grabbing`.
     document.body.classList.add 'dragging'
