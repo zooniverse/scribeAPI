@@ -5,7 +5,7 @@ class GroupsController < ApplicationController
 
   def index
     page          = get_int :page, 1
-    limit         = get_int :limit, 25
+    limit         = get_int :limit, 35
     project_id    = get_objectid :project_id
 
     # If project_id given (it always should be), filter on it:
