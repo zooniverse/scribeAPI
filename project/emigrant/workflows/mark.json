@@ -4,6 +4,7 @@
   "subject_fetch_limit":"10",
   "generates_subjects": true,
   "generates_subjects_for": "transcribe",
+  "retire_limit": 0.75,
 
   "first_task":"mark_primary",
 
