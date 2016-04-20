@@ -21,8 +21,7 @@ class Workflow
   field    :subjects_classifiable_by_creator,                type: Boolean,   default: true
   # Controls whether the user-generated subject shown may be "edited" (cloned, really)
   # Currently only implemented as an EDIT button in Verify (user can transcribe using a prev transcription as a basis)
-  field    :subjects_editable,                               type: Boolean,   default: true
-  field    :active_subjects,                                 type: Integer,   default: 0
+  field    :subjects_editable,                               type: Boolean,   default: false
   field    :order,                                           type: Integer,   default: 0
 
   has_many     :subjects
@@ -32,6 +31,10 @@ class Workflow
   embeds_many :tasks, class_name: 'WorkflowTask'
 
   index project_id: 1, name: 1
+
+  def active_subjects
+    subjects.active.count
+  end
 
   def subject_has_enough_classifications(subject)
     subject.classification_count >= self.generates_subjects_after

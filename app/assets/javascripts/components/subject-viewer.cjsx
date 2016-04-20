@@ -40,6 +40,9 @@ module.exports = React.createClass
   componentWillReceiveProps: (new_props) ->
     @setUncommittedMark null if new_props.task?.tool != 'pickOneMarkOne'
 
+    # Useful for debugging prod:
+    console.info "SubjectViewer view: #{new_props.subject.id}" if new_props.subject.id != @props.subject.id
+
     if Object.keys(@props.annotation).length == 0 #prevents back-to-back mark tasks, displaying a duplicate mark from previous tasks.
       @setUncommittedMark null
 

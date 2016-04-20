@@ -7,22 +7,27 @@ module SubjectGenerationMethods
       atts = subject_attributes_from_classification(classification)
       atts[:status] = 'inactive'
 
-      classification.child_subject = Subject.find_or_initialize_by(workflow: atts[:workflow], parent_subject: atts[:parent_subject], type: atts[:type])
+      classification.child_subject = Subject.find_or_create_by(workflow: atts[:workflow], parent_subject: atts[:parent_subject], type: atts[:type], subject_set: classification.subject.subject_set)
       classification.save
 
-      ann = classification.annotation.except(:key, :tool, :generates_subject_type)
-
       # Collect unique annotations into data hash
+      classifications = nil
       if classification.child_subject.persisted?
 
-        values = classification.child_subject.data['values'].nil? ? [] : classification.child_subject.data['values']
-        values.push ann unless values.include? ann
-
-        atts[:data] = {'values' => values}
+        values = classification.child_subject.data.nil? || classification.child_subject.data['values'].nil? ? [] : classification.child_subject.data['values']
+        classifications = classification.child_subject.parent_classifications
 
       else
-        atts[:data] = {'values' => [ann]}
+        classifications = [classification]
       end
+
+      # Compute vote counts based on all transcriptions and all votes cast:
+      combined_weights = classification.child_subject.parent_and_descendent_classifications_grouped
+
+      # Store most common 3 cause any more is probably too many to review:
+      vals = combined_weights[(0...3)].map { |a| a[:ann] }
+      atts[:data] = { "values" => vals }
+
       atts[:data][:task_prompt] = classification.workflow_task.instruction
 
       # Don't update attributes already saved/initialized in subject:

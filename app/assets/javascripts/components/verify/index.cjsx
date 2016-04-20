@@ -12,6 +12,8 @@ DraggableModal          = require 'components/draggable-modal'
 GenericButton           = require 'components/buttons/generic-button'
 Tutorial                = require 'components/tutorial'
 HelpModal               = require 'components/help-modal'
+NoMoreSubjectsModal     = require 'components/no-more-subjects-modal'
+LoadingIndicator        = require('components/loading-indicator')
 
 # Hash of core tools:
 coreTools          = require 'components/core-tools'
@@ -66,20 +68,19 @@ module.exports = React.createClass # rename to Classifier
     @setState helping: not @state.helping
 
   render: ->
+
     currentAnnotation = @getCurrentClassification().annotation
 
     onFirstAnnotation = currentAnnotation?.task is @getActiveWorkflow().first_task
 
     <div className="classifier">
       <div className="subject-area">
-        { if ! @getCurrentSubject()?
+        { if ! @state.subjects?
+            <LoadingIndicator />
+          
+          else if ! @getCurrentSubject()?
 
-            <DraggableModal
-              header          = { if @state.userClassifiedAll then "You verified them all!" else "Nothing to verify" }
-              buttons         = {<GenericButton label='Continue' href='/#/mark' />}
-            >
-              Currently, there are no {@props.project.term('subject')}s for you to {@props.workflowName}. Try <a href="/#/mark">marking</a> instead!
-            </DraggableModal>
+            <NoMoreSubjectsModal header={ if @state.userClassifiedAll then "You verified them all!" else "Nothing to verify" } workflowName={@props.workflowName} project={@props.project} />
 
           else if @getCurrentSubject()?
             <SubjectViewer onLoad={@handleViewerLoad} subject={@getCurrentSubject()} active=true workflow={@getActiveWorkflow()} classification={@props.classification} annotation={currentAnnotation}>

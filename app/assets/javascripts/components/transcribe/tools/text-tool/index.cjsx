@@ -163,6 +163,7 @@ TextTool = React.createClass
   render: ->
     return null if @props.loading # hide transcribe tool while loading image
 
+
     val = @state.annotation[@fieldKey()]
     val = '' if ! val?
 

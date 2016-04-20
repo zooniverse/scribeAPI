@@ -16,8 +16,8 @@
     <dt>Status</dt>
     <dd><%= @subject.status %> 
       <% if ! @subject.parent_subject.nil? %>
-        <% if @subject.parent_subject.workflow.generates_subjects_method == 'collect-unique'  %>
-          <br />(Has <%= @subject.parent_classifications.count %> classifications. <%= @subject.parent_subject.workflow.generates_subjects_after %> total required to activate.)
+        <% if @subject.status == 'inactive' && @subject.parent_subject.workflow.generates_subjects_method == 'collect-unique'  %>
+          <br />(Has <%= @subject.parent_classifications.count %> parent classifications. <%= @subject.parent_subject.workflow.generates_subjects_after %> total required to activate.)
         <% end %>
         <% if @subject.parent_subject.workflow.generates_subjects_method == 'most-popular'  %>
           <br />(<%= @subject.parent_classifications.count %> parent classification(s) have <%= (100 * @subject.calculate_most_popular_parent_classification[:percentage]).to_i %>% agreement. At least <%= @subject.parent_subject.workflow.generates_subjects_after %> parent classifications with <%= (100 * @subject.parent_subject.workflow.generates_subjects_agreement).to_i %>% agreement required to activate.)
@@ -27,7 +27,7 @@
         <br />(<%= @subject.flagged_bad_count %> "Bad Subject" votes)
       <% end %> 
       <% if @subject.retire_count %>
-        <br />(<%= @subject.retire_count %> Retire votes)
+        <br />Votes for retrement: <%= (@subject.percentage_for_retire * 100).round %>% (<%= @subject.retire_count %> of <%= @subject.number_of_completion_assessments %> completion assessments)
       <% end %> 
     </dd>
 
@@ -68,6 +68,7 @@
         &mdash;
       <% else %>
         <%= render partial: 'partials/data_hash', locals: {hash: @subject.data} %> 
+
       <% end %>
     </dd>
 
@@ -103,6 +104,18 @@
     <% end %>
 
     </dl>
+
+    <% if @subject.workflow && @subject.workflow.name == 'verify' %>
+      <h3>Classifications Breakdown</h3>
+      <ul>
+      <% @subject.parent_and_descendent_classifications_grouped.each do |cl| %>
+        <li>
+          <%= (100 * cl[:percentage]).round %>%: <%= cl[:votes] %> votes
+          <%= render partial: 'partials/data_hash', locals: {hash: cl[:ann] } %>
+        </li>
+      <% end %>
+      </ul>
+    <% end %>
 
   <% end %>
   

@@ -16,5 +16,4 @@ class Project
       return -1 if w1.active_subjects > w2.active_subjects
       1
 
-
 module.exports = Project
