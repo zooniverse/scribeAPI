@@ -8,6 +8,7 @@
   "generates_subjects_max": 20,
   "generates_subjects_agreement": 0.75,
   "subjects_classifiable_by_creator": false,
+  "subjects_editable": true,
 
   "tasks": {
 
