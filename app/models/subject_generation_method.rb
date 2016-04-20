@@ -47,6 +47,10 @@ class SubjectGenerationMethod
     if (label = task.tool_label(classification))
       region[:label] = label
     end
+    # If region.color not passed from client, derive it from workflow_task tool config:
+    if ! region[:color] && task.sub_tool_config(classification)
+      region[:color] = task.sub_tool_config(classification)[:color]
+    end
 
     {
       parent_subject: classification.subject,

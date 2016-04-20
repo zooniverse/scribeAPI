@@ -1,6 +1,6 @@
 ## Data exports
 
-With help from volunteers like yourself, we are extracting structured, building-level information from about 6,400 mortgages contained in the Emigrant Savings Bank Records at The New York Public Library. Of course, the ultimate goal is to make this data publicly available. Having a keyword-searchable and structured index of names and mortgage details will of great use to genealogists, historians, digital humanities researchers, and others interested in exploring historical data sources.
+Participants have made {{project.classification_count}} contributions to Emigrant City to date. This project periodically builds a merged, anonymized dump of that data, which is made public here. This is an active project and we’re continuing to gather data from the records. (You can [help](/#/intro)!) The data made available here is refreshed weekly.
 
 After enough transcriptions are made, our team will determine the best way to get the data to you in an easy and accessible way. In the meantime, feel free to explore the collection assets themselves on the Library's [Digital Collections](http://digitalcollections.nypl.org/collections/emigrant-savings-bank-records) website. In this project, we're working with the subset of these digitized materials, the volumes containing Mortgage and Bond records. The volumes appearing in Emigrant City are:
 * [Bond and Mortgage Record Book 1 (1 to 1,555)](http://digitalcollections.nypl.org/items/df712aa0-00b1-0133-fbd7-58d385a7bbd0)
@@ -15,6 +15,6 @@ After enough transcriptions are made, our team will determine the best way to ge
 * [Real Estate Loans No. 13](http://digitalcollections.nypl.org/items/3edf3050-24cd-0133-e6df-58d385a7b928)
 
 
-You may also be interested to explore how we’ve been experimenting with opening up data from other crowdsourcing projects:
+You may also be interested to explore how we’ve been experimenting with opening up data from other participatory projects:
 * [What's on the Menu?](http://menus.nypl.org/data)
 * [Building Inspector](http://buildinginspector.nypl.org/data)

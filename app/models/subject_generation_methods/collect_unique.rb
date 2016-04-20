@@ -34,7 +34,8 @@ module SubjectGenerationMethods
       if num_parent_classifications >= classification.workflow.generates_subjects_after
 
         # Get number of distinct classifications:
-        num_vals = classification.child_subject.data['values'].nil? ? -1 : classification.child_subject.data['values'].size
+        # num_vals = classification.child_subject.data['values'].nil? ? -1 : classification.child_subject.data['values'].size
+        num_vals = atts[:data]['values'].size
 
         # Where will this generated subject appear, if anywhere?
         next_workflow = classification.child_subject.workflow
@@ -49,13 +50,13 @@ module SubjectGenerationMethods
           verify_method = next_workflow.generates_subjects_method
 
           # If next workflow's generation method is most-popular and everyone transcribed the same thing, auto upgrade to 'complete':
-          if num_vals == 1 && verify_method == 'most-popular'
+          # (but only if num_parent_classifications  > 1)
+          if num_vals == 1 && verify_method == 'most-popular' && num_parent_classifications > 1 
             atts[:status] = 'complete'
 
           # .. Otherwise, activate the generated subject into the next workflow:
           else
-            classification.child_subject.activate!
-            atts.delete :status
+            atts[:status] = 'active'
           end
         end
       end
@@ -68,8 +69,10 @@ module SubjectGenerationMethods
       atts[:creating_user_ids] ||= []
       classification.child_subject.creating_user_ids.push classification.user_id
 
-      # puts "Saving atts to classification: #{atts.inspect}"
       classification.child_subject.update_attributes atts
+
+      # Now that child subj is saved (with a parent subject_set) Fire activate hooks if activating:
+      classification.child_subject.activate! if atts[:status] == 'active'
 
       classification.child_subject
     end

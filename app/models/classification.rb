@@ -11,6 +11,11 @@ class Classification
   field :finished_at
   field :user_agent
 
+  field :data_md5
+
+  before_create :generate_data_md5
+
+
   belongs_to    :workflow, :foreign_key => "workflow_id"
   belongs_to    :user
   belongs_to    :subject, foreign_key: "subject_id", inverse_of: :classifications
@@ -37,7 +42,8 @@ class Classification
 
   def check_for_retirement_by_classification_count(subject)
     if workflow.generates_subjects_method == "collect-unique"
-      if subject.classification_count >= workflow.generates_subjects_after
+      # Must divide number of classifications by the number of distinct generated subjects (otherwise 3 generated subjects may hang out 'inactive' in verify waiting for 3 additional classifications that will never come..)
+      if subject.classification_count / subject.secondary_subject_count >= workflow.generates_subjects_after
         subject.retire!
       end
     end
@@ -86,9 +92,15 @@ class Classification
     end
 
     if self.task_key == "flag_bad_subject_task"
-      subject.increment_flagged_bad_count_by_one
-      # Push user_id onto Subject.deleting_user_ids if appropriate
-      Subject.where({id: subject.id}).find_and_modify({"$addToSet" => {deleting_user_ids: user_id.to_s}})
+      # If deleting user is creator, immediately change status to bad
+      if subject.created_solely_by?(user) 
+        subject.bad!
+
+      else
+        subject.increment_flagged_bad_count_by_one
+        # Push user_id onto Subject.deleting_user_ids if appropriate
+        Subject.where({id: subject.id}).find_and_modify({"$addToSet" => {deleting_user_ids: user_id.to_s}})
+      end
     end
 
     if self.task_key == "flag_illegible_subject_task"
@@ -109,6 +121,26 @@ class Classification
     workflow_name = workflow.nil? ? '[Orphaned] ' : workflow.name.capitalize
     "#{workflow_name} Classification (#{ ann.blank? ? task_key : ann})"
   end
+
+  def generate_data_md5
+    props = {
+      annotation: annotation,
+      location: location,
+      subject_id: subject_id,
+      task_key: task_key,
+      workflow_id: workflow_id
+    }
+    self.data_md5 = self.class.data_md5_for_props(props)
+  end
+
+  def self.find_by_props(props)
+    find_by data_md5: data_md5_for_props(props)
+  end
+
+  def self.data_md5_for_props(props)
+    Digest::MD5.hexdigest(props.to_query)
+  end
+
 
   # Returns hash mapping distinct values for given field to matching count:
   def self.group_by_hour(match={})

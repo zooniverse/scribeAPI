@@ -60,5 +60,43 @@
       {"label": "About", "page": "about"}
     ],
     "footer": []
-  }
+  },
+
+  "export_specs": [
+    {
+      "name": "Record",
+      "spec_fields": [
+        {"name": "Mortgager", "repeats": false},
+        {"name": "Street Address", "format": "address", "repeats": false},
+        {"name": "Record Date", "format": "date", "format_options": {"range": [1850,1950]}, "repeats": false},
+        {
+          "name": "Land & Building Dimensions", 
+          "format": {
+            "em_survey_land_dimensions": "dimensions", 
+            "em_survey_building_dimensions": "dimensions"
+          },
+          "repeats": false
+        },
+        {"name": "Amount Loaned", "format": "monetary", "repeats": false},
+        {"name": "Stories & Materials", "format": {"em_record_stories": "numeric"}, "repeats": false},
+        {
+          "name": "Valuation", 
+          "select": "Total Value", 
+          "repeats": true,
+          "sub_fields": [
+            {"name": "Total Value", "format": "monetary", "repeats": false},
+            {"name": "Date", "select": "Valuation Date", "format": "date", "repeats": false},
+            {
+              "name": "Land & Building Value", 
+              "select": "Land & Building Value", 
+              "format": {"em_valuation_ground": "monetary", "em_valuation_building": "monetary"},
+              "repeats": false
+            }
+          ]
+        },
+        {"name": "Record Number", "format": "numeric", "repeats": false},
+        {"name": "Additional Info", "repeats": true}
+      ]
+    }
+  ]
 }

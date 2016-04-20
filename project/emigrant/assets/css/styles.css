@@ -98,6 +98,7 @@ html, body,
   width: 960px;
   margin: 20px auto;
   box-sizing: border-box;
+  padding: 0px;
 }
 @media screen and (max-width: 999px) {
   .page-content {
@@ -111,7 +112,7 @@ html, body,
   background: rgba(255,255,255,0.85);
   padding: 20px 40px;
 }
-.page-content.custom-page > div:nth-child(2) > *:first-child {
+.page-content.custom-page h2 {
   color: #fff;
   background: #3f5765;
   margin-top: -20px;
@@ -120,7 +121,21 @@ html, body,
   padding: 40px 0;
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
+  text-align: center;
 }
+
+.page-content.custom-page .with-nav {
+  padding-left: 20px;
+}
+
+.page-content.custom-page .with-nav h2 {
+  background: transparent;
+  color: #3f5765;
+  text-align: left;
+  margin: 0;
+  padding: 10px 0;
+}
+
 .page-content > div.updated-at {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
@@ -137,7 +152,6 @@ html, body,
 .page-content h2 {
   font-size: 36px;
   font-weight: 400;
-  text-align: center;
 }
 .page-content h3 {
   font-size: 28px;

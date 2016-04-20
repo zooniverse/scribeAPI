@@ -11,6 +11,10 @@ Verify                        = require './verify'
 # TODO Group routes currently not implemented
 GroupPage                     = require './group-page'
 GroupBrowser                  = require './group-browser'
+FinalSubjectSetBrowser        = require './final-subject-set-browser'
+FinalSubjectSetPage           = require './final-subject-set-page'
+FinalSubjectSetDownload       = require './final-subject-set-download'
+GenericPage                   = require './generic-page'
 
 Project                       = require 'models/project.coffee'
 
@@ -74,15 +78,35 @@ class AppRouter
               name={workflow.name + '_entire_page'}
             />
         }
+
+
         { # Project-configured pages:
           project.pages?.map (page, key) =>
             <Route
               key={key}
-              path={page.name}
+              path={page.key}
               handler={@controllerForPage(page)}
               name={page.name}
             />
         }
+
+        <Route
+          path="#{project.data_url_base}/browse"
+          handler={FinalSubjectSetBrowser}
+          name='final_subject_sets'
+        />
+        { if project.downloadable_data
+          <Route
+            path="#{project.data_url_base}/browse/:final_subject_set_id"
+            handler={FinalSubjectSetPage}
+            name='final_subject_set_page'
+          />
+        }
+        <Route
+          path="#{project.data_url_base}/download"
+          handler={FinalSubjectSetDownload}
+          name='final_subject_sets_download'
+        />
 
         <Route
           path='groups'
@@ -115,7 +139,6 @@ class AppRouter
         #   $("div#" + selectedID).addClass("selected-content"))
         #   $("a#" + selectedID).addClass("selected-content"))
 
-
       componentDidMount: ->
         pattern = new RegExp('#/[A-z]*#(.*)')
         selectedID = "#{window.location.hash}".match(pattern)
@@ -141,21 +164,11 @@ class AppRouter
           active: false
           heightStyle: "content"
 
-      navToggle:(e)->
-
       render: ->
         formatted_name = page.name.replace("_", " ")
-        <div className="page-content custom-page" id="#{page.name}">
-          <h1>{formatted_name}</h1>
-          <div dangerouslySetInnerHTML={{__html: marked(page.content)}} />
-          {
-            if page.group_browser? && page.group_browser != ''
-              <div className='group-area'>
-                <GroupBrowser project={project} title={page.group_browser} />
-              </div>
-          }
-          <div className="updated-at">Last Update {page.updated_at}</div>
-        </div>
+        base_key = page.key.split('/')[0]
+        nav = project.page_navs[base_key]
+        <GenericPage key={page.name} title={formatted_name} nav={nav} current_nav={"/#/#{page.key}"} content={page.content} footer={"Last Update: #{moment(page.updated_at, moment.ISO_8601).calendar()}"} />
 
 module.exports = AppRouter
 window.React = React
