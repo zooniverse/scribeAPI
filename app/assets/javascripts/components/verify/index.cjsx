@@ -75,13 +75,12 @@ module.exports = React.createClass # rename to Classifier
 
     <div className="classifier">
       <div className="subject-area">
-        { if ! @state.subjects?
-            <LoadingIndicator />
-          
-          else if ! @getCurrentSubject()?
-
+        { if @state.noMoreSubjects
             <NoMoreSubjectsModal header={ if @state.userClassifiedAll then "You verified them all!" else "Nothing to verify" } workflowName={@props.workflowName} project={@props.project} />
 
+          else if ! @state.subjects?
+            <LoadingIndicator />
+          
           else if @getCurrentSubject()?
             <SubjectViewer onLoad={@handleViewerLoad} subject={@getCurrentSubject()} active=true workflow={@getActiveWorkflow()} classification={@props.classification} annotation={currentAnnotation}>
               { if ( VerifyComponent = @getCurrentTool() )?
