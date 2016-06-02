@@ -15,6 +15,83 @@ namespace :subjects do
     project
   end
 
+  task :progress_report, [] => :environment do |task, args|
+    Project.current.workflows.each do |workflow|
+      puts workflow.name
+      puts "  Total: #{workflow.subjects.count}"
+      groups = Subject.group_by_field(:status, {workflow_id: workflow.id})
+      groups.each do |(v, count)|
+        puts "  #{v}: #{count}"
+      end
+      completion = 0
+      case workflow.name
+      when 'mark'
+        completion = 1.0 - groups['active'].to_f / workflow.subjects.count
+      when 'transcribe'
+        completion = 1.0 - groups['active'].to_f / workflow.subjects.count
+      when 'verify'
+        completion = 1.0 - (groups['inactive'].to_f + groups['active']).to_f / workflow.subjects.count
+      end
+      puts "  Completion: #{(completion * 100)}%"
+    end
+  end
+
+  task :bad_parents_make_bad_children, [] => :environment do |task, args|
+    Subject.where(status: 'bad').each do |subject| 
+      if subject.child_subjects.count > 0
+        child_statuses = subject.child_subjects.map { |_s| _s.status }
+        puts "Asserting badness of #{subject.id} with children that are: #{child_statuses.join(', ')}"
+        subject.bad!
+        # break
+      end
+    end
+  end
+
+  task :apply_consensus_after_spec_formatting, [:subject_id] => :environment do |task, args|
+    subjects = args[:subject_id].nil? ? Project.current.workflows.find_by(name: 'verify').subjects.where(status: 'active', :classification_count.gte => 5) : [Subject.find(args[:subject_id])]
+
+    subjects.each do |subject| 
+      final_subject = subject.child_subjects.first
+      revised_consensus = final_subject.calculate_most_popular_parent_classification normalized: true
+      # puts "revised: #{revised_consensus.inspect}" if args[:subject_id].present?
+      if revised_consensus[:percentage] >= subject.workflow.generates_subjects_agreement
+        puts "Make complete: #{final_subject.id}"
+        puts "  .. and retire: #{subject.id}"
+        # puts "complete: #{final_subject.inspect}"
+        # puts "retire!: #{subject.inspect}"
+        final_subject.complete!
+        subject.retire!
+      elsif args[:subject_id].present?
+        puts "Not applying consensus by spec formatting"
+      end
+    end
+  end
+
+  task :fix_active_transcribe_subjects_with_contentious_children, [] => :environment do |task, args|
+    Subject.where(status: 'contentious').each do |s| 
+      if s.parent_subject.status != 'retired'
+        puts "parent status: #{s.parent_subject.status}"
+        child_statuses = s.parent_subject.child_subjects.map { |_s| _s.status }
+        if ! child_statuses.include?('active')
+          puts "Subject #{s.id} is contentious, so retiring #{s.parent_subject.id}"
+          s.parent_subject.retire!
+        else
+          puts "Subject #{s.id} is contentious, but has active siblings, so not retiring"
+        end
+      end
+    end
+  end
+
+  task :fix_inactive_verifications, [] => :environment do |task, args|
+    puts "Looking for inactive Verify subjects..."
+    transcribe_subject_ids = Project.current.workflows.find_by(name: 'verify').subjects.where(status: 'inactive').inject([]) { |subject_ids, subject| subject_ids << subject.parent_subject_id; subject_ids }.uniq
+    puts "Found #{transcribe_subject_ids.size} distinct transcription subjects with inactive Verify child subjects"
+    transcribe_subject_ids.each_with_index do |subject_id, i|
+      Subject.find(subject_id).activate!
+      puts " - Activate transcribe subject: ", subject_id
+    end
+  end
+
   task :load_groups, [:project_key] => :environment do |task, args|
     project_key = args[:project_key]
     subjects_dir = Rails.root.join('project', project_key, 'subjects')
