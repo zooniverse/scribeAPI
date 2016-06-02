@@ -210,7 +210,7 @@ class Subject
 
     buckets = buckets.sort_by { |(k,annotations)| - annotations.size }
     # puts "BUCKETS: \n#{buckets.map { |(k,v)| "#{k} => #{v.size}" }.join("  \n")}"
-    buckets.map { |(k,annotations)| {ann: annotations.first, percentage: annotations.size.to_f / parent_classifications.count } }.first
+    buckets.map { |(k,annotations)| {ann: annotations.first, percentage: annotations.size.to_f / parent_classifications.count } }
   end
 
   def parent_and_descendent_classifications_grouped
