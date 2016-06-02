@@ -21,8 +21,8 @@ class Classification
   belongs_to    :subject, foreign_key: "subject_id", inverse_of: :classifications
   belongs_to    :child_subject, class_name: "Subject", inverse_of: :parent_classifications
 
-  after_create  :increment_subject_classification_count #, :check_for_retirement_by_classification_count
   after_create  :generate_new_subjects
+  after_create  :increment_subject_classification_count
   after_create  :generate_terms
   # removing this after create until we have a use case for the information
   # after_create  :increment_subject_set_classification_count, 
@@ -42,8 +42,9 @@ class Classification
 
   def check_for_retirement_by_classification_count(subject)
     if workflow.generates_subjects_method == "collect-unique"
-      # Must divide number of classifications by the number of distinct generated subjects (otherwise 3 generated subjects may hang out 'inactive' in verify waiting for 3 additional classifications that will never come..)
-      if subject.classification_count / subject.secondary_subject_count >= workflow.generates_subjects_after
+      # Only after all all generated subjects have been activated should this mark be retired
+      # (Note this means some marks will acquire mult redundant transcriptions if mult subjects are generated.)
+      if subject.child_subjects.inactive.count == 0
         subject.retire!
       end
     end

@@ -10,6 +10,7 @@ class Subject
   scope :by_type, -> (type) { where(type: type) }
   scope :active_non_root, -> { where(:type.ne => 'root', :status => 'active') }
   scope :active, -> { where(status: 'active').asc(:order)  }
+  scope :inactive, -> { where(status: 'inactive') }
   scope :not_bad, -> { where(:status.ne => 'bad').asc(:order)  }
   scope :visible_marks, -> { where(:status.ne => 'bad', :region.ne => nil).asc(:order)  }
   scope :complete, -> { where(status: 'complete').asc(:order)  }
