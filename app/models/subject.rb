@@ -162,7 +162,13 @@ class Subject
   def bad!
     status! 'bad'
     subject_set.subject_deactivated_on_workflow(workflow) if ! workflow.nil?
-    # subject_set.inc_complete_secondary_subject 1 if type != 'root'
+
+    # Recurse badness downward!
+    child_subjects.each do |child|
+      if ['active','inactive'].include?(child.status)
+        child.bad!
+      end
+    end
   end
 
   def retire!
@@ -175,21 +181,35 @@ class Subject
     true
   end
 
+  def complete!
+    status! 'complete'
+  end
+
   def activate!
     status! 'active'
     subject_set.subject_activated_on_workflow(workflow) if ! workflow.nil?
     # subject_set.inc_active_secondary_subject 1 if type != 'root'
   end
 
-  def parent_classifications_grouped
+  def parent_classifications_grouped(options = { normalized: false })
     annotations = parent_classifications.map { |c| c.annotation }
     buckets = annotations.inject({}) do |h, ann|
-      h[ann] ||= 0
-      h[ann] += 1
+      values = ann
+      # Should we normalize values?
+      if options[:normalized]
+        task = workflow.nil? ? parent_subject.parent_workflow_task : parent_workflow_task
+        values = Export::DocumentBuilder.normalize_annotation task, values
+      end
+      key = values.is_a?(Array) ? values.join('||') : values
+      h[key] ||= []
+      h[key] << ann
+
       h
     end
-    buckets = buckets.sort_by { |(k,v)| - v }
-    buckets.map { |(k,v)| {ann: k, percentage: v.to_f / parent_classifications.count } }
+
+    buckets = buckets.sort_by { |(k,annotations)| - annotations.size }
+    # puts "BUCKETS: \n#{buckets.map { |(k,v)| "#{k} => #{v.size}" }.join("  \n")}"
+    buckets.map { |(k,annotations)| {ann: annotations.first, percentage: annotations.size.to_f / parent_classifications.count } }.first
   end
 
   def parent_and_descendent_classifications_grouped
@@ -227,8 +247,8 @@ class Subject
     end
   end
 
-  def calculate_most_popular_parent_classification
-    parent_classifications_grouped.first
+  def calculate_most_popular_parent_classification(options = { normalized: false })
+    parent_classifications_grouped(options).first
   end
 
   def parent_workflow

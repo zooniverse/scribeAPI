@@ -5,6 +5,20 @@ class Export::DocumentBuilder
     @spec = spec
   end
 
+  def self.normalize_annotation(workflow_task, annotation)
+    # puts "incoming ann: #{annotation.inspect}"
+    if Project.current.export_document_specs
+      # field = Project.current.export_document_specs.first.spec_fields.select { |f| f.name === workflow_task.export_name }.first
+      field = Project.current.export_document_specs.first.field_by_name workflow_task.export_name
+      # puts "field: .. #{field.inspect}"
+      annotation = annotation['value'] if ! annotation['value'].nil?
+      annotation = apply_format annotation, field.format, field.format_options
+      # puts "  .. becomes: #{annotation.inspect}"
+    end
+    # annotation.map { |k, v|value_for_assertion
+    annotation
+  end
+
   def export_document
     doc = Export::Document.create name: @spec.name, final_subject_set: @set, spec: @spec
     @spec.spec_fields.each do |field_spec|

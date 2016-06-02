@@ -13,4 +13,15 @@ class Export::Spec::Document
     end
     inst
   end
+
+  def field_by_name(name)
+    spec_fields.each do |f|
+      return f if f.name == name
+      if f.sub_fields
+        fs = f.sub_fields.select { |_f| _f.name == name }
+        return fs.first if ! fs.empty?
+      end
+    end
+    nil
+  end
 end
