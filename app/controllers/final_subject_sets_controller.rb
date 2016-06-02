@@ -21,10 +21,11 @@ class FinalSubjectSetsController < FinalDataController
       if field_spec && field_spec.format
         split = "(-|to)"
         split = " #{split} " if field_spec.format == 'date'
-        if keyword.match /\w+ ?#{split} ?\w+/i
+        if keyword.match /\w+ ?#{split} ?\w*/i
           values = keyword.split(/#{split}/i)
           values = [values.first, values.last]
           values = parse_range values, field_spec.format
+          puts "values: #{values}"
 
           @sets = @sets.by_export_field_range(field, values)
 

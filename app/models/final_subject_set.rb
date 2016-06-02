@@ -14,14 +14,14 @@ class FinalSubjectSet
   end
 
   scope :by_export_field_range, -> (name, values) do
+    m = { }
+    m["$gte"] = values.first if ! values.first.nil?
+    m["$lte"] = values.last if ! values.last.nil?
     where({
       "export_document.export_fields" => {
         '$elemMatch' => {
           name: name,
-          value: { 
-            "$gte" => values.first,
-            "$lte" => values.last
-          }
+          value: m
         }
       }
     })

@@ -16,7 +16,6 @@ module.exports = React.createClass
   render: ->
     next_workflow = @props.project.workflowWithMostActives @props.workflowName
     next_href = "/"
-
     next_label = 'Continue'
 
     if next_workflow?
@@ -46,6 +45,7 @@ module.exports = React.createClass
               <p>The {@props.project.root_subjects_count.toLocaleString()} records can be explored via the <a href="/#/data">Data tab</a>.</p>
             }
           </div>
+
       }
     </DraggableModal>
 

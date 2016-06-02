@@ -18,7 +18,13 @@ module.exports =
 
   orderSubjectsByY: (subjects) ->
     subjects.sort (a,b) ->
-      return if a.region.y >= b.region.y then 1 else -1
+      # If a is positioned vertically adjacent to b, then order by x:
+      if Math.abs(a.region.y - b.region.y) <= a.region.height / 2
+        if a.region.x > b.region.x then 1 else -1
+      # Otherwise just order by y:
+      else
+        if a.region.y >= b.region.y then 1 else -1
+
 
   # Fetch a single subject:
   fetchSubject: (subject_id)->
