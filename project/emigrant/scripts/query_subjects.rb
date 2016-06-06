@@ -22,7 +22,7 @@ item_uuids = [
   "c5d23760-ecf4-0132-8bed-58d385a7b928", # Real Estate Loans No. 10 http://digitalcollections.nypl.org/items/59b0a100-23fd-0133-b24f-58d385a7bbd0
   "c6697fe0-ecf4-0132-b1fc-58d385a7b928", # Real Estate Loans No. 11 http://digitalcollections.nypl.org/items/cf0c3ee0-24bd-0133-5e2d-58d385a7b928
 =end
-  "c7d4b670-ecf4-0132-5854-58d385a7b928", # Real Estate Loans No. 11 http://digitalcollections.nypl.org/items/01af2f60-8701-0133-b22c-00505686a51c
+  "c7d4b670-ecf4-0132-5854-58d385a7b928", # Real Estate Loans No. 14 http://digitalcollections.nypl.org/items/01af2f60-8701-0133-b22c-00505686a51c
 ]
 
 

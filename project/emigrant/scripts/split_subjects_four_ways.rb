@@ -6,8 +6,8 @@
 # derivs and includes capture-level metadata about the crop.
 
 # Depends on ENV vars:
-#   S3_ID
-#   S3_SECRET
+#   AWS_ACCESS_KEY_ID
+#   AWS_SECRET_ACCESS_KEY
 
 require 'csv'
 require 'tempfile'
@@ -32,7 +32,7 @@ STOP_AT = ARGV[1].nil? ? nil : ARGV[1].to_i
 $in_path = "#{File.dirname(File.dirname(__FILE__))}/subjects/subjects_from_api.csv"
 $out_path = "#{File.dirname(File.dirname(__FILE__))}/subjects/group_only_one_group.fourways.csv"
 
-$s3 = S3::Service.new(access_key_id: ENV['S3_ID'], secret_access_key: ENV['S3_SECRET'])
+$s3 = S3::Service.new(access_key_id: ENV['AWS_ACCESS_KEY_ID'], secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'])
 $bucket = $s3.buckets.find BUCKET_NAME
 
 # Saves img (IO Stream) to path (String)
