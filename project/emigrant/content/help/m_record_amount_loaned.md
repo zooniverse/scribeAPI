@@ -21,6 +21,10 @@
   <div class="modal-field-guide" >
     <img src="/images/m_loan_5.png" alt="record_loan_5">
   </div>
+  <h3>Sample Image Six</h3>
+  <div class="modal-field-guide" >
+    <img src="/images/m_loan_6.png" alt="record_loan_6">
+  </div>
   <h3>Naming Variants</h3>
   <div>
     <ul>

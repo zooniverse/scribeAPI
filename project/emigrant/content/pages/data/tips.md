@@ -42,9 +42,7 @@ Emigrant City is a project and resource to browse historic mortgage records from
 This project intended to create a index to enable further discovery. With this project, the goal is to create an index of the bond and mortgage records to enable further discovery and use. We’ve worked with experts on the material to scope the data collected to fields which appear with greater regularity across documents: Record Date, Record Number, Mortgager Name, Street Address, Amount Loaned, Valuation, and Dimension & Description. Collecting and verifying these fields from the records creates resource that opens up the search of these materials. However, the data being gathered is not an exhaustive. Rather than creating a complete transcription of each record, the transcribed fields create an index to give some toeholds for future reference and querying of these rich materials which previously were largely invisible and difficult to search.  
 
 * **How often is the data refreshed?**  
-Contributions are still actively being made to Emigrant City. The records available in browse and download will be refreshed weekly with these new contributions. (You can still contribute to the project by <a href="/#/transcribe">transcribing</a> and <a href="/#/verify">verifying</a> data.)
+Contributions are still actively being made to Emigrant City. The records available in browse and download will be refreshed weekly with these new contributions.  
 
 <!-- * **What geographic areas are covered?** -->
 <!-- Will including this confuse? In this mortgage, the mortgage date appears three times. The project is structured to allow for multiple fields on one page. Multiple users marked the same field which resulted in the same date, “Mar. 23/03,” being transcribed several times.-->
-
-

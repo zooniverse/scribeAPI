@@ -80,3 +80,4 @@ Use genealogy databases to search city directories, censuses, and other records 
 ### Further reading  
 #### [Emigrant City: An Introduction](http://www.nypl.org/blog/2015/11/04/emigrant-city)  
 #### [Emigrant City: Two Stories](http://www.nypl.org/blog/2015/11/04/emigrant-city-two-stories)  
+#### [Scribe: Toward a General Framework for Community Transcription](http://www.nypl.org/blog/2015/11/23/scribe-framework-community-transcription)

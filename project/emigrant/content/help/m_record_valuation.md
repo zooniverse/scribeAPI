@@ -17,4 +17,8 @@
   <div class="modal-field-guide" >
     <img src="/images/m_value_4.png" alt="record_value_image_4">
   </div>
+  <h3>Sample Image Five</h3>
+  <div class="modal-field-guide" >
+    <img src="/images/m_value_5.png" alt="record_value_image_5">
+  </div>
 </div>

@@ -13,6 +13,10 @@
   <div class="modal-field-guide" >
     <img src="/images/m_mortgager_3.png" alt="record_mortgager_image_3">
   </div>
+  <h3>Sample Image Four</h3>
+  <div class="modal-field-guide" >
+    <img src="/images/m_mortgager_5.png" alt="record_mortgager_image_5">
+  </div>
   <h3>Naming Variants</h3>
   <div>
     <ul>
