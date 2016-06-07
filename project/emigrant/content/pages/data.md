@@ -14,6 +14,7 @@ Feel free to explore the collection assets themselves on the Library's [Digital 
 * [Real Estate Loans No. 10](http://digitalcollections.nypl.org/items/59b0a100-23fd-0133-b24f-58d385a7bbd0)
 * [Real Estate Loans No. 11](http://digitalcollections.nypl.org/items/cf0c3ee0-24bd-0133-5e2d-58d385a7b928)
 * [Real Estate Loans No. 13](http://digitalcollections.nypl.org/items/3edf3050-24cd-0133-e6df-58d385a7b928)
+* [Real Estate Loans No. 14](http://digitalcollections.nypl.org/items/01af2f60-8701-0133-b22c-00505686a51c)
 
 
 You may also be interested to explore how we’ve been experimenting with opening up data from other crowdsourcing projects:

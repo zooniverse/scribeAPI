@@ -17,6 +17,10 @@
   <div class="modal-field-guide" >
     <img src="/images/m_survey_4.png" alt="record_survey_4">
   </div>
+  <h3>Sample Image Five</h3>
+  <div class="modal-field-guide" >
+    <img src="/images/m_survey_5.png" alt="record_survey_5">
+  </div>
   <h3>Naming Variants</h3>
   <div>
     <ul>
