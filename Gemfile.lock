@@ -160,9 +160,7 @@ GEM
     mongoid-serializer (0.0.5)
       active_model-shaz
       mongoid (>= 3.0)
-    moped (2.0.4)
-      connection_pool (~> 2.0)
-      optionable (~> 0.2.0)
+    moped (1.5.3)
     multi_json (1.11.2)
     multi_test (0.1.2)
     multi_xml (0.5.5)
@@ -193,7 +191,6 @@ GEM
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
     omniauth-zooniverse (0.0.3)
-    optionable (0.2.0)
     origin (2.3)
     orm_adapter (0.5.0)
     pry (0.10.1)
