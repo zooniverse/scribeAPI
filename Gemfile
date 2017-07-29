@@ -19,7 +19,7 @@ gem 'mongo'
 gem 'active_model_serializers'
 gem 'mongoid-serializer'
 gem 'rack-cors', :require => 'rack/cors'
-gem "bson", '~> 4.2.1'
+gem "bson"
 gem "moped"
 gem 'sprockets-coffee-react'
 gem 'stylus', '~> 1.0.1'
