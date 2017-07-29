@@ -5,7 +5,7 @@
 
 [Scribe](http://scribeproject.github.io/) is a framework for crowdsourcing the transcription of text-based documents, particularly documents that are not well suited for Optical Character Recognition. It is a collaboration between [Zooniverse](https://www.zooniverse.org/) and [The New York Public Library Labs](http://labs.nypl.org/) with generous support from [The National Endowment for the Humanities (NEH), Office of Digital Humanities](http://www.neh.gov/divisions/odh).
 
-This is a form of ScribeAPI, updated in July 2017 to get it running on Heroku. See below for changes and additional documentation.
+This is a fork of ScribeAPI, updated in July 2017 to get it running on Heroku. See below for changes and additional documentation.
 
 ## For Project Creators
 
