@@ -13,9 +13,8 @@ gem 'devise'
 gem 'omniauth-facebook'
 gem "omniauth-google-oauth2"
 gem 'omniauth-zooniverse', '~> 0.0.3'
-
-gem 'mongoid', '~> 5.2.1'
-gem 'mongo'
+gem 'mongoid', '~> 5.2', '>= 5.2.1'
+gem 'mongo', '2.4.1'
 gem 'active_model_serializers'
 gem 'mongoid-serializer'
 gem 'rack-cors', :require => 'rack/cors'
