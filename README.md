@@ -1,11 +1,11 @@
+> This is a fork of ScribeAPI, updated in July 2017 to get it running on Heroku. See below for changes and additional documentation.
+
 > **Warning**
 > This project is experimental and not well supported.
 
 # Scribe 
 
 [Scribe](http://scribeproject.github.io/) is a framework for crowdsourcing the transcription of text-based documents, particularly documents that are not well suited for Optical Character Recognition. It is a collaboration between [Zooniverse](https://www.zooniverse.org/) and [The New York Public Library Labs](http://labs.nypl.org/) with generous support from [The National Endowment for the Humanities (NEH), Office of Digital Humanities](http://www.neh.gov/divisions/odh).
-
-This is a fork of ScribeAPI, updated in July 2017 to get it running on Heroku. See below for changes and additional documentation.
 
 ## For Project Creators
 
@@ -51,7 +51,7 @@ We are launching Scribe with three very different projects by [Zooniverse](https
 
 ### Environment variables -- Development
 
-This isn't really mentioned in the ScribeAPI wiki:
+This isn't really mentioned in the [ScribeAPI wiki](https://github.com/zooniverse/scribeAPI/wiki):
 
 * Create a file in the root of the project called `.env`.
 * Use `rake secret` to create a secret key.
@@ -60,11 +60,11 @@ This isn't really mentioned in the ScribeAPI wiki:
 * To specify the name of the Mongo database you want to create, set `MONGO_DB=yourdbname`
 * If you're going to start up the Puma web server (see below), add `RACK_ENV=development` and `PORT=3000`
 
-Also add your OAUTH keys to `.env` as mentioned in the wiki.
+Also add your OAUTH keys to `.env` as mentioned [in the wiki](https://github.com/zooniverse/scribeAPI/wiki/Setting-up-OAuth-%26-Deploying).
 
 ### Deployment to Heroku
 
-After creating your Heroku app and database as described in the wiki:
+After creating your Heroku app and database as described [in the wiki](https://github.com/zooniverse/scribeAPI/wiki/Setting-up-OAuth-%26-Deploying):
 
 * Add `DEVISE_SECRET_TOKEN` and `SECRET_KEY_BASE_TOKEN` to Heroku's environment variables, eg: `heroku config:set "DEVISE_SECRET_TOKEN=yournewkey"`
 * Add your `MONGOLAB_URI` and OAUTH credentials as described in the wiki.
