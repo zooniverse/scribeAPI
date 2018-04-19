@@ -4,29 +4,64 @@ class ClassificationsController < ApplicationController
 
   def create
 
-    user = require_user!
+    # Is it a bot?
+    user = get_bot_user_from_request request
 
-    workflow_id      = BSON::ObjectId.from_string params["classifications"]["workflow_id"]
+    user = require_user! if user.nil?
+
+    workflow_id      = params["classifications"]["workflow_id"] ? params["classifications"]["workflow_id"] : nil
     task_key         = params["classifications"]["task_key"]
 
     annotation       = params["classifications"]["annotation"]
     annotation       = {} if annotation.nil?
-    started_at       = params["classifications"]["metadata"]["started_at"]
-    finished_at      = params["classifications"]["metadata"]["finished_at"]
+
+    started_at       = nil
+    finished_at      = nil
+    if params["classifications"]["metadata"]
+      started_at = params["classifications"]["metadata"]["started_at"]
+      finished_at      = params["classifications"]["metadata"]["finished_at"]
+
+    else
+      started_at = finished_at       = Time.new.strftime("%Y%m%dT%H%M%S%z")
+    end
+
     subject_id       = params["classifications"]["subject_id"]
     user_agent       = request.headers["HTTP_USER_AGENT"]
 
-    @result = Classification.create(
-      workflow_id: workflow_id,
-      subject_id: subject_id,
-      location: location,
+    # If workflow not found by id, maybe it was specified by name?
+    if workflow_id.nil? && ! params["workflow"].nil?
+      workflow = Workflow.find_by name: params["workflow"]["name"]
+      workflow_id = workflow.id
+    end
+
+    workflow_id = BSON::ObjectId.from_string workflow_id if ! workflow_id.nil?
+
+    # If user is a bot, consider creating the subject on the fly:
+    if user.is_a?(BotUser) && subject_id.nil? && (standard_url = params["subject"]["location"]["standard"])
+      subject_id = Subject.find_or_create_root_by_standard_url(standard_url).id
+    end
+
+    h = {
       annotation: annotation,
-      started_at: started_at,
-      finished_at: finished_at,
-      user_agent: user_agent,
+      location: location,
+      subject_id: subject_id,
       task_key: task_key,
-      user: user
-    )
+      workflow_id: workflow_id,
+      user_id: user.id
+    }
+    if (@result = Classification.find_by_props(h)).nil?
+      @result = Classification.create(
+        workflow_id: workflow_id,
+        subject_id: subject_id,
+        location: location,
+        annotation: annotation,
+        started_at: started_at,
+        finished_at: finished_at,
+        user_agent: user_agent,
+        task_key: task_key,
+        user: user
+      )
+    end
     render json: @result
   end
 

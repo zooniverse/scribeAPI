@@ -3,7 +3,12 @@ class ProjectsController < ApplicationController
 
   caches_action :index, :cache_path => "projects/index"
 
+  # TODO deprecate this nonsensical usage. Use /projects/current instead
   def index
+    current
+  end
+
+  def current
     respond_with Project.current
   end
 
@@ -12,14 +17,5 @@ class ProjectsController < ApplicationController
     render :json => {:project => project, :stats => project.stats}
   end
 
-=begin
-  def project_css
-    render text: Project.current.styles
-  end
-
-  def project_js
-    render text: Project.current.custom_js
-  end
-=end
 
 end

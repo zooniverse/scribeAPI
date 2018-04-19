@@ -1,0 +1,238 @@
+.final-subject-set-browser
+  flex(grow: 1)
+  max-width 700px
+
+  .pagination
+    list-style none
+
+    li
+      display inline-block
+      margin-right 0.5em
+      line-height 1.2em
+
+      a, span
+        @extends .standard-button
+        font-weight bold
+        color white
+        padding 0.2em 0.6em
+
+      a
+        text-decoration none
+
+      &.disabled
+        opacity 0.5
+
+      &.divider:after
+        content "..."
+
+
+  .tabs
+    padding 0
+    margin 0
+    margin-top 20px
+    list-style none
+    border-bottom solid #bbb 1px
+
+    li
+      display inline-block
+      border solid #bbb
+      border-width 1px 1px 0 1px
+      margin 0 0 0 10px
+      font-size 1.4em
+      border-radius 5px 5px 0 0
+
+      a
+        padding 10px 30px
+        text-decoration none
+        color gray
+
+      &.active
+        background-color rgba(255,255,255,0.30)
+        
+        a
+          font-weight bold
+          color TERTIARY_NORMAL
+
+  &.page-content
+    h2
+      text-align left
+      pading-bottom 10px
+
+  ul
+    list-style none
+    padding-left 0
+
+  .json-link
+    width auto
+    float right
+    margin-left 10px
+
+
+  // Search page:
+
+  form
+    padding-bottom 1em
+
+    input
+      vertical-align middle
+
+    input#data-search
+      font-size 2em
+      margin-right 10px
+
+    select
+      font-size 1.3em
+
+
+  .loading-indicator
+    width 100px
+    margin 100px auto
+    color black
+    position inherit
+    display block
+
+  ul.results
+    li
+      display inline-block
+      margin 0 10px 10px 0
+      width 330px
+      height 150px
+      overflow hidden
+
+      a
+        color #2b3a42
+        text-decoration none
+
+      .image
+        width 160px
+        float left
+
+      .matches
+        width 160px
+        float left
+        font-size 14px
+
+        .match
+          padding-bottom 0.5em
+          line-height 1.5em
+
+          .field
+            font-weight bold
+
+            &:after
+              content ":"
+
+          .term
+            padding-left 1em
+
+            em
+              font-style unset
+              font-weight bold
+              color TERTIARY_NORMAL
+
+
+  // Set page:
+  .final-subject-set-page
+    img.standard-image
+      max-width 600px
+
+    h3
+      border-left none
+      padding 0
+      line-height normal
+      font-size 28px
+      clear both
+      margin-bottom 0
+
+    ul.assertion-data, dl.assertion-properties
+      margin 4px 0 4px 10px
+
+    ul.assertion-data
+      clear left
+
+      li
+        color gray
+
+        span.value
+          font-weight bold
+          color #2b3a42
+
+        span.cleaned-version
+          padding-left 1em
+
+        span.data-key
+          margin-left 20px
+
+    dl.assertion-properties
+      margin-left 10px
+      clear left
+      font-size 14px
+
+      dt,dd
+        display inline
+        color gray
+
+      dt
+        margin 0 2px 0 0
+        &:after
+          content ":"
+
+      dd
+        margin 0 20px 0 0
+
+        &.confidence
+          color red
+
+        &.status-complete
+          color green
+
+        &.status
+          color TERTIARY_NORMAL
+
+        &.confidence-med
+          color TERTIARY_NORMAL
+
+        &.confidence-max, &.confidence-high
+          color  green
+
+        &.confidence-low
+          color #FC2260
+
+    .show-region-link
+      font-size 12px
+      display block
+      margin-left 10px
+      text-decoration none
+
+
+    .image-crop
+      opacity 0.7
+      margin-left 10px
+      max-width 700px
+
+      transition: height 0.3s ease-out
+
+      &.showing
+        border solid gray 1px
+
+
+      &:hover
+        opacity 1
+    
+    a.back
+      font-size: 1.3em;
+      text-decoration: none;
+
+      &:before
+        content "< "
+
+  dl.source-metadata
+    dl
+      margin-top 10px
+
+    dt
+      font-size 20px
+
+    dd
+      margin-left 0
+      margin-bottom 10px

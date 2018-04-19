@@ -126,70 +126,34 @@ namespace :project do
     # load project_file_path
     project = Project.find_or_create_by key: project_key
 
-    # Establish some defaults so that if they're not set in the project hash, we overwrite the old value with the null default
-    project_defaults = {
-      background: nil,
-      logo: nil,
-      favicon: nil,
-      terms_map: {},
-      team_emails: [],
-      team: [],
-      organizations: [],
-      analytics: nil,
-      forum: nil,
-      menus: {},
-      partials: {}
-    }
-    # Set all valid fields from hash:
-    project_hash = project_hash.inject(project_defaults) { |h, (k,v)| h[k] = v if Project.fields.keys.include?(k.to_s); h }
-    project.update project_hash
+    load_export_specs(project, project_hash['export_specs']) if project_hash['export_specs']
 
-    puts "Created project: #{project.title}"
+    # Set all valid fields from hash:
+    project_hash = project_hash.inject({}) { |h, (k,v)| h[k] = v if Project.fields.keys.include?(k.to_s); h }
+    project.update project_hash
 
     # Load pages from content/*:
     content_path = Rails.root.join('project', project_key, 'content')
     puts "Loading pages from #{content_path}:"
 
-    prev_pages = project.pages
     project.pages = []
 
-    Dir.foreach(content_path).each do |file|
-      path = Rails.root.join content_path, file
-      next if File.directory? path
-      next if ! ['.html','.erb','.md'].include? path.extname
-      ext = path.extname
-      page_key = file.split('.').first
-      name = page_key.capitalize
-      content = File.read path
-
-      puts "  Loading page: \"#{name}\" (#{content.size}b)"
-      if page_key == 'home'
-        project.home_page_content = content
-
+    # Dir.foreach(content_path).each do |file|
+     #  path = Rails.root.join content_path, file
+      # next if File.directory? path
+      # next if ! ['.html','.erb','.md'].include? path.extname
+    
+    # Load legacy pages from content folder directly:
+    Dir.glob("#{content_path}/*.{erb,html,md}").each do |path|
+      load_page project, path
+    end
+    
+    # Also load anything inside content/pages:
+    Dir.glob("#{content_path}/pages/*").each do |path|
+      if File.directory?(path)
+        load_page_group project, path
       else
-        # Set updated at if content changed:
-        updated_at = Time.now
-        if ! prev_pages.nil? && ! prev_pages.empty?
-          previous_page = prev_pages.select { |p| p[:key] == page_key }
-          if ! previous_page.empty? && (previous_page = previous_page.first)
-            updated_at = ! previous_page[:updated_at].nil? && previous_page[:content] == content ? previous_page[:updated_at] : Time.now
-          end
-        end
-
-        # Check if we should include group browser content
-        group_match = /<!\-\-[\s]*require groups:[\s]*(.*)\-\->/.match(content)
-        group_browser = ''
-        if group_match && !group_match.captures.empty?
-          group_browser = group_match.captures[0]
-        end
-
-        project.pages << {
-          key: page_key,
-          name: name,
-          content: content,
-          updated_at: updated_at,
-          group_browser: group_browser
-        }
+        load_page project, path
       end
     end
 
@@ -214,6 +178,72 @@ namespace :project do
 
     project.save
     project
+  end
+
+  def load_page_group(project, path)
+    base_key = File.basename path
+
+    nav_content = nil
+    nav_path = File.join(path, "_nav.md")
+    if File.exist?(nav_path)
+      nav_content = File.read nav_path
+      puts "got nav: #{nav_content}"
+    end
+
+    Dir.glob("#{path}/*.{erb,html,md}").each do |path|
+      load_page project, path, {base_key: base_key, nav: nav_content} unless File.basename(path).match(/^_/)
+    end
+  end
+
+  def load_page(project, path, options = {})
+    filename = File.basename path
+
+    page_key = filename.split('.').first
+    name = page_key.capitalize
+    name = "#{options[:base_key].capitalize} | #{name}" if options[:base_key]
+    content = File.read path
+
+    if page_key == 'home'
+      project.home_page_content = content
+
+    else
+      # Set updated at if content changed:
+      updated_at = Time.now
+      if ! project.pages.nil? && ! project.pages.empty?
+        previous_page = project.pages.select { |p| p[:key] == page_key }
+        if ! previous_page.empty? && (previous_page = previous_page.first)
+          updated_at = ! previous_page[:updated_at].nil? && previous_page[:content] == content ? previous_page[:updated_at] : Time.now
+        end
+      end
+
+      # PB 20160219 deprecating this cause doesn't appear in use
+      # Check if we should include group browser content
+      # group_match = /<!\-\-[\s]*require groups:[\s]*(.*)\-\->/.match(content)
+      # group_browser = ''
+      # if group_match && !group_match.captures.empty?
+      #   group_browser = group_match.captures[0]
+      # end
+
+      # Place page nav in special page_navs hash by base key:
+      project.page_navs = {} if options[:nav]
+      project.page_navs[options[:base_key]] = options[:nav] if options[:nav]
+
+      project.pages << {
+        key: ( options[:base_key].nil? ? '' : "#{options[:base_key]}/" ) + page_key,
+        name: name,
+        content: content,
+        updated_at: updated_at
+        # group_browser: group_browser
+      }
+    end
+    puts "  Loaded page: \"#{options[:base_key]}/#{name}\" (#{content.size}b)"
+
+  end
+
+  def load_export_specs(project, config)
+    project.export_document_specs = config.map do |h|
+      Export::Spec::Document.from_hash h, project
+    end
   end
 
   def load_styles(project)
@@ -400,8 +430,148 @@ namespace :project do
 
   end
 
+  desc "Build final_subject* data in database"
+  task :build_final_data, [:project_key, :rebuild, :start, :limit] => :environment do |task, args|
+    args.with_defaults rebuild: true, start: 0, limit: Float::INFINITY
+    rebuild = args[:rebuild] != 'false'
+    start = args[:start].to_i
+    limit = args[:limit].to_f
 
+    project = project_by_key args[:project_key]
 
+    start_time = Time.now
+    count = project.subject_sets.count
+    last_index = [count, start + limit - 1].min
+    step = [100, limit].min
+    built = 0
+
+    # puts "set: #{SubjectSet.find("5637a11432623300030a0100").inspect}"
+    # FinalSubjectSet.assert_for_set SubjectSet.find("56b115677061755afb539701"), rebuild
+    # FinalSubjectSet.assert_for_set FinalSubjectSet.find('56b118e07061755afbfcd801').subject_set, rebuild
+    # exit
+
+    # Do any of this project's workflow tasks have configured export_names? If not, warn:
+    has_export_names = ! project.workflows.map { |w| w.tasks }.flatten.select { |t| ! t.export_name.blank? }.empty? 
+    puts "WARNING: No export_names found in workflow configuration. This may make it tricky to interpret the field-level data. See `export_name` documentation in https://github.com/zooniverse/scribeAPI/wiki/Project-Workflows#tasks" if ! has_export_names
+
+    if project.export_document_specs.blank?
+      puts "No export_spec configured; Add one before building"
+      exit
+    end
+
+    # Rebuild indexes
+    FinalSubjectSet.rebuild_indexes Project.current
+
+    (start..last_index).step(step).each do |offset|
+      sets = project.subject_sets.offset(offset).limit(step).each_with_index do |set, i|
+
+        final_set = FinalSubjectSet.assert_for_set set, rebuild
+        built += 1
+
+        ellapsed = Time.now - start_time
+        per_set = ellapsed / built
+        remaining = per_set * (count - (offset + i+1)) / 60 / 60
+        complete = (offset + i+1).to_f / count * 100
+        $stderr.print "\r#{'%.8f' % complete}% complete. #{'%.1f' % remaining}h remaining. Built item #{offset +i+1} of #{count}"
+      end
+    end
+
+  end
+
+  desc "Using data in final_subject* collections, generate a series of JSON exports and attempt to create a downloadable ZIP"
+  task :export_final_data, [:project_key] => :environment do |task, args|
+    project = project_by_key args[:project_key]
+
+    # Make sure user has run build_final_data first:
+    if project.final_subject_sets.empty?
+      puts "No FinalSubjectSets found."
+      exit
+    end
+
+    missing_env_keys = ['S3_EXPORT_BUCKET','S3_EXPORT_PATH','AWS_REGION','AWS_ACCESS_KEY_ID','AWS_SECRET_ACCESS_KEY'].select { |k| ENV[k].nil? }
+    if ! missing_env_keys.empty?
+      puts "Can not export data without setting #{missing_env_keys.join ", "}"
+      exit
+    end
+
+    s3client = Aws::S3::Client.new
+
+    local_export_base = "#{Rails.root}/tmp/export/#{project.key}"
+
+    # Remove previous:
+    # `rm -rf #{local_export_base}` if File.exists?(local_export_base)
+
+    FileUtils.mkdir_p(local_export_base) unless File.exists?(local_export_base)
+    start = Time.now
+    built = 0
+    limit = 100
+    count = FinalSubjectSet.count
+
+    (0..count).step(limit).each do |offset|
+      project.final_subject_sets.offset(offset).limit(limit).each_with_index do |set, i|
+        path = "#{local_export_base}/#{set.subject_set_id}.json"
+        content = FinalSubjectSetSerializer.new(set, root:false).to_json
+        File.open path, "w" do |f|
+          f << content
+        end
+        built += 1
+
+        # puts "Wrote #{i+1} of #{count}: #{content.size}b to #{path}"
+        ellapsed = Time.now - start
+        per_set = ellapsed / built
+        remaining = per_set * (count - (offset + i+1)) / 60
+        complete = (offset + i+1).to_f / count * 100
+        $stderr.print "\r#{'%.8f' % complete}% complete. #{'%.1f' % remaining}m remaining. Built #{offset +i+1} of #{count}"
+      end
+    end
+
+    # Generate timestamped filename with random suffix so it can't be guessed:
+    rand_suffix = (('a'..'z').to_a + (0..9).to_a).shuffle[0,16].join
+    max_updated = project.final_subject_sets.max(:updated_at)
+    filename = "scribe-#{project.key}-#{max_updated.strftime("%F")}-#{rand_suffix}.tar.gz"
+
+    # Zip it up
+    Rails.logger.info "Rake Complete, Begin GZIP, Go to S3"
+    sh %{cd #{local_export_base}; tar cfvz #{filename} --exclude '*.gz' .;}
+    Rails.logger.info "Tar-ing Complete"
+
+    # Upload it to S3
+    s3client = Aws::S3::Client.new
+    local_path = "#{local_export_base}/#{filename}"
+    remote_path = "#{ENV['S3_EXPORT_PATH']}/#{filename}"
+
+    Rails.logger.info "Uploading #{local_path} to #{ENV['S3_EXPORT_BUCKET']}#{remote_path}"
+    s3client.put_object({
+      acl:        'public-read',
+      bucket:     ENV['S3_EXPORT_BUCKET'],
+      key:        remote_path,
+      body:       File.read(local_path)
+    })
+
+    # Remove local temp files
+    sh %{rm -rf #{local_export_base};}
+
+    # Create the final-data-export record so it appears on /#/data/exports
+    s3_url = "http://#{ENV['S3_EXPORT_BUCKET']}/#{remote_path}"
+    FinalDataExport.create path: s3_url, num_final_subject_sets: count, project: project
+
+    puts "Finished building exports. Download at: #{s3_url}"
+
+  end
+
+  desc "Convenience method that, in one call, builds all data JSONs and zips them up into a single ZIP release"
+  task :build_and_export_final_data, [:project_key, :rebuild, :ensure_day_of_week_is] => :environment do |task, args|
+    # If ensure_day_of_week_is given, proceed with execution only if weekday matches value
+    # (Important for heroku scheduler, which can schedule daily but not weekly)
+    if ! args[:ensure_day_of_week_is].blank? 
+      if Date.today.strftime("%A").downcase != args[:ensure_day_of_week_is].downcase
+        puts "Aborting because today is not #{args[:ensure_day_of_week_is]}"
+        exit
+      end
+    end
+    Rake::Task['project:build_final_data'].invoke(args[:project_key], args[:rebuild])
+    Rake::Task['project:export_final_data'].invoke(args[:project_key])
+  end
 
   def translate_pick_one_tool_config(task_hash)
     config = task_hash[:tool_config] || {}
@@ -487,5 +657,10 @@ namespace :project do
     end
   end
 
+  def project_by_key(key, default=Project.current)
+    p = Project.find_by key: key
+    p = default if ! p
+    p
+  end
 
 end

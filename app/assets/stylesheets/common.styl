@@ -292,3 +292,42 @@ div.home-page
   margin-bottom 50px
   overflow: hidden
   min-height 800px
+
+
+.custom-page-inner-wrapper
+  flexbox(flex)
+  min-height 300px
+  // overflow hidden // just to clear floats
+
+.custom-page-nav
+  flex(grow: 1)
+  min-width 200px
+
+  ul
+    list-style none
+    padding 0
+
+    li
+      font-size 16px
+      line-height 16px
+      margin-left 0
+      margin-bottom 15px
+      padding-left 15px
+      border-left 2px solid transparent
+
+      a
+        color SECONDARY_NORMAL
+        text-decoration none
+
+        &:hover
+          color SECONDARY_HOVER
+
+      &.current
+        font-weight bold
+        border-left 2px solid MAIN_HIGHLIGHT
+
+
+
+custom-page-body
+  overflow hidden
+  flex(grow: 10)

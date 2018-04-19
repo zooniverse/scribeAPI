@@ -16,12 +16,13 @@ class Project
   field  :scientists,        type: Array,  default: []
   field  :developers,        type: Array,  default: []
   field  :pages,             type: Array,  default: []
+  field  :page_navs,         type: Hash,  default: {}
   field  :menus,             type: Hash,   default: {}
   field  :partials,          type: Hash,   default: {}
-  field  :logo,              type: String
-  field  :background,        type: String
-  field  :favicon,           type: String
-  field  :forum,             type: Hash
+  field  :logo,              type: String,  default: nil
+  field  :background,        type: String,  default: nil
+  field  :favicon,           type: String,  default: nil
+  field  :forum,             type: Hash,    default: nil
   field  :feedback_form_url, type: String
   field  :discuss_url,       type: String
   field  :blog_url,          type: String
@@ -29,12 +30,13 @@ class Project
   field  :styles,            type: String
   field  :custom_js,         type: String
   field  :admin_email,       type: String
-  field  :team_emails,       type: Array
+  field  :team_emails,       type: Array,   default: []
   field  :metadata_search,   type: Hash
   field  :tutorial,          type: Hash
   field  :terms_map,         type: Hash, default: {} # Hash mapping internal terms to project appropriate terms (e.g. 'group'=>'ship')
   field  :status,            type: String, default: 'inactive'
-  field  :analytics,          type: Hash
+  field  :analytics,         type: Hash,    default: nil
+  field  :downloadable_data, type: Boolean
 
   # 10.27.15 until we can sort out a better time to call this method, lets comment it out.
   include CachedStats
@@ -44,6 +46,10 @@ class Project
   has_many :subject_sets
   has_many :workflows, dependent: :destroy, order: "order ASC"
   has_many :subjects
+  has_many :final_subject_sets
+  has_many :final_data_exports
+
+  embeds_many :export_document_specs, class_name: "Export::Spec::Document"
 
   scope :most_recent, -> { order(updated_at: -1) }
   scope :active, -> { where(status: 'active') }
@@ -61,6 +67,21 @@ class Project
 
   def self.current
     active.first
+  end
+
+  # get Distinct export_names from all workflow_tasks
+  def export_names
+    workflows.inject([]) do |a, w|
+      a += w.tasks.map { |t| t.export_name }
+
+    end.select do |n| 
+      ! n.nil? 
+
+    end.inject({}) do |h, name|
+      key = name.gsub(' ', '-').gsub(/[^A-Za-z0-9-]/, '')
+      h[key] = name
+      h
+    end
   end
 
   def calc_stats

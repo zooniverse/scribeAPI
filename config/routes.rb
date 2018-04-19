@@ -8,6 +8,7 @@ API::Application.routes.draw do
 
 
   get '/projects',                                            to: 'projects#index',       defaults: { format: 'json' }
+  get '/projects/current',                                    to: 'projects#current',     defaults: { format: 'json' }
 
   get '/workflows',                                           to: 'workflow#index',       defaults: { format: 'json' }
   get '/workflows/:id',                                       to: 'workflow#show',        defaults: { format: 'json' }
@@ -35,10 +36,16 @@ API::Application.routes.draw do
 
   resources :groups, only: [:show, :index], :defaults => { :format => 'json' }
 
+  # Final data:
+  resources :final_subject_sets, only: [:show, :index], :defaults => { :format => 'json' }
+  get '/data/latest',                                         to: 'final_data_exports#latest'
+  resources :final_data_exports, only: [:show, :index], path: "/data"
+
   namespace :admin do
     resources :subject_sets, :subjects, :classifications, :users
     get 'dashboard' => 'dashboard#index'
     get 'data' => 'data#index'
+    post 'data' => 'data#index'
     get 'data/download' => 'data#download'
     get 'signin' => 'auth#signin'
     post 'stats/recalculate' => 'dashboard#recalculate_stats'

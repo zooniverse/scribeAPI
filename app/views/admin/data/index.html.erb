@@ -1,36 +1,32 @@
 <h1>Data</h1>
 
-<form method="get" action="<%= admin_data_download_path %>" target="_blank">
+<% if @export.nil? %>
+  <p>No data exports have yet been built.</p>
+  <p>Please run `rake project:build_and_export_final_data` first</p>
 
-<p><%= @num_complete %> complete subject(s) ready for export (<%= @num_non_root %> pending).</p>
+<% else %>
+  <p>Most recent data export:
 
-<h3>Format</h3>
-<% {  "JSON" => 'json',
-      "CSV" =>  'csv'
-   }.each do |(label, key)|
-     input_id = "download_format_#{key}"
-%>
-  <div>
-    <input type="radio" id="<%= input_id %>" name="download_format" value="<%= key %>"<%= key == 'json' ? ' checked="checked"' : '' %> />
-    <label for="<%= input_id %>"><%= label %></label>
-  </div>
+  <dl>
+    <dt>Items</dt>
+    <dd><%= @export.num_final_subject_sets %></dd>
+
+    <dt>Built</dt>
+    <dd><%= @export.updated_at.strftime('%B %-d, %Y') %>
+
+  </dl>
+
+  <a href="<%= @export.path %>">Download</a>
+
+  <h2>Make Public?</h2>
+
+  <p>Should the public be able to download the latest from <a href="/data/latest" target="_blank">/data/latest</a> and subscribe to the <a href="/data.atom" target="_blank">data updates ATOM feed</a>?</p>
+  
+  <form method="post">
+    <%= check_box 'project', "downloadable_data" %>
+    <%= label 'project','downloadable_data', 'Allow the public to download data' %>
+
+    <p><input type="submit" value="Save" /></p>
+  </form>
+
 <% end %>
-
-<h3>Completeness</h3>
-<% {  "Complete (Only crowd-verified subjects)" => 'complete',
-      "All (All data  in a massive json struc)" =>  'all'
-   }.each do |(label, key)|
-     input_id = "download_status_#{key}"
-%>
-  <div>
-    <input type="radio" id="<%= input_id %>" name="download_status" value="<%= key %>"<%= key == 'all' ? ' checked="checked"' : '' %> />
-    <label for="<%= input_id %>"><%= label %></label>
-  </div>
-<% end %>
-
-
-<h3>Download</h3>
-
-<input type="submit" value="Download" />
-
-</form>
