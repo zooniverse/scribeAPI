@@ -12,6 +12,8 @@ WORKDIR /src/
 
 RUN bundle install
 
+RUN npm conf set strict-ssl false
+
 RUN npm install
 
 EXPOSE 80
