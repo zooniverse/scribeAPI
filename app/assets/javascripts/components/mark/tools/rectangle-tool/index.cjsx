@@ -1,7 +1,7 @@
 React           = require 'react'
 Draggable       = require 'lib/draggable'
 DragHandle      = require './drag-handle'
-DeleteButton    = require 'components/buttons/delete-mark'
+DeleteButton    = require '../../../buttons/delete-mark'
 MarkButtonMixin = require 'lib/mark-button-mixin'
 
 MINIMUM_SIZE = 15

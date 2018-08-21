@@ -1,6 +1,6 @@
 React                   = require 'react'
 GenericTask             = require './generic'
-LabeledRadioButton      = require 'components/buttons/labeled-radio-button'
+LabeledRadioButton      = require '../buttons/labeled-radio-button'
 
 # Markdown = require '../../components/markdown'
 

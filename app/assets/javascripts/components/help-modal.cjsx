@@ -1,5 +1,5 @@
 React           = require 'react'
-DraggableModal  = require 'components/draggable-modal'
+DraggableModal  = require './draggable-modal'
 
 module.exports = React.createClass
   displayName: 'HelpModal'

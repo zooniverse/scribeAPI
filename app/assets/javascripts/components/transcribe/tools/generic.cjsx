@@ -1,6 +1,6 @@
 React = require 'react'
 cloneWithProps = require 'react/lib/cloneWithProps'
-# alert = require '../../lib/alert'
+# alert = require 'lib/alert'
 # Markdown = require '../../components/markdown'
 # Tooltip = require '../../components/tooltip'
 

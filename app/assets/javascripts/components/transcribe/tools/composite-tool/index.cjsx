@@ -1,12 +1,12 @@
 React             = require 'react'
 {Navigation}      = require 'react-router'
-DraggableModal    = require 'components/draggable-modal'
+DraggableModal    = require '../../../draggable-modal'
 DoneButton        = require './done-button'
-SmallButton       = require 'components/buttons/small-button'
+SmallButton       = require '../../../buttons/small-button'
 PrevButton        = require './prev-button'
-HelpButton        = require 'components/buttons/help-button'
-BadSubjectButton  = require 'components/buttons/bad-subject-button'
-IllegibleSubjectButton = require 'components/buttons/illegible-subject-button'
+HelpButton        = require '../../../buttons/help-button'
+BadSubjectButton  = require '../../../buttons/bad-subject-button'
+IllegibleSubjectButton = require '../../../buttons/illegible-subject-button'
 
 
 CompositeTool = React.createClass

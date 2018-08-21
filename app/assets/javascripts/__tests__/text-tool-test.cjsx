@@ -40,7 +40,7 @@ jest
       expect(TextTool).toBeTruthy()
 
     xit "should render with an empty text input field", ->
-      DOM = renderIntoDocument(<TextTool >)
+      DOM = renderIntoDocument(<TextTool />)
     
     xit "should display the correct label", ->
 

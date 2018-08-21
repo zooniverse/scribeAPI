@@ -1,6 +1,6 @@
 # @cjsx React.DOM
 React = require 'react'
-Draggable = require '../lib/draggable'
+Draggable = require 'lib/draggable'
 # ResizeButton = require './mark/resize-button'
 
 RowFocusTool = React.createClass

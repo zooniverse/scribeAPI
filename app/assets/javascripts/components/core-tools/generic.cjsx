@@ -1,8 +1,8 @@
 React               = require 'react'
 cloneWithProps      = require 'react/lib/cloneWithProps'
 HelpModal           = require '../help-modal'
-HelpButton          = require 'components/buttons/help-button'
-BadSubjectButton    = require 'components/buttons/bad-subject-button'
+HelpButton          = require '../buttons/help-button'
+BadSubjectButton    = require '../buttons/bad-subject-button'
 
 module.exports = React.createClass
   displayName: 'GenericTask'

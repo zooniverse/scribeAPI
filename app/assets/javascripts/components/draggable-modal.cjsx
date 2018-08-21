@@ -1,5 +1,5 @@
 React         = require 'react'
-Draggable     = require 'lib/draggable'
+Draggable     = require '../lib/draggable'
 DoneButton    = require './buttons/done-button'
 
 module.exports = React.createClass

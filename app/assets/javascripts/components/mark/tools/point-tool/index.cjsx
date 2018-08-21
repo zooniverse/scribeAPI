@@ -1,7 +1,7 @@
 React           = require 'react'
 DrawingToolRoot = require './root'
 Draggable       = require 'lib/draggable'
-DeleteButton    = require 'components/buttons/delete-mark'
+DeleteButton    = require '../../../buttons/delete-mark'
 MarkButtonMixin = require 'lib/mark-button-mixin'
 
 # DEFAULT SETTINGS

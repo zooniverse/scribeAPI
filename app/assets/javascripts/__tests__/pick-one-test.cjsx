@@ -1,3 +1,5 @@
+global.marked = (text) -> text;
+
 jest
   .dontMock '../components/core-tools/pick-one'
 
@@ -23,16 +25,15 @@ jest
       next_task: null,
       tool: "pickOne"
       tool_config: {
-        options: {
-          yes: {
-            label: "yes",
+        options: [{
+            value: "yes",
+            label: "Yes",
             next_task: null
-            },
-          no: {
-            label: "no",
+          }, {
+            value: "no",
+            label: "No",
             next_task: null
-          }
-        }
+          }]
       }
     }
 

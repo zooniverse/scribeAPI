@@ -8,18 +8,18 @@ ForumSubjectWidget = require '../forum-subject-widget'
 
 BaseWorkflowMethods     = require 'lib/workflow-methods-mixin'
 
-DraggableModal          = require 'components/draggable-modal'
-GenericButton           = require 'components/buttons/generic-button'
-Tutorial                = require 'components/tutorial'
-HelpModal               = require 'components/help-modal'
+DraggableModal          = require '../draggable-modal'
+GenericButton           = require '../buttons/generic-button'
+Tutorial                = require '../tutorial'
+HelpModal               = require '../help-modal'
 
 # Hash of core tools:
-coreTools          = require 'components/core-tools'
+coreTools          = require '../core-tools'
 
 # Hash of transcribe tools:
 verifyTools   = require './tools'
 
-API                = require '../../lib/api'
+API                = require 'lib/api'
 
 module.exports = React.createClass # rename to Classifier
   displayName: 'Verify'
