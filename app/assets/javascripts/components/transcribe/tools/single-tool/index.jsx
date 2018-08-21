@@ -1,128 +1,195 @@
-# @cjsx React.DOM
-React           = require 'react'
-Draggable       = require 'lib/draggable'
-DoneButton      = require './done-button'
-inputComponents = require '../../input-components'
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * DS207: Consider shorter variations of null checks
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+/** @jsx React.DOM */
+const React = require("react");
+const Draggable = require("lib/draggable");
+const DoneButton = require("./done-button");
+const inputComponents = require("../../input-components");
 
-TextTool = React.createClass
-  displayName: 'SingleTool'
+const TextTool = React.createClass({
+  displayName: "SingleTool",
 
-  getInitialState: ->
-    viewerSize: @props.viewerSize
-    annotation:
-      value: ''
+  getInitialState() {
+    return {
+      viewerSize: this.props.viewerSize,
+      annotation: {
+        value: ""
+      }
+    };
+  },
 
-  getDefaultProps: ->
-    annotation: {}
-    task: null
-    subject: null
-    clickOffsetX: 0
-    clickOffsetY: 0
+  getDefaultProps() {
+    return {
+      annotation: {},
+      task: null,
+      subject: null,
+      clickOffsetX: 0,
+      clickOffsetY: 0
+    };
+  },
 
-  componentWillReceiveProps: ->
-    @setState
-      annotation: @props.annotation
+  componentWillReceiveProps() {
+    return this.setState({
+      annotation: this.props.annotation
+    });
+  },
 
-  componentDidMount: -> # not sure if this does anything? --STI
-    @updatePosition()
+  componentDidMount() {
+    // not sure if this does anything? --STI
+    return this.updatePosition();
+  },
 
-  handleInitStart: (e,d) ->
-    # prevent dragging from non-divs (a bit hacky) --STI
-    @setState preventDrag: e.target.nodeName isnt 'DIV'
+  handleInitStart(e, d) {
+    // prevent dragging from non-divs (a bit hacky) --STI
+    this.setState({ preventDrag: e.target.nodeName !== "DIV" });
 
-    @props.clickOffsetX = e.nativeEvent.offsetX + e.nativeEvent.srcElement.offsetParent.offsetLeft
-    @props.clickOffsetY = e.nativeEvent.offsetY + e.nativeEvent.srcElement.offsetParent.offsetTop
+    this.props.clickOffsetX =
+      e.nativeEvent.offsetX + e.nativeEvent.srcElement.offsetParent.offsetLeft;
+    return (this.props.clickOffsetY =
+      e.nativeEvent.offsetY + e.nativeEvent.srcElement.offsetParent.offsetTop);
+  },
 
-  handleInitDrag: (e, d) ->
-    return if @state.preventDrag # not too happy about this one
+  handleInitDrag(e, d) {
+    if (this.state.preventDrag) {
+      return;
+    } // not too happy about this one
 
-    dx = e.clientX - @props.clickOffsetX + window.scrollX
-    dy = e.clientY - @props.clickOffsetY + window.scrollY
+    const dx = e.clientX - this.props.clickOffsetX + window.scrollX;
+    const dy = e.clientY - this.props.clickOffsetY + window.scrollY;
 
-    @setState dragged: true, dx: dx, dy: dy
+    return this.setState({ dragged: true, dx, dy });
+  },
 
-  # Expects size hash with:
-  #   w: [viewer width]
-  #   h: [viewer height]
-  #   scale:
-  #     horizontal: [horiz scaling of image to fit within above vals]
-  #     vertical:   [vert scaling of image..]
-  onViewerResize: (size) ->
-    @setState
+  // Expects size hash with:
+  //   w: [viewer width]
+  //   h: [viewer height]
+  //   scale:
+  //     horizontal: [horiz scaling of image to fit within above vals]
+  //     vertical:   [vert scaling of image..]
+  onViewerResize(size) {
+    this.setState({
       viewerSize: size
-    @updatePosition()
+    });
+    return this.updatePosition();
+  },
 
-  updatePosition: ->
+  updatePosition() {
+    // HANDLE DIFFERENT TOOLS
+    let x, y;
+    const { toolName } = this.props.subject.data;
+    switch (toolName) {
+      case "pointTool":
+        x = this.props.subject.data.x + 40;
+        y = this.props.subject.data.y + 40; // TODO: don't hard-wire dimensions
+        break;
+      case "rectangleTool":
+        ({ x } = this.props.subject.data);
+        y = this.props.subject.data.y + this.props.subject.data.height;
+        break;
+      case "textRowTool":
+        x =
+          this.state.viewerSize != null
+            ? (this.state.viewerSize.w - 650) / 2
+            : 0; // TODO: don't hard-wire dimensions
+        y = this.props.subject.data.yLower;
+        break;
+      default:
+        console.log(
+          `ERROR: Cannot update position on unknown transcription tool ${toolName}!`
+        );
+    }
 
-    # HANDLE DIFFERENT TOOLS
-    toolName = @props.subject.data.toolName
-    switch toolName
-      when 'pointTool'
-        x = @props.subject.data.x + 40
-        y = @props.subject.data.y + 40 # TODO: don't hard-wire dimensions
-      when 'rectangleTool'
-        x = @props.subject.data.x
-        y = @props.subject.data.y + @props.subject.data.height
-      when 'textRowTool'
-        x = if @state.viewerSize? then (@state.viewerSize.w-650 )/2 else 0 # TODO: don't hard-wire dimensions
-        y = @props.subject.data.yLower
-      else
-        console.log "ERROR: Cannot update position on unknown transcription tool #{toolName}!"
+    if (this.state.viewerSize != null && !this.state.dragged) {
+      return this.setState({
+        dx: x * this.state.viewerSize.scale.horizontal,
+        dy: y * this.state.viewerSize.scale.vertical
+      });
+    }
+  },
 
-    if @state.viewerSize? && ! @state.dragged
-      @setState
-        dx: x * @state.viewerSize.scale.horizontal
-        dy: y * @state.viewerSize.scale.vertical
+  commitAnnotation() {
+    return this.props.onComplete(this.state.annotation);
+  },
 
-  commitAnnotation: ->
-    @props.onComplete @state.annotation
+  handleChange(e) {
+    this.state.annotation.value = e.target.value;
+    return this.forceUpdate();
+  },
 
-  handleChange: (e) ->
-    @state.annotation.value = e.target.value
-    @forceUpdate()
+  handleKeyPress(e) {
+    if ([13].indexOf(e.keyCode) >= 0) {
+      // ENTER:
+      this.commitAnnotation();
+      return e.preventDefault();
+    }
+  },
 
-  handleKeyPress: (e) ->
-    if [13].indexOf(e.keyCode) >= 0 # ENTER:
-      @commitAnnotation()
-      e.preventDefault()
+  render() {
+    let toolType;
+    if (this.props.viewerSize == null || this.props.subject == null) {
+      return null;
+    }
 
-  render: ->
-    return null unless @props.viewerSize? && @props.subject?
+    // If user has set a custom position, position based on that:
+    const style = {
+      left: this.state.dx,
+      top: this.state.dy
+    };
 
-    # If user has set a custom position, position based on that:
-    style =
-      left: @state.dx
-      top: @state.dy
+    const val =
+      (this.state.annotation != null
+        ? this.state.annotation.value
+        : undefined) != null
+        ? this.state.annotation != null
+          ? this.state.annotation.value
+          : undefined
+        : "";
 
-    val = @state.annotation?.value ? ''
+    if (this.props.subject.type === "item_location") {
+      toolType = "testComponent";
+    } else {
+      toolType = this.props.task.tool_options.tool_type;
+    }
 
+    if (inputComponents[toolType] == null) {
+      console.log(`ERROR: Field type, ${toolType}, does not exist!`);
+      return null;
+    }
 
-    if @props.subject.type is 'item_location'
-      toolType = 'testComponent'
-    else
-      toolType = @props.task.tool_options.tool_type
+    const InputComponent = inputComponents[toolType];
 
-    unless inputComponents[toolType]?
-      console.log "ERROR: Field type, #{toolType}, does not exist!"
-      return null
+    return (
+      <Draggable
+        onStart={this.handleInitStart}
+        onDrag={this.handleInitDrag}
+        onEnd={this.handleInitRelease}
+        ref="inputWrapper0"
+      >
+        <div className="transcribe-tool" style={style}>
+          <InputComponent
+            key={this.props.task.key}
+            val={
+              (this.state.annotation != null
+                ? this.state.annotation.value
+                : undefined) != null
+                ? this.state.annotation != null
+                  ? this.state.annotation.value
+                  : undefined
+                : ""
+            }
+            instruction={this.props.task.instruction}
+            handleChange={this.handleChange}
+            onKeyPress={this.handleKeyPress}
+            commitAnnotation={this.commitAnnotation}
+          />
+        </div>
+      </Draggable>
+    );
+  }
+});
 
-    InputComponent = inputComponents[toolType]
-
-    <Draggable
-      onStart = {@handleInitStart}
-      onDrag  = {@handleInitDrag}
-      onEnd   = {@handleInitRelease}
-      ref     = "inputWrapper0">
-      <div className="transcribe-tool" style={style}>
-        <InputComponent
-          key={@props.task.key}
-          val={@state.annotation?.value ? ''}
-          instruction={@props.task.instruction}
-          handleChange={@handleChange}
-          onKeyPress={@handleKeyPress}
-          commitAnnotation={@commitAnnotation}
-        />
-      </div>
-    </Draggable>
-
-module.exports = TextTool
+module.exports = TextTool;

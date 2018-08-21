@@ -1,16 +1,20 @@
-# @cjsx React.DOM
+/** @jsx React.DOM */
 
-React = require 'react'
+const React = require("react");
 
-LoadingIndicator = React.createClass
-  displayName: 'LoadingIndicator'
+const LoadingIndicator = React.createClass({
+  displayName: "LoadingIndicator",
 
-  render: ->
-    <span className="loading-indicator">
-      Loading
-      <span>•</span>
-      <span>•</span>
-      <span>•</span>
-    </span>
+  render() {
+    return (
+      <span className="loading-indicator">
+        Loading
+        <span>•</span>
+        <span>•</span>
+        <span>•</span>
+      </span>
+    );
+  }
+});
 
-module.exports = LoadingIndicator
+module.exports = LoadingIndicator;

@@ -1,3 +1,3 @@
 module.exports =
-  # transcribeTool:   require './transcribe-row-tool'
-  verifyTool:        require './verify-tool'
+  // transcribeTool:   require './transcribe-row-tool'
+  { verifyTool: require("./verify-tool") };

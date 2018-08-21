@@ -1,46 +1,69 @@
-React = require("react")
-MainHeader                    = require '../partials/main-header'
-API                           = require 'lib/api'
-AppRouter                     = require './app-router'
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * DS207: Consider shorter variations of null checks
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+const React = require("react");
+const MainHeader = require("../partials/main-header");
+const API = require("lib/api");
+const AppRouter = require("./app-router");
 
-{RouteHandler}                = require 'react-router'
+const { RouteHandler } = require("react-router");
 
-window.API = API
+window.API = API;
 
-App = React.createClass
+const App = React.createClass({
+  getInitialState() {
+    return {
+      project: null,
+      routerRunning: false
+    };
+  },
 
-  getInitialState: ->
-    project:              null
-    routerRunning:        false
+  componentDidMount() {
+    if (this.state.project == null) {
+      return API.type("projects")
+        .get()
+        .then(result => {
+          const project = result[0];
 
-  componentDidMount: ->
+          return this.setState({ project });
+        });
+    }
+  },
 
-    if ! @state.project?
-      API.type('projects').get().then (result)=>
+  render() {
+    if (this.state.project == null) {
+      return null;
+    }
 
-        project = result[0]
+    const style = {};
+    if (this.state.project.background != null) {
+      style.backgroundImage = `url(${this.state.project.background})`;
+    }
 
-        @setState project:           project
-
-
-  render: ->
-    return null if ! @state.project?
-
-    style = {}
-    style.backgroundImage = "url(#{@state.project.background})" if @state.project.background?
-
-    <div>
-      <div className="readymade-site-background" style={style}>
-        <div className="readymade-site-background-effect"></div>
-      </div>
-      <div className="panoptes-main">
-
-        <MainHeader workflows={@state.project.workflows} pages={@state.project.pages} short_title={@state.project.short_title} />
-
-        <div className="main-content">
-          <RouteHandler hash={window.location.hash} project={@state.project} />
+    return (
+      <div>
+        <div className="readymade-site-background" style={style}>
+          <div className="readymade-site-background-effect" />
+        </div>
+        <div className="panoptes-main">
+          <MainHeader
+            workflows={this.state.project.workflows}
+            pages={this.state.project.pages}
+            short_title={this.state.project.short_title}
+          />
+          <div className="main-content">
+            <RouteHandler
+              hash={window.location.hash}
+              project={this.state.project}
+            />
+          </div>
         </div>
       </div>
-    </div>
-   
-module.exports = App
+    );
+  }
+});
+
+module.exports = App;

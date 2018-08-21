@@ -1,77 +1,118 @@
-React     = require 'react'
-HelpModal = require './help-modal'
-DraggableModal  = require './draggable-modal'
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * DS207: Consider shorter variations of null checks
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+const React = require("react");
+const HelpModal = require("./help-modal");
+const DraggableModal = require("./draggable-modal");
 
-module.exports = React.createClass
-  displayName: 'Tutorial'
+module.exports = React.createClass({
+  displayName: "Tutorial",
 
-  propTypes:
-    tutorial: React.PropTypes.object.isRequired
+  propTypes: {
+    tutorial: React.PropTypes.object.isRequired,
     onCloseTutorial: React.PropTypes.func.isRequired
+  },
 
-  getInitialState:->
-    currentTask: @props.tutorial.first_task
-    nextTask: @props.tutorial.tasks[@props.tutorial.first_task].next_task
-    completedSteps: 0
-    doneButtonLabel: "Next"
+  getInitialState() {
+    return {
+      currentTask: this.props.tutorial.first_task,
+      nextTask: this.props.tutorial.tasks[this.props.tutorial.first_task]
+        .next_task,
+      completedSteps: 0,
+      doneButtonLabel: "Next"
+    };
+  },
 
-  advanceToNextTask:->
-    if @props.tutorial.tasks[@state.currentTask].next_task == null
-      @onClose()
+  advanceToNextTask() {
+    if (this.props.tutorial.tasks[this.state.currentTask].next_task === null) {
+      return this.onClose();
+    } else {
+      return this.setState({
+        currentTask: this.state.nextTask,
+        nextTask: this.props.tutorial.tasks[this.state.nextTask].next_task,
+        completedSteps: this.state.completedSteps + 1
+      });
+    }
+  },
 
-    else
-      @setState
-        currentTask: @state.nextTask
-        nextTask: @props.tutorial.tasks[@state.nextTask].next_task
-        completedSteps: @state.completedSteps + 1
+  onClose() {
+    this.animateClose();
+    return this.props.onCloseTutorial();
+  },
 
-  onClose: ->
-    @animateClose()
-    @props.onCloseTutorial()
+  animateClose() {
+    const $modal = $(this.refs.tutorialModal.getDOMNode());
+    const $clone = $modal.clone();
+    const $link = $(".tutorial-link").first();
+    if ($link.length) {
+      const x1 = $modal.offset().left - $(window).scrollLeft();
+      const y1 = $modal.offset().top - $(window).scrollTop();
+      const x2 = $link.offset().left - $(window).scrollLeft();
+      const y2 = $link.offset().top - $(window).scrollTop();
+      const xdiff = x2 - x1;
+      const ydiff = y2 - y1;
+      $modal.parent().append($clone);
+      return $clone.animate(
+        {
+          opacity: 0,
+          left: `+=${xdiff}`,
+          top: `+=${ydiff}`,
+          width: "toggle",
+          height: "toggle"
+        },
+        500,
+        () => $clone.remove()
+      );
+    }
+  },
 
-  animateClose: ->
-    $modal = $(@refs.tutorialModal.getDOMNode())
-    $clone = $modal.clone()
-    $link = $('.tutorial-link').first()
-    if $link.length
-      x1 = $modal.offset().left - $(window).scrollLeft()
-      y1 = $modal.offset().top - $(window).scrollTop()
-      x2 = $link.offset().left - $(window).scrollLeft()
-      y2 = $link.offset().top - $(window).scrollTop()
-      xdiff = x2 - x1
-      ydiff = y2 - y1
-      $modal.parent().append($clone)
-      $clone.animate {
-          opacity: 0
-          left: '+=' + xdiff
-          top: '+=' + ydiff
-          width: 'toggle'
-          height: 'toggle'
-        }, 500, ->
-          $clone.remove()
-
-  onClickStep: (index) ->
-    taskKeys = Object.keys(@props.tutorial.tasks)
-    taskKey = taskKeys[index]
-    task = @props.tutorial.tasks[taskKey]
-    @setState
-      currentTask: taskKey
-      nextTask: task.next_task
+  onClickStep(index) {
+    const taskKeys = Object.keys(this.props.tutorial.tasks);
+    const taskKey = taskKeys[index];
+    const task = this.props.tutorial.tasks[taskKey];
+    return this.setState({
+      currentTask: taskKey,
+      nextTask: task.next_task,
       completedSteps: index
+    });
+  },
 
-  render:->
-    helpContent = @props.tutorial.tasks[@state.currentTask].help
-    taskKeys = Object.keys(@props.tutorial.tasks)
+  render() {
+    let doneButtonLabel;
+    const helpContent = this.props.tutorial.tasks[this.state.currentTask].help;
+    const taskKeys = Object.keys(this.props.tutorial.tasks);
 
-    if @state.nextTask != null
-      doneButtonLabel = "Next"
-    else
-      doneButtonLabel = "Done"
+    if (this.state.nextTask !== null) {
+      doneButtonLabel = "Next";
+    } else {
+      doneButtonLabel = "Done";
+    }
 
-    progressSteps = []
-    for key, step of @props.tutorial.tasks
-      progressSteps.push step
+    const progressSteps = [];
+    for (let key in this.props.tutorial.tasks) {
+      const step = this.props.tutorial.tasks[key];
+      progressSteps.push(step);
+    }
 
-    <DraggableModal ref="tutorialModal" header={helpContent.title ? 'Help'} doneButtonLabel={doneButtonLabel} onDone={@advanceToNextTask} width={800} classes="help-modal" currentStepIndex={@state.completedSteps} closeButton=true onClose={@onClose} progressSteps={progressSteps} onClickStep={@onClickStep} >
-      <div dangerouslySetInnerHTML={{__html: marked( helpContent.body ) }} />
-    </DraggableModal>
+    return (
+      <DraggableModal
+        ref="tutorialModal"
+        header={helpContent.title != null ? helpContent.title : "Help"}
+        doneButtonLabel={doneButtonLabel}
+        onDone={this.advanceToNextTask}
+        width={800}
+        classes="help-modal"
+        currentStepIndex={this.state.completedSteps}
+        closeButton={true}
+        onClose={this.onClose}
+        progressSteps={progressSteps}
+        onClickStep={this.onClickStep}
+      >
+        <div dangerouslySetInnerHTML={{ __html: marked(helpContent.body) }} />
+      </DraggableModal>
+    );
+  }
+});

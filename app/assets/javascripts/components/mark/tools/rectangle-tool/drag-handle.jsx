@@ -1,30 +1,40 @@
-React = require 'react'
-Draggable = require 'lib/draggable'
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+const React = require("react");
+const Draggable = require("lib/draggable");
 
-RADIUS = 4
-STROKE_COLOR = '#fff'
-FILL_COLOR = '#000'
-STROKE_WIDTH = 1.5
+const RADIUS = 4;
+const STROKE_COLOR = "#fff";
+const FILL_COLOR = "#000";
+const STROKE_WIDTH = 1.5;
 
-OVERSHOOT = 4
+const OVERSHOOT = 4;
 
-module.exports = React.createClass
-  displayName: 'DragHandle'
+module.exports = React.createClass({
+  displayName: "DragHandle",
 
-  render: ->
-    scale = (@props.tool.props.xScale + @props.tool.props.yScale) / 2
+  render() {
+    const scale =
+      (this.props.tool.props.xScale + this.props.tool.props.yScale) / 2;
 
-    <Draggable onDrag = {@props.onDrag} onEnd={@props.onEnd}>
-      <g
-        fill={FILL_COLOR}
-        stroke={STROKE_COLOR}
-        strokeWidth={STROKE_WIDTH/scale}
-      >
-        <circle
-          className="mark-tool resize-button"
-          r={RADIUS/scale}
-          cx="#{@props.x}",
-          cy="#{@props.y}"}
-        />
-      </g>
-    </Draggable>
+    return (
+      <Draggable onDrag={this.props.onDrag} onEnd={this.props.onEnd}>
+        <g
+          fill={FILL_COLOR}
+          stroke={STROKE_COLOR}
+          strokeWidth={STROKE_WIDTH / scale}
+        >
+          <circle
+            className="mark-tool resize-button"
+            r={RADIUS / scale}
+            cx={`${this.props.x}`}
+            cy={`${this.props.y}`}
+          />
+        </g>
+      </Draggable>
+    );
+  }
+});

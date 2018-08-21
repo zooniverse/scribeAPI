@@ -1,12 +1,19 @@
-React         = require 'react'
-GenericButton = require './generic-button'
+const React = require("react");
 
-module.exports = React.createClass
-  displayName: 'NextButton'
+module.exports = React.createClass({
+  displayName: "NextButton",
 
-  getDefaultProps: ->
-    label: 'Next &gt;'
- 
-  render: ->
-    <MajorButton key="major-button" {...@props} className='next'/>
-     
+  getDefaultProps() {
+    return { label: "Next &gt;" };
+  },
+
+  render() {
+    return (
+      <MajorButton
+        {...Object.assign({ key: "major-button" }, this.props, {
+          className: "next"
+        })}
+      />
+    );
+  }
+});

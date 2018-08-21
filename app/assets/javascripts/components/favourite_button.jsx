@@ -1,44 +1,74 @@
-# @cjsx React.DOM
+var _this = this;
 
-React = require 'react'
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * DS208: Avoid top-level this
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+/** @jsx React.DOM */
 
+const React = require("react");
 
-# IMPORTANT!
-window.React = React
+// IMPORTANT!
+window.React = React;
 
-FavouriteButton = React.createClass
-  displayname: 'FavouriteButton'
+const FavouriteButton = React.createClass({
+  displayname: "FavouriteButton",
 
-  getInitialState:=>
-    favourite: this.props.subject.user_favourite
-    loading: false
+  getInitialState: () => {
+    return {
+      favourite: _this.props.subject.user_favourite,
+      loading: false
+    };
+  },
 
-  add_favourite:(e)->
-    e.preventDefault()
+  add_favourite(e) {
+    e.preventDefault();
 
-    @setState
+    this.setState({
       loading: true
+    });
 
-    $.post "/subjects/#{this.props.subject.id}/favourite", =>
-      @setState
-        loading:false
+    return $.post(`/subjects/${this.props.subject.id}/favourite`, () => {
+      return this.setState({
+        loading: false,
         favourite: true
+      });
+    });
+  },
 
-
-  remove_favourite: (e)->
-    e.preventDefault()
-    $.post "/subjects/#{this.props.subject.id}/unfavourite", =>
-      @setState
-        loading:false
+  remove_favourite(e) {
+    e.preventDefault();
+    return $.post(`/subjects/${this.props.subject.id}/unfavourite`, () => {
+      return this.setState({
+        loading: false,
         favourite: false
+      });
+    });
+  },
 
-  render: ->
-    if this.state.loading
-      <a className='favourite_button'>Loading</a>
-    else if this.state.favourite
-      <a herf='#' onClick={@remove_favourite} className='favourite_button'>Unfavourite</a>
-    else
-      <a href='#' onClick={@add_favourite} className='favourite_button'>Favourite</a>
+  render() {
+    if (this.state.loading) {
+      return <a className="favourite_button">Loading</a>;
+    } else if (this.state.favourite) {
+      return (
+        <a
+          herf="#"
+          onClick={this.remove_favourite}
+          className="favourite_button"
+        >
+          Unfavourite
+        </a>
+      );
+    } else {
+      return (
+        <a href="#" onClick={this.add_favourite} className="favourite_button">
+          Favourite
+        </a>
+      );
+    }
+  }
+});
 
-
-module.exports = FavouriteButton
+module.exports = FavouriteButton;

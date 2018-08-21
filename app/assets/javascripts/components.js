@@ -1,5 +1,4 @@
-AppRouter = require 'components/app-router'
+const AppRouter = require("components/app-router");
 
-$(document).ready ->
-  new AppRouter()
- 
+$(document).ready(() =>
+  new AppRouter());

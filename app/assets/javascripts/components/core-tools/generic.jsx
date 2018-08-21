@@ -1,25 +1,32 @@
-React               = require 'react'
-cloneWithProps      = require 'react/lib/cloneWithProps'
-HelpModal           = require '../help-modal'
-HelpButton          = require '../buttons/help-button'
-BadSubjectButton    = require '../buttons/bad-subject-button'
+const React = require("react");
+const cloneWithProps = require("react/lib/cloneWithProps");
 
-module.exports = React.createClass
-  displayName: 'GenericTask'
+module.exports = React.createClass({
+  displayName: "GenericTask",
 
-  getDefaultProps: ->
-    question: ''
-    help: ''
-    answers: ''
+  getDefaultProps() {
+    return {
+      question: "",
+      help: "",
+      answers: ""
+    };
+  },
 
-  render: ->
-    <div className="workflow-task">
-      <span dangerouslySetInnerHTML={{__html: marked( @props.question ) }} />
-      <div className="answers">
-        { React.Children.map @props.answers, (answer) =>
-            cloneWithProps answer,  classes: answer.props.classes + ' answer', disabled: @props.badSubject
-        }
+  render() {
+    return (
+      <div className="workflow-task">
+        <span
+          dangerouslySetInnerHTML={{ __html: marked(this.props.question) }}
+        />
+        <div className="answers">
+          {React.Children.map(this.props.answers, answer => {
+            return cloneWithProps(answer, {
+              classes: answer.props.classes + " answer",
+              disabled: this.props.badSubject
+            });
+          })}
+        </div>
       </div>
-
-    </div>
-
+    );
+  }
+});

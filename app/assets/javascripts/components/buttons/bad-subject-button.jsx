@@ -1,13 +1,36 @@
-React         = require 'react'
-SmallButton   = require './small-button'
+/*
+ * decaffeinate suggestions:
+ * DS207: Consider shorter variations of null checks
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+const React = require("react");
+const SmallButton = require("./small-button");
 
-module.exports = React.createClass
-  displayName: 'BadSubjectButton'
+module.exports = React.createClass({
+  displayName: "BadSubjectButton",
 
-  render: ->
-    label = @props.label ? ( if @props.active then 'Bad Subject' else 'Bad Subject?' )
+  render() {
+    const label =
+      this.props.label != null
+        ? this.props.label
+        : this.props.active
+          ? "Bad Subject"
+          : "Bad Subject?";
 
-    additional_classes = []
-    additional_classes.push 'toggled' if @props.active
-    additional_classes.push @props.className if @props.className?
-    <SmallButton key="bad-subject-button" label={label} onClick={@props.onClick} className="ghost toggle-button #{additional_classes.join(' ')}" />
+    const additional_classes = [];
+    if (this.props.active) {
+      additional_classes.push("toggled");
+    }
+    if (this.props.className != null) {
+      additional_classes.push(this.props.className);
+    }
+    return (
+      <SmallButton
+        key="bad-subject-button"
+        label={label}
+        onClick={this.props.onClick}
+        className={`ghost toggle-button ${additional_classes.join(" ")}`}
+      />
+    );
+  }
+});

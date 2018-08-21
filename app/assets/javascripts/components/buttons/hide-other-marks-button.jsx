@@ -1,10 +1,20 @@
-React         = require 'react'
-SmallButton   = require './small-button'
+const React = require("react");
+const SmallButton = require("./small-button");
 
-module.exports = React.createClass
-  displayName: 'HideOtherMarksButton'
+module.exports = React.createClass({
+  displayName: "HideOtherMarksButton",
 
-  render: ->
-    label = if @props.active then 'Show Other Marks' else 'Hide Other Marks'
+  render() {
+    const label = this.props.active ? "Show Other Marks" : "Hide Other Marks";
 
-    <SmallButton label={label} onClick={@props.onClick} className="ghost toggle-button #{'toggled' if @props.active}" />
+    return (
+      <SmallButton
+        label={label}
+        onClick={this.props.onClick}
+        className={`ghost toggle-button ${
+          this.props.active ? "toggled" : undefined
+          }`}
+      />
+    );
+  }
+});

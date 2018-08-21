@@ -1,91 +1,140 @@
-React = require("react")
-MainHeader                    = require '../partials/main-header'
-Footer                        = require '../partials/footer'
-API                           = require '../lib/api'
-Project                       = require '../models/project.coffee'
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * DS103: Rewrite code to no longer use __guard__
+ * DS207: Consider shorter variations of null checks
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+const React = require("react");
+const MainHeader = require("../partials/main-header");
+const Footer = require("../partials/footer");
+const API = require("../lib/api");
+const Project = require("../models/project.coffee");
 
-BrowserWarning                = require './browser-warning'
+const BrowserWarning = require("./browser-warning");
 
-{RouteHandler}                = require 'react-router'
+const { RouteHandler } = require("react-router");
 
-window.API = API
+window.API = API;
 
-App = React.createClass
-  getInitialState: ->
-    routerRunning:        false
-    user:                 null
-    loginProviders:       []
+const App = React.createClass({
+  getInitialState() {
+    return {
+      routerRunning: false,
+      user: null,
+      loginProviders: []
+    };
+  },
 
-  componentDidMount: ->
-    @fetchUser()
+  componentDidMount() {
+    return this.fetchUser();
+  },
 
-
-  fetchUser:->
-    @setState
+  fetchUser() {
+    this.setState({
       error: null
-    request = $.getJSON "/current_user"
+    });
+    const request = $.getJSON("/current_user");
 
-    request.done (result)=>
-      if result?.data
-        @setState
+    request.done(result => {
+      if (result != null ? result.data : undefined) {
+        this.setState({
           user: result.data
-      else
+        });
+      } else {
+      }
 
-      if result?.meta?.providers
-        @setState loginProviders: result.meta.providers
+      if (__guard__(result != null ? result.meta : undefined, x => x.providers)) {
+        return this.setState({ loginProviders: result.meta.providers });
+      }
+    });
 
-    request.fail (error)=>
-      @setState
-        loading:false
+    return request.fail(error => {
+      return this.setState({
+        loading: false,
         error: "Having trouble logging you in"
+      });
+    });
+  },
 
-  setTutorialComplete: ->
-    previously_saved = @state.user?.tutorial_complete?
+  setTutorialComplete() {
+    const previously_saved =
+      (this.state.user != null
+        ? this.state.user.tutorial_complete
+        : undefined) != null;
 
-    # Immediately ammend user object with tutorial_complete flag so that we can hide the Tutorial:
-    @setState user: $.extend(@state.user ? {}, tutorial_complete: true)
+    // Immediately ammend user object with tutorial_complete flag so that we can hide the Tutorial:
+    this.setState({
+      user: $.extend(this.state.user != null ? this.state.user : {}, {
+        tutorial_complete: true
+      })
+    });
 
-    # Don't re-save user.tutorial_complete if already saved:
-    return if previously_saved
+    // Don't re-save user.tutorial_complete if already saved:
+    if (previously_saved) {
+      return;
+    }
 
-    request = $.post "/tutorial_complete"
-    request.fail (error)=>
-      console.log "failed to set tutorial value for user"
+    const request = $.post("/tutorial_complete");
+    return request.fail(error => {
+      return console.log("failed to set tutorial value for user");
+    });
+  },
 
+  render() {
+    const { project } = window;
+    if (project == null) {
+      return null;
+    }
 
-  render: ->
-    project = window.project
-    return null if ! project?
+    const style = {};
+    if (project.background != null) {
+      style.backgroundImage = `url(${project.background})`;
+    }
 
-    style = {}
-    style.backgroundImage = "url(#{project.background})" if project.background?
-
-    <div>
-      <div className="readymade-site-background" style={style}>
-        <div className="readymade-site-background-effect"></div>
-      </div>
-      <div className="panoptes-main">
-
-        <MainHeader
-          workflows={project.workflows}
-          feedbackFormUrl={project.feedback_form_url}
-          discussUrl={project.discuss_url}
-          blogUrl={project.blog_url}
-          pages={project.pages}
-          short_title={project.short_title}
-          logo={project.logo}
-          menus={project.menus}
-          user={@state.user}
-          loginProviders={@state.loginProviders}
-          onLogout={() => @setState user: null}
-        />
-
-        <div className="main-content">
-          <BrowserWarning />
-          <RouteHandler hash={window.location.hash} project={project} onCloseTutorial={@setTutorialComplete} user={@state.user}/>
+    return (
+      <div>
+        <div className="readymade-site-background" style={style}>
+          <div className="readymade-site-background-effect"></div>
         </div>
-        <Footer privacyPolicy={ project.privacy_policy } menus={project.menus} partials={project.partials} />
+        <div className="panoptes-main">
+          <MainHeader
+            workflows={project.workflows}
+            feedbackFormUrl={project.feedback_form_url}
+            discussUrl={project.discuss_url}
+            blogUrl={project.blog_url}
+            pages={project.pages}
+            short_title={project.short_title}
+            logo={project.logo}
+            menus={project.menus}
+            user={this.state.user}
+            loginProviders={this.state.loginProviders}
+            onLogout={() => this.setState({ user: null })}
+          />
+          <div className="main-content">
+            <BrowserWarning />
+            <RouteHandler
+              hash={window.location.hash}
+              project={project}
+              onCloseTutorial={this.setTutorialComplete}
+              user={this.state.user}
+            />
+          </div>
+          <Footer
+            privacyPolicy={project.privacy_policy}
+            menus={project.menus}
+            partials={project.partials}
+          />
+        </div>
       </div>
-    </div>
+    );
+  }
+});
 
-module.exports = App
+module.exports = App;
+
+function __guard__(value, transform) {
+  return typeof value !== "undefined" && value !== null
+    ? transform(value)
+    : undefined;
+}

@@ -1,15 +1,23 @@
-React         = require 'react'
-GenericButton = require './generic-button'
+const React = require("react");
+const GenericButton = require("./generic-button");
 
-module.exports = React.createClass
-  displayName: 'SmallButton'
+module.exports = React.createClass({
+  displayName: "SmallButton",
 
-  getDefaultProps: ->
-    label: 'Next &gt;'
- 
-  render: ->
-    classes = ['small-button']
-    classes.push @props.className if @props.className?
+  getDefaultProps() {
+    return { label: "Next &gt;" };
+  },
 
-    <GenericButton {...@props} className={classes.join ' '} />
-     
+  render() {
+    const classes = ["small-button"];
+    if (this.props.className != null) {
+      classes.push(this.props.className);
+    }
+
+    return (
+      <GenericButton
+        {...Object.assign({}, this.props, { className: classes.join(" ") })}
+      />
+    );
+  }
+});

@@ -1,60 +1,102 @@
-React                         = require 'react'
-LightBox                      = require './light-box'
-SubjectZoomPan                = require 'components/subject-zoom-pan'
-ForumSubjectWidget            = require './forum-subject-widget'
-{Link}                        = require 'react-router'
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+const React = require("react");
+const LightBox = require("./light-box");
+const SubjectZoomPan = require("components/subject-zoom-pan");
+const ForumSubjectWidget = require("./forum-subject-widget");
+const { Link } = require("react-router");
 
+module.exports = React.createClass({
+  displayName: "SubjectSetToolbar",
 
-module.exports = React.createClass
-  displayName: "SubjectSetToolbar"
-
-  propTypes:
+  propTypes: {
     hideOtherMarks: React.PropTypes.bool.isRequired
+  },
 
-  getInitialState: ->
-    subject_set: @props.subject_set
-    zoomPanViewBox: @props.viewBox
-    active_pane: ''
-    hideMarks: true
+  getInitialState() {
+    return {
+      subject_set: this.props.subject_set,
+      zoomPanViewBox: this.props.viewBox,
+      active_pane: "",
+      hideMarks: true
+    };
+  },
 
-  togglePane: (name) ->
-    if @state.active_pane == name
-      @setState active_pane: ''
-      @props.onHide()
-    else
-      @setState active_pane: name
-      @props.onExpand()
+  togglePane(name) {
+    if (this.state.active_pane === name) {
+      this.setState({ active_pane: "" });
+      return this.props.onHide();
+    } else {
+      this.setState({ active_pane: name });
+      return this.props.onExpand();
+    }
+  },
 
-  render: ->
-    # disable LightBox if work has begun
-    disableLightBox = if @props.task.key isnt @props.workflow.first_task then true else false
-    <div className="subject-set-toolbar">
-      <div className="subject-set-toolbar-panes">
-        <div className={"light-box-area multi-page pane" + if @state.active_pane == 'multi-page' then ' active' else '' }>
-          { if @props.subject_set
+  render() {
+    // disable LightBox if work has begun
+    const disableLightBox =
+      this.props.task.key !== this.props.workflow.first_task ? true : false;
+    return (
+      <div className="subject-set-toolbar">
+        <div className="subject-set-toolbar-panes">
+          <div
+            className={`light-box-area multi-page pane${
+              this.state.active_pane === "multi-page" ? " active" : ""
+              }`}
+          >
+            {this.props.subject_set ? (
               <LightBox
-                subject_set={@props.subject_set}
-                subject_index={@props.subject_index}
-                key={@props.subject_set.subjects[0].id}
+                subject_set={this.props.subject_set}
+                subject_index={this.props.subject_index}
+                key={this.props.subject_set.subjects[0].id}
                 isDisabled={disableLightBox}
-                toggleLightboxHelp={@props.lightboxHelp}
-                onSubject={@props.onSubject}
-                subjectCurrentPage={@props.subjectCurrentPage}
-                nextPage={@props.nextPage}
-                prevPage={@props.prevPage}
-                totalSubjectPages={@props.totalSubjectPages}
-                />
-          }
-        </div>
-        <div className={"pan-zoom-area pan-zoom pane" + if @state.active_pane == 'pan-zoom' then ' active' else '' }>
-          <SubjectZoomPan subject={@props.subject} onChange={@props.onZoomChange} viewBox={@state.zoomPanViewBox}/>
-        </div>
+                toggleLightboxHelp={this.props.lightboxHelp}
+                onSubject={this.props.onSubject}
+                subjectCurrentPage={this.props.subjectCurrentPage}
+                nextPage={this.props.nextPage}
+                prevPage={this.props.prevPage}
+                totalSubjectPages={this.props.totalSubjectPages}
+              />
+            ) : undefined}
+          </div>
+          <div
+            className={`pan-zoom-area pan-zoom pane${
+              this.state.active_pane === "pan-zoom" ? " active" : ""
+              }`}
+          >
+            <SubjectZoomPan subject={this.props.subject} onChange={this.props.onZoomChange} viewBox={this.state.zoomPanViewBox} />
+          </div>
 
 
+        </div>
+        <div className="subject-set-toolbar-links">
+          <a className={`toggle-pan-zoom${
+            this.state.active_pane === "pan-zoom" ? " active" : ""
+            }`}
+            onClick={() => this.togglePane("pan-zoom")}>
+            <div className="helper">Toggle pan and zoom tool</div>
+          </a>
+          <a className={`toggle-multi-page${
+            this.props.subject_set.subjects.length <= 1 ? " disabled" : ""
+            }${this.state.active_pane === "multi-page" ? " active" : ""}`}
+            onClick={() => this.togglePane("multi-page")}>
+            <div className="helper">Toggle multi-page navigation</div>
+          </a>
+          <a className={this.props.hideOtherMarks === true
+            ? "fa fa-toggle-on fa-2x"
+            : "fa fa-toggle-off fa-2x"
+          } onClick={this.props.toggleHideOtherMarks}>
+            <div className="helper">
+              {this.props.hideOtherMarks === false
+                ? "Hide Marks of Other People"
+                : "Showing Only Your Marks"}
+            </div>
+          </a>
+        </div>
       </div>
-      <div className="subject-set-toolbar-links">
-        <a className={"toggle-pan-zoom" + if @state.active_pane == 'pan-zoom' then ' active' else '' } onClick={() => @togglePane 'pan-zoom'}><div className="helper">Toggle pan and zoom tool</div></a>
-        <a className={"toggle-multi-page" + if @props.subject_set.subjects.length <= 1 then ' disabled' else '' + if @state.active_pane == 'multi-page' then ' active' else '' } onClick={() => @togglePane 'multi-page'}><div className="helper">Toggle multi-page navigation</div></a>
-        <a className={if @props.hideOtherMarks == true then 'fa fa-toggle-on fa-2x' else 'fa fa-toggle-off fa-2x' } onClick={@props.toggleHideOtherMarks}><div className="helper">{if @props.hideOtherMarks == false then "Hide Marks of Other People" else "Showing Only Your Marks"}</div></a>
-      </div>
-    </div>
+    );
+  }
+});

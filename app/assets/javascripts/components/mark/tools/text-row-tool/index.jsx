@@ -1,145 +1,198 @@
-React            = require 'react'
-DrawingToolRoot  = require './root'
-Draggable        = require 'lib/draggable'
-DeleteButton     = require './delete-button'
-DragHandle       = require './drag-handle'
-MarkButtonMixin  = require 'lib/mark-button-mixin'
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * DS205: Consider reworking code to avoid use of IIFEs
+ * DS207: Consider shorter variations of null checks
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+const React = require("react");
+const DrawingToolRoot = require("./root");
+const Draggable = require("lib/draggable");
+const DeleteButton = require("./delete-button");
+const DragHandle = require("./drag-handle");
+const MarkButtonMixin = require("lib/mark-button-mixin");
 
-# DEFAULT SETTINGS
-RADIUS = 10
-SELECTED_RADIUS = 20
-CROSSHAIR_SPACE = 0.2
-CROSSHAIR_WIDTH = 1
-DELETE_BUTTON_ANGLE = 45
-DEFAULT_HEIGHT = 100
-MINIMUM_HEIGHT = 25
+// DEFAULT SETTINGS
+const RADIUS = 10;
+const SELECTED_RADIUS = 20;
+const CROSSHAIR_SPACE = 0.2;
+const CROSSHAIR_WIDTH = 1;
+const DELETE_BUTTON_ANGLE = 45;
+const DEFAULT_HEIGHT = 100;
+const MINIMUM_HEIGHT = 25;
 
-module.exports = React.createClass
-  displayName: 'TextRowTool'
+module.exports = React.createClass({
+  displayName: "TextRowTool",
 
-  mixins: [MarkButtonMixin] # adds MarkButton and helper methods to each mark
+  mixins: [MarkButtonMixin], // adds MarkButton and helper methods to each mark
 
-  statics:
-    defaultValues: ({x, y}) ->
-      x: x
-      y: y - DEFAULT_HEIGHT/2 # x and y will be the initial click position (not super useful as of yet)
-      yUpper: y - DEFAULT_HEIGHT/2
-      yLower: y + DEFAULT_HEIGHT/2
+  statics: {
+    defaultValues({ x, y }) {
+      return {
+        x,
+        y: y - DEFAULT_HEIGHT / 2, // x and y will be the initial click position (not super useful as of yet)
+        yUpper: y - DEFAULT_HEIGHT / 2,
+        yLower: y + DEFAULT_HEIGHT / 2
+      };
+    },
 
-    initMove: ({x, y}) ->
-      x: x
-      y: y - DEFAULT_HEIGHT/2
-      yUpper: y - DEFAULT_HEIGHT/2 # not sure if these are needed
-      yLower: y + DEFAULT_HEIGHT/2
+    initMove({ x, y }) {
+      return {
+        x,
+        y: y - DEFAULT_HEIGHT / 2,
+        yUpper: y - DEFAULT_HEIGHT / 2, // not sure if these are needed
+        yLower: y + DEFAULT_HEIGHT / 2
+      };
+    }
+  },
 
-  getDeleteButtonPosition: ->
-    x: 100
-    y: (@props.mark.yLower-@props.mark.yUpper)/2
+  getDeleteButtonPosition() {
+    return {
+      x: 100,
+      y: (this.props.mark.yLower - this.props.mark.yUpper) / 2
+    };
+  },
 
-  getUpperHandlePosition: ->
-    x: @props.sizeRect?.props.width/2
-    y: @props.mark.yUpper - @props.mark.y
+  getUpperHandlePosition() {
+    return {
+      x:
+        (this.props.sizeRect != null
+          ? this.props.sizeRect.props.width
+          : undefined) / 2,
+      y: this.props.mark.yUpper - this.props.mark.y
+    };
+  },
 
-  getLowerHandlePosition: ->
-    x: @props.sizeRect?.props.width/2
-    y: @props.mark.yLower - @props.mark.y
+  getLowerHandlePosition() {
+    return {
+      x:
+        (this.props.sizeRect != null
+          ? this.props.sizeRect.props.width
+          : undefined) / 2,
+      y: this.props.mark.yLower - this.props.mark.y
+    };
+  },
 
-  getMarkButtonPosition: ->
-    # NOTE: this somehow doesn't receive props in the first couple renders and produces an error --STI
-    x: @props.sizeRect?.props.width - 100
-    y: (@props.mark.yLower-@props.mark.yUpper)/2
+  getMarkButtonPosition() {
+    // NOTE: this somehow doesn't receive props in the first couple renders and produces an error --STI
+    return {
+      x:
+        (this.props.sizeRect != null
+          ? this.props.sizeRect.props.width
+          : undefined) - 100,
+      y: (this.props.mark.yLower - this.props.mark.yUpper) / 2
+    };
+  },
 
-  render: ->
-    if @state.markStatus is 'mark-committed'
-      isPriorMark = true
-      @props.disabled = true
+  render() {
+    let isPriorMark;
+    if (this.state.markStatus === "mark-committed") {
+      isPriorMark = true;
+      this.props.disabled = true;
+    }
 
-    classes = []
-    classes.push 'transcribable' if @props.isTranscribable
-    classes.push if @props.disabled then 'committed' else 'uncommitted'
+    const classes = [];
+    if (this.props.isTranscribable) {
+      classes.push("transcribable");
+    }
+    classes.push(this.props.disabled ? "committed" : "uncommitted");
 
-    averageScale = (@props.xScale + @props.yScale) / 2
-    crosshairSpace = CROSSHAIR_SPACE / averageScale
-    crosshairWidth = CROSSHAIR_WIDTH / averageScale
-    selectedRadius = SELECTED_RADIUS / averageScale
-    radius = if @props.selected
-      SELECTED_RADIUS / averageScale
-    else
-      RADIUS / averageScale
+    const averageScale = (this.props.xScale + this.props.yScale) / 2;
+    const crosshairSpace = CROSSHAIR_SPACE / averageScale;
+    const crosshairWidth = CROSSHAIR_WIDTH / averageScale;
+    const selectedRadius = SELECTED_RADIUS / averageScale;
+    const radius = this.props.selected
+      ? SELECTED_RADIUS / averageScale
+      : RADIUS / averageScale;
 
-    scale = (@props.xScale + @props.yScale) / 2
+    const scale = (this.props.xScale + this.props.yScale) / 2;
 
-    <g
-      tool={this}
-      transform="translate(0, #{@props.mark.y})"
-      onMouseDown={@handleMouseDown}
-      title={@props.mark.label}
-    >
+    return (
       <g
-        className="text-row-tool"
-        onMouseDown={@props.onSelect unless @props.disabled}
+        tool={this}
+        transform={`translate(0, ${this.props.mark.y})`}
+        onMouseDown={this.handleMouseDown}
+        title={this.props.mark.label}
       >
-        <Draggable onDrag={@handleDrag}>
-          <g
-            className="tool-shape #{classes.join ' '}"
-            dangerouslySetInnerHTML={
-              __html: "
-                <filter id=\"dropShadow\">
-                  <feGaussianBlur in=\"SourceAlpha\" stdDeviation=\"3\" />
-                  <feOffset dx=\"2\" dy=\"4\" />
-                  <feMerge>
-                    <feMergeNode />
-                    <feMergeNode in=\"SourceGraphic\" />
-                  </feMerge>
-                </filter>
-
-                <rect
-                  #{if @props.mark.color? then "stroke=\"#{@props.mark.color}\""}
-                  x=\"0\"
-                  y=\"0\"
-                  width=\"100%\"
-                  height=\"#{@props.mark.yLower-@props.mark.yUpper}\"
-                  className=\"#{ if isPriorMark then 'previous-mark'}\"
-                  filter=\"#{if @props.selected then 'url(#dropShadow)' else 'none'}\"
-                />
-              "
-            }
-          />
-
-        </Draggable>
-
-        { if @props.selected and not @state.locked
+        <g
+          className="text-row-tool"
+          onMouseDown={!this.props.disabled ? this.props.onSelect : undefined}
+        >
+          <Draggable onDrag={this.handleDrag}>
+            <g
+              className={`tool-shape ${classes.join(" ")}`}
+              dangerouslySetInnerHTML={{
+                __html: `\
+                  <filter id=\"dropShadow\"> \
+                    <feGaussianBlur in=\"SourceAlpha\" stdDeviation=\"3\" /> \
+                    <feOffset dx=\"2\" dy=\"4\" /> \
+                    <feMerge> \
+                      <feMergeNode /> \
+                      <feMergeNode in=\"SourceGraphic\" /> \
+                    </feMerge> \
+                  </filter> \
+                  <rect \
+                    ${this.props.mark.color != null
+                    ? `stroke=\"${this.props.mark.color}\"`
+                    : ''} \
+                    x=\"0\" \
+                    y=\"0\" \
+                    width=\"100%\" \
+                    height=\"${this.props.mark.yLower - this.props.mark.yUpper}\" \
+                    className=\"${isPriorMark ? "previous-mark" : undefined}\" \
+                    filter=\"${this.props.selected ? "url(#dropShadow)" : "none"}\" \
+                  />\
+                `
+              }}
+            />
+          </Draggable>
+          {this.props.selected && !this.state.locked ? (
             <g>
-              <DragHandle   tool={this} onDrag={@handleUpperResize} position={@getUpperHandlePosition()} />
-              <DragHandle   tool={this} onDrag={@handleLowerResize} position={@getLowerHandlePosition()} />
-              <DeleteButton tool={this} position={@getDeleteButtonPosition()} />
+              <DragHandle tool={this} onDrag={this.handleUpperResize} position={this.getUpperHandlePosition()} />
+              <DragHandle tool={this} onDrag={this.handleLowerResize} position={this.getLowerHandlePosition()} />
+              <DeleteButton tool={this} position={this.getDeleteButtonPosition()} />
             </g>
-        }
-
-        { # REQUIRES MARK-BUTTON-MIXIN
-          if @props.selected or @state.markStatus is 'transcribe-enabled'
-            @renderMarkButton() if @props.isTranscribable
-        }
-
+          ) : (
+              undefined
+            )}
+          {(() => {
+            // REQUIRES MARK-BUTTON-MIXIN
+            if (this.props.selected || this.state.markStatus === "transcribe-enabled"
+            ) {
+              if (this.props.isTranscribable) {
+                return this.renderMarkButton();
+              }
+            }
+          })()}
+        </g>
       </g>
-    </g>
+    );
+  },
 
-  handleDrag: (e, d) ->
-    return if @state.locked
-    return if @props.disabled
-    @props.mark.y += d.y / @props.yScale
-    @props.mark.yUpper += d.y / @props.yScale
-    @props.mark.yLower += d.y / @props.yScale
-    @props.onChange e
+  handleDrag(e, d) {
+    if (this.state.locked) {
+      return;
+    }
+    if (this.props.disabled) {
+      return;
+    }
+    this.props.mark.y += d.y / this.props.yScale;
+    this.props.mark.yUpper += d.y / this.props.yScale;
+    this.props.mark.yLower += d.y / this.props.yScale;
+    return this.props.onChange(e);
+  },
 
-  handleUpperResize: (e, d) ->
-    @props.mark.yUpper += d.y / @props.yScale
-    @props.mark.y += d.y / @props.yScale # fix weird resizing problem
-    @props.onChange e
+  handleUpperResize(e, d) {
+    this.props.mark.yUpper += d.y / this.props.yScale;
+    this.props.mark.y += d.y / this.props.yScale; // fix weird resizing problem
+    return this.props.onChange(e);
+  },
 
-  handleLowerResize: (e, d) ->
-    @props.mark.yLower += d.y / @props.yScale
-    @props.onChange e
+  handleLowerResize(e, d) {
+    this.props.mark.yLower += d.y / this.props.yScale;
+    return this.props.onChange(e);
+  },
 
-  handleMouseDown: ->
-    # @props.onSelect @props.mark # unless @props.disabled
+  handleMouseDown() { }
+});
+// @props.onSelect @props.mark # unless @props.disabled

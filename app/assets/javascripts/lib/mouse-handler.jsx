@@ -1,69 +1,97 @@
-React = require 'react'
-# cloneWithProps = require 'react/lib/cloneWithProps'
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * DS207: Consider shorter variations of null checks
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+const React = require("react");
+// cloneWithProps = require 'react/lib/cloneWithProps'
 
-module.exports = React.createClass
-  displayName: 'MouseHandler'
+module.exports = React.createClass({
+  displayName: "MouseHandler",
 
-  _previousEventCoords: null
+  _previousEventCoords: null,
 
-  propTypes:
-    # children: React.PropTypes.component.isRequired
-    onStart: React.PropTypes.oneOfType [
-      React.PropTypes.func
+  propTypes: {
+    // children: React.PropTypes.component.isRequired
+    onStart: React.PropTypes.oneOfType([
+      React.PropTypes.func,
       React.PropTypes.bool
-    ]
-    onDrag: React.PropTypes.func
-    onEnd: React.PropTypes.func
+    ]),
+    onDrag: React.PropTypes.func,
+    onEnd: React.PropTypes.func,
     disabled: React.PropTypes.bool
+  },
 
-  render: ->
-    # NOTE: This won't actually render any new DOM nodes,
-    # it just attaches a `mousedown` listener to its child.
-    if @props.disabled
-      @props.children
-    else
-      React.cloneElement @props.children,
-        className: "#{@props.children.props.className} draggable"
-        onMouseDown: @handleStart
+  render() {
+    // NOTE: This won't actually render any new DOM nodes,
+    // it just attaches a `mousedown` listener to its child.
+    if (this.props.disabled) {
+      return this.props.children;
+    } else {
+      return React.cloneElement(this.props.children, {
+        className: `${this.props.children.props.className} draggable`,
+        onMouseDown: this.handleStart
+      });
+    }
+  },
 
-  _rememberCoords: (e) ->
-    @_previousEventCoords =
-      x: e.pageX
+  _rememberCoords(e) {
+    return (this._previousEventCoords = {
+      x: e.pageX,
       y: e.pageY
+    });
+  },
 
-  handleStart: (e) ->
-    return false if e.target.nodeName is "INPUT" or e.target.nodeName is "TEXTAREA"
-    return false if $(e.target).parents('a').length > 0
-    e.preventDefault()
+  handleStart(e) {
+    if (e.target.nodeName === "INPUT" || e.target.nodeName === "TEXTAREA") {
+      return false;
+    }
+    if ($(e.target).parents("a").length > 0) {
+      return false;
+    }
+    e.preventDefault();
 
-    @_rememberCoords e
+    this._rememberCoords(e);
 
-    # Prefix with this class to switch from `cursor:grab` to `cursor:grabbing`.
-    document.body.classList.add 'dragging'
+    // Prefix with this class to switch from `cursor:grab` to `cursor:grabbing`.
+    document.body.classList.add("dragging");
 
-    document.addEventListener 'mousemove', @handleDrag
-    document.addEventListener 'mouseup', @handleEnd
+    document.addEventListener("mousemove", this.handleDrag);
+    document.addEventListener("mouseup", this.handleEnd);
 
-    # If there's no `onStart`, `onDrag` will be called on start.
-    startHandler = @props.onStart ? @handleDrag
-    if startHandler # You can set it to `false` if you don't want anything to fire.
-      startHandler e
+    // If there's no `onStart`, `onDrag` will be called on start.
+    const startHandler =
+      this.props.onStart != null ? this.props.onStart : this.handleDrag;
+    if (startHandler) {
+      // You can set it to `false` if you don't want anything to fire.
+      return startHandler(e);
+    }
+  },
 
-  handleDrag: (e) ->
-    d =
-      x: e.pageX - @_previousEventCoords.x
-      y: e.pageY - @_previousEventCoords.y
+  handleDrag(e) {
+    const d = {
+      x: e.pageX - this._previousEventCoords.x,
+      y: e.pageY - this._previousEventCoords.y
+    };
 
-    @props.onDrag? e, d
+    if (typeof this.props.onDrag === "function") {
+      this.props.onDrag(e, d);
+    }
 
-    @_rememberCoords e
+    return this._rememberCoords(e);
+  },
 
-  handleEnd: (e) ->
-    document.removeEventListener 'mousemove', @handleDrag
-    document.removeEventListener 'mouseup', @handleEnd
+  handleEnd(e) {
+    document.removeEventListener("mousemove", this.handleDrag);
+    document.removeEventListener("mouseup", this.handleEnd);
 
-    @props.onEnd? e
+    if (typeof this.props.onEnd === "function") {
+      this.props.onEnd(e);
+    }
 
-    @_previousEventCoords = null
+    this._previousEventCoords = null;
 
-    document.body.classList.remove 'dragging'
+    return document.body.classList.remove("dragging");
+  }
+});

@@ -1,13 +1,17 @@
-# @cjsx React.DOM
+/** @jsx React.DOM */
 
-React = require 'react'
+const React = require("react");
 
-SubjectMetadata = React.createClass
-  displayName: "Metadata"
+const SubjectMetadata = React.createClass({
+  displayName: "Metadata",
 
-  render: ->
-    <div className="metadata">
-      <h3>Metadata</h3>
-    </div>
+  render() {
+    return (
+      <div className="metadata">
+        <h3>Metadata</h3>
+      </div>
+    );
+  }
+});
 
-module.exports = SubjectMetadata
+module.exports = SubjectMetadata;
