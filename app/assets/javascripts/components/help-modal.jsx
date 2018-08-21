@@ -1,7 +1,7 @@
 const React = require("react");
 const DraggableModal = require("./draggable-modal");
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   displayName: "HelpModal",
 
   componentDidMount() {

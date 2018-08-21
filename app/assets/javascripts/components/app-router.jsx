@@ -181,7 +181,7 @@ class AppRouter {
   }
 
   controllerForPage(page) {
-    return React.createClass({
+    return require('create-react-class')({
       displayName: `${page.name}Page`,
 
       componentWillMount() {},

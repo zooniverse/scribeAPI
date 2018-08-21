@@ -7,7 +7,7 @@
 const React = require("react");
 const { Navigation } = require("react-router");
 
-const NameSearch = React.createClass({
+const NameSearch = require('create-react-class')({
   displayName: "NameSearch",
   mixins: [Navigation],
 

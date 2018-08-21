@@ -4,7 +4,7 @@ Draggable  = require 'lib/draggable'
 DoneButton = require './done-button'
 PrevButton = require './prev-button'
 
-TextAreaTool = React.createClass
+TextAreaTool = require('create-react-class')
   displayName: 'TextAreaTool'
 
   handleInitStart: (e) ->

@@ -1,7 +1,7 @@
 const React = require("react");
 const SmallButton = require("./small-button");
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   displayName: "IllegibleSubjectButton",
 
   render() {

@@ -1,7 +1,7 @@
 const React = require("react");
 const GenericButton = require("./generic-button");
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   displayName: "SmallButton",
 
   getDefaultProps() {

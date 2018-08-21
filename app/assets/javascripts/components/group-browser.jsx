@@ -12,7 +12,7 @@ const API = require("lib/api");
 
 const SmallButton = require("components/buttons/small-button");
 
-const GroupBrowser = React.createClass({
+const GroupBrowser = require('create-react-class')({
   displayName: "GroupBrowser",
 
   getInitialState() {

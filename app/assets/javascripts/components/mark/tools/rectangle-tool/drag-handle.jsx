@@ -13,7 +13,7 @@ const STROKE_WIDTH = 1.5;
 
 const OVERSHOOT = 4;
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   displayName: "DragHandle",
 
   render() {

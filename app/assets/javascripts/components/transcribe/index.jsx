@@ -6,7 +6,7 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-/** @jsx React.DOM */
+
 const React = require("react");
 const { Navigation } = require("react-router");
 const SubjectViewer = require("../subject-viewer");
@@ -30,7 +30,7 @@ const Tutorial = require("../tutorial");
 const DraggableModal = require("../draggable-modal");
 const GenericButton = require("../buttons/generic-button");
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   // rename to Classifier
   displayName: "Transcribe",
   mixins: [FetchSubjectsMixin, BaseWorkflowMethods, Navigation], // load subjects and set state variables: subjects,  classification

@@ -13,7 +13,7 @@ const HelpButton = require("../../../buttons/help-button");
 const BadSubjectButton = require("../../../buttons/bad-subject-button");
 const IllegibleSubjectButton = require("../../../buttons/illegible-subject-button");
 
-const TextTool = React.createClass({
+const TextTool = require('create-react-class')({
   displayName: "TextTool",
 
   getInitialState() {

@@ -6,7 +6,7 @@
  */
 const React = require("react");
 
-const Login = React.createClass({
+const Login = require('create-react-class')({
   displayName: "Login",
 
   getInitialState() {

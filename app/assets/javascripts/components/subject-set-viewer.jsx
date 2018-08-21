@@ -4,7 +4,7 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-/** @jsx React.DOM */
+
 const React = require("react");
 const SubjectViewer = require("./subject-viewer");
 const { Router, Routes, Route, Link } = require("react-router");
@@ -17,7 +17,7 @@ const markingTools = require("./mark/tools");
 const ZoomPanListenerMethods = require("lib/zoom-pan-listener-methods");
 const SubjectSetToolbar = require("./subject-set-toolbar");
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   displayName: "SubjectSetViewer",
   resizing: false,
 

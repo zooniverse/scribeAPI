@@ -1,12 +1,7 @@
+import ReactTestUtils from "react-dom/test-utils";
 global.marked = (text) => text;
 
-jest.dontMock("../components/core-tools/pick-one");
-
-jest.dontMock("../components/core-tools/generic");
-
 describe("SingleChoiceTask/pickOne", function () {
-  const React = require("react/addons");
-
   const {
     renderIntoDocument,
     scryRenderedComponentsWithType,
@@ -14,7 +9,7 @@ describe("SingleChoiceTask/pickOne", function () {
     scryRenderedDOMComponentsWithTag,
     createRenderer,
     Simulate
-  } = React.addons.TestUtils;
+  } = ReactTestUtils;
 
   const task_object = {
     generates_subject_type: null,
@@ -41,7 +36,8 @@ describe("SingleChoiceTask/pickOne", function () {
   const PickOne = require("../components/core-tools/pick-one");
   const GenericTask = require("../components/core-tools/generic");
 
-  const shallowRenderer = React.addons.TestUtils.createRenderer();
+  const ShallowRenderer = require('react-test-renderer/shallow');
+  const shallowRenderer = new ShallowRenderer();
   shallowRenderer.render(
     <PickOne annotation="" task={task_object} onChange={clickRecord} />
   );

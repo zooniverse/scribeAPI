@@ -4,7 +4,7 @@
  * DS205: Consider reworking code to avoid use of IIFEs
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-/** @jsx React.DOM */
+
 const React = require("react");
 const Draggable = require("lib/draggable");
 const PrevButton = require("./prev-button");
@@ -12,7 +12,7 @@ const NextButton = require("./next-button");
 const DoneButton = require("./done-button");
 const TranscribeInput = require("./transcribe-input");
 
-const TranscribeTool = React.createClass({
+const TranscribeTool = require('create-react-class')({
   displayName: "TranscribeTool",
 
   componentWillReceiveProps() {

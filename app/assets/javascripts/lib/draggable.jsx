@@ -5,9 +5,8 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
-// cloneWithProps = require 'react/lib/cloneWithProps'
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   displayName: "Draggable",
 
   _previousEventCoords: null,

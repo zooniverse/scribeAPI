@@ -1,6 +1,6 @@
 const DoneButton = require("./done-button");
 
-const TestComponent = React.createClass({
+const TestComponent = require('create-react-class')({
   displayName: "TestComponent",
 
   render() {

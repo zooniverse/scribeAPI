@@ -17,7 +17,7 @@ const DELETE_BUTTON_DISTANCE_X = 12;
 const DELETE_BUTTON_DISTANCE_Y = 0;
 const DEBUG = false;
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   displayName: "RectangleTool",
 
   mixins: [MarkButtonMixin],

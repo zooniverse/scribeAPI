@@ -1,7 +1,7 @@
-/** @jsx React.DOM */
+
 const React = require("react");
 
-const NextButton = React.createClass({
+const NextButton = require('create-react-class')({
   displayName: 'NextButton',
 
   render() {

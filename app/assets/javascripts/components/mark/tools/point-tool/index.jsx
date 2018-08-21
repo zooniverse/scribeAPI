@@ -18,7 +18,7 @@ const CROSSHAIR_SPACE = 0.2;
 const CROSSHAIR_WIDTH = 1;
 const DELETE_BUTTON_ANGLE = 45;
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   displayName: "PointTool",
 
   mixins: [MarkButtonMixin],

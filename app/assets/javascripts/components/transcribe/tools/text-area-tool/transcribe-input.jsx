@@ -1,7 +1,7 @@
-/** @jsx React.DOM */
+
 const React = require("react");
 
-const TranscribeInput = React.createClass({
+const TranscribeInput = require('create-react-class')({
   displayName: "TranscribeInput",
 
   render() {

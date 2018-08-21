@@ -4,10 +4,10 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-/** @jsx React.DOM */
+
 const React = require("react");
 
-const ActionButton = React.createClass({
+const ActionButton = require('create-react-class')({
   displayName: "ActionButton",
 
   handleClick(e) {

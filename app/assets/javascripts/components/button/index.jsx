@@ -1,7 +1,7 @@
 ResizeButton = require('./resize-button');
 React = require('react');
 
-module.export = React.createClass({
+module.export = require('create-react-class')({
   displayName: 'ButtonLink',
   propTypes: {
     name: React.PropTypes.string,

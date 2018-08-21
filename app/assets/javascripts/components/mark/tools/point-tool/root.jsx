@@ -9,7 +9,7 @@ const React = require("react");
 const STROKE_WIDTH = 1.5;
 const SELECTED_STROKE_WIDTH = 2.5;
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   displayName: "DrawingToolRoot",
 
   statics: {

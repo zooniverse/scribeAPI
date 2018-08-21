@@ -17,28 +17,28 @@ const {
 
 const BrowserHistory = require("react-router/lib/BrowserHistory");
 
-const Foo1 = React.createClass({
+const Foo1 = require('create-react-class')({
   displayName: "Foo1",
   render() {
     return <div>Foo 1 page</div>;
   }
 });
 
-const Foo2 = React.createClass({
+const Foo2 = require('create-react-class')({
   displayName: "Foo2",
   render() {
     return <div>Foo 2 page</div>;
   }
 });
 
-const NoMatch = React.createClass({
+const NoMatch = require('create-react-class')({
   displayName: "NoMatch",
   render() {
     return <div>No match</div>;
   }
 });
 
-const App = React.createClass({
+const App = require('create-react-class')({
   displayName: "App",
   render() {
     return (

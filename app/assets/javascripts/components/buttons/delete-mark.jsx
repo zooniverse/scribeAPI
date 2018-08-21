@@ -12,7 +12,7 @@ M 0 ${-1 * RADIUS * 0.7} \
 L 0 ${RADIUS * 0.7}\
 `;
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   displayName: "DeleteButton",
 
   getDefaultProps() {

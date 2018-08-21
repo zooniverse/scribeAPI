@@ -1,8 +1,8 @@
-/** @jsx React.DOM */
+
 
 const React = require("react");
 
-const SubjectMetadata = React.createClass({
+const SubjectMetadata = require('create-react-class')({
   displayName: "Metadata",
 
   render() {

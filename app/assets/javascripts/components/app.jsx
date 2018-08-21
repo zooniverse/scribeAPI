@@ -17,7 +17,7 @@ const { RouteHandler } = require("react-router");
 
 window.API = API;
 
-const App = React.createClass({
+const App = require('create-react-class')({
   getInitialState() {
     return {
       routerRunning: false,

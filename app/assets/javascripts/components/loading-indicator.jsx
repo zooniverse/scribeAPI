@@ -1,8 +1,8 @@
-/** @jsx React.DOM */
+
 
 const React = require("react");
 
-const LoadingIndicator = React.createClass({
+const LoadingIndicator = require('create-react-class')({
   displayName: "LoadingIndicator",
 
   render() {

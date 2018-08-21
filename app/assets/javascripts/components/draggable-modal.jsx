@@ -10,7 +10,7 @@ const React = require("react");
 const Draggable = require("../lib/draggable");
 const DoneButton = require("./buttons/done-button");
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   displayName: "DraggableModal",
 
   getDefaultProps() {

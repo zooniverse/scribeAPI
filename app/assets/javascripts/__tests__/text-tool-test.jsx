@@ -1,8 +1,8 @@
-jest.dontMock("../components/transcribe/tools/text-tool/index");
+
+import React from "react";
+import ReactTestUtils from "react-dom/test-utils";
 
 describe("text-tool index", function () {
-  const React = require("react/addons");
-
   const {
     renderIntoDocument,
     scryRenderedComponentsWithType,
@@ -10,7 +10,7 @@ describe("text-tool index", function () {
     scryRenderedDOMComponentsWithTag,
     createRenderer,
     Simulate
-  } = React.addons.TestUtils;
+  } = ReactTestUtils;
 
   const task_object = {
     generates_subject_type: null,

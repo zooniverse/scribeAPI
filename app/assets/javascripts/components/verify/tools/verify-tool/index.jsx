@@ -13,7 +13,7 @@ const HelpButton = require("../../../buttons/help-button");
 const BadSubjectButton = require("../../../buttons/bad-subject-button");
 const SmallButton = require("../../../buttons/small-button");
 
-const VerifyTool = React.createClass({
+const VerifyTool = require('create-react-class')({
   displayName: "VerifyTool",
 
   getInitialState() {

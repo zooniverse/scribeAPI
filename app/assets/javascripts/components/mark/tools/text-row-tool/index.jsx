@@ -21,7 +21,7 @@ const DELETE_BUTTON_ANGLE = 45;
 const DEFAULT_HEIGHT = 100;
 const MINIMUM_HEIGHT = 25;
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   displayName: "TextRowTool",
 
   mixins: [MarkButtonMixin], // adds MarkButton and helper methods to each mark

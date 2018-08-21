@@ -9,7 +9,7 @@ const SubjectZoomPan = require("components/subject-zoom-pan");
 const ForumSubjectWidget = require("./forum-subject-widget");
 const { Link } = require("react-router");
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   displayName: "SubjectSetToolbar",
 
   propTypes: {

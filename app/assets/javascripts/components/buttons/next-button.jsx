@@ -1,6 +1,6 @@
 const React = require("react");
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   displayName: "NextButton",
 
   getDefaultProps() {

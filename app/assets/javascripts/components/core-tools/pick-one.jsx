@@ -14,7 +14,7 @@ const LabeledRadioButton = require("../buttons/labeled-radio-button");
 
 const NOOP = Function.prototype;
 
-// Summary = React.createClass
+// Summary = require('create-react-class')
 //   displayName: 'SingleChoiceSummary'
 
 //   getDefaultProps: ->
@@ -55,7 +55,7 @@ const NOOP = Function.prototype;
 //       </div>
 //     </div>
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   displayName: "SingleChoiceTask",
 
   statics: {

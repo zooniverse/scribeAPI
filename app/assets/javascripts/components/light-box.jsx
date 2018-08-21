@@ -13,7 +13,7 @@ const SVGImage = require("./svg-image");
 const ActionButton = require("./action-button");
 const HelpModal = require("./help-modal");
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   displayName: "LightBox",
 
   propTypes: {

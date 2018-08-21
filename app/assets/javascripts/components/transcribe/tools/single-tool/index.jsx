@@ -4,13 +4,13 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-/** @jsx React.DOM */
+
 const React = require("react");
 const Draggable = require("lib/draggable");
 const DoneButton = require("./done-button");
 const inputComponents = require("../../input-components");
 
-const TextTool = React.createClass({
+const TextTool = require('create-react-class')({
   displayName: "SingleTool",
 
   getInitialState() {

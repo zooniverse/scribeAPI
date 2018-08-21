@@ -26,7 +26,7 @@ const DraggableModal = require("../draggable-modal");
 const Draggable = require("lib/draggable");
 const { Link } = require("react-router");
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   // rename to Classifier
   displayName: "Mark",
 

@@ -7,7 +7,7 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const React = require("react/addons");
+const React = require("react");
 const { Router, Routes, Route, Link } = require("react-router");
 const SVGImage = require("./svg-image");
 const MouseHandler = require("lib/mouse-handler");
@@ -22,7 +22,7 @@ const MarkDrawingMixin = require("lib/mark-drawing-mixin");
 
 const API = require("lib/api");
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   displayName: "SubjectViewer",
   resizing: false,
 

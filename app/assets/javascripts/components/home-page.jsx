@@ -12,7 +12,7 @@ const GroupBrowser = require("./group-browser");
 const NameSearch = require("./name-search");
 const { Navigation } = require("react-router");
 
-const HomePage = React.createClass({
+const HomePage = require('create-react-class')({
   displayName: "HomePage",
   mixins: [Navigation],
 

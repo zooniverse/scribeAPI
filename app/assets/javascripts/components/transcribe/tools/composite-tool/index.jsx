@@ -16,7 +16,7 @@ const HelpButton = require("../../../buttons/help-button");
 const BadSubjectButton = require("../../../buttons/bad-subject-button");
 const IllegibleSubjectButton = require("../../../buttons/illegible-subject-button");
 
-const CompositeTool = React.createClass({
+const CompositeTool = require('create-react-class')({
   displayName: "CompositeTool",
   mixins: [Navigation],
 

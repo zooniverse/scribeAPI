@@ -1,6 +1,6 @@
 const DoneButton = require("./done-button");
 
-const DateField = React.createClass({
+const DateField = require('create-react-class')({
   displayName: "DateField",
 
   render() {

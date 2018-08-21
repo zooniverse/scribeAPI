@@ -13,7 +13,7 @@ const STROKE_WIDTH = 1.5;
 
 const DESTROY_TRANSITION_DURATION = 0;
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   displayName: "DragHandle",
 
   getDefaultProps() {

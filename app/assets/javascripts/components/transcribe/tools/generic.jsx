@@ -4,12 +4,11 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
-const cloneWithProps = require("react/lib/cloneWithProps");
 // alert = require 'lib/alert'
 // Markdown = require '../../components/markdown'
 // Tooltip = require '../../components/tooltip'
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   displayName: "GenericTool",
 
   getDefaultProps() {
@@ -30,7 +29,7 @@ module.exports = React.createClass({
         <span>{this.props.question}</span>
         <div className="answers">
           {React.Children.map(this.props.answers, answer =>
-            cloneWithProps(answer, { className: "answer" })
+            React.cloneElement(answer, { className: "answer" })
           )}
         </div>
         {this.props.help ? (

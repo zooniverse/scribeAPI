@@ -6,14 +6,14 @@ var _this = this;
  * DS208: Avoid top-level this
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-/** @jsx React.DOM */
+
 
 const React = require("react");
 
 // IMPORTANT!
 window.React = React;
 
-const FavouriteButton = React.createClass({
+const FavouriteButton = require('create-react-class')({
   displayname: "FavouriteButton",
 
   getInitialState: () => {

@@ -6,7 +6,7 @@
 const React = require("react");
 const GenericButton = require("./buttons/generic-button");
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   displayName: "BrowserWarning",
 
   getInitialState() {

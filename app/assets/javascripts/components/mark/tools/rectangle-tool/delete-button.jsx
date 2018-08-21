@@ -19,7 +19,7 @@ L 0 ${RADIUS * 0.7}\
 
 const DESTROY_TRANSITION_DURATION = 0;
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   displayName: "DeleteButton",
 
   getDefaultProps() {

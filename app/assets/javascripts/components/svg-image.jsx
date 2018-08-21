@@ -1,4 +1,4 @@
-/** @jsx React.DOM */
+
 
 const React = require("react");
 
@@ -6,7 +6,7 @@ const React = require("react");
 // (because of its namespaced `xlink:href` attribute, I think),
 // so this fakes one by wrapping it in a <g>.
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   displayName: "SVGImage",
 
   getInitialState() {

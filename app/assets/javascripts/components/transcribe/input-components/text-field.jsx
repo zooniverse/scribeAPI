@@ -1,6 +1,6 @@
 const DoneButton = require("./done-button");
 
-const TextField = React.createClass({
+const TextField = require('create-react-class')({
   displayName: "TextField",
 
   render() {

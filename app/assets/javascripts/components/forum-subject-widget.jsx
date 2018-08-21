@@ -6,14 +6,14 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-/** @jsx React.DOM */
+
 
 const React = require("react");
 const { Router, Routes, Route, Link } = require("react-router");
 const LoadingIndicator = require("./loading-indicator");
 const ForumConnectors = require("./forum-connectors");
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   displayName: "ForumSubjectWidget",
   resizing: false,
 

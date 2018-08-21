@@ -19,7 +19,7 @@ const PAN_MAX_Y = 0.7; // Max allowed val for y
 // The following inverts this, moving the image upward instead
 const INVERT_PAN = false;
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   displayName: "SubjectZoomPan",
 
   getInitialState() {

@@ -1,7 +1,6 @@
 const React = require("react");
-const cloneWithProps = require("react/lib/cloneWithProps");
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   displayName: "GenericTask",
 
   getDefaultProps() {
@@ -20,7 +19,7 @@ module.exports = React.createClass({
         />
         <div className="answers">
           {React.Children.map(this.props.answers, answer => {
-            return cloneWithProps(answer, {
+            return React.cloneElement(answer, {
               classes: answer.props.classes + " answer",
               disabled: this.props.badSubject
             });

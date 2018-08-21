@@ -10,7 +10,7 @@ const Router = require("react-router");
 // {Navigation, Link} = Router
 const Login = require("../components/login");
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   displayName: "MainHeader",
 
   getDefaultProps() {

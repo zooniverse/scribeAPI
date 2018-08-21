@@ -1,7 +1,7 @@
 const React = require("react");
 const TextTool = require("../text-tool");
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   displayName: "DateTool",
 
   render() {

@@ -1,7 +1,7 @@
-/** @jsx React.DOM */
+
 const React = require("react");
 
-const PrevButton = React.createClass({
+const PrevButton = require('create-react-class')({
   displayName: "PrevButton",
 
   render() {

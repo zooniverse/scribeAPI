@@ -61,7 +61,7 @@ const icons = {
   )
 };
 
-module.exports = React.createClass({
+module.exports = require('create-react-class')({
   displayName: "PickOneMarkOne",
   statics: {
     // Summary: Summary

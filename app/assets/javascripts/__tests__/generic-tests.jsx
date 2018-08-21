@@ -1,7 +1,5 @@
-jest.dontMock("../components/core-tools/generic");
-
+import GenericTask from "../components/core-tools/generic";
 describe("GenericTask", function () {
-  const GenericTask = require("../components/core-tools/generic");
   it("should grab the GenericTask code", () =>
     expect(GenericTask).toBeTruthy());
 });

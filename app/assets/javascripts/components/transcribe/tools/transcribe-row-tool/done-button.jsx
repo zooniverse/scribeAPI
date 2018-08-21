@@ -1,7 +1,7 @@
-/** @jsx React.DOM */
+
 const React = require("react");
 
-const DoneButton = React.createClass({
+const DoneButton = require('create-react-class')({
   displayName: "DoneButton",
 
   render() {

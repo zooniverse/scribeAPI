@@ -11,7 +11,7 @@ const GroupBrowser = require("./group-browser");
 const GenericButton = require("components/buttons/generic-button");
 const API = require("../lib/api");
 
-const GroupPage = React.createClass({
+const GroupPage = require('create-react-class')({
   displayName: "GroupPage",
 
   getInitialState() {
