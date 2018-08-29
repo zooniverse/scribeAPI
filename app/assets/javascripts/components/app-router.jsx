@@ -9,9 +9,9 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 const createReactClass = require("create-react-class");
-const { App } = require("./app.jsx");
+const { App, AppContext } = require("./app.jsx");
 const { Route, Redirect, Switch } = require("react-router");
-const { BrowserRouter } = require("react-router-dom");
+const { HashRouter } = require("react-router-dom");
 const HomePage = require("./home-page.jsx");
 
 const Mark = require("./mark/index.jsx");
@@ -50,8 +50,7 @@ module.exports = class AppRouter {
       <App>
         <Switch>
           <Redirect from="/home" to="/" />
-          <Route exact name="home" path="/"
-            render={(props) => <HomePage {...props} />} />
+          <Route exact name="home" path="/" component={HomePage} />
           {(() => {
             const result = [];
             for (w of Array.from(project.workflows)) {
@@ -156,9 +155,8 @@ module.exports = class AppRouter {
               return (
                 <Route
                   key={key}
-                  path={page.name}
+                  path={'/' + page.name}
                   component={this.controllerForPage(page)}
-                  name={page.name}
                 />
               );
             })
@@ -168,14 +166,14 @@ module.exports = class AppRouter {
         </Switch>
       </App>
     );
-    return ReactDOM.render(<BrowserRouter>{routes}</BrowserRouter>, document.getElementById('app'));
+    return ReactDOM.render(<HashRouter>{routes}</HashRouter>, document.getElementById('app'));
     // return Router.run(routes, (Handler, state) =>
     //   React.render(<Handler />, document.body)
     // );
   }
 
   controllerForPage(page) {
-    return createReactClass({
+    return AppContext(createReactClass({
       displayName: `${page.name}Page`,
 
       componentWillMount() { },
@@ -226,12 +224,12 @@ module.exports = class AppRouter {
             <div dangerouslySetInnerHTML={{ __html: marked(page.content) }} />
             {page.group_browser != null && page.group_browser !== "" &&
               <div className="group-area">
-                <GroupBrowser project={project} title={page.group_browser} />
+                <GroupBrowser project={this.props.project} title={page.group_browser} />
               </div>}
             <div className="updated-at">Last Update {page.updated_at}</div>
           </div>
         );
       }
-    });
+    }));
   }
 }

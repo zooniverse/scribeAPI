@@ -12,6 +12,7 @@ const React = require("react");
 const createReactClass = require("create-react-class");
 const PropTypes = require('prop-types');
 const { NavLink } = require("react-router-dom");
+const { AppContext } = require("../app.jsx");
 const SubjectSetViewer = require("../subject-set-viewer.jsx");
 const coreTools = require("../core-tools/index.jsx");
 const FetchSubjectSetsMixin = require("../../lib/fetch-subject-sets-mixin.jsx");
@@ -26,7 +27,7 @@ const HideOtherMarksButton = require("../buttons/hide-other-marks-button.jsx");
 const DraggableModal = require("../draggable-modal.jsx");
 const Draggable = require("../../lib/draggable.jsx");
 
-module.exports = createReactClass({
+module.exports = AppContext(createReactClass({
   // rename to Classifier
   displayName: "Mark",
 
@@ -574,7 +575,7 @@ module.exports = createReactClass({
       </div>
     );
   }
-});
+}));
 
 window.React = React;
 
