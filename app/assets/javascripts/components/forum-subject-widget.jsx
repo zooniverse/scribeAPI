@@ -9,6 +9,7 @@
 
 
 const React = require("react");
+const ReactDOM = require("react-dom");
 const PropTypes = require('prop-types');
 const ForumConnectors = require("./forum-connectors/index.jsx");
 const createReactClass = require("create-react-class");
@@ -103,7 +104,7 @@ module.exports = createReactClass({
     e.preventDefault();
     const term =
       this.refs.search_term != null
-        ? this.refs.search_term.getDOMNode().value.trim()
+        ? ReactDOM.findDOMNode(this.refs.search_term).value.trim()
         : undefined;
     const url = this.state.connector.search_url(term);
     return window.open(url, "_blank");

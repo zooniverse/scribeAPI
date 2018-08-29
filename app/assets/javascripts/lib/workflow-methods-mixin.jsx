@@ -22,37 +22,25 @@ module.exports = {
       return null;
     }
 
-    let k = (() => {
-      const result = [];
-      for (k = 0; k < this.props.project.workflows.length; k++) {
-        const w = this.props.project.workflows[k];
-        if (w.name === this.props.workflowName) {
-          result.push(k);
-        }
+    for (let i = 0; i < this.props.project.workflows.length; i++) {
+      const workflow = this.props.project.workflows[i];
+      if (workflow.name === this.props.workflowName) {
+        return workflow;
       }
-      return result;
-    })();
-    if ((k != null ? k.length : undefined) !== 1) {
-      return null;
     }
-    return this.props.project.workflows[k[0]];
+
+    return null;
   },
 
   getWorkflowByName(name) {
-    let k = (() => {
-      const result = [];
-      for (k = 0; k < this.props.project.workflows.length; k++) {
-        const w = this.props.project.workflows[k];
-        if (w.name === name) {
-          result.push(k);
-        }
+    for (let i = 0; i < this.props.project.workflows.length; i++) {
+      const workflow = this.props.project.workflows[i];
+      if (workflow.name === name) {
+        return workflow;
       }
-      return result;
-    })();
-    if ((k != null ? k.length : undefined) !== 1) {
-      return null;
     }
-    return this.props.project.workflows[k[0]];
+
+    return null;
   },
 
   // Start a new classification (optionally initialized with given annotation hash):
@@ -223,7 +211,7 @@ module.exports = {
 
     this.setState({
       classifications: classifications,
-      classificationIndex: classifications.length-1
+      classificationIndex: classifications.length - 1
     }, () => {
       this.forceUpdate();
       window.classifications = this.state.classifications; // make accessible to console
@@ -420,16 +408,16 @@ module.exports = {
     // PB: Moving from hash of options to an array of options
 
     if ((options = (() => {
-        const result = [];
-        for (let c of Array.from(
-          task.tool_config != null ? task.tool_config.options : undefined
-        )) {
-          if (c.value === __guard__(this.getCurrentClassification().annotation, x => x.value)) {
-            result.push(c);
-          }
+      const result = [];
+      for (let c of Array.from(
+        task.tool_config != null ? task.tool_config.options : undefined
+      )) {
+        if (c.value === __guard__(this.getCurrentClassification().annotation, x => x.value)) {
+          result.push(c);
         }
-        return result;
-      })()) && options.length > 0 && (opt = options[0]) != null && opt.next_task != null) {
+      }
+      return result;
+    })()) && options.length > 0 && (opt = options[0]) != null && opt.next_task != null) {
       nextKey = opt.next_task;
     } else {
       nextKey = this.getTasks()[this.state.taskKey].next_task;
@@ -457,8 +445,8 @@ module.exports = {
   // Get currently viewed subject set
   getCurrentSubjectSet() {
     if (this.state.subjectSets != null
-        ? this.state.subjectSets[this.state.subject_set_index]
-        : undefined
+      ? this.state.subjectSets[this.state.subject_set_index]
+      : undefined
     ) {
       return this.state.subjectSets != null
         ? this.state.subjectSets[this.state.subject_set_index]
@@ -533,11 +521,12 @@ module.exports = {
       const next_index = this.state.subject_index + 1;
       const next_subject = this.state.subjects[next_index];
       return this.setState({
-          taskKey: next_subject.type,
-          subject_index: next_index }, () => {
-          const key = this.getCurrentSubject().type;
-          return this.advanceToTask(key);
-        }
+        taskKey: next_subject.type,
+        subject_index: next_index
+      }, () => {
+        const key = this.getCurrentSubject().type;
+        return this.advanceToTask(key);
+      }
       );
 
       // Haz more pages of subjects?

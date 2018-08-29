@@ -444,14 +444,14 @@ module.exports = AppContext(createReactClass({
                 this.getActiveWorkflow() != null &&
                 this.getWorkflowByName("transcribe") != null ? (
                   <p>
-                    <Link
+                    <NavLink
                       to={`/transcribe/${
                         this.getWorkflowByName("transcribe").id
                         }/${__guard__(this.getCurrentSubject(), x5 => x5.id)}`}
                       className="transcribe-link"
                     >
                       Transcribe this {this.props.project.term("subject")} now!
-                  </Link>
+                  </NavLink>
                   </p>
                 ) : (
                   undefined

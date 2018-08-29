@@ -7,6 +7,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
+const ReactDOM = require("react-dom");
 const createReactClass = require("create-react-class");
 const GenericTask = require("./generic.jsx");
 // Markdown = require '../../components/markdown'
@@ -167,12 +168,12 @@ module.exports = createReactClass({
               className="drawing-tool-input"
               checked={i === this.getSubToolIndex()}
               ref={`inp-${i}`}
-              tool={tool}
+              data-tool={tool}
               onChange={this.handleChange.bind(this, i)}
             />
             <span>
               {tool.label}
-              {count && <span className="count">{count}</span>}
+              {!!count && <span className="count">{count}</span>}
             </span>
             {tool.help && tool.generates_subject_type &&
               <span
@@ -215,7 +216,7 @@ module.exports = createReactClass({
 
   handleChange(index, e) {
     const inp = this.refs[`inp-${index}`];
-    if (inp.getDOMNode().checked) {
+    if (ReactDOM.findDOMNode(inp).checked) {
       return this.updateState({
         subToolIndex: index,
         tool: inp.props.tool

@@ -7,6 +7,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
+const ReactDOM = require("react-dom");
 const Draggable = require("../lib/draggable.jsx");
 const DoneButton = require("./buttons/done-button.jsx");
 const createReactClass = require("create-react-class");
@@ -23,7 +24,7 @@ module.exports = createReactClass({
 
   componentDidMount() {
     // Prevent dragging from (presumably) accidentally selecting modal text on-drag
-    return $(React.findDOMNode(this)).disableSelection();
+    return $(ReactDOM.findDOMNode(this)).disableSelection();
   },
 
   closeModal() {

@@ -21,7 +21,7 @@ module.exports = createReactClass({
         <div className="answers">
           {React.Children.map(this.props.answers, answer => {
             return React.cloneElement(answer, {
-              classes: answer.props.classes + " answer",
+              className: answer.props.className + " answer",
               disabled: this.props.badSubject
             });
           })}

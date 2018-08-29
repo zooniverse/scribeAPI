@@ -5,6 +5,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
+const ReactDOM = require("react-dom");
 const createReactClass = require("create-react-class");
 
 const NameSearch = createReactClass({
@@ -19,7 +20,7 @@ const NameSearch = createReactClass({
   handleKeyPress(e) {
     if (this.isMounted()) {
       const term = e.target.value;
-      const el = $(React.findDOMNode(this));
+      const el = $(ReactDOM.findDOMNode(this));
       return el.autocomplete({
         source: (request, response) => {
           return $.ajax({

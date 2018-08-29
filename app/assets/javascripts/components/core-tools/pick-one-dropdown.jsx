@@ -5,6 +5,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
+const ReactDOM = require("react-dom");
 const createReactClass = require("create-react-class");
 const GenericTask = require("./generic.jsx");
 // Markdown = require '../../components/markdown'
@@ -104,7 +105,7 @@ module.exports = createReactClass({
   },
 
   handleChange(index, e) {
-    const { value } = $(this.refs.inputs.getDOMNode()).find("select")[0];
+    const { value } = $(ReactDOM.findDOMNode(this.refs.inputs)).find("select")[0];
     this.props.onChange({
       value
     });

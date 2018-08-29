@@ -9,19 +9,19 @@ const API = require("./api.jsx");
 module.exports = {
   componentDidMount() {
     // Fetching a single subject?
-    if (this.props.params.subject_id != null) {
-      return this.fetchSubject(this.props.params.subject_id);
+    if (this.props.match.params.subject_id != null) {
+      return this.fetchSubject(this.props.match.params.subject_id);
 
       // Fetching subjects by current workflow and optional filters:
     } else {
+      let query = queryString.parse(this.props.location);
       // Gather filters by which to query subjects
       const params = {
-        parent_subject_id: this.props.params.parent_subject_id,
-        group_id:
-          this.props.query.group_id != null ? this.props.query.group_id : null,
+        parent_subject_id: this.props.match.params.parent_subject_id,
+        group_id: query.group_id != null ? query.group_id : null,
         subject_set_id:
-          this.props.query.subject_set_id != null
-            ? this.props.query.subject_set_id
+          query.subject_set_id != null
+            ? query.subject_set_id
             : null
       };
       return this.fetchSubjects(params);

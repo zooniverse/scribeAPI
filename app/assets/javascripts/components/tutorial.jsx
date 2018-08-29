@@ -5,6 +5,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
+const ReactDOM = require("react-dom");
 const PropTypes = require('prop-types');
 const DraggableModal = require("./draggable-modal.jsx");
 const createReactClass = require("create-react-class");
@@ -45,7 +46,7 @@ module.exports = createReactClass({
   },
 
   animateClose() {
-    const $modal = $(this.refs.tutorialModal.getDOMNode());
+    const $modal = $(ReactDOM.findDOMNode(this.refs.tutorialModal));
     const $clone = $modal.clone();
     const $link = $(".tutorial-link").first();
     if ($link.length) {

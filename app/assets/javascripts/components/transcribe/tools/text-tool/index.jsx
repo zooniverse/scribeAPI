@@ -7,6 +7,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
+const ReactDOM = require("react-dom");
 const DraggableModal = require("../../../draggable-modal.jsx");
 const SmallButton = require("../../../buttons/small-button.jsx");
 const HelpButton = require("../../../buttons/help-button.jsx");
@@ -73,7 +74,7 @@ const TextTool = createReactClass({
   componentWillUnmount() {
     const tool_config = this.toolConfig();
     if (tool_config.suggest === "common") {
-      const el = $(this.refs.input0.getDOMNode());
+      const el = $(ReactDOM.findDOMNode(this.refs.input0));
       if (el.autocomplete != null) {
         return el.autocomplete("destroy");
       }
@@ -89,7 +90,7 @@ const TextTool = createReactClass({
   // Set focus on input:
   focus() {
     const el = $(
-      this.refs.input0 != null ? this.refs.input0.getDOMNode() : undefined
+      this.refs.input0 != null ? ReactDOM.findDOMNode(this.refs.input0) : undefined
     );
     if (el != null && el.length) {
       return el.focus();
@@ -135,7 +136,7 @@ const TextTool = createReactClass({
   applyAutoComplete() {
     if (this.isMounted() && this.toolConfig().suggest === "common") {
       const el = $(
-        this.refs.input0 != null ? this.refs.input0.getDOMNode() : undefined
+        this.refs.input0 != null ? ReactDOM.findDOMNode(this.refs.input0) : undefined
       );
       return el.autocomplete({
         open: () => this.setState({ autocompleting: true }),
@@ -200,7 +201,7 @@ const TextTool = createReactClass({
   getCaret() {
     let el;
     return (el = $(
-      this.refs.input0 != null ? this.refs.input0.getDOMNode() : undefined
+      this.refs.input0 != null ? ReactDOM.findDOMNode(this.refs.input0) : undefined
     ));
   },
 

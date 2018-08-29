@@ -36,7 +36,7 @@ class App extends React.Component {
     const { project } = window;
     return {
       project,
-      onCloseTutorial: this.setTutorialComplete,
+      onCloseTutorial: this.setTutorialComplete.bind(this),
       user: this.state.user
     }
   }
@@ -79,11 +79,11 @@ class App extends React.Component {
         : undefined) != null;
 
     // Immediately amend user object with tutorial_complete flag so that we can hide the Tutorial:
-    this.setState({
-      user: $.extend(this.state.user != null ? this.state.user : {}, {
+    this.setState((prevState) => ({
+      user: $.extend(prevState.user != null ? prevState.user : {}, {
         tutorial_complete: true
       })
-    });
+    }));
 
     // Don't re-save user.tutorial_complete if already saved:
     if (previously_saved) {

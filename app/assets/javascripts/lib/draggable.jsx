@@ -5,6 +5,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
+const ReactDOM = require("react-dom");
 const PropTypes = require('prop-types');
 
 const createReactClass = require("create-react-class");
@@ -85,7 +86,7 @@ module.exports = createReactClass({
       return;
     }
 
-    const $el = $(this.getDOMNode());
+    const $el = $(ReactDOM.findDOMNode(this));
     const pos = $el.position();
     const offset = $el.offset();
     const parent_left = offset.left - pos.left;

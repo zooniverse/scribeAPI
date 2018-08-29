@@ -1,4 +1,5 @@
 const React = require("react");
+const ReactDOM = require("react-dom");
 const DraggableModal = require("./draggable-modal.jsx");
 const createReactClass = require("create-react-class");
 
@@ -6,7 +7,7 @@ module.exports = createReactClass({
   displayName: "HelpModal",
 
   componentDidMount() {
-    const el = $(React.findDOMNode(this)).find("#accordion-help-modal");
+    const el = $(ReactDOM.findDOMNode(this)).find("#accordion-help-modal");
     el.accordion({
       collapsible: true,
       active: false,

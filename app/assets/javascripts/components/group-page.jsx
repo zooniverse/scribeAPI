@@ -20,7 +20,7 @@ const GroupPage = createReactClass({
 
   componentDidMount() {
     API.type("groups")
-      .get(this.props.params.group_id)
+      .get(this.props.match.params.group_id)
       .then(group => {
         return this.setState({
           group
@@ -28,7 +28,7 @@ const GroupPage = createReactClass({
       });
 
     return API.type("subject_sets")
-      .get({ group_id: this.props.params.group_id })
+      .get({ group_id: this.props.match.params.group_id })
       .then(sets => {
         return this.setState({
           subject_sets: sets

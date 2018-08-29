@@ -22,6 +22,7 @@
     "json-api-client": "^0.4.4",
     "normalize-styl": "^3.0.3",
     "normalize.css": "^3.0.3",
+    "query-string": "^6.1.0",
     "react": "^15.6.2",
     "react-dom": "^15.6.2",
     "react-router": "^4.3.1",

@@ -41,7 +41,7 @@ module.exports = createReactClass({
       classificationIndex: 0,
       subject_index: 0,
       helping: false,
-      last_mark_task_key: this.props.query.mark_key,
+      last_mark_task_key: queryString.parse(this.props.location).mark_key,
       showingTutorial: false
     };
   },
@@ -123,16 +123,17 @@ module.exports = createReactClass({
 
   // transition back to mark workflow
   returnToMarking() {
+    let query = queryString.parse(this.props.location);
     return this.context.router.transitionTo(
       "mark",
       {},
       {
         subject_set_id: this.getCurrentSubject().subject_set_id,
         selected_subject_id: this.getCurrentSubject().parent_subject_id,
-        mark_task_key: this.props.query.mark_key,
+        mark_task_key: query.mark_key,
         subject_id: this.getCurrentSubject().id,
 
-        page: this.props.query.page
+        page: query.page
       }
     );
   },
@@ -140,11 +141,11 @@ module.exports = createReactClass({
   render() {
     let isLastSubject, transcribeMode;
     if (
-      this.props.params.workflow_id != null &&
-      this.props.params.parent_subject_id != null
+      this.props.match.params.workflow_id != null &&
+      this.props.match.params.parent_subject_id != null
     ) {
       transcribeMode = "page";
-    } else if (this.props.params.subject_id) {
+    } else if (this.props.match.params.subject_id) {
       transcribeMode = "single";
     } else {
       transcribeMode = "random";
@@ -223,7 +224,7 @@ Currently, there are no `}
                     annotation={currentAnnotation}
                     subject={this.getCurrentSubject()}
                     onChange={this.handleDataFromTool}
-                    subjectCurrentPage={this.props.query.page}
+                    subjectCurrentPage={queryString.parse(this.props.location).page}
                     onComplete={this.handleTaskComplete}
                     onBack={this.makeBackHandler()}
                     workflow={this.getActiveWorkflow()}

@@ -8,6 +8,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
+const ReactDOM = require("react-dom");
 const createReactClass = require("create-react-class");
 
 const SVGImage = require("./svg-image.jsx");
@@ -309,7 +310,7 @@ module.exports = createReactClass({
   getScale() {
     let rect =
       this.refs.sizeRect != null
-        ? this.refs.sizeRect.getDOMNode().getBoundingClientRect()
+        ? ReactDOM.findDOMNode(this.refs.sizeRect).getBoundingClientRect()
         : undefined;
 
     if (rect == null || rect.width == null) {
@@ -327,7 +328,7 @@ module.exports = createReactClass({
   },
 
   getEventOffset(e) {
-    const rect = this.refs.sizeRect.getDOMNode().getBoundingClientRect();
+    const rect = ReactDOM.findDOMNode(this.refs.sizeRect).getBoundingClientRect();
     const { scale } = this.state; // @getScale()
     const x =
       (e.pageX - window.pageXOffset - rect.left) / scale.horizontal +

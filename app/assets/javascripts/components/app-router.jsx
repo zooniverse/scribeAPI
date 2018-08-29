@@ -64,7 +64,7 @@ module.exports = class AppRouter {
             return (
               <Route
                 key={key}
-                path={workflow.name}
+                path={'/' + workflow.name}
                 component={component}
                 name={workflow.name}
               />
@@ -84,7 +84,7 @@ module.exports = class AppRouter {
             return (
               <Route
                 key={key}
-                path={workflow.name + "/:subject_set_id" + "/:subject_id"}
+                path={'/' + workflow.name + "/:subject_set_id" + "/:subject_id"}
                 component={component}
                 name={workflow.name + "_specific_subject"}
               />
@@ -104,7 +104,7 @@ module.exports = class AppRouter {
             return (
               <Route
                 key={key}
-                path={workflow.name + "/:subject_set_id"}
+                path={'/' + workflow.name + "/:subject_set_id"}
                 component={component}
                 name={workflow.name + "_specific_set"}
               />
@@ -124,7 +124,7 @@ module.exports = class AppRouter {
             return (
               <Route
                 key={key}
-                path={workflow.name + "/:subject_id"}
+                path={'/' + workflow.name + "/:subject_id"}
                 component={component}
                 name={workflow.name + "_specific"}
               />
@@ -144,7 +144,7 @@ module.exports = class AppRouter {
             return (
               <Route
                 key={key}
-                path={workflow.name + "/:workflow_id" + "/:parent_subject_id"}
+                path={'/' + workflow.name + "/:workflow_id" + "/:parent_subject_id"}
                 component={component}
                 name={workflow.name + "_entire_page"}
               />
@@ -161,8 +161,8 @@ module.exports = class AppRouter {
               );
             })
           }
-          <Route path="groups" component={GroupBrowser} name="groups" />
-          <Route path="groups/:group_id" component={GroupPage} name="group_show" />
+          <Route path="/groups" component={GroupBrowser} name="groups" />
+          <Route path="/groups/:group_id" component={GroupPage} name="group_show" />
         </Switch>
       </App>
     );
@@ -196,7 +196,7 @@ module.exports = class AppRouter {
           $(`a#${selectedID[1]}`).addClass("selected-content");
         }
 
-        const elms = $(React.findDOMNode(this)).find("a.about-nav");
+        const elms = $(ReactDOM.findDOMNode(this)).find("a.about-nav");
         elms.on("click", function (e) {
           e.preventDefault();
           $(".selected-content").removeClass("selected-content");
@@ -206,7 +206,7 @@ module.exports = class AppRouter {
           return $(divId).addClass("selected-content");
         });
 
-        const el = $(React.findDOMNode(this)).find("#accordion");
+        const el = $(ReactDOM.findDOMNode(this)).find("#accordion");
         return el.accordion({
           collapsible: true,
           active: false,

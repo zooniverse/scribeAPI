@@ -8,6 +8,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const API = require("./api.jsx");
+const queryString = require('query-string');
 
 module.exports = {
   fetchSubjectSetsBasedOnProps() {
@@ -18,9 +19,9 @@ module.exports = {
       }
 
       const state = {};
-
+      let query = queryString.parse(this.props.location);
       // If a specific subject id indicated..
-      if (this.props.query.selected_subject_id != null) {
+      if (query.selected_subject_id != null) {
         // Get the index of the specified subject in the (presumably first & only) subject set:
         let left;
         state.subject_index =
@@ -28,7 +29,7 @@ module.exports = {
             const result = [];
             for (let ind = 0; ind < subject_sets[0].subjects.length; ind++) {
               const subj = subject_sets[0].subjects[ind];
-              if (subj.id === this.props.query.selected_subject_id) {
+              if (subj.id === query.selected_subject_id) {
                 result.push(ind);
               }
             }
@@ -39,8 +40,8 @@ module.exports = {
       }
 
       // If taskKey specified, now's the time to set that too:
-      if (this.props.query.mark_task_key) {
-        state.taskKey = this.props.query.mark_task_key;
+      if (query.mark_task_key) {
+        state.taskKey = query.mark_task_key;
       }
 
       if (state) {
@@ -48,11 +49,12 @@ module.exports = {
       }
     };
 
+    let query = queryString.parse(this.props.location);
     // Fetch by subject-set id?
     const subject_set_id =
-      this.props.params.subject_set_id != null
-        ? this.props.params.subject_set_id
-        : this.props.query.subject_set_id;
+      this.props.match.params.subject_set_id != null
+        ? this.props.match.params.subject_set_id
+        : query.subject_set_id;
     if (subject_set_id != null) {
       return this.fetchSubjectSet(subject_set_id, postFetchCallback);
 
@@ -60,8 +62,7 @@ module.exports = {
     } else {
       // Gather filters by which to query subject-sets
       const params = {
-        group_id:
-          this.props.query.group_id != null ? this.props.query.group_id : null
+        group_id: query.group_id != null ? query.group_id : null
       };
       return this.fetchSubjectSets(params, postFetchCallback);
     }
@@ -84,7 +85,7 @@ module.exports = {
 
   orderSubjectsByOrder(subject_sets) {
     for (let subject_set of Array.from(subject_sets)) {
-      subject_set.subjects = subject_set.subjects.sort(function(a, b) {
+      subject_set.subjects = subject_set.subjects.sort(function (a, b) {
         if (a.order >= b.order) {
           return 1;
         } else {
@@ -110,7 +111,7 @@ module.exports = {
   // This is the main fetch method for subject sets. (fetches via SubjectSetsController#index)
   fetchSubjectSets(params, callback) {
     params = $.extend({ workflow_id: this.getActiveWorkflow().id }, params);
-    const _callback = sets => {};
+    const _callback = sets => { };
 
     // Apply defaults to unset params:
     const _params = $.extend(
