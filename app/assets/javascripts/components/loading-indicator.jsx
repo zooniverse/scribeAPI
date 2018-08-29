@@ -1,8 +1,9 @@
 
 
 const React = require("react");
+const createReactClass = require("create-react-class");
 
-const LoadingIndicator = require('create-react-class')({
+const LoadingIndicator = createReactClass({
   displayName: "LoadingIndicator",
 
   render() {

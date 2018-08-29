@@ -1,5 +1,6 @@
 const React = require("react");
-const GenericTask = require("./generic");
+const createReactClass = require("create-react-class");
+const GenericTask = require("./generic.jsx");
 // Markdown = require '../../components/markdown'
 
 const NOOP = Function.prototype;
@@ -53,7 +54,7 @@ const icons = {
   )
 };
 
-// Summary = require('create-react-class')
+// Summary = createReactClass
 //   displayName: 'SingleChoiceSummary'
 
 //   getDefaultProps: ->
@@ -96,7 +97,7 @@ const icons = {
 //           </div>}
 //     </div>
 
-module.exports = require('create-react-class')({
+module.exports = createReactClass({
   displayName: "PickMany",
   statics: {
     // Summary: Summary
@@ -148,13 +149,10 @@ module.exports = require('create-react-class')({
               onChange={this.handleChange.bind(this, i)}
             />
             <span>{option.label}</span>
-            {option.help != null ? (
+            {option.help != null &&
               <span className="help" data-text={`${option.help}`}>
                 <i className="fa fa-question" />
-              </span>
-            ) : (
-                undefined
-              )}
+              </span>}
           </label>
         );
       }

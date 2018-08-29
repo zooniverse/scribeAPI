@@ -7,14 +7,16 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
-const GenericTask = require("./generic");
-const LabeledRadioButton = require("../buttons/labeled-radio-button");
+const createReactClass = require("create-react-class");
+const PropTypes = require('prop-types');
+const GenericTask = require("./generic.jsx");
+const LabeledRadioButton = require("../buttons/labeled-radio-button.jsx");
 
 // Markdown = require '../../components/markdown'
 
 const NOOP = Function.prototype;
 
-// Summary = require('create-react-class')
+// Summary = createReactClass
 //   displayName: 'SingleChoiceSummary'
 
 //   getDefaultProps: ->
@@ -55,7 +57,7 @@ const NOOP = Function.prototype;
 //       </div>
 //     </div>
 
-module.exports = require('create-react-class')({
+module.exports = createReactClass({
   displayName: "SingleChoiceTask",
 
   statics: {
@@ -76,9 +78,9 @@ module.exports = require('create-react-class')({
 
   propTypes() {
     return {
-      task: React.PropTypes.object.isRequired,
-      annotation: React.PropTypes.object.isRequired,
-      onChange: React.PropTypes.func.isRequired
+      task: PropTypes.object.isRequired,
+      annotation: PropTypes.object.isRequired,
+      onChange: PropTypes.func.isRequired
     };
   },
 

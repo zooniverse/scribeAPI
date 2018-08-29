@@ -9,11 +9,11 @@
 
 
 const React = require("react");
-const { Router, Routes, Route, Link } = require("react-router");
-const LoadingIndicator = require("./loading-indicator");
-const ForumConnectors = require("./forum-connectors");
+const PropTypes = require('prop-types');
+const ForumConnectors = require("./forum-connectors/index.jsx");
+const createReactClass = require("create-react-class");
 
-module.exports = require('create-react-class')({
+module.exports = createReactClass({
   displayName: "ForumSubjectWidget",
   resizing: false,
 
@@ -26,7 +26,7 @@ module.exports = require('create-react-class')({
   },
 
   propTypes: {
-    project: React.PropTypes.object
+    project: PropTypes.object
   },
 
   getInitialState() {

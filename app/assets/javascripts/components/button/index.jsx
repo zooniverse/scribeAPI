@@ -1,12 +1,14 @@
-ResizeButton = require('./resize-button');
-React = require('react');
+const ResizeButton = require("./resize-button.jsx");
+const React = require("react");
+const PropTypes = require('prop-types');
+const createReactClass = require("create-react-class");
 
-module.export = require('create-react-class')({
+module.exports = createReactClass({
   displayName: 'ButtonLink',
   propTypes: {
-    name: React.PropTypes.string,
-    type: React.PropTypes.string,
-    url: React.PropTypes.string
+    name: PropTypes.string,
+    type: PropTypes.string,
+    url: PropTypes.string
   },
   handleClick: (event) => {
     event.preventDefault();

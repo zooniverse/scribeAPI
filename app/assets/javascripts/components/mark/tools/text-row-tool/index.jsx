@@ -6,11 +6,12 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
-const DrawingToolRoot = require("./root");
-const Draggable = require("lib/draggable");
-const DeleteButton = require("./delete-button");
-const DragHandle = require("./drag-handle");
-const MarkButtonMixin = require("lib/mark-button-mixin");
+const createReactClass = require("create-react-class");
+const DrawingToolRoot = require("./root.jsx");
+const Draggable = require("../../../../lib/draggable.jsx");
+const DeleteButton = require("./delete-button.jsx");
+const DragHandle = require("./drag-handle.jsx");
+const MarkButtonMixin = require("../../../../lib/mark-button-mixin.jsx");
 
 // DEFAULT SETTINGS
 const RADIUS = 10;
@@ -21,7 +22,7 @@ const DELETE_BUTTON_ANGLE = 45;
 const DEFAULT_HEIGHT = 100;
 const MINIMUM_HEIGHT = 25;
 
-module.exports = require('create-react-class')({
+module.exports = createReactClass({
   displayName: "TextRowTool",
 
   mixins: [MarkButtonMixin], // adds MarkButton and helper methods to each mark

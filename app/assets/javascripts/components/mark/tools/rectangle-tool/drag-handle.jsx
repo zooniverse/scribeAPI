@@ -4,7 +4,8 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
-const Draggable = require("lib/draggable");
+const createReactClass = require("create-react-class");
+const Draggable = require("../../../../lib/draggable.jsx");
 
 const RADIUS = 4;
 const STROKE_COLOR = "#fff";
@@ -13,7 +14,7 @@ const STROKE_WIDTH = 1.5;
 
 const OVERSHOOT = 4;
 
-module.exports = require('create-react-class')({
+module.exports = createReactClass({
   displayName: "DragHandle",
 
   render() {

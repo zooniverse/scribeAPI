@@ -5,15 +5,16 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
-const HelpModal = require("./help-modal");
-const DraggableModal = require("./draggable-modal");
+const PropTypes = require('prop-types');
+const DraggableModal = require("./draggable-modal.jsx");
+const createReactClass = require("create-react-class");
 
-module.exports = require('create-react-class')({
+module.exports = createReactClass({
   displayName: "Tutorial",
 
   propTypes: {
-    tutorial: React.PropTypes.object.isRequired,
-    onCloseTutorial: React.PropTypes.func.isRequired
+    tutorial: PropTypes.object.isRequired,
+    onCloseTutorial: PropTypes.func.isRequired
   },
 
   getInitialState() {

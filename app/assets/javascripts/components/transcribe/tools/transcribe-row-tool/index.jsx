@@ -6,13 +6,15 @@
  */
 
 const React = require("react");
-const Draggable = require("lib/draggable");
-const PrevButton = require("./prev-button");
-const NextButton = require("./next-button");
-const DoneButton = require("./done-button");
-const TranscribeInput = require("./transcribe-input");
+const createReactClass = require("create-react-class");
 
-const TranscribeTool = require('create-react-class')({
+const Draggable = require("../lib/draggable.jsx");
+const PrevButton = require("./prev-button.jsx");
+const NextButton = require("./next-button.jsx");
+const DoneButton = require("./done-button.jsx");
+const TranscribeInput = require("./transcribe-input.jsx");
+
+const TranscribeTool = createReactClass({
   displayName: "TranscribeTool",
 
   componentWillReceiveProps() {
@@ -41,7 +43,7 @@ const TranscribeTool = require('create-react-class')({
   // dx: window.innerWidth/2 - 200
   // dy: @props.yScale * @props.selectedMark.yLower + 20
 
-  componentDidMount() {},
+  componentDidMount() { },
 
   nextTextEntry() {
     return this.setState(
@@ -129,7 +131,7 @@ const TranscribeTool = require('create-react-class')({
     });
   }, //, =>
 
-  handleInitRelease() {},
+  handleInitRelease() { },
 
   render() {
     const { currentStep } = this.state;
@@ -185,5 +187,4 @@ const TranscribeTool = require('create-react-class')({
     );
   }
 });
-
 module.exports = TranscribeTool;

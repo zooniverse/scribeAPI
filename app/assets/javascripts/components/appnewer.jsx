@@ -4,41 +4,31 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
-const Router = require("react-router");
-const {
-  Handler,
-  Root,
-  RouteHandler,
-  Route,
-  DefaultRoute,
-  Navigation,
-  Link
-} = Router;
+const Router, { Route } = require("react-router");
+const createReactClass = require("create-react-class");
 
-const BrowserHistory = require("react-router/lib/BrowserHistory");
-
-const Foo1 = require('create-react-class')({
+const Foo1 = createReactClass({
   displayName: "Foo1",
   render() {
     return <div>Foo 1 page</div>;
   }
 });
 
-const Foo2 = require('create-react-class')({
+const Foo2 = createReactClass({
   displayName: "Foo2",
   render() {
     return <div>Foo 2 page</div>;
   }
 });
 
-const NoMatch = require('create-react-class')({
+const NoMatch = createReactClass({
   displayName: "NoMatch",
   render() {
     return <div>No match</div>;
   }
 });
 
-const App = require('create-react-class')({
+const App = createReactClass({
   displayName: "App",
   render() {
     return (

@@ -4,7 +4,7 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const API = require("./api");
+const API = require("./api.jsx");
 
 module.exports = {
   componentDidMount() {
@@ -77,7 +77,6 @@ module.exports = {
         } else {
           this.setState({
             subject_index: 0,
-            subjects,
             subjects: this.orderSubjectsByY(subjects),
             subjects_next_page: subjects[0].getMeta("next_page")
           });

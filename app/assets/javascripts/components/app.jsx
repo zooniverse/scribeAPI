@@ -6,29 +6,44 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
-const MainHeader = require("../partials/main-header");
-const Footer = require("../partials/footer");
-const API = require("../lib/api");
-const Project = require("../models/project.coffee");
+const PropTypes = require("prop-types");
 
-const BrowserWarning = require("./browser-warning");
+const MainHeader = require("../partials/main-header.jsx");
+const Footer = require("../partials/footer.jsx");
+const API = require("../lib/api.jsx");
 
-const { RouteHandler } = require("react-router");
+const BrowserWarning = require("./browser-warning.jsx");
 
 window.API = API;
 
-const App = require('create-react-class')({
-  getInitialState() {
-    return {
+const contextTypes = {
+  project: PropTypes.object,
+  onCloseTutorial: PropTypes.func.isRequired,
+  user: PropTypes.object
+}
+
+class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
       routerRunning: false,
       user: null,
       loginProviders: []
     };
-  },
+  }
+
+  getChildContext() {
+    const { project } = window;
+    return {
+      project,
+      onCloseTutorial: this.setTutorialComplete,
+      user: this.state.user
+    }
+  }
 
   componentDidMount() {
     return this.fetchUser();
-  },
+  }
 
   fetchUser() {
     this.setState({
@@ -55,7 +70,7 @@ const App = require('create-react-class')({
         error: "Having trouble logging you in"
       });
     });
-  },
+  }
 
   setTutorialComplete() {
     const previously_saved =
@@ -63,7 +78,7 @@ const App = require('create-react-class')({
         ? this.state.user.tutorial_complete
         : undefined) != null;
 
-    // Immediately ammend user object with tutorial_complete flag so that we can hide the Tutorial:
+    // Immediately amend user object with tutorial_complete flag so that we can hide the Tutorial:
     this.setState({
       user: $.extend(this.state.user != null ? this.state.user : {}, {
         tutorial_complete: true
@@ -79,7 +94,7 @@ const App = require('create-react-class')({
     return request.fail(error => {
       return console.log("failed to set tutorial value for user");
     });
-  },
+  }
 
   render() {
     const { project } = window;
@@ -113,12 +128,7 @@ const App = require('create-react-class')({
           />
           <div className="main-content">
             <BrowserWarning />
-            <RouteHandler
-              hash={window.location.hash}
-              project={project}
-              onCloseTutorial={this.setTutorialComplete}
-              user={this.state.user}
-            />
+            {this.props.children}
           </div>
           <Footer
             privacyPolicy={project.privacy_policy}
@@ -129,9 +139,27 @@ const App = require('create-react-class')({
       </div>
     );
   }
-});
+}
 
-module.exports = App;
+App.childContextTypes = contextTypes;
+const AppContext = (ComponentToWrap) => {
+  class AppContextComponent extends React.Component {
+    render() {
+      return (
+        <ComponentToWrap {...this.props} {...this.context} />
+      )
+    }
+  }
+
+  AppContextComponent.contextTypes = contextTypes;
+
+  return AppContextComponent;
+}
+
+module.exports = {
+  App,
+  AppContext
+};
 
 function __guard__(value, transform) {
   return typeof value !== "undefined" && value !== null

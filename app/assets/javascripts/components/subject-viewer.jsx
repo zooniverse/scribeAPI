@@ -8,21 +8,16 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
-const { Router, Routes, Route, Link } = require("react-router");
-const SVGImage = require("./svg-image");
-const MouseHandler = require("lib/mouse-handler");
-const LoadingIndicator = require("./loading-indicator");
-const SubjectMetadata = require("./subject-metadata");
-const NextButton = require("./action-button");
-const markingTools = require("./mark/tools");
+const createReactClass = require("create-react-class");
 
-const RowFocusTool = require("components/row-focus-tool");
+const SVGImage = require("./svg-image.jsx");
+const MouseHandler = require("../lib/mouse-handler.jsx");
+const LoadingIndicator = require("./loading-indicator.jsx");
+const NextButton = require("./action-button.jsx");
+const markingTools = require("./mark/tools/index.jsx");
+const MarkDrawingMixin = require("../lib/mark-drawing-mixin.jsx");
 
-const MarkDrawingMixin = require("lib/mark-drawing-mixin");
-
-const API = require("lib/api");
-
-module.exports = require('create-react-class')({
+module.exports = createReactClass({
   displayName: "SubjectViewer",
   resizing: false,
 

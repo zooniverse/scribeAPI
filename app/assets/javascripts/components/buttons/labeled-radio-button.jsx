@@ -1,12 +1,12 @@
 const React = require("react");
+const createReactClass = require("create-react-class");
 
-module.exports = require('create-react-class')({
+module.exports = createReactClass({
   displayName: "LabeledRadioButton",
 
   getDefaultProps() {
     return {
       classes: "",
-      key: Math.random(),
       name: "input0",
       value: "",
       checked: false,

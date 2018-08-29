@@ -5,21 +5,23 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
+const PropTypes = require('prop-types');
 
-module.exports = require('create-react-class')({
+const createReactClass = require("create-react-class");
+module.exports = createReactClass({
   displayName: "MouseHandler",
 
   _previousEventCoords: null,
 
   propTypes: {
-    // children: React.PropTypes.component.isRequired
-    onStart: React.PropTypes.oneOfType([
-      React.PropTypes.func,
-      React.PropTypes.bool
+    // children: PropTypes.component.isRequired
+    onStart: PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.bool
     ]),
-    onDrag: React.PropTypes.func,
-    onEnd: React.PropTypes.func,
-    disabled: React.PropTypes.bool
+    onDrag: PropTypes.func,
+    onEnd: PropTypes.func,
+    disabled: PropTypes.bool
   },
 
   render() {

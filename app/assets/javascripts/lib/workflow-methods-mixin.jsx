@@ -8,12 +8,12 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const Classification = require("models/classification.coffee");
+const Classification = require("../models/classification.js");
 
-const coreTools = require("components/core-tools");
-const markTools = require("components/mark/tools");
-const transcribeTools = require("components/transcribe/tools");
-const verifyTools = require("components/verify/tools");
+const coreTools = require("../components/core-tools/index.jsx");
+const markTools = require("../components/mark/tools/index.jsx");
+const transcribeTools = require("../components/transcribe/tools/index.jsx");
+const verifyTools = require("../components/verify/tools/index.jsx");
 
 module.exports = {
   // Convenience method for selecting currently active workflow based on active controller
@@ -576,8 +576,8 @@ module.exports = {
             header: "All Done!",
             message: `There's nothing more for you to ${this.props.workflowName} here.`,
             onClick: () => {
-              if (typeof this.transitionTo === "function") {
-                this.transitionTo("mark");
+              if (typeof this.context.router.transitionTo === "function") {
+                this.context.router.transitionTo("mark");
               } // "/#/mark"
               return this.setState({
                 notice: null,

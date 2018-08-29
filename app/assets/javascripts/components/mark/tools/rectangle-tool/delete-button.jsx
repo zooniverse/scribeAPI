@@ -4,6 +4,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
+const createReactClass = require("create-react-class");
 
 const RADIUS = 8;
 const STROKE_COLOR = "#000";
@@ -19,7 +20,7 @@ L 0 ${RADIUS * 0.7}\
 
 const DESTROY_TRANSITION_DURATION = 0;
 
-module.exports = require('create-react-class')({
+module.exports = createReactClass({
   displayName: "DeleteButton",
 
   getDefaultProps() {

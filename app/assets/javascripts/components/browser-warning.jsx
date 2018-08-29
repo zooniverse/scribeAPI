@@ -4,9 +4,10 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
-const GenericButton = require("./buttons/generic-button");
+const GenericButton = require("./buttons/generic-button.jsx");
+const createReactClass = require("create-react-class");
 
-module.exports = require('create-react-class')({
+module.exports = createReactClass({
   displayName: "BrowserWarning",
 
   getInitialState() {

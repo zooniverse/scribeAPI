@@ -6,14 +6,15 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
-const DraggableModal = require("../../../draggable-modal");
-const GenericButton = require("../../../buttons/generic-button");
-const DoneButton = require("../../../buttons/done-button");
-const HelpButton = require("../../../buttons/help-button");
-const BadSubjectButton = require("../../../buttons/bad-subject-button");
-const SmallButton = require("../../../buttons/small-button");
+const DraggableModal = require("../../../draggable-modal.jsx");
+const GenericButton = require("../../../buttons/generic-button.jsx");
+const DoneButton = require("../../../buttons/done-button.jsx");
+const HelpButton = require("../../../buttons/help-button.jsx");
+const BadSubjectButton = require("../../../buttons/bad-subject-button.jsx");
+const SmallButton = require("../../../buttons/small-button.jsx");
 
-const VerifyTool = require('create-react-class')({
+const createReactClass = require("create-react-class");
+const VerifyTool = createReactClass({
   displayName: "VerifyTool",
 
   getInitialState() {

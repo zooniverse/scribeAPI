@@ -1,5 +1,3 @@
-const markingTools = require("components/mark/tools");
-
 module.exports = {
   //   PB: This appears unused. DEP
   //   showPreviousMarks: ->

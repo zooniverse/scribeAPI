@@ -1,6 +1,8 @@
 
-import React from "react";
-import ReactTestUtils from "react-dom/test-utils";
+const React = require("react");
+const ReactTestUtils = require("react-dom/test-utils");
+
+const TextTool = require("../components/transcribe/tools/text-tool/index.jsx");
 
 describe("text-tool index", function () {
   const {
@@ -31,8 +33,6 @@ describe("text-tool index", function () {
       }
     }
   };
-
-  const TextTool = require("../components/transcribe/tools/text-tool/index");
 
   it("should load the TextTool module", () =>
     expect(TextTool).toBeTruthy());

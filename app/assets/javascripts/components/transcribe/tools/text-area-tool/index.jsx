@@ -1,7 +1,8 @@
 const React = require("react");
-const TextTool = require("../text-tool");
+const createReactClass = require("create-react-class");
+const TextTool = require("../text-tool/index.jsx");
 
-const TextAreaTool = require('create-react-class')({
+const TextAreaTool = createReactClass({
   displayName: "TextAreaTool",
 
   render() {

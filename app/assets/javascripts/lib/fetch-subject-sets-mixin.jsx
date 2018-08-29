@@ -7,7 +7,7 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const API = require("./api");
+const API = require("./api.jsx");
 
 module.exports = {
   fetchSubjectSetsBasedOnProps() {

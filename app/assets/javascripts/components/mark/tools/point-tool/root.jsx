@@ -5,11 +5,12 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
+const createReactClass = require("create-react-class");
 
 const STROKE_WIDTH = 1.5;
 const SELECTED_STROKE_WIDTH = 2.5;
 
-module.exports = require('create-react-class')({
+module.exports = createReactClass({
   displayName: "DrawingToolRoot",
 
   statics: {

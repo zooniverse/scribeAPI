@@ -1,7 +1,8 @@
 
 const React = require("react");
+const createReactClass = require("create-react-class");
 
-const PrevButton = require('create-react-class')({
+const PrevButton = createReactClass({
   displayName: "PrevButton",
 
   render() {

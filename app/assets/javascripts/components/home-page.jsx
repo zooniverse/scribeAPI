@@ -8,32 +8,28 @@
  */
 
 const React = require("react");
-const GroupBrowser = require("./group-browser");
-const NameSearch = require("./name-search");
-const { Navigation } = require("react-router");
+const { AppContext } = require("./app.jsx");
+const GroupBrowser = require("./group-browser.jsx");
+const NameSearch = require("./name-search.jsx");
 
-const HomePage = require('create-react-class')({
-  displayName: "HomePage",
-  mixins: [Navigation],
-
+class HomePage extends React.Component {
   componentWillReceiveProps(new_props) {
     return this.setState({ project: new_props.project });
-  },
+  }
 
   markClick() {
-    return this.transitionTo("mark", {});
-  },
+    return this.context.router.transitionTo("mark", {});
+  }
 
   transcribeClick() {
-    return this.transitionTo("transcribe", {});
-  },
+    return this.context.router.transitionTo("transcribe", {});
+  }
 
   render() {
     return (
       <div className="home-page">
-        {(this.props.project != null
-          ? this.props.project.home_page_content
-          : undefined) != null ? (
+        {this.props.project != null &&
+          this.props.project.home_page_content != null &&
           <div className="page-content">
             <h1 className="title">
               {this.props.project != null
@@ -46,14 +42,14 @@ const HomePage = require('create-react-class')({
               }}
             />
             {// Is there a metadata search configured, and should it be on the homepage?
-            // TODO If mult metadata_search fields configured, maybe offer a <select> to choose between them
-            __guard__(
-              this.props.project != null
-                ? this.props.project.metadata_search
-                : undefined,
-              x => x.feature_on_homepage
-            )
-              ? Array.from(this.props.project.metadata_search.fields).map(
+              // TODO If mult metadata_search fields configured, maybe offer a <select> to choose between them
+              __guard__(
+                this.props.project != null
+                  ? this.props.project.metadata_search
+                  : undefined,
+                x => x.feature_on_homepage
+              )
+                ? Array.from(this.props.project.metadata_search.fields).map(
                   field => (
                     <div className="metadata-search" key={field}>
                       <img id="search-icon" src="assets/searchtool.svg" />
@@ -61,20 +57,17 @@ const HomePage = require('create-react-class')({
                     </div>
                   )
                 )
-              : undefined}
+                : undefined}
             <div className="group-area">
               <GroupBrowser project={this.props.project} />
             </div>
-          </div>
-        ) : (
-          undefined
-        )}
+          </div>}
       </div>
     );
   }
-});
+}
 
-module.exports = HomePage;
+module.exports = AppContext(HomePage);
 
 function __guard__(value, transform) {
   return typeof value !== "undefined" && value !== null

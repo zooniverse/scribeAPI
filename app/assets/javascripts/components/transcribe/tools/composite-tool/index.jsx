@@ -7,18 +7,17 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
-const { Navigation } = require("react-router");
-const DraggableModal = require("../../../draggable-modal");
-const DoneButton = require("./done-button");
-const SmallButton = require("../../../buttons/small-button");
-const PrevButton = require("./prev-button");
-const HelpButton = require("../../../buttons/help-button");
-const BadSubjectButton = require("../../../buttons/bad-subject-button");
-const IllegibleSubjectButton = require("../../../buttons/illegible-subject-button");
+const createReactClass = require("create-react-class");
+const DraggableModal = require("../../../draggable-modal.jsx");
+const DoneButton = require("./done-button.jsx");
+const SmallButton = require("../../../buttons/small-button.jsx");
+const PrevButton = require("./prev-button.jsx");
+const HelpButton = require("../../../buttons/help-button.jsx");
+const BadSubjectButton = require("../../../buttons/bad-subject-button.jsx");
+const IllegibleSubjectButton = require("../../../buttons/illegible-subject-button.jsx");
 
-const CompositeTool = require('create-react-class')({
+const CompositeTool = createReactClass({
   displayName: "CompositeTool",
-  mixins: [Navigation],
 
   getInitialState() {
     return {
@@ -132,7 +131,7 @@ const CompositeTool = require('create-react-class')({
     this.commitAnnotation();
 
     // transition back to mark
-    return this.transitionTo(
+    return this.context.router.transitionTo(
       "mark",
       {},
       {

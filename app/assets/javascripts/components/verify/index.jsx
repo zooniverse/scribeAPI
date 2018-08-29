@@ -8,31 +8,22 @@
  */
 
 const React = require("react");
-const { Navigation } = require("react-router");
-const SubjectViewer = require("../subject-viewer");
-const JSONAPIClient = require("json-api-client"); // use to manage data?
-const FetchSubjectsMixin = require("lib/fetch-subjects-mixin");
-const ForumSubjectWidget = require("../forum-subject-widget");
+const SubjectViewer = require("../subject-viewer.jsx");
+const FetchSubjectsMixin = require("../../lib/fetch-subjects-mixin.jsx");
+const ForumSubjectWidget = require("../forum-subject-widget.jsx");
 
-const BaseWorkflowMethods = require("lib/workflow-methods-mixin");
+const BaseWorkflowMethods = require("../../lib/workflow-methods-mixin.jsx");
 
-const DraggableModal = require("../draggable-modal");
-const GenericButton = require("../buttons/generic-button");
-const Tutorial = require("../tutorial");
-const HelpModal = require("../help-modal");
+const DraggableModal = require("../draggable-modal.jsx");
+const GenericButton = require("../buttons/generic-button.jsx");
+const Tutorial = require("../tutorial.jsx");
+const HelpModal = require("../help-modal.jsx");
 
-// Hash of core tools:
-const coreTools = require("../core-tools");
-
-// Hash of transcribe tools:
-const verifyTools = require("./tools");
-
-const API = require("lib/api");
-
-module.exports = require('create-react-class')({
+const createReactClass = require("create-react-class");
+module.exports = createReactClass({
   // rename to Classifier
   displayName: "Verify",
-  mixins: [FetchSubjectsMixin, BaseWorkflowMethods, Navigation], // load subjects and set state variables: subjects,  classification
+  mixins: [FetchSubjectsMixin, BaseWorkflowMethods], // load subjects and set state variables: subjects,  classification
 
   getDefaultProps() {
     return { workflowName: "verify" };

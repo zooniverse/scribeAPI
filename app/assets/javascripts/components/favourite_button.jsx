@@ -13,7 +13,8 @@ const React = require("react");
 // IMPORTANT!
 window.React = React;
 
-const FavouriteButton = require('create-react-class')({
+const createReactClass = require("create-react-class");
+const FavouriteButton = createReactClass({
   displayname: "FavouriteButton",
 
   getInitialState: () => {

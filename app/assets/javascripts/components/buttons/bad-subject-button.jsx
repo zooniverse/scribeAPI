@@ -4,9 +4,10 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
-const SmallButton = require("./small-button");
+const createReactClass = require("create-react-class");
+const SmallButton = require("./small-button.jsx");
 
-module.exports = require('create-react-class')({
+module.exports = createReactClass({
   displayName: "BadSubjectButton",
 
   render() {

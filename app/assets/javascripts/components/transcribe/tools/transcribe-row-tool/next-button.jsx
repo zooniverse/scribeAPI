@@ -1,7 +1,8 @@
 
 const React = require("react");
 
-const NextButton = require('create-react-class')({
+const createReactClass = require("create-react-class");
+module.exports = createReactClass({
   displayName: "NextButton",
 
   render() {
@@ -17,5 +18,3 @@ const NextButton = require('create-react-class')({
     );
   }
 });
-
-module.exports = NextButton;

@@ -1,12 +1,13 @@
 
 
 const React = require("react");
+const createReactClass = require("create-react-class");
 
 // React.DOM doesn't include an SVG <image> tag
 // (because of its namespaced `xlink:href` attribute, I think),
 // so this fakes one by wrapping it in a <g>.
 
-module.exports = require('create-react-class')({
+module.exports = createReactClass({
   displayName: "SVGImage",
 
   getInitialState() {

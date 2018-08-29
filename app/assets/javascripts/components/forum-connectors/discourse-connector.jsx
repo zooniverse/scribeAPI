@@ -4,11 +4,8 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
- let DiscourseConnector;
 
-const React = require("react");
-
-module.exports = DiscourseConnector = class DiscourseConnector {
+ const DiscourseConnector = class DiscourseConnector {
   constructor(options, project) {
     this.options = options;
     this.project = project;
@@ -85,3 +82,4 @@ module.exports = DiscourseConnector = class DiscourseConnector {
     return this.options.base_url + `/search?q=${term}`;
   }
 };
+module.exports = DiscourseConnector;

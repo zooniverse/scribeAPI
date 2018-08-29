@@ -6,7 +6,8 @@
  */
 const React = require("react");
 
-const Footer = require('create-react-class')({
+const createReactClass = require("create-react-class");
+const Footer = createReactClass({
   displayName: "Footer",
 
   propTypes() {

@@ -4,11 +4,8 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
- let TalkConnector;
 
-const React = require("react");
-
-module.exports = TalkConnector = class TalkConnector {
+module.exports = class TalkConnector {
   constructor(options) {
     this.options = options;
   }

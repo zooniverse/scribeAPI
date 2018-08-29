@@ -7,11 +7,11 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
-const GroupBrowser = require("./group-browser");
-const GenericButton = require("components/buttons/generic-button");
-const API = require("../lib/api");
+const GenericButton = require("./buttons/generic-button.jsx");
+const API = require("../lib/api.jsx");
+const createReactClass = require("create-react-class");
 
-const GroupPage = require('create-react-class')({
+const GroupPage = createReactClass({
   displayName: "GroupPage",
 
   getInitialState() {

@@ -1,4 +1,5 @@
 const React = require("react");
+const createReactClass = require("create-react-class");
 
 const RADIUS = 8;
 const STROKE_COLOR = "#000";
@@ -12,7 +13,7 @@ M 0 ${-1 * RADIUS * 0.7} \
 L 0 ${RADIUS * 0.7}\
 `;
 
-module.exports = require('create-react-class')({
+module.exports = createReactClass({
   displayName: "DeleteButton",
 
   getDefaultProps() {

@@ -7,10 +7,11 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
-const Draggable = require("../lib/draggable");
-const DoneButton = require("./buttons/done-button");
+const Draggable = require("../lib/draggable.jsx");
+const DoneButton = require("./buttons/done-button.jsx");
+const createReactClass = require("create-react-class");
 
-module.exports = require('create-react-class')({
+module.exports = createReactClass({
   displayName: "DraggableModal",
 
   getDefaultProps() {

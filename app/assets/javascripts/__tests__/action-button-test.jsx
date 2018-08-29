@@ -1,13 +1,12 @@
-import React from "react";
-import ReactTestUtils from "react-dom/test-utils";
+const React = require("react");
+const ReactTestUtils = require("react-dom/test-utils");
+const ActionButton = require("../components/action-button.jsx");
 
 describe("ActionButton", function () {
   let actionButton;
 
-  const ActionButton = require("../components/action-button");
+  actionButton = ReactTestUtils.renderIntoDocument(<ActionButton />);
 
   it("should grab the action-button code", () =>
-    expect(ActionButton).toBeTruthy());
-
-  actionButton = ReactTestUtils.renderIntoDocument(<ActionButton />);
+    expect(actionButton).toBeTruthy());
 });

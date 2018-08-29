@@ -9,21 +9,22 @@ var _this = this;
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
-const SVGImage = require("./svg-image");
-const ActionButton = require("./action-button");
-const HelpModal = require("./help-modal");
+const PropTypes = require('prop-types');
+const SVGImage = require("./svg-image.jsx");
+const ActionButton = require("./action-button.jsx");
+const createReactClass = require("create-react-class");
 
-module.exports = require('create-react-class')({
+module.exports = createReactClass({
   displayName: "LightBox",
 
   propTypes: {
-    subject_set: React.PropTypes.object.isRequired,
-    subject_index: React.PropTypes.number.isRequired,
-    onSubject: React.PropTypes.func.isRequired,
-    nextPage: React.PropTypes.func.isRequired,
-    prevPage: React.PropTypes.func.isRequired,
-    totalSubjectPages: React.PropTypes.number,
-    subjectCurrentPage: React.PropTypes.number
+    subject_set: PropTypes.object.isRequired,
+    subject_index: PropTypes.number.isRequired,
+    onSubject: PropTypes.func.isRequired,
+    nextPage: PropTypes.func.isRequired,
+    prevPage: PropTypes.func.isRequired,
+    totalSubjectPages: PropTypes.number,
+    subjectCurrentPage: PropTypes.number
   },
 
   getInitialState() {
@@ -258,8 +259,8 @@ module.exports = require('create-react-class')({
       .indexOf(subject_arg.id);
   },
 
-  // allows user to naviagate back though a subject_set
-  // # controlls navigation of current page of subjects as well as the method that pull a new page of subjects
+  // allows user to navigate back though a subject_set
+  // # controls navigation of current page of subjects as well as the method that pull a new page of subjects
   moveBack(indexOfFirst) {
     // if the current page of subjects is the first page of subjects, and the first <li> is the first subject in the page of subjects.
     if (

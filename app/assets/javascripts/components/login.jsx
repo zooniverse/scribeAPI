@@ -5,8 +5,9 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
+const createReactClass = require("create-react-class");
 
-const Login = require('create-react-class')({
+const Login = createReactClass({
   displayName: "Login",
 
   getInitialState() {

@@ -6,11 +6,13 @@
  */
 
 const React = require("react");
-const Draggable = require("lib/draggable");
-const DoneButton = require("./done-button");
-const inputComponents = require("../../input-components");
+const createReactClass = require("create-react-class");
 
-const TextTool = require('create-react-class')({
+const Draggable = require("../../../../lib/draggable.jsx");
+const DoneButton = require("./done-button.jsx");
+const inputComponents = require("../../input-components/index.jsx");
+
+const TextTool = createReactClass({
   displayName: "SingleTool",
 
   getInitialState() {

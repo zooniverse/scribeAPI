@@ -5,15 +5,16 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
-const MainHeader = require("../partials/main-header");
-const API = require("lib/api");
-const AppRouter = require("./app-router");
-
 const { RouteHandler } = require("react-router");
+const createReactClass = require("create-react-class");
+const MainHeader = require("../partials/main-header.jsx");
+const API = require("../lib/api.jsx");
+const AppRouter = require("./app-router.jsx");
+
 
 window.API = API;
 
-const App = require('create-react-class')({
+const App = createReactClass({
   getInitialState() {
     return {
       project: null,

@@ -35,13 +35,12 @@ module API
           '.eot',  '.otf', '.svc', '.woff', '.ttf', # Fonts
           '.mp4',                                   # Video
           '.ico',                                   # Icon
-          '.cjsx'
+          '.jsx', '.js'
         ]
       end)
     end
 
-    config.browserify_rails.commandline_options = "-t coffee-reactify --extension=\".cjsx\" "
-    # config.browserify_rails.commandline_options = "-t reactify --extension=\".js.jsx\""
+    config.browserify_rails.commandline_options = "-t reactify"
 
 
 

@@ -9,29 +9,29 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
-const { Navigation } = require("react-router");
-const SubjectSetViewer = require("../subject-set-viewer");
-const coreTools = require("../core-tools");
-const FetchSubjectSetsMixin = require("lib/fetch-subject-sets-mixin");
-const BaseWorkflowMethods = require("lib/workflow-methods-mixin");
+const createReactClass = require("create-react-class");
+const PropTypes = require('prop-types');
+const { NavLink } = require("react-router-dom");
+const SubjectSetViewer = require("../subject-set-viewer.jsx");
+const coreTools = require("../core-tools/index.jsx");
+const FetchSubjectSetsMixin = require("../../lib/fetch-subject-sets-mixin.jsx");
+const BaseWorkflowMethods = require("../../lib/workflow-methods-mixin.jsx");
 const JSONAPIClient = require("json-api-client"); // use to manage data?
-const ForumSubjectWidget = require("../forum-subject-widget");
-const API = require("lib/api");
-const HelpModal = require("../help-modal");
-const Tutorial = require("../tutorial");
-const HelpButton = require("../buttons/help-button");
-const BadSubjectButton = require("../buttons/bad-subject-button");
-const HideOtherMarksButton = require("../buttons/hide-other-marks-button");
-const DraggableModal = require("../draggable-modal");
-const Draggable = require("lib/draggable");
-const { Link } = require("react-router");
+const ForumSubjectWidget = require("../forum-subject-widget.jsx");
+const HelpModal = require("../help-modal.jsx");
+const Tutorial = require("../tutorial.jsx");
+const HelpButton = require("../buttons/help-button.jsx");
+const BadSubjectButton = require("../buttons/bad-subject-button.jsx");
+const HideOtherMarksButton = require("../buttons/hide-other-marks-button.jsx");
+const DraggableModal = require("../draggable-modal.jsx");
+const Draggable = require("../../lib/draggable.jsx");
 
-module.exports = require('create-react-class')({
+module.exports = createReactClass({
   // rename to Classifier
   displayName: "Mark",
 
   propTypes: {
-    onCloseTutorial: React.PropTypes.func.isRequired
+    onCloseTutorial: PropTypes.func.isRequired
   },
 
   getDefaultProps() {
@@ -39,7 +39,7 @@ module.exports = require('create-react-class')({
   },
   // hideOtherMarks: false
 
-  mixins: [FetchSubjectSetsMixin, BaseWorkflowMethods, Navigation], // load subjects and set state variables: subjects, currentSubject, classification
+  mixins: [FetchSubjectSetsMixin, BaseWorkflowMethods], // load subjects and set state variables: subjects, currentSubject, classification
 
   getInitialState() {
     return {
@@ -175,7 +175,7 @@ module.exports = require('create-react-class')({
     return this.beginClassification();
   },
 
-  destroyCurrentAnnotation() {},
+  destroyCurrentAnnotation() { },
   // TODO: implement mechanism for going backwards to previous classification, potentially deleting later classifications from stack:
   // @props.classification.annotations.pop()
 
@@ -244,14 +244,14 @@ module.exports = require('create-react-class')({
     const currentSubtool = this.state.currentSubtool
       ? this.state.currentSubtool
       : __guard__(
-          __guard__(this.getTasks()[firstTask], x1 => x1.tool_config.tools),
-          x => x[0]
-        );
+        __guard__(this.getTasks()[firstTask], x1 => x1.tool_config.tools),
+        x => x[0]
+      );
 
     // direct link to this page
     const pageURL = `${location.origin}/#/mark?subject_set_id=${
       this.getCurrentSubjectSet().id
-    }&selected_subject_id=${__guard__(this.getCurrentSubject(), x2 => x2.id)}`;
+      }&selected_subject_id=${__guard__(this.getCurrentSubject(), x2 => x2.id)}`;
 
     if ((currentTask != null ? currentTask.tool : undefined) === "pick_one") {
       const currentAnswer = Array.from(currentTask.tool_config.options).filter(
@@ -322,113 +322,113 @@ module.exports = require('create-react-class')({
         <div className="right-column">
           <div className={`task-area ${this.getActiveWorkflow().name}`}>
             {this.getCurrentTask() != null &&
-            this.getCurrentSubject() != null ? (
-              <div className="task-container">
-                <TaskComponent
-                  key={this.getCurrentTask().key}
-                  task={currentTask}
-                  annotation={
-                    (left1 = __guard__(
-                      this.getCurrentClassification(),
-                      x4 => x4.annotation
-                    )) != null
-                      ? left1
-                      : {}
-                  }
-                  onChange={this.handleDataFromTool}
-                  onSubjectHelp={this.showSubjectHelp}
-                  subject={this.getCurrentSubject()}
-                />
-                <nav className="task-nav">
-                  {false ? (
-                    <button
-                      type="button"
-                      className="back minor-button"
-                      disabled={onFirstAnnotation}
-                      onClick={this.destroyCurrentAnnotation}
-                    >
-                      Back
+              this.getCurrentSubject() != null ? (
+                <div className="task-container">
+                  <TaskComponent
+                    key={this.getCurrentTask().key}
+                    task={currentTask}
+                    annotation={
+                      (left1 = __guard__(
+                        this.getCurrentClassification(),
+                        x4 => x4.annotation
+                      )) != null
+                        ? left1
+                        : {}
+                    }
+                    onChange={this.handleDataFromTool}
+                    onSubjectHelp={this.showSubjectHelp}
+                    subject={this.getCurrentSubject()}
+                  />
+                  <nav className="task-nav">
+                    {false ? (
+                      <button
+                        type="button"
+                        className="back minor-button"
+                        disabled={onFirstAnnotation}
+                        onClick={this.destroyCurrentAnnotation}
+                      >
+                        Back
                     </button>
-                  ) : (
-                    undefined
-                  )}
-                  {this.getNextTask() && this.state.badSubject == null ? (
-                    <button
-                      type="button"
-                      className="continue major-button"
-                      disabled={waitingForAnswer}
-                      onClick={this.advanceToNextTask}
-                    >
-                      Next
-                    </button>
-                  ) : this.state.taskKey === "completion_assessment_task" ? (
-                    this.getCurrentSubject() ===
-                    this.getCurrentSubjectSet().subjects[
-                      this.getCurrentSubjectSet().subjects.length - 1
-                    ] ? (
+                    ) : (
+                        undefined
+                      )}
+                    {this.getNextTask() && this.state.badSubject == null ? (
                       <button
                         type="button"
                         className="continue major-button"
                         disabled={waitingForAnswer}
-                        onClick={this.completeSubjectAssessment}
+                        onClick={this.advanceToNextTask}
                       >
                         Next
-                      </button>
-                    ) : (
-                      <button
-                        type="button"
-                        className="continue major-button"
-                        disabled={waitingForAnswer}
-                        onClick={this.completeSubjectAssessment}
-                      >
-                        Next Page
-                      </button>
-                    )
-                  ) : (
-                    <button
-                      type="button"
-                      className="continue major-button"
-                      disabled={waitingForAnswer}
-                      onClick={this.completeSubjectSet}
-                    >
-                      Done
                     </button>
-                  )}
-                </nav>
-                <div className="help-bad-subject-holder">
-                  {this.getCurrentTask().help != null ? (
-                    <HelpButton
-                      onClick={this.toggleHelp}
-                      label=""
-                      className="task-help-button"
-                    />
-                  ) : (
-                    undefined
-                  )}
-                  {onFirstAnnotation ? (
-                    <BadSubjectButton
-                      class="bad-subject-button"
-                      label={`Bad ${this.props.project.term("subject")}`}
-                      active={this.state.badSubject}
-                      onClick={this.toggleBadSubject}
-                    />
-                  ) : (
-                    undefined
-                  )}
-                  {this.state.badSubject ? (
-                    <p>
-                      You've marked this {this.props.project.term("subject")} as
+                    ) : this.state.taskKey === "completion_assessment_task" ? (
+                      this.getCurrentSubject() ===
+                        this.getCurrentSubjectSet().subjects[
+                        this.getCurrentSubjectSet().subjects.length - 1
+                        ] ? (
+                          <button
+                            type="button"
+                            className="continue major-button"
+                            disabled={waitingForAnswer}
+                            onClick={this.completeSubjectAssessment}
+                          >
+                            Next
+                      </button>
+                        ) : (
+                          <button
+                            type="button"
+                            className="continue major-button"
+                            disabled={waitingForAnswer}
+                            onClick={this.completeSubjectAssessment}
+                          >
+                            Next Page
+                      </button>
+                        )
+                    ) : (
+                          <button
+                            type="button"
+                            className="continue major-button"
+                            disabled={waitingForAnswer}
+                            onClick={this.completeSubjectSet}
+                          >
+                            Done
+                    </button>
+                        )}
+                  </nav>
+                  <div className="help-bad-subject-holder">
+                    {this.getCurrentTask().help != null ? (
+                      <HelpButton
+                        onClick={this.toggleHelp}
+                        label=""
+                        className="task-help-button"
+                      />
+                    ) : (
+                        undefined
+                      )}
+                    {onFirstAnnotation ? (
+                      <BadSubjectButton
+                        class="bad-subject-button"
+                        label={`Bad ${this.props.project.term("subject")}`}
+                        active={this.state.badSubject}
+                        onClick={this.toggleBadSubject}
+                      />
+                    ) : (
+                        undefined
+                      )}
+                    {this.state.badSubject ? (
+                      <p>
+                        You've marked this {this.props.project.term("subject")} as
                       BAD. Thanks for flagging the issue!{" "}
-                      <strong>Press DONE to continue.</strong>
-                    </p>
-                  ) : (
-                    undefined
-                  )}
+                        <strong>Press DONE to continue.</strong>
+                      </p>
+                    ) : (
+                        undefined
+                      )}
+                  </div>
                 </div>
-              </div>
-            ) : (
-              undefined
-            )}
+              ) : (
+                undefined
+              )}
             <div className="task-secondary-area">
               {this.getCurrentTask() != null ? (
                 <p>
@@ -437,39 +437,39 @@ module.exports = require('create-react-class')({
                   </a>
                 </p>
               ) : (
-                undefined
-              )}
+                  undefined
+                )}
               {this.getCurrentTask() != null &&
-              this.getActiveWorkflow() != null &&
-              this.getWorkflowByName("transcribe") != null ? (
-                <p>
-                  <Link
-                    to={`/transcribe/${
-                      this.getWorkflowByName("transcribe").id
-                    }/${__guard__(this.getCurrentSubject(), x5 => x5.id)}`}
-                    className="transcribe-link"
-                  >
-                    Transcribe this {this.props.project.term("subject")} now!
+                this.getActiveWorkflow() != null &&
+                this.getWorkflowByName("transcribe") != null ? (
+                  <p>
+                    <Link
+                      to={`/transcribe/${
+                        this.getWorkflowByName("transcribe").id
+                        }/${__guard__(this.getCurrentSubject(), x5 => x5.id)}`}
+                      className="transcribe-link"
+                    >
+                      Transcribe this {this.props.project.term("subject")} now!
                   </Link>
-                </p>
-              ) : (
-                undefined
-              )}
+                  </p>
+                ) : (
+                  undefined
+                )}
               {this.getActiveWorkflow() != null &&
-              (this.state.groups != null
-                ? this.state.groups.length
-                : undefined) > 1 ? (
-                <p>
-                  <Link
-                    to={`/groups/${this.getCurrentSubjectSet().group_id}`}
-                    className="about-link"
-                  >
-                    About this {this.props.project.term("group")}.
-                  </Link>
-                </p>
-              ) : (
-                undefined
-              )}
+                (this.state.groups != null
+                  ? this.state.groups.length
+                  : undefined) > 1 ? (
+                  <p>
+                    <NavLink
+                      to={`/groups/${this.getCurrentSubjectSet().group_id}`}
+                      className="about-link"
+                    >
+                      About this {this.props.project.term("group")}.
+                  </NavLink>
+                  </p>
+                ) : (
+                  undefined
+                )}
               <div className="forum-holder">
                 <ForumSubjectWidget
                   subject={this.getCurrentSubject()}
@@ -509,35 +509,35 @@ module.exports = require('create-react-class')({
         {this.props.project.tutorial != null && this.state.showingTutorial ? (
           // Check for workflow-specific tutorial
           this.props.project.tutorial.workflows != null &&
-          this.props.project.tutorial.workflows[
+            this.props.project.tutorial.workflows[
             __guard__(this.getActiveWorkflow(), x6 => x6.name)
-          ] ? (
-            <Tutorial
-              tutorial={
-                this.props.project.tutorial.workflows[
+            ] ? (
+              <Tutorial
+                tutorial={
+                  this.props.project.tutorial.workflows[
                   this.getActiveWorkflow().name
-                ]
-              }
-              onCloseTutorial={this.props.onCloseTutorial}
-            />
-          ) : (
-            // Otherwise just show general tutorial
-            <Tutorial
-              tutorial={this.props.project.tutorial}
-              onCloseTutorial={this.props.onCloseTutorial}
-            />
-          )
+                  ]
+                }
+                onCloseTutorial={this.props.onCloseTutorial}
+              />
+            ) : (
+              // Otherwise just show general tutorial
+              <Tutorial
+                tutorial={this.props.project.tutorial}
+                onCloseTutorial={this.props.onCloseTutorial}
+              />
+            )
         ) : (
-          undefined
-        )}
+            undefined
+          )}
         {this.state.helping ? (
           <HelpModal
             help={this.getCurrentTask().help}
             onDone={() => this.setState({ helping: false })}
           />
         ) : (
-          undefined
-        )}
+            undefined
+          )}
         {this.state.lightboxHelp ? (
           <HelpModal
             help={{
@@ -548,28 +548,28 @@ module.exports = require('create-react-class')({
             onDone={() => this.setState({ lightboxHelp: false })}
           />
         ) : (
-          undefined
-        )}
+            undefined
+          )}
         {this.getCurrentTask() != null
           ? (() => {
-              const result = [];
-              const iterable = this.getCurrentTask().tool_config.options;
-              for (let i = 0; i < iterable.length; i++) {
-                tool = iterable[i];
-                if (
-                  tool.help &&
-                  tool.generates_subject_type &&
-                  this.state.activeSubjectHelper === tool.generates_subject_type
-                ) {
-                  result.push(
-                    <HelpModal help={tool.help} onDone={this.hideSubjectHelp} />
-                  );
-                } else {
-                  result.push(undefined);
-                }
+            const result = [];
+            const iterable = this.getCurrentTask().tool_config.options;
+            for (let i = 0; i < iterable.length; i++) {
+              tool = iterable[i];
+              if (
+                tool.help &&
+                tool.generates_subject_type &&
+                this.state.activeSubjectHelper === tool.generates_subject_type
+              ) {
+                result.push(
+                  <HelpModal help={tool.help} onDone={this.hideSubjectHelp} />
+                );
+              } else {
+                result.push(undefined);
               }
-              return result;
-            })()
+            }
+            return result;
+          })()
           : undefined}
       </div>
     );

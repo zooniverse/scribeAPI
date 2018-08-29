@@ -6,10 +6,10 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
-const DrawingToolRoot = require("./root");
-const Draggable = require("lib/draggable");
-const DeleteButton = require("../../../buttons/delete-mark");
-const MarkButtonMixin = require("lib/mark-button-mixin");
+const createReactClass = require("create-react-class");
+const Draggable = require("../../../../lib/draggable.jsx");
+const DeleteButton = require("../../../buttons/delete-mark.jsx");
+const MarkButtonMixin = require("../../../../lib/mark-button-mixin.jsx");
 
 // DEFAULT SETTINGS
 const RADIUS = 10;
@@ -18,7 +18,7 @@ const CROSSHAIR_SPACE = 0.2;
 const CROSSHAIR_WIDTH = 1;
 const DELETE_BUTTON_ANGLE = 45;
 
-module.exports = require('create-react-class')({
+module.exports = createReactClass({
   displayName: "PointTool",
 
   mixins: [MarkButtonMixin],

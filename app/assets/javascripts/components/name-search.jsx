@@ -5,11 +5,10 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
-const { Navigation } = require("react-router");
+const createReactClass = require("create-react-class");
 
-const NameSearch = require('create-react-class')({
+const NameSearch = createReactClass({
   displayName: "NameSearch",
-  mixins: [Navigation],
 
   // fieldKey: ->
   //   if @props.standalone
@@ -58,7 +57,7 @@ const NameSearch = require('create-react-class')({
 
         select: (e, ui) => {
           e.target.value;
-          return this.transitionTo(
+          return this.context.router.transitionTo(
             "mark",
             {},
             { subject_set_id: ui.item.value.id }

@@ -1,7 +1,8 @@
 
 const React = require("react");
+const createReactClass = require("create-react-class");
 
-const TranscribeInput = require('create-react-class')({
+const TranscribeInput = createReactClass({
   displayName: "TranscribeInput",
 
   render() {

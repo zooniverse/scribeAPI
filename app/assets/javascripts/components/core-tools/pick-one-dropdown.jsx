@@ -5,12 +5,13 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
-const GenericTask = require("./generic");
+const createReactClass = require("create-react-class");
+const GenericTask = require("./generic.jsx");
 // Markdown = require '../../components/markdown'
 
 const NOOP = Function.prototype;
 
-// Summary = require('create-react-class')
+// Summary = createReactClass
 //   displayName: 'SingleChoiceSummary'
 
 //   getDefaultProps: ->
@@ -51,7 +52,7 @@ const NOOP = Function.prototype;
 //       </div>
 //     </div>
 
-module.exports = require('create-react-class')({
+module.exports = createReactClass({
   displayName: "SingleChoiceTask",
 
   statics: {

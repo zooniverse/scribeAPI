@@ -1,6 +1,7 @@
-const DoneButton = require("./done-button");
+const DoneButton = require("./done-button.jsx");
+const createReactClass = require("create-react-class");
 
-const DateField = require('create-react-class')({
+const DateField = createReactClass({
   displayName: "DateField",
 
   render() {
@@ -25,5 +26,4 @@ const DateField = require('create-react-class')({
     );
   }
 });
-
 module.exports = DateField;

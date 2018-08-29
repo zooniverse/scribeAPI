@@ -4,16 +4,16 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
-const LightBox = require("./light-box");
-const SubjectZoomPan = require("components/subject-zoom-pan");
-const ForumSubjectWidget = require("./forum-subject-widget");
-const { Link } = require("react-router");
+const createReactClass = require("create-react-class");
+const PropTypes = require('prop-types');
+const LightBox = require("./light-box.jsx");
+const SubjectZoomPan = require("./subject-zoom-pan.jsx");
 
-module.exports = require('create-react-class')({
+module.exports = createReactClass({
   displayName: "SubjectSetToolbar",
 
   propTypes: {
-    hideOtherMarks: React.PropTypes.bool.isRequired
+    hideOtherMarks: PropTypes.bool.isRequired
   },
 
   getInitialState() {

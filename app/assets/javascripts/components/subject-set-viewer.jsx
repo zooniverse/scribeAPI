@@ -6,23 +6,18 @@
  */
 
 const React = require("react");
-const SubjectViewer = require("./subject-viewer");
-const { Router, Routes, Route, Link } = require("react-router");
-const SVGImage = require("./svg-image");
-const Draggable = require("lib/draggable");
-const LoadingIndicator = require("./loading-indicator");
-const SubjectMetadata = require("./subject-metadata");
-const ActionButton = require("./action-button");
-const markingTools = require("./mark/tools");
-const ZoomPanListenerMethods = require("lib/zoom-pan-listener-methods");
-const SubjectSetToolbar = require("./subject-set-toolbar");
+const PropTypes = require('prop-types');
+const createReactClass = require("create-react-class");
+const SubjectViewer = require("./subject-viewer.jsx");
+const ZoomPanListenerMethods = require("../lib/zoom-pan-listener-methods.jsx");
+const SubjectSetToolbar = require("./subject-set-toolbar.jsx");
 
-module.exports = require('create-react-class')({
+module.exports = createReactClass({
   displayName: "SubjectSetViewer",
   resizing: false,
 
   propTypes: {
-    onDestroy: React.PropTypes.func.isRequired
+    onDestroy: PropTypes.func.isRequired
   }, //hands @handleMarkDelete, which call wmm method: @flagSubjectAsUserDeleted
 
   mixins: [ZoomPanListenerMethods],

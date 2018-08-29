@@ -6,10 +6,12 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
-const Draggable = require("lib/draggable");
-const DragHandle = require("./drag-handle");
-const DeleteButton = require("../../../buttons/delete-mark");
-const MarkButtonMixin = require("lib/mark-button-mixin");
+const createReactClass = require("create-react-class");
+const PropTypes = require('prop-types');
+const Draggable = require("../../../../lib/draggable.jsx");
+const DragHandle = require("./drag-handle.jsx");
+const DeleteButton = require("../../../buttons/delete-mark.jsx");
+const MarkButtonMixin = require("../../../../lib/mark-button-mixin.jsx");
 
 const MINIMUM_SIZE = 15;
 const DELETE_BUTTON_ANGLE = 45;
@@ -17,14 +19,14 @@ const DELETE_BUTTON_DISTANCE_X = 12;
 const DELETE_BUTTON_DISTANCE_Y = 0;
 const DEBUG = false;
 
-module.exports = require('create-react-class')({
+module.exports = createReactClass({
   displayName: "RectangleTool",
 
   mixins: [MarkButtonMixin],
 
   propTypes: {
-    // key:  React.PropTypes.number.isRequired
-    mark: React.PropTypes.object.isRequired
+    // key:  PropTypes.number.isRequired
+    mark: PropTypes.object.isRequired
   },
 
   initCoords: null,

@@ -8,11 +8,10 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
-const API = require("lib/api");
+const createReactClass = require("create-react-class");
+const API = require("../lib/api.jsx");
 
-const SmallButton = require("components/buttons/small-button");
-
-const GroupBrowser = require('create-react-class')({
+const GroupBrowser = createReactClass({
   displayName: "GroupBrowser",
 
   getInitialState() {

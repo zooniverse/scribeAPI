@@ -1,7 +1,8 @@
 
 const React = require("react");
 
-const NextButton = require('create-react-class')({
+const createReactClass = require("create-react-class");
+const NextButton = createReactClass({
   displayName: "NextButton",
 
   render() {

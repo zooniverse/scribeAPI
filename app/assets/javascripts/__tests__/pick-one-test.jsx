@@ -1,4 +1,7 @@
-import ReactTestUtils from "react-dom/test-utils";
+const ReactTestUtils = require("react-dom/test-utils");
+const ShallowRenderer = require("react-test-renderer/shallow");
+const PickOne = require("../components/core-tools/pick-one.jsx");
+
 global.marked = (text) => text;
 
 describe("SingleChoiceTask/pickOne", function () {
@@ -33,10 +36,6 @@ describe("SingleChoiceTask/pickOne", function () {
   // mock of the props.onChange from subject-viewer
   const clickRecord = jest.genMockFunction();
 
-  const PickOne = require("../components/core-tools/pick-one");
-  const GenericTask = require("../components/core-tools/generic");
-
-  const ShallowRenderer = require('react-test-renderer/shallow');
   const shallowRenderer = new ShallowRenderer();
   shallowRenderer.render(
     <PickOne annotation="" task={task_object} onChange={clickRecord} />
@@ -67,8 +66,8 @@ describe("SingleChoiceTask/pickOne", function () {
       <PickOne annotation="" task={task_object} onChange={clickRecord} />
     );
     const labels = scryRenderedDOMComponentsWithTag(DOM, "label");
-    expect(labels[0].props.className).not.toContain("active");
-    expect(labels[1].props.className).not.toContain("active");
+    expect(labels[0].className).not.toContain("active");
+    expect(labels[1].className).not.toContain("active");
   });
 
   it("when a label is clicked the class @handleChange should be called & label should contain the word 'active' ", () => {
@@ -84,6 +83,6 @@ describe("SingleChoiceTask/pickOne", function () {
 
     Simulate.change(inputs[0], { target: { checked: true } });
     expect(clickRecord).toBeCalled(); //the mock func stands in for the subject-viewer's @handleChange()
-    expect(labels[0].props.className).toContain("active");
+    expect(labels[0].className).toContain("active");
   });
 });

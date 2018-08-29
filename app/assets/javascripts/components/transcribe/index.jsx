@@ -8,32 +8,31 @@
  */
 
 const React = require("react");
-const { Navigation } = require("react-router");
-const SubjectViewer = require("../subject-viewer");
+const createReactClass = require("create-react-class");
+const SubjectViewer = require("../subject-viewer.jsx");
 const JSONAPIClient = require("json-api-client"); // use to manage data?
-const FetchSubjectsMixin = require("lib/fetch-subjects-mixin");
-const ForumSubjectWidget = require("../forum-subject-widget");
+const FetchSubjectsMixin = require("../../lib/fetch-subjects-mixin.jsx");
+const ForumSubjectWidget = require("../forum-subject-widget.jsx");
 
-const BaseWorkflowMethods = require("lib/workflow-methods-mixin");
+const BaseWorkflowMethods = require("../../lib/workflow-methods-mixin.jsx");
 
 // Hash of core tools:
-const coreTools = require("../core-tools");
+const coreTools = require("../core-tools/index.jsx");
 
 // Hash of transcribe tools:
-const transcribeTools = require("./tools");
+const transcribeTools = require("./tools/index.jsx");
 
-const RowFocusTool = require("../row-focus-tool");
-const API = require("lib/api");
+const RowFocusTool = require("../row-focus-tool.jsx");
 
-const HelpModal = require("../help-modal");
-const Tutorial = require("../tutorial");
-const DraggableModal = require("../draggable-modal");
-const GenericButton = require("../buttons/generic-button");
+const HelpModal = require("../help-modal.jsx");
+const Tutorial = require("../tutorial.jsx");
+const DraggableModal = require("../draggable-modal.jsx");
+const GenericButton = require("../buttons/generic-button.jsx");
 
-module.exports = require('create-react-class')({
+module.exports = createReactClass({
   // rename to Classifier
   displayName: "Transcribe",
-  mixins: [FetchSubjectsMixin, BaseWorkflowMethods, Navigation], // load subjects and set state variables: subjects,  classification
+  mixins: [FetchSubjectsMixin, BaseWorkflowMethods], // load subjects and set state variables: subjects,  classification
 
   getInitialState() {
     return {
@@ -124,7 +123,7 @@ module.exports = require('create-react-class')({
 
   // transition back to mark workflow
   returnToMarking() {
-    return this.transitionTo(
+    return this.context.router.transitionTo(
       "mark",
       {},
       {

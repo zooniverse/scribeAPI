@@ -8,7 +8,8 @@ const React = require("react");
 // Markdown = require '../../components/markdown'
 // Tooltip = require '../../components/tooltip'
 
-module.exports = require('create-react-class')({
+const createReactClass = require("create-react-class");
+module.exports = createReactClass({
   displayName: "GenericTool",
 
   getDefaultProps() {

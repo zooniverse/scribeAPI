@@ -7,7 +7,8 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
-const GenericTask = require("./generic");
+const createReactClass = require("create-react-class");
+const GenericTask = require("./generic.jsx");
 // Markdown = require '../../components/markdown'
 
 const NOOP = Function.prototype;
@@ -61,7 +62,7 @@ const icons = {
   )
 };
 
-// Summary = require('create-react-class')
+// Summary = createReactClass
 //   displayName: 'SingleChoiceSummary'
 
 //   getDefaultProps: ->
@@ -104,7 +105,7 @@ const icons = {
 //           </div>}
 //     </div>
 
-module.exports = require('create-react-class')({
+module.exports = createReactClass({
   displayName: "TranscribeTask",
 
   statics: {
@@ -166,11 +167,7 @@ module.exports = require('create-react-class')({
               onChange={this.handleChange.bind(this, i)}
             />
             <span>{tool.label}</span>
-            {count !== 0 ? (
-              <span className="tool-count">({count})</span>
-            ) : (
-                undefined
-              )}
+            {count !== 0 && <span className="tool-count">({count})</span>}
           </label>
         );
       }

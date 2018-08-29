@@ -5,10 +5,12 @@
  */
 
 const React = require("react");
-const Draggable = require("lib/draggable");
+const Draggable = require("../lib/draggable.jsx");
 // ResizeButton = require './mark/resize-button'
 
-const RowFocusTool = require('create-react-class')({
+const createReactClass = require("create-react-class");
+
+const RowFocusTool = createReactClass({
   displayName: "RowFocusTool",
 
   statics: {
@@ -29,7 +31,6 @@ const RowFocusTool = require('create-react-class')({
     return {
       centerX: this.props.mark.x,
       centerY: this.props.mark.y,
-      markHeight: this.props.defaultMarkHeight,
       fillColor: "rgba(0,0,0,0.5)",
       strokeColor: "rgba(0,0,0,0.5)",
       strokeWidth: 0,

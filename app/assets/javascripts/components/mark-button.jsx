@@ -4,7 +4,8 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const React = require("react");
-const Draggable = require("lib/draggable");
+const createReactClass = require("create-react-class");
+const Draggable = require("../lib/draggable.jsx");
 
 const DEBUG = false;
 
@@ -23,7 +24,7 @@ const CHECKBOX_COLOR = "#000";
 
 const DESTROY_TRANSITION_DURATION = 0;
 
-module.exports = require('create-react-class')({
+module.exports = createReactClass({
   displayName: "TranscribeButton",
 
   getDefaultProps() {
