@@ -219,7 +219,7 @@ module.exports = createReactClass({
     if (ReactDOM.findDOMNode(inp).checked) {
       return this.updateState({
         subToolIndex: index,
-        tool: inp.props.tool
+        tool: inp.dataset.tool
       });
     }
   }

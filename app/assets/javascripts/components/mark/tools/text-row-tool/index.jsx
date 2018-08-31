@@ -58,7 +58,7 @@ module.exports = createReactClass({
     return {
       x:
         (this.props.sizeRect != null
-          ? this.props.sizeRect.props.width
+          ? this.props.sizeRect.attributes.width.value
           : undefined) / 2,
       y: this.props.mark.yUpper - this.props.mark.y
     };
@@ -68,7 +68,7 @@ module.exports = createReactClass({
     return {
       x:
         (this.props.sizeRect != null
-          ? this.props.sizeRect.props.width
+          ? this.props.sizeRect.attributes.width.value
           : undefined) / 2,
       y: this.props.mark.yLower - this.props.mark.y
     };
@@ -79,7 +79,7 @@ module.exports = createReactClass({
     return {
       x:
         (this.props.sizeRect != null
-          ? this.props.sizeRect.props.width
+          ? this.props.sizeRect.attributes.width.value
           : undefined) - 100,
       y: (this.props.mark.yLower - this.props.mark.yUpper) / 2
     };

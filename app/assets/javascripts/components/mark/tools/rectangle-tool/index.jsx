@@ -199,11 +199,11 @@ module.exports = createReactClass({
 
   assertBounds() {
     this.props.mark.x = Math.min(
-      this.props.sizeRect.props.width - this.props.mark.width,
+      this.props.sizeRect.attributes.width.value - this.props.mark.width,
       this.props.mark.x
     );
     this.props.mark.y = Math.min(
-      this.props.sizeRect.props.height - this.props.mark.height,
+      this.props.sizeRect.attributes.height.value - this.props.mark.height,
       this.props.mark.y
     );
 
@@ -218,18 +218,18 @@ module.exports = createReactClass({
   },
 
   validVert(y, h) {
-    return y >= 0 && y + h <= this.props.sizeRect.props.height;
+    return y >= 0 && y + h <= this.props.sizeRect.attributes.height.value;
   },
 
   validHoriz(x, w) {
-    return x >= 0 && x + w <= this.props.sizeRect.props.width;
+    return x >= 0 && x + w <= this.props.sizeRect.attributes.width.value;
   },
 
   getDeleteButtonPosition() {
     const points = this.state.pointsHash["handleHLDrag"];
     let x = points[0] + DELETE_BUTTON_DISTANCE_X / this.props.xScale;
     let y = points[1] + DELETE_BUTTON_DISTANCE_Y / this.props.yScale;
-    x = Math.min(x, this.props.sizeRect.props.width - 15 / this.props.xScale);
+    x = Math.min(x, this.props.sizeRect.attributes.width.value - 15 / this.props.xScale);
     y = Math.max(y, 15 / this.props.yScale);
     return { x, y };
   },
@@ -239,11 +239,11 @@ module.exports = createReactClass({
     return {
       x: Math.min(
         points[0],
-        this.props.sizeRect.props.width - 40 / this.props.xScale
+        this.props.sizeRect.attributes.width.value - 40 / this.props.xScale
       ),
       y: Math.min(
         points[1] + 20 / this.props.yScale,
-        this.props.sizeRect.props.height - 15 / this.props.yScale
+        this.props.sizeRect.attributes.height.value - 15 / this.props.yScale
       )
     };
   },
@@ -298,7 +298,7 @@ module.exports = createReactClass({
 
     return (
       <g
-        tool={this}
+        data-tool={this}
         onMouseDown={this.props.onSelect}
         title={this.props.mark.label}
       >
