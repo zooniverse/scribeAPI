@@ -9,6 +9,8 @@
 
 const React = require("react");
 const createReactClass = require("create-react-class");
+const queryString = require('query-string');
+const { AppContext } = require("../app.jsx");
 const SubjectViewer = require("../subject-viewer.jsx");
 const JSONAPIClient = require("json-api-client"); // use to manage data?
 const FetchSubjectsMixin = require("../../lib/fetch-subjects-mixin.jsx");
@@ -29,7 +31,7 @@ const Tutorial = require("../tutorial.jsx");
 const DraggableModal = require("../draggable-modal.jsx");
 const GenericButton = require("../buttons/generic-button.jsx");
 
-module.exports = createReactClass({
+module.exports = AppContext(createReactClass({
   // rename to Classifier
   displayName: "Transcribe",
   mixins: [FetchSubjectsMixin, BaseWorkflowMethods], // load subjects and set state variables: subjects,  classification
@@ -325,7 +327,7 @@ Currently, there are no `}
       </div>
     );
   }
-});
+}));
 
 window.React = React;
 

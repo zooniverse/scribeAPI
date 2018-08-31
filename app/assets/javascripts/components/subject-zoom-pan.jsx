@@ -24,6 +24,7 @@ module.exports = createReactClass({
   displayName: "SubjectZoomPan",
 
   getInitialState() {
+    this._handleZoomKeys = this._handleZoomKeys.bind(this);
     return {
       zoom: {
         level: 1,
@@ -34,7 +35,11 @@ module.exports = createReactClass({
   },
 
   componentDidMount() {
-    return window.addEventListener("keydown", e => this._handleZoomKeys(e));
+    return window.addEventListener("keydown", this._handleZoomKeys);
+  },
+
+  componentWillUnmount() {
+    window.removeEventListener("keydown", this._handleZoomKeys);
   },
 
   // Zoom given amount (1 or -1)

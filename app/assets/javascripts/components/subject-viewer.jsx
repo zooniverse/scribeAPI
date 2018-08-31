@@ -35,7 +35,7 @@ module.exports = createReactClass({
         x: 0,
         y: 0
       },
-      scale: { horizontal: 1, vertical: 1 },
+      scale: { horizontal: 1, vertical: 1, offsetX: 0, offsetY: 0 },
       sameSessionTranscriptions: []
     };
   },
@@ -314,7 +314,7 @@ module.exports = createReactClass({
         : undefined;
 
     if (rect == null || rect.width == null) {
-      return { horizontal: 1, vertical: 1 };
+      return { horizontal: 1, vertical: 1, offsetX: 0, offsetY: 0 };
     }
     if (rect == null) {
       rect = { width: 0, height: 0 };

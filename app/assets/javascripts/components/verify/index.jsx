@@ -9,6 +9,7 @@
 
 const React = require("react");
 const SubjectViewer = require("../subject-viewer.jsx");
+const { AppContext } = require("../app.jsx");
 const FetchSubjectsMixin = require("../../lib/fetch-subjects-mixin.jsx");
 const ForumSubjectWidget = require("../forum-subject-widget.jsx");
 
@@ -20,7 +21,7 @@ const Tutorial = require("../tutorial.jsx");
 const HelpModal = require("../help-modal.jsx");
 
 const createReactClass = require("create-react-class");
-module.exports = createReactClass({
+module.exports = AppContext(createReactClass({
   // rename to Classifier
   displayName: "Verify",
   mixins: [FetchSubjectsMixin, BaseWorkflowMethods], // load subjects and set state variables: subjects,  classification
@@ -187,7 +188,7 @@ Currently, there are no `}
       </div>
     );
   }
-});
+}));
 
 window.React = React;
 

@@ -7,8 +7,7 @@ module.exports = createReactClass({
 
   getDefaultProps() {
     return {
-      label: "Need some help?",
-      key: "help-button"
+      label: "Need some help?"
     };
   },
 

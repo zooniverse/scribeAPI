@@ -134,7 +134,7 @@ const TextTool = createReactClass({
   },
 
   applyAutoComplete() {
-    if (this.isMounted() && this.toolConfig().suggest === "common") {
+    if (this.toolConfig().suggest === "common") {
       const el = $(
         this.refs.input0 != null ? ReactDOM.findDOMNode(this.refs.input0) : undefined
       );
@@ -268,17 +268,17 @@ const TextTool = createReactClass({
       this.props.task.examples != null
         ? this.props.task.examples
         : __guard__(
-            Array.from(
-              (this.props.task.tool_config != null
+          Array.from(
+            (this.props.task.tool_config != null
+              ? this.props.task.tool_config.options
+              : undefined) != null
+              ? this.props.task.tool_config != null
                 ? this.props.task.tool_config.options
-                : undefined) != null
-                ? this.props.task.tool_config != null
-                  ? this.props.task.tool_config.options
-                  : undefined
-                : []
-            ).filter(t => t.value === this.props.annotation_key)[0],
-            x1 => x1.examples
-          );
+                : undefined
+              : []
+          ).filter(t => t.value === this.props.annotation_key)[0],
+          x1 => x1.examples
+        );
 
     // create component input field(s)
     let tool_content = (
@@ -291,8 +291,8 @@ const TextTool = createReactClass({
             ))}
           </ul>
         ) : (
-          undefined
-        )}
+            undefined
+          )}
         {
           ((atts = {
             ref,
@@ -307,20 +307,20 @@ const TextTool = createReactClass({
             value: val,
             disabled: this.props.badSubject
           }),
-          this.props.inputType === "text" ? (
-            <input {...Object.assign({ type: "text", value: val }, atts)} />
-          ) : this.props.inputType === "textarea" ? (
-            <textarea
-              {...Object.assign({ key: this.props.task.key, value: val }, atts)}
-            />
-          ) : this.props.inputType === "number" ? (
-            // Let's not make it input[type=number] because we don't want the browser to absolutely *force* numeric; We should coerce numerics without obliging
-            <input {...Object.assign({ type: "text", value: val }, atts)} />
-          ) : this.props.inputType === "date" ? (
-            <input {...Object.assign({ type: "date", value: val }, atts)} />
-          ) : (
-            console.warn(`Invalid inputType specified: ${this.props.inputType}`)
-          ))
+            this.props.inputType === "text" ? (
+              <input {...Object.assign({ type: "text", value: val }, atts)} />
+            ) : this.props.inputType === "textarea" ? (
+              <textarea
+                {...Object.assign({ key: this.props.task.key, value: val }, atts)}
+              />
+            ) : this.props.inputType === "number" ? (
+              // Let's not make it input[type=number] because we don't want the browser to absolutely *force* numeric; We should coerce numerics without obliging
+              <input {...Object.assign({ type: "text", value: val }, atts)} />
+            ) : this.props.inputType === "date" ? (
+              <input {...Object.assign({ type: "date", value: val }, atts)} />
+            ) : (
+                      console.warn(`Invalid inputType specified: ${this.props.inputType}`)
+                    ))
         }
       </div>
     );

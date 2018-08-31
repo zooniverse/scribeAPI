@@ -5,6 +5,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const API = require("./api.jsx");
+const queryString = require('query-string');
 
 module.exports = {
   componentDidMount() {

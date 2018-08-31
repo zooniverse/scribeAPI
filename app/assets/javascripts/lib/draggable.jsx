@@ -15,13 +15,17 @@ module.exports = createReactClass({
   _previousEventCoords: null,
 
   getDefaultProps() {
-    return { disableDragIn: ["INPUT", "TEXTAREA", "A", "BUTTON"] };
+    return {
+      x: 0,
+      y: 0,
+      disableDragIn: ["INPUT", "TEXTAREA", "A", "BUTTON"]
+    };
   },
 
   getInitialState() {
     return {
-      x: this.props.x, // ? 0
-      y: this.props.y, //? 0
+      x: this.props.x,
+      y: this.props.y,
       dragged: false
     };
   },
@@ -61,7 +65,7 @@ module.exports = createReactClass({
           this.props.children.props != null
             ? this.props.children.props.className
             : undefined
-        } draggable`,
+          } draggable`,
         onMouseDown: this.handleStart,
         style
       });
