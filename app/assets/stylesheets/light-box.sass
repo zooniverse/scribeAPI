@@ -1,24 +1,24 @@
 .light-box-area
-  z-index 100
+  z-index: 100
 
   // prevent highlighting/selecting
-  -webkit-touch-callout none
-  -webkit-user-select none
-  -khtml-user-select none
-  -moz-user-select none
-  -ms-user-select none
-  user-select none
+  -webkit-touch-callout: none
+  -webkit-user-select: none
+  -khtml-user-select: none
+  -moz-user-select: none
+  -ms-user-select: none
+  user-select: none
 
-  transition margin 0.2s
+  transition: margin 0.2s
 
   &.folded
-    transition margin 0.2s
-    margin-left -120px
+    transition: margin 0.2s
+    margin-left: -120px
 
   .carousel
-    box-shadow: 0 0 5px 3px rgba(0,0,0,0.4);
+    box-shadow: 0 0 5px 3px rgba(0,0,0,0.4)
 
-    width inherit
+    width: inherit
     // width: 10%
     // min-width 150px
     align-item: center
@@ -42,106 +42,106 @@
       fill: rgba(63,87,101,1)
 
     &:hover i
-      font-weight bold
+      font-weight: bold
 
-      color #8cbc8c
+      color: #8cbc8c
 
     #questions-tip
       vertical-align: text-top
       margin-right: 4px
 
   .action-button-next
-    padding: 0;
-    background-color:  #ffffff;
+    padding: 0
+    background-color:  #ffffff
     border-top: solid 3px #3f5765
     height: 30px
-    line-height: 2;
+    line-height: 2
     color: #3f5765
-    border-radius 0
-    text-align center
-    font-weight: 400;
+    border-radius: 0
+    text-align: center
+    font-weight: 400
     width: 49%
-    top: 0px;
-    margin: 0px;
-    position: relative;
-    opacity: 1;
+    top: 0px
+    margin: 0px
+    position: relative
+    opacity: 1
     &:hover
-      background-color: #cdcdcd;
+      background-color: #cdcdcd
     a
-      text-decoration:none
-      padding: 10%;
+      text-decoration: none
+      padding: 10%
       color: #3f5765
 
   .action-button-back
-    border-right: solid 3px #3f5765;
+    border-right: solid 3px #3f5765
     border-top: solid 3px #3f5765
-    background-color: #ffffff;
-    padding: 0;
+    background-color: #ffffff
+    padding: 0
     height: 30px
-    line-height: 2;
+    line-height: 2
     color: #3f5765
-    border-radius 0
-    text-align center
-    font-weight: 400;
+    border-radius: 0
+    text-align: center
+    font-weight: 400
     width: 49%
-    top: 0px;
-    margin: 0px;
-    position: relative;
-    opacity: 1;
+    top: 0px
+    margin: 0px
+    position: relative
+    opacity: 1
     &:hover
-      background-color: #cdcdcd;
+      background-color: #cdcdcd
     a
-      text-decoration:none
-      padding: 10%;
+      text-decoration: none
+      padding: 10%
       color: #3f5765
 
   #image-list
-    cursor pointer
-    opacity 1
-    transition opacity 1s
+    cursor: pointer
+    opacity: 1
+    transition: opacity 1s
     &.disabled
-      transition opacity 1s
-      cursor not-allowed
-      opacity 0.25
+      transition: opacity 1s
+      cursor: not-allowed
+      opacity: 0.25
 
   ul
-    padding-left 0
-    list-style none
+    padding-left: 0
+    list-style: none
     align-items: center
     margin-top: 0
 
     li
-      transition border 0.2s, background 0.3s
-      border-style: solid;
-      border-width: 3px;
-      border-color: rgba(0,0,0,0);
+      transition: border 0.2s, background 0.3s
+      border-style: solid
+      border-width: 3px
+      border-color: rgba(0,0,0,0)
       background-color: black
-      margin: 4%;
+      margin: 4%
       align-items: center
       width: 125px
-      border-radius: 12px;
-      cursor: inherit;
+      border-radius: 12px
+      cursor: inherit
       &.active
-        transition border 0.2, background 0.3s
-        border-style: solid;
-        border-width: 3px;
-        border-color:  #50afff;
+        transition: border 0.2, background 0.3s
+        border-style: solid
+        border-width: 3px
+        border-color:  #50afff
         background-color: #9BD1FF
 
       &:hover
-        border-style: solid;
-        border-width: 3px;
-        border-color: #fff;
+        border-style: solid
+        border-width: 3px
+        border-color: #fff
 
       span
-        border-bottom-right-radius: 8px;
+        border-bottom-right-radius: 8px
         border-top-left-radius: 8px
-        border-style: solid;
-        border-width: 3px;
-        border-color:  #ffffff;
-        float: left;
+        border-style: solid
+        border-width: 3px
+        border-color:  #ffffff
+        float: left
         color: #3f5765
-        background-color:  #ffffff;
-        width: 20px;
-        height: 20px;
-        text-align: center;
+        background-color:  #ffffff
+        width: 20px
+        height: 20px
+        text-align: center

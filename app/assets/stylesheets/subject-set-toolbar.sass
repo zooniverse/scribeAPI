@@ -1,19 +1,19 @@
 .subject-set-toolbar
   height: 100%
   width: 60px
-  flex(shrink: 1)
+  +flex($shrink: 1)
   margin-left: 0
   position: fixed
   top: 72px
   left: 0
   z-index: 1000
   padding-top: 20px
-  -webkit-touch-callout none
-  -webkit-user-select none
-  -khtml-user-select none
-  -moz-user-select none
-  -ms-user-select none
-  user-select none
+  -webkit-touch-callout: none
+  -webkit-user-select: none
+  -khtml-user-select: none
+  -moz-user-select: none
+  -ms-user-select: none
+  user-select: none
 
 .subject-set-toolbar-links
   width: 100%
@@ -84,7 +84,7 @@
       color: #fff
       justify-content: center
       align-content: center
-      flex-direction: column
+      +flex-direction(column)
       z-index: 1000
       box-shadow: 2px 2px 2px 0px rgba(0,0,0,0.4)
 
@@ -142,15 +142,15 @@
       padding: 3px
 
       i
-        color #3f5765
-        cursor pointer
-        padding 2px
+        color: #3f5765
+        cursor: pointer
+        padding: 2px
         &:hover
-          transition color 0.2s
-          color #8cbc8c
+          transition: color 0.2s
+          color: #8cbc8c
 
 .fa.fa-comments-o
-  border-top: solid #efefef 1px;
+  border-top: solid #efefef 1px
 
 
 

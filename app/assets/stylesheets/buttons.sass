@@ -1,17 +1,17 @@
 .secret-button
-  @extends $reset-button
+  @extend %reset-button
 
 .standard-button
-  @extends $reset-button
+  @extend %reset-button
   border-radius: 3px
   color: white
   padding: 0.4em 1.4em
   text-align: center
-  font-weight bold
-  background: PRIMARY_NORMAL
+  font-weight: bold
+  background: $PRIMARY_NORMAL
   &:active
-    transform translateY(1px)
-    box-shadow none
+    transform: translateY(1px)
+    box-shadow: none
   &:disabled
     pointer-events: none
   &.full
@@ -19,37 +19,37 @@
     width: 100%
 
 .major-button
-  @extends .standard-button
-  background: PRIMARY_NORMAL
+  @extend .standard-button
+  background: $PRIMARY_NORMAL
   font-weight: bold
-  text-transform: uppercase;
+  text-transform: uppercase
 
   &:hover
-    background: PRIMARY_HOVER
+    background: $PRIMARY_HOVER
 
 .minor-button
-  @extends .standard-button
+  @extend .standard-button
   color: white
-  background: SECONDARY_NORMAL
-  text-transform: uppercase;
+  background: $SECONDARY_NORMAL
+  text-transform: uppercase
 
   &:hover
-    background: SECONDARY_HOVER
+    background: $SECONDARY_HOVER
 
   &.ghost
-    border: solid SECONDARY_NORMAL 2px
-    border-radius 3px
+    border: solid $SECONDARY_NORMAL 2px
+    border-radius: 3px
     background: transparent
-    color SECONDARY_NORMAL
+    color: $SECONDARY_NORMAL
 
 .small-button
-  @extends .minor-button
-  text-transform: none;
-  font-size 11px
+  @extend .minor-button
+  text-transform: none
+  font-size: 11px
   padding: 0.2em 1em
 
 .pill-button
-  @extends $reset-button
+  @extend %reset-button
   border: 1px solid
   border-radius: 3px
   font-size: 0.7em

@@ -1,12 +1,12 @@
-FOREGROUND = #404040
-BACKGROUND = white
-MAIN_HIGHLIGHT = #43bbfd
-SECOND_HIGHLIGHT = #38b978
+$FOREGROUND: #404040
+$BACKGROUND: white
+$MAIN_HIGHLIGHT: #43bbfd
+$SECOND_HIGHLIGHT: #38b978
 
-background-stripes(color1, color2, size)
-  background-image: repeating-linear-gradient(-45deg, color1, color1 size / 2, color2 size / 2, color2 size)
+@mixin background-stripes($color1, $color2, $size)
+  background-image: repeating-linear-gradient(-45deg, $color1, $color1 $size / 2, $color2 $size / 2, $color2 $size)
 
-$reset-button
+%reset-button
   background: transparent
   border: 0
   color: inherit

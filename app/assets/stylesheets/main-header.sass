@@ -1,75 +1,75 @@
 
 .main-header-group
   // defined in mixin:  background-linear-gradient(startPoint, startColor, startInterval, endColor, endInterval)
-  background-linear-gradient top, rgba(0,0,0,1), 50%, rgba(0,0,0,0.2), 100% 
+  +background-linear-gradient(top, rgba(0,0,0,1), 50%, rgba(0,0,0,0.2), 100%)
   max-heigth: 50px
-  position fixed
-  top 0px
-  width 100%
-  height 72px
+  position: fixed
+  top: 0px
+  width: 100%
+  height: 72px
 
-  flexbox(flex)
-  border: 0 solid rgba(FOREGROUND, 0.5)
-  z-index 100
+  +flexbox(flex)
+  border: 0 solid rgba($FOREGROUND, 0.5)
+  z-index: 100
 
   // disable selecting text
-  -webkit-touch-callout none
-  -webkit-user-select none
-  -khtml-user-select none
-  -moz-user-select none
-  -ms-user-select none
-  user-select none
+  -webkit-touch-callout: none
+  -webkit-user-select: none
+  -khtml-user-select: none
+  -moz-user-select: none
+  -ms-user-select: none
+  user-select: none
 
 .main-header-item
-  @extends $reset-button
-  outline none
+  @extend %reset-button
+  outline: none
   overflow: hidden
   align-items: center
-  background: rgba(MAIN_HIGHLIGHT, 0)
+  background: rgba($MAIN_HIGHLIGHT, 0)
   border-radius: 2
   color: white
   cursor: normal
-  flex(grow: 1)
+  +flex($grow: 1)
   // padding: 0.5rem 1.5vw 0.2em
-  padding 0 10px 0
+  padding: 0 10px 0
   white-space: nowrap
   box-shadow: 0 0 0 inset
   transition: box-shadow 0.2s
   text-transform: uppercase
   letter-spacing: .2em
-  text-align center
-  line-height 72px
+  text-align: center
+  line-height: 72px
 
   &[data-active]
     box-shadow: 0 -3px 0 inset
 
   &:hover
-    background: rgba(MEDIUM_GRAY, 0.3)
+    background: rgba($MEDIUM_GRAY, 0.3)
 
   &.logo
     img
-      width 42px
-      height 42px
-      margin-top 10px
-    color:  #efefef;
-    font-size: 24px;
-    font-weight: 700;
-    font-style: italic;
-    // line-height: 36px;
-    text-align: center;
+      width: 42px
+      height: 42px
+      margin-top: 10px
+    color:  #efefef
+    font-size: 24px
+    font-weight: 700
+    font-style: italic
+    // line-height: 36px
+    text-align: center
     transform: rotate(-11.719deg)
     -webkit-transform: rotate(-11.719deg)
-    -ms-transform:rotate(-11.719deg)
+    -ms-transform: rotate(-11.719deg)
     &:hover
       background: transparent
     &.selected
       background: transparent
-      border-bottom: none;
+      border-bottom: none
 
   &.selected
-    background: rgba(MEDIUM_GRAY, 0.5)
-    transition border 0.3s, background-color 0.3s
-    border-bottom: solid 2px #8cbc8c;
+    background: rgba($MEDIUM_GRAY, 0.5)
+    transition: border 0.3s, background-color 0.3s
+    border-bottom: solid 2px #8cbc8c
 
 
   > a
@@ -84,54 +84,52 @@
   width: 3rem
 
 .login
-  @extends $reset-button
-  flex(grow: 14)
-  color rgba(255, 255, 255, 0.4)
+  @extend %reset-button
+  +flex($grow: 14)
+  color: rgba(255, 255, 255, 0.4)
   overflow: hidden
   align-items: center
   text-transform: uppercase
-  line-height 72px
+  line-height: 72px
 
   .login-container
-    padding-right: 2%;
-    float:right
-
-
+    padding-right: 2%
+    float: right
 
   img
-    max-height 20px
-    margin-right 8px
+    max-height: 20px
+    margin-right: 8px
 
   .guest-hello
-    padding-right 10px
+    padding-right: 10px
 
   .logout
-    padding-left 6px
+    padding-left: 6px
 
   &:hover
-    color white
+    color: white
 
   .options
-    width 100px
-    display inline-block
-    padding-left 6px
+    width: 100px
+    display: inline-block
+    padding-left: 6px
 
     a
-      margin-right 5px
-      text-transform capitalize
-      display inline-block
-      width 18px
-      height 18px
-      line-height 18px
-      font-size 12px
-      text-align center
-      color #000
-      background none repeat scroll 0 0 rgba(255, 255, 255, 0.4)
-      border-radius 50%
+      margin-right: 5px
+      text-transform: capitalize
+      display: inline-block
+      width: 18px
+      height: 18px
+      line-height: 18px
+      font-size: 12px
+      text-align: center
+      color: #000
+      background: none repeat scroll 0 0 rgba(255, 255, 255, 0.4)
+      border-radius: 50%
 
       &:hover
-        color #fff
+        color: #fff
 
 @media all and (max-width: 1100px)
   .login .label
-    display none
+    display: none

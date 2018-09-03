@@ -1,13 +1,13 @@
 .classifier
 
-  flexbox(flex)
-  flex-direction(row)
-  flex-wrap(nowrap)
+  +flexbox(flex)
+  +flex-direction(row)
+  +flex-wrap(nowrap)
 
   justify-content: center
 
   .subject-area
-    flex(grow: 1)
+    +flex($grow: 1)
 
   .subject-container
     color: gray
@@ -40,7 +40,7 @@
     justify-content: space-between
 
   .subject-frame-pip
-    @extends $reset-button
+    @extend %reset-button
     background: transparent
     border: 2px solid
     border-radius: 50%
@@ -55,123 +55,123 @@
       background: #f60
 
   .right-column
-    width 250px
-    flex(shrink: 0)
-    padding 0 10px
+    width: 250px
+    +flex($shrink: 0)
+    padding: 0 10px
 
     .task-area
-      position fixed
-      background-color #ffffff
-      color SECONDARY_NORMAL
-      padding 20px
-      border-radius 5px
-      border-top-right-radius 0px
-      border-bottom-right-radius 0px
-      z-index 50
+      position: fixed
+      background-color: #ffffff
+      color: $SECONDARY_NORMAL
+      padding: 20px
+      border-radius: 5px
+      border-top-right-radius: 0px
+      border-bottom-right-radius: 0px
+      z-index: 50
 
       &.mark
-        padding 20px 20px 0
-        height 100vh
-        display flex
-        flex-direction(column)
-        overflow hidden
-        overflow-y auto
+        padding: 20px 20px 0
+        height: 100vh
+        display: flex
+        +flex-direction(column)
+        overflow: hidden
+        overflow-y: auto
 
       a
-        cursor pointer
+        cursor: pointer
 
-      box-shadow 0 0 5px 3px rgba(0,0,0,0.4)
+      box-shadow: 0 0 5px 3px rgba(0,0,0,0.4)
 
 
       // prevent highlighting/selecting
-      -webkit-touch-callout none
-      -webkit-user-select none
-      -khtml-user-select none
-      -moz-user-select none
-      -ms-user-select none
-      user-select none
+      -webkit-touch-callout: none
+      -webkit-user-select: none
+      -khtml-user-select: none
+      -moz-user-select: none
+      -ms-user-select: none
+      user-select: none
 
       .task-container
-        width 220px
-        flex(grow: 1)
-        padding-bottom 10%
+        width: 220px
+        +flex($grow: 1)
+        padding-bottom: 10%
 
       .help-bad-subject-holder
-        margin 10px 0 15px 0
+        margin: 10px 0 15px 0
 
         button
-          margin 10px 10px 0 0
-          width 100%
+          margin: 10px 10px 0 0
+          width: 100%
 
         .task-help-button
-          position absolute
-          top 0
-          right 0
-          font-family FontAwesome
-          background #bbb
-          color #fff
-          width 24px
-          height 24px
-          line-height 24px
-          text-align center
-          border none
-          border-radius 12px
-          padding 0
-          font-weight normal
-          font-size 14px
+          position: absolute
+          top: 0
+          right: 0
+          font-family: FontAwesome
+          background: #bbb
+          color: #fff
+          width: 24px
+          height: 24px
+          line-height: 24px
+          text-align: center
+          border: none
+          border-radius: 12px
+          padding: 0
+          font-weight: normal
+          font-size: 14px
           margin: 2%
-          -webkit-font-smoothing antialiased
-          -moz-osx-font-smoothing grayscale
+          -webkit-font-smoothing: antialiased
+          -moz-osx-font-smoothing: grayscale
           &:hover
-            background #3f5765
+            background: #3f5765
 
           &:before
-            content "\f128"
+            content: "\f128"
 
       .workflow-task
-        margin-bottom 10px
+        margin-bottom: 10px
         > span:first-child > p:first-child
-          margin-top 0
-          padding-right 10px
+          margin-top: 0
+          padding-right: 10px
         .pick-one-dropdown
-          font-size 1.5em
-          transition opacity 0.250s
-          background-color #ececec
-          opacity 0.75
-          outline none
+          font-size: 1.5em
+          transition: opacity 0.250s
+          background-color: #ececec
+          opacity: 0.75
+          outline: none
           &:hover
-            opacity 1.0
-            transition opacity 0.250s
-          border-radius 5px
-          padding 12px 20px
-          height 40px
-          width 300px
-          border 2px solid transparent
-          cursor pointer
-          opacity 0.75
+            opacity: 1.0
+            transition: opacity 0.250s
+          border-radius: 5px
+          padding: 12px 20px
+          height: 40px
+          width: 300px
+          border: 2px solid transparent
+          cursor: pointer
+          opacity: 0.75
 
         .answer
-          @extends .standard-button
-          background-color #ddd
-          color #333
-          font-size 12px
+          @extend .standard-button
+          background-color: #ddd
+          color: #333
+          font-size: 12px
 
           align-items: center
-          flexbox(flex)
-          flex-direction(row)
-          flex-wrap(nowrap)
+          +flexbox(flex)
+          +flex-direction(row)
+          +flex-wrap(nowrap)
 
           margin: 0.5em 0
           text-align: left
-          position relative
+          position: relative
 
           input
             visibility: hidden
           .drawing-tool-icon
-            flex(shrink: 0)
+            +flex($shrink: 0)
             line-height: 1
             margin-right: 0.5em
-            width 2em
+            width: 2em
 
           .markdown > p:first-child:last-child
             margin: 0
@@ -180,148 +180,148 @@
             opacity: 0.7
 
           .count
-            margin-left 0.5em
+            margin-left: 0.5em
 
             &:before
-              content '('
+              content: '('
             &:after
-              content ')'
+              content: ')'
 
           .help
-            position absolute
-            display none
-            right 0
-            top 0
-            height 20px
-            padding 0.4em 1em
-            background rgba(0,0,0,0.2)
-            border-left 1px solid rgba(255,255,255,0.2)
+            position: absolute
+            display: none
+            right: 0
+            top: 0
+            height: 20px
+            padding: 0.4em 1em
+            background: rgba(0,0,0,0.2)
+            border-left: 1px solid rgba(255,255,255,0.2)
             &:before
-              display none
-              content attr(data-text)
-              position absolute
-              right 2px
-              top 100%
-              width 200px
-              padding 0.5em
-              background #f7efa5
-              border 1px solid #918e72
-              font-size 0.8em
-              color black
-              font-weight normal
+              display: none
+              content: attr(data-text)
+              position: absolute
+              right: 2px
+              top: 100%
+              width: 200px
+              padding: 0.5em
+              background: #f7efa5
+              border: 1px solid #918e72
+              font-size: 0.8em
+              color: black
+              font-weight: normal
             &:hover:before
               // display block
 
           &:hover, &.active
-            color white
+            color: white
             .help
-              display block
+              display: block
           &.active
-            background-color rgba(160, 180, 188, 50);
-            z-index 100
+            background-color: rgba(160, 180, 188, .50)
+            z-index: 100
           &:hover
-            background-color rgba(160, 180, 188, 50);
-            z-index 101
+            background-color: rgba(160, 180, 188, .50)
+            z-index: 101
 
       .task-secondary-area
-        width 260px
-        margin-left -20px
-        margin-right -20px
-        box-sizing border-box
-        border-top solid #999 1px
-        background #ddd
-        margin-bottom 110px
-        flex nil none
+        width: 260px
+        margin-left: -20px
+        margin-right: -20px
+        box-sizing: border-box
+        border-top: solid #999 1px
+        background: #ddd
+        margin-bottom: 110px
+        +flex(nil, none)
 
         > p
-          margin 0
+          margin: 0
           > a
-            display block
-            padding 8px 16px
-            text-decoration none
-            color #777
-            border-bottom 1px solid #bbb
+            display: block
+            padding: 8px 16px
+            text-decoration: none
+            color: #777
+            border-bottom: 1px solid #bbb
 
             &:before
-              font-family FontAwesome
-              color #aaa
-              display inline-block
-              margin-right 6px
-              -webkit-font-smoothing antialiased
-              -moz-osx-font-smoothing grayscale
-              font-size 16px
-              vertical-align baseline
+              font-family: FontAwesome
+              color: #aaa
+              display: inline-block
+              margin-right: 6px
+              -webkit-font-smoothing: antialiased
+              -moz-osx-font-smoothing: grayscale
+              font-size: 16px
+              vertical-align: baseline
 
             &.tutorial-link
-              background-color #BEDBE8
-              color #3C6C8E
-              border-color #999
+              background-color: #BEDBE8
+              color: #3C6C8E
+              border-color: #999
 
             &.tutorial-link:before
-              content "\f059"
-              color #3C6C8E
+              content: "\f059"
+              color: #3C6C8E
 
             &.transcribe-link:before
-              content "\f14b"
+              content: "\f14b"
 
             &.about-link:before
-              content "\f05a"
+              content: "\f05a"
 
             &:hover
               &,
               &:before
-                color #3f5765
+                color: #3f5765
 
         .forum-subject-widget
           > a
             font-family: ProximaNova, 'Helvetica Neue'
-            display block
-            text-decoration none
-            color #777
+            display: block
+            text-decoration: none
+            color: #777
             &.forum-link
               &:before
-                font-family: FontAwesome;
-                color #aaa
-                display inline-block
-                -webkit-font-smoothing antialiased
-                -moz-osx-font-smoothing grayscale
-                vertical-align baseline
-                content "\f0e6"
+                font-family: FontAwesome
+                color: #aaa
+                display: inline-block
+                -webkit-font-smoothing: antialiased
+                -moz-osx-font-smoothing: grayscale
+                vertical-align: baseline
+                content: "\f0e6"
 
               &:hover
                 &,
                 &:before
-                  color #3f5765
+                  color: #3f5765
 
       &.transcribe,
       &.verify
         .task-secondary-area
-          margin-bottom 0
-          border-bottom solid #999 1px
+          margin-bottom: 0
+          border-bottom: solid #999 1px
 
       .social-media-container
-        margin 10px 0 -10px
-        padding-top 8px
-        padding-bottom 4px
-        font-size 26px
-        text-align center
-        transition color 0.2s
-        background #3f5765
-        line-height 1
-        width 100%
+        margin: 10px 0 -10px
+        padding-top: 8px
+        padding-bottom: 4px
+        font-size: 26px
+        text-align: center
+        transition: color 0.2s
+        background: #3f5765
+        line-height: 1
+        width: 100%
 
         i
-          color #ddd
-          cursor pointer
-          padding 0 2px
+          color: #ddd
+          cursor: pointer
+          padding: 0 2px
           &:hover
-            transition color 0.2s
-            color #fff
+            transition: color 0.2s
+            color: #fff
 
       .task-nav
-        flexbox(flex)
+        +flexbox(flex)
         margin-top: 20px
-        width 220px
+        width: 220px
         .back
           // PB don't think these flex-grow values are needed?
           // flex: 1 0
@@ -329,8 +329,8 @@
           // flex: 2 0
         .continue
           // flex: 3 0
-          width 100%
-        :not(:first-child)
+          width: 100%
+        & :not(:first-child)
           margin-left: 0.5em
 
 .workflow-task
@@ -346,101 +346,101 @@
 
 
 .workflow-nothing-more
-  margin-top 200px
-  border-radius 1em
-  padding 1em
-  background-color white
-  opacity 0.75
+  margin-top: 200px
+  border-radius: 1em
+  padding: 1em
+  background-color: white
+  opacity: 0.75
 
   p
-    color black
+    color: black
 
 .draggable-modal
-  position absolute
-  min-width 338px
-  max-width 800px
-  background-color rgb(236, 236, 236)
-  color black
-  box-shadow 0 0 5px 3px rgba(0,0,0,.4)
-  border-radius 6px
-  line-height 2em
-  cursor move
-  z-index 10
-  text-align left
+  position: absolute
+  min-width: 338px
+  max-width: 800px
+  background-color: rgb(236, 236, 236)
+  color: black
+  box-shadow: 0 0 5px 3px rgba(0,0,0,.4)
+  border-radius: 6px
+  line-height: 2em
+  cursor: move
+  z-index: 10
+  text-align: left
 
   .modal-body, .modal-buttons
-    padding 20px 20px 10px
+    padding: 20px 20px 10px
 
   .modal-header
-    font-size 1.6em
-    background-color #3f5765
-    color white
-    padding 14px 20px
+    font-size: 1.6em
+    background-color: #3f5765
+    color: white
+    padding: 14px 20px
 
   .modal-body
-    overflow hidden
+    overflow: hidden
 
     p:first-of-type
-      margin-top 0
+      margin-top: 0
 
     p:last-of-type
-      margin-bottom 0
+      margin-bottom: 0
 
   .modal-buttons
-    text-align right
-    padding-bottom 20px
-    overflow hidden
+    text-align: right
+    padding-bottom: 20px
+    overflow: hidden
 
     .help-button, .bad-subject, .floated-left
-      float left
-      margin-right 10px
+      float: left
+      margin-right: 10px
 
       &:last
-        margin-right 0
+        margin-right: 0
 
   .modal-close-button
-    position absolute
-    top -10px
-    right -10px
-    width 40px
-    height 40px
-    line-height 40px
-    text-align center
-    border-radius 20px
-    background #8cbc8c
-    color white
-    font-size 30px
-    cursor pointer
+    position: absolute
+    top: -10px
+    right: -10px
+    width: 40px
+    height: 40px
+    line-height: 40px
+    text-align: center
+    border-radius: 20px
+    background: #8cbc8c
+    color: white
+    font-size: 30px
+    cursor: pointer
 
     &:hover
-      background lighten(#8cbc8c, 15%)
+      background: lighten(#8cbc8c, 15%)
 
     &:before
-      content "\f00d"
-      font-family 'FontAwesome'
-      display inline-block
-      margin-top -1px
+      content: "\f00d"
+      font-family: 'FontAwesome'
+      display: inline-block
+      margin-top: -1px
 
 
 // currently used for the "Bad Subject" and "Hide Other Marks" buttons
 .toggle-button
-  color TERTIARY_NORMAL
-  border-color TERTIARY_NORMAL
+  color: $TERTIARY_NORMAL
+  border-color: $TERTIARY_NORMAL
   margin-right: 3px
 
   &.toggled
-    border solid 1px darkred
-    background-color darkred
-    color white
+    border: solid 1px darkred
+    background-color: darkred
+    color: white
 
   &.toggled:before
-    content '\2713   '
+    content: '\2713   '
 
 
 
 
 .help-modal
-  width 500px
+  width: 500px
 
   .modal-body
-    font-size 1.3em
+    font-size: 1.3em

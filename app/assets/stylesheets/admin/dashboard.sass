@@ -1,174 +1,174 @@
 html, body
-  background #fff
-  color #222
+  background: #fff
+  color: #222
 
 .dashboard
-  position relative
-  padding-top 20px
+  position: relative
+  padding-top: 20px
 
 .row
-  overflow visible
-  margin 1em 1em 0
+  overflow: visible
+  margin: 1em 1em 0
 
 .category
-  float left
-  width 50%
-  min-height 500px
-  border-top 1px solid #ddd
-  margin-top 20px
-  padding-top 20px
+  float: left
+  width: 50%
+  min-height: 500px
+  border-top: 1px solid #ddd
+  margin-top: 20px
+  padding-top: 20px
 
   &:nth-child(odd)
-    clear both
+    clear: both
 
   .title
-    margin 0
-    padding-left 3px
+    margin: 0
+    padding-left: 3px
 
   .units
-    float right
-    margin-right 30px
+    float: right
+    margin-right: 30px
 
     button
-      display inline-block
-      border none
-      border-radius 0
-      padding 0.3em 0.6em
-      margin-left -2px
-      cursor pointer
-      outline none
+      display: inline-block
+      border: none
+      border-radius: 0
+      padding: 0.3em 0.6em
+      margin-left: -2px
+      cursor: pointer
+      outline: none
 
       &.active, &:hover
-        background #666
-        color #fff
+        background: #666
+        color: #fff
 
   .count
-    font-size 3em
-    line-height 1
+    font-size: 3em
+    line-height: 1
 
   .chart
 
     svg
-      -ms-transform-origin 0 0
-      -webkit-transform-origin 0 0
-      transform-origin 0 0
+      -ms-transform-origin: 0 0
+      -webkit-transform-origin: 0 0
+      transform-origin: 0 0
 
     text
-      fill #111
+      fill: #111
 
     .area
-      fill steelblue
-      clip-path url(#clip)
-      fill-opacity .5
+      fill: steelblue
+      clip-path: url(#clip)
+      fill-opacity: .5
 
     .line
-      stroke steelblue
-      stroke-width 1
-      fill none
-      clip-path url(#clip)
+      stroke: steelblue
+      stroke-width: 1
+      fill: none
+      clip-path: url(#clip)
 
     .axis path,
     .axis line
-      fill none
-      stroke #222
-      shape-rendering crispEdges
+      fill: none
+      stroke: #222
+      shape-rendering: crispEdges
 
     .brush .extent
-      stroke #fff
-      fill-opacity .125
-      shape-rendering crispEdges
+      stroke: #fff
+      fill-opacity: .125
+      shape-rendering: crispEdges
 
     .x-line
-      stroke #29567a
-      stroke-dasharray 3,3
+      stroke: #29567a
+      stroke-dasharray: 3,3
 
     circle.helper
-      fill steelblue
-      stroke #666
-      stroke-width 2
-      fill-opacity .5
+      fill: steelblue
+      stroke: #666
+      stroke-width: 2
+      fill-opacity: .5
 
     text.value
-      font-size 1.4em
-      font-weight bold
+      font-size: 1.4em
+      font-weight: bold
 
     .arc text
-      fill #fff
+      fill: #fff
 
     .arc-center
-      font-size 3em
-      font-weight bold
+      font-size: 3em
+      font-weight: bold
 
   .chart-key
-    padding 5px 10px
-    margin 10px
-    background #eee
+    padding: 5px 10px
+    margin: 10px
+    background: #eee
 
 
   @media screen and (max-width: 800px)
-    width 100%
-    float none
+    width: 100%
+    float: none
 
 
 
 .dashboard-table
-  border-collapse collapse
+  border-collapse: collapse
 
   tr
     th, td
-      padding 10px
+      padding: 10px
 
     th
-      text-align left
+      text-align: left
 
     &:hover
-      background-color #eee
+      background-color: #eee
 
 .core-data, .supplied-data
-  width 45%
-  float left
-  overflow hidden
+  width: 45%
+  float: left
+  overflow: hidden
 
 dl
   dt
-    color #aaa
+    color: #aaa
 
   dd
-    padding-bottom 10px
-    margin-left 20px
+    padding-bottom: 10px
+    margin-left: 20px
 
     ul
-      padding-left 20px
+      padding-left: 20px
 
       li
         label
-          color #999
+          color: #999
 
 
 .breadcrumb
-  list-style none
-  padding 0
+  list-style: none
+  padding: 0
 
   li
-    display inline-block
-    padding 10px 0
-    font-size 1.4em
+    display: inline-block
+    padding: 10px 0
+    font-size: 1.4em
 
     &:before
-      content "\00BB "
+      content: "\00BB "
 
     &:first-of-type
       &:before
-        content none
+        content: none
 
     a
-      padding-right 10px
+      padding-right: 10px
 
 a
-  color orange
+  color: orange
 
 .recalculate-stats
-  @extends .major-button
-  position absolute
-  top 10px
-  right 20px
+  @extend .major-button
+  position: absolute
+  top: 10px
+  right: 20px
