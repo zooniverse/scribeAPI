@@ -494,7 +494,6 @@ module.exports = createReactClass({
                     xScale={scale.horizontal}
                     yScale={scale.vertical}
                     disabled={!mark.userCreated}
-                    disabled={!mark.userCreated}
                     isTranscribable={mark.isTranscribable}
                     interim={mark.interim_id != null}
                     isPriorMark={isPriorMark}

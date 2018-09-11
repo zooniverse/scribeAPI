@@ -217,7 +217,6 @@ Currently, there are no `}
                   annotation={currentAnnotation}
                 >
                   <TranscribeComponent
-                    viewerSize={this.state.viewerSize}
                     annotation_key={`${this.state.taskKey}.${
                       this.getCurrentSubject().id
                     }`}

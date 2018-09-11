@@ -8,7 +8,7 @@
 const React = require("react");
 const createReactClass = require("create-react-class");
 
-const Draggable = require("../lib/draggable.jsx");
+const Draggable = require("../../../../lib/draggable.jsx");
 const PrevButton = require("./prev-button.jsx");
 const NextButton = require("./next-button.jsx");
 const DoneButton = require("./done-button.jsx");
