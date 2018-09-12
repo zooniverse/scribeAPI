@@ -1,7 +1,7 @@
 
 
-const React = require("react");
-const createReactClass = require("create-react-class");
+import React from "react";
+import createReactClass from "create-react-class";
 
 const LoadingIndicator = createReactClass({
   displayName: "LoadingIndicator",
@@ -18,4 +18,4 @@ const LoadingIndicator = createReactClass({
   }
 });
 
-module.exports = LoadingIndicator;
+export default LoadingIndicator;

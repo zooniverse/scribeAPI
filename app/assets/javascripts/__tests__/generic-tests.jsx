@@ -1,4 +1,4 @@
-const GenericTask = require("../components/core-tools/generic.jsx");
+import GenericTask from "../components/core-tools/generic.jsx";
 describe("GenericTask", function () {
   it("should grab the GenericTask code", () =>
     expect(GenericTask).toBeTruthy());

@@ -1,7 +1,7 @@
 
-const React = require("react");
+import React from "react";
 
-const createReactClass = require("create-react-class");
+import createReactClass from "create-react-class";
 const TranscribeInput = createReactClass({
   displayName: "TranscribeInput",
 
@@ -32,4 +32,4 @@ const TranscribeInput = createReactClass({
   }
 });
 
-module.exports = TranscribeInput;
+export default TranscribeInput;

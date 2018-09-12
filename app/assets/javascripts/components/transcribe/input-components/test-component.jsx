@@ -1,5 +1,5 @@
-const DoneButton = require("./done-button.jsx");
-const createReactClass = require("create-react-class");
+import DoneButton from "./done-button.jsx";
+import createReactClass from "create-react-class";
 
 const TestComponent = createReactClass({
   displayName: "TestComponent",
@@ -35,4 +35,4 @@ const TestComponent = createReactClass({
   }
 });
 
-module.exports = TestComponent;
+export default TestComponent;

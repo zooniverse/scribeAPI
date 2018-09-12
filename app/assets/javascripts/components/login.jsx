@@ -4,8 +4,8 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const React = require("react");
-const createReactClass = require("create-react-class");
+import React from "react";
+import createReactClass from "create-react-class";
 
 const Login = createReactClass({
   displayName: "Login",
@@ -108,4 +108,4 @@ const Login = createReactClass({
   }
 });
 
-module.exports = Login;
+export default Login;

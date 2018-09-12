@@ -1,9 +1,9 @@
-const React = require("react");
-const ReactDOM = require("react-dom");
-const DraggableModal = require("./draggable-modal.jsx");
-const createReactClass = require("create-react-class");
+import React from "react";
+import ReactDOM from "react-dom";
+import DraggableModal from "./draggable-modal.jsx";
+import createReactClass from "create-react-class";
 
-module.exports = createReactClass({
+export default createReactClass({
   displayName: "HelpModal",
 
   componentDidMount() {

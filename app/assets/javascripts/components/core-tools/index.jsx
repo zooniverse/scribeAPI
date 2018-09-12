@@ -1,8 +1,14 @@
 // HASH OF CORE TOOLS
-module.exports = {
-  pickOne: require("./pick-one.jsx"),
-  pickOneDropdown: require("./pick-one-dropdown.jsx"),
-  pickMany: require("./pick-many.jsx"),
-  pickOneMarkOne: require("./pick-one-mark-one.jsx"),
-  transcribe: require("./transcribe.jsx") // ????
+import pickOne from "./pick-one.jsx";
+import pickOneDropdown from "./pick-one-dropdown.jsx";
+import pickMany from "./pick-many.jsx";
+import pickOneMarkOne from "./pick-one-mark-one.jsx";
+import transcribe from "./transcribe.jsx";
+
+export default {
+  pickOne,
+  pickOneDropdown,
+  pickMany,
+  pickOneMarkOne,
+  transcribe /* ???? */
 };

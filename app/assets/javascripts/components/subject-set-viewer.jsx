@@ -5,14 +5,14 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 
-const React = require("react");
-const PropTypes = require('prop-types');
-const createReactClass = require("create-react-class");
-const SubjectViewer = require("./subject-viewer.jsx");
-const ZoomPanListenerMethods = require("../lib/zoom-pan-listener-methods.jsx");
-const SubjectSetToolbar = require("./subject-set-toolbar.jsx");
+import React from "react";
+import PropTypes from 'prop-types';
+import createReactClass from "create-react-class";
+import SubjectViewer from "./subject-viewer.jsx";
+import ZoomPanListenerMethods from "../lib/zoom-pan-listener-methods.jsx";
+import SubjectSetToolbar from "./subject-set-toolbar.jsx";
 
-module.exports = createReactClass({
+export default createReactClass({
   displayName: "SubjectSetViewer",
   resizing: false,
 

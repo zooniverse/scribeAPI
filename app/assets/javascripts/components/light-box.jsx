@@ -8,13 +8,13 @@ var _this = this;
  * DS208: Avoid top-level this
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const React = require("react");
-const PropTypes = require('prop-types');
-const SVGImage = require("./svg-image.jsx");
-const ActionButton = require("./action-button.jsx");
-const createReactClass = require("create-react-class");
+import React from "react";
+import PropTypes from 'prop-types';
+import SVGImage from "./svg-image.jsx";
+import ActionButton from "./action-button.jsx";
+import createReactClass from "create-react-class";
 
-module.exports = createReactClass({
+export default createReactClass({
   displayName: "LightBox",
 
   propTypes: {

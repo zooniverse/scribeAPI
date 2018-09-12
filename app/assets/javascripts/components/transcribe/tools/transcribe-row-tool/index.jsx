@@ -5,14 +5,14 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 
-const React = require("react");
-const createReactClass = require("create-react-class");
+import React from "react";
+import createReactClass from "create-react-class";
 
-const Draggable = require("../../../../lib/draggable.jsx");
-const PrevButton = require("./prev-button.jsx");
-const NextButton = require("./next-button.jsx");
-const DoneButton = require("./done-button.jsx");
-const TranscribeInput = require("./transcribe-input.jsx");
+import Draggable from "../../../../lib/draggable.jsx";
+import PrevButton from "./prev-button.jsx";
+import NextButton from "./next-button.jsx";
+import DoneButton from "./done-button.jsx";
+import TranscribeInput from "./transcribe-input.jsx";
 
 const TranscribeTool = createReactClass({
   displayName: "TranscribeTool",
@@ -187,4 +187,4 @@ const TranscribeTool = createReactClass({
     );
   }
 });
-module.exports = TranscribeTool;
+export default TranscribeTool;

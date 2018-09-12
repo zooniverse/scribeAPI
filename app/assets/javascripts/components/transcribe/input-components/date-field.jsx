@@ -1,5 +1,5 @@
-const DoneButton = require("./done-button.jsx");
-const createReactClass = require("create-react-class");
+import DoneButton from "./done-button.jsx";
+import createReactClass from "create-react-class";
 
 const DateField = createReactClass({
   displayName: "DateField",
@@ -26,4 +26,4 @@ const DateField = createReactClass({
     );
   }
 });
-module.exports = DateField;
+export default DateField;

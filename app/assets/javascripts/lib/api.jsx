@@ -1,4 +1,4 @@
-const JSONAPIClient = require("json-api-client");
+import JSONAPIClient from "json-api-client";
 
 const PATH_TO_API_ROOT = `${window.location.protocol}//${
   window.location.host
@@ -11,4 +11,4 @@ const DEFAULT_HEADERS = {
 
 const client = new JSONAPIClient(PATH_TO_API_ROOT, DEFAULT_HEADERS);
 
-module.exports = client;
+export default client;

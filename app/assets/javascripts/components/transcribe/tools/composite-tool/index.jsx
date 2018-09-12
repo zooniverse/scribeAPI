@@ -6,15 +6,15 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const React = require("react");
-const createReactClass = require("create-react-class");
-const DraggableModal = require("../../../draggable-modal.jsx");
-const DoneButton = require("./done-button.jsx");
-const SmallButton = require("../../../buttons/small-button.jsx");
-const PrevButton = require("./prev-button.jsx");
-const HelpButton = require("../../../buttons/help-button.jsx");
-const BadSubjectButton = require("../../../buttons/bad-subject-button.jsx");
-const IllegibleSubjectButton = require("../../../buttons/illegible-subject-button.jsx");
+import React from "react";
+import createReactClass from "create-react-class";
+import DraggableModal from "../../../draggable-modal.jsx";
+import DoneButton from "./done-button.jsx";
+import SmallButton from "../../../buttons/small-button.jsx";
+import PrevButton from "./prev-button.jsx";
+import HelpButton from "../../../buttons/help-button.jsx";
+import BadSubjectButton from "../../../buttons/bad-subject-button.jsx";
+import IllegibleSubjectButton from "../../../buttons/illegible-subject-button.jsx";
 
 const CompositeTool = createReactClass({
   displayName: "CompositeTool",
@@ -240,4 +240,4 @@ const CompositeTool = createReactClass({
   }
 });
 
-module.exports = CompositeTool;
+export default CompositeTool;

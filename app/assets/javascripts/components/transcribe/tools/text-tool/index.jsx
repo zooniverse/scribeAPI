@@ -6,15 +6,15 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const React = require("react");
-const ReactDOM = require("react-dom");
-const DraggableModal = require("../../../draggable-modal.jsx");
-const SmallButton = require("../../../buttons/small-button.jsx");
-const HelpButton = require("../../../buttons/help-button.jsx");
-const BadSubjectButton = require("../../../buttons/bad-subject-button.jsx");
-const IllegibleSubjectButton = require("../../../buttons/illegible-subject-button.jsx");
+import React from "react";
+import ReactDOM from "react-dom";
+import DraggableModal from "../../../draggable-modal.jsx";
+import SmallButton from "../../../buttons/small-button.jsx";
+import HelpButton from "../../../buttons/help-button.jsx";
+import BadSubjectButton from "../../../buttons/bad-subject-button.jsx";
+import IllegibleSubjectButton from "../../../buttons/illegible-subject-button.jsx";
 
-const createReactClass = require("create-react-class");
+import createReactClass from "create-react-class";
 const TextTool = createReactClass({
   displayName: "TextTool",
 
@@ -392,7 +392,7 @@ const TextTool = createReactClass({
   }
 });
 
-module.exports = TextTool;
+export default TextTool;
 
 function __guard__(value, transform) {
   return typeof value !== "undefined" && value !== null

@@ -3,7 +3,7 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const MarkButton = require("../components/mark-button.jsx");
+import MarkButton from "../components/mark-button.jsx";
 
 // store keys of pre-defined mark-button states
 const MARK_STATES = [
@@ -13,7 +13,7 @@ const MARK_STATES = [
   "transcribe-finished"
 ];
 
-module.exports = {
+export default {
   getInitialState() {
     let markStatus;
     if (this.props.isPriorMark && this.props.selected) {

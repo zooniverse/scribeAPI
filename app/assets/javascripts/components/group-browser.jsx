@@ -7,9 +7,9 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const React = require("react");
-const createReactClass = require("create-react-class");
-const API = require("../lib/api.jsx");
+import React from "react";
+import createReactClass from "create-react-class";
+import API from "../lib/api.jsx";
 
 const GroupBrowser = createReactClass({
   displayName: "GroupBrowser",
@@ -129,7 +129,7 @@ const GroupBrowser = createReactClass({
   }
 });
 
-module.exports = GroupBrowser;
+export default GroupBrowser;
 
 function __guard__(value, transform) {
   return typeof value !== "undefined" && value !== null

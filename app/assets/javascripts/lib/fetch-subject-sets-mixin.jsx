@@ -7,10 +7,10 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const API = require("./api.jsx");
-const queryString = require('query-string');
+import API from "./api.jsx";
+import queryString from 'query-string';
 
-module.exports = {
+export default {
   fetchSubjectSetsBasedOnProps() {
     // Establish a callback for after subjects are fetched - to apply additional state changes:
     const postFetchCallback = subject_sets => {

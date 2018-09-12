@@ -5,14 +5,14 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const React = require("react");
-const PropTypes = require("prop-types");
+import React from "react";
+import PropTypes from "prop-types";
 
-const MainHeader = require("../partials/main-header.jsx");
-const Footer = require("../partials/footer.jsx");
-const API = require("../lib/api.jsx");
+import MainHeader from "../partials/main-header.jsx";
+import Footer from "../partials/footer.jsx";
+import API from "../lib/api.jsx";
 
-const BrowserWarning = require("./browser-warning.jsx");
+import BrowserWarning from "./browser-warning.jsx";
 
 window.API = API;
 
@@ -142,7 +142,7 @@ class App extends React.Component {
 }
 
 App.childContextTypes = contextTypes;
-const AppContext = (ComponentToWrap) => {
+function AppContext(ComponentToWrap) {
   class AppContextComponent extends React.Component {
     render() {
       return (
@@ -156,7 +156,7 @@ const AppContext = (ComponentToWrap) => {
   return AppContextComponent;
 }
 
-module.exports = {
+export {
   App,
   AppContext
 };

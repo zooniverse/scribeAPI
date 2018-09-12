@@ -3,8 +3,8 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const React = require("react");
-const createReactClass = require("create-react-class");
+import React from "react";
+import createReactClass from "create-react-class";
 
 const ZOOM_STEP = 0.35; // Amount to zoom by
 const ZOOM_MAX = 3;
@@ -20,7 +20,7 @@ const PAN_MAX_Y = 0.7; // Max allowed val for y
 // The following inverts this, moving the image upward instead
 const INVERT_PAN = false;
 
-module.exports = createReactClass({
+export default createReactClass({
   displayName: "SubjectZoomPan",
 
   getInitialState() {

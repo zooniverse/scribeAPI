@@ -1,7 +1,7 @@
 
-const React = require("react");
+import React from "react";
 
-const createReactClass = require("create-react-class");
+import createReactClass from "create-react-class";
 const PrevButton = createReactClass({
   displayName: "PrevButton",
 
@@ -19,4 +19,4 @@ const PrevButton = createReactClass({
   }
 });
 
-module.exports = PrevButton;
+export default PrevButton;

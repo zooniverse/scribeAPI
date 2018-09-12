@@ -5,8 +5,8 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 
-const React = require("react");
-const createReactClass = require("create-react-class");
+import React from "react";
+import createReactClass from "create-react-class";
 
 const ActionButton = createReactClass({
   displayName: "ActionButton",
@@ -49,4 +49,4 @@ const ActionButton = createReactClass({
     );
   }
 });
-module.exports = ActionButton;
+export default ActionButton;

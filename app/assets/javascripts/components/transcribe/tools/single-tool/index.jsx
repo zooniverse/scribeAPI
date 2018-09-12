@@ -5,12 +5,12 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 
-const React = require("react");
-const createReactClass = require("create-react-class");
+import React from "react";
+import createReactClass from "create-react-class";
 
-const Draggable = require("../../../../lib/draggable.jsx");
-const DoneButton = require("./done-button.jsx");
-const inputComponents = require("../../input-components/index.jsx");
+import Draggable from "../../../../lib/draggable.jsx";
+import DoneButton from "./done-button.jsx";
+import inputComponents from "../../input-components/index.jsx";
 
 const TextTool = createReactClass({
   displayName: "SingleTool",
@@ -194,4 +194,4 @@ const TextTool = createReactClass({
   }
 });
 
-module.exports = TextTool;
+export default TextTool;

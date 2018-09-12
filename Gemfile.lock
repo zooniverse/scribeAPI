@@ -288,7 +288,7 @@ DEPENDENCIES
   active_model_serializers
   better_errors
   binding_of_caller
-  browserify-rails (~> 0.9.1)
+  browserify-rails (>= 0.9.1)
   bson
   capybara
   cucumber-rails

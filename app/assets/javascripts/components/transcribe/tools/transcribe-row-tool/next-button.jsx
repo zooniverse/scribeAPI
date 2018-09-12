@@ -1,8 +1,8 @@
 
-const React = require("react");
+import React from "react";
 
-const createReactClass = require("create-react-class");
-module.exports = createReactClass({
+import createReactClass from "create-react-class";
+export default createReactClass({
   displayName: "NextButton",
 
   render() {

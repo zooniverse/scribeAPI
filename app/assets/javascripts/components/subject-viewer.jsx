@@ -7,18 +7,18 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const React = require("react");
-const ReactDOM = require("react-dom");
-const createReactClass = require("create-react-class");
+import React from "react";
+import ReactDOM from "react-dom";
+import createReactClass from "create-react-class";
 
-const SVGImage = require("./svg-image.jsx");
-const MouseHandler = require("../lib/mouse-handler.jsx");
-const LoadingIndicator = require("./loading-indicator.jsx");
-const NextButton = require("./action-button.jsx");
-const markingTools = require("./mark/tools/index.jsx");
-const MarkDrawingMixin = require("../lib/mark-drawing-mixin.jsx");
+import SVGImage from "./svg-image.jsx";
+import MouseHandler from "../lib/mouse-handler.jsx";
+import LoadingIndicator from "./loading-indicator.jsx";
+import NextButton from "./action-button.jsx";
+import markingTools from "./mark/tools/index.jsx";
+import MarkDrawingMixin from "../lib/mark-drawing-mixin.jsx";
 
-module.exports = createReactClass({
+export default createReactClass({
   displayName: "SubjectViewer",
   resizing: false,
 

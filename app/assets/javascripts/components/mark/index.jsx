@@ -8,26 +8,26 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const React = require("react");
-const createReactClass = require("create-react-class");
-const PropTypes = require('prop-types');
-const { NavLink } = require("react-router-dom");
-const { AppContext } = require("../app.jsx");
-const SubjectSetViewer = require("../subject-set-viewer.jsx");
-const coreTools = require("../core-tools/index.jsx");
-const FetchSubjectSetsMixin = require("../../lib/fetch-subject-sets-mixin.jsx");
-const BaseWorkflowMethods = require("../../lib/workflow-methods-mixin.jsx");
-const JSONAPIClient = require("json-api-client"); // use to manage data?
-const ForumSubjectWidget = require("../forum-subject-widget.jsx");
-const HelpModal = require("../help-modal.jsx");
-const Tutorial = require("../tutorial.jsx");
-const HelpButton = require("../buttons/help-button.jsx");
-const BadSubjectButton = require("../buttons/bad-subject-button.jsx");
-const HideOtherMarksButton = require("../buttons/hide-other-marks-button.jsx");
-const DraggableModal = require("../draggable-modal.jsx");
-const Draggable = require("../../lib/draggable.jsx");
+import React from "react";
+import createReactClass from "create-react-class";
+import PropTypes from 'prop-types';
+import { NavLink } from "react-router-dom";
+import { AppContext } from "../app.jsx";
+import SubjectSetViewer from "../subject-set-viewer.jsx";
+import coreTools from "../core-tools/index.jsx";
+import FetchSubjectSetsMixin from "../../lib/fetch-subject-sets-mixin.jsx";
+import BaseWorkflowMethods from "../../lib/workflow-methods-mixin.jsx";
+import JSONAPIClient from "json-api-client"; // use to manage data?
+import ForumSubjectWidget from "../forum-subject-widget.jsx";
+import HelpModal from "../help-modal.jsx";
+import Tutorial from "../tutorial.jsx";
+import HelpButton from "../buttons/help-button.jsx";
+import BadSubjectButton from "../buttons/bad-subject-button.jsx";
+import HideOtherMarksButton from "../buttons/hide-other-marks-button.jsx";
+import DraggableModal from "../draggable-modal.jsx";
+import Draggable from "../../lib/draggable.jsx";
 
-module.exports = AppContext(createReactClass({
+export default AppContext(createReactClass({
   // rename to Classifier
   displayName: "Mark",
 

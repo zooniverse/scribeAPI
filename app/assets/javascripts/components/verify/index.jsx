@@ -7,21 +7,21 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 
-const React = require("react");
-const SubjectViewer = require("../subject-viewer.jsx");
-const { AppContext } = require("../app.jsx");
-const FetchSubjectsMixin = require("../../lib/fetch-subjects-mixin.jsx");
-const ForumSubjectWidget = require("../forum-subject-widget.jsx");
+import React from "react";
+import SubjectViewer from "../subject-viewer.jsx";
+import { AppContext } from "../app.jsx";
+import FetchSubjectsMixin from "../../lib/fetch-subjects-mixin.jsx";
+import ForumSubjectWidget from "../forum-subject-widget.jsx";
 
-const BaseWorkflowMethods = require("../../lib/workflow-methods-mixin.jsx");
+import BaseWorkflowMethods from "../../lib/workflow-methods-mixin.jsx";
 
-const DraggableModal = require("../draggable-modal.jsx");
-const GenericButton = require("../buttons/generic-button.jsx");
-const Tutorial = require("../tutorial.jsx");
-const HelpModal = require("../help-modal.jsx");
+import DraggableModal from "../draggable-modal.jsx";
+import GenericButton from "../buttons/generic-button.jsx";
+import Tutorial from "../tutorial.jsx";
+import HelpModal from "../help-modal.jsx";
 
-const createReactClass = require("create-react-class");
-module.exports = AppContext(createReactClass({
+import createReactClass from "create-react-class";
+export default AppContext(createReactClass({
   // rename to Classifier
   displayName: "Verify",
   mixins: [FetchSubjectsMixin, BaseWorkflowMethods], // load subjects and set state variables: subjects,  classification

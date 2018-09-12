@@ -1,7 +1,7 @@
 
 
-const React = require("react");
-const createReactClass = require("create-react-class");
+import React from "react";
+import createReactClass from "create-react-class";
 
 const SubjectMetadata = createReactClass({
   displayName: "Metadata",
@@ -15,4 +15,4 @@ const SubjectMetadata = createReactClass({
   }
 });
 
-module.exports = SubjectMetadata;
+export default SubjectMetadata;

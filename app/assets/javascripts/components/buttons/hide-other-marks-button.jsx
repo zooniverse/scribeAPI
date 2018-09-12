@@ -1,8 +1,8 @@
-const React = require("react");
-const createReactClass = require("create-react-class");
-const SmallButton = require("./small-button.jsx");
+import React from "react";
+import createReactClass from "create-react-class";
+import SmallButton from "./small-button.jsx";
 
-module.exports = createReactClass({
+export default createReactClass({
   displayName: "HideOtherMarksButton",
 
   render() {

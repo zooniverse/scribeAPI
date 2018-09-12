@@ -3,13 +3,13 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const React = require("react");
-const createReactClass = require("create-react-class");
-const PropTypes = require('prop-types');
-const LightBox = require("./light-box.jsx");
-const SubjectZoomPan = require("./subject-zoom-pan.jsx");
+import React from "react";
+import createReactClass from "create-react-class";
+import PropTypes from 'prop-types';
+import LightBox from "./light-box.jsx";
+import SubjectZoomPan from "./subject-zoom-pan.jsx";
 
-module.exports = createReactClass({
+export default createReactClass({
   displayName: "SubjectSetToolbar",
 
   propTypes: {

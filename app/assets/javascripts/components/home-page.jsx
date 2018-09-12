@@ -7,12 +7,13 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 
-const React = require("react");
-const { AppContext } = require("./app.jsx");
-const GroupBrowser = require("./group-browser.jsx");
-const NameSearch = require("./name-search.jsx");
+import React from "react";
+import { AppContext } from "./app.jsx";
+import GroupBrowser from "./group-browser.jsx";
+import NameSearch from "./name-search.jsx";
 
-class HomePage extends React.Component {
+@AppContext
+export default class HomePage extends React.Component {
   componentWillReceiveProps(new_props) {
     return this.setState({ project: new_props.project });
   }
@@ -66,8 +67,6 @@ class HomePage extends React.Component {
     );
   }
 }
-
-module.exports = AppContext(HomePage);
 
 function __guard__(value, transform) {
   return typeof value !== "undefined" && value !== null

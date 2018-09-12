@@ -1,8 +1,7 @@
+import React from "react";
+import ReactTestUtils from "react-dom/test-utils";
 
-const React = require("react");
-const ReactTestUtils = require("react-dom/test-utils");
-
-const TextTool = require("../components/transcribe/tools/text-tool/index.jsx");
+import TextTool from "../components/transcribe/tools/text-tool/index.jsx";
 
 describe("text-tool index", function () {
   const {

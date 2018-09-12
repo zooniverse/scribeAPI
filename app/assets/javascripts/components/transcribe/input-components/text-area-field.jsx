@@ -1,5 +1,5 @@
-const DoneButton = require("./done-button.jsx");
-const createReactClass = require("create-react-class");
+import DoneButton from "./done-button.jsx";
+import createReactClass from "create-react-class";
 
 const TextAreaField = createReactClass({
   displayName: "TextAreaField",
@@ -27,4 +27,4 @@ const TextAreaField = createReactClass({
   }
 });
 
-module.exports = TextAreaField;
+export default TextAreaField;

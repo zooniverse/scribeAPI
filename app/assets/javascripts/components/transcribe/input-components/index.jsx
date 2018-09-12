@@ -1,6 +1,11 @@
-module.exports = {
-  textField: require("./text-field.jsx"),
-  dateField: require("./date-field.jsx"),
-  textAreaField: require("./text-area-field.jsx"),
-  testComponent: require("./test-component.jsx")
+import textField from "./text-field.jsx";
+import dateField from "./date-field.jsx";
+import textAreaField from "./text-area-field.jsx";
+import testComponent from "./test-component.jsx";
+
+export default {
+  textField,
+  dateField,
+  textAreaField,
+  testComponent
 };

@@ -4,11 +4,11 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 
-const React = require("react");
-const Draggable = require("../lib/draggable.jsx");
+import React from "react";
+import Draggable from "../lib/draggable.jsx";
 // ResizeButton = require './mark/resize-button'
 
-const createReactClass = require("create-react-class");
+import createReactClass from "create-react-class";
 
 const RowFocusTool = createReactClass({
   displayName: "RowFocusTool",
@@ -151,4 +151,4 @@ const RowFocusTool = createReactClass({
   }
 });
 
-module.exports = RowFocusTool;
+export default RowFocusTool;

@@ -1,6 +1,6 @@
 
-const React = require("react");
-const createReactClass = require("create-react-class");
+import React from "react";
+import createReactClass from "create-react-class";
 
 const DoneButton = createReactClass({
   displayName: "DoneButton",
@@ -17,4 +17,4 @@ const DoneButton = createReactClass({
   }
 });
 
-module.exports = DoneButton;
+export default DoneButton;

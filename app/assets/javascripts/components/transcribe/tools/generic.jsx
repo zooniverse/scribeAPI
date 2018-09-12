@@ -3,13 +3,13 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const React = require("react");
+import React from "react";
 // alert = require 'lib/alert'
 // Markdown = require '../../components/markdown'
 // Tooltip = require '../../components/tooltip'
 
-const createReactClass = require("create-react-class");
-module.exports = createReactClass({
+import createReactClass from "create-react-class";
+export default createReactClass({
   displayName: "GenericTool",
 
   getDefaultProps() {

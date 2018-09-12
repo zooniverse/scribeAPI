@@ -1,6 +1,6 @@
-const React = require("react");
-const ReactTestUtils = require("react-dom/test-utils");
-const ActionButton = require("../components/action-button.jsx");
+import React from "react";
+import ReactTestUtils from "react-dom/test-utils";
+import ActionButton from "../components/action-button.jsx";
 
 describe("ActionButton", function () {
   let actionButton;

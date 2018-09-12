@@ -1,11 +1,14 @@
 {
   "name": "scribeAPI",
   "devDependencies": {
-    "babel-core": "6.14.0",
+    "babel-core": "^6.14.0",
     "babel-jest": "16.0.0",
+    "babel-plugin-transform-decorators-legacy": "^1.3.5",
     "babel-polyfill": "6.16.0",
-    "babel-preset-es2015": "6.16.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015": "^6.16.0",
     "babel-preset-react": "6.16.0",
+    "babelify": "^8.0.0",
     "jest": "16.0.0",
     "json-api-client": "^0.2.3",
     "react-addons-test-utils": "^15.6.2",
@@ -16,11 +19,10 @@
     "node": ">= 0.10"
   },
   "dependencies": {
-    "browserify": "^11.0.0",
+    "browserify": "^14.0.0",
     "browserify-incremental": "^3.0.1",
     "create-react-class": "^15.6.3",
     "json-api-client": "^0.4.4",
-    "normalize-styl": "^3.0.3",
     "normalize.css": "^3.0.3",
     "query-string": "^6.1.0",
     "react": "^15.6.2",
@@ -30,9 +32,23 @@
     "reactify": "^1.1.1"
   },
   "scripts": {
-    "test": "jest"
+    "test": "NODE_ENV=testing jest"
   },
   "jest": {
+    "transform": {
+      "^.+\\.js?$": "babel-jest"
+    },
+    "moduleFileExtensions": [
+      "js",
+      "jsx"
+    ],
     "testRegex": "(/app/assets/javascripts/__tests__/.*|\\.(test|spec))\\.(js|json|jsx|node)$"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify"
+      ]
+    ]
   }
 }

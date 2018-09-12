@@ -6,10 +6,10 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const React = require("react");
-const ReactDOM = require("react-dom");
-const createReactClass = require("create-react-class");
-const GenericTask = require("./generic.jsx");
+import React from "react";
+import ReactDOM from "react-dom";
+import createReactClass from "create-react-class";
+import GenericTask from "./generic.jsx";
 // Markdown = require '../../components/markdown'
 
 const NOOP = Function.prototype;
@@ -63,7 +63,7 @@ const icons = {
   )
 };
 
-module.exports = createReactClass({
+export default createReactClass({
   displayName: "PickOneMarkOne",
   statics: {
     // Summary: Summary

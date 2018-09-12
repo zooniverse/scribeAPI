@@ -4,10 +4,10 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const API = require("./api.jsx");
-const queryString = require('query-string');
+import API from "./api.jsx";
+import queryString from 'query-string';
 
-module.exports = {
+export default {
   componentDidMount() {
     // Fetching a single subject?
     if (this.props.match.params.subject_id != null) {

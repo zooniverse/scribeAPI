@@ -5,7 +5,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 
-module.exports = class TalkConnector {
+export default class TalkConnector {
   constructor(options) {
     this.options = options;
   }

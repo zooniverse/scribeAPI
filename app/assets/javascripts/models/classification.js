@@ -88,4 +88,4 @@ class Classification {
 //   workflow_id: @workflow_id
 // rec.save()
 
-module.exports = Classification;
+export default Classification;

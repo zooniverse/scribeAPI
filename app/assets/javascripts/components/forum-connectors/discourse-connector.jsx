@@ -82,4 +82,4 @@
     return this.options.base_url + `/search?q=${term}`;
   }
 };
-module.exports = DiscourseConnector;
+export default DiscourseConnector;

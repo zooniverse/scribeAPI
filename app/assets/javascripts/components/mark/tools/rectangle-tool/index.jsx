@@ -5,13 +5,13 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const React = require("react");
-const createReactClass = require("create-react-class");
-const PropTypes = require('prop-types');
-const Draggable = require("../../../../lib/draggable.jsx");
-const DragHandle = require("./drag-handle.jsx");
-const DeleteButton = require("../../../buttons/delete-mark.jsx");
-const MarkButtonMixin = require("../../../../lib/mark-button-mixin.jsx");
+import React from "react";
+import createReactClass from "create-react-class";
+import PropTypes from 'prop-types';
+import Draggable from "../../../../lib/draggable.jsx";
+import DragHandle from "./drag-handle.jsx";
+import DeleteButton from "../../../buttons/delete-mark.jsx";
+import MarkButtonMixin from "../../../../lib/mark-button-mixin.jsx";
 
 const MINIMUM_SIZE = 15;
 const DELETE_BUTTON_ANGLE = 45;
@@ -19,7 +19,7 @@ const DELETE_BUTTON_DISTANCE_X = 12;
 const DELETE_BUTTON_DISTANCE_Y = 0;
 const DEBUG = false;
 
-module.exports = createReactClass({
+export default createReactClass({
   displayName: "RectangleTool",
 
   mixins: [MarkButtonMixin],

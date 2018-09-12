@@ -5,13 +5,13 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const React = require("react");
-const createReactClass = require("create-react-class");
-const DrawingToolRoot = require("./root.jsx");
-const Draggable = require("../../../../lib/draggable.jsx");
-const DeleteButton = require("./delete-button.jsx");
-const DragHandle = require("./drag-handle.jsx");
-const MarkButtonMixin = require("../../../../lib/mark-button-mixin.jsx");
+import React from "react";
+import createReactClass from "create-react-class";
+import DrawingToolRoot from "./root.jsx";
+import Draggable from "../../../../lib/draggable.jsx";
+import DeleteButton from "./delete-button.jsx";
+import DragHandle from "./drag-handle.jsx";
+import MarkButtonMixin from "../../../../lib/mark-button-mixin.jsx";
 
 // DEFAULT SETTINGS
 const RADIUS = 10;
@@ -22,7 +22,7 @@ const DELETE_BUTTON_ANGLE = 45;
 const DEFAULT_HEIGHT = 100;
 const MINIMUM_HEIGHT = 25;
 
-module.exports = createReactClass({
+export default createReactClass({
   displayName: "TextRowTool",
 
   mixins: [MarkButtonMixin], // adds MarkButton and helper methods to each mark

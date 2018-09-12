@@ -1,4 +1,4 @@
-module.exports = function (name) {
+export default function (name) {
   name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
   const regex = new RegExp(`[\\?&]${name}=([^&#]*)`);
   const results = regex.exec(location.search);

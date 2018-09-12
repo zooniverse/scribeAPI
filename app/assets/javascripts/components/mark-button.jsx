@@ -3,9 +3,9 @@
  * DS205: Consider reworking code to avoid use of IIFEs
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const React = require("react");
-const createReactClass = require("create-react-class");
-const Draggable = require("../lib/draggable.jsx");
+import React from "react";
+import createReactClass from "create-react-class";
+import Draggable from "../lib/draggable.jsx";
 
 const DEBUG = false;
 
@@ -24,7 +24,7 @@ const CHECKBOX_COLOR = "#000";
 
 const DESTROY_TRANSITION_DURATION = 0;
 
-module.exports = createReactClass({
+export default createReactClass({
   displayName: "TranscribeButton",
 
   getDefaultProps() {

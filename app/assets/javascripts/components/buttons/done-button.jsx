@@ -1,8 +1,8 @@
-const React = require("react");
-const createReactClass = require("create-react-class");
-const GenericButton = require("./generic-button.jsx");
+import React from "react";
+import createReactClass from "create-react-class";
+import GenericButton from "./generic-button.jsx";
 
-module.exports = createReactClass({
+export default createReactClass({
   displayName: "DoneButton",
 
   getDefaultProps() {

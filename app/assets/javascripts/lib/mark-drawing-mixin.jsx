@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   //   PB: This appears unused. DEP
   //   showPreviousMarks: ->
   //     previousMarks =

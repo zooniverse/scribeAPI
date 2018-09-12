@@ -1,6 +1,6 @@
-const React = require("react");
+import React from "react";
 
-const createReactClass = require("create-react-class");
+import createReactClass from "create-react-class";
 const ZooniverseLogoSource = createReactClass({
   displayName: 'ZooniverseLogoSource',
 
@@ -26,7 +26,7 @@ document.body.appendChild(sourceContainer);
 
 React.renderComponent(<ZooniverseLogoSource />, sourceContainer);
 
-module.exports = createReactClass({
+export default createReactClass({
   displayName: "ZooniverseLogo",
 
   getDefaultProps() {

@@ -4,9 +4,9 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const React = require("react");
-const ReactDOM = require("react-dom");
-const createReactClass = require("create-react-class");
+import React from "react";
+import ReactDOM from "react-dom";
+import createReactClass from "create-react-class";
 
 const NameSearch = createReactClass({
   displayName: "NameSearch",
@@ -73,4 +73,4 @@ const NameSearch = createReactClass({
   }
 });
 
-module.exports = NameSearch;
+export default NameSearch;

@@ -5,15 +5,15 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const React = require("react");
-const DraggableModal = require("../../../draggable-modal.jsx");
-const GenericButton = require("../../../buttons/generic-button.jsx");
-const DoneButton = require("../../../buttons/done-button.jsx");
-const HelpButton = require("../../../buttons/help-button.jsx");
-const BadSubjectButton = require("../../../buttons/bad-subject-button.jsx");
-const SmallButton = require("../../../buttons/small-button.jsx");
+import React from "react";
+import DraggableModal from "../../../draggable-modal.jsx";
+import GenericButton from "../../../buttons/generic-button.jsx";
+import DoneButton from "../../../buttons/done-button.jsx";
+import HelpButton from "../../../buttons/help-button.jsx";
+import BadSubjectButton from "../../../buttons/bad-subject-button.jsx";
+import SmallButton from "../../../buttons/small-button.jsx";
 
-const createReactClass = require("create-react-class");
+import createReactClass from "create-react-class";
 const VerifyTool = createReactClass({
   displayName: "VerifyTool",
 
@@ -223,4 +223,4 @@ const VerifyTool = createReactClass({
   }
 });
 
-module.exports = VerifyTool;
+export default VerifyTool;

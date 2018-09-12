@@ -6,13 +6,13 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const React = require("react");
-const ReactDOM = require("react-dom");
-const Draggable = require("../lib/draggable.jsx");
-const DoneButton = require("./buttons/done-button.jsx");
-const createReactClass = require("create-react-class");
+import React from "react";
+import ReactDOM from "react-dom";
+import Draggable from "../lib/draggable.jsx";
+import DoneButton from "./buttons/done-button.jsx";
+import createReactClass from "create-react-class";
 
-module.exports = createReactClass({
+export default createReactClass({
   displayName: "DraggableModal",
 
   getDefaultProps() {

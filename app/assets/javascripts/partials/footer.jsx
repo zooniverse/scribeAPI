@@ -4,9 +4,9 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const React = require("react");
+import React from "react";
 
-const createReactClass = require("create-react-class");
+import createReactClass from "create-react-class";
 const Footer = createReactClass({
   displayName: "Footer",
 
@@ -115,4 +115,4 @@ const Footer = createReactClass({
   }
 });
 
-module.exports = Footer;
+export default Footer;

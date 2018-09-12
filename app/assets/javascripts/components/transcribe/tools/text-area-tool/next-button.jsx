@@ -1,7 +1,7 @@
 
-const React = require("react");
+import React from "react";
 
-const createReactClass = require("create-react-class");
+import createReactClass from "create-react-class";
 const NextButton = createReactClass({
   displayName: "NextButton",
 
@@ -19,4 +19,4 @@ const NextButton = createReactClass({
   }
 });
 
-module.exports = NextButton;
+export default NextButton;

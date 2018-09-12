@@ -8,13 +8,13 @@
  */
 
 
-const React = require("react");
-const ReactDOM = require("react-dom");
-const PropTypes = require('prop-types');
-const ForumConnectors = require("./forum-connectors/index.jsx");
-const createReactClass = require("create-react-class");
+import React from "react";
+import ReactDOM from "react-dom";
+import PropTypes from 'prop-types';
+import ForumConnectors from "./forum-connectors/index.jsx";
+import createReactClass from "create-react-class";
 
-module.exports = createReactClass({
+export default createReactClass({
   displayName: "ForumSubjectWidget",
   resizing: false,
 

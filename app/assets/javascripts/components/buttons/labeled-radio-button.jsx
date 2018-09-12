@@ -1,7 +1,7 @@
-const React = require("react");
-const createReactClass = require("create-react-class");
+import React from "react";
+import createReactClass from "create-react-class";
 
-module.exports = createReactClass({
+export default createReactClass({
   displayName: "LabeledRadioButton",
 
   getDefaultProps() {

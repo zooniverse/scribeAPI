@@ -6,10 +6,10 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const React = require("react");
-const GenericButton = require("./buttons/generic-button.jsx");
-const API = require("../lib/api.jsx");
-const createReactClass = require("create-react-class");
+import React from "react";
+import GenericButton from "./buttons/generic-button.jsx";
+import API from "../lib/api.jsx";
+import createReactClass from "create-react-class";
 
 const GroupPage = createReactClass({
   displayName: "GroupPage",
@@ -193,4 +193,4 @@ const GroupPage = createReactClass({
   }
 });
 
-module.exports = GroupPage;
+export default GroupPage;

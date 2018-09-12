@@ -3,11 +3,11 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const React = require("react");
-const GenericButton = require("./buttons/generic-button.jsx");
-const createReactClass = require("create-react-class");
+import React from "react";
+import GenericButton from "./buttons/generic-button.jsx";
+import createReactClass from "create-react-class";
 
-module.exports = createReactClass({
+export default createReactClass({
   displayName: "BrowserWarning",
 
   getInitialState() {

@@ -6,23 +6,23 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const React = require("react");
-const ReactDOM = require("react-dom");
-const createReactClass = require("create-react-class");
-const { App, AppContext } = require("./app.jsx");
-const { Route, Redirect, Switch } = require("react-router");
-const { HashRouter } = require("react-router-dom");
-const HomePage = require("./home-page.jsx");
+import React from "react";
+import ReactDOM from "react-dom";
+import createReactClass from "create-react-class";
+import { App, AppContext } from "./app.jsx";
+import { Route, Redirect, Switch } from "react-router";
+import { HashRouter } from "react-router-dom";
+import HomePage from "./home-page.jsx";
 
-const Mark = require("./mark/index.jsx");
-const Transcribe = require("./transcribe/index.jsx");
-const Verify = require("./verify/index.jsx");
+import Mark from "./mark/index.jsx";
+import Transcribe from "./transcribe/index.jsx";
+import Verify from "./verify/index.jsx";
 
 // TODO Group routes currently not implemented
-const GroupPage = require("./group-page.jsx");
-const GroupBrowser = require("./group-browser.jsx");
+import GroupPage from "./group-page.jsx";
+import GroupBrowser from "./group-browser.jsx";
 
-const Project = require("../models/project.js");
+import Project from "../models/project.js";
 
 function getComponent(name) {
   switch (name) {
@@ -34,7 +34,7 @@ function getComponent(name) {
       return Verify;
   }
 }
-module.exports = class AppRouter {
+export default class AppRouter {
   constructor() {
     API.type("projects")
       .get()
@@ -233,3 +233,6 @@ module.exports = class AppRouter {
     }));
   }
 }
+
+$(document).ready(() =>
+  new AppRouter());

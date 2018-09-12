@@ -1,8 +1,8 @@
-const React = require("react");
-const createReactClass = require("create-react-class");
-const TextTool = require("../text-tool/index.jsx");
+import React from "react";
+import createReactClass from "create-react-class";
+import TextTool from "../text-tool/index.jsx";
 
-module.exports = createReactClass({
+export default createReactClass({
   displayName: "DateTool",
 
   render() {

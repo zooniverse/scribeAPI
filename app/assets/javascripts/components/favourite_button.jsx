@@ -8,12 +8,12 @@ var _this = this;
  */
 
 
-const React = require("react");
+import React from "react";
 
 // IMPORTANT!
 window.React = React;
 
-const createReactClass = require("create-react-class");
+import createReactClass from "create-react-class";
 const FavouriteButton = createReactClass({
   displayname: "FavouriteButton",
 
@@ -72,4 +72,4 @@ const FavouriteButton = createReactClass({
   }
 });
 
-module.exports = FavouriteButton;
+export default FavouriteButton;

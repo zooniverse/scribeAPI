@@ -4,13 +4,13 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const React = require("react");
-const ReactDOM = require("react-dom");
-const PropTypes = require('prop-types');
-const DraggableModal = require("./draggable-modal.jsx");
-const createReactClass = require("create-react-class");
+import React from "react";
+import ReactDOM from "react-dom";
+import PropTypes from 'prop-types';
+import DraggableModal from "./draggable-modal.jsx";
+import createReactClass from "create-react-class";
 
-module.exports = createReactClass({
+export default createReactClass({
   displayName: "Tutorial",
 
   propTypes: {

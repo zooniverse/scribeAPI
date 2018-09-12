@@ -7,31 +7,31 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 
-const React = require("react");
-const createReactClass = require("create-react-class");
-const queryString = require('query-string');
-const { AppContext } = require("../app.jsx");
-const SubjectViewer = require("../subject-viewer.jsx");
-const JSONAPIClient = require("json-api-client"); // use to manage data?
-const FetchSubjectsMixin = require("../../lib/fetch-subjects-mixin.jsx");
-const ForumSubjectWidget = require("../forum-subject-widget.jsx");
+import React from "react";
+import createReactClass from "create-react-class";
+import queryString from 'query-string';
+import { AppContext } from "../app.jsx";
+import SubjectViewer from "../subject-viewer.jsx";
+import JSONAPIClient from "json-api-client"; // use to manage data?
+import FetchSubjectsMixin from "../../lib/fetch-subjects-mixin.jsx";
+import ForumSubjectWidget from "../forum-subject-widget.jsx";
 
-const BaseWorkflowMethods = require("../../lib/workflow-methods-mixin.jsx");
+import BaseWorkflowMethods from "../../lib/workflow-methods-mixin.jsx";
 
 // Hash of core tools:
-const coreTools = require("../core-tools/index.jsx");
+import coreTools from "../core-tools/index.jsx";
 
 // Hash of transcribe tools:
-const transcribeTools = require("./tools/index.jsx");
+import transcribeTools from "./tools/index.jsx";
 
-const RowFocusTool = require("../row-focus-tool.jsx");
+import RowFocusTool from "../row-focus-tool.jsx";
 
-const HelpModal = require("../help-modal.jsx");
-const Tutorial = require("../tutorial.jsx");
-const DraggableModal = require("../draggable-modal.jsx");
-const GenericButton = require("../buttons/generic-button.jsx");
+import HelpModal from "../help-modal.jsx";
+import Tutorial from "../tutorial.jsx";
+import DraggableModal from "../draggable-modal.jsx";
+import GenericButton from "../buttons/generic-button.jsx";
 
-module.exports = AppContext(createReactClass({
+export default AppContext(createReactClass({
   // rename to Classifier
   displayName: "Transcribe",
   mixins: [FetchSubjectsMixin, BaseWorkflowMethods], // load subjects and set state variables: subjects,  classification

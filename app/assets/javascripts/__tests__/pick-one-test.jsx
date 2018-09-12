@@ -1,6 +1,6 @@
-const ReactTestUtils = require("react-dom/test-utils");
-const ShallowRenderer = require("react-test-renderer/shallow");
-const PickOne = require("../components/core-tools/pick-one.jsx");
+import ReactTestUtils from "react-dom/test-utils";
+import ShallowRenderer from "react-test-renderer/shallow";
+import PickOne from "../components/core-tools/pick-one.jsx";
 
 global.marked = (text) => text;
 

@@ -4,10 +4,10 @@
  * DS205: Consider reworking code to avoid use of IIFEs
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const React = require("react");
-const ReactDOM = require("react-dom");
-const createReactClass = require("create-react-class");
-const GenericTask = require("./generic.jsx");
+import React from "react";
+import ReactDOM from "react-dom";
+import createReactClass from "create-react-class";
+import GenericTask from "./generic.jsx";
 // Markdown = require '../../components/markdown'
 
 const NOOP = Function.prototype;
@@ -53,7 +53,7 @@ const NOOP = Function.prototype;
 //       </div>
 //     </div>
 
-module.exports = createReactClass({
+export default createReactClass({
   displayName: "SingleChoiceTask",
 
   statics: {

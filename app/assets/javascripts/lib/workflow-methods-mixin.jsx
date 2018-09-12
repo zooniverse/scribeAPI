@@ -8,14 +8,14 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const Classification = require("../models/classification.js");
+import Classification from "../models/classification.js";
 
-const coreTools = require("../components/core-tools/index.jsx");
-const markTools = require("../components/mark/tools/index.jsx");
-const transcribeTools = require("../components/transcribe/tools/index.jsx");
-const verifyTools = require("../components/verify/tools/index.jsx");
+import coreTools from "../components/core-tools/index.jsx";
+import markTools from "../components/mark/tools/index.jsx";
+import transcribeTools from "../components/transcribe/tools/index.jsx";
+import verifyTools from "../components/verify/tools/index.jsx";
 
-module.exports = {
+export default {
   // Convenience method for selecting currently active workflow based on active controller
   getActiveWorkflow() {
     if (!this.props.project) {

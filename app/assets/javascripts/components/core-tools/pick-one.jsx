@@ -6,11 +6,11 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const React = require("react");
-const createReactClass = require("create-react-class");
-const PropTypes = require('prop-types');
-const GenericTask = require("./generic.jsx");
-const LabeledRadioButton = require("../buttons/labeled-radio-button.jsx");
+import React from "react";
+import createReactClass from "create-react-class";
+import PropTypes from 'prop-types';
+import GenericTask from "./generic.jsx";
+import LabeledRadioButton from "../buttons/labeled-radio-button.jsx";
 
 // Markdown = require '../../components/markdown'
 
@@ -57,7 +57,7 @@ const NOOP = Function.prototype;
 //       </div>
 //     </div>
 
-module.exports = createReactClass({
+export default createReactClass({
   displayName: "SingleChoiceTask",
 
   statics: {

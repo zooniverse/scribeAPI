@@ -4,12 +4,12 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const React = require("react");
-const createReactClass = require("create-react-class");
-const { NavLink } = require("react-router-dom");
-const Login = require("../components/login.jsx");
+import React from "react";
+import createReactClass from "create-react-class";
+import { NavLink } from "react-router-dom";
+import Login from "../components/login.jsx";
 
-module.exports = createReactClass({
+export default createReactClass({
   displayName: "MainHeader",
 
   getDefaultProps() {

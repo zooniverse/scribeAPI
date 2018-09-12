@@ -3,8 +3,8 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const React = require("react");
-const createReactClass = require("create-react-class");
+import React from "react";
+import createReactClass from "create-react-class";
 
 const RADIUS = 8;
 const STROKE_COLOR = "#000";
@@ -20,7 +20,7 @@ L 0 ${RADIUS * 0.7}\
 
 const DESTROY_TRANSITION_DURATION = 0;
 
-module.exports = createReactClass({
+export default createReactClass({
   displayName: "DeleteButton",
 
   getDefaultProps() {
