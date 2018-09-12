@@ -9,7 +9,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import marked from 'marked';
+import marked from '../lib/marked.min.js';
 
 import createReactClass from "create-react-class";
 import { App, AppContext } from "./app.jsx";

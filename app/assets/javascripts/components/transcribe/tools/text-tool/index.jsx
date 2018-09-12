@@ -8,7 +8,7 @@
  */
 import React from "react";
 import ReactDOM from "react-dom";
-import marked from 'marked';
+import marked from '../../../../lib/marked.min.js';
 import DraggableModal from "../../../draggable-modal.jsx";
 import SmallButton from "../../../buttons/small-button.jsx";
 import HelpButton from "../../../buttons/help-button.jsx";
