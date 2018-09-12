@@ -2,25 +2,25 @@ source 'https://rubygems.org'
 
 ruby '2.2.10'
 
-gem 'rails', '4.0.13'
-gem 'sass-rails', '~> 4.0.0'
+gem 'rails', '~> 4.2.6'
+gem 'sass-rails'
 gem 'uglifier', '>= 1.3.0'
 gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 1.2'
-gem 'devise'
+gem 'devise', '3.4.0'
 gem 'omniauth-facebook'
 gem "omniauth-google-oauth2"
 gem 'omniauth-zooniverse', '~> 0.0.3'
 
-gem 'mongoid', '~> 4.0.2'
+gem 'mongoid', '~> 5.4.0'
 gem 'active_model_serializers'
 gem 'mongoid-serializer'
 gem 'rack-cors', :require => 'rack/cors'
 gem "bson"
 gem "moped"
 gem 'browserify-rails', '>= 0.9.1'
-gem 'react-rails', '~> 1.0.0.pre', github: 'reactjs/react-rails'
+gem 'react-rails'
 
 gem 'rack-streaming-proxy', '~> 2.0.1'
 gem 'kaminari'
@@ -54,7 +54,7 @@ group :test do
   gem 'capybara'
   gem 'cucumber-rails', :require=>false
   gem 'database_cleaner', '1.0.1'
-  gem 'rspec-rails', '~> 3.0'
+  gem 'rspec-rails', '>= 3.0'
   gem 'shoulda-matchers'
   gem 'email_spec'
   gem 'launchy'
