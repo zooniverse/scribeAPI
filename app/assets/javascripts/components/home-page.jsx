@@ -8,6 +8,7 @@
  */
 
 import React from "react";
+import marked from 'marked';
 import { AppContext } from "./app.jsx";
 import GroupBrowser from "./group-browser.jsx";
 import NameSearch from "./name-search.jsx";

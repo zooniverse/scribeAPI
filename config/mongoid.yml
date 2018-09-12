@@ -9,7 +9,7 @@ production:
     # (default: true)
     raise_not_found_error: false
 
-  sessions:
+  clients:
     default:
 
       # The standard MongoDB connection URI allows for easy replica set
@@ -55,7 +55,7 @@ production:
 
 development:
   # Configure available database sessions. (required)
-  sessions:
+  clients:
     # Defines the default session. (required)
     default:
       # Defines the name of the default database that Mongoid can connect to.

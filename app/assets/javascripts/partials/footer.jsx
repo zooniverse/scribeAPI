@@ -5,6 +5,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 import React from "react";
+import marked from 'marked';
 
 import createReactClass from "create-react-class";
 const Footer = createReactClass({

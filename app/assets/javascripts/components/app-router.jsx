@@ -8,6 +8,9 @@
  */
 import React from "react";
 import ReactDOM from "react-dom";
+
+import marked from 'marked';
+
 import createReactClass from "create-react-class";
 import { App, AppContext } from "./app.jsx";
 import { Route, Redirect, Switch } from "react-router";

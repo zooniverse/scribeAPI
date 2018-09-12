@@ -6,6 +6,7 @@
  */
 import React from "react";
 import ReactDOM from "react-dom";
+import marked from 'marked';
 import PropTypes from 'prop-types';
 import DraggableModal from "./draggable-modal.jsx";
 import createReactClass from "create-react-class";

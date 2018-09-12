@@ -1,6 +1,8 @@
 import React from "react";
 import createReactClass from "create-react-class";
 
+import marked from 'marked';
+
 export default createReactClass({
   displayName: "GenericTask",
 

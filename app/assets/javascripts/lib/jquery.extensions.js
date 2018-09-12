@@ -7,7 +7,7 @@
 // Disable text selection on matched el:
 //   e.g. $('.draggable-element').disableSelection()
 // From: http://stackoverflow.com/questions/4083351/what-does-jquery-fn-mean
-
+import jQuery from 'jquery'
 ($ => {
   return ($.fn.disableSelection = function() {
     return this.attr("unselectable", "on")

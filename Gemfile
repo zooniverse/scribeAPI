@@ -4,8 +4,7 @@ ruby '2.2.10'
 
 gem 'rails', '~> 4.2.6'
 gem 'sass-rails'
-gem 'uglifier', '>= 1.3.0'
-gem 'jquery-rails'
+gem 'webpacker', '~> 3.5'
 gem 'turbolinks'
 gem 'jbuilder', '~> 1.2'
 gem 'devise', '3.4.0'
@@ -19,8 +18,6 @@ gem 'mongoid-serializer'
 gem 'rack-cors', :require => 'rack/cors'
 gem "bson"
 gem "moped"
-gem 'browserify-rails', '>= 0.9.1'
-gem 'react-rails'
 
 gem 'rack-streaming-proxy', '~> 2.0.1'
 gem 'kaminari'
@@ -44,10 +41,6 @@ group :development, :production do
   gem 'binding_of_caller', :platforms=>[:mri_19, :mri_20, :rbx]
   gem 'quiet_assets'
   gem 'rails_layout'
-end
-
-group :assets do
-  gem 'jquery-ui-sass-rails'
 end
 
 group :test do
