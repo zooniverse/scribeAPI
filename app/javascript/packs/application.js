@@ -7,6 +7,7 @@
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
 
-import 'jquery';
-import 'jquery-ui';
+import jquery from 'jquery';
+export default (window.$ = window.jQuery = jquery);
+import 'jquery-ui-dist/jquery-ui.js';
 import '../../assets/javascripts/application.js';

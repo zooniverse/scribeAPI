@@ -4154,9 +4154,9 @@ jest@16.0.0:
   dependencies:
     jest-cli "^16.0.0"
 
-jquery-ui@^1.12.1:
+jquery-ui-dist@^1.12.1:
   version "1.12.1"
-  resolved "https://registry.yarnpkg.com/jquery-ui/-/jquery-ui-1.12.1.tgz#bcb4045c8dd0539c134bc1488cdd3e768a7a9e51"
+  resolved "https://registry.yarnpkg.com/jquery-ui-dist/-/jquery-ui-dist-1.12.1.tgz#5c0815d3cc6f90ff5faaf5b268a6e23b4ca904fa"
 
 jquery@^3.3.1:
   version "3.3.1"
