@@ -2,7 +2,6 @@
  * decaffeinate suggestions:
  * DS101: Remove unnecessary use of Array.from
  * DS102: Remove unnecessary code created because of implicit returns
- * DS103: Rewrite code to no longer use __guard__
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
@@ -268,32 +267,23 @@ const TextTool = createReactClass({
     const examples =
       this.props.task.examples != null
         ? this.props.task.examples
-        : __guard__(
-          Array.from(
-            (this.props.task.tool_config != null
-              ? this.props.task.tool_config.options
-              : undefined) != null
-              ? this.props.task.tool_config != null
-                ? this.props.task.tool_config.options
-                : undefined
-              : []
-          ).filter(t => t.value === this.props.annotation_key)[0],
-          x1 => x1.examples
-        );
+        : Array.from(
+          this.props.task.tool_config &&
+          this.props.task.tool_config.options ||
+          []
+        ).filter(t => t.value === this.props.annotation_key).map(x => x.examples);
 
     // create component input field(s)
     let tool_content = (
       <div className="input-field active">
         <label dangerouslySetInnerHTML={{ __html: marked(label) }} />
-        {examples ? (
+        {examples && (
           <ul className="task-examples">
             {Array.from(examples).map((ex, i) => (
               <li key={i}>{ex}</li>
             ))}
           </ul>
-        ) : (
-            undefined
-          )}
+        )}
         {
           ((atts = {
             ref,
@@ -301,10 +291,10 @@ const TextTool = createReactClass({
             "data-task_key": this.props.task.key,
             onKeyDown: this.handleKeyDown,
             onChange: this.handleChange,
-            onFocus: () =>
-              typeof this.props.onInputFocus === "function"
-                ? this.props.onInputFocus(this.props.annotation_key)
-                : undefined,
+            onFocus: () => {
+              if (typeof this.props.onInputFocus === "function")
+                this.props.onInputFocus(this.props.annotation_key)
+            },
             value: val,
             disabled: this.props.badSubject
           }),
@@ -394,9 +384,3 @@ const TextTool = createReactClass({
 });
 
 export default TextTool;
-
-function __guard__(value, transform) {
-  return typeof value !== "undefined" && value !== null
-    ? transform(value)
-    : undefined;
-}
