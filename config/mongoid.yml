@@ -115,7 +115,7 @@ development:
     # use_utc: false
 
 test:
-  sessions:
+  clients:
     default:
       database: api_test
       hosts:

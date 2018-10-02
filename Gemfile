@@ -47,10 +47,10 @@ group :test do
   gem 'capybara'
   gem 'cucumber-rails', :require=>false
   gem 'database_cleaner', '1.0.1'
-  gem 'rspec-rails', '>= 3.0'
+  gem 'rspec-rails', '~> 3.6'
   gem 'shoulda-matchers'
   gem 'email_spec'
   gem 'launchy'
   gem 'factory_girl'
-  gem 'mongoid-rspec', '>= 1.6.0', :github=>"mongoid-rspec/mongoid-rspec"
+  gem 'mongoid-rspec', '3.0.0'
 end
