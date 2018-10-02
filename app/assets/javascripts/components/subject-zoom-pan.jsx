@@ -31,7 +31,7 @@ export default class SubjectZoomPan extends React.Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener("keydown", this._handleZoomKeys.bind(this));
+    window.removeEventListener("keydown", this._handleZoomKeys);
   }
 
   // Zoom given amount (1 or -1)
