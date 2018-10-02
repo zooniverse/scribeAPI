@@ -7,7 +7,7 @@
   },
   "license": "MIT",
   "engines": {
-    "node": ">= 0.10"
+    "node": "6.11.1"
   },
   "dependencies": {
     "browserify": "^11.0.0",
