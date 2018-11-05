@@ -43,7 +43,7 @@ export default class AppRouter {
       .get()
       .then(result => {
         window.project = new Project(result[0]);
-        return this.runRoutes(window.project);
+        this.runRoutes(window.project);
       });
   }
 
@@ -164,12 +164,12 @@ export default class AppRouter {
               );
             })
           }
-          <Route path="/groups" component={GroupBrowser} name="groups" />
           <Route path="/groups/:group_id" component={GroupPage} name="group_show" />
+          <Route path="/groups" component={GroupBrowser} name="groups" />
         </Switch>
       </App>
     );
-    return ReactDOM.render(<HashRouter>{routes}</HashRouter>, document.getElementById('app'));
+    ReactDOM.render(<HashRouter>{routes}</HashRouter>, document.getElementById('app'));
     // return Router.run(routes, (Handler, state) =>
     //   React.render(<Handler />, document.body)
     // );

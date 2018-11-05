@@ -1,43 +1,38 @@
-/*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * DS103: Rewrite code to no longer use __guard__
- * DS205: Consider reworking code to avoid use of IIFEs
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 import React from "react";
-import createReactClass from "create-react-class";
 import API from "../lib/api.jsx";
+import { AppContext } from "./app.jsx";
 
-const GroupBrowser = createReactClass({
-  displayName: "GroupBrowser",
-
-  getInitialState() {
-    return { groups: [] };
-  },
+@AppContext
+export default class GroupBrowser extends React.Component {
+  constructor() {
+    super();
+    this.state = { groups: [] };
+  }
 
   componentDidMount() {
-    return API.type("groups")
-      .get({ project_id: this.props.project.id })
+    const project_id = this.props.project.id;
+    API.type("groups")
+      .get({ project_id })
       .then(groups => {
-        for (let group of Array.from(groups)) {
+        for (let group of groups) {
+          // hide buttons by default
           group.showButtons = false;
-        } // hide buttons by default
-        return this.setState({ groups });
+        }
+        this.setState({ groups });
       });
-  },
+  }
 
   showButtonsForGroup(group, e) {
     group.showButtons = true;
-    return this.forceUpdate();
-  }, // trigger re-render to update buttons
+    // trigger re-render to update buttons
+    this.forceUpdate();
+  }
 
   hideButtonsForGroup(group, e) {
     group.showButtons = false;
-    return this.forceUpdate();
-  }, // trigger re-render to update buttons
+    // trigger re-render to update buttons
+    this.forceUpdate();
+  }
 
   renderGroup(group) {
     const buttonContainerClasses = [];
@@ -59,28 +54,16 @@ const GroupBrowser = createReactClass({
         <div className={`button-container ${buttonContainerClasses.join(" ")}`}>
           {(() => {
             const result = [];
-            for (let workflow of Array.from(this.props.project.workflows)) {
-              if (
-                (__guard__(
-                  group.stats.workflow_counts != null
-                    ? group.stats.workflow_counts[workflow.id]
-                    : undefined,
-                  x => x.active_subjects
-                ) != null
-                  ? __guard__(
-                      group.stats.workflow_counts != null
-                        ? group.stats.workflow_counts[workflow.id]
-                        : undefined,
-                      x => x.active_subjects
-                    )
-                  : 0) > 0
-              ) {
+            for (let workflow of this.props.project.workflows) {
+              const workflowCounts = group.stats.workflow_counts != null &&
+                group.stats.workflow_counts[workflow.id];
+              if ((workflowCounts && workflowCounts.active_subjects != null
+                ? workflowCounts.active_subjects
+                : 0) > 0) {
                 result.push(
-                  <a
-                    href={`/#/${workflow.name}?group_id=${group.id}`}
+                  <a href={`/#/${workflow.name}?group_id=${group.id}`}
                     className="button small-button"
-                    key={workflow.id}
-                  >
+                    key={workflow.id}>
                     {workflow.name.capitalize()}
                   </a>
                 );
@@ -91,19 +74,12 @@ const GroupBrowser = createReactClass({
 
             return result;
           })()}
-          <a
-            href={`/#/groups/${group.id}`}
-            className="button small-button ghost"
-          >
-            More info
-          </a>
+          <a href={`/#/groups/${group.id}`} className="button small-button ghost">More info</a>
         </div>
-        <p className={`group-name ${groupNameClasses.join(" ")}`}>
-          {group.name}
-        </p>
+        <p className={`group-name ${groupNameClasses.join(" ")}`}>{group.name}</p>
       </div>
     );
-  },
+  }
 
   render() {
     // Only display GroupBrowser if more than one group defined:
@@ -112,27 +88,17 @@ const GroupBrowser = createReactClass({
     }
 
     const groups = [
-      Array.from(this.state.groups).map(group => this.renderGroup(group))
+      this.state.groups.map(group => this.renderGroup(group))
     ];
     return (
       <div className="group-browser">
         <h3 className="groups-header">
-          {this.props.title != null ? (
-            <span>{this.props.title}</span>
-          ) : (
-            <span>Select a {this.props.project.term("group")}</span>
-          )}
+          {this.props.title != null &&
+            <span>{this.props.title}</span> ||
+            <span>Select a {this.props.project.term("group")}</span>}
         </h3>
         <div className="groups">{groups}</div>
       </div>
     );
   }
-});
-
-export default GroupBrowser;
-
-function __guard__(value, transform) {
-  return typeof value !== "undefined" && value !== null
-    ? transform(value)
-    : undefined;
-}
+};
