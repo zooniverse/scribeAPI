@@ -12,6 +12,7 @@ import Draggable from "../../../../lib/draggable.jsx";
 import DragHandle from "./drag-handle.jsx";
 import DeleteButton from "../../../buttons/delete-mark.jsx";
 import MarkButtonMixin from "../../../../lib/mark-button-mixin.jsx";
+import MarkLabel from '../mark-label.jsx';
 
 const MINIMUM_SIZE = 15;
 const DELETE_BUTTON_ANGLE = 45;
@@ -85,7 +86,7 @@ export default createReactClass({
       mark.status = "mark";
     }
     ({ mark });
-    // set up the state in order to caluclate the polyline as rectangle
+    // set up the state in order to calculate the polyline as rectangle
     const x1 = this.props.mark.x;
     const x2 = x1 + this.props.mark.width;
     const y1 = this.props.mark.y;
@@ -323,7 +324,7 @@ ${
                   this.props.mark.color != null
                     ? `stroke=\"${this.props.mark.color}\"`
                     : undefined
-                } \
+                  } \
 points=\"${points}\" \
 filter=\"${this.props.selected ? "url(#dropShadow)" : "none"}\" \
 />\
@@ -331,6 +332,7 @@ filter=\"${this.props.selected ? "url(#dropShadow)" : "none"}\" \
               }}
             />
           </Draggable>
+          <MarkLabel x={x1 + width / 2} y={y1 + height / 2} label={this.props.mark.label} />
           {this.props.selected ? (
             <DeleteButton
               onClick={this.props.onDestroy}
@@ -339,8 +341,8 @@ filter=\"${this.props.selected ? "url(#dropShadow)" : "none"}\" \
               y={this.getDeleteButtonPosition(this.state.pointsHash).y}
             />
           ) : (
-            undefined
-          )}
+              undefined
+            )}
           {this.props.selected && !this.props.disabled ? (
             <g>
               {(() => {
@@ -364,8 +366,8 @@ filter=\"${this.props.selected ? "url(#dropShadow)" : "none"}\" \
               })()}
             </g>
           ) : (
-            undefined
-          )}
+              undefined
+            )}
           {(() => {
             // REQUIRES MARK-BUTTON-MIXIN
             if (

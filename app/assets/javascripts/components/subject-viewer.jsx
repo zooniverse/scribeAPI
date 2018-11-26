@@ -211,10 +211,10 @@ export default createReactClass({
     if (MarkComponent == null) {
       return null;
     }
-
     const mark = {
       belongsToUser: true, // let users see their current mark when hiding others
       toolName: subTool.type,
+      label: subTool.label,
       userCreated: true,
       subToolIndex,
       color: subTool.color, // @props.annotation?.subToolIndex
