@@ -353,7 +353,7 @@ export default AppContext(createReactClass({
                     ) : (
                         undefined
                       )}
-                    {this.getNextTask() && this.state.badSubject == null ? (
+                    {this.getNextTask() && !this.state.badSubject ? (
                       <button
                         type="button"
                         className="continue major-button"
