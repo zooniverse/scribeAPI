@@ -1,23 +1,21 @@
 import React from "react";
-import createReactClass from "create-react-class";
 
-export default createReactClass({
-  displayName: "LabeledRadioButton",
-
-  getDefaultProps() {
-    return {
-      classes: "",
-      name: "input0",
-      value: "",
-      checked: false,
-      onChange: () => true,
-      label: "",
-      disabled: false
-    };
-  },
+export default class LabeledRadioButton extends React.Component {
+  static defaultProps = {
+    classes: "",
+    className: '',
+    name: "input0",
+    value: "",
+    checked: false,
+    onChange: () => true,
+    label: "",
+    disabled: false
+  }
 
   render() {
-    const classes = this.props.classes + (this.props.disabled ? " disabled" : "");
+    const classes = [this.props.className,
+      this.props.classes,
+      (this.props.disabled ? " disabled" : "")].join(' ');
     return (
       <label key={this.props.key} className={classes}>
         <input
@@ -32,4 +30,4 @@ export default createReactClass({
       </label>
     );
   }
-});
+};
