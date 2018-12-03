@@ -1,20 +1,11 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * DS103: Rewrite code to no longer use __guard__
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 import React from "react";
+import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 
 import MainHeader from "../partials/main-header.jsx";
 import Footer from "../partials/footer.jsx";
-import API from "../lib/api.jsx";
 
 import BrowserWarning from "./browser-warning.jsx";
-
-window.API = API;
 
 const contextTypes = {
   project: PropTypes.object,
@@ -22,7 +13,10 @@ const contextTypes = {
   user: PropTypes.object
 }
 
+@withRouter
 class App extends React.Component {
+  static childContextTypes = contextTypes;
+
   constructor() {
     super();
     this.state = {
@@ -42,7 +36,15 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    return this.fetchUser();
+    this.fetchUser();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { location, history: { action } } = nextProps;
+    if (location !== this.props.location && action === 'PUSH') {
+      // navigated to a new page!
+      window.scrollTo(0, 0);
+    }
   }
 
   fetchUser() {
@@ -52,20 +54,23 @@ class App extends React.Component {
     const request = $.getJSON("/current_user");
 
     request.done(result => {
-      if (result != null ? result.data : undefined) {
+      if (result == null) {
+        return
+      }
+
+      if (result.data) {
         this.setState({
           user: result.data
         });
-      } else {
       }
 
-      if (__guard__(result != null ? result.meta : undefined, x => x.providers)) {
-        return this.setState({ loginProviders: result.meta.providers });
+      if (result.meta != null && result.meta.providers) {
+        this.setState({ loginProviders: result.meta.providers });
       }
     });
 
-    return request.fail(error => {
-      return this.setState({
+    request.fail(error => {
+      this.setState({
         loading: false,
         error: "Having trouble logging you in"
       });
@@ -80,7 +85,7 @@ class App extends React.Component {
 
     // Immediately amend user object with tutorial_complete flag so that we can hide the Tutorial:
     this.setState((prevState) => ({
-      user: $.extend(prevState.user != null ? prevState.user : {}, {
+      user: $.extend(prevState.user || {}, {
         tutorial_complete: true
       })
     }));
@@ -91,8 +96,8 @@ class App extends React.Component {
     }
 
     const request = $.post("/tutorial_complete");
-    return request.fail(error => {
-      return console.log("failed to set tutorial value for user");
+    request.fail(error => {
+      console.log("failed to set tutorial value for user");
     });
   }
 
@@ -141,17 +146,15 @@ class App extends React.Component {
   }
 }
 
-App.childContextTypes = contextTypes;
 function AppContext(ComponentToWrap) {
   class AppContextComponent extends React.Component {
+    static contextTypes = contextTypes;
     render() {
       return (
         <ComponentToWrap {...this.props} {...this.context} />
       )
     }
   }
-
-  AppContextComponent.contextTypes = contextTypes;
 
   return AppContextComponent;
 }
@@ -160,9 +163,3 @@ export {
   App,
   AppContext
 };
-
-function __guard__(value, transform) {
-  return typeof value !== "undefined" && value !== null
-    ? transform(value)
-    : undefined;
-}

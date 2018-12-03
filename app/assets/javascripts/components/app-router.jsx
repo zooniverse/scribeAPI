@@ -26,6 +26,7 @@ import GroupPage from "./group-page.jsx";
 import GroupBrowser from "./group-browser.jsx";
 
 import Project from "../models/project.js";
+import API from "../lib/api.jsx";
 
 function getComponent(name) {
   switch (name) {

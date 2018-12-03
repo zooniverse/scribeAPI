@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from 'react-router-dom';
 import API from "../lib/api.jsx";
 import { AppContext } from "./app.jsx";
 
@@ -77,11 +78,11 @@ export default class GroupBrowser extends React.Component {
                   : 0) > 0
                 ) {
                   result.push(
-                    <a href={`/#/${workflow.name}?group_id=${group.id}`}
+                    <NavLink to={`/${workflow.name}?group_id=${group.id}`}
                       className="button small-button"
                       key={workflow.id}>
                       {workflow.name.capitalize()}
-                    </a>
+                    </NavLink>
                   );
                 }
               }
@@ -89,7 +90,7 @@ export default class GroupBrowser extends React.Component {
 
             return result;
           })()}
-          <a href={`/#/groups/${group.id}`} className="button small-button ghost">More info</a>
+          <NavLink to={`/groups/${group.id}`} className="button small-button ghost">More info</NavLink>
         </div>
         <p className={`group-name ${groupNameClasses.join(" ")}`}>{group.name}</p>
       </div>

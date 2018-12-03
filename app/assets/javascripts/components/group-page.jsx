@@ -156,7 +156,7 @@ export default class GroupPage extends React.Component {
                             <GenericButton
                               key={workflow.id}
                               label={workflow.name}
-                              href={`#/${workflow.name}?subject_set_id=${
+                              to={`/${workflow.name}?subject_set_id=${
                                 set.id
                                 }`}
                             />

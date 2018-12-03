@@ -1,25 +1,15 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 import React from "react";
-import createReactClass from "create-react-class";
+import { NavLink } from 'react-router-dom';
 
-export default createReactClass({
-  displayName: "GenericButton",
-
-  getDefaultProps() {
-    return {
-      label: "Okay",
-      disabled: false,
-      className: "",
-      major: false,
-      onClick: null,
-      href: null
-    };
-  },
+export default class GenericButton extends React.Component {
+  static defaultProps = {
+    label: "Okay",
+    disabled: false,
+    className: "",
+    major: false,
+    onClick: null,
+    href: null
+  };
 
   render() {
     const classes = this.props.className.split(/\s+/);
@@ -30,25 +20,36 @@ export default createReactClass({
 
     let { onClick } = this.props;
 
-    if (this.props.href) {
-      const c = this.props.onClick;
-      onClick = () => {
-        if (typeof c === "function") {
-          c();
-        }
-        window.location.href = this.props.href;
-      };
+    if (this.props.to) {
+      return (
+        <NavLink className={classes.join(" ")}
+          to={this.props.to}
+          disabled={this.props.disabled ? "disabled" : undefined}>
+          <span>{this.props.label}</span>
+        </NavLink>
+      );
     }
+    else {
+      if (this.props.href) {
+        const c = this.props.onClick;
+        onClick = () => {
+          if (typeof c === "function") {
+            c();
+          }
+          window.location.href = this.props.href;
+        };
+      }
 
-    const key = this.props.href != null ? this.props.href : this.props.onClick;
+      const key = this.props.href || this.props.onClick;
 
-    return (
-      <button key={key}
-        className={classes.join(" ")}
-        onClick={onClick}
-        disabled={this.props.disabled ? "disabled" : undefined}>
-        {this.props.label}
-      </button>
-    );
+      return (
+        <button key={key}
+          className={classes.join(" ")}
+          onClick={onClick}
+          disabled={this.props.disabled ? "disabled" : undefined}>
+          <span>{this.props.label}</span>
+        </button>
+      );
+    }
   }
-});
+};
