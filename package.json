@@ -33,6 +33,7 @@
     "react-dom": "^15.6.2",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
+    "rxjs": "^6.3.3",
     "webpack": "^3.0.0",
     "webpack-merge": "^4.1.4"
   },
