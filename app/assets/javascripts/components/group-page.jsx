@@ -1,7 +1,7 @@
 import React from "react";
 import GenericButton from "./buttons/generic-button.jsx";
 import API from "../lib/api.jsx";
-import { AppContext } from "./app.jsx";
+import { AppContext } from "./app-context.jsx";
 
 @AppContext
 export default class GroupPage extends React.Component {
@@ -145,7 +145,7 @@ export default class GroupPage extends React.Component {
                   <div className="mark-transcribe-buttons">
                     {(() => {
                       const result1 = [];
-                      for (let workflow of this.props.project.workflows) {
+                      for (let workflow of this.props.context.project.workflows) {
                         const workflowCounts = set.counts[workflow.id] != null &&
                           set.counts[workflow.id];
                         if ((workflowCounts != null && workflowCounts.active_subjects

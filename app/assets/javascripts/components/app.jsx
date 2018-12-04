@@ -1,20 +1,15 @@
 import React from "react";
 import { withRouter } from "react-router";
-import PropTypes from "prop-types";
+import queryString from 'query-string';
 
 import MainHeader from "../partials/main-header.jsx";
 import Footer from "../partials/footer.jsx";
 
 import BrowserWarning from "./browser-warning.jsx";
-
-const contextTypes = {
-  project: PropTypes.object,
-  onCloseTutorial: PropTypes.func.isRequired,
-  user: PropTypes.object
-}
+import { contextTypes } from './app-context.jsx';
 
 @withRouter
-class App extends React.Component {
+export class App extends React.Component {
   static childContextTypes = contextTypes;
 
   constructor() {
@@ -26,12 +21,18 @@ class App extends React.Component {
     };
   }
 
+  getGroupId() {
+    let query = queryString.parse(this.props.location.search);
+    return query.group_id;
+  }
+
   getChildContext() {
     const { project } = window;
     return {
       project,
       onCloseTutorial: this.setTutorialComplete.bind(this),
-      user: this.state.user
+      user: this.state.user,
+      groupId: this.getGroupId()
     }
   }
 
@@ -145,21 +146,3 @@ class App extends React.Component {
     );
   }
 }
-
-function AppContext(ComponentToWrap) {
-  class AppContextComponent extends React.Component {
-    static contextTypes = contextTypes;
-    render() {
-      return (
-        <ComponentToWrap {...this.props} {...this.context} />
-      )
-    }
-  }
-
-  return AppContextComponent;
-}
-
-export {
-  App,
-  AppContext
-};

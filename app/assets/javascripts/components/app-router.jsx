@@ -12,7 +12,8 @@ import ReactDOM from "react-dom";
 import marked from '../lib/marked.min.js';
 
 import createReactClass from "create-react-class";
-import { App, AppContext } from "./app.jsx";
+import { App } from "./app.jsx";
+import { AppContext } from './app-context.jsx';
 import { Route, Redirect, Switch } from "react-router";
 import { HashRouter } from "react-router-dom";
 import HomePage from "./home-page.jsx";

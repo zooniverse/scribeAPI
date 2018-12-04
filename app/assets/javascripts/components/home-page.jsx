@@ -9,7 +9,7 @@
 
 import React from "react";
 import marked from '../lib/marked.min.js';
-import { AppContext } from "./app.jsx";
+import { AppContext } from "./app-context.jsx";
 import GroupBrowser from "./group-browser.jsx";
 import NameSearch from "./name-search.jsx";
 
@@ -20,38 +20,38 @@ export default class HomePage extends React.Component {
   }
 
   markClick() {
-    return this.context.router.transitionTo("mark", {});
+    return this.props.context.router.transitionTo("mark", {});
   }
 
   transcribeClick() {
-    return this.context.router.transitionTo("transcribe", {});
+    return this.props.context.router.transitionTo("transcribe", {});
   }
 
   render() {
     return (
       <div className="home-page">
-        {this.props.project != null &&
-          this.props.project.home_page_content != null &&
+        {this.props.context.project != null &&
+          this.props.context.project.home_page_content != null &&
           <div className="page-content">
             <h1 className="title">
-              {this.props.project != null
-                ? this.props.project.title
+              {this.props.context.project != null
+                ? this.props.context.project.title
                 : undefined}
             </h1>
             <div
               dangerouslySetInnerHTML={{
-                __html: marked(this.props.project.home_page_content)
+                __html: marked(this.props.context.project.home_page_content)
               }}
             />
             {// Is there a metadata search configured, and should it be on the homepage?
               // TODO If mult metadata_search fields configured, maybe offer a <select> to choose between them
               __guard__(
-                this.props.project != null
-                  ? this.props.project.metadata_search
+                this.props.context.project != null
+                  ? this.props.context.project.metadata_search
                   : undefined,
                 x => x.feature_on_homepage
               )
-                ? Array.from(this.props.project.metadata_search.fields).map(
+                ? Array.from(this.props.context.project.metadata_search.fields).map(
                   field => (
                     <div className="metadata-search" key={field}>
                       <img id="search-icon" src="assets/searchtool.svg" />
@@ -61,7 +61,7 @@ export default class HomePage extends React.Component {
                 )
                 : undefined}
             <div className="group-area">
-              <GroupBrowser project={this.props.project} />
+              <GroupBrowser project={this.props.context.project} />
             </div>
           </div>}
       </div>

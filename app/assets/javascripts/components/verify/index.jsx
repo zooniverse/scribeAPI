@@ -9,7 +9,7 @@
 
 import React from "react";
 import SubjectViewer from "../subject-viewer.jsx";
-import { AppContext } from "../app.jsx";
+import { AppContext } from "../app-context.jsx";
 import FetchSubjectsMixin from "../../lib/fetch-subjects-mixin.jsx";
 import ForumSubjectWidget from "../forum-subject-widget.jsx";
 

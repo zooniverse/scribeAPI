@@ -8,23 +8,18 @@
  */
 
 import React from "react";
+import { NavLink } from 'react-router-dom';
 import createReactClass from "create-react-class";
 import queryString from 'query-string';
-import { AppContext } from "../app.jsx";
+import { AppContext } from "../app-context.jsx";
 import SubjectViewer from "../subject-viewer.jsx";
-import JSONAPIClient from "json-api-client"; // use to manage data?
 import FetchSubjectsMixin from "../../lib/fetch-subjects-mixin.jsx";
 import ForumSubjectWidget from "../forum-subject-widget.jsx";
 
 import BaseWorkflowMethods from "../../lib/workflow-methods-mixin.jsx";
 
-// Hash of core tools:
-import coreTools from "../core-tools/index.jsx";
-
 // Hash of transcribe tools:
 import transcribeTools from "./tools/index.jsx";
-
-import RowFocusTool from "../row-focus-tool.jsx";
 
 import HelpModal from "../help-modal.jsx";
 import Tutorial from "../tutorial.jsx";
@@ -126,7 +121,7 @@ export default AppContext(createReactClass({
   // transition back to mark workflow
   returnToMarking() {
     let query = queryString.parse(this.props.location);
-    return this.context.router.transitionTo(
+    return this.props.context.router.transitionTo(
       "mark",
       {},
       {
@@ -181,23 +176,29 @@ We are currently looking for a subject for you to `}
 `}
             </DraggableModal>
           ) : (
-            undefined
-          )}
+              undefined
+            )}
           {(() => {
             if (this.state.noMoreSubjects) {
+              $("html, body")
+                .stop()
+                .animate({ scrollTop: 0 }, 500);
+              const groupId = this.props.context.groupId;
+              const markLink = '/mark' + (groupId ? `?group_id=${groupId}` : '');
               return (
                 <DraggableModal
+                  y={100}
                   header={
                     this.state.userClassifiedAll
                       ? "Thanks for transcribing!"
                       : "Nothing to transcribe"
                   }
-                  buttons={<GenericButton label="Continue" href="/#/mark" />}
+                  buttons={<GenericButton label="Continue" to={markLink} />}
                 >
                   {`\
 Currently, there are no `}
-                  {this.props.project.term("subject")}s for you to{" "}
-                  {this.props.workflowName}. Try <a href="/#/mark">marking</a>
+                  {this.props.context.project.term("subject")}s for you to{" "}
+                  {this.props.workflowName}. Try <NavLink to={markLink}>marking</NavLink>
                   {` instead!\
 `}
                 </DraggableModal>
@@ -219,7 +220,7 @@ Currently, there are no `}
                   <TranscribeComponent
                     annotation_key={`${this.state.taskKey}.${
                       this.getCurrentSubject().id
-                    }`}
+                      }`}
                     key={this.getCurrentTask().key}
                     task={this.getCurrentTask()}
                     annotation={currentAnnotation}
@@ -243,7 +244,7 @@ Currently, there are no `}
                     returnToMarking={this.returnToMarking}
                     transcribeMode={transcribeMode}
                     isLastSubject={isLastSubject}
-                    project={this.props.project}
+                    project={this.props.context.project}
                   />
                 </SubjectViewer>
               );
@@ -258,9 +259,9 @@ Currently, there are no `}
                 x => x[currentAnnotation.value]
               ) != null
                 ? __guard__(
-                    this.getCurrentTask().tool_config.options,
-                    x1 => x1[currentAnnotation.value].next_task
-                  )
+                  this.getCurrentTask().tool_config.options,
+                  x1 => x1[currentAnnotation.value].next_task
+                )
                 : this.getCurrentTask().next_task;
 
             return (
@@ -277,12 +278,12 @@ Currently, there are no `}
                         </a>
                       </p>
                     ) : (
-                      undefined
-                    )}
+                        undefined
+                      )}
                     <div className="forum-holder">
                       <ForumSubjectWidget
                         subject={this.getCurrentSubject()}
-                        project={this.props.project}
+                        project={this.props.context.project}
                       />
                     </div>
                   </div>
@@ -291,38 +292,38 @@ Currently, there are no `}
             );
           }
         })()}
-        {this.props.project.tutorial != null && this.state.showingTutorial ? (
+        {this.props.context.project.tutorial != null && this.state.showingTutorial ? (
           // Check for workflow-specific tutorial
-          this.props.project.tutorial.workflows != null &&
-          this.props.project.tutorial.workflows[
+          this.props.context.project.tutorial.workflows != null &&
+            this.props.context.project.tutorial.workflows[
             __guard__(this.getActiveWorkflow(), x2 => x2.name)
-          ] ? (
-            <Tutorial
-              tutorial={
-                this.props.project.tutorial.workflows[
+            ] ? (
+              <Tutorial
+                tutorial={
+                  this.props.context.project.tutorial.workflows[
                   this.getActiveWorkflow().name
-                ]
-              }
-              onCloseTutorial={this.hideTutorial}
-            />
-          ) : (
-            // Otherwise just show general tutorial
-            <Tutorial
-              tutorial={this.props.project.tutorial}
-              onCloseTutorial={this.hideTutorial}
-            />
-          )
+                  ]
+                }
+                onCloseTutorial={this.hideTutorial}
+              />
+            ) : (
+              // Otherwise just show general tutorial
+              <Tutorial
+                tutorial={this.props.context.project.tutorial}
+                onCloseTutorial={this.hideTutorial}
+              />
+            )
         ) : (
-          undefined
-        )}
+            undefined
+          )}
         {this.state.helping ? (
           <HelpModal
             help={this.getCurrentTask().help}
             onDone={() => this.setState({ helping: false })}
           />
         ) : (
-          undefined
-        )}
+            undefined
+          )}
       </div>
     );
   }

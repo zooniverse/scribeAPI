@@ -57,7 +57,7 @@ const NameSearch = createReactClass({
 
       select: (e, ui) => {
         e.target.value;
-        return this.context.router.transitionTo(
+        return this.props.context.router.transitionTo(
           "mark",
           {},
           { subject_set_id: ui.item.value.id }

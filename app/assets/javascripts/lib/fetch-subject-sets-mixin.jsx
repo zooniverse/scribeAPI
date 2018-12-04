@@ -199,7 +199,7 @@ export default {
   // used by "About this {group}" link on Mark interface
   fetchGroups() {
     return API.type("groups")
-      .get({ project_id: this.props.project.id })
+      .get({ project_id: this.props.context.project.id })
       .then(groups => {
         for (let group of Array.from(groups)) {
           group.showButtons = false;

@@ -18,12 +18,12 @@ import verifyTools from "../components/verify/tools/index.jsx";
 export default {
   // Convenience method for selecting currently active workflow based on active controller
   getActiveWorkflow() {
-    if (!this.props.project) {
+    if (!this.props.context.project) {
       return null;
     }
 
-    for (let i = 0; i < this.props.project.workflows.length; i++) {
-      const workflow = this.props.project.workflows[i];
+    for (let i = 0; i < this.props.context.project.workflows.length; i++) {
+      const workflow = this.props.context.project.workflows[i];
       if (workflow.name === this.props.workflowName) {
         return workflow;
       }
@@ -33,8 +33,8 @@ export default {
   },
 
   getWorkflowByName(name) {
-    for (let i = 0; i < this.props.project.workflows.length; i++) {
-      const workflow = this.props.project.workflows[i];
+    for (let i = 0; i < this.props.context.project.workflows.length; i++) {
+      const workflow = this.props.context.project.workflows[i];
       if (workflow.name === name) {
         return workflow;
       }
@@ -565,8 +565,8 @@ export default {
             header: "All Done!",
             message: `There's nothing more for you to ${this.props.workflowName} here.`,
             onClick: () => {
-              if (typeof this.context.router.transitionTo === "function") {
-                this.context.router.transitionTo("mark");
+              if (typeof this.props.context.router.transitionTo === "function") {
+                this.props.context.router.transitionTo("mark");
               } // "/#/mark"
               return this.setState({
                 notice: null,

@@ -131,7 +131,7 @@ const CompositeTool = createReactClass({
     this.commitAnnotation();
 
     // transition back to mark
-    return this.context.router.transitionTo(
+    return this.props.context.router.transitionTo(
       "mark",
       {},
       {

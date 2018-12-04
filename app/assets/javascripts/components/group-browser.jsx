@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from 'react-router-dom';
 import API from "../lib/api.jsx";
-import { AppContext } from "./app.jsx";
+import { AppContext } from "./app-context.jsx";
 
 @AppContext
 export default class GroupBrowser extends React.Component {
