@@ -5,15 +5,15 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 
-import React from "react";
-import PropTypes from 'prop-types';
-import createReactClass from "create-react-class";
-import SubjectViewer from "./subject-viewer.jsx";
-import ZoomPanListenerMethods from "../lib/zoom-pan-listener-methods.jsx";
-import SubjectSetToolbar from "./subject-set-toolbar.jsx";
+import React from 'react'
+import PropTypes from 'prop-types'
+import createReactClass from 'create-react-class'
+import SubjectViewer from './subject-viewer.jsx'
+import ZoomPanListenerMethods from '../lib/zoom-pan-listener-methods.jsx'
+import SubjectSetToolbar from './subject-set-toolbar.jsx'
 
 export default createReactClass({
-  displayName: "SubjectSetViewer",
+  displayName: 'SubjectSetViewer',
   resizing: false,
 
   propTypes: {
@@ -27,59 +27,59 @@ export default createReactClass({
       subject_set: this.props.subject_set,
       tool: this.props.tool,
       toolbar_expanded: false
-    };
+    }
   },
 
   advancePrevious() {
-    return this.advance(-1);
+    return this.advance(-1)
   },
 
   advanceNext() {
-    return this.advance(1);
+    return this.advance(1)
   },
 
   advance(count) {
-    const new_index = this.props.subject_index + count;
+    const new_index = this.props.subject_index + count
     if (new_index < 0 || new_index >= this.props.subject_set.subjects.length) {
-      return;
+      return
     }
 
     // Let's just deal in indexes rather than storing both objects and indexes in state, lest they drift out of sync
     return this.setState({ subject_index: new_index }, () => {
-      return typeof this.props.onViewSubject === "function"
+      return typeof this.props.onViewSubject === 'function'
         ? this.props.onViewSubject(new_index)
-        : undefined;
-    });
+        : undefined
+    })
   },
 
   specificSelection(blah, new_index) {
     // this prevents navigating away from the subject during a workflow --AMS
     if (this.props.workflow.first_task === this.props.task.key) {
-      return typeof this.props.onViewSubject === "function"
+      return typeof this.props.onViewSubject === 'function'
         ? this.props.onViewSubject(new_index)
-        : undefined;
+        : undefined
     } else {
-      return null;
+      return null
     }
   },
 
   onToolbarExpand() {
-    return this.setState({ toolbar_expanded: true });
+    return this.setState({ toolbar_expanded: true })
   },
 
   onToolbarHide() {
-    return this.setState({ toolbar_expanded: false });
+    return this.setState({ toolbar_expanded: false })
   },
 
   render() {
     if (this.props.subject_set.subjects == null) {
-      return null;
+      return null
     }
 
     return (
       <div
         className={`subject-set-viewer${
-          this.state.toolbar_expanded ? " expand" : ""
+          this.state.toolbar_expanded ? ' expand' : ''
         }`}
       >
         <SubjectSetToolbar
@@ -122,8 +122,8 @@ export default createReactClass({
           interimMarks={this.props.interimMarks}
         />
       </div>
-    );
+    )
   }
-});
+})
 
-window.React = React;
+window.React = React

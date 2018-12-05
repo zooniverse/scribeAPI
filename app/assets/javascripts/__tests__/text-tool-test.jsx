@@ -1,9 +1,9 @@
-import React from "react";
-import ReactTestUtils from "react-dom/test-utils";
+import React from 'react'
+import ReactTestUtils from 'react-dom/test-utils'
 
-import TextTool from "../components/transcribe/tools/text-tool/index.jsx";
+import TextTool from '../components/transcribe/tools/text-tool/index.jsx'
 
-describe("text-tool index", function () {
+describe('text-tool index', function () {
   const {
     renderIntoDocument,
     scryRenderedComponentsWithType,
@@ -11,39 +11,39 @@ describe("text-tool index", function () {
     scryRenderedDOMComponentsWithTag,
     createRenderer,
     Simulate
-  } = ReactTestUtils;
+  } = ReactTestUtils
 
   const task_object = {
     generates_subject_type: null,
-    instruction: "Do you have a favorite ice cream flavour?",
-    key: "pick_page_type",
+    instruction: 'Do you have a favorite ice cream flavour?',
+    key: 'pick_page_type',
     next_task: null,
-    tool: "pickOne",
+    tool: 'pickOne',
     tool_config: {
       options: {
         yes: {
-          label: "yes",
+          label: 'yes',
           next_task: null
         },
         no: {
-          label: "no",
+          label: 'no',
           next_task: null
         }
       }
     }
-  };
+  }
 
-  it("should load the TextTool module", () =>
-    expect(TextTool).toBeTruthy());
+  it('should load the TextTool module', () =>
+    expect(TextTool).toBeTruthy())
 
-  xit("should render with an empty text input field", () => {
-    let DOM;
-    return (DOM = renderIntoDocument(<TextTool />));
-  });
+  xit('should render with an empty text input field', () => {
+    let DOM
+    return (DOM = renderIntoDocument(<TextTool />))
+  })
 
-  xit("should display the correct label", () => { });
+  xit('should display the correct label', () => { })
 
-  xit("a keypress should change input", () => { });
+  xit('a keypress should change input', () => { })
 
-  xit("should done button should call a commit function", () => { });
-});
+  xit('should done button should call a commit function', () => { })
+})

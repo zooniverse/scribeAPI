@@ -4,21 +4,21 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-import React from "react";
-import createReactClass from "create-react-class";
+import React from 'react'
+import createReactClass from 'create-react-class'
 
 const Login = createReactClass({
-  displayName: "Login",
+  displayName: 'Login',
 
   getInitialState() {
-    return { error: null };
+    return { error: null }
   },
 
   getDefaultProps() {
     return {
       user: null,
       loginProviders: []
-    };
+    }
   },
 
   render() {
@@ -32,41 +32,41 @@ const Login = createReactClass({
           ? this.renderLoggedInAsGuest()
           : undefined}
         {!this.props.user
-          ? this.renderLoginOptions("Log In:", "login-container")
+          ? this.renderLoginOptions('Log In:', 'login-container')
           : undefined}
       </div>
-    );
+    )
   },
 
   signOut(e) {
-    e.preventDefault();
+    e.preventDefault()
 
     const request = $.ajax({
-      url: "/users/sign_out",
-      method: "delete",
-      dataType: "json"
-    });
+      url: '/users/sign_out',
+      method: 'delete',
+      dataType: 'json'
+    })
 
     request.done(() => {
-      return this.props.onLogout();
-    });
+      return this.props.onLogout()
+    })
 
     return request.error((request, error) => {
       return this.setState({
-        error: "Could not log out"
-      });
-    });
+        error: 'Could not log out'
+      })
+    })
   },
 
   renderLoggedInAsGuest() {
     return (
       <span>
         {this.renderLoginOptions(
-          "Log in to save your work:",
-          "login-container"
+          'Log in to save your work:',
+          'login-container'
         )}
       </span>
-    );
+    )
   },
 
   renderLoggedIn() {
@@ -82,12 +82,12 @@ const Login = createReactClass({
           Logout
         </a>
       </span>
-    );
+    )
   },
 
   renderLoginOptions(label, classNames) {
     const links = this.props.loginProviders.map(function(link) {
-      const icon_id = link.id === "zooniverse" ? "dot-circle-o" : link.id;
+      const icon_id = link.id === 'zooniverse' ? 'dot-circle-o' : link.id
       return (
         <a
           key={`login-link-${link.id}`}
@@ -96,16 +96,16 @@ const Login = createReactClass({
         >
           <i className={`fa fa-${icon_id} fa-2`} />
         </a>
-      );
-    });
+      )
+    })
 
     return (
       <span className={classNames}>
-        <span className="label">{label || "Log In:"}</span>
+        <span className="label">{label || 'Log In:'}</span>
         <div className="options">{links}</div>
       </span>
-    );
+    )
   }
-});
+})
 
-export default Login;
+export default Login

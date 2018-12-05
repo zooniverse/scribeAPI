@@ -8,57 +8,57 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-import Classification from "../models/classification.js";
+import Classification from '../models/classification.js'
 
-import coreTools from "../components/core-tools/index.jsx";
-import markTools from "../components/mark/tools/index.jsx";
-import transcribeTools from "../components/transcribe/tools/index.jsx";
-import verifyTools from "../components/verify/tools/index.jsx";
+import coreTools from '../components/core-tools/index.jsx'
+import markTools from '../components/mark/tools/index.jsx'
+import transcribeTools from '../components/transcribe/tools/index.jsx'
+import verifyTools from '../components/verify/tools/index.jsx'
 
 export default {
   // Convenience method for selecting currently active workflow based on active controller
   getActiveWorkflow() {
     if (!this.props.context.project) {
-      return null;
+      return null
     }
 
     for (let i = 0; i < this.props.context.project.workflows.length; i++) {
-      const workflow = this.props.context.project.workflows[i];
+      const workflow = this.props.context.project.workflows[i]
       if (workflow.name === this.props.workflowName) {
-        return workflow;
+        return workflow
       }
     }
 
-    return null;
+    return null
   },
 
   getWorkflowByName(name) {
     for (let i = 0; i < this.props.context.project.workflows.length; i++) {
-      const workflow = this.props.context.project.workflows[i];
+      const workflow = this.props.context.project.workflows[i]
       if (workflow.name === name) {
-        return workflow;
+        return workflow
       }
     }
 
-    return null;
+    return null
   },
 
   // Start a new classification (optionally initialized with given annotation hash):
   beginClassification(annotation, callback) {
     if (annotation == null) {
-      annotation = {};
+      annotation = {}
     }
-    const { classifications } = this.state;
-    const classification = new Classification();
+    const { classifications } = this.state
+    const classification = new Classification()
 
     if (annotation != null) {
       for (let k in annotation) {
-        const v = annotation[k];
-        classification.annotation[k] = v;
+        const v = annotation[k]
+        classification.annotation[k] = v
       }
     }
 
-    classifications.push(classification);
+    classifications.push(classification)
 
     return this.setState(
       {
@@ -66,47 +66,47 @@ export default {
         classificationIndex: classifications.length - 1
       },
       () => {
-        this.forceUpdate();
-        window.classifications = this.state.classifications; // make accessible to console
+        this.forceUpdate()
+        window.classifications = this.state.classifications // make accessible to console
         if (callback != null) {
-          return callback();
+          return callback()
         }
       }
-    );
+    )
   },
 
   commitClassification(classification) {
     if (classification == null) {
-      return;
+      return
     }
 
     // Create visual interim mark just in case POST takes a while
-    const interim_mark = this.addInterimMark(classification);
+    const interim_mark = this.addInterimMark(classification)
 
     // Commit classification to backend
     return classification.commit(classification => {
       // Did this generate a child_subject? Update local copy:
       if (classification.child_subject) {
-        this.appendChildSubject(classification.subject_id, classification.child_subject);
+        this.appendChildSubject(classification.subject_id, classification.child_subject)
 
         // Now that we have the real mark, hide the interim mark:
         if (interim_mark != null) {
-          this.hideInterimMark(interim_mark);
+          this.hideInterimMark(interim_mark)
         }
       }
 
       if (this.state.badSubject) {
         this.toggleBadSubject(() => {
-          return this.advanceToNextSubject();
-        });
+          return this.advanceToNextSubject()
+        })
       }
 
       if (this.state.illegibleSubject) {
         return this.toggleIllegibleSubject(() => {
-          return this.advanceToNextSubject();
-        });
+          return this.advanceToNextSubject()
+        })
       }
-    });
+    })
   },
 
   // Called immediately before saving a classification, adds a fake mark in lieu
@@ -114,7 +114,7 @@ export default {
   addInterimMark(classification) {
     // Uniquely identify local interim marks:
     if (!this.interim_mark_id) {
-      this.interim_mark_id = 0;
+      this.interim_mark_id = 0
     }
 
     // Interim mark is the region (the mark classification's annotation hash) with extras:
@@ -126,42 +126,42 @@ export default {
       }, classification.annotation)
 
     // Add interim mark to array in @state
-    const interimMarks = this.state.interimMarks != null ? this.state.interimMarks : [];
-    interimMarks.push(interim_mark);
-    this.setState({ interimMarks });
+    const interimMarks = this.state.interimMarks != null ? this.state.interimMarks : []
+    interimMarks.push(interim_mark)
+    this.setState({ interimMarks })
 
-    return interim_mark;
+    return interim_mark
   },
 
   // Counterpart to addInterimMark, hides the given interim mark
   hideInterimMark(interim_mark) {
-    const { interimMarks } = this.state;
+    const { interimMarks } = this.state
     return (() => {
-      const result = [];
+      const result = []
       for (let i = 0; i < interimMarks.length; i++) {
         // If this is the interim mark to hide, hide it:
-        const m = interimMarks[i];
+        const m = interimMarks[i]
         if (m.interim_id === interim_mark.interim_id) {
           m.show = false
-          this.setState({ interimMarks });
+          this.setState({ interimMarks })
           // We found it, move on:
           break
         } else {
-          result.push(undefined);
+          result.push(undefined)
         }
       }
-      return result;
-    })();
+      return result
+    })()
   },
 
   // used to commit task-level classifications, i.e. not from marking tools
   commitCurrentClassification() {
-    const classification = this.getCurrentClassification();
-    classification.subject_id = __guard__(this.getCurrentSubject(), x => x.id);
+    const classification = this.getCurrentClassification()
+    classification.subject_id = __guard__(this.getCurrentSubject(), x => x.id)
     if (this.getCurrentSubjectSet() != null) {
-      classification.subject_set_id = this.getCurrentSubjectSet().id;
+      classification.subject_set_id = this.getCurrentSubjectSet().id
     }
-    classification.workflow_id = this.getActiveWorkflow().id;
+    classification.workflow_id = this.getActiveWorkflow().id
 
     // If user activated 'Bad Subject' button, override task:
     if (this.state.badSubject) {
@@ -170,26 +170,26 @@ export default {
       classification.task_key = 'flag_illegible_subject_task'
       // Otherwise, classification is for active task:
     } else {
-      classification.task_key = this.state.taskKey;
+      classification.task_key = this.state.taskKey
       if (Object.keys(classification.annotation).length === 0) {
-        return;
+        return
       }
     }
 
-    this.commitClassification(classification);
-    return this.beginClassification();
+    this.commitClassification(classification)
+    return this.beginClassification()
   },
 
   // used for committing marking tools (by passing annotation)
   createAndCommitClassification(annotation) {
-    let { classifications } = this.state;
-    const classification = new Classification();
-    classification.annotation = annotation != null ? annotation : { annotation: {} }; // initialize annotation
-    classification.subject_id = __guard__(this.getCurrentSubject(), x => x.id);
+    let { classifications } = this.state
+    const classification = new Classification()
+    classification.annotation = annotation != null ? annotation : { annotation: {} } // initialize annotation
+    classification.subject_id = __guard__(this.getCurrentSubject(), x => x.id)
     if (this.getCurrentSubjectSet() != null) {
-      classification.subject_set_id = this.getCurrentSubjectSet().id;
+      classification.subject_set_id = this.getCurrentSubjectSet().id
     }
-    classification.workflow_id = this.getActiveWorkflow().id;
+    classification.workflow_id = this.getActiveWorkflow().id
 
     // If user activated 'Bad Subject' button, override task:
     if (this.state.badSubject) {
@@ -199,120 +199,120 @@ export default {
 
       // Otherwise, classification is for active task:
     } else {
-      classification.task_key = this.state.taskKey;
+      classification.task_key = this.state.taskKey
       if (Object.keys(classification.annotation).length === 0) {
-        return;
+        return
       }
     }
 
-    ({ classifications } = this.state);
+    ({ classifications } = this.state)
 
-    classifications.push(classification);
+    classifications.push(classification)
 
     this.setState({
       classifications: classifications,
       classificationIndex: classifications.length - 1
     }, () => {
-      this.forceUpdate();
-      window.classifications = this.state.classifications; // make accessible to console
-      if (typeof callback !== "undefined" && callback !== null) {
-        return callback();
+      this.forceUpdate()
+      window.classifications = this.state.classifications // make accessible to console
+      if (typeof callback !== 'undefined' && callback !== null) {
+        return callback()
       }
     }
-    );
+    )
 
-    return this.commitClassification(classification);
+    return this.commitClassification(classification)
   },
 
   toggleBadSubject(e, callback) {
     return this.setState({ badSubject: !this.state.badSubject }, () => {
-      return typeof callback === "function" ? callback() : undefined;
-    });
+      return typeof callback === 'function' ? callback() : undefined
+    })
   },
 
   toggleIllegibleSubject(e, callback) {
     return this.setState(
       { illegibleSubject: !this.state.illegibleSubject },
       () => {
-        return typeof callback === "function" ? callback() : undefined;
+        return typeof callback === 'function' ? callback() : undefined
       }
-    );
+    )
   },
 
   flagSubjectAsUserDeleted(subject_id) {
-    const classification = this.getCurrentClassification();
-    classification.subject_id = subject_id; // @getCurrentSubject()?.id
-    classification.workflow_id = this.getActiveWorkflow().id;
-    classification.task_key = "flag_bad_subject_task";
+    const classification = this.getCurrentClassification()
+    classification.subject_id = subject_id // @getCurrentSubject()?.id
+    classification.workflow_id = this.getActiveWorkflow().id
+    classification.task_key = 'flag_bad_subject_task'
 
     return classification.commit(classification => {
       this.updateChildSubject(
         this.getCurrentSubject().id,
         classification.subject_id,
         { user_has_deleted: true }
-      );
-      return this.beginClassification();
-    });
+      )
+      return this.beginClassification()
+    })
   },
 
   // Update specified child_subject with given properties (e.g. after submitting a delete flag)
   updateChildSubject(parent_subject_id, child_subject_id, props) {
-    let s;
+    let s
     if ((s = this.getSubjectById(parent_subject_id))) {
       return (() => {
-        const result = [];
+        const result = []
         for (let i = 0; i < s.child_subjects.length; i++) {
-          var c = s.child_subjects[i];
+          var c = s.child_subjects[i]
           if (c.id === child_subject_id) {
             result.push(
               (() => {
-                const result1 = [];
+                const result1 = []
                 for (let k in props) {
-                  const v = props[k];
-                  result1.push((c[k] = v));
+                  const v = props[k]
+                  result1.push((c[k] = v))
                 }
-                return result1;
+                return result1
               })()
-            );
+            )
           } else {
-            result.push(undefined);
+            result.push(undefined)
           }
         }
-        return result;
-      })();
+        return result
+      })()
     }
   },
 
   // Add newly acquired child_subject to child_subjects array of relevant subject (i.e. after submitting a subject-generating classification)
   appendChildSubject(subject_id, child_subject) {
-    let s;
+    let s
     if ((s = this.getSubjectById(subject_id))) {
-      s.child_subjects.push($.extend({ userCreated: true }, child_subject));
+      s.child_subjects.push($.extend({ userCreated: true }, child_subject))
 
       // We've updated an internal object in @state.subjectSets, but framework doesn't notice, so tell it to update:
-      return this.forceUpdate();
+      return this.forceUpdate()
     }
   },
 
   // Get a reference to the local copy of a subject by id regardless of whether viewing subject-sets or just subjects
   getSubjectById(id) {
-    let s;
+    let s
     if (this.state.subjectSets != null) {
       // If current subject set has no subjects, we're likely in between one subject set
       // and the next (for which we're currently fetching subjects), so return null:
       if (this.getCurrentSubjectSet().subjects == null) {
-        return null;
+        return null
       }
 
       for (s of Array.from(this.getCurrentSubjectSet().subjects)) {
         if (s.id === id) {
-          return s;
+          return s
         }
       }
     } else {
       for (s of Array.from(this.state.subjects)) {
         if (s.id === id) {
-          return s;
+          return s
         }
       }
     }
@@ -320,44 +320,44 @@ export default {
 
   // Get current classification:
   getCurrentClassification() {
-    return this.state.classifications[this.state.classificationIndex];
+    return this.state.classifications[this.state.classificationIndex]
   },
 
   // Get current task:
   getCurrentTask() {
     if (this.state.taskKey == null) {
-      return null;
+      return null
     }
     if (this.getTasks()[this.state.taskKey] == null) {
       console.warn(
         `TaskKey invalid: ${this.state.taskKey}. Should be: ${(() => {
-          const result = [];
-          const object = this.getTasks();
+          const result = []
+          const object = this.getTasks()
           for (let k in object) {
-            const v = object[k];
-            result.push(k);
+            const v = object[k]
+            result.push(k)
           }
-          return result;
+          return result
         })()}`
-      );
+      )
     }
-    return this.getTasks()[this.state.taskKey];
+    return this.getTasks()[this.state.taskKey]
   },
 
   getTasks() {
     // Add completion_assessment_task to list of tasks dynamically:
     // <<<<<<< HEAD
-    const { tasks } = this.getActiveWorkflow();
-    let completion_assessment_task = this.getCompletionAssessmentTask();
+    const { tasks } = this.getActiveWorkflow()
+    let completion_assessment_task = this.getCompletionAssessmentTask()
     // Merge keys recursively if it exists in config
-    if (tasks["completion_assessment_task"] != null) {
+    if (tasks['completion_assessment_task'] != null) {
       completion_assessment_task = $.extend(
         true,
-        tasks["completion_assessment_task"],
+        tasks['completion_assessment_task'],
         completion_assessment_task
-      );
+      )
     }
-    return $.extend(tasks, { completion_assessment_task });
+    return $.extend(tasks, { completion_assessment_task })
   },
   // =======
   //     tasks = @getActiveWorkflow().tasks
@@ -368,13 +368,13 @@ export default {
 
   // Get instance of current tool:
   getCurrentTool() {
-    let tool;
-    const toolKey = __guard__(this.getCurrentTask(), x => x.tool);
-    return (tool = this.toolByKey(toolKey));
+    let tool
+    const toolKey = __guard__(this.getCurrentTask(), x => x.tool)
+    return (tool = this.toolByKey(toolKey))
   },
 
   toolByKey(toolKey) {
-    let left, left1;
+    let left, left1
     return (left =
       (left1 =
         coreTools[toolKey] != null ? coreTools[toolKey] : markTools[toolKey]) !=
@@ -382,63 +382,63 @@ export default {
         ? left1
         : transcribeTools[toolKey]) != null
       ? left
-      : verifyTools[toolKey];
+      : verifyTools[toolKey]
   },
 
   // Load next logical task
   advanceToNextTask() {
-    const nextTaskKey = __guard__(this.getNextTask(), x => x.key);
+    const nextTaskKey = __guard__(this.getNextTask(), x => x.key)
     if (nextTaskKey === null) {
       return
     }
 
     // Commit whatever current classification is:
-    this.commitCurrentClassification();
+    this.commitCurrentClassification()
     // start a new one:
     // @beginClassification {} # this keps adding empty (uncommitted) classifications to @state.classifications --STI
 
     // After classification ready with empty annotation, proceed to next task:
-    return this.advanceToTask(nextTaskKey);
+    return this.advanceToTask(nextTaskKey)
   },
 
   // Get next logical task
   getNextTask() {
-    let nextKey, opt, options;
-    const task = this.getTasks()[this.state.taskKey];
+    let nextKey, opt, options
+    const task = this.getTasks()[this.state.taskKey]
     // PB: Moving from hash of options to an array of options
 
     if ((options = (() => {
-      const result = [];
+      const result = []
       for (let c of Array.from(
         task.tool_config != null ? task.tool_config.options : undefined
       )) {
         if (c.value === __guard__(this.getCurrentClassification().annotation, x => x.value)) {
-          result.push(c);
+          result.push(c)
         }
       }
-      return result;
+      return result
     })()) && options.length > 0 && (opt = options[0]) != null && opt.next_task != null) {
-      nextKey = opt.next_task;
+      nextKey = opt.next_task
     } else {
-      nextKey = this.getTasks()[this.state.taskKey].next_task;
+      nextKey = this.getTasks()[this.state.taskKey].next_task
     }
 
-    return this.getTasks()[nextKey];
+    return this.getTasks()[nextKey]
   },
 
   // Advance to a named task:
   advanceToTask(key) {
-    const task = this.getTasks()[key];
+    const task = this.getTasks()[key]
 
-    const tool = this.toolByKey(task != null ? task.tool : undefined);
+    const tool = this.toolByKey(task != null ? task.tool : undefined)
     if (task == null) {
-      return console.warn("WARN: Invalid task key: ", key);
+      return console.warn('WARN: Invalid task key: ', key)
     } else if (tool == null) {
-      return console.warn(`WARN: Invalid tool specified in ${key}: ${task.tool}`);
+      return console.warn(`WARN: Invalid tool specified in ${key}: ${task.tool}`)
     } else {
       return this.setState({
         taskKey: key
-      });
+      })
     }
   },
 
@@ -450,7 +450,7 @@ export default {
     ) {
       return this.state.subjectSets != null
         ? this.state.subjectSets[this.state.subject_set_index]
-        : undefined;
+        : undefined
     }
   },
   // else @state.subjectSets #having a hard time accounting for one subject_set
@@ -459,20 +459,20 @@ export default {
   getCurrentSubject() {
     // If we've viewing a subject-set (i.e. Mark) let's use that subject-set's subjects
 
-    let subjects;
+    let subjects
     if (this.getCurrentSubjectSet() != null) {
-      ({ subjects } = this.getCurrentSubjectSet());
+      ({ subjects } = this.getCurrentSubjectSet())
 
       // Otherwise, since we're not viewing subject-sets, we must have an array of indiv subjects:
     } else {
-      ({ subjects } = this.state);
+      ({ subjects } = this.state)
     }
 
     // It's possible we have no subjects at all, in which case fail with null:
     if (subjects == null) {
-      return null;
+      return null
     }
-    return subjects[this.state.subject_index];
+    return subjects[this.state.subject_index]
   }, // otherwise, return subject
 
   getCompletionAssessmentTask() {
@@ -480,71 +480,71 @@ export default {
       generates_subject_type: null,
       instruction: `Thanks for all your work! Is there anything left to ${
         this.props.workflowName
-        }?`,
-      key: "completion_assessment_task",
+      }?`,
+      key: 'completion_assessment_task',
       next_task: null,
-      tool: "pickOne",
+      tool: 'pickOne',
       help: {
-        title: "Completion Assessment",
-        body: "<p>Have all requested fields on this page been marked with a rectangle?</p><p>You do not have to mark every field on the page, however, it helps us to know if you think there is more to mark. Thank you!</p>"
+        title: 'Completion Assessment',
+        body: '<p>Have all requested fields on this page been marked with a rectangle?</p><p>You do not have to mark every field on the page, however, it helps us to know if you think there is more to mark. Thank you!</p>'
       },
       tool_config: {
-        "options": [
+        'options': [
           {
-            "label": "Yes",
-            "next_task": null,
-            "value": "incomplete_subject"
+            'label': 'Yes',
+            'next_task': null,
+            'value': 'incomplete_subject'
           },
           {
-            "label": "No",
-            "next_task": null,
-            "value": "complete_subject"
+            'label': 'No',
+            'next_task': null,
+            'value': 'complete_subject'
           }
         ]
       },
       subToolIndex: 0
-    };
+    }
   },
 
   // Regardless of what workflow we're in, call this to display next subject (if any avail)
   advanceToNextSubject() {
     if (this.state.subjects != null) {
-      return this._advanceToNextSubjectInSubjects();
+      return this._advanceToNextSubjectInSubjects()
     } else {
-      return this._advanceToNextSubjectInSubjectSets();
+      return this._advanceToNextSubjectInSubjectSets()
     }
   },
 
   // This is the version of advanceToNextSubject for workflows that consume subjects (transcribe,verify)
   _advanceToNextSubjectInSubjects() {
     if (this.state.subject_index + 1 < this.state.subjects.length) {
-      const next_index = this.state.subject_index + 1;
-      const next_subject = this.state.subjects[next_index];
+      const next_index = this.state.subject_index + 1
+      const next_subject = this.state.subjects[next_index]
       return this.setState({
         taskKey: next_subject.type,
         subject_index: next_index
       }, () => {
-        const key = this.getCurrentSubject().type;
-        return this.advanceToTask(key);
+        const key = this.getCurrentSubject().type
+        return this.advanceToTask(key)
       }
-      );
+      )
 
       // Haz more pages of subjects?
     } else if (this.state.subjects_next_page != null) {
-      return this.fetchSubjects({ page: this.state.subjects_next_page });
+      return this.fetchSubjects({ page: this.state.subjects_next_page })
     } else {
       return this.setState({
         subject_index: null,
         noMoreSubjects: true,
         userClassifiedAll: this.state.subjects.length > 0
-      });
+      })
     }
   },
 
   // This is the version of advanceToNextSubject for workflows that consume subject sets (mark)
   _advanceToNextSubjectInSubjectSets() {
-    let new_subject_set_index = this.state.subject_set_index;
-    let new_subject_index = this.state.subject_index + 1;
+    let new_subject_set_index = this.state.subject_set_index
+    let new_subject_index = this.state.subject_index + 1
 
     // If we've exhausted pages in this subject set, move to next one:
     if (new_subject_index >= this.getCurrentSubjectSet().subjects.length) {
@@ -557,25 +557,25 @@ export default {
       if (this.state.subject_sets_current_page < this.state.subject_sets_total_pages) {
         this.fetchSubjectSets({
           page: this.state.subject_sets_current_page + 1
-        });
+        })
       } else {
         this.setState({
           taskKey: null,
           notice: {
-            header: "All Done!",
+            header: 'All Done!',
             message: `There's nothing more for you to ${this.props.workflowName} here.`,
             onClick: () => {
-              if (typeof this.props.context.router.transitionTo === "function") {
-                this.props.context.router.transitionTo("mark");
+              if (typeof this.props.context.router.transitionTo === 'function') {
+                this.props.context.router.transitionTo('mark')
               } // "/#/mark"
               return this.setState({
                 notice: null,
                 taskKey: this.getActiveWorkflow().first_task
-              });
+              })
             }
           }
-        });
-        console.warn("NO MORE SUBJECT SETS");
+        })
+        console.warn('NO MORE SUBJECT SETS')
       }
       return
     }
@@ -590,25 +590,25 @@ export default {
         currentSubToolIndex: 0
       },
       () => {
-        return this.fetchSubjectsForCurrentSubjectSet(1, 100);
+        return this.fetchSubjectsForCurrentSubjectSet(1, 100)
       }
-    );
+    )
   },
 
   commitClassificationAndContinue(d) {
-    this.commitCurrentClassification();
+    this.commitCurrentClassification()
     return this.beginClassification({}, () => {
       if (__guard__(this.getCurrentTask(), x => x.next_task) != null) {
-        return this.advanceToTask(this.getCurrentTask().next_task);
+        return this.advanceToTask(this.getCurrentTask().next_task)
       } else {
-        return this.advanceToNextSubject();
+        return this.advanceToNextSubject()
       }
-    });
+    })
   }
-};
+}
 
 function __guard__(value, transform) {
-  return typeof value !== "undefined" && value !== null
+  return typeof value !== 'undefined' && value !== null
     ? transform(value)
-    : undefined;
+    : undefined
 }

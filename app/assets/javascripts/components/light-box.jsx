@@ -1,4 +1,4 @@
-var _this = this;
+var _this = this
 
 /*
  * decaffeinate suggestions:
@@ -8,14 +8,14 @@ var _this = this;
  * DS208: Avoid top-level this
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-import React from "react";
-import PropTypes from 'prop-types';
-import SVGImage from "./svg-image.jsx";
-import ActionButton from "./action-button.jsx";
-import createReactClass from "create-react-class";
+import React from 'react'
+import PropTypes from 'prop-types'
+import SVGImage from './svg-image.jsx'
+import ActionButton from './action-button.jsx'
+import createReactClass from 'create-react-class'
 
 export default createReactClass({
-  displayName: "LightBox",
+  displayName: 'LightBox',
 
   propTypes: {
     subject_set: PropTypes.object.isRequired,
@@ -31,59 +31,59 @@ export default createReactClass({
     return {
       first: this.props.subject_set.subjects[0],
       folded: false
-    };
+    }
   },
 
   handleFoldClick(e) {
-    return this.setState({ folded: !this.state.folded });
+    return this.setState({ folded: !this.state.folded })
   },
 
   lightBoxMessage: () => {
-    let text;
+    let text
     if (_this.state.folded) {
-      return (text = "Show Lightbox");
+      return (text = 'Show Lightbox')
     } else {
-      return (text = "Hide Lightbox");
+      return (text = 'Hide Lightbox')
     }
   },
 
   render() {
     // window.subjects = @props.subject_set.subjects # pb ?
-    let carouselStyle, text;
+    let carouselStyle, text
     if (this.props.subject_set.subjects.length <= 1) {
-      return null;
+      return null
     }
-    const indexOfFirst = this.findSubjectIndex(this.state.first);
-    const second = this.props.subject_set.subjects[indexOfFirst + 1];
-    const third = this.props.subject_set.subjects[indexOfFirst + 2];
+    const indexOfFirst = this.findSubjectIndex(this.state.first)
+    const second = this.props.subject_set.subjects[indexOfFirst + 1]
+    const third = this.props.subject_set.subjects[indexOfFirst + 2]
 
-    const viewBox = [0, 0, 100, 100];
+    const viewBox = [0, 0, 100, 100]
 
     if (this.state.folded) {
       carouselStyle = {
-        display: "none"
-      };
+        display: 'none'
+      }
     }
     if (this.state.folded) {
-      text = "Show Lightbox";
+      text = 'Show Lightbox'
     } else {
-      text = "Hide Lightbox";
+      text = 'Hide Lightbox'
     }
 
-    const classes = [];
+    const classes = []
     if (this.props.isDisabled) {
-      classes.push("disabled");
+      classes.push('disabled')
     } else {
     }
 
-    const containerClasses = [];
-    containerClasses.push("light-box-area");
+    const containerClasses = []
+    containerClasses.push('light-box-area')
     if (this.state.folded) {
-      containerClasses.push("folded");
+      containerClasses.push('folded')
     }
 
     return (
-      <div className={containerClasses.join(" ")}>
+      <div className={containerClasses.join(' ')}>
         <div className="carousel">
           <div id="visibility-button">
             <svg
@@ -106,7 +106,7 @@ export default createReactClass({
                 className={
                   this.props.subject_index ===
                   this.findSubjectIndex(this.state.first)
-                    ? "active"
+                    ? 'active'
                     : undefined
                 }
               >
@@ -136,7 +136,7 @@ export default createReactClass({
                   )}
                   className={
                     this.props.subject_index === this.findSubjectIndex(second)
-                      ? "active"
+                      ? 'active'
                       : undefined
                   }
                 >
@@ -169,7 +169,7 @@ export default createReactClass({
                   )}
                   className={
                     this.props.subject_index === this.findSubjectIndex(third)
-                      ? "active"
+                      ? 'active'
                       : undefined
                   }
                 >
@@ -212,13 +212,13 @@ export default createReactClass({
           </div>
         </div>
       </div>
-    );
+    )
   },
 
   // allows user to click on a subject in the lightbox to load that subject into the subject-viewer.
   // This method ultimately sets the state.subject_index in mark/index. See subject-set-viewer#specificSelection() and mark/index#handleViewSubject().
   shineSelected(index) {
-    return this.props.onSubject(index);
+    return this.props.onSubject(index)
   },
 
   // determines the back button css
@@ -228,9 +228,9 @@ export default createReactClass({
       this.props.subject_set.subjects[indexOfFirst] ===
         this.props.subject_set.subjects[0]
     ) {
-      return "disabled";
+      return 'disabled'
     } else {
-      return "";
+      return ''
     }
   },
 
@@ -244,9 +244,9 @@ export default createReactClass({
             this.props.subject_set.subjects.length - 1
           ])
     ) {
-      return "disabled";
+      return 'disabled'
     } else {
-      return "";
+      return ''
     }
   },
 
@@ -256,7 +256,7 @@ export default createReactClass({
     // return @props.subject_set.subjects.indexOf subject_arg
     return Array.from(this.props.subject_set.subjects)
       .map(s => s.id)
-      .indexOf(subject_arg.id);
+      .indexOf(subject_arg.id)
   },
 
   // allows user to navigate back though a subject_set
@@ -275,11 +275,11 @@ export default createReactClass({
     ) {
       return this.props.prevPage(() =>
         this.setState({ first: this.props.subject_set.subjects[0] })
-      );
+      )
     } else {
       return this.setState({
         first: this.props.subject_set.subjects[indexOfFirst - 3]
-      });
+      })
     }
   },
 
@@ -296,7 +296,7 @@ export default createReactClass({
             this.props.subject_set.subjects.length - 1
           ])
     ) {
-      return;
+      return
     }
     // # if the current page of subjects is NOT the last page of the subject_set and the 2nd or 3rd <li> is the last <li> contain the last subjects in the subject_set
     if (
@@ -312,7 +312,7 @@ export default createReactClass({
     ) {
       return this.props.nextPage(() =>
         this.setState({ first: this.props.subject_set.subjects[0] })
-      );
+      )
       // NOTE: for some reason, LightBox does not receive correct value for @props.subject_index, which has led to this awkard callback function above --STI
       // @setState first: @props.subject_set.subjects[0], => @forceUpdate()
 
@@ -320,7 +320,7 @@ export default createReactClass({
     } else {
       return this.setState({
         first: this.props.subject_set.subjects[indexOfFirst + 3]
-      });
+      })
     }
   }
-});
+})

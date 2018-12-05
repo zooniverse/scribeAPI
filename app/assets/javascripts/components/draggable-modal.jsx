@@ -6,65 +6,65 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-import React from "react";
-import ReactDOM from "react-dom";
-import Draggable from "../lib/draggable.jsx";
-import DoneButton from "./buttons/done-button.jsx";
-import createReactClass from "create-react-class";
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Draggable from '../lib/draggable.jsx'
+import DoneButton from './buttons/done-button.jsx'
+import createReactClass from 'create-react-class'
 
 export default createReactClass({
-  displayName: "DraggableModal",
+  displayName: 'DraggableModal',
 
   getDefaultProps() {
     return {
-      classes: "",
-      doneButtonLabel: "Done"
-    };
+      classes: '',
+      doneButtonLabel: 'Done'
+    }
   },
 
   componentDidMount() {
     // Prevent dragging from (presumably) accidentally selecting modal text on-drag
-    return $(ReactDOM.findDOMNode(this)).disableSelection();
+    return $(ReactDOM.findDOMNode(this)).disableSelection()
   },
 
   closeModal() {
     if (this.props.onClose) {
-      this.props.onClose();
+      this.props.onClose()
     }
-    return this.setState({ closed: true });
+    return this.setState({ closed: true })
   },
 
   render() {
-    let { onDone } = this.props;
+    let { onDone } = this.props
     if (onDone == null) {
       onDone = () => {
-        return this.setState({ closed: true });
-      };
+        return this.setState({ closed: true })
+      }
     }
 
-    let { onClickStep } = this.props;
+    let { onClickStep } = this.props
     if (onClickStep == null) {
-      onClickStep = function() {};
+      onClickStep = function() {}
     }
 
     // Position roughly in center of screen unless explicit x,y given:
-    const width = this.props.width != null ? this.props.width : 400;
+    const width = this.props.width != null ? this.props.width : 400
     let x =
-      this.props.x != null ? this.props.x : ($(window).width() - width) / 2;
-    let header_h = 80;
-    if ($(".main-nav").length > 0) {
-      header_h = $(".main-nav")
+      this.props.x != null ? this.props.x : ($(window).width() - width) / 2
+    let header_h = 80
+    if ($('.main-nav').length > 0) {
+      header_h = $('.main-nav')
         .first()
-        .height();
+        .height()
     }
     let y =
       this.props.y != null
         ? this.props.y
-        : header_h + 30 + $(window).scrollTop();
-    y = Math.max(y, 50);
-    x = Math.max(x, 100);
+        : header_h + 30 + $(window).scrollTop()
+    y = Math.max(y, 50)
+    x = Math.max(x, 100)
     if (x > $(window).width() - width) {
-      x = $(window).width() - width;
+      x = $(window).width() - width
     }
 
     return (
@@ -111,19 +111,19 @@ export default createReactClass({
           <div className="modal-buttons">
             {(() => {
               if (this.props.buttons != null) {
-                return this.props.buttons;
+                return this.props.buttons
               } else if (onDone != null) {
                 return (
                   <DoneButton
                     label={this.props.doneButtonLabel}
                     onClick={onDone}
                   />
-                );
+                )
               }
             })()}
           </div>
         </div>
       </Draggable>
-    );
+    )
   }
-});
+})

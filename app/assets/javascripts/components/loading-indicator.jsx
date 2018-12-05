@@ -1,10 +1,10 @@
 
 
-import React from "react";
-import createReactClass from "create-react-class";
+import React from 'react'
+import createReactClass from 'create-react-class'
 
 const LoadingIndicator = createReactClass({
-  displayName: "LoadingIndicator",
+  displayName: 'LoadingIndicator',
 
   render() {
     return (
@@ -14,8 +14,8 @@ const LoadingIndicator = createReactClass({
         <span>•</span>
         <span>•</span>
       </span>
-    );
+    )
   }
-});
+})
 
-export default LoadingIndicator;
+export default LoadingIndicator

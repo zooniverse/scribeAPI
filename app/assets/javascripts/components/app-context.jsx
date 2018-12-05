@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
 export const contextTypes = {
   project: PropTypes.object,
@@ -17,5 +17,5 @@ export function AppContext(ComponentToWrap) {
       )
     }
   }
-  return AppContextComponent;
+  return AppContextComponent
 }

@@ -1,7 +1,7 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
-import { AppContext } from '../components/app-context.jsx';
-import Login from "../components/login.jsx";
+import React from 'react'
+import { NavLink } from 'react-router-dom'
+import { AppContext } from '../components/app-context.jsx'
+import Login from '../components/login.jsx'
 
 @AppContext
 export default class MainHeader extends React.Component {
@@ -11,8 +11,8 @@ export default class MainHeader extends React.Component {
   };
 
   render() {
-    let showFeedbackTab = false;
-    const groupId = this.props.context.groupId;
+    let showFeedbackTab = false
+    const groupId = this.props.context.groupId
 
     return (
       <header className="main-header">
@@ -31,7 +31,7 @@ export default class MainHeader extends React.Component {
                   title = workflow.name.charAt(0).toUpperCase() + workflow.name.slice(1)
                 return (
                   <NavLink key={key} to={`/${workflow.name + (groupId && ('?group_id=' + groupId) || '')}`} activeClassName="selected" className={`main-header-item ${workflow.name}`}>{title}</NavLink>
-                );
+                )
               })
           }
           {// Page tabs, check for main menu
@@ -47,10 +47,10 @@ export default class MainHeader extends React.Component {
               this.props.pages != null
               && this.props.pages.map((page, key) => {
                 const
-                  formatted_name = page.name.replace("_", " ")
+                  formatted_name = page.name.replace('_', ' ')
                 return (
                   <NavLink key={key} to={`/${page.name.toLowerCase()}`} activeClassName="selected" className="main-header-item">{formatted_name}</NavLink>
-                );
+                )
               })}
           {
             // include feedback tab if defined
@@ -68,6 +68,6 @@ export default class MainHeader extends React.Component {
           <Login user={this.props.user} loginProviders={this.props.loginProviders} onLogout={this.props.onLogout} />
         </nav>
       </header>
-    );
+    )
   }
-};
+}

@@ -4,26 +4,26 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 
-import React from "react";
-import Draggable from "../lib/draggable.jsx";
+import React from 'react'
+import Draggable from '../lib/draggable.jsx'
 // ResizeButton = require './mark/resize-button'
 
-import createReactClass from "create-react-class";
+import createReactClass from 'create-react-class'
 
 const RowFocusTool = createReactClass({
-  displayName: "RowFocusTool",
+  displayName: 'RowFocusTool',
 
   statics: {
     defaultValues() {
-      return this.initStart(...arguments);
+      return this.initStart(...arguments)
     },
 
     initStart() {
-      return this.initMove(...arguments);
+      return this.initMove(...arguments)
     },
 
     initMove({ x, y }) {
-      return { x, y };
+      return { x, y }
     }
   },
 
@@ -31,8 +31,8 @@ const RowFocusTool = createReactClass({
     return {
       centerX: this.props.mark.x,
       centerY: this.props.mark.y,
-      fillColor: "rgba(0,0,0,0.5)",
-      strokeColor: "rgba(0,0,0,0.5)",
+      fillColor: 'rgba(0,0,0,0.5)',
+      strokeColor: 'rgba(0,0,0,0.5)',
       strokeWidth: 0,
       yUpper: this.props.mark.yUpper,
       yLower: this.props.mark.yLower,
@@ -40,7 +40,7 @@ const RowFocusTool = createReactClass({
 
       markComplete: false,
       transcribeComplete: false
-    };
+    }
   },
 
   componentWillReceiveProps() {
@@ -53,21 +53,21 @@ const RowFocusTool = createReactClass({
         markHeight: this.props.mark.yLower - this.props.mark.yUpper
       },
       () => {
-        return this.forceUpdate();
+        return this.forceUpdate()
       }
-    );
+    )
   },
 
   handleToolProgress() {
     if (this.state.markComplete === false) {
-      return this.setState({ markComplete: true });
+      return this.setState({ markComplete: true })
     } else {
-      return this.setState({ transcribeComplete: true });
+      return this.setState({ transcribeComplete: true })
     }
   },
 
   render() {
-    const markHeight = this.props.mark.yLower - this.props.mark.yUpper;
+    const markHeight = this.props.mark.yLower - this.props.mark.yUpper
     return (
       <g
         className="point drawing-tool"
@@ -147,8 +147,8 @@ const RowFocusTool = createReactClass({
           </g>
         </Draggable>
       </g>
-    );
+    )
   }
-});
+})
 
-export default RowFocusTool;
+export default RowFocusTool

@@ -23,7 +23,7 @@ export default {
 
   highlightMark(mark, toolName) {
     switch (toolName) {
-      case "rectangleTool":
+      case 'rectangleTool':
         return (
           <g>
             <rect
@@ -59,8 +59,8 @@ export default {
               fill="rgba(0,0,0,0.6)"
             />
           </g>
-        );
-      case "textRowTool":
+        )
+      case 'textRowTool':
         return (
           <g>
             <rect
@@ -80,7 +80,7 @@ export default {
               fill="rgba(0,0,0,0.6)"
             />
           </g>
-        );
+        )
     }
   }
-};
+}

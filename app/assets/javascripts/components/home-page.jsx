@@ -7,24 +7,24 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 
-import React from "react";
-import marked from '../lib/marked.min.js';
-import { AppContext } from "./app-context.jsx";
-import GroupBrowser from "./group-browser.jsx";
-import NameSearch from "./name-search.jsx";
+import React from 'react'
+import marked from '../lib/marked.min.js'
+import { AppContext } from './app-context.jsx'
+import GroupBrowser from './group-browser.jsx'
+import NameSearch from './name-search.jsx'
 
 @AppContext
 export default class HomePage extends React.Component {
   componentWillReceiveProps(new_props) {
-    return this.setState({ project: new_props.project });
+    return this.setState({ project: new_props.project })
   }
 
   markClick() {
-    return this.props.context.router.transitionTo("mark", {});
+    return this.props.context.router.transitionTo('mark', {})
   }
 
   transcribeClick() {
-    return this.props.context.router.transitionTo("transcribe", {});
+    return this.props.context.router.transitionTo('transcribe', {})
   }
 
   render() {
@@ -65,12 +65,12 @@ export default class HomePage extends React.Component {
             </div>
           </div>}
       </div>
-    );
+    )
   }
 }
 
 function __guard__(value, transform) {
-  return typeof value !== "undefined" && value !== null
+  return typeof value !== 'undefined' && value !== null
     ? transform(value)
-    : undefined;
+    : undefined
 }

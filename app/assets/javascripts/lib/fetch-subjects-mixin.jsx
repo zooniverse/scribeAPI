@@ -4,18 +4,18 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-import API from "./api.jsx";
-import queryString from 'query-string';
+import API from './api.jsx'
+import queryString from 'query-string'
 
 export default {
   componentDidMount() {
     // Fetching a single subject?
     if (this.props.match.params.subject_id != null) {
-      return this.fetchSubject(this.props.match.params.subject_id);
+      return this.fetchSubject(this.props.match.params.subject_id)
 
       // Fetching subjects by current workflow and optional filters:
     } else {
-      let query = queryString.parse(this.props.location);
+      let query = queryString.parse(this.props.location)
       // Gather filters by which to query subjects
       const params = {
         parent_subject_id: this.props.match.params.parent_subject_id,
@@ -24,28 +24,28 @@ export default {
           query.subject_set_id != null
             ? query.subject_set_id
             : null
-      };
-      return this.fetchSubjects(params);
+      }
+      return this.fetchSubjects(params)
     }
   },
 
   orderSubjectsByY(subjects) {
     return subjects.sort(function(a, b) {
       if (a.region.y >= b.region.y) {
-        return 1;
+        return 1
       } else {
-        return -1;
+        return -1
       }
-    });
+    })
   },
 
   // Fetch a single subject:
   fetchSubject(subject_id) {
-    const request = API.type("subjects").get(subject_id);
+    const request = API.type('subjects').get(subject_id)
 
     this.setState({
       subject: []
-    });
+    })
 
     return request.then(subject => {
       return this.setState(
@@ -55,11 +55,11 @@ export default {
         },
         () => {
           if (this.fetchSubjectsCallback != null) {
-            return this.fetchSubjectsCallback();
+            return this.fetchSubjectsCallback()
           }
         }
-      );
-    });
+      )
+    })
   },
 
   fetchSubjects(params, callback) {
@@ -69,24 +69,24 @@ export default {
         limit: this.getActiveWorkflow().subject_fetch_limit
       },
       params
-    );
-    return API.type("subjects")
+    )
+    return API.type('subjects')
       .get(_params)
       .then(subjects => {
         if (subjects.length === 0) {
-          this.setState({ noMoreSubjects: true });
+          this.setState({ noMoreSubjects: true })
         } else {
           this.setState({
             subject_index: 0,
             subjects: this.orderSubjectsByY(subjects),
-            subjects_next_page: subjects[0].getMeta("next_page")
-          });
+            subjects_next_page: subjects[0].getMeta('next_page')
+          })
         }
 
         // Does including instance have a defined callback to call when new subjects received?
         if (this.fetchSubjectsCallback != null) {
-          return this.fetchSubjectsCallback();
+          return this.fetchSubjectsCallback()
         }
-      });
+      })
   }
-};
+}

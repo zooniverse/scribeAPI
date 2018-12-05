@@ -1,4 +1,4 @@
-var _this = this;
+var _this = this
 
 /*
  * decaffeinate suggestions:
@@ -8,50 +8,50 @@ var _this = this;
  */
 
 
-import React from "react";
+import React from 'react'
 
 // IMPORTANT!
-window.React = React;
+window.React = React
 
-import createReactClass from "create-react-class";
+import createReactClass from 'create-react-class'
 const FavouriteButton = createReactClass({
-  displayname: "FavouriteButton",
+  displayname: 'FavouriteButton',
 
   getInitialState: () => {
     return {
       favourite: _this.props.subject.user_favourite,
       loading: false
-    };
+    }
   },
 
   add_favourite(e) {
-    e.preventDefault();
+    e.preventDefault()
 
     this.setState({
       loading: true
-    });
+    })
 
     return $.post(`/subjects/${this.props.subject.id}/favourite`, () => {
       return this.setState({
         loading: false,
         favourite: true
-      });
-    });
+      })
+    })
   },
 
   remove_favourite(e) {
-    e.preventDefault();
+    e.preventDefault()
     return $.post(`/subjects/${this.props.subject.id}/unfavourite`, () => {
       return this.setState({
         loading: false,
         favourite: false
-      });
-    });
+      })
+    })
   },
 
   render() {
     if (this.state.loading) {
-      return <a className="favourite_button">Loading</a>;
+      return <a className="favourite_button">Loading</a>
     } else if (this.state.favourite) {
       return (
         <a
@@ -61,15 +61,15 @@ const FavouriteButton = createReactClass({
         >
           Unfavourite
         </a>
-      );
+      )
     } else {
       return (
         <a href="#" onClick={this.add_favourite} className="favourite_button">
           Favourite
         </a>
-      );
+      )
     }
   }
-});
+})
 
-export default FavouriteButton;
+export default FavouriteButton

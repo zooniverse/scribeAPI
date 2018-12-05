@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react'
 
-import createReactClass from "create-react-class";
+import createReactClass from 'create-react-class'
 const ZooniverseLogoSource = createReactClass({
   displayName: 'ZooniverseLogoSource',
 
@@ -13,33 +13,33 @@ const ZooniverseLogoSource = createReactClass({
     <ellipse cx="0" cy="0" rx="6" ry="65" transform="rotate(50)" />
   </g>
 </symbol>\
-`;
+`
 
-    return <svg dangerouslySetInnerHTML={{ __html: symbolHTML }} />;
+    return <svg dangerouslySetInnerHTML={{ __html: symbolHTML }} />
   }
-});
+})
 
-const sourceContainer = document.createElement("div");
+const sourceContainer = document.createElement('div')
 sourceContainer.id = 'zooniverse-logo-source-container'
 sourceContainer.style.display = 'none'
-document.body.appendChild(sourceContainer);
+document.body.appendChild(sourceContainer)
 
-React.renderComponent(<ZooniverseLogoSource />, sourceContainer);
+React.renderComponent(<ZooniverseLogoSource />, sourceContainer)
 
 export default createReactClass({
-  displayName: "ZooniverseLogo",
+  displayName: 'ZooniverseLogo',
 
   getDefaultProps() {
     return {
       width: '1em',
       height: '1em'
-    };
+    }
   },
 
   render() {
-    const useHTML = `\
+    const useHTML = '\
 <use xlink:href="#zooniverse-logo-source" x="0" y="0" width="100" height="100" />\
-`;
+'
 
     return (
       <svg
@@ -49,6 +49,6 @@ export default createReactClass({
         className="zooniverse-logo"
         dangerouslySetInnerHTML={{ __html: useHTML }}
       />
-    );
+    )
   }
-});
+})

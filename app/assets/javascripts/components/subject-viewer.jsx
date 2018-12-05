@@ -472,37 +472,37 @@ export default createReactClass({
             key={mark._key}
             className={`marks-for-annotation${
               mark.groupActive ? ' group-active' : ''
-              }`}
+            }`}
             data-disabled={isPriorMark || null}
           >
             {
               (mark._key != null ? mark._key : (mark._key = Math.random()),
-                (ToolComponent = markingTools[mark.toolName]),
-                (
-                  <ToolComponent
-                    key={mark._key}
-                    subject_id={mark.subject_id}
-                    taskKey={
-                      this.props.task != null ? this.props.task.key : undefined
-                    }
-                    mark={mark}
-                    xScale={scale.horizontal}
-                    yScale={scale.vertical}
-                    disabled={!mark.userCreated}
-                    isTranscribable={mark.isTranscribable}
-                    interim={mark.interim_id != null}
-                    isPriorMark={isPriorMark}
-                    subjectCurrentPage={this.props.subjectCurrentPage}
-                    selected={mark === this.state.selectedMark}
-                    getEventOffset={this.getEventOffset}
-                    submitMark={this.submitMark}
-                    sizeRect={this.refs.sizeRect}
-                    displaysTranscribeButton={displaysTranscribeButton}
-                    onSelect={this.selectMark.bind(this, mark)}
-                    onChange={this.handleChange.bind(this, mark)}
-                    onDestroy={this.destroyMark.bind(this, mark)}
-                  />
-                ))
+              (ToolComponent = markingTools[mark.toolName]),
+              (
+                <ToolComponent
+                  key={mark._key}
+                  subject_id={mark.subject_id}
+                  taskKey={
+                    this.props.task != null ? this.props.task.key : undefined
+                  }
+                  mark={mark}
+                  xScale={scale.horizontal}
+                  yScale={scale.vertical}
+                  disabled={!mark.userCreated}
+                  isTranscribable={mark.isTranscribable}
+                  interim={mark.interim_id != null}
+                  isPriorMark={isPriorMark}
+                  subjectCurrentPage={this.props.subjectCurrentPage}
+                  selected={mark === this.state.selectedMark}
+                  getEventOffset={this.getEventOffset}
+                  submitMark={this.submitMark}
+                  sizeRect={this.refs.sizeRect}
+                  displaysTranscribeButton={displaysTranscribeButton}
+                  onSelect={this.selectMark.bind(this, mark)}
+                  onChange={this.handleChange.bind(this, mark)}
+                  onDestroy={this.destroyMark.bind(this, mark)}
+                />
+              ))
             }
           </g>
         )
@@ -542,8 +542,8 @@ export default createReactClass({
         label="Loading..."
       />
     ) : (
-        <NextButton onClick={this.nextSubject} label="Next Page" />
-      )
+      <NextButton onClick={this.nextSubject} label="Next Page" />
+    )
 
     if (this.state.loading) {
       markingSurfaceContent = <LoadingIndicator />

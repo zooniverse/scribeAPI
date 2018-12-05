@@ -7,10 +7,10 @@ export default {
   getInitialState() {
     return {
       zoomPanViewBox: null
-    };
+    }
   },
 
   handleZoomPanViewBoxChange(viewBox) {
-    return this.setState({ zoomPanViewBox: viewBox });
+    return this.setState({ zoomPanViewBox: viewBox })
   }
-};
+}
