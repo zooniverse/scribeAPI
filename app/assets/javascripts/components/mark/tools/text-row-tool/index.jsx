@@ -1,58 +1,43 @@
 /*
  * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
  * DS205: Consider reworking code to avoid use of IIFEs
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-import React from "react";
-import createReactClass from "create-react-class";
-import DrawingToolRoot from "./root.jsx";
-import Draggable from "../../../../lib/draggable.jsx";
-import DeleteButton from "./delete-button.jsx";
-import DragHandle from "./drag-handle.jsx";
-import MarkButtonMixin from "../../../../lib/mark-button-mixin.jsx";
+import React from 'react'
+import Draggable from '../../../../lib/draggable.jsx'
+import DeleteButton from './delete-button.jsx'
+import DragHandle from './drag-handle.jsx'
+import MarkButtonMixin from '../../../../lib/mark-button-mixin.jsx'
 
-// DEFAULT SETTINGS
-const RADIUS = 10;
-const SELECTED_RADIUS = 20;
-const CROSSHAIR_SPACE = 0.2;
-const CROSSHAIR_WIDTH = 1;
-const DELETE_BUTTON_ANGLE = 45;
-const DEFAULT_HEIGHT = 100;
-const MINIMUM_HEIGHT = 25;
+const DEFAULT_HEIGHT = 100
 
-export default createReactClass({
-  displayName: "TextRowTool",
-
-  mixins: [MarkButtonMixin], // adds MarkButton and helper methods to each mark
-
-  statics: {
-    defaultValues({ x, y }) {
-      return {
-        x,
-        y: y - DEFAULT_HEIGHT / 2, // x and y will be the initial click position (not super useful as of yet)
-        yUpper: y - DEFAULT_HEIGHT / 2,
-        yLower: y + DEFAULT_HEIGHT / 2
-      };
-    },
-
-    initMove({ x, y }) {
-      return {
-        x,
-        y: y - DEFAULT_HEIGHT / 2,
-        yUpper: y - DEFAULT_HEIGHT / 2, // not sure if these are needed
-        yLower: y + DEFAULT_HEIGHT / 2
-      };
+@MarkButtonMixin
+export default class TextRowTool extends React.Component {
+  static defaultValues({ x, y }) {
+    return {
+      x,
+      y: y - DEFAULT_HEIGHT / 2, // x and y will be the initial click position (not super useful as of yet)
+      yUpper: y - DEFAULT_HEIGHT / 2,
+      yLower: y + DEFAULT_HEIGHT / 2
     }
-  },
+  }
+
+  static initMove({ x, y }) {
+    return {
+      x,
+      y: y - DEFAULT_HEIGHT / 2,
+      yUpper: y - DEFAULT_HEIGHT / 2, // not sure if these are needed
+      yLower: y + DEFAULT_HEIGHT / 2
+    }
+  }
 
   getDeleteButtonPosition() {
     return {
       x: 100,
       y: (this.props.mark.yLower - this.props.mark.yUpper) / 2
-    };
-  },
+    }
+  }
 
   getUpperHandlePosition() {
     return {
@@ -61,8 +46,8 @@ export default createReactClass({
           ? this.props.sizeRect.attributes.width.value
           : undefined) / 2,
       y: this.props.mark.yUpper - this.props.mark.y
-    };
-  },
+    }
+  }
 
   getLowerHandlePosition() {
     return {
@@ -71,8 +56,8 @@ export default createReactClass({
           ? this.props.sizeRect.attributes.width.value
           : undefined) / 2,
       y: this.props.mark.yLower - this.props.mark.y
-    };
-  },
+    }
+  }
 
   getMarkButtonPosition() {
     // NOTE: this somehow doesn't receive props in the first couple renders and produces an error --STI
@@ -82,118 +67,103 @@ export default createReactClass({
           ? this.props.sizeRect.attributes.width.value
           : undefined) - 100,
       y: (this.props.mark.yLower - this.props.mark.yUpper) / 2
-    };
-  },
+    }
+  }
 
   render() {
-    let isPriorMark;
-    if (this.state.markStatus === "mark-committed") {
-      isPriorMark = true;
-      this.props.disabled = true;
+    let isPriorMark
+    if (this.state.markStatus === 'mark-committed') {
+      isPriorMark = true
+      this.props.disabled = true
     }
 
-    const classes = [];
+    const classes = []
     if (this.props.isTranscribable) {
-      classes.push("transcribable");
+      classes.push('transcribable')
     }
-    classes.push(this.props.disabled ? "committed" : "uncommitted");
-
-    const averageScale = (this.props.xScale + this.props.yScale) / 2;
-    const crosshairSpace = CROSSHAIR_SPACE / averageScale;
-    const crosshairWidth = CROSSHAIR_WIDTH / averageScale;
-    const selectedRadius = SELECTED_RADIUS / averageScale;
-    const radius = this.props.selected
-      ? SELECTED_RADIUS / averageScale
-      : RADIUS / averageScale;
-
-    const scale = (this.props.xScale + this.props.yScale) / 2;
+    classes.push(this.props.disabled ? 'committed' : 'uncommitted')
 
     return (
       <g
         tool={this}
         transform={`translate(0, ${this.props.mark.y})`}
-        onMouseDown={this.handleMouseDown}
+        onMouseDown={this.handleMouseDown.bind(this)}
         title={this.props.mark.label}
       >
         <g
           className="text-row-tool"
           onMouseDown={!this.props.disabled ? this.props.onSelect : undefined}
         >
-          <Draggable onDrag={this.handleDrag}>
+          <Draggable onDrag={this.handleDrag.bind(this)}>
             <g
-              className={`tool-shape ${classes.join(" ")}`}
+              className={`tool-shape ${classes.join(' ')}`}
               dangerouslySetInnerHTML={{
                 __html: `\
-                  <filter id=\"dropShadow\"> \
-                    <feGaussianBlur in=\"SourceAlpha\" stdDeviation=\"3\" /> \
-                    <feOffset dx=\"2\" dy=\"4\" /> \
+                  <filter id="dropShadow"> \
+                    <feGaussianBlur in="SourceAlpha" stdDeviation="3" /> \
+                    <feOffset dx="2" dy="4" /> \
                     <feMerge> \
                       <feMergeNode /> \
-                      <feMergeNode in=\"SourceGraphic\" /> \
+                      <feMergeNode in="SourceGraphic" /> \
                     </feMerge> \
                   </filter> \
                   <rect \
-                    ${this.props.mark.color != null
-                    ? `stroke=\"${this.props.mark.color}\"`
-                    : ''} \
-                    x=\"0\" \
-                    y=\"0\" \
-                    width=\"100%\" \
-                    height=\"${this.props.mark.yLower - this.props.mark.yUpper}\" \
-                    className=\"${isPriorMark ? "previous-mark" : undefined}\" \
-                    filter=\"${this.props.selected ? "url(#dropShadow)" : "none"}\" \
+                    ${this.props.mark.color != null ? `stroke="${this.props.mark.color}"` : ''} \
+                    x="0" \
+                    y="0" \
+                    width="100%" \
+                    height="${this.props.mark.yLower - this.props.mark.yUpper}" \
+                    className="${isPriorMark ? 'previous-mark' : undefined}" \
+                    filter="${this.props.selected ? 'url(#dropShadow)' : 'none'}" \
                   />\
                 `
               }}
             />
           </Draggable>
-          {this.props.selected && !this.state.locked ? (
+          {this.props.selected && !this.state.locked &&
             <g>
-              <DragHandle tool={this} onDrag={this.handleUpperResize} position={this.getUpperHandlePosition()} />
-              <DragHandle tool={this} onDrag={this.handleLowerResize} position={this.getLowerHandlePosition()} />
+              <DragHandle tool={this} onDrag={this.handleUpperResize.bind(this)} position={this.getUpperHandlePosition()} />
+              <DragHandle tool={this} onDrag={this.handleLowerResize.bind(this)} position={this.getLowerHandlePosition()} />
               <DeleteButton tool={this} position={this.getDeleteButtonPosition()} />
-            </g>
-          ) : (
-              undefined
-            )}
+            </g> || undefined}
           {(() => {
             // REQUIRES MARK-BUTTON-MIXIN
-            if (this.props.selected || this.state.markStatus === "transcribe-enabled"
+            if (this.props.selected || this.state.markStatus === 'transcribe-enabled'
             ) {
               if (this.props.isTranscribable) {
-                return this.renderMarkButton();
+                return this.renderMarkButton()
               }
             }
           })()}
         </g>
       </g>
-    );
-  },
+    )
+  }
 
   handleDrag(e, d) {
     if (this.state.locked) {
-      return;
+      return
     }
     if (this.props.disabled) {
-      return;
+      return
     }
-    this.props.mark.y += d.y / this.props.yScale;
-    this.props.mark.yUpper += d.y / this.props.yScale;
-    this.props.mark.yLower += d.y / this.props.yScale;
-    return this.props.onChange(e);
-  },
+    this.props.mark.y += d.y / this.props.yScale
+    this.props.mark.yUpper += d.y / this.props.yScale
+    this.props.mark.yLower += d.y / this.props.yScale
+    this.props.onChange(e)
+  }
 
   handleUpperResize(e, d) {
-    this.props.mark.yUpper += d.y / this.props.yScale;
-    this.props.mark.y += d.y / this.props.yScale; // fix weird resizing problem
-    return this.props.onChange(e);
-  },
+    this.props.mark.yUpper += d.y / this.props.yScale
+    this.props.mark.y += d.y / this.props.yScale // fix weird resizing problem
+    this.props.onChange(e)
+  }
 
   handleLowerResize(e, d) {
-    this.props.mark.yLower += d.y / this.props.yScale;
-    return this.props.onChange(e);
-  },
+    this.props.mark.yLower += d.y / this.props.yScale
+    this.props.onChange(e)
+  }
 
   handleMouseDown() { }
-});
+}
 // @props.onSelect @props.mark # unless @props.disabled
