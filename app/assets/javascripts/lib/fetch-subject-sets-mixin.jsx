@@ -19,7 +19,7 @@ export default {
       }
 
       const state = {}
-      let query = queryString.parse(this.props.location)
+      let query = queryString.parse(this.props.location.search)
       // If a specific subject id indicated..
       if (query.selected_subject_id != null) {
         // Get the index of the specified subject in the (presumably first & only) subject set:
@@ -49,7 +49,7 @@ export default {
       }
     }
 
-    let query = queryString.parse(this.props.location)
+    let query = queryString.parse(this.props.location.search)
     // Fetch by subject-set id?
     const subject_set_id =
       this.props.match.params.subject_set_id != null

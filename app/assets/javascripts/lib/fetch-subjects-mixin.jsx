@@ -15,7 +15,7 @@ export default {
 
       // Fetching subjects by current workflow and optional filters:
     } else {
-      let query = queryString.parse(this.props.location)
+      let query = queryString.parse(this.props.location.search)
       // Gather filters by which to query subjects
       const params = {
         parent_subject_id: this.props.match.params.parent_subject_id,
