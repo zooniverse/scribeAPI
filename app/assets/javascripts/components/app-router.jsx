@@ -12,7 +12,7 @@ Verify                        = require './verify'
 GroupPage                     = require './group-page'
 GroupBrowser                  = require './group-browser'
 
-Project                       = require 'models/project.coffee'
+Project                       = require '../models/project.coffee'
 
 class AppRouter
   constructor: ->

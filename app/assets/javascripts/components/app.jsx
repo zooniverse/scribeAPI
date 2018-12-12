@@ -2,7 +2,7 @@ React = require("react")
 MainHeader                    = require '../partials/main-header'
 Footer                        = require '../partials/footer'
 API                           = require '../lib/api'
-Project                       = require 'models/project.coffee'
+Project                       = require '../models/project.coffee'
 
 BrowserWarning                = require './browser-warning'
 

@@ -1,7 +1,7 @@
 React                         = require 'react/addons'
 {Router, Routes, Route, Link} = require 'react-router'
 SVGImage                      = require './svg-image'
-MouseHandler                  = require '../lib/mouse-handler'
+MouseHandler                  = require 'lib/mouse-handler'
 LoadingIndicator              = require './loading-indicator'
 SubjectMetadata               = require './subject-metadata'
 NextButton                    = require './action-button'

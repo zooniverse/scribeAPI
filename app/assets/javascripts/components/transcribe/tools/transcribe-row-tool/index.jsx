@@ -1,6 +1,6 @@
 # @cjsx React.DOM
 React = require 'react'
-Draggable       = require '../../lib/draggable'
+Draggable       = require 'lib/draggable'
 PrevButton      = require './prev-button'
 NextButton      = require './next-button'
 DoneButton      = require './done-button'

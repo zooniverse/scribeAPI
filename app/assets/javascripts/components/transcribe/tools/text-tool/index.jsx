@@ -1,9 +1,9 @@
 React                  = require 'react'
-DraggableModal         = require 'components/draggable-modal'
-SmallButton            = require 'components/buttons/small-button'
-HelpButton             = require 'components/buttons/help-button'
-BadSubjectButton       = require 'components/buttons/bad-subject-button'
-IllegibleSubjectButton = require 'components/buttons/illegible-subject-button'
+DraggableModal         = require '../../../draggable-modal'
+SmallButton            = require '../../../buttons/small-button'
+HelpButton             = require '../../../buttons/help-button'
+BadSubjectButton       = require '../../../buttons/bad-subject-button'
+IllegibleSubjectButton = require '../../../buttons/illegible-subject-button'
 
 TextTool = React.createClass
   displayName: 'TextTool'

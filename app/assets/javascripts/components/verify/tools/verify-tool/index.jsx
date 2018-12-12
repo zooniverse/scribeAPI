@@ -1,10 +1,10 @@
 React                   = require 'react'
 DraggableModal          = require '../../../draggable-modal'
-GenericButton           = require 'components/buttons/generic-button'
-DoneButton              = require 'components/buttons/done-button'
-HelpButton              = require 'components/buttons/help-button'
-BadSubjectButton        = require 'components/buttons/bad-subject-button'
-SmallButton             = require 'components/buttons/small-button'
+GenericButton           = require '../../../buttons/generic-button'
+DoneButton              = require '../../../buttons/done-button'
+HelpButton              = require '../../../buttons/help-button'
+BadSubjectButton        = require '../../../buttons/bad-subject-button'
+SmallButton             = require '../../../buttons/small-button'
 
 VerifyTool = React.createClass
   displayName: 'VerifyTool'

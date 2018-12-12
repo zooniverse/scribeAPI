@@ -10,18 +10,18 @@ ForumSubjectWidget      = require '../forum-subject-widget'
 BaseWorkflowMethods     = require 'lib/workflow-methods-mixin'
 
 # Hash of core tools:
-coreTools               = require 'components/core-tools'
+coreTools               = require '../core-tools'
 
 # Hash of transcribe tools:
 transcribeTools         = require './tools'
 
 RowFocusTool            = require '../row-focus-tool'
-API                     = require '../../lib/api'
+API                     = require 'lib/api'
 
-HelpModal               = require 'components/help-modal'
-Tutorial                = require 'components/tutorial'
-DraggableModal          = require 'components/draggable-modal'
-GenericButton           = require 'components/buttons/generic-button'
+HelpModal               = require '../help-modal'
+Tutorial                = require '../tutorial'
+DraggableModal          = require '../draggable-modal'
+GenericButton           = require '../buttons/generic-button'
 
 module.exports = React.createClass # rename to Classifier
   displayName: 'Transcribe'

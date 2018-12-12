@@ -1,5 +1,5 @@
 React = require 'react'
-API   = require '../lib/api'
+API   = require 'lib/api'
 
 SmallButton   = require('components/buttons/small-button')
 

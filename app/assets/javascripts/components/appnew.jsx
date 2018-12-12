@@ -1,6 +1,6 @@
 React = require("react")
 MainHeader                    = require '../partials/main-header'
-API                           = require '../lib/api'
+API                           = require 'lib/api'
 AppRouter                     = require './app-router'
 
 {RouteHandler}                = require 'react-router'
