@@ -11,23 +11,23 @@
     transform: translateY(0.3em)
 
 .loading-indicator
-  position fixed
-  top 50vh
-  color #fff
+  position: fixed
+  top: 50vh
+  color: #fff
   letter-spacing: 0.1em
-  display inline-block
+  display: inline-block
 
 
   > *
-    TIME = 500ms
+    $TIME: 500ms
 
-    animation: loading-indicator-bounce TIME ease-in-out infinite alternate
-    -webkit-animation: loading-indicator-bounce TIME ease-in-out infinite alternate
+    animation: loading-indicator-bounce $TIME ease-in-out infinite alternate
+    -webkit-animation: loading-indicator-bounce $TIME ease-in-out infinite alternate
 
     display: inline-block
 
     &:nth-child(3n-1)
-      animation-delay: unit(TIME / 3, unit(TIME))
+      animation-delay: $TIME / 3
 
     &:nth-child(3n-2)
-      animation-delay: unit(TIME / 1.5, unit(TIME))
+      animation-delay: $TIME / 1.5

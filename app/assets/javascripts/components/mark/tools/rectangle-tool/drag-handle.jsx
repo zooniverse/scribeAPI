@@ -1,30 +1,29 @@
-React = require 'react'
-Draggable = require 'lib/draggable'
+import React from 'react'
+import Draggable from '../../../../lib/draggable.jsx'
 
-RADIUS = 4
-STROKE_COLOR = '#fff'
-FILL_COLOR = '#000'
-STROKE_WIDTH = 1.5
+const RADIUS = 8
+const STROKE_COLOR = '#fff'
+const FILL_COLOR = '#000'
+const STROKE_WIDTH = 2
 
-OVERSHOOT = 4
+export default function DragHandle(props) {
+  const scale =
+    (props.tool.props.xScale + props.tool.props.yScale) / 2
 
-module.exports = React.createClass
-  displayName: 'DragHandle'
-
-  render: ->
-    scale = (@props.tool.props.xScale + @props.tool.props.yScale) / 2
-
-    <Draggable onDrag = {@props.onDrag} onEnd={@props.onEnd}>
+  return (
+    <Draggable onDrag={props.onDrag} onEnd={props.onEnd}>
       <g
         fill={FILL_COLOR}
         stroke={STROKE_COLOR}
-        strokeWidth={STROKE_WIDTH/scale}
+        strokeWidth={STROKE_WIDTH / scale}
       >
         <circle
           className="mark-tool resize-button"
-          r={RADIUS/scale}
-          cx="#{@props.x}",
-          cy="#{@props.y}"}
+          r={RADIUS / scale}
+          cx={`${props.x}`}
+          cy={`${props.y}`}
         />
       </g>
     </Draggable>
+  )
+}

@@ -1,224 +1,338 @@
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * DS103: Rewrite code to no longer use __guard__
+ * DS205: Consider reworking code to avoid use of IIFEs
+ * DS207: Consider shorter variations of null checks
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
 
-# @cjsx React.DOM
-React                   = require 'react'
-{Navigation}            = require 'react-router'
-SubjectViewer           = require '../subject-viewer'
-JSONAPIClient           = require 'json-api-client' # use to manage data?
-FetchSubjectsMixin      = require 'lib/fetch-subjects-mixin'
-ForumSubjectWidget      = require '../forum-subject-widget'
+import React from "react";
+import { NavLink } from 'react-router-dom';
+import createReactClass from "create-react-class";
+import queryString from 'query-string';
+import { AppContext } from "../app-context.jsx";
+import SubjectViewer from "../subject-viewer.jsx";
+import FetchSubjectsMixin from "../../lib/fetch-subjects-mixin.jsx";
+import ForumSubjectWidget from "../forum-subject-widget.jsx";
 
-BaseWorkflowMethods     = require 'lib/workflow-methods-mixin'
+import BaseWorkflowMethods from "../../lib/workflow-methods-mixin.jsx";
 
-# Hash of core tools:
-coreTools               = require '../core-tools'
+// Hash of transcribe tools:
+import transcribeTools from "./tools/index.jsx";
 
-# Hash of transcribe tools:
-transcribeTools         = require './tools'
+import HelpModal from "../help-modal.jsx";
+import Tutorial from "../tutorial.jsx";
+import DraggableModal from "../draggable-modal.jsx";
+import GenericButton from "../buttons/generic-button.jsx";
 
-RowFocusTool            = require '../row-focus-tool'
-API                     = require 'lib/api'
+export default AppContext(createReactClass({
+  // rename to Classifier
+  displayName: "Transcribe",
+  mixins: [FetchSubjectsMixin, BaseWorkflowMethods], // load subjects and set state variables: subjects,  classification
 
-HelpModal               = require '../help-modal'
-Tutorial                = require '../tutorial'
-DraggableModal          = require '../draggable-modal'
-GenericButton           = require '../buttons/generic-button'
+  getInitialState() {
+    return {
+      taskKey: null,
+      classifications: [],
+      classificationIndex: 0,
+      subject_index: 0,
+      helping: false,
+      last_mark_task_key: queryString.parse(this.props.location).mark_key,
+      showingTutorial: false
+    };
+  },
 
-module.exports = React.createClass # rename to Classifier
-  displayName: 'Transcribe'
-  mixins: [FetchSubjectsMixin, BaseWorkflowMethods, Navigation] # load subjects and set state variables: subjects,  classification
+  getDefaultProps() {
+    return { workflowName: "transcribe" };
+  },
 
-  getInitialState: ->
-    taskKey:                      null
-    classifications:              []
-    classificationIndex:          0
-    subject_index:                0
-    helping:                      false
-    last_mark_task_key:           @props.query.mark_key
-    showingTutorial:              false
+  componentWillMount() {
+    return this.beginClassification();
+  },
 
-  getDefaultProps: ->
-    workflowName: 'transcribe'
+  fetchSubjectsCallback() {
+    if (this.getCurrentSubject() != null) {
+      return this.setState({ taskKey: this.getCurrentSubject().type });
+    }
+  },
 
-  componentWillMount: ->
-    @beginClassification()
+  __DEP__handleTaskComponentChange(val) {
+    const taskOption = this.getCurrentTask().tool_config.options[val];
+    if (taskOption.next_task != null) {
+      return this.advanceToTask(taskOption.next_task);
+    }
+  },
 
-  fetchSubjectsCallback: ->
-    @setState taskKey: @getCurrentSubject().type if @getCurrentSubject()?
+  // Handle user selecting a pick/drawing tool:
+  handleDataFromTool(d) {
+    const { classifications } = this.state;
+    const currentClassification =
+      classifications[this.state.classificationIndex];
 
-  __DEP__handleTaskComponentChange: (val) ->
-    taskOption = @getCurrentTask().tool_config.options[val]
-    if taskOption.next_task?
-      @advanceToTask taskOption.next_task
+    // this is a source of conflict. do we copy key/value pairs, or replace the entire annotation? --STI
+    for (let k in d) {
+      const v = d[k];
+      currentClassification.annotation[k] = v;
+    }
 
-  # Handle user selecting a pick/drawing tool:
-  handleDataFromTool: (d) ->
-    classifications = @state.classifications
-    currentClassification = classifications[@state.classificationIndex]
+    return this.setState({ classifications }, () => this.forceUpdate());
+  },
 
-    # this is a source of conflict. do we copy key/value pairs, or replace the entire annotation? --STI
-    currentClassification.annotation[k] = v for k, v of d
+  handleTaskComplete(d) {
+    this.handleDataFromTool(d);
+    return this.commitClassificationAndContinue(d);
+  },
 
-    @setState
-      classifications: classifications,
-        => @forceUpdate()
-
-  handleTaskComplete: (d) ->
-    @handleDataFromTool(d)
-    @commitClassificationAndContinue d
-
-  handleViewerLoad: (props) ->
-    @setState
+  handleViewerLoad(props) {
+    let tool;
+    this.setState({
       viewerSize: props.size
+    });
 
-    if (tool = @refs.taskComponent)?
-      tool.onViewerResize props.size
+    if ((tool = this.refs.taskComponent) != null) {
+      return tool.onViewerResize(props.size);
+    }
+  },
 
-  makeBackHandler: ->
-    () =>
-      console.log "go back"
+  makeBackHandler() {
+    return () => {
+      console.log("go back");
+    };
+  },
 
-  toggleHelp: ->
-    @setState helping: not @state.helping
+  toggleHelp() {
+    return this.setState({ helping: !this.state.helping });
+  },
 
-  toggleTutorial: ->
-    @setState showingTutorial: not @state.showingTutorial
+  toggleTutorial() {
+    return this.setState({ showingTutorial: !this.state.showingTutorial });
+  },
 
-  hideTutorial: ->
-    @setState showingTutorial: false
+  hideTutorial() {
+    return this.setState({ showingTutorial: false });
+  },
 
-  componentWillUnmount:->
-    # PB: What's intended here? Docs state `void componentWillUnmount()`, so not sure what this serves:
-    not @state.badSubject
+  componentWillUnmount() {
+    // PB: What's intended here? Docs state `void componentWillUnmount()`, so not sure what this serves:
+    return !this.state.badSubject;
+  },
 
-  # transition back to mark workflow
-  returnToMarking: ->
-    @transitionTo 'mark', {},
-      subject_set_id: @getCurrentSubject().subject_set_id
-      selected_subject_id: @getCurrentSubject().parent_subject_id
-      mark_task_key: @props.query.mark_key
-      subject_id: @getCurrentSubject().id
+  // transition back to mark workflow
+  returnToMarking() {
+    let query = queryString.parse(this.props.location);
+    return this.props.context.router.transitionTo(
+      "mark",
+      {},
+      {
+        subject_set_id: this.getCurrentSubject().subject_set_id,
+        selected_subject_id: this.getCurrentSubject().parent_subject_id,
+        mark_task_key: query.mark_key,
+        subject_id: this.getCurrentSubject().id,
 
-      page: @props.query.page
+        page: query.page
+      }
+    );
+  },
 
-  render: ->
-    if @props.params.workflow_id? and @props.params.parent_subject_id?
-      transcribeMode = 'page'
-    else if @props.params.subject_id
-      transcribeMode = 'single'
-    else
-      transcribeMode = 'random'
+  render() {
+    let isLastSubject, transcribeMode;
+    if (
+      this.props.match.params.workflow_id != null &&
+      this.props.match.params.parent_subject_id != null
+    ) {
+      transcribeMode = "page";
+    } else if (this.props.match.params.subject_id) {
+      transcribeMode = "single";
+    } else {
+      transcribeMode = "random";
+    }
 
-    if @state.subjects?
-      isLastSubject = ( @state.subject_index >= @state.subjects.length - 1 )
-    else isLastSubject = null
+    if (this.state.subjects != null) {
+      isLastSubject =
+        this.state.subject_index >= this.state.subjects.length - 1;
+    } else {
+      isLastSubject = null;
+    }
 
-    currentAnnotation = @getCurrentClassification().annotation
-    TranscribeComponent = @getCurrentTool() # @state.currentTool
-    onFirstAnnotation = currentAnnotation?.task is @getActiveWorkflow().first_task
+    const currentAnnotation = this.getCurrentClassification().annotation;
+    const TranscribeComponent = this.getCurrentTool(); // @state.currentTool
+    const onFirstAnnotation =
+      (currentAnnotation != null ? currentAnnotation.task : undefined) ===
+      this.getActiveWorkflow().first_task;
 
-    <div className="classifier">
-      <div className="subject-area">
-        {
-          unless @getCurrentSubject() || @state.noMoreSubjects
+    return (
+      <div className="classifier">
+        <div className="subject-area">
+          {!this.getCurrentSubject() && !this.state.noMoreSubjects ? (
             <DraggableModal
-              header          = { "Loading transcription subjects." }
-              buttons         = {<GenericButton label='Back to Marking' href='/#/mark' />}
+              header="Loading transcription subjects."
+              buttons={<GenericButton label="Back to Marking" href="/#/mark" />}
             >
-                We are currently looking for a subject for you to {@props.workflowName}.
+              {`\
+We are currently looking for a subject for you to `}
+              {this.props.workflowName}
+              {`.\
+`}
             </DraggableModal>
-        }
+          ) : (
+              undefined
+            )}
+          {(() => {
+            if (this.state.noMoreSubjects) {
+              $("html, body")
+                .stop()
+                .animate({ scrollTop: 0 }, 500);
+              const groupId = this.props.context.groupId;
+              const markLink = '/mark' + (groupId ? `?group_id=${groupId}` : '');
+              return (
+                <DraggableModal
+                  y={100}
+                  header={
+                    this.state.userClassifiedAll
+                      ? "Thanks for transcribing!"
+                      : "Nothing to transcribe"
+                  }
+                  buttons={<GenericButton label="Continue" to={markLink} />}
+                >
+                  {`\
+Currently, there are no `}
+                  {this.props.context.project.term("subject")}s for you to{" "}
+                  {this.props.workflowName}. Try <NavLink to={markLink}>marking</NavLink>
+                  {` instead!\
+`}
+                </DraggableModal>
+              );
+            } else if (
+              this.getCurrentSubject() != null &&
+              this.getCurrentTask() != null
+            ) {
+              return (
+                <SubjectViewer
+                  onLoad={this.handleViewerLoad}
+                  task={this.getCurrentTask()}
+                  subject={this.getCurrentSubject()}
+                  active={true}
+                  workflow={this.getActiveWorkflow()}
+                  classification={this.props.classification}
+                  annotation={currentAnnotation}
+                >
+                  <TranscribeComponent
+                    annotation_key={`${this.state.taskKey}.${
+                      this.getCurrentSubject().id
+                      }`}
+                    key={this.getCurrentTask().key}
+                    task={this.getCurrentTask()}
+                    annotation={currentAnnotation}
+                    subject={this.getCurrentSubject()}
+                    onChange={this.handleDataFromTool}
+                    subjectCurrentPage={queryString.parse(this.props.location).page}
+                    onComplete={this.handleTaskComplete}
+                    onBack={this.makeBackHandler()}
+                    workflow={this.getActiveWorkflow()}
+                    viewerSize={this.state.viewerSize}
+                    transcribeTools={transcribeTools}
+                    onShowHelp={
+                      this.getCurrentTask().help != null
+                        ? this.toggleHelp
+                        : undefined
+                    }
+                    badSubject={this.state.badSubject}
+                    onBadSubject={this.toggleBadSubject}
+                    illegibleSubject={this.state.illegibleSubject}
+                    onIllegibleSubject={this.toggleIllegibleSubject}
+                    returnToMarking={this.returnToMarking}
+                    transcribeMode={transcribeMode}
+                    isLastSubject={isLastSubject}
+                    project={this.props.context.project}
+                  />
+                </SubjectViewer>
+              );
+            }
+          })()}
+        </div>
+        {(() => {
+          if (this.getCurrentTask() != null && this.getCurrentSubject()) {
+            const nextTask =
+              __guard__(
+                this.getCurrentTask().tool_config.options,
+                x => x[currentAnnotation.value]
+              ) != null
+                ? __guard__(
+                  this.getCurrentTask().tool_config.options,
+                  x1 => x1[currentAnnotation.value].next_task
+                )
+                : this.getCurrentTask().next_task;
 
-        { if @state.noMoreSubjects
-            <DraggableModal
-              header          = { if @state.userClassifiedAll then "Thanks for transcribing!" else "Nothing to transcribe" }
-              buttons         = {<GenericButton label='Continue' href='/#/mark' />}
-            >
-                Currently, there are no {@props.project.term('subject')}s for you to {@props.workflowName}. Try <a href="/#/mark">marking</a> instead!
-            </DraggableModal>
-
-
-          else if @getCurrentSubject()? and @getCurrentTask()?
-
-            <SubjectViewer
-              onLoad={@handleViewerLoad}
-              task={@getCurrentTask()}
-              subject={@getCurrentSubject()}
-              active=true
-              workflow={@getActiveWorkflow()}
-              classification={@props.classification}
-              annotation={currentAnnotation}
-            >
-              <TranscribeComponent
-                viewerSize={@state.viewerSize}
-                annotation_key={"#{@state.taskKey}.#{@getCurrentSubject().id}"}
-                key={@getCurrentTask().key}
-                task={@getCurrentTask()}
-                annotation={currentAnnotation}
-                subject={@getCurrentSubject()}
-                onChange={@handleDataFromTool}
-                subjectCurrentPage={@props.query.page}
-                onComplete={@handleTaskComplete}
-                onBack={@makeBackHandler()}
-                workflow={@getActiveWorkflow()}
-                viewerSize={@state.viewerSize}
-                transcribeTools={transcribeTools}
-                onShowHelp={@toggleHelp if @getCurrentTask().help?}
-                badSubject={@state.badSubject}
-                onBadSubject={@toggleBadSubject}
-                illegibleSubject={@state.illegibleSubject}
-                onIllegibleSubject={@toggleIllegibleSubject}
-                returnToMarking={@returnToMarking}
-                transcribeMode={transcribeMode}
-                isLastSubject={isLastSubject}
-                project={@props.project}
-              />
-
-            </SubjectViewer>
-        }
-      </div>
-
-      { if @getCurrentTask()? and @getCurrentSubject()
-          nextTask =
-            if @getCurrentTask().tool_config.options?[currentAnnotation.value]?
-              @getCurrentTask().tool_config.options?[currentAnnotation.value].next_task
-            else
-              @getCurrentTask().next_task
-
-          <div className="right-column">
-            <div className="task-area transcribe">
-
-              <div className="task-secondary-area">
-
-                {
-                  if @getCurrentTask()?
-                    <p>
-                      <a className="tutorial-link" onClick={@toggleTutorial}>View A Tutorial</a>
-                    </p>
-                }
-
-                <div className="forum-holder">
-                  <ForumSubjectWidget subject=@getCurrentSubject() project={@props.project} />
+            return (
+              <div className="right-column">
+                <div className="task-area transcribe">
+                  <div className="task-secondary-area">
+                    {this.getCurrentTask() != null ? (
+                      <p>
+                        <a
+                          className="tutorial-link"
+                          onClick={this.toggleTutorial}
+                        >
+                          View A Tutorial
+                        </a>
+                      </p>
+                    ) : (
+                        undefined
+                      )}
+                    <div className="forum-holder">
+                      <ForumSubjectWidget
+                        subject={this.getCurrentSubject()}
+                        project={this.props.context.project}
+                      />
+                    </div>
+                  </div>
                 </div>
-
               </div>
+            );
+          }
+        })()}
+        {this.props.context.project.tutorial != null && this.state.showingTutorial ? (
+          // Check for workflow-specific tutorial
+          this.props.context.project.tutorial.workflows != null &&
+            this.props.context.project.tutorial.workflows[
+            __guard__(this.getActiveWorkflow(), x2 => x2.name)
+            ] ? (
+              <Tutorial
+                tutorial={
+                  this.props.context.project.tutorial.workflows[
+                  this.getActiveWorkflow().name
+                  ]
+                }
+                onCloseTutorial={this.hideTutorial}
+              />
+            ) : (
+              // Otherwise just show general tutorial
+              <Tutorial
+                tutorial={this.props.context.project.tutorial}
+                onCloseTutorial={this.hideTutorial}
+              />
+            )
+        ) : (
+            undefined
+          )}
+        {this.state.helping ? (
+          <HelpModal
+            help={this.getCurrentTask().help}
+            onDone={() => this.setState({ helping: false })}
+          />
+        ) : (
+            undefined
+          )}
+      </div>
+    );
+  }
+}));
 
-            </div>
-          </div>
-      }
+window.React = React;
 
-      { if @props.project.tutorial? && @state.showingTutorial
-          # Check for workflow-specific tutorial
-          if @props.project.tutorial.workflows? && @props.project.tutorial.workflows[@getActiveWorkflow()?.name]
-            <Tutorial tutorial={@props.project.tutorial.workflows[@getActiveWorkflow().name]} onCloseTutorial={@hideTutorial} />
-          # Otherwise just show general tutorial
-          else
-            <Tutorial tutorial={@props.project.tutorial} onCloseTutorial={@hideTutorial} />
-      }
-
-      { if @state.helping
-        <HelpModal help={@getCurrentTask().help} onDone={=> @setState helping: false } />
-      }
-
-    </div>
-
-window.React = React
+function __guard__(value, transform) {
+  return typeof value !== "undefined" && value !== null
+    ? transform(value)
+    : undefined;
+}

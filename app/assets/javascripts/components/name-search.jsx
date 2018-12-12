@@ -1,53 +1,76 @@
-React         = require 'react'
-{Navigation}  = require 'react-router'
+/*
+ * decaffeinate suggestions:
+ * DS101: Remove unnecessary use of Array.from
+ * DS102: Remove unnecessary code created because of implicit returns
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+import React from 'react'
+import ReactDOM from 'react-dom'
+import createReactClass from 'create-react-class'
 
-NameSearch = React.createClass
-  displayName: "NameSearch"
-  mixins: [Navigation]
+const NameSearch = createReactClass({
+  displayName: 'NameSearch',
 
-  # fieldKey: ->
-  #   if @props.standalone
-  #     'value'
-  #   else
-  #     @props.annotation_key
+  // fieldKey: ->
+  //   if @props.standalone
+  //     'value'
+  //   else
+  //     @props.annotation_key
 
-  handleKeyPress: (e) ->
-
-    if @isMounted()
-      term = e.target.value
-      el = $(React.findDOMNode(this))
-      el.autocomplete
-        source: (request, response)=>
-          $.ajax
-            url: "/subject_sets/terms/#{@props.field}"
-            dataType: "json"
-            data:
-              q: request.term
-            success: ( data ) =>
-              names = []
-              if data.length != 0
-                for n in data
-                  unit = {}
-                  unit["label"] =  n.meta_data.name
-                  unit["value"] = n
-                  names.push unit
-              else
+  handleKeyPress(e) {
+    const term = e.target.value
+    const el = $(ReactDOM.findDOMNode(this))
+    return el.autocomplete({
+      source: (request, response) => {
+        return $.ajax({
+          url: `/subject_sets/terms/${this.props.field}`,
+          dataType: 'json',
+          data: {
+            q: request.term
+          },
+          success: data => {
+            let unit
+            const names = []
+            if (data.length !== 0) {
+              for (let n of Array.from(data)) {
                 unit = {}
-                unit["label"] =  "Currently, there is no match. Please check back in a few days."
-                names.push unit
-              response( names )
-            error: (xhr, thrownError)=>
-              console.log xhr.status, thrownError
-        focus: (e,ui)=>
-          e.preventDefault()
+                unit['label'] = n.meta_data.name
+                unit['value'] = n
+                names.push(unit)
+              }
+            } else {
+              unit = {}
+              unit['label'] =
+                'Currently, there is no match. Please check back in a few days.'
+              names.push(unit)
+            }
+            return response(names)
+          },
+          error: (xhr, thrownError) => {
+            return console.log(xhr.status, thrownError)
+          }
+        })
+      },
+      focus: (e, ui) => {
+        return e.preventDefault()
+      },
 
-        select: (e, ui) =>
-          e.target.value
-          @transitionTo 'mark', {},
-            subject_set_id: ui.item.value.id
-           
+      select: (e, ui) => {
+        e.target.value
+        return this.props.context.router.transitionTo(
+          'mark',
+          {},
+          { subject_set_id: ui.item.value.id }
+        )
+      }
+    })
+  },
 
-  render: ->
-    <input id="name-search" type="text" placeholder={"Search Records by Name"} onKeyDown={@handleKeyPress} />
+  render() {
+    return (
+      <input id="name-search" type="text" placeholder="Search Records by Name" onKeyDown={this.handleKeyPress} />
+    )
+  }
+})
 
-module.exports = NameSearch
+export default NameSearch

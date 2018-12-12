@@ -1,4 +1,8 @@
-# HASH OF FORUM CONNECTORS
-module.exports =
-  discourse: require './discourse-connector'
-  talk:      require './talk-connector'
+// HASH OF FORUM CONNECTORS
+import discourse from "./discourse-connector.jsx";
+import talk from "./talk-connector.jsx";
+
+export default {
+  discourse,
+  talk
+};

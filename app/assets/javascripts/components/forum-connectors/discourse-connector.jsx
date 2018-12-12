@@ -1,59 +1,85 @@
-# @cjsx React.DOM
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * DS207: Consider shorter variations of null checks
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
 
-React = require 'react'
+ const DiscourseConnector = class DiscourseConnector {
+  constructor(options, project) {
+    this.options = options;
+    this.project = project;
+  }
 
-module.exports =
+  fetchPosts(type, id, callback) {
+    // fetchPosts: (terms, callback) ->
 
-  class DiscourseConnector
-    constructor: (@options, @project) ->
+    // url = '/proxy/forum'
+    let url = this.options.base_url;
+    url += `/search.json?q=${id}`;
+    return $.ajax({
+      url,
+      dataType: "json",
+      success: (resp => {
+        let posts = resp.posts != null ? resp.posts : [];
 
-    fetchPosts: (type, id, callback) ->
-      # fetchPosts: (terms, callback) ->
+        const { base_url } = this.options;
+        posts = posts.map(p => ({
+          title: p.blurb,
+          excerpt: p.blurb,
+          author: p.username,
+          url: base_url + "/t/" + p.topic_slug,
+          updated_at: p.updated_at
+        }));
+        resp = {};
+        resp[type != null ? type : "subjects"] = posts;
+        return typeof callback === "function" ? callback(resp) : undefined;
+      }).bind(this),
+      error: (xhr, status, err) => {
+        return console.error(
+          "Error loading posts: ",
+          url,
+          status,
+          err.toString()
+        );
+      }
+    });
+  }
 
-      # url = '/proxy/forum'
-      url = @options.base_url
-      url += '/search.json?q=' + id
-      $.ajax
-        url: url
-        dataType: "json"
-        success: ((resp) =>
+  create_url(obj) {
+    // It's a subject set:
+    // if obj.subjects?
+    //  title = "#{@project.title} #{@project.term('subject set')} #{obj.id}"
+    // url = "#{window.location.protocol}//#{window.location.origin}/#/mark/?subject_set_id=#{obj.id}"
+    // else
 
-          posts = resp.posts ? []
+    let title;
+    if (obj == null) {
+      return null;
+    }
 
-          base_url = @options.base_url
-          posts = posts.map (p) ->
-            title: p.blurb
-            excerpt: p.blurb
-            author: p.username
-            url: base_url + '/t/' + p.topic_slug
-            updated_at: p.updated_at
-          resp = {}
-          resp[type ? 'subjects'] = posts
-          callback? resp
+    if (this.project != null) {
+      title = `${this.project.title} ${this.project.term("subject")} ${obj.id}`;
+    }
+    const url = `${window.location.origin}/#/mark?subject_set_id=${
+      obj.subject_set_id
+      }&selected_subject_id=${obj.id}`;
 
-        ).bind(this)
-        error: ((xhr, status, err) ->
-          console.error "Error loading posts: ", url, status, err.toString()
-        ).bind(this)
+    const line = "_".repeat([80, Math.max(title.length, url.length)].min);
+    const body = `\n\n${line}\n${title}\n${url}`;
 
-    create_url: (obj) ->
-      # It's a subject set:
-      # if obj.subjects?
-       #  title = "#{@project.title} #{@project.term('subject set')} #{obj.id}"
-        # url = "#{window.location.protocol}//#{window.location.origin}/#/mark/?subject_set_id=#{obj.id}"
-      # else
+    const category = "Emigrant Records Discussion";
 
-      return null if ! obj?
+    return (
+      this.options.base_url +
+      `/new-topic?title=${encodeURIComponent(title)}&body=${encodeURIComponent(
+        body
+      )}&category=${category}`
+    );
+  }
 
-      title = "#{@project.title} #{@project.term('subject')} #{obj.id}" if @project?
-      url = "#{window.location.origin}/#/mark?subject_set_id=#{obj.subject_set_id}&selected_subject_id=#{obj.id}"
-  
-      line = '_'.repeat [80,Math.max(title.length, url.length)].min
-      body = "\n\n#{line}\n#{title}\n#{url}"
-
-      category = "Emigrant Records Discussion"
-      
-      @options.base_url + "/new-topic?title=#{encodeURIComponent(title)}&body=#{encodeURIComponent(body)}&category=#{category}"
-
-    search_url: (term) ->
-      @options.base_url + "/search?q=#{term}"
+  search_url(term) {
+    return this.options.base_url + `/search?q=${term}`;
+  }
+};
+export default DiscourseConnector;

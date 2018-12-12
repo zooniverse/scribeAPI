@@ -1,143 +1,199 @@
-# @cjsx React.DOM
-React              = require 'react'
-{Navigation}       = require 'react-router'
-SubjectViewer      = require '../subject-viewer'
-JSONAPIClient      = require 'json-api-client' # use to manage data?
-FetchSubjectsMixin = require 'lib/fetch-subjects-mixin'
-ForumSubjectWidget = require '../forum-subject-widget'
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * DS103: Rewrite code to no longer use __guard__
+ * DS205: Consider reworking code to avoid use of IIFEs
+ * DS207: Consider shorter variations of null checks
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
 
-BaseWorkflowMethods     = require 'lib/workflow-methods-mixin'
+import React from "react";
+import SubjectViewer from "../subject-viewer.jsx";
+import { AppContext } from "../app-context.jsx";
+import FetchSubjectsMixin from "../../lib/fetch-subjects-mixin.jsx";
+import ForumSubjectWidget from "../forum-subject-widget.jsx";
 
-DraggableModal          = require '../draggable-modal'
-GenericButton           = require '../buttons/generic-button'
-Tutorial                = require '../tutorial'
-HelpModal               = require '../help-modal'
+import BaseWorkflowMethods from "../../lib/workflow-methods-mixin.jsx";
 
-# Hash of core tools:
-coreTools          = require '../core-tools'
+import DraggableModal from "../draggable-modal.jsx";
+import GenericButton from "../buttons/generic-button.jsx";
+import Tutorial from "../tutorial.jsx";
+import HelpModal from "../help-modal.jsx";
 
-# Hash of transcribe tools:
-verifyTools   = require './tools'
+import createReactClass from "create-react-class";
+export default AppContext(createReactClass({
+  // rename to Classifier
+  displayName: "Verify",
+  mixins: [FetchSubjectsMixin, BaseWorkflowMethods], // load subjects and set state variables: subjects,  classification
 
-API                = require 'lib/api'
+  getDefaultProps() {
+    return { workflowName: "verify" };
+  },
 
-module.exports = React.createClass # rename to Classifier
-  displayName: 'Verify'
-  mixins: [FetchSubjectsMixin, BaseWorkflowMethods, Navigation] # load subjects and set state variables: subjects,  classification
+  getInitialState() {
+    return {
+      taskKey: null,
+      classifications: [],
+      classificationIndex: 0,
+      subject_index: 0,
+      showingTutorial: false,
+      helping: false
+    };
+  },
 
-  getDefaultProps: ->
-    workflowName: 'verify'
+  componentWillMount() {
+    return this.beginClassification();
+  },
 
-  getInitialState: ->
-    taskKey:                      null
-    classifications:              []
-    classificationIndex:          0
-    subject_index:                0
-    showingTutorial:              false
-    helping:                      false
+  fetchSubjectsCallback() {
+    if (this.getCurrentSubject() != null) {
+      return this.setState({ taskKey: this.getCurrentSubject().type });
+    }
+  },
 
-  componentWillMount: ->
-    @beginClassification()
+  // Handle user selecting a pick/drawing tool:
+  handleDataFromTool(d) {
+    const { classifications } = this.state;
+    const currentClassification =
+      classifications[this.state.classificationIndex];
 
-  fetchSubjectsCallback: ->
-    @setState taskKey: @getCurrentSubject().type if @getCurrentSubject()?
+    for (let k in d) {
+      const v = d[k];
+      currentClassification.annotation[k] = v;
+    }
 
-  # Handle user selecting a pick/drawing tool:
-  handleDataFromTool: (d) ->
-    classifications = @state.classifications
-    currentClassification = classifications[@state.classificationIndex]
+    this.forceUpdate();
+    return this.setState({ classifications }, () => this.forceUpdate());
+  },
 
-    currentClassification.annotation[k] = v for k, v of d
+  handleTaskComplete(d) {
+    this.handleDataFromTool(d);
+    return this.commitClassificationAndContinue(d);
+  },
 
-    @forceUpdate()
-    @setState classifications: classifications, => @forceUpdate()
+  toggleTutorial() {
+    return this.setState({ showingTutorial: !this.state.showingTutorial });
+  },
 
-  handleTaskComplete: (d) ->
-    @handleDataFromTool(d)
-    @commitClassificationAndContinue d
+  hideTutorial() {
+    return this.setState({ showingTutorial: false });
+  },
 
-  toggleTutorial: ->
-    @setState showingTutorial: not @state.showingTutorial
+  toggleHelp() {
+    return this.setState({ helping: !this.state.helping });
+  },
 
-  hideTutorial: ->
-    @setState showingTutorial: false
+  render() {
+    const currentAnnotation = this.getCurrentClassification().annotation;
 
-  toggleHelp: ->
-    @setState helping: not @state.helping
+    const onFirstAnnotation =
+      (currentAnnotation != null ? currentAnnotation.task : undefined) ===
+      this.getActiveWorkflow().first_task;
 
-  render: ->
-    currentAnnotation = @getCurrentClassification().annotation
-
-    onFirstAnnotation = currentAnnotation?.task is @getActiveWorkflow().first_task
-
-    <div className="classifier">
-      <div className="subject-area">
-        { if ! @getCurrentSubject()?
-
-            <DraggableModal
-              header          = { if @state.userClassifiedAll then "You verified them all!" else "Nothing to verify" }
-              buttons         = {<GenericButton label='Continue' href='/#/mark' />}
-            >
-              Currently, there are no {@props.project.term('subject')}s for you to {@props.workflowName}. Try <a href="/#/mark">marking</a> instead!
-            </DraggableModal>
-
-          else if @getCurrentSubject()?
-            <SubjectViewer onLoad={@handleViewerLoad} subject={@getCurrentSubject()} active=true workflow={@getActiveWorkflow()} classification={@props.classification} annotation={currentAnnotation}>
-              { if ( VerifyComponent = @getCurrentTool() )?
-
-                <VerifyComponent
-                  viewerSize={@state.viewerSize}
-                  task={@getCurrentTask()}
-                  annotation={@getCurrentClassification().annotation}
-                  onShowHelp={@toggleHelp if @getCurrentTask().help?}
-                  badSubject={@state.badSubject}
-                  onBadSubject={@toggleBadSubject}
-                  subject={@getCurrentSubject()}
-                  onChange={@handleTaskComponentChange}
-                  onComplete={@handleTaskComplete}
-                  workflow={@getActiveWorkflow()}
-                  project={@props.project}
-                />
-              }
-            </SubjectViewer>
-        }
-      </div>
-
-      { if @getCurrentSubject()?
+    return (
+      <div className="classifier">
+        <div className="subject-area">
+          {(() => {
+            if (this.getCurrentSubject() == null) {
+              return (
+                <DraggableModal
+                  header={
+                    this.state.userClassifiedAll
+                      ? "You verified them all!"
+                      : "Nothing to verify"
+                  }
+                  buttons={<GenericButton label="Continue" href="/#/mark" />}
+                >
+                  {`\
+Currently, there are no `}
+                  {this.props.project.term("subject")}s for you to{" "}
+                  {this.props.workflowName}. Try <a href="/#/mark">marking</a>
+                  {` instead!\
+`}
+                </DraggableModal>
+              );
+            } else if (this.getCurrentSubject() != null) {
+              let VerifyComponent;
+              return (
+                <SubjectViewer
+                  onLoad={this.handleViewerLoad}
+                  subject={this.getCurrentSubject()}
+                  active={true}
+                  workflow={this.getActiveWorkflow()}
+                  classification={this.props.classification}
+                  annotation={currentAnnotation}
+                >
+                  {(VerifyComponent = this.getCurrentTool()) != null ? (
+                    <VerifyComponent
+                      viewerSize={this.state.viewerSize}
+                      task={this.getCurrentTask()}
+                      annotation={this.getCurrentClassification().annotation}
+                      onShowHelp={
+                        this.getCurrentTask().help != null
+                          ? this.toggleHelp
+                          : undefined
+                      }
+                      badSubject={this.state.badSubject}
+                      onBadSubject={this.toggleBadSubject}
+                      subject={this.getCurrentSubject()}
+                      onChange={this.handleTaskComponentChange}
+                      onComplete={this.handleTaskComplete}
+                      workflow={this.getActiveWorkflow()}
+                      project={this.props.project}
+                    />
+                  ) : (
+                      undefined
+                    )}
+                </SubjectViewer>
+              );
+            }
+          })()}
+        </div>
+        {this.getCurrentSubject() != null ? (
           <div className="right-column">
             <div className="task-area verify">
-
               <div className="task-secondary-area">
-
-                {
-                  if @getCurrentTask()?
-                    <p>
-                      <a className="tutorial-link" onClick={@toggleTutorial}>View A Tutorial</a>
-                    </p>
-                }
-
+                {this.getCurrentTask() != null ? (
+                  <p>
+                    <a className="tutorial-link" onClick={this.toggleTutorial}>
+                      View A Tutorial
+                    </a>
+                  </p>
+                ) : undefined}
                 <div className="forum-holder">
-                  <ForumSubjectWidget subject=@getCurrentSubject() project={@props.project} />
+                  <ForumSubjectWidget
+                    subject={this.getCurrentSubject()}
+                    project={this.props.project}
+                  />
                 </div>
-
               </div>
-
             </div>
           </div>
-      }
+        ) : (
+            undefined
+          )}
+        {this.props.project.tutorial != null && this.state.showingTutorial ? (
+          // Check for workflow-specific tutorial
+          this.props.project.tutorial.workflows != null &&
+            this.props.project.tutorial.workflows[__guard__(this.getActiveWorkflow(), x => x.name)] ? (
+              <Tutorial tutorial={this.props.project.tutorial.workflows[this.getActiveWorkflow().name]} onCloseTutorial={this.hideTutorial} />
+            ) : (
+              // Otherwise just show general tutorial
+              <Tutorial tutorial={this.props.project.tutorial} onCloseTutorial={this.hideTutorial} />
+            )
+        ) : undefined}
+        {this.state.helping ? (
+          <HelpModal help={this.getCurrentTask().help} onDone={() => this.setState({ helping: false })} />
+        ) : undefined}
+      </div>
+    );
+  }
+}));
 
-      { if @props.project.tutorial? && @state.showingTutorial
-          # Check for workflow-specific tutorial
-          if @props.project.tutorial.workflows? && @props.project.tutorial.workflows[@getActiveWorkflow()?.name]
-            <Tutorial tutorial={@props.project.tutorial.workflows[@getActiveWorkflow().name]} onCloseTutorial={@hideTutorial} />
-          # Otherwise just show general tutorial
-          else
-            <Tutorial tutorial={@props.project.tutorial} onCloseTutorial={@hideTutorial} />
-      }
+window.React = React;
 
-      { if @state.helping
-        <HelpModal help={@getCurrentTask().help} onDone={=> @setState helping: false } />
-      }
-    </div>
-
-window.React = React
+function __guard__(value, transform) {
+  return typeof value !== "undefined" && value !== null
+    ? transform(value)
+    : undefined;
+}

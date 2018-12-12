@@ -1,25 +1,30 @@
-DoneButton = require './done-button'
+import DoneButton from "./done-button.jsx";
+import createReactClass from "create-react-class";
 
-TextField = React.createClass
-  displayName: 'TextField'
+const TextField = createReactClass({
+  displayName: "TextField",
 
-  render: ->
-    <span>
-      <div className="left">
-        <div className="input-field active">
-          <label>{@props.instruction}</label>
-          <input
-            ref="input0"
-            type="text"
-            data-task_key={@props.key}
-            onChange={@props.handleChange}
-            value={@props.val}
-          />
+  render() {
+    return (
+      <span>
+        <div className="left">
+          <div className="input-field active">
+            <label>{this.props.instruction}</label>
+            <input
+              ref="input0"
+              type="text"
+              data-task_key={this.props.key}
+              onChange={this.props.handleChange}
+              value={this.props.val}
+            />
+          </div>
         </div>
-      </div>
-      <div className="right">
-        <DoneButton onClick={@props.commitAnnotation} />
-      </div>
-    </span>
+        <div className="right">
+          <DoneButton onClick={this.props.commitAnnotation} />
+        </div>
+      </span>
+    );
+  }
+});
 
-module.exports = TextField
+export default TextField;

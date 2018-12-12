@@ -1,18 +1,12 @@
-jest
-  .dontMock '../components/action-button'
-  
-  describe 'ActionButton', ->
-    React = require 'react/addons'
-    {renderIntoDocument, Simulate} = React.addons.TestUtils
+import React from 'react'
+import ReactTestUtils from 'react-dom/test-utils'
+import ActionButton from '../components/action-button.jsx'
 
-    ActionButton = require '../components/action-button'
-        
-    it 'should grab the action-button code', ->
-      expect(ActionButton).toBeTruthy()
+describe('ActionButton', function () {
+  let actionButton
 
-    actionButton = renderIntoDocument(<ActionButton/>)
-    
-    
+  actionButton = ReactTestUtils.renderIntoDocument(<ActionButton />)
 
-    
-
+  it('should grab the action-button code', () =>
+    expect(actionButton).toBeTruthy())
+})

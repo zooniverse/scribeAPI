@@ -1,23 +1,23 @@
-BACKGROUND = white
-FOREGROUND = #333
-MAIN_HIGHLIGHT = #91BF8F
-MEDIUM_GRAY = #555
+$BACKGROUND: white
+$FOREGROUND: #333
+$MAIN_HIGHLIGHT: #91BF8F
+$MEDIUM_GRAY: #555
 
-PRIMARY_NORMAL=#8cbc8c
-PRIMARY_HOVER=#A4C8A4
+$PRIMARY_NORMAL: #8cbc8c
+$PRIMARY_HOVER: #A4C8A4
 
-SECONDARY_NORMAL=#3f5765
-SECONDARY_HOVER=#667983
+$SECONDARY_NORMAL: #3f5765
+$SECONDARY_HOVER: #667983
 
-TERTIARY_NORMAL=#FC5424
-DISABLED_GRAY=#CDCDCD
+$TERTIARY_NORMAL: #FC5424
+$DISABLED_GRAY: #CDCDCD
 
-SANS_SERIF = Arimo, Montserrat, "Gill Sans", Arial, sans-serif
-SERIF = "Playfair Display", Georgia, serif
-COURIER = "Courier New", Courier, monospace
+$SANS_SERIF: Arimo, Montserrat, "Gill Sans", Arial, sans-serif
+$SERIF: "Playfair Display", Georgia, serif
+$COURIER: "Courier New", Courier, monospace
 
 html
-  background: MEDIUM_GRAY
+  background: $MEDIUM_GRAY
   color: white
   font: 14px/1.5 ProximaNova, "Helvetica Neue", Arial, sans-serif
 
@@ -45,13 +45,13 @@ hr
   color: inherit
 
 a
-  color: TERTIARY_NORMAL
+  color: $TERTIARY_NORMAL
 
 button
   outline: none
 
 .readymade-site-background
-  background-color: MEDIUM_GRAY
+  background-color: $MEDIUM_GRAY
   background-position: 50% 33%
   background-size: cover
   bottom: 0
@@ -85,11 +85,11 @@ button
   [data-location-hash="#/"] &
     margin-top: 45vh
 
-background-stripes(color1, color2, size)
-  background: linear-gradient(-45deg, color1 25%, color2 25%, color2 50%, color1 50%, color1 75%, color2 75%)
-  background-size: size size
+@mixin background-stripes($color1, $color2, $size)
+  background: linear-gradient(-45deg, $color1 25%, $color2 25%, $color2 50%, $color1 50%, $color1 75%, $color2 75%)
+  background-size: $size $size
 
-$reset-button
+%reset-button
   background: transparent
   border: 0
   color: inherit
@@ -100,7 +100,7 @@ $reset-button
   padding: 0
   text-decoration: none
 
-$text-input
+%text-input
   border: 1px solid gray
   box-shadow: 0 1px 3px rgba(black, 0.2) inset
   box-sizing: border-box
@@ -109,81 +109,80 @@ $text-input
 
   &.full
     width: 100%
-
--webkit-font-smoothing antialiased
+    -webkit-font-smoothing: antialiased
 
 body
   // font-family: 'Ubuntu', sans-serif
   font-family: ProximaNova, 'Helvetica Neue'
 
 h1
-  color #426262
-  font-weight 400
-  font-size 3em
+  color: #426262
+  font-weight: 400
+  font-size: 3em
 
 .page-content
   // margin 100px 100px
-  border-radius 12px
-  padding 20px
-  min-width 250px
-  line-height 1.8em
+  border-radius: 12px
+  padding: 20px
+  min-width: 250px
+  line-height: 1.8em
 
   h1
     padding: .5em
-    text-align left
-    margin-top 0
+    text-align: left
+    margin-top: 0
     color: white
-    margin-bottom: 0;
+    margin-bottom: 0
 
   h2
-    font-size 30px
+    font-size: 30px
 
-  & > div
-    background-color #efefef
-    padding 20px
-    color #2b3a42
+  > div
+    background-color: #efefef
+    padding: 20px
+    color: #2b3a42
 
   p
-    max-width 800px
+    max-width: 800px
 
   .updated-at
-    text-align right
-    color gray
+    text-align: right
+    color: gray
 
 
-$button
-  border-radius 5px
-  padding 12px 20px
-  width 140px
-  font-weight bold
-  font-size 12px
-  border 2px solid transparent
-  cursor pointer
-  opacity 0.75
-  color #000
+%button
+  border-radius: 5px
+  padding: 12px 20px
+  width: 140px
+  font-weight: bold
+  font-size: 12px
+  border: 2px solid transparent
+  cursor: pointer
+  opacity: 0.75
+  color: #000
   &.yellow
-    background-color yellow
+    background-color: yellow
   &.red
-    background-color red
+    background-color: red
   &.blue
-    background-color blue
+    background-color: blue
   &.white
-    background-color #fff
+    background-color: #fff
   &.green
-    background-color #693
+    background-color: #693
   &.disabled
-    opacity 0.25
-    pointer-events none
+    opacity: 0.25
+    pointer-events: none
     &:hover
-      opacity 0.25
+      opacity: 0.25
       // do nothing
     &:active
-      transform translateY(0px)
+      transform: translateY(0px)
   &:active
-    transform translateY(1px)
-    box-shadow none
+    transform: translateY(1px)
+    box-shadow: none
   &:hover
-    opacity 1.0
+    opacity: 1.0
     // border 2px solid #000
 
 div.home-page
@@ -203,9 +202,9 @@ div.home-page
     min-width: 200px
 
   a
-    color: inherit;
-    opacity: 0.75;
-    text-decoration: none;
+    color: inherit
+    opacity: 0.75
+    text-decoration: none
 
 
 
@@ -214,10 +213,10 @@ div.home-page
   color: #eae9e9
   padding: 20px
   padding-bottom: 0
-  position: relative;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  position: relative
+  bottom: 0
+  left: 0
+  right: 0
 
   .scribe-logo-container
     display: block
@@ -229,7 +228,7 @@ div.home-page
       margin-bottom: 30px
 
   .scribe-footer-general
-    border-top: solid #808080 1px;
+    border-top: solid #808080 1px
     padding-top: 10px
     padding-bottom: 40px
     text-align: center
@@ -278,17 +277,17 @@ div.home-page
 
 
 
-  -webkit-touch-callout none
-  -webkit-user-select none
-  -khtml-user-select none
-  -moz-user-select none
-  -ms-user-select none
-  user-select none
+  -webkit-touch-callout: none
+  -webkit-user-select: none
+  -khtml-user-select: none
+  -moz-user-select: none
+  -ms-user-select: none
+  user-select: none
 
 
 .main-content
   // margin-top: 10px
-  margin-top 80px
-  margin-bottom 50px
+  margin-top: 80px
+  margin-bottom: 50px
   overflow: hidden
-  min-height 800px
+  min-height: 800px

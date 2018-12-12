@@ -1,122 +1,190 @@
-# @cjsx React.DOM
-React = require 'react'
-Draggable       = require 'lib/draggable'
-PrevButton      = require './prev-button'
-NextButton      = require './next-button'
-DoneButton      = require './done-button'
-TranscribeInput = require './transcribe-input'
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * DS205: Consider reworking code to avoid use of IIFEs
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
 
-TranscribeTool = React.createClass
-  displayName: 'TranscribeTool'
+import React from "react";
+import createReactClass from "create-react-class";
 
-  componentWillReceiveProps: ->
-    
-    @setState
-      dx: window.innerWidth/2 - 200
-      dy: @props.yScale * @props.selectedMark.yLower + 65 - @props.scrollOffset
+import Draggable from "../../../../lib/draggable.jsx";
+import PrevButton from "./prev-button.jsx";
+import NextButton from "./next-button.jsx";
+import DoneButton from "./done-button.jsx";
+import TranscribeInput from "./transcribe-input.jsx";
 
-  getInitialState: ->    
-    # convert task object to array (to use .length method)
-    tasksArray = []
-    for key, elem of @props.tasks
-      tasksArray[key] = elem
+const TranscribeTool = createReactClass({
+  displayName: "TranscribeTool",
 
-    tasks: tasksArray
-    currentStep: 0
-    # dx: window.innerWidth/2 - 200
-    # dy: @props.yScale * @props.selectedMark.yLower + 20
+  componentWillReceiveProps() {
+    return this.setState({
+      dx: window.innerWidth / 2 - 200,
+      dy:
+        this.props.yScale * this.props.selectedMark.yLower +
+        65 -
+        this.props.scrollOffset
+    });
+  },
 
-  componentDidMount: ->
+  getInitialState() {
+    // convert task object to array (to use .length method)
+    const tasksArray = [];
+    for (let key in this.props.tasks) {
+      const elem = this.props.tasks[key];
+      tasksArray[key] = elem;
+    }
 
-  nextTextEntry: ->
-    @setState
+    return {
+      tasks: tasksArray,
       currentStep: 0
-      dx: window.innerWidth/2 - 200
-      dy: @props.yScale * @props.selectedMark.yLower + 20, =>
-        @props.nextTextEntry()
+    };
+  },
+  // dx: window.innerWidth/2 - 200
+  // dy: @props.yScale * @props.selectedMark.yLower + 20
 
-  nextStep: (e) ->
-    # record transcription
-    transcription = []
-    
-    for step, i in @state.tasks
-      transcription.push { 
-        field_name: "#{step.field_name}", 
-        value: $(".transcribe-input:eq(#{step.key})").val() 
+  componentDidMount() { },
+
+  nextTextEntry() {
+    return this.setState(
+      {
+        currentStep: 0,
+        dx: window.innerWidth / 2 - 200,
+        dy: this.props.yScale * this.props.selectedMark.yLower + 20
+      },
+      () => {
+        return this.props.nextTextEntry();
       }
+    );
+  },
 
-    @props.recordTranscription(transcription)
-    
-    if @nextStepAvailable
-      currentStep = @state.currentStep + 1
-    else
-      currentStep = 0
+  nextStep(e) {
+    // record transcription
+    let currentStep;
+    const transcription = [];
 
-    @setState currentStep: currentStep
-    
-  prevStep: ->
-    return unless @prevStepAvailable()
-    @setState currentStep: @state.currentStep - 1
+    for (let i = 0; i < this.state.tasks.length; i++) {
+      const step = this.state.tasks[i];
+      transcription.push({
+        field_name: `${step.field_name}`,
+        value: $(`.transcribe-input:eq(${step.key})`).val()
+      });
+    }
 
-  nextStepAvailable: ->
-    if @state.currentStep + 1 > @state.tasks.length - 1
-      return false
-    else
-      return true
+    this.props.recordTranscription(transcription);
 
-  prevStepAvailable: ->
-    if @state.currentStep - 1 >= 0
-      return true
-    else
-      return false
+    if (this.nextStepAvailable) {
+      currentStep = this.state.currentStep + 1;
+    } else {
+      currentStep = 0;
+    }
 
-  handleInitStart: (e) ->
-    @setState preventDrag: false
-    if e.target.nodeName is "INPUT" or e.target.nodeName is "TEXTAREA"
-      @setState preventDrag: true
-      
-    @setState
-      xClick: e.pageX - $('.transcribe-tool').offset().left
-      yClick: e.pageY - $('.transcribe-tool').offset().top
+    return this.setState({ currentStep });
+  },
 
-  handleInitDrag: (e) ->
-    return if @state.preventDrag # not too happy about this one
+  prevStep() {
+    if (!this.prevStepAvailable()) {
+      return;
+    }
+    return this.setState({ currentStep: this.state.currentStep - 1 });
+  },
 
-    dx = e.pageX - @state.xClick - window.scrollX
-    dy = e.pageY - @state.yClick - window.scrollY
+  nextStepAvailable() {
+    if (this.state.currentStep + 1 > this.state.tasks.length - 1) {
+      return false;
+    } else {
+      return true;
+    }
+  },
 
-    @setState
-      dx: dx
-      dy: dy #, =>
+  prevStepAvailable() {
+    if (this.state.currentStep - 1 >= 0) {
+      return true;
+    } else {
+      return false;
+    }
+  },
 
-  handleInitRelease: ->
+  handleInitStart(e) {
+    this.setState({ preventDrag: false });
+    if (e.target.nodeName === "INPUT" || e.target.nodeName === "TEXTAREA") {
+      this.setState({ preventDrag: true });
+    }
 
-  render: ->
-    currentStep = @state.currentStep
-    
-    style = 
-      left: @state.dx,
-      top:  @state.dy
+    return this.setState({
+      xClick: e.pageX - $(".transcribe-tool").offset().left,
+      yClick: e.pageY - $(".transcribe-tool").offset().top
+    });
+  },
 
-    <div className="transcribe-tool-container">
-      <Draggable
-        onStart = {@handleInitStart}
-        onDrag  = {@handleInitDrag}
-        onEnd   = {@handleInitRelease}>
+  handleInitDrag(e) {
+    if (this.state.preventDrag) {
+      return;
+    } // not too happy about this one
 
-        <div className="transcribe-tool" style={style}>
-          <div className="left">
-            { for key, task of @state.tasks # NOTE: remember tasks is Object
-                <TranscribeInput key={key} task={task} currentStep={@state.currentStep} />
-            }
+    const dx = e.pageX - this.state.xClick - window.scrollX;
+    const dy = e.pageY - this.state.yClick - window.scrollY;
+
+    return this.setState({
+      dx,
+      dy
+    });
+  }, //, =>
+
+  handleInitRelease() { },
+
+  render() {
+    const { currentStep } = this.state;
+
+    const style = {
+      left: this.state.dx,
+      top: this.state.dy
+    };
+
+    return (
+      <div className="transcribe-tool-container">
+        <Draggable
+          onStart={this.handleInitStart}
+          onDrag={this.handleInitDrag}
+          onEnd={this.handleInitRelease}
+        >
+          <div className="transcribe-tool" style={style}>
+            <div className="left">
+              {(() => {
+                const result = [];
+                for (let key in this.state.tasks) {
+                  // NOTE: remember tasks is Object
+                  const task = this.state.tasks[key];
+                  result.push(
+                    <TranscribeInput
+                      key={key}
+                      task={task}
+                      currentStep={this.state.currentStep}
+                    />
+                  );
+                }
+
+                return result;
+              })()}
+            </div>
+            <div className="right">
+              <PrevButton
+                prevStepAvailable={this.prevStepAvailable}
+                prevStep={this.prevStep}
+              />
+              <NextButton
+                nextStepAvailable={this.nextStepAvailable}
+                nextStep={this.nextStep}
+              />
+              <DoneButton
+                nextStepAvailable={this.nextStepAvailable}
+                nextTextEntry={this.nextTextEntry}
+              />
+            </div>
           </div>
-          <div className="right">
-            <PrevButton prevStepAvailable = {@prevStepAvailable} prevStep = {@prevStep} />
-            <NextButton nextStepAvailable = {@nextStepAvailable} nextStep = {@nextStep} />
-            <DoneButton nextStepAvailable = {@nextStepAvailable} nextTextEntry = {@nextTextEntry} />
-          </div>
-        </div>
-      </Draggable>
-    </div>
-
-module.exports = TranscribeTool
+        </Draggable>
+      </div>
+    );
+  }
+});
+export default TranscribeTool;

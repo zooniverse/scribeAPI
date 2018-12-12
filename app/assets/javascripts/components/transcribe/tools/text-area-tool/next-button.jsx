@@ -1,15 +1,22 @@
-# @cjsx React.DOM
-React = require 'react'
 
-NextButton = React.createClass
-  displayName: 'NextButton'
+import React from "react";
 
-  render: ->
-    classes = 'button next'
-    classes = classes + ' disabled' unless @props.nextStepAvailable()
-      
-    <button className = {classes} onClick = {@props.nextStep} >
-      Next &gt;
+import createReactClass from "create-react-class";
+const NextButton = createReactClass({
+  displayName: "NextButton",
+
+  render() {
+    let classes = "button next";
+    if (!this.props.nextStepAvailable()) {
+      classes = classes + " disabled";
+    }
+
+    return (
+      <button className={classes} onClick={this.props.nextStep}>
+        Next &gt;
     </button>
+    );
+  }
+});
 
-module.exports = NextButton
+export default NextButton;

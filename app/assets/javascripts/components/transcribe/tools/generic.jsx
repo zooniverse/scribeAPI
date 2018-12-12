@@ -1,34 +1,50 @@
-React = require 'react'
-cloneWithProps = require 'react/lib/cloneWithProps'
-# alert = require 'lib/alert'
-# Markdown = require '../../components/markdown'
-# Tooltip = require '../../components/tooltip'
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+import React from "react";
+// alert = require 'lib/alert'
+// Markdown = require '../../components/markdown'
+// Tooltip = require '../../components/tooltip'
 
-module.exports = React.createClass
-  displayName: 'GenericTool'
+import createReactClass from "create-react-class";
+export default createReactClass({
+  displayName: "GenericTool",
 
-  getDefaultProps: ->
-    question: ''
-    help: ''
-    answers: ''
+  getDefaultProps() {
+    return {
+      question: "",
+      help: "",
+      answers: ""
+    };
+  },
 
-  getInitialState: ->
-    helping: false
+  getInitialState() {
+    return { helping: false };
+  },
 
-  render: ->
-    <div className="workflow-task">
-      <span>{@props.question}</span>
-      <div className="answers">
-        {React.Children.map @props.answers, (answer) ->
-          cloneWithProps answer,  className: 'answer'}
+  render() {
+    return (
+      <div className="workflow-task">
+        <span>{this.props.question}</span>
+        <div className="answers">
+          {React.Children.map(this.props.answers, answer =>
+            React.cloneElement(answer, { className: "answer" })
+          )}
+        </div>
+        {this.props.help ? (
+          <p className="help">
+            <button type="button" className="pill-button" onClick={this.toggleHelp}>
+              Need some help?
+            </button>
+          </p>
+        ) : undefined}
       </div>
-      {if @props.help
-        <p className="help">
-          <button type="button" className="pill-button" onClick={@toggleHelp}>
-            Need some help?
-          </button>
-        </p>}
-    </div>
+    );
+  },
 
-  toggleHelp: ->
-    @setState helping: not @state.helping
+  toggleHelp() {
+    return this.setState({ helping: !this.state.helping });
+  }
+});

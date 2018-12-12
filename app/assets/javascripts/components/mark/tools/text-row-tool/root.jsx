@@ -1,54 +1,79 @@
-React = require 'react'
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * DS207: Consider shorter variations of null checks
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+import React from "react";
+import createReactClass from "create-react-class";
 
-STROKE_WIDTH = 1.5
-SELECTED_STROKE_WIDTH = 2.5
+const STROKE_WIDTH = 1.5;
+const SELECTED_STROKE_WIDTH = 2.5;
 
-module.exports = React.createClass
-  displayName: 'DrawingToolRoot'
+export default createReactClass({
+  displayName: "DrawingToolRoot",
 
-  statics:
-    distance: (x1, y1, x2, y2) ->
-      Math.sqrt Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)
+  statics: {
+    distance(x1, y1, x2, y2) {
+      return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    }
+  },
 
-  getDefaultProps: ->
-    tool: null
+  getDefaultProps() {
+    return { tool: null };
+  },
 
-  getInitialState: ->
-    destroying: false
+  getInitialState() {
+    return { destroying: false };
+  },
 
-  render: ->
-    toolProps = @props.tool.props
+  render() {
+    const toolProps = this.props.tool.props;
 
-    rootProps =
-      'data-disabled': toolProps.disabled or null
-      'data-selected': toolProps.selected or null
-      'data-destroying': @props.tool.state?.destroying or null
-      style: color: toolProps.color
+    const rootProps = {
+      "data-disabled": toolProps.disabled || null,
+      "data-selected": toolProps.selected || null,
+      "data-destroying":
+        (this.props.tool.state != null
+          ? this.props.tool.state.destroying
+          : undefined) || null,
+      style: {
+        color: toolProps.color
+      }
+    };
 
-    scale = (toolProps.xScale + toolProps.yScale) / 2
+    const scale = (toolProps.xScale + toolProps.yScale) / 2;
 
-    mainStyle =
-      fill: 'transparent'
-      stroke: 'red'
-      strokeWidth: if toolProps.selected
-        SELECTED_STROKE_WIDTH / scale
-      else
-        STROKE_WIDTH / scale
+    const mainStyle = {
+      fill: "transparent",
+      stroke: "red",
+      strokeWidth: toolProps.selected
+        ? SELECTED_STROKE_WIDTH / scale
+        : STROKE_WIDTH / scale
+    };
 
-    <g 
-      className="drawing-tool"
-      data-disabled={toolProps.disabled or null}
-      data-selected= {toolProps.selected or null}
-      data-destroying={@props.tool.state?.destroying or null}
-      color="red"
-    >
-      <g 
-        className="drawing-tool-main"
-        fill='transparent'
-        stroke='#f60'
-        strokeWidth={SELECTED_STROKE_WIDTH/scale}
-        onMouseDown={toolProps.onSelect unless toolProps.disabled}
+    return (
+      <g
+        className="drawing-tool"
+        data-disabled={toolProps.disabled || null}
+        data-selected={toolProps.selected || null}
+        data-destroying={
+          (this.props.tool.state != null
+            ? this.props.tool.state.destroying
+            : undefined) || null
+        }
+        color="red"
       >
-        {@props.children}
+        <g
+          className="drawing-tool-main"
+          fill="transparent"
+          stroke="#f60"
+          strokeWidth={SELECTED_STROKE_WIDTH / scale}
+          onMouseDown={!toolProps.disabled ? toolProps.onSelect : undefined}
+        >
+          {this.props.children}
+        </g>
       </g>
-    </g>
+    );
+  }
+});

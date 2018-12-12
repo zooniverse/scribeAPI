@@ -1,119 +1,149 @@
-React           = require 'react'
-DrawingToolRoot = require './root'
-Draggable       = require 'lib/draggable'
-DeleteButton    = require '../../../buttons/delete-mark'
-MarkButtonMixin = require 'lib/mark-button-mixin'
+/*
+ * decaffeinate suggestions:
+ * DS205: Consider reworking code to avoid use of IIFEs
+ * DS207: Consider shorter variations of null checks
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+import React from 'react'
+import Draggable from '../../../../lib/draggable.jsx'
+import DeleteButton from '../../../buttons/delete-mark.jsx'
+import MarkButtonMixin from '../../../../lib/mark-button-mixin.jsx'
 
-# DEFAULT SETTINGS
-RADIUS = 10
-SELECTED_RADIUS = 20
-CROSSHAIR_SPACE = 0.2
-CROSSHAIR_WIDTH = 1
-DELETE_BUTTON_ANGLE = 45
+// DEFAULT SETTINGS
+const RADIUS = 10
+const SELECTED_RADIUS = 20
+const CROSSHAIR_SPACE = 0.2
+const CROSSHAIR_WIDTH = 1
+const DELETE_BUTTON_ANGLE = 45
 
-module.exports = React.createClass
-  displayName: 'PointTool'
+@MarkButtonMixin
+export default class PointTool extends React.Component {
+  static defaultValues({ x, y }) {
+    return { x, y }
+  }
 
-  mixins: [MarkButtonMixin]
+  static initMove({ x, y }) {
+    return { x, y }
+  }
 
-  statics:
-    defaultValues: ({x, y}) ->
-      {x, y}
+  getDeleteButtonPosition() {
+    const theta = DELETE_BUTTON_ANGLE * (Math.PI / 180)
+    return {
+      x: (SELECTED_RADIUS / this.props.xScale) * Math.cos(theta) + 20,
+      y: -1 * (SELECTED_RADIUS / this.props.yScale) * Math.sin(theta) - 20
+    }
+  }
 
-    initMove: ({x, y}) ->
-      {x, y}
+  getMarkButtonPosition() {
+    return {
+      x: SELECTED_RADIUS / this.props.xScale,
+      y: SELECTED_RADIUS / this.props.yScale
+    }
+  }
 
-  getDeleteButtonPosition: ->
-    theta = (DELETE_BUTTON_ANGLE) * (Math.PI / 180)
-    x: (SELECTED_RADIUS / @props.xScale) * Math.cos(theta) + 20
-    y: -1 * (SELECTED_RADIUS / @props.yScale) * Math.sin(theta) - 20
+  handleDrag(e, d) {
+    if (this.state.locked) {
+      return
+    }
+    if (this.props.disabled) {
+      return
+    }
+    this.props.mark.x += d.x / this.props.xScale
+    this.props.mark.y += d.y / this.props.yScale
+    this.props.onChange(e)
+  }
 
-  getMarkButtonPosition: ->
-    x: SELECTED_RADIUS/@props.xScale
-    y: SELECTED_RADIUS/@props.yScale
+  handleMouseDown() {
+    this.props.onSelect(this.props.mark)
+  } // unless @props.disabled
 
-  handleDrag: (e, d) ->
-    return if @state.locked
-    return if @props.disabled
-    @props.mark.x += d.x / @props.xScale
-    @props.mark.y += d.y / @props.yScale
-    @props.onChange e
+  render() {
+    const classes = []
+    if (this.props.isTranscribable) {
+      classes.push('transcribable')
+    }
+    classes.push(this.props.disabled ? 'committed' : 'uncommitted')
 
-  handleMouseDown: ->
-    @props.onSelect @props.mark # unless @props.disabled
+    if (this.state.markStatus === 'mark-committed') {
+      this.props.disabled = true
+    }
 
-  render: ->
-    classes = []
-    classes.push 'transcribable' if @props.isTranscribable
-    classes.push if @props.disabled then 'committed' else 'uncommitted'
+    const averageScale = (this.props.xScale + this.props.yScale) / 2
 
-    if @state.markStatus is 'mark-committed'
-      isPriorMark = true
-      @props.disabled = true
+    const crosshairSpace = CROSSHAIR_SPACE / averageScale
+    const crosshairWidth = CROSSHAIR_WIDTH / averageScale
+    const selectedRadius = SELECTED_RADIUS / averageScale
 
-    averageScale = (@props.xScale + @props.yScale) / 2
+    const radius =
+      this.props.selected || this.props.disabled
+        ? SELECTED_RADIUS / averageScale
+        : RADIUS / averageScale
 
-    crosshairSpace = CROSSHAIR_SPACE / averageScale
-    crosshairWidth = CROSSHAIR_WIDTH / averageScale
-    selectedRadius = SELECTED_RADIUS / averageScale
+    const scale = (this.props.xScale + this.props.yScale) / 2
 
-    radius = if @props.selected or @props.disabled
-      SELECTED_RADIUS / averageScale
-    else
-      RADIUS / averageScale
-
-    scale = (@props.xScale + @props.yScale) / 2
-
-    <g
-      tool={this}
-      transform="translate(#{@props.mark.x}, #{@props.mark.y})"
-      onMouseDown={@handleMouseDown}
-      title={@props.mark.label}
-    >
+    return (
       <g
-        className='point-tool'
+        tool={this}
+        transform={`translate(${this.props.mark.x}, ${this.props.mark.y})`}
+        onMouseDown={this.handleMouseDown.bind(this)}
+        title={this.props.mark.label}
       >
-
-        <Draggable onDrag={@handleDrag}>
-          <g
-            className="tool-shape #{classes.join ' '}"
-            dangerouslySetInnerHTML={
-              __html: "
-                <filter id=\"dropShadow\">
-                  <feGaussianBlur in=\"SourceAlpha\" stdDeviation=\"3\" />
-                  <feOffset dx=\"2\" dy=\"4\" />
-                  <feMerge>
-                    <feMergeNode />
-                    <feMergeNode in=\"SourceGraphic\" />
-                  </feMerge>
-                </filter>
-
-                <g #{if @props.mark.color? then "stroke=\"#{@props.mark.color}\""} >
-                  <line x1=\"0\" y1=\"#{-1 * crosshairSpace * selectedRadius}\" x2=\"0\" y2=\"#{-1 * selectedRadius}\" strokeWidth=\"#{crosshairWidth}\" />
-                  <line x1=\"#{-1 * crosshairSpace * selectedRadius}\" y1=\"0\" x2=\"#{-1 * selectedRadius}\" y2=\"0\" strokeWidth=\"#{crosshairWidth}\" />
-                  <line x1=\"0\" y1=\"#{crosshairSpace * selectedRadius}\" x2=\"0\" y2=\"#{selectedRadius}\" strokeWidth=\"#{crosshairWidth}\" />
-                  <line x1=\"#{crosshairSpace * selectedRadius}\" y1=\"0\" x2=\"#{selectedRadius}\" y2=\"0\" strokeWidth=\"#{crosshairWidth}\" />
-                </g>
-
-                <circle
-                  #{if @props.mark.color? then "stroke=\"#{@props.mark.color}\""}
-                  r=\"#{radius}\"
-                  filter=\"#{if @props.selected then 'url(#dropShadow)' else 'none'}\"
-                />
-              "
+        <g className="point-tool">
+          <Draggable onDrag={this.handleDrag.bind(this)}>
+            <g
+              className={`tool-shape ${classes.join(' ')}`}
+              dangerouslySetInnerHTML={{
+                __html: `\
+<filter id="dropShadow"> \
+<feGaussianBlur in="SourceAlpha" stdDeviation="3" /> \
+<feOffset dx="2" dy="4" /> \
+<feMerge> \
+<feMergeNode /> \
+<feMergeNode in="SourceGraphic" /> \
+</feMerge> \
+</filter> \
+\
+<g ${this.props.mark.color != null && `stroke="${this.props.mark.color}"` || ''} > \
+<line x1="0" y1="${-1 *
+                  crosshairSpace *
+                  selectedRadius}" x2="0" y2="${-1 *
+                  selectedRadius}" strokeWidth="${crosshairWidth}" /> \
+<line x1="${-1 * crosshairSpace * selectedRadius}" y1="0" x2="${-1 *
+                  selectedRadius}" y2="0" strokeWidth="${crosshairWidth}" /> \
+<line x1="0" y1="${crosshairSpace *
+                  selectedRadius}" x2="0" y2="${selectedRadius}" strokeWidth="${crosshairWidth}" /> \
+<line x1="${crosshairSpace *
+                  selectedRadius}" y1="0" x2="${selectedRadius}" y2="0" strokeWidth="${crosshairWidth}" /> \
+</g> \
+\
+<circle \
+${this.props.mark.color != null && `stroke="${this.props.mark.color}"` || ''} \
+r="${radius}" \
+filter="${this.props.selected ? 'url(#dropShadow)' : 'none'}" \
+/>\
+`
+              }}
+            />
+          </Draggable>
+          {this.props.selected ?
+            <DeleteButton
+              onClick={this.props.onDestroy}
+              scale={scale}
+              x={this.getDeleteButtonPosition().x}
+              y={this.getDeleteButtonPosition().y}
+            /> : undefined}
+          {(() => {
+            // REQUIRES MARK-BUTTON-MIXIN
+            if (this.props.selected ||
+              this.state.markStatus === 'transcribe-enabled'
+            ) {
+              if (this.props.isTranscribable) {
+                return this.renderMarkButton()
+              }
             }
-          />
-
-        </Draggable>
-
-        { if @props.selected
-            <DeleteButton onClick={@props.onDestroy} scale={scale} x={@getDeleteButtonPosition().x} y={@getDeleteButtonPosition().y}/>
-        }
-
-        { # REQUIRES MARK-BUTTON-MIXIN
-          if @props.selected or @state.markStatus is 'transcribe-enabled'
-            @renderMarkButton() if @props.isTranscribable
-        }
-
+          })()}
+        </g>
       </g>
-    </g>
+    )
+  }
+}

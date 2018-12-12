@@ -1,13 +1,18 @@
-# @cjsx React.DOM
 
-React = require 'react'
 
-SubjectMetadata = React.createClass
-  displayName: "Metadata"
+import React from 'react'
+import createReactClass from 'create-react-class'
 
-  render: ->
-    <div className="metadata">
-      <h3>Metadata</h3>
-    </div>
+const SubjectMetadata = createReactClass({
+  displayName: 'Metadata',
 
-module.exports = SubjectMetadata
+  render() {
+    return (
+      <div className="metadata">
+        <h3>Metadata</h3>
+      </div>
+    )
+  }
+})
+
+export default SubjectMetadata

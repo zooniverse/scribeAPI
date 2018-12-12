@@ -1,87 +1,134 @@
-React                   = require 'react'
-GenericTask             = require './generic'
-LabeledRadioButton      = require '../buttons/labeled-radio-button'
+/*
+ * decaffeinate suggestions:
+ * DS101: Remove unnecessary use of Array.from
+ * DS102: Remove unnecessary code created because of implicit returns
+ * DS205: Consider reworking code to avoid use of IIFEs
+ * DS207: Consider shorter variations of null checks
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+import React from "react";
+import createReactClass from "create-react-class";
+import PropTypes from 'prop-types';
+import GenericTask from "./generic.jsx";
+import LabeledRadioButton from "../buttons/labeled-radio-button.jsx";
 
-# Markdown = require '../../components/markdown'
+// Markdown = require '../../components/markdown'
 
-NOOP = Function.prototype
+const NOOP = Function.prototype;
 
-# Summary = React.createClass
-#   displayName: 'SingleChoiceSummary'
+// Summary = createReactClass
+//   displayName: 'SingleChoiceSummary'
 
-#   getDefaultProps: ->
-#     task: null
-#     annotation: null
-#     expanded: false
+//   getDefaultProps: ->
+//     task: null
+//     annotation: null
+//     expanded: false
 
-#   getInitialState: ->
-#     expanded: @props.expanded
+//   getInitialState: ->
+//     expanded: @props.expanded
 
-#   render: ->
-#     <div className="classification-task-summary">
-#       <div className="question">
-#         {@props.task.question}
-#         {if @state.expanded
-#           <button type="button" className="toggle-more" onClick={@setState.bind this, expanded: false, null}>Less</button>
-#         else
-#           <button type="button" className="toggle-more" onClick={@setState.bind this, expanded: true, null}>More</button>}
-#       </div>
-#       <div className="answers">
-#         {if @state.expanded
-#           for answer, i in @props.task.answers
-#             answer._key ?= Math.random()
-#             <div key={answer._key} className="answer">
-#               {if i is @props.annotation.value
-#                 <i className="fa fa-check-circle-o fa-fw"></i>
-#               else
-#                 <i className="fa fa-circle-o fa-fw"></i>}
-#               {@props.task.answers[i].label}
-#             </div>
-#         else if @props.annotation.value?
-#           <div className="answer">
-#             <i className="fa fa-check-circle-o fa-fw"></i>
-#             {@props.task.answers[@props.annotation.value].label}
-#           </div>
-#         else
-#           <div className="answer">No answer</div>}
-#       </div>
-#     </div>
+//   render: ->
+//     <div className="classification-task-summary">
+//       <div className="question">
+//         {@props.task.question}
+//         {if @state.expanded
+//           <button type="button" className="toggle-more" onClick={@setState.bind this, expanded: false, null}>Less</button>
+//         else
+//           <button type="button" className="toggle-more" onClick={@setState.bind this, expanded: true, null}>More</button>}
+//       </div>
+//       <div className="answers">
+//         {if @state.expanded
+//           for answer, i in @props.task.answers
+//             answer._key ?= Math.random()
+//             <div key={answer._key} className="answer">
+//               {if i is @props.annotation.value
+//                 <i className="fa fa-check-circle-o fa-fw"></i>
+//               else
+//                 <i className="fa fa-circle-o fa-fw"></i>}
+//               {@props.task.answers[i].label}
+//             </div>
+//         else if @props.annotation.value?
+//           <div className="answer">
+//             <i className="fa fa-check-circle-o fa-fw"></i>
+//             {@props.task.answers[@props.annotation.value].label}
+//           </div>
+//         else
+//           <div className="answer">No answer</div>}
+//       </div>
+//     </div>
 
-module.exports = React.createClass
-  displayName: 'SingleChoiceTask'
+export default createReactClass({
+  displayName: "SingleChoiceTask",
 
-  statics:
-    # Summary: Summary # don't use Summary (yet?)
+  statics: {
+    // Summary: Summary # don't use Summary (yet?)
 
-    getDefaultAnnotation: ->
-      value: null
+    getDefaultAnnotation() {
+      return { value: null };
+    }
+  },
 
-  getDefaultProps: ->
-    task: null
-    annotation: null
-    onChange: NOOP
+  getDefaultProps() {
+    return {
+      task: null,
+      annotation: null,
+      onChange: NOOP
+    };
+  },
 
-  propTypes: ->
-    task: React.PropTypes.object.isRequired
-    annotation: React.PropTypes.object.isRequired
-    onChange: React.PropTypes.func.isRequired
+  propTypes() {
+    return {
+      task: PropTypes.object.isRequired,
+      annotation: PropTypes.object.isRequired,
+      onChange: PropTypes.func.isRequired
+    };
+  },
 
-  render: ->
-    answers = for answer in @props.task.tool_config.options
-      answer._key ?= Math.random()
-      checked = answer.value is @props.annotation.value
-      classes = ['minor-button']
-      classes.push 'active' if checked
+  render() {
+    const answers = (() => {
+      const result = [];
+      for (let answer of Array.from(this.props.task.tool_config.options)) {
+        if (answer._key == null) {
+          answer._key = Math.random();
+        }
+        const checked = answer.value === this.props.annotation.value;
+        const classes = ["minor-button"];
+        if (checked) {
+          classes.push("active");
+        }
 
-      <LabeledRadioButton key={answer._key} classes={classes.join ' '} value={answer.value} checked={checked} onChange={@handleChange.bind this, answer.value} label={answer.label} />
+        result.push(
+          <LabeledRadioButton
+            key={answer._key}
+            classes={classes.join(" ")}
+            value={answer.value}
+            checked={checked}
+            onChange={this.handleChange.bind(this, answer.value)}
+            label={answer.label}
+          />
+        );
+      }
+      return result;
+    })();
 
-    <GenericTask ref="inputs" {...@props} question={@props.task.instruction} answers={answers} />
+    return (
+      <GenericTask
+        {...Object.assign({ ref: "inputs" }, this.props, {
+          question: this.props.task.instruction,
+          answers: answers
+        })}
+      />
+    );
+  },
 
-  handleChange: (index, e) ->
-    if e.target.checked
-      @props.onChange({
+  handleChange(index, e) {
+    if (e.target.checked) {
+      this.props.onChange({
         value: e.target.value
-      })
-      @forceUpdate() # update the radiobuttons after selection
+      });
+      return this.forceUpdate();
+    }
+  }
+}); // update the radiobuttons after selection
 
-window.React = React
+window.React = React;

@@ -1,99 +1,129 @@
-# @cjsx React.DOM
-React                         = require 'react'
-SubjectViewer                 = require './subject-viewer'
-{Router, Routes, Route, Link} = require 'react-router'
-SVGImage                      = require './svg-image'
-Draggable                     = require 'lib/draggable'
-LoadingIndicator              = require './loading-indicator'
-SubjectMetadata               = require './subject-metadata'
-ActionButton                  = require './action-button'
-markingTools                  = require './mark/tools'
-ZoomPanListenerMethods        = require 'lib/zoom-pan-listener-methods'
-SubjectSetToolbar             = require './subject-set-toolbar'
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * DS207: Consider shorter variations of null checks
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
 
-module.exports = React.createClass
-  displayName: 'SubjectSetViewer'
-  resizing: false
+import React from 'react'
+import PropTypes from 'prop-types'
+import createReactClass from 'create-react-class'
+import SubjectViewer from './subject-viewer.jsx'
+import ZoomPanListenerMethods from '../lib/zoom-pan-listener-methods.jsx'
+import SubjectSetToolbar from './subject-set-toolbar.jsx'
 
-  propTypes:
-    onDestroy: React.PropTypes.func.isRequired #hands @handleMarkDelete, which call wmm method: @flagSubjectAsUserDeleted
+export default createReactClass({
+  displayName: 'SubjectSetViewer',
+  resizing: false,
 
-  mixins: [ZoomPanListenerMethods]
+  propTypes: {
+    onDestroy: PropTypes.func.isRequired
+  }, //hands @handleMarkDelete, which call wmm method: @flagSubjectAsUserDeleted
 
-  getInitialState: ->
-    subject_set: @props.subject_set
-    tool: @props.tool
-    toolbar_expanded: false
+  mixins: [ZoomPanListenerMethods],
 
-  advancePrevious: ->
-    @advance -1
+  getInitialState() {
+    return {
+      subject_set: this.props.subject_set,
+      tool: this.props.tool,
+      toolbar_expanded: false
+    }
+  },
 
-  advanceNext: ->
-    @advance 1
+  advancePrevious() {
+    return this.advance(-1)
+  },
 
-  advance: (count) ->
-    new_index = @props.subject_index + count
-    return if new_index < 0 || new_index >= @props.subject_set.subjects.length
+  advanceNext() {
+    return this.advance(1)
+  },
 
-    # Let's just deal in indexes rather than storing both objects and indexes in state, lest they drift out of sync
-    @setState subject_index: new_index, () =>
-      @props.onViewSubject? new_index
+  advance(count) {
+    const new_index = this.props.subject_index + count
+    if (new_index < 0 || new_index >= this.props.subject_set.subjects.length) {
+      return
+    }
 
-  specificSelection: (blah, new_index) ->
-    # this prevents navigating away from the subject during a workflow --AMS
-    if @props.workflow.first_task == @props.task.key
-      @props.onViewSubject? new_index
-    else
+    // Let's just deal in indexes rather than storing both objects and indexes in state, lest they drift out of sync
+    return this.setState({ subject_index: new_index }, () => {
+      return typeof this.props.onViewSubject === 'function'
+        ? this.props.onViewSubject(new_index)
+        : undefined
+    })
+  },
+
+  specificSelection(blah, new_index) {
+    // this prevents navigating away from the subject during a workflow --AMS
+    if (this.props.workflow.first_task === this.props.task.key) {
+      return typeof this.props.onViewSubject === 'function'
+        ? this.props.onViewSubject(new_index)
+        : undefined
+    } else {
       return null
+    }
+  },
 
-  onToolbarExpand: ->
-    @setState toolbar_expanded: true
+  onToolbarExpand() {
+    return this.setState({ toolbar_expanded: true })
+  },
 
-  onToolbarHide: ->
-    @setState toolbar_expanded: false
+  onToolbarHide() {
+    return this.setState({ toolbar_expanded: false })
+  },
 
-  render: ->
-    return null if ! @props.subject_set.subjects?
+  render() {
+    if (this.props.subject_set.subjects == null) {
+      return null
+    }
 
-    <div className={"subject-set-viewer" + if @state.toolbar_expanded then ' expand' else ''}>
-      <SubjectSetToolbar
-        workflow={@props.workflow}
-        task={@props.task}
-        subject={@props.subject_set.subjects[@props.subject_index]}
-        subject_set={@props.subject_set}
-        subject_index={@props.subject_index}
-        subjectCurrentPage={@props.subjectCurrentPage}
-        lightboxHelp={@props.lightboxHelp}
-        onSubject={@specificSelection.bind this, @props.subject_index}
-        nextPage={@props.nextPage}
-        prevPage={@props.prevPage}
-        totalSubjectPages={@props.totalSubjectPages}
-        onZoomChange={@handleZoomPanViewBoxChange}
-        viewBox={@state.zoomPanViewBox}
-        onExpand={@onToolbarExpand}
-        onHide={@onToolbarHide}
-        hideOtherMarks={@props.hideOtherMarks}
-        toggleHideOtherMarks={@props.toggleHideOtherMarks}
-      />
-
-      <SubjectViewer
-        subject={@props.subject_set.subjects[@props.subject_index]}
-        workflow={@props.workflow}
-        task={@props.task}
-        subjectCurrentPage={@props.subjectCurrentPage}
-        annotation={@props.annotation}
-        active={true}
-        onComplete={@props.onComplete}
-        onChange={@props.onChange}
-        onDestroy={@props.onDestroy}
-        subToolIndex={@props.subToolIndex}
-        destroyCurrentClassification={@props.destroyCurrentClassification}
-        hideOtherMarks={@props.hideOtherMarks}
-        currentSubtool={@props.currentSubtool}
-        viewBox={@state.zoomPanViewBox}
-        interimMarks={@props.interimMarks}
-      />
-
-    </div>
+    return (
+      <div
+        className={`subject-set-viewer${
+          this.state.toolbar_expanded ? ' expand' : ''
+        }`}
+      >
+        <SubjectSetToolbar
+          workflow={this.props.workflow}
+          task={this.props.task}
+          subject={this.props.subject_set.subjects[this.props.subject_index]}
+          subject_set={this.props.subject_set}
+          subject_index={this.props.subject_index}
+          subjectCurrentPage={this.props.subjectCurrentPage}
+          lightboxHelp={this.props.lightboxHelp}
+          onSubject={this.specificSelection.bind(
+            this,
+            this.props.subject_index
+          )}
+          nextPage={this.props.nextPage}
+          prevPage={this.props.prevPage}
+          totalSubjectPages={this.props.totalSubjectPages}
+          onZoomChange={this.handleZoomPanViewBoxChange}
+          viewBox={this.state.zoomPanViewBox}
+          onExpand={this.onToolbarExpand}
+          onHide={this.onToolbarHide}
+          hideOtherMarks={this.props.hideOtherMarks}
+          toggleHideOtherMarks={this.props.toggleHideOtherMarks}
+        />
+        <SubjectViewer
+          subject={this.props.subject_set.subjects[this.props.subject_index]}
+          workflow={this.props.workflow}
+          task={this.props.task}
+          subjectCurrentPage={this.props.subjectCurrentPage}
+          annotation={this.props.annotation}
+          active={true}
+          onComplete={this.props.onComplete}
+          onChange={this.props.onChange}
+          onDestroy={this.props.onDestroy}
+          subToolIndex={this.props.subToolIndex}
+          destroyCurrentClassification={this.props.destroyCurrentClassification}
+          hideOtherMarks={this.props.hideOtherMarks}
+          currentSubtool={this.props.currentSubtool}
+          viewBox={this.state.zoomPanViewBox}
+          interimMarks={this.props.interimMarks}
+        />
+      </div>
+    )
+  }
+})
 
 window.React = React

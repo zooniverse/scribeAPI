@@ -1,69 +1,73 @@
-React = require("react")
-{Link} = require 'react-router'
-Router = require 'react-router'
-# {Navigation, Link} = Router
-Login = require '../components/login'
+import React from 'react'
+import { NavLink } from 'react-router-dom'
+import { AppContext } from '../components/app-context.jsx'
+import Login from '../components/login.jsx'
 
-module.exports = React.createClass
-  displayName: 'MainHeader'
-
-  getDefaultProps: ->
-    user: null
+@AppContext
+export default class MainHeader extends React.Component {
+  static defaultProps = {
+    user: null,
     loginProviders: []
+  };
 
-  render: ->
-    <header classNameim="main-header">
+  render() {
+    let showFeedbackTab = false
+    const groupId = this.props.context.groupId
 
-      <nav className="main-nav main-header-group">
-        <Link to="/" activeClassName="selected" className="main-header-item logo">
+    return (
+      <header className="main-header">
+        <nav className="main-nav main-header-group">
+          <NavLink to="/" activeClassName="selected" className="main-header-item logo">
+            {this.props.logo && <img src={this.props.logo} /> || this.props.short_title}
+          </NavLink>
           {
-            unless @props.logo?
-              @props.short_title
-            else
-              <img src={@props.logo} />
+            // Workflows tabs:
+            this.props.workflows.filter(w =>
+              ['transcribe', 'mark', 'verify'].includes(w.name)
+            )
+              .sort((w1, w2) => w1.order > w2.order ? 1 : -1)
+              .map((workflow, key) => {
+                const
+                  title = workflow.name.charAt(0).toUpperCase() + workflow.name.slice(1)
+                return (
+                  <NavLink key={key} to={`/${workflow.name + (groupId && ('?group_id=' + groupId) || '')}`} activeClassName="selected" className={`main-header-item ${workflow.name}`}>{title}</NavLink>
+                )
+              })
           }
-        </Link>
-
-        {
-          # Workflows tabs:
-          workflow_names = ['transcribe','mark','verify']
-          workflows = (w for w in @props.workflows when w.name in workflow_names)
-          workflows = workflows.sort (w1, w2) -> if w1.order > w2.order then 1 else -1
-          workflows.map (workflow, key) =>
-            title = workflow.name.charAt(0).toUpperCase() + workflow.name.slice(1)
-            <Link key={key} to="/#{workflow.name}" activeClassName="selected" className="main-header-item">{title}</Link>
-        }
-        { # Page tabs, check for main menu
-          if @props.menus? && @props.menus.main?
-            for item, i in @props.menus.main
-              if item.page?
-                <Link key={item.page} to="/#{item.page}" activeClassName="selected" className="main-header-item">{item.label}</Link>
-              else if item.url?
-                <a href="#{item.url}" className="main-header-item">{item.label}</a>
-              else
-                <a className="main-header-item">{item.label}</a>
-          # Otherwise, just list all the pages in default order
-          else
-            @props.pages?.map (page, key) =>
-              formatted_name = page.name.replace("_", " ")
-              <Link key={key} to="/#{page.name.toLowerCase()}" activeClassName="selected" className="main-header-item">{formatted_name}</Link>
-        }
-
-        { # include feedback tab if defined
-          showFeedbackTab = false
-          if @props.feedbackFormUrl? and showFeedbackTab
-            <a className="main-header-item" href={@props.feedbackFormUrl}>Feedback</a>
-        }
-        { # include blog tab if defined
-          if @props.blogUrl?
-            <a target={"_blank"} className="main-header-item" href={@props.blogUrl}>Blog</a>
-        }
-        { # include blog tab if defined
-          if @props.discussUrl?
-            <a target={"_blank"} className="main-header-item" href={@props.discussUrl}>Discuss</a>
-        }
-        <Login user={@props.user} loginProviders={@props.loginProviders} onLogout={@props.onLogout} />
-
-      </nav>
-
-    </header>
+          {// Page tabs, check for main menu
+            this.props.menus != null && this.props.menus.main != null
+              ? this.props.menus.main.map(
+                (item, i) =>
+                  item.page != null
+                    ? <NavLink key={item.page} to={`/${item.page}`} activeClassName="selected" className="main-header-item">{item.label}</NavLink>
+                    : item.url != null
+                      ? <a href={`${item.url}`} className="main-header-item">{item.label}</a>
+                      : <a className="main-header-item">{item.label}</a>)
+              : // Otherwise, just list all the pages in default order
+              this.props.pages != null
+              && this.props.pages.map((page, key) => {
+                const
+                  formatted_name = page.name.replace('_', ' ')
+                return (
+                  <NavLink key={key} to={`/${page.name.toLowerCase()}`} activeClassName="selected" className="main-header-item">{formatted_name}</NavLink>
+                )
+              })}
+          {
+            // include feedback tab if defined
+            this.props.feedbackFormUrl != null && showFeedbackTab &&
+            <a className="main-header-item" href={this.props.feedbackFormUrl}>Feedback</a>
+          }
+          {// include blog tab if defined
+            this.props.blogUrl != null &&
+            <a target="_blank" className="main-header-item" href={this.props.blogUrl}>Blog</a>
+          }
+          {// include blog tab if defined
+            this.props.discussUrl != null &&
+            <a target="_blank" className="main-header-item" href={this.props.discussUrl}>Discuss</a>
+          }
+          <Login user={this.props.user} loginProviders={this.props.loginProviders} onLogout={this.props.onLogout} />
+        </nav>
+      </header>
+    )
+  }
+}

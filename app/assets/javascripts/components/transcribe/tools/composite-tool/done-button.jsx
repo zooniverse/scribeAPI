@@ -1,15 +1,20 @@
-# @cjsx React.DOM
-React = require 'react'
 
-DoneButton = React.createClass
-  displayName: 'DoneButton'
+import React from "react";
 
-  render: ->
-    classes = 'button done'
-    title   = 'Next'
-    
-    <button className = {classes} onClick = {@props.onClick} >
-      {title}
-    </button>
+import createReactClass from "create-react-class";
+const DoneButton = createReactClass({
+  displayName: "DoneButton",
 
-module.exports = DoneButton
+  render() {
+    const classes = "button done";
+    const title = "Next";
+
+    return (
+      <button className={classes} onClick={this.props.onClick}>
+        {title}
+      </button>
+    );
+  }
+});
+
+export default DoneButton;

@@ -1,69 +1,120 @@
-React = require 'react'
-API   = require 'lib/api'
+import React from 'react'
+import { NavLink } from 'react-router-dom'
+import API from '../lib/api.jsx'
+import { AppContext } from './app-context.jsx'
 
-SmallButton   = require('components/buttons/small-button')
+@AppContext
+export default class GroupBrowser extends React.Component {
+  constructor() {
+    super()
+    this.state = { counts: {}, groups: [] }
+  }
 
-GroupBrowser = React.createClass
-  displayName: 'GroupBrowser'
+  componentDidMount() {
+    const project_id = this.props.project.id
+    API.type('groups')
+      .get({ project_id })
+      .then(groups => {
+        for (let group of groups) {
+          // hide buttons by default
+          group.showButtons = false
+        }
+        this.setState({ groups })
 
-  getInitialState:->
-    groups:[]
+        for (let group of this.state.groups) {
+          API.type('subject_sets')
+            .get({ group_id: group.id })
+            .then(sets => {
+              const counts = {
+                [group.id]: sets[0].counts,
+                ... this.state.counts
+              }
+              this.setState({ counts })
+            })
+        }
+      })
+  }
 
-  componentDidMount:->
-    API.type("groups").get(project_id: @props.project.id).then (groups)=>
-      group.showButtons = false for group in groups  # hide buttons by default
-      @setState groups: groups
-
-  showButtonsForGroup: (group, e) ->
+  showButtonsForGroup(group, e) {
     group.showButtons = true
-    @forceUpdate() # trigger re-render to update buttons
+    // trigger re-render to update buttons
+    this.forceUpdate()
+  }
 
-  hideButtonsForGroup: (group, e) ->
+  hideButtonsForGroup(group, e) {
     group.showButtons = false
-    @forceUpdate() # trigger re-render to update buttons
+    // trigger re-render to update buttons
+    this.forceUpdate()
+  }
 
-  renderGroup: (group) ->
-    buttonContainerClasses = []
-    groupNameClasses = []
-    if group.showButtons
-      buttonContainerClasses.push "active"
-    else
-      groupNameClasses.push "active"
+  renderGroup(group) {
+    const buttonContainerClasses = []
+    const groupNameClasses = []
+    if (group.showButtons) {
+      buttonContainerClasses.push('active')
+    } else {
+      groupNameClasses.push('active')
+    }
 
-    <div
-      onMouseOver={@showButtonsForGroup.bind this, group}
-      onMouseOut={@hideButtonsForGroup.bind this, group}
-      className='group'
-      style={backgroundImage: "url(#{group.cover_image_url})"}
-      key={group.id}
+    return (
+      <div
+        onMouseOver={this.showButtonsForGroup.bind(this, group)}
+        onMouseOut={this.hideButtonsForGroup.bind(this, group)}
+        className="group"
+        style={{ backgroundImage: `url(${group.cover_image_url})` }}
+        key={group.id}
       >
-      <div className="button-container #{buttonContainerClasses.join ' '}">
-        { for workflow in @props.project.workflows
-            if (group.stats.workflow_counts?[workflow.id]?.active_subjects ? 0) > 0
-              <a href={"/#/#{workflow.name}?group_id=#{group.id}"} className="button small-button" key={workflow.id} >{workflow.name.capitalize()}</a>
-        }
-        <a href="/#/groups/#{group.id}" className="button small-button ghost">More info</a>
+        <div className={`button-container ${buttonContainerClasses.join(' ')}`}>
+          {(() => {
+            const result = []
+            const groupCounts = this.state.counts[group.id] != null &&
+              this.state.counts[group.id]
+            if (groupCounts) {
+              for (let workflow of this.props.project.workflows) {
+                const workflowCounts = groupCounts[workflow.id] != null &&
+                  groupCounts[workflow.id]
+                if ((workflowCounts != null && workflowCounts.active_subjects
+                  ? workflowCounts.active_subjects
+                  : 0) > 0
+                ) {
+                  result.push(
+                    <NavLink to={`/${workflow.name}?group_id=${group.id}`}
+                      className="button small-button"
+                      key={workflow.id}>
+                      {workflow.name.capitalize()}
+                    </NavLink>
+                  )
+                }
+              }
+            }
+
+            return result
+          })()}
+          <NavLink to={`/groups/${group.id}`} className="button small-button ghost">More info</NavLink>
+        </div>
+        <p className={`group-name ${groupNameClasses.join(' ')}`}>{group.name}</p>
       </div>
-      <p className="group-name #{groupNameClasses.join ' '}">{group.name}</p>
-    </div>
+    )
+  }
 
-  render: ->
-    # Only display GroupBrowser if more than one group defined:
-    return null if @state.groups.length <= 1
+  render() {
+    // Only display GroupBrowser if more than one group defined:
+    if (this.state.groups.length <= 1) {
+      return null
+    }
 
-    groups = [@renderGroup(group) for group in @state.groups]
-    <div className="group-browser">
-      <h3 className="groups-header">
-        {
-          if @props.title?
-            <span>{@props.title}</span>
-          else
-            <span>Select a {@props.project.term('group')}</span>
-        }
-      </h3>
-      <div className="groups">
-        {groups}
+    const groups = [
+      this.state.groups.map(group => this.renderGroup(group))
+    ]
+    return (
+      <div className="group-browser">
+        <h3 className="groups-header">
+          {this.props.title != null &&
+            <span>{this.props.title}</span> ||
+            <span>Select a {this.props.project.term('group')}</span>}
+        </h3>
+        <div className="groups">{groups}</div>
       </div>
-    </div>
-
-module.exports = GroupBrowser
+    )
+  }
+}

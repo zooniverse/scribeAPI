@@ -1,15 +1,26 @@
-React         = require 'react'
-SmallButton   = require './small-button'
+import React from "react";
+import createReactClass from "create-react-class";
+import SmallButton from "./small-button.jsx";
 
-module.exports = React.createClass
-  displayName: 'HelpButton'
+export default createReactClass({
+  displayName: "HelpButton",
 
-  getDefaultProps: ->
-    label: 'Need some help?' 
-    key: 'help-button'
- 
-  render: ->
-    classes = ['help-button','ghost']
-    classes.push @props.className if @props.className?
+  getDefaultProps() {
+    return {
+      label: "Need some help?"
+    };
+  },
 
-    <SmallButton {...@props} className={classes.join ' '} />
+  render() {
+    const classes = ["help-button", "ghost"];
+    if (this.props.className != null) {
+      classes.push(this.props.className);
+    }
+
+    return (
+      <SmallButton
+        {...Object.assign({}, this.props, { className: classes.join(" ") })}
+      />
+    );
+  }
+});

@@ -4,8 +4,6 @@ rvm:
 services:
   - mongodb
 before_install:  
-  - npm install -g n
-  - sudo n 6
   - npm install
 script:
   - npm run test

@@ -1,21 +1,33 @@
-React         = require 'react'
+import React from "react";
 
-module.exports = React.createClass
-  displayName: 'LabeledRadioButton'
+export default class LabeledRadioButton extends React.Component {
+  static defaultProps = {
+    classes: "",
+    className: '',
+    name: "input0",
+    value: "",
+    checked: false,
+    onChange: () => true,
+    label: "",
+    disabled: false
+  }
 
-  getDefaultProps: ->
-    classes:          ''
-    key:              Math.random()
-    name:             'input0'
-    value:            ''
-    checked:          false
-    onChange:         () => true
-    label:            ""
-    disabled:         false
-
-  render: ->
-    classes = @props.classes + (if @props.disabled then ' disabled' else '')
-    <label key={@props.key} className={classes}>
-      <input type="radio" name={@props.name} value={@props.value} checked={@props.checked} onChange={@props.onChange} disabled={if @props.disabled then 'disabled' } />
-      <span>{@props.label}</span>
-    </label>
+  render() {
+    const classes = [this.props.className,
+      this.props.classes,
+      (this.props.disabled ? " disabled" : "")].join(' ');
+    return (
+      <label key={this.props.key} className={classes}>
+        <input
+          type="radio"
+          name={this.props.name}
+          value={this.props.value}
+          checked={this.props.checked}
+          onChange={this.props.onChange}
+          disabled={this.props.disabled ? "disabled" : undefined}
+        />
+        <span>{this.props.label}</span>
+      </label>
+    );
+  }
+};

@@ -1,129 +1,226 @@
-React                   = require 'react'
-DraggableModal          = require '../../../draggable-modal'
-GenericButton           = require '../../../buttons/generic-button'
-DoneButton              = require '../../../buttons/done-button'
-HelpButton              = require '../../../buttons/help-button'
-BadSubjectButton        = require '../../../buttons/bad-subject-button'
-SmallButton             = require '../../../buttons/small-button'
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * DS205: Consider reworking code to avoid use of IIFEs
+ * DS207: Consider shorter variations of null checks
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+import React from "react";
+import DraggableModal from "../../../draggable-modal.jsx";
+import GenericButton from "../../../buttons/generic-button.jsx";
+import DoneButton from "../../../buttons/done-button.jsx";
+import HelpButton from "../../../buttons/help-button.jsx";
+import BadSubjectButton from "../../../buttons/bad-subject-button.jsx";
+import SmallButton from "../../../buttons/small-button.jsx";
 
-VerifyTool = React.createClass
-  displayName: 'VerifyTool'
+import createReactClass from "create-react-class";
+const VerifyTool = createReactClass({
+  displayName: "VerifyTool",
 
-  getInitialState: ->
-    annotation:
-      value: ''
+  getInitialState() {
+    return {
+      annotation: {
+        value: ""
+      }
+    };
+  },
 
-  getDefaultProps: ->
-    annotation: {}
-    task: null
-    subject: null
-    standalone: true
-    annotation_key: 'value'
-    focus: true
-    doneButtonLabel: 'Okay'
-    transcribeButtonLabel: 'None of these? Enter your own'
+  getDefaultProps() {
+    return {
+      annotation: {},
+      task: null,
+      subject: null,
+      standalone: true,
+      annotation_key: "value",
+      focus: true,
+      doneButtonLabel: "Okay",
+      transcribeButtonLabel: "None of these? Enter your own"
+    };
+  },
 
-  componentWillReceiveProps: ->
-    @setState
-      annotation: @props.annotation
+  componentWillReceiveProps() {
+    return this.setState({
+      annotation: this.props.annotation
+    });
+  },
 
-  commitAnnotation: ->
-    @props.onComplete @state.annotation
+  commitAnnotation() {
+    return this.props.onComplete(this.state.annotation);
+  },
 
-  handleChange: (e) ->
-    @state.annotation[@props.annotation_key] = e.target.value
-    @forceUpdate()
+  handleChange(e) {
+    this.state.annotation[this.props.annotation_key] = e.target.value;
+    return this.forceUpdate();
+  },
 
-  handleKeyPress: (e) ->
+  handleKeyPress(e) {
+    if ([13].indexOf(e.keyCode) >= 0) {
+      // ENTER:
+      this.commitAnnotation();
+      return e.preventDefault();
+    }
+  },
 
-    if [13].indexOf(e.keyCode) >= 0 # ENTER:
-      @commitAnnotation()
-      e.preventDefault()
+  chooseOption(e) {
+    let el = $(e.target);
+    if (el.tagName !== "A") {
+      el = $(el.parents("a")[0]);
+    }
+    const value = this.props.subject.data["values"][el.data("value_index")];
 
-  chooseOption: (e) ->
-    el = $(e.target)
-    el = $(el.parents('a')[0]) if el.tagName != 'A'
-    value = @props.subject.data['values'][el.data('value_index')]
+    return this.setState({ annotation: value }, () => {
+      return this.commitAnnotation();
+    });
+  },
 
-    @setState({annotation: value}, () =>
-      @commitAnnotation()
-    )
+  // this can go into a mixin? (common across all transcribe tools)
+  getPosition(data) {
+    let x, y;
+    const yPad = 20;
+    switch (data.toolName) {
+      case "rectangleTool":
+        ({ x } = data);
+        y = parseFloat(data.y) + parseFloat(data.height) + yPad;
+        break;
+      case "textRowTool":
+        ({ x } = data);
+        y = data.yLower + yPad;
+        break;
+      default:
+        // default for pointTool
+        ({ x } = data);
+        y = data.y + yPad;
+    }
+    return { x, y };
+  },
 
-  # this can go into a mixin? (common across all transcribe tools)
-  getPosition: (data) ->
-    yPad = 20
-    switch data.toolName
-      when 'rectangleTool'
-        x = data.x
-        y = parseFloat(data.y) + parseFloat(data.height) + yPad
-      when 'textRowTool'
-        x = data.x
-        y = data.yLower + yPad
-      else # default for pointTool
-        x = data.x
-        y = data.y + yPad
-    return {x,y}
+  render() {
+    // return null unless @props.viewerSize? && @props.subject?
+    // return null if ! @props.scale? || ! @props.scale.horizontal?
+    let label, data;
+    if (this.props.loading) {
+      return null;
+    } // hide verify tool while loading image
 
-  render: ->
-    # return null unless @props.viewerSize? && @props.subject?
-    # return null if ! @props.scale? || ! @props.scale.horizontal?
-    return null if @props.loading # hide verify tool while loading image
+    const val =
+      this.state.annotation[this.props.annotation_key] != null
+        ? this.state.annotation[this.props.annotation_key]
+        : "";
 
-    val = @state.annotation[@props.annotation_key] ? ''
+    label = this.props.task.instruction;
+    if (!this.props.standalone) {
+      label = this.props.label != null ? this.props.label : "";
+    }
 
-    label = @props.task.instruction
-    if ! @props.standalone
-      label = @props.label ? ''
+    const buttons = [];
+    console.info(`Verifying subject id ${this.props.subject.id}`);
 
-    buttons = []
-    console.info "Verifying subject id #{@props.subject.id}"
+    if (this.props.onShowHelp != null) {
+      buttons.push(
+        <HelpButton onClick={this.props.onShowHelp} key="help-button" />
+      );
+    }
 
-    if @props.onShowHelp?
-      buttons.push <HelpButton onClick={@props.onShowHelp} key="help-button"/>
+    if ((this.props.task != null
+      ? this.props.task.tool_config.displays_transcribe_button
+      : undefined) != null &&
+      this.props.subject != null) {
+      const transcribe_url = `/#/transcribe/${
+        this.props.subject.parent_subject_id
+        }?scrollX=${window.scrollX}&scrollY=${window.scrollY}&page=${
+        this.props.subject._meta != null
+          ? this.props.subject._meta.current_page
+          : undefined
+        }`;
+      buttons.push(
+        <GenericButton
+          key="transcribe-button"
+          label={this.props.transcribeButtonLabel}
+          href={transcribe_url}
+          className="ghost small-button help-button"
+        />
+      );
+    }
+    // buttons.push <DoneButton label={@props.doneButtonLabel} onClick={@commitAnnotation} />
 
-    if @props.task?.tool_config.displays_transcribe_button? and @props.subject?
-      transcribe_url = "/#/transcribe/#{@props.subject.parent_subject_id}?scrollX=#{window.scrollX}&scrollY=#{window.scrollY}&page=#{@props.subject._meta?.current_page}"
-      buttons.push <GenericButton key="transcribe-button" label={@props.transcribeButtonLabel} href={transcribe_url} className="ghost small-button help-button" />
-      # buttons.push <DoneButton label={@props.doneButtonLabel} onClick={@commitAnnotation} />
+    if (this.props.onBadSubject != null) {
+      buttons.push(
+        <BadSubjectButton
+          key="bad-subject-button"
+          label={`Bad ${this.props.project.term("mark")}`}
+          className="floated-left"
+          active={this.props.badSubject}
+          onClick={this.props.onBadSubject}
+        />
+      );
+      if (this.props.badSubject) {
+        buttons.push(<SmallButton label="Next" key="done-button" onClick={this.commitAnnotation} />);
+      }
+    }
 
-    if @props.onBadSubject?
-      buttons.push <BadSubjectButton key="bad-subject-button" label={"Bad #{@props.project.term('mark')}"} className="floated-left" active={@props.badSubject} onClick={@props.onBadSubject} />
-      if @props.badSubject
-        buttons.push <SmallButton label='Next' key="done-button" onClick={@commitAnnotation} />
+    const { x, y } = this.getPosition(this.props.subject.region);
+    return (
+      <DraggableModal
+        header={label}
+        x={x * this.props.scale.horizontal + this.props.scale.offsetX}
+        y={y * this.props.scale.vertical + this.props.scale.offsetY}
+        onDone={this.commitAnnotation}
+        buttons={buttons}
+      >
+        <div className="verify-tool-choices">
+          {this.props.subject.data.task_prompt != null ? (
+            <span>
+              Original prompt: <em>{this.props.subject.data.task_prompt}</em>
+            </span>
+          ) : undefined}
+          <ul>
+            {(() => {
+              const result = [];
+              for (let i = 0; i < this.props.subject.data["values"].length; i++) {
+                data = this.props.subject.data["values"][i];
+                result.push(
+                  <li key={i}>
+                    <a href="javascript:void(0);" onClick={this.chooseOption} data-value_index={i} >
+                      <ul className="choice clickable">
+                        {(() => {
+                          const result1 = [];
+                          for (let k in data) {
+                            // Label should be the key in the data hash unless it's a single-value hash with key 'value':
+                            const v = data[k];
+                            label = k !== "value" ||
+                              (() => {
+                                const result2 = [];
+                                for (let _k in data) {
+                                  const _v = data[_k];
+                                  result2.push(_k);
+                                }
+                                return result2;
+                              })().length > 1
+                              ? k
+                              : "";
+                            // TODO: hack to approximate a friendly label in emigrant; should pull from original label:
+                            label = label.replace(/em_/, '')
+                            label = label.replace(/_/g, ' ')
+                            result1.push(
+                              <li key={k}><span className="label">{label}</span> {v}</li>
+                            );
+                          }
 
-    {x,y} = @getPosition @props.subject.region
-    <DraggableModal
+                          return result1;
+                        })()}
+                      </ul>
+                    </a>
+                  </li>
+                );
+              }
 
-      header  = {label}
-      x={x*@props.scale.horizontal + @props.scale.offsetX}
-      y={y*@props.scale.vertical + @props.scale.offsetY}
-      onDone  = {@commitAnnotation}
-      buttons = {buttons}>
+              return result;
+            })()}
+          </ul>
+        </div>
+      </DraggableModal>
+    );
+  }
+});
 
-      <div className="verify-tool-choices">
-        { if @props.subject.data.task_prompt?
-          <span>Original prompt: <em>{ @props.subject.data.task_prompt }</em></span>
-        }
-        <ul>
-        { for data,i in @props.subject.data['values']
-            <li key={i}>
-              <a href="javascript:void(0);" onClick={@chooseOption} data-value_index={i}>
-                <ul className="choice clickable" >
-                { for k,v of data
-                    # Label should be the key in the data hash unless it's a single-value hash with key 'value':
-                    label = if k != 'value' or (_k for _k,_v of data).length > 1 then k else ''
-                    # TODO: hack to approximate a friendly label in emigrant; should pull from original label:
-                    label = label.replace(/em_/,'')
-                    label = label.replace(/_/g, ' ')
-                    <li key={k}><span className="label">{label}</span> {v}</li>
-                }
-                </ul>
-              </a>
-            </li>
-        }
-        </ul>
-      </div>
-
-    </DraggableModal>
-
-module.exports = VerifyTool
+export default VerifyTool;

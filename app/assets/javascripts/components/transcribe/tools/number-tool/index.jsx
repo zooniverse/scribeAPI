@@ -1,8 +1,13 @@
-React             = require 'react'
-TextTool          = require '../text-tool'
+import React from "react";
+import createReactClass from "create-react-class";
+import TextTool from "../text-tool/index.jsx";
 
-module.exports = React.createClass
-  displayName: 'NumberTool'
+export default createReactClass({
+  displayName: "NumberTool",
 
-  render: ->
-    <TextTool {...@props} inputType='number'/>
+  render() {
+    return (
+      <TextTool {...Object.assign({}, this.props, { inputType: "number" })} />
+    );
+  }
+});

@@ -1,73 +1,119 @@
-React                   = require 'react'
+/*
+ * decaffeinate suggestions:
+ * DS205: Consider reworking code to avoid use of IIFEs
+ * DS207: Consider shorter variations of null checks
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+import React from 'react'
+import marked from '../lib/marked.min.js'
 
-Footer = React.createClass
-  displayName: 'Footer'
+import createReactClass from 'create-react-class'
+const Footer = createReactClass({
+  displayName: 'Footer',
 
-  propTypes:->
-    privacyPolicy: @props.privacyPolicy
+  propTypes() {
+    return { privacyPolicy: this.props.privacyPolicy }
+  },
 
-  getInitialState: ->
-    categories: null
+  getInitialState() {
+    return { categories: null }
+  },
 
-  render: ->
-    <div id="footer" className="scribe-footer">
-      <a href="http://scribeproject.github.io/" className="scribe-logo-container">
-        <img src={"/assets/scribe-logo-inv.png"} alt={"Scribe Logo"} ></img>
-      </a>
+  render() {
+    let i
+    return (
+      <div id="footer" className="scribe-footer">
+        <a href="http://scribeproject.github.io/" className="scribe-logo-container">
+          <img src={'/assets/scribe-logo-inv.png'} alt={'Scribe Logo'} ></img>
+        </a>
+        <div className="scribe-footer-content">
+          <div className="scribe-footer-heading">This project is built using Scribe: document transcription, crowdsourced.</div>
+          {this.state.categories != null ? (
+            <div className="scribe-footer-projects">
+              {(() => {
+                let j
+                const result = []
+                for (
+                  j = 0, i = j;
+                  j < this.state.categories.length;
+                  j++ , i = j
+                ) {
+                  var { category, projects } = this.state.categories[i]
+                  result.push(
+                    <div key={i} className="scribe-footer-category">
+                      <div className="scribe-footer-category-title">{category}</div>
+                      {(() => {
+                        const result1 = []
+                        for (i = 0; i < projects.length; i++) {
+                          const project = projects[i]
+                          result1.push(
+                            <div key={i} className="scribe-footer-project">
+                              <a href={project.url}>{project.name}</a>
+                            </div>
+                          )
+                        }
 
-      <div className="scribe-footer-content">
-        <div className="scribe-footer-heading">This project is built using Scribe: document transcription, crowdsourced.</div>
-
-        {if @state.categories?
-          <div className="scribe-footer-projects">
-            {for {category, projects}, i in @state.categories
-              <div key={i} className="scribe-footer-category">
-                <div className="scribe-footer-category-title">{category}</div>
-                {for project, i in projects
-                  <div key={i} className="scribe-footer-project">
-                    <a href={project.url}>{project.name}</a>
-                  </div>
+                        return result1
+                      })()}
+                      <div className="scribe-footer-project" />
+                    </div>
+                  )
                 }
-                <div className="scribe-footer-project"></div>
-              </div>
-            }
-          </div>
-        }
 
-
-        {
-          if @props.menus? && @props.menus.footer?
-            if @props.menus.footer.length > 0
-              <div className="scribe-footer-general">
-                for item, i in @props.menus.footer
-                  if item.url?
-                    <div className="scribe-footer-category custom-footer-link">
-                      <a href={item.url}>{item.label}</a>
-                    </div>
-                  else
-                    <div className="scribe-footer-category custom-footer-link">
-                      {item.label}
-                    </div>
-              </div>
-          else
-            <div className="scribe-footer-general">
-              <div className="scribe-footer-category">
-                <a href={@props.privacyPolicy}>Privacy Policy</a>
-              </div>
-              <div className="scribe-footer-category">
-                <a href="https://github.com/zooniverse/ScribeAPI">Source & Bugs</a>
-              </div>
+                return result
+              })()}
             </div>
-        }
+          ) : undefined}
+          {(() => {
+            if (this.props.menus != null && this.props.menus.footer != null) {
+              if (this.props.menus.footer.length > 0) {
+                return (
+                  <div className="scribe-footer-general">
+                    {(() => {
+                      const result2 = []
+                      for (i = 0; i < this.props.menus.footer.length; i++) {
+                        const item = this.props.menus.footer[i]
+                        if (item.url != null) {
+                          result2.push(
+                            <div className="scribe-footer-category custom-footer-link">
+                              <a href={item.url}>{item.label}</a>
+                            </div>
+                          )
+                        } else {
+                          result2.push(
+                            <div className="scribe-footer-category custom-footer-link">
+                              {item.label}
+                            </div>
+                          )
+                        }
+                      }
 
-
+                      return result2
+                    })()}
+                  </div>
+                )
+              }
+            } else {
+              return (
+                <div className="scribe-footer-general">
+                  <div className="scribe-footer-category">
+                    <a href={this.props.privacyPolicy}>Privacy Policy</a>
+                  </div>
+                  <div className="scribe-footer-category">
+                    <a href="https://github.com/zooniverse/ScribeAPI">Source &amp; Bugs</a>
+                  </div>
+                </div>
+              )
+            }
+          })()}
+        </div>
+        {this.props.partials != null &&
+          this.props.partials['footer'] != null ? (
+            <div className="custom-footer" dangerouslySetInnerHTML={{ __html: marked(this.props.partials['footer']) }} />
+          ) : undefined}
       </div>
+    )
+  }
+})
 
-      {
-        if @props.partials? && @props.partials["footer"]?
-          <div className="custom-footer" dangerouslySetInnerHTML={{__html: marked(@props.partials["footer"])}} />
-      }
-
-    </div>
-
-module.exports = Footer
+export default Footer

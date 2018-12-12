@@ -1,8 +1,13 @@
-React             = require 'react'
-TextTool          = require '../text-tool'
+import React from "react";
+import createReactClass from "create-react-class";
+import TextTool from "../text-tool/index.jsx";
 
-module.exports = React.createClass
-  displayName: 'DateTool'
+export default createReactClass({
+  displayName: "DateTool",
 
-  render: ->
-    <TextTool {...@props} inputType='date'/>
+  render() {
+    return (
+      <TextTool {...Object.assign({}, this.props, { inputType: "date" })} />
+    );
+  }
+});

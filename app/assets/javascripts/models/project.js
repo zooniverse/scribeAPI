@@ -1,10 +1,14 @@
-class Project
+class Project {
+  constructor(obj) {
+    for (let k in obj) {
+      const v = obj[k];
+      this[k] = v;
+    }
+  }
 
-  constructor: (obj) ->
-    for k,v of obj
-      @[k] = v
+  term(t) {
+    return this.terms_map[t] != null ? this.terms_map[t] : t;
+  }
+}
 
-  term: (t) ->
-    @terms_map[t] ? t
-
-module.exports = Project
+export default Project;

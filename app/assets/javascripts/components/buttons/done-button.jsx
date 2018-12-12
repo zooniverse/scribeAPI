@@ -1,12 +1,21 @@
-React         = require 'react'
-GenericButton = require './generic-button'
+import React from "react";
+import createReactClass from "create-react-class";
+import GenericButton from "./generic-button.jsx";
 
-module.exports = React.createClass
-  displayName: 'DoneButton'
+export default createReactClass({
+  displayName: "DoneButton",
 
-  getDefaultProps: ->
-    label: 'Done'
+  getDefaultProps() {
+    return { label: "Done" };
+  },
 
-  render: ->
-    <GenericButton label={@props.label} onClick={@props.onClick} major=true className='done'/>
-     
+  render() {
+    return (
+      <GenericButton label={this.props.label}
+        onClick={this.props.onClick}
+        major={true}
+        className="done"
+      />
+    );
+  }
+});

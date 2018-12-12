@@ -1,15 +1,20 @@
-# @cjsx React.DOM
-React = require 'react'
 
-PrevButton = React.createClass
-  displayName: 'PrevButton'
+import React from "react";
+import createReactClass from "create-react-class";
 
-  render: ->
-    classes = 'button prev'
-    # classes = classes + ' disabled' unless @props.prevStepAvailable()
+const PrevButton = createReactClass({
+  displayName: "PrevButton",
 
-    <button className = {classes} onClick = {null} >
-      &lt; Back
-    </button>
+  render() {
+    const classes = "button prev";
+    // classes = classes + ' disabled' unless @props.prevStepAvailable()
 
-module.exports = PrevButton
+    return (
+      <button className={classes} onClick={null}>
+        &lt; Back
+      </button>
+    );
+  }
+});
+
+export default PrevButton;

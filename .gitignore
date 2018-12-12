@@ -13,6 +13,9 @@ g#----------------------------------------------------------------------------
 # background image which changes based on which project is loaded
 public/background.jpg
 
+# pre-compiled assets
+public/assets
+
 # bundler state
 /.bundle
 /vendor/bundle/
@@ -87,3 +90,8 @@ node_modules
 
 #dump
 dump
+/public/packs
+/public/packs-test
+/node_modules
+yarn-debug.log*
+.yarn-integrity

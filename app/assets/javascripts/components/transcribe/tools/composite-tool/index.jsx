@@ -1,154 +1,243 @@
-React             = require 'react'
-{Navigation}      = require 'react-router'
-DraggableModal    = require '../../../draggable-modal'
-DoneButton        = require './done-button'
-SmallButton       = require '../../../buttons/small-button'
-PrevButton        = require './prev-button'
-HelpButton        = require '../../../buttons/help-button'
-BadSubjectButton  = require '../../../buttons/bad-subject-button'
-IllegibleSubjectButton = require '../../../buttons/illegible-subject-button'
+/*
+ * decaffeinate suggestions:
+ * DS101: Remove unnecessary use of Array.from
+ * DS102: Remove unnecessary code created because of implicit returns
+ * DS205: Consider reworking code to avoid use of IIFEs
+ * DS207: Consider shorter variations of null checks
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+import React from "react";
+import createReactClass from "create-react-class";
+import DraggableModal from "../../../draggable-modal.jsx";
+import DoneButton from "./done-button.jsx";
+import SmallButton from "../../../buttons/small-button.jsx";
+import PrevButton from "./prev-button.jsx";
+import HelpButton from "../../../buttons/help-button.jsx";
+import BadSubjectButton from "../../../buttons/bad-subject-button.jsx";
+import IllegibleSubjectButton from "../../../buttons/illegible-subject-button.jsx";
 
+const CompositeTool = createReactClass({
+  displayName: "CompositeTool",
 
-CompositeTool = React.createClass
-  displayName: 'CompositeTool'
-  mixins: [Navigation]
+  getInitialState() {
+    return {
+      annotation: this.props.annotation != null ? this.props.annotation : {},
+      viewerSize: this.props.viewerSize,
+      active_field_key: Array.from(this.props.task.tool_config.options).map(
+        c => c.value
+      )[0]
+    };
+  },
 
-  getInitialState: ->
-    annotation: @props.annotation ? {}
-    viewerSize: @props.viewerSize
-    active_field_key: (c.value for c in @props.task.tool_config.options)[0]
+  getDefaultProps() {
+    return {
+      annotation: {},
+      task: null,
+      subject: null
+    };
+  },
 
-  getDefaultProps: ->
-    annotation: {}
-    task: null
-    subject: null
+  // this can go into a mixin? (common across all transcribe tools)
+  getPosition(data) {
+    let x, y;
+    if (data.x == null) {
+      return { x: null, y: null };
+    }
 
-  # this can go into a mixin? (common across all transcribe tools)
-  getPosition: (data) ->
-    return x: null, y: null if ! data.x?
+    const yPad = 20;
+    switch (data.toolName) {
+      case "rectangleTool":
+        ({ x } = data);
+        y = parseFloat(data.y) + parseFloat(data.height) + yPad;
+        break;
+      case "textRowTool":
+        ({ x } = data);
+        y = data.yLower + yPad;
+        break;
+      default:
+        // default for pointTool
+        ({ x } = data);
+        if (data.y != null) {
+          y = data.y + yPad;
+        }
+    }
+    if (x == null) {
+      x = this.props.subject.width / 2;
+    }
+    if (y == null) {
+      y = this.props.subject.height / 2;
+    }
+    return { x, y };
+  },
 
-    yPad = 20
-    switch data.toolName
-      when 'rectangleTool'
-        x = data.x
-        y = parseFloat(data.y) + parseFloat(data.height) + yPad
-      when 'textRowTool'
-        x = data.x
-        y = data.yLower + yPad
-      else # default for pointTool
-        x = data.x
-        y = data.y + yPad if data.y?
-    x = @props.subject.width / 2 if ! x?
-    y = @props.subject.height / 2 if ! y?
-    return {x,y}
-
-  onViewerResize: (size) ->
-    @setState
+  onViewerResize(size) {
+    return this.setState({
       viewerSize: size
+    });
+  },
 
-  handleChange: (annotation) ->
-    @setState annotation: annotation
+  handleChange(annotation) {
+    this.setState({ annotation });
 
-    @props.onChange annotation # forward annotation to parent
+    return this.props.onChange(annotation);
+  }, // forward annotation to parent
 
-  # Fires when user hits <enter> in an input
-  # If there are more inputs, move focus to next input
-  # Otherwise commit annotation (which is default behavior when there's only one input
-  handleCompletedField: ->
-    field_keys = (c.value for c of @props.task.tool_config.options)
-    next_field_key = field_keys[ field_keys.indexOf(@state.active_field_key) + 1 ]
-
-    if next_field_key?
-      @setState active_field_key: next_field_key
-        , =>
-          @forceUpdate()
-    else
-      @commitAnnotation()
-
-  # User moved focus to an input:
-  handleFieldFocus: (annotation_key) ->
-    @setState active_field_key: annotation_key
-
-  # this can go into a mixin? (common across all transcribe tools)
-  commitAnnotation: ->
-    # Clear current annotation so that it doesn't carry over into next task if next task uses same tool
-    ann = @state.annotation
-    @setState annotation: {}, () =>
-      @props.onComplete ann
-
-    if @props.transcribeMode is 'page' or @props.transcribeMode is 'single'
-      if @props.isLastSubject and not @props.task.next_task?
-        @props.returnToMarking()
-
-  # this can go into a mixin? (common across all transcribe tools)
-  returnToMarking: ->
-    @commitAnnotation()
-
-    # transition back to mark
-    @transitionTo 'mark', {},
-      subject_set_id: @props.subject.subject_set_id
-      selected_subject_id: @props.subject.parent_subject_id
-      page: @props.subjectCurrentPage
-
-  render: ->
-    buttons = []
-    # TK: buttons.push <PrevButton onClick={=> console.log "Prev button clicked!"} />
-
-    if @props.onShowHelp?
-      buttons.push <HelpButton onClick={@props.onShowHelp} key="help-button"/>
-
-    if @props.onBadSubject?
-      buttons.push <BadSubjectButton key="bad-subject-button" label={"Bad #{@props.project.term('mark')}"} active={@props.badSubject} onClick={@props.onBadSubject} />
-
-    if @props.onIllegibleSubject?
-      buttons.push <IllegibleSubjectButton active={@props.illegibleSubject} onClick={@props.onIllegibleSubject} key="illegible-subject-button"/>
-
-    buttonLabel =
-      if @props.task.next_task?
-       'Continue'
-      else
-        if @props.isLastSubject and ( @props.transcribeMode is 'page' or @props.transcribeMode is 'single' )
-          'Return to Marking'
-        else 'Next Entry'
-
-    buttons.push <SmallButton label={buttonLabel} key="done-button" onClick={@commitAnnotation} />
-
-    {x,y} = @getPosition @props.subject.region
-
-    <DraggableModal
-      x={x*@props.scale.horizontal + @props.scale.offsetX}
-      y={y*@props.scale.vertical + @props.scale.offsetY}
-      buttons={buttons}
-      classes="transcribe-tool composite"
-      >
-
-      <label>{@props.task.instruction}</label>
-
-      {
-        for sub_tool, index in @props.task.tool_config.options
-          ToolComponent = @props.transcribeTools[sub_tool.tool]
-          annotation_key = sub_tool.value
-          focus = annotation_key is @state.active_field_key
-
-          <ToolComponent
-            key={index}
-            task={@props.task}
-            tool_config={sub_tool.tool_config}
-            subject={@props.subject}
-            workflow={@props.workflow}
-            standalone={false}
-            viewerSize={@props.viewerSize}
-            onChange={@handleChange}
-            onComplete={@handleCompletedField}
-            onInputFocus={@handleFieldFocus}
-            label={sub_tool.label ? ''}
-            focus={focus}
-            scale={@props.scale}
-            annotation_key={annotation_key}
-            annotation={@state.annotation}
-          />
+  // Fires when user hits <enter> in an input
+  // If there are more inputs, move focus to next input
+  // Otherwise commit annotation (which is default behavior when there's only one input
+  handleCompletedField() {
+    const field_keys = (() => {
+      const result = [];
+      for (let c in this.props.task.tool_config.options) {
+        result.push(c.value);
       }
+      return result;
+    })();
+    const next_field_key =
+      field_keys[field_keys.indexOf(this.state.active_field_key) + 1];
 
-    </DraggableModal>
+    if (next_field_key != null) {
+      return this.setState({ active_field_key: next_field_key }, () => {
+        return this.forceUpdate();
+      });
+    } else {
+      return this.commitAnnotation();
+    }
+  },
 
-module.exports = CompositeTool
+  // User moved focus to an input:
+  handleFieldFocus(annotation_key) {
+    return this.setState({ active_field_key: annotation_key });
+  },
+
+  // this can go into a mixin? (common across all transcribe tools)
+  commitAnnotation() {
+    // Clear current annotation so that it doesn't carry over into next task if next task uses same tool
+    const ann = this.state.annotation;
+    this.setState({ annotation: {} }, () => {
+      return this.props.onComplete(ann);
+    });
+
+    if (this.props.transcribeMode === "page" || this.props.transcribeMode === "single"
+    ) {
+      if (this.props.isLastSubject && this.props.task.next_task == null) {
+        return this.props.returnToMarking();
+      }
+    }
+  },
+
+  // this can go into a mixin? (common across all transcribe tools)
+  returnToMarking() {
+    this.commitAnnotation();
+
+    // transition back to mark
+    return this.props.context.router.transitionTo(
+      "mark",
+      {},
+      {
+        subject_set_id: this.props.subject.subject_set_id,
+        selected_subject_id: this.props.subject.parent_subject_id,
+        page: this.props.subjectCurrentPage
+      }
+    );
+  },
+
+  render() {
+    const buttons = [];
+    // TK: buttons.push <PrevButton onClick={=> console.log "Prev button clicked!"} />
+
+    if (this.props.onShowHelp != null) {
+      buttons.push(
+        <HelpButton onClick={this.props.onShowHelp} key="help-button" />
+      );
+    }
+
+    if (this.props.onBadSubject != null) {
+      buttons.push(
+        <BadSubjectButton
+          key="bad-subject-button"
+          label={`Bad ${this.props.project.term("mark")}`}
+          active={this.props.badSubject}
+          onClick={this.props.onBadSubject}
+        />
+      );
+    }
+
+    if (this.props.onIllegibleSubject != null) {
+      buttons.push(
+        <IllegibleSubjectButton
+          active={this.props.illegibleSubject}
+          onClick={this.props.onIllegibleSubject}
+          key="illegible-subject-button"
+        />
+      );
+    }
+
+    const buttonLabel =
+      this.props.task.next_task != null
+        ? "Continue"
+        : this.props.isLastSubject &&
+          (this.props.transcribeMode === "page" ||
+            this.props.transcribeMode === "single")
+          ? "Return to Marking"
+          : "Next Entry";
+
+    buttons.push(
+      <SmallButton
+        label={buttonLabel}
+        key="done-button"
+        onClick={this.commitAnnotation}
+      />
+    );
+
+    const { x, y } = this.getPosition(this.props.subject.region);
+
+    return (
+      <DraggableModal
+        x={x * this.props.scale.horizontal + this.props.scale.offsetX}
+        y={y * this.props.scale.vertical + this.props.scale.offsetY}
+        buttons={buttons}
+        classes="transcribe-tool composite"
+      >
+        <label>{this.props.task.instruction}</label>
+        {(() => {
+          const result = [];
+
+          for (let index = 0;
+            index < this.props.task.tool_config.options.length;
+            index++
+          ) {
+            const sub_tool = this.props.task.tool_config.options[index];
+            const ToolComponent = this.props.transcribeTools[sub_tool.tool];
+            const annotation_key = sub_tool.value;
+            const focus = annotation_key === this.state.active_field_key;
+
+            result.push(
+              <ToolComponent
+                key={index}
+                task={this.props.task}
+                tool_config={sub_tool.tool_config}
+                subject={this.props.subject}
+                workflow={this.props.workflow}
+                standalone={false}
+                viewerSize={this.props.viewerSize}
+                onChange={this.handleChange}
+                onComplete={this.handleCompletedField}
+                onInputFocus={this.handleFieldFocus}
+                label={sub_tool.label != null ? sub_tool.label : ""}
+                focus={focus}
+                scale={this.props.scale}
+                annotation_key={annotation_key}
+                annotation={this.state.annotation}
+              />
+            );
+          }
+
+          return result;
+        })()}
+      </DraggableModal>
+    );
+  }
+});
+
+export default CompositeTool;

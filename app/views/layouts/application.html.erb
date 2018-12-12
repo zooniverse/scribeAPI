@@ -24,7 +24,7 @@
 <% end %>
 
 <script src="https://cdn.polyfill.io/v1/polyfill.min.js?features=default,es6,Promise,fetch&amp;flags=gated"></script>
-<%= javascript_include_tag "application" %>
+<%= javascript_pack_tag 'application' %>
 <script src='/js/custom.js' charset="utf-8"></script>
 
 <%= csrf_meta_tags %>
@@ -65,6 +65,6 @@
   })(window,document,'script','dataLayer','<%= current_project.analytics[:google_tag_manager_client_id] %>');
 </script>
 <% end %>
-
+<div id="app"></div>
 </body>
 </html>

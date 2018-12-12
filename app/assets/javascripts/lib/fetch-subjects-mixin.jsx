@@ -1,57 +1,92 @@
-API = require './api'
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * DS207: Consider shorter variations of null checks
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+import API from './api.jsx'
+import queryString from 'query-string'
 
-module.exports =
-  componentDidMount: ->
+export default {
+  componentDidMount() {
+    // Fetching a single subject?
+    if (this.props.match.params.subject_id != null) {
+      return this.fetchSubject(this.props.match.params.subject_id)
 
-    # Fetching a single subject?
-    if @props.params.subject_id?
-      @fetchSubject @props.params.subject_id
+      // Fetching subjects by current workflow and optional filters:
+    } else {
+      let query = queryString.parse(this.props.location)
+      // Gather filters by which to query subjects
+      const params = {
+        parent_subject_id: this.props.match.params.parent_subject_id,
+        group_id: query.group_id != null ? query.group_id : null,
+        subject_set_id:
+          query.subject_set_id != null
+            ? query.subject_set_id
+            : null
+      }
+      return this.fetchSubjects(params)
+    }
+  },
 
-    # Fetching subjects by current workflow and optional filters:
-    else
-      # Gather filters by which to query subjects
-      params =
-        parent_subject_id:        @props.params.parent_subject_id
-        group_id:                 @props.query.group_id ? null
-        subject_set_id:           @props.query.subject_set_id ? null
-      @fetchSubjects params
+  orderSubjectsByY(subjects) {
+    return subjects.sort(function(a, b) {
+      if (a.region.y >= b.region.y) {
+        return 1
+      } else {
+        return -1
+      }
+    })
+  },
 
-  orderSubjectsByY: (subjects) ->
-    subjects.sort (a,b) ->
-      return if a.region.y >= b.region.y then 1 else -1
+  // Fetch a single subject:
+  fetchSubject(subject_id) {
+    const request = API.type('subjects').get(subject_id)
 
-  # Fetch a single subject:
-  fetchSubject: (subject_id)->
-    request = API.type("subjects").get subject_id
-
-    @setState
+    this.setState({
       subject: []
+    })
 
-    request.then (subject) =>
-      @setState
-        subject_index: 0
-        subjects: [subject],
-        () =>
-          if @fetchSubjectsCallback?
-            @fetchSubjectsCallback()
+    return request.then(subject => {
+      return this.setState(
+        {
+          subject_index: 0,
+          subjects: [subject]
+        },
+        () => {
+          if (this.fetchSubjectsCallback != null) {
+            return this.fetchSubjectsCallback()
+          }
+        }
+      )
+    })
+  },
 
-  fetchSubjects: (params, callback) ->
-    _params = $.extend({
-      workflow_id: @getActiveWorkflow().id
-      limit: @getActiveWorkflow().subject_fetch_limit
-    }, params)
-    API.type('subjects').get(_params).then (subjects) =>
-      if subjects.length is 0
-        @setState noMoreSubjects: true
+  fetchSubjects(params, callback) {
+    const _params = $.extend(
+      {
+        workflow_id: this.getActiveWorkflow().id,
+        limit: this.getActiveWorkflow().subject_fetch_limit
+      },
+      params
+    )
+    return API.type('subjects')
+      .get(_params)
+      .then(subjects => {
+        if (subjects.length === 0) {
+          this.setState({ noMoreSubjects: true })
+        } else {
+          this.setState({
+            subject_index: 0,
+            subjects: this.orderSubjectsByY(subjects),
+            subjects_next_page: subjects[0].getMeta('next_page')
+          })
+        }
 
-      else
-        @setState
-          subject_index: 0
-          subjects: subjects
-          subjects: @orderSubjectsByY(subjects)
-          subjects_next_page: subjects[0].getMeta("next_page")
-
-      # Does including instance have a defined callback to call when new subjects received?
-      if @fetchSubjectsCallback?
-        @fetchSubjectsCallback()
-
+        // Does including instance have a defined callback to call when new subjects received?
+        if (this.fetchSubjectsCallback != null) {
+          return this.fetchSubjectsCallback()
+        }
+      })
+  }
+}

@@ -1,341 +1,576 @@
-React                   = require 'react'
-{Navigation}            = require 'react-router'
-SubjectSetViewer        = require '../subject-set-viewer'
-coreTools               = require '../core-tools'
-FetchSubjectSetsMixin   = require 'lib/fetch-subject-sets-mixin'
-BaseWorkflowMethods     = require 'lib/workflow-methods-mixin'
-JSONAPIClient           = require 'json-api-client' # use to manage data?
-ForumSubjectWidget      = require '../forum-subject-widget'
-API                     = require 'lib/api'
-HelpModal               = require '../help-modal'
-Tutorial                = require '../tutorial'
-HelpButton              = require '../buttons/help-button'
-BadSubjectButton        = require '../buttons/bad-subject-button'
-HideOtherMarksButton    = require '../buttons/hide-other-marks-button'
-DraggableModal          = require '../draggable-modal'
-Draggable               = require 'lib/draggable'
-{Link}                  = require 'react-router'
+/*
+ * decaffeinate suggestions:
+ * DS101: Remove unnecessary use of Array.from
+ * DS102: Remove unnecessary code created because of implicit returns
+ * DS103: Rewrite code to no longer use __guard__
+ * DS104: Avoid inline assignments
+ * DS205: Consider reworking code to avoid use of IIFEs
+ * DS207: Consider shorter variations of null checks
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+import React from "react";
+import createReactClass from "create-react-class";
+import { NavLink } from "react-router-dom";
+import { AppContext } from "../app-context.jsx";
+import SubjectSetViewer from "../subject-set-viewer.jsx";
+import FetchSubjectSetsMixin from "../../lib/fetch-subject-sets-mixin.jsx";
+import BaseWorkflowMethods from "../../lib/workflow-methods-mixin.jsx";
+import ForumSubjectWidget from "../forum-subject-widget.jsx";
+import HelpModal from "../help-modal.jsx";
+import Tutorial from "../tutorial.jsx";
+import HelpButton from "../buttons/help-button.jsx";
+import BadSubjectButton from "../buttons/bad-subject-button.jsx";
+import DraggableModal from "../draggable-modal.jsx";
 
-module.exports = React.createClass # rename to Classifier
-  displayName: 'Mark'
+export default AppContext(createReactClass({
+  // rename to Classifier
+  displayName: "Mark",
 
-  propTypes:
-    onCloseTutorial: React.PropTypes.func.isRequired
+  getDefaultProps() {
+    return { workflowName: "mark" };
+  },
+  // hideOtherMarks: false
 
-  getDefaultProps: ->
-    workflowName: 'mark'
-    # hideOtherMarks: false
+  mixins: [FetchSubjectSetsMixin, BaseWorkflowMethods], // load subjects and set state variables: subjects, currentSubject, classification
 
-  mixins: [FetchSubjectSetsMixin, BaseWorkflowMethods, Navigation] # load subjects and set state variables: subjects, currentSubject, classification
+  getInitialState() {
+    return {
+      taskKey: null,
+      classifications: [],
+      classificationIndex: 0,
+      subject_set_index: 0,
+      subject_index: 0,
+      currentSubToolIndex: 0,
+      helping: false,
+      hideOtherMarks: false,
+      currentSubtool: null,
+      showingTutorial: this.showTutorialBasedOnUser(this.props.context.user),
+      lightboxHelp: false,
+      activeSubjectHelper: null,
+      subjectCurrentPage: 1
+    };
+  },
 
-  getInitialState: ->
-    taskKey:             null
-    classifications:     []
-    classificationIndex: 0
-    subject_set_index:   0
-    subject_index:       0
-    currentSubToolIndex: 0
-    helping:             false
-    hideOtherMarks:      false
-    currentSubtool:      null
-    showingTutorial:     @showTutorialBasedOnUser @props.user
-    lightboxHelp:        false
-    activeSubjectHelper: null
-    subjectCurrentPage:  1
+  componentWillReceiveProps(new_props) {
+    return this.setState({
+      showingTutorial: this.showTutorialBasedOnUser(new_props.context.user)
+    });
+  },
 
-  componentWillReceiveProps: (new_props) ->
-    @setState showingTutorial: @showTutorialBasedOnUser(new_props.user)
+  showTutorialBasedOnUser(user) {
+    // Show tutorial by default
+    let show = true;
+    if ((user != null ? user.tutorial_complete : undefined) != null) {
+      // If we have a user, show tutorial if they haven't completed it:
+      show = !user.tutorial_complete;
+    }
+    return show;
+  },
 
-  showTutorialBasedOnUser: (user) ->
-    # Show tutorial by default
-    show = true
-    if user?.tutorial_complete?
-      # If we have a user, show tutorial if they haven't completed it:
-      show = ! user.tutorial_complete
-    show
+  componentDidMount() {
+    this.getCompletionAssessmentTask();
+    this.fetchSubjectSetsBasedOnProps();
+    return this.fetchGroups();
+  },
 
-  componentDidMount: ->
-    @getCompletionAssessmentTask()
-    @fetchSubjectSetsBasedOnProps()
-    @fetchGroups()
+  componentWillMount() {
+    this.setState({ taskKey: this.getActiveWorkflow().first_task });
+    return this.beginClassification();
+  },
 
-  componentWillMount: ->
-    @setState taskKey: @getActiveWorkflow().first_task
-    @beginClassification()
+  componentDidUpdate(prev_props) {
+    // If visitor nav'd from, for example, /mark/[some id] to /mark, this component won't re-mount, so detect transition here:
+    if (prev_props.hash !== this.props.hash) {
+      return this.fetchSubjectSetsBasedOnProps();
+    }
+  },
 
-  componentDidUpdate: (prev_props) ->
-    # If visitor nav'd from, for example, /mark/[some id] to /mark, this component won't re-mount, so detect transition here:
-    if prev_props.hash != @props.hash
-      @fetchSubjectSetsBasedOnProps()
+  toggleHelp() {
+    this.setState({ helping: !this.state.helping });
+    return this.hideSubjectHelp();
+  },
 
-  toggleHelp: ->
-    @setState helping: not @state.helping
-    @hideSubjectHelp()
+  toggleTutorial() {
+    this.setState({ showingTutorial: !this.state.showingTutorial });
+    return this.hideSubjectHelp();
+  },
 
-  toggleTutorial: ->
-    @setState showingTutorial: not @state.showingTutorial
-    @hideSubjectHelp()
+  toggleLightboxHelp() {
+    this.setState({ lightboxHelp: !this.state.lightboxHelp });
+    return this.hideSubjectHelp();
+  },
 
-  toggleLightboxHelp: ->
-    @setState lightboxHelp: not @state.lightboxHelp
-    @hideSubjectHelp()
+  toggleHideOtherMarks() {
+    return this.setState({ hideOtherMarks: !this.state.hideOtherMarks });
+  },
 
-  toggleHideOtherMarks: ->
-    @setState hideOtherMarks: not @state.hideOtherMarks
+  // User changed currently-viewed subject:
+  handleViewSubject(index) {
+    this.setState({ subject_index: index }, () => this.forceUpdate());
+    if (this.state.badSubject) {
+      return this.toggleBadSubject();
+    }
+  },
 
-  # User changed currently-viewed subject:
-  handleViewSubject: (index) ->
-    @setState subject_index: index, => @forceUpdate()
-    @toggleBadSubject() if @state.badSubject
+  // User somehow indicated current task is complete; commit current classification
+  handleToolComplete(annotation) {
+    this.handleDataFromTool(annotation);
+    return this.createAndCommitClassification(annotation);
+  },
 
-  # User somehow indicated current task is complete; commit current classification
-  handleToolComplete: (annotation) ->
-    @handleDataFromTool(annotation)
-    @createAndCommitClassification(annotation)
+  // Handle user selecting a pick/drawing tool:
+  handleDataFromTool(d) {
+    // Kind of a hack: We receive annotation data from two places:
+    //  1. tool selection widget in right-col
+    //  2. the actual draggable marking tools
+    // We want to remember the subToolIndex so that the right-col menu highlights
+    // the correct tool after committing a mark. If incoming data has subToolIndex
+    // but no mark location information, we know this callback was called by the
+    // right-col. So only in that case, record currentSubToolIndex, which we use
+    // to initialize marks going forward
+    if (d.subToolIndex != null && d.x == null && d.y == null) {
+      this.setState({ currentSubToolIndex: d.subToolIndex });
+      if (d.tool != null) {
+        return this.setState({ currentSubtool: d.tool });
+      }
+    } else {
+      const { classifications } = this.state;
+      for (let k in d) {
+        const v = d[k];
+        classifications[this.state.classificationIndex].annotation[k] = v;
+      }
 
+      // PB: Saving STI's notes here in case we decide tools should fully
+      //   replace annotation hash rather than selectively update by key as above:
+      // not clear whether we should replace annotations, or append to it --STI
+      // classifications[@state.classificationIndex].annotation = d #[k] = v for k, v of d
 
-  # Handle user selecting a pick/drawing tool:
-  handleDataFromTool: (d) ->
-    # Kind of a hack: We receive annotation data from two places:
-    #  1. tool selection widget in right-col
-    #  2. the actual draggable marking tools
-    # We want to remember the subToolIndex so that the right-col menu highlights
-    # the correct tool after committing a mark. If incoming data has subToolIndex
-    # but no mark location information, we know this callback was called by the
-    # right-col. So only in that case, record currentSubToolIndex, which we use
-    # to initialize marks going forward
-    if d.subToolIndex? && ! d.x? && ! d.y?
-      @setState currentSubToolIndex: d.subToolIndex
-      @setState currentSubtool: d.tool if d.tool?
+      return this.setState({ classifications }, () => {
+        return this.forceUpdate();
+      });
+    }
+  },
 
-    else
-      classifications = @state.classifications
-      classifications[@state.classificationIndex].annotation[k] = v for k, v of d
+  handleMarkDelete(m) {
+    return this.flagSubjectAsUserDeleted(m.subject_id);
+  },
 
-      # PB: Saving STI's notes here in case we decide tools should fully
-      #   replace annotation hash rather than selectively update by key as above:
-      # not clear whether we should replace annotations, or append to it --STI
-      # classifications[@state.classificationIndex].annotation = d #[k] = v for k, v of d
+  destroyCurrentClassification() {
+    const { classifications } = this.state;
+    classifications.splice(this.state.classificationIndex, 1);
+    this.setState({
+      classifications,
+      classificationIndex: classifications.length - 1
+    });
 
-      @setState
-        classifications: classifications
-          , =>
-            @forceUpdate()
+    // There should always be an empty classification ready to receive data:
+    return this.beginClassification();
+  },
 
-  handleMarkDelete: (m) ->
-    @flagSubjectAsUserDeleted m.subject_id
+  destroyCurrentAnnotation() { },
+  // TODO: implement mechanism for going backwards to previous classification, potentially deleting later classifications from stack:
+  // @props.classification.annotations.pop()
 
-  destroyCurrentClassification: ->
-    classifications = @state.classifications
-    classifications.splice(@state.classificationIndex,1)
-    @setState
-      classifications: classifications
-      classificationIndex: classifications.length-1
+  completeSubjectSet() {
+    this.commitCurrentClassification();
+    this.beginClassification();
 
-    # There should always be an empty classification ready to receive data:
-    @beginClassification()
-
-  destroyCurrentAnnotation: ->
-    # TODO: implement mechanism for going backwards to previous classification, potentially deleting later classifications from stack:
-    # @props.classification.annotations.pop()
-
-  completeSubjectSet: ->
-    @commitCurrentClassification()
-    @beginClassification()
-
-    # TODO: Should maybe make this workflow-configurable?
-    show_subject_assessment = true
-    if show_subject_assessment
-      @setState
+    // TODO: Should maybe make this workflow-configurable?
+    const show_subject_assessment = true;
+    if (show_subject_assessment) {
+      return this.setState({
         taskKey: "completion_assessment_task"
+      });
+    }
+  },
 
-  completeSubjectAssessment: ->
-    @commitCurrentClassification()
-    @beginClassification()
-    @advanceToNextSubject()
+  completeSubjectAssessment() {
+    this.commitCurrentClassification();
+    this.beginClassification();
+    return this.advanceToNextSubject();
+  },
 
-  nextPage: (callback_fn)->
-    new_page = @state.subjectCurrentPage + 1
-    @setState subjectCurrentPage: new_page, => @fetchSubjectsForCurrentSubjectSet(new_page, null, callback_fn)
+  nextPage(callback_fn) {
+    const new_page = this.state.subjectCurrentPage + 1;
+    return this.setState({ subjectCurrentPage: new_page }, () =>
+      this.fetchSubjectsForCurrentSubjectSet(new_page, null, callback_fn)
+    );
+  },
 
-  prevPage: (callback_fn) ->
-    new_page = @state.subjectCurrentPage - 1
-    @setState subjectCurrentPage: new_page
-    @fetchSubjectsForCurrentSubjectSet(new_page, null, callback_fn)
+  prevPage(callback_fn) {
+    const new_page = this.state.subjectCurrentPage - 1;
+    this.setState({ subjectCurrentPage: new_page });
+    return this.fetchSubjectsForCurrentSubjectSet(new_page, null, callback_fn);
+  },
 
-  showSubjectHelp: (subject_type) ->
-    @setState
-      activeSubjectHelper: subject_type
-      helping: false
-      showingTutorial: false
+  showSubjectHelp(subject_type) {
+    return this.setState({
+      activeSubjectHelper: subject_type,
+      helping: false,
+      showingTutorial: false,
       lightboxHelp: false
+    });
+  },
 
-  hideSubjectHelp: () ->
-    @setState
+  hideSubjectHelp() {
+    return this.setState({
       activeSubjectHelper: null
+    });
+  },
 
-  render: ->
-    return null unless @getCurrentSubjectSet()? && @getActiveWorkflow()?
+  render() {
+    let left1, waitingForAnswer;
+    let tool;
+    if (
+      this.getCurrentSubjectSet() == null ||
+      this.getActiveWorkflow() == null
+    ) {
+      return null;
+    }
 
-    currentTask = @getCurrentTask()
-    TaskComponent = @getCurrentTool()
-    activeWorkflow = @getActiveWorkflow()
-    firstTask = activeWorkflow.first_task
-    onFirstAnnotation = @state.taskKey == firstTask
-    currentSubtool = if @state.currentSubtool then @state.currentSubtool else @getTasks()[firstTask]?.tool_config.tools?[0]
+    const currentTask = this.getCurrentTask();
+    const TaskComponent = this.getCurrentTool();
+    const activeWorkflow = this.getActiveWorkflow();
+    const firstTask = activeWorkflow.first_task;
+    const onFirstAnnotation = this.state.taskKey === firstTask;
+    const currentSubtool = this.state.currentSubtool
+      ? this.state.currentSubtool
+      : __guard__(
+        __guard__(this.getTasks()[firstTask], x1 => x1.tool_config.tools),
+        x => x[0]
+      );
 
-    # direct link to this page
-    pageURL = "#{location.origin}/#/mark?subject_set_id=#{@getCurrentSubjectSet().id}&selected_subject_id=#{@getCurrentSubject()?.id}"
+    // direct link to this page
+    const pageURL = `${location.origin}/#/mark?subject_set_id=${
+      this.getCurrentSubjectSet().id
+      }&selected_subject_id=${__guard__(this.getCurrentSubject(), x2 => x2.id)}`;
 
+    if ((currentTask != null ? currentTask.tool : undefined) === "pick_one") {
+      const currentAnswer = Array.from(currentTask.tool_config.options).filter(
+        a => a.value === currentAnnotation.value
+      )[0];
+      waitingForAnswer = !currentAnswer;
+    }
 
-    if currentTask?.tool is 'pick_one'
-      currentAnswer = (a for a in currentTask.tool_config.options when a.value == currentAnnotation.value)[0]
-      waitingForAnswer = not currentAnswer
-
-    <div className="classifier">
-
-      <div className="subject-area">
-        { if @state.noMoreSubjectSets
-            style = marginTop: "50px"
-            <p style={style}>There is nothing left to do. Thanks for your work and please check back soon!</p>
-
-          else if @state.notice
-            <DraggableModal header={@state.notice.header} onDone={@state.notice.onClick}>{@state.notice.message}</DraggableModal>
-
-          else if @getCurrentSubjectSet()?
-            <SubjectSetViewer
-              subject_set={@getCurrentSubjectSet()}
-              subject_index={@state.subject_index}
-              workflow={@getActiveWorkflow()}
-              task={currentTask}
-              annotation={@getCurrentClassification()?.annotation ? {}}
-              onComplete={@handleToolComplete}
-              onChange={@handleDataFromTool}
-              onDestroy={@handleMarkDelete}
-              onViewSubject={@handleViewSubject}
-              subToolIndex={@state.currentSubToolIndex}
-              nextPage={@nextPage}
-              prevPage={@prevPage}
-              subjectCurrentPage={@state.subjectCurrentPage}
-              totalSubjectPages={@state.subjects_total_pages}
-              destroyCurrentClassification={@destroyCurrentClassification}
-              hideOtherMarks={@state.hideOtherMarks}
-              toggleHideOtherMarks={@toggleHideOtherMarks}
-              currentSubtool={currentSubtool}
-              lightboxHelp={@toggleLightboxHelp}
-              interimMarks={@state.interimMarks}
-            />
-        }
-      </div>
-      <div className="right-column">
-        <div className={"task-area " + @getActiveWorkflow().name}>
-          { if @getCurrentTask()? && @getCurrentSubject()?
-              <div className="task-container">
-                <TaskComponent
-                  key={@getCurrentTask().key}
+    return (
+      <div className="classifier">
+        <div className="subject-area">
+          {(() => {
+            if (this.state.noMoreSubjectSets) {
+              const style = { marginTop: "50px" };
+              return (
+                <p style={style}>
+                  There is nothing left to do. Thanks for your work and please
+                  check back soon!
+                </p>
+              );
+            } else if (this.state.notice) {
+              return (
+                <DraggableModal
+                  header={this.state.notice.header}
+                  onDone={this.state.notice.onClick}
+                >
+                  {this.state.notice.message}
+                </DraggableModal>
+              );
+            } else if (this.getCurrentSubjectSet() != null) {
+              let left;
+              return (
+                <SubjectSetViewer
+                  subject_set={this.getCurrentSubjectSet()}
+                  subject_index={this.state.subject_index}
+                  workflow={this.getActiveWorkflow()}
                   task={currentTask}
-                  annotation={@getCurrentClassification()?.annotation ? {}}
-                  onChange={@handleDataFromTool}
-                  onSubjectHelp={@showSubjectHelp}
-                  subject={@getCurrentSubject()}
+                  annotation={
+                    (left = __guard__(
+                      this.getCurrentClassification(),
+                      x3 => x3.annotation
+                    )) != null
+                      ? left
+                      : {}
+                  }
+                  onComplete={this.handleToolComplete}
+                  onChange={this.handleDataFromTool}
+                  onDestroy={this.handleMarkDelete}
+                  onViewSubject={this.handleViewSubject}
+                  subToolIndex={this.state.currentSubToolIndex}
+                  nextPage={this.nextPage}
+                  prevPage={this.prevPage}
+                  subjectCurrentPage={this.state.subjectCurrentPage}
+                  totalSubjectPages={this.state.subjects_total_pages}
+                  destroyCurrentClassification={
+                    this.destroyCurrentClassification
+                  }
+                  hideOtherMarks={this.state.hideOtherMarks}
+                  toggleHideOtherMarks={this.toggleHideOtherMarks}
+                  currentSubtool={currentSubtool}
+                  lightboxHelp={this.toggleLightboxHelp}
+                  interimMarks={this.state.interimMarks}
                 />
-
-                <nav className="task-nav">
-                  { if false
-                    <button type="button" className="back minor-button" disabled={onFirstAnnotation} onClick={@destroyCurrentAnnotation}>Back</button>
-                  }
-                  { if @getNextTask() and not @state.badSubject?
-                      <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@advanceToNextTask}>Next</button>
-                    else
-                      if @state.taskKey == "completion_assessment_task"
-                        if @getCurrentSubject() == @getCurrentSubjectSet().subjects[@getCurrentSubjectSet().subjects.length-1]
-                          <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next</button>
-                        else
-                          <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectAssessment}>Next Page</button>
-                      else
-                        <button type="button" className="continue major-button" disabled={waitingForAnswer} onClick={@completeSubjectSet}>Done</button>
-                  }
-                </nav>
-
-                <div className="help-bad-subject-holder">
-                  { if @getCurrentTask().help?
-                    <HelpButton onClick={@toggleHelp} label="" className="task-help-button" />
-                  }
-                  { if onFirstAnnotation
-                    <BadSubjectButton class="bad-subject-button" label={"Bad " + @props.project.term('subject')} active={@state.badSubject} onClick={@toggleBadSubject} />
-                  }
-                  { if @state.badSubject
-                    <p>You&#39;ve marked this {@props.project.term('subject')} as BAD. Thanks for flagging the issue! <strong>Press DONE to continue.</strong></p>
-                  }
+              );
+            }
+          })()}
+        </div>
+        <div className="right-column">
+          <div className={`task-area ${this.getActiveWorkflow().name}`}>
+            {this.getCurrentTask() != null &&
+              this.getCurrentSubject() != null ? (
+                <div className="task-container">
+                  <TaskComponent
+                    key={this.getCurrentTask().key}
+                    task={currentTask}
+                    annotation={
+                      (left1 = __guard__(
+                        this.getCurrentClassification(),
+                        x4 => x4.annotation
+                      )) != null
+                        ? left1
+                        : {}
+                    }
+                    onChange={this.handleDataFromTool}
+                    onSubjectHelp={this.showSubjectHelp}
+                    subject={this.getCurrentSubject()}
+                  />
+                  <nav className="task-nav">
+                    {false ? (
+                      <button
+                        type="button"
+                        className="back minor-button"
+                        disabled={onFirstAnnotation}
+                        onClick={this.destroyCurrentAnnotation}
+                      >
+                        Back
+                    </button>
+                    ) : (
+                        undefined
+                      )}
+                    {this.getNextTask() && !this.state.badSubject ? (
+                      <button
+                        type="button"
+                        className="continue major-button"
+                        disabled={waitingForAnswer}
+                        onClick={this.advanceToNextTask}
+                      >
+                        Next
+                    </button>
+                    ) : this.state.taskKey === "completion_assessment_task" ? (
+                      this.getCurrentSubject() ===
+                        this.getCurrentSubjectSet().subjects[
+                        this.getCurrentSubjectSet().subjects.length - 1
+                        ] ? (
+                          <button
+                            type="button"
+                            className="continue major-button"
+                            disabled={waitingForAnswer}
+                            onClick={this.completeSubjectAssessment}
+                          >
+                            Next
+                      </button>
+                        ) : (
+                          <button
+                            type="button"
+                            className="continue major-button"
+                            disabled={waitingForAnswer}
+                            onClick={this.completeSubjectAssessment}
+                          >
+                            Next Page
+                      </button>
+                        )
+                    ) : (
+                          <button
+                            type="button"
+                            className="continue major-button"
+                            disabled={waitingForAnswer}
+                            onClick={this.completeSubjectSet}
+                          >
+                            Done
+                    </button>
+                        )}
+                  </nav>
+                  <div className="help-bad-subject-holder">
+                    {this.getCurrentTask().help != null ? (
+                      <HelpButton
+                        onClick={this.toggleHelp}
+                        label=""
+                        className="task-help-button"
+                      />
+                    ) : (
+                        undefined
+                      )}
+                    {onFirstAnnotation ? (
+                      <BadSubjectButton
+                        class="bad-subject-button"
+                        label={`Bad ${this.props.context.project.term("subject")}`}
+                        active={this.state.badSubject}
+                        onClick={this.toggleBadSubject}
+                      />
+                    ) : (
+                        undefined
+                      )}
+                    {this.state.badSubject ? (
+                      <p className="bad-subject-marked">
+                        <span>
+                        You've marked this {this.props.context.project.term("subject")} as
+                      BAD. Thanks for flagging the issue!{" "}</span>
+                        <strong>Press DONE to continue.</strong>
+                      </p>
+                    ) : (
+                        undefined
+                      )}
+                  </div>
                 </div>
+              ) : (
+                undefined
+              )}
+            <div className="task-secondary-area">
+              {this.getCurrentTask() != null ? (
+                <p>
+                  <a className="tutorial-link" onClick={this.toggleTutorial}>
+                    View A Tutorial
+                  </a>
+                </p>
+              ) : (
+                  undefined
+                )}
+              {this.getCurrentTask() != null &&
+                this.getActiveWorkflow() != null &&
+                this.getWorkflowByName("transcribe") != null ? (
+                  <p>
+                    <NavLink
+                      to={`/transcribe/${
+                        this.getWorkflowByName("transcribe").id
+                        }/${__guard__(this.getCurrentSubject(), x5 => x5.id)}`}
+                      className="transcribe-link"
+                    >
+                      Transcribe this {this.props.context.project.term("subject")} now!
+                  </NavLink>
+                  </p>
+                ) : (
+                  undefined
+                )}
+              {this.getActiveWorkflow() != null &&
+                (this.state.groups != null
+                  ? this.state.groups.length
+                  : undefined) > 1 ? (
+                  <p>
+                    <NavLink
+                      to={`/groups/${this.getCurrentSubjectSet().group_id}`}
+                      className="about-link"
+                    >
+                      About this {this.props.context.project.term("group")}.
+                  </NavLink>
+                  </p>
+                ) : (
+                  undefined
+                )}
+              <div className="forum-holder">
+                <ForumSubjectWidget
+                  subject={this.getCurrentSubject()}
+                  subject_set={this.getCurrentSubjectSet()}
+                  project={this.props.context.project}
+                />
               </div>
-          }
-
-          <div className="task-secondary-area">
-
-            {
-              if @getCurrentTask()?
-                <p>
-                  <a className="tutorial-link" onClick={@toggleTutorial}>View A Tutorial</a>
-                </p>
-            }
-
-            {
-              if @getCurrentTask()? && @getActiveWorkflow()? && @getWorkflowByName('transcribe')?
-                <p>
-                  <Link to="/transcribe/#{@getWorkflowByName('transcribe').id}/#{@getCurrentSubject()?.id}" className="transcribe-link">Transcribe this {@props.project.term('subject')} now!</Link>
-                </p>
-            }
-
-            {
-              if @getActiveWorkflow()? and @state.groups?.length > 1
-                <p>
-                  <Link to="/groups/#{@getCurrentSubjectSet().group_id}" className="about-link">About this {@props.project.term('group')}.</Link>
-                </p>
-            }
-
-            <div className="forum-holder">
-              <ForumSubjectWidget subject={@getCurrentSubject()} subject_set={@getCurrentSubjectSet()} project={@props.project} />
-            </div>
-
-            <div className="social-media-container">
-              <a href="https://www.facebook.com/sharer.php?u=#{encodeURIComponent pageURL}" target="_blank">
-                <i className="fa fa-facebook-square"/>
-              </a>
-              <a href="https://twitter.com/home?status=#{encodeURIComponent pageURL}%0A" target="_blank">
-                <i className="fa fa-twitter-square"/>
-              </a>
-              <a href="https://plus.google.com/share?url=#{encodeURIComponent pageURL}" target="_blank">
-                <i className="fa fa-google-plus-square"/>
-              </a>
+              <div className="social-media-container">
+                <a
+                  href={`https://www.facebook.com/sharer.php?u=${encodeURIComponent(
+                    pageURL
+                  )}`}
+                  target="_blank"
+                >
+                  <i className="fa fa-facebook-square" />
+                </a>
+                <a
+                  href={`https://twitter.com/home?status=${encodeURIComponent(
+                    pageURL
+                  )}%0A`}
+                  target="_blank"
+                >
+                  <i className="fa fa-twitter-square" />
+                </a>
+                <a
+                  href={`https://plus.google.com/share?url=${encodeURIComponent(
+                    pageURL
+                  )}`}
+                  target="_blank"
+                >
+                  <i className="fa fa-google-plus-square" />
+                </a>
+              </div>
             </div>
           </div>
-
         </div>
+        {this.props.context.project.tutorial != null && this.state.showingTutorial && (
+          // Check for workflow-specific tutorial
+          this.props.context.project.tutorial.workflows != null &&
+            this.props.context.project.tutorial.workflows[
+            __guard__(this.getActiveWorkflow(), x6 => x6.name)
+            ] ? (
+              <Tutorial
+                tutorial={
+                  this.props.context.project.tutorial.workflows[
+                  this.getActiveWorkflow().name
+                  ]
+                }
+                onCloseTutorial={this.props.context.onCloseTutorial}
+              />
+            ) : (
+              // Otherwise just show general tutorial
+              <Tutorial
+                tutorial={this.props.context.project.tutorial}
+                onCloseTutorial={this.props.context.onCloseTutorial}
+              />
+            )
+        )}
+        {this.state.helping ? (
+          <HelpModal
+            help={this.getCurrentTask().help}
+            onDone={() => this.setState({ helping: false })}
+          />
+        ) : (
+            undefined
+          )}
+        {this.state.lightboxHelp ? (
+          <HelpModal
+            help={{
+              title: "The Lightbox",
+              body:
+                "<p>This Lightbox displays a complete set of documents in order. You can use it to go through the documents sequentially—but feel free to do them in any order that you like! Just click any thumbnail to open that document and begin marking it.</p><p>However, please note that **once you start marking a page, the Lightbox becomes locked ** until you finish marking that page! You can select a new page once you have finished.</p>"
+            }}
+            onDone={() => this.setState({ lightboxHelp: false })}
+          />
+        ) : (
+            undefined
+          )}
+        {this.getCurrentTask() != null
+          ? (() => {
+            const result = [];
+            const iterable = this.getCurrentTask().tool_config.options;
+            for (let i = 0; i < iterable.length; i++) {
+              tool = iterable[i];
+              if (
+                tool.help &&
+                tool.generates_subject_type &&
+                this.state.activeSubjectHelper === tool.generates_subject_type
+              ) {
+                result.push(
+                  <HelpModal help={tool.help} onDone={this.hideSubjectHelp} />
+                );
+              } else {
+                result.push(undefined);
+              }
+            }
+            return result;
+          })()
+          : undefined}
       </div>
-      { if @props.project.tutorial? && @state.showingTutorial
-          # Check for workflow-specific tutorial
-          if @props.project.tutorial.workflows? && @props.project.tutorial.workflows[@getActiveWorkflow()?.name]
-            <Tutorial tutorial={@props.project.tutorial.workflows[@getActiveWorkflow().name]} onCloseTutorial={@props.onCloseTutorial} />
-          # Otherwise just show general tutorial
-          else
-            <Tutorial tutorial={@props.project.tutorial} onCloseTutorial={@props.onCloseTutorial} />
-      }
-      { if @state.helping
-        <HelpModal help={@getCurrentTask().help} onDone={=> @setState helping: false } />
-      }
-      {
-        if @state.lightboxHelp
-          <HelpModal help={{title: "The Lightbox", body: "<p>This Lightbox displays a complete set of documents in order. You can use it to go through the documents sequentially—but feel free to do them in any order that you like! Just click any thumbnail to open that document and begin marking it.</p><p>However, please note that **once you start marking a page, the Lightbox becomes locked ** until you finish marking that page! You can select a new page once you have finished.</p>"}} onDone={=> @setState lightboxHelp: false } />
-      }
-      {
-        if @getCurrentTask()?
-          for tool, i in @getCurrentTask().tool_config.options
-            if tool.help && tool.generates_subject_type && @state.activeSubjectHelper == tool.generates_subject_type
-              <HelpModal help={tool.help} onDone={@hideSubjectHelp} />
-      }
+    );
+  }
+}));
 
-    </div>
+window.React = React;
 
-
-window.React = React
+function __guard__(value, transform) {
+  return typeof value !== "undefined" && value !== null
+    ? transform(value)
+    : undefined;
+}

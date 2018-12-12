@@ -1,18 +1,36 @@
-React           = require 'react'
-DraggableModal  = require './draggable-modal'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import marked from '../lib/marked.min.js'
+import DraggableModal from './draggable-modal.jsx'
+import createReactClass from 'create-react-class'
 
-module.exports = React.createClass
-  displayName: 'HelpModal'
+export default createReactClass({
+  displayName: 'HelpModal',
 
-  componentDidMount: ->
-    el = $(React.findDOMNode(this)).find("#accordion-help-modal")
-    el.accordion
-      collapsible: true
-      active: false
-      heightStyle: "content"
+  componentDidMount() {
+    const el = $(ReactDOM.findDOMNode(this)).find('#accordion-help-modal')
+    el.accordion({
+      collapsible: true,
+      active: false,
+      heightStyle: 'content'
+    })
+  },
 
-  render: ->
-    return null unless @props.help?
-    <DraggableModal header={@props.help.title ? 'Help'} onDone={@props.onDone} width=600 classes="help-modal">
-      <div dangerouslySetInnerHTML={{__html: marked( @props.help.body ) }} />
-    </DraggableModal>
+  render() {
+    if (this.props.help == null) {
+      return null
+    }
+    return (
+      <DraggableModal
+        header={this.props.help.title != null ? this.props.help.title : 'Help'}
+        onDone={this.props.onDone}
+        width={600}
+        classes="help-modal"
+      >
+        <div
+          dangerouslySetInnerHTML={{ __html: marked(this.props.help.body) }}
+        />
+      </DraggableModal>
+    )
+  }
+})
