@@ -9,23 +9,20 @@
  */
 import React from 'react'
 import ReactDOM from 'react-dom'
-import createReactClass from 'create-react-class'
 
 import SVGImage from './svg-image.jsx'
 import MouseHandler from '../lib/mouse-handler.jsx'
 import LoadingIndicator from './loading-indicator.jsx'
-import NextButton from './action-button.jsx'
 import markingTools from './mark/tools/index.jsx'
 import MarkDrawingMixin from '../lib/mark-drawing-mixin.jsx'
 
-export default createReactClass({
-  displayName: 'SubjectViewer',
-  resizing: false,
+@MarkDrawingMixin
+export default class SubjectViewer extends React.Component {
+  resizing = false;
 
-  mixins: [MarkDrawingMixin], // load helper methods to draw marks and highlights
-
-  getInitialState() {
-    return {
+  constructor(props) {
+    super(props)
+    this.state = {
       subject: this.props.subject,
       marks: this.getMarksFromProps(this.props),
       selectedMark: null,
@@ -36,18 +33,17 @@ export default createReactClass({
         y: 0
       },
       scale: { horizontal: 1, vertical: 1, offsetX: 0, offsetY: 0 },
-      sameSessionTranscriptions: []
+      sameSessionTranscriptions: [],
+      scrollTarget: 0
     }
-  },
+  }
 
-  getDefaultProps() {
-    return {
-      tool: null, // Optional tool to place alongside subject (e.g. transcription tool placed alongside mark)
-      onLoad: null,
-      annotationIsComplete: false,
-      interimMarks: {}
-    }
-  },
+  static defaultProps = {
+    tool: null, // Optional tool to place alongside subject (e.g. transcription tool placed alongside mark)
+    onLoad: null,
+    annotationIsComplete: false,
+    interimMarks: {}
+  }
 
   componentWillReceiveProps(new_props) {
     if ((new_props.task != null ? new_props.task.tool : undefined) !== 'pickOneMarkOne') {
@@ -66,13 +62,13 @@ export default createReactClass({
     if (new_props.subject.id === this.props.subject.id) {
       this.scrollToSubject()
     }
-  },
+  }
 
   componentDidMount() {
     this.setView(0, 0, this.props.subject.width, this.props.subject.height)
     this.loadImage(this.props.subject.location.standard)
     window.addEventListener('resize', this.updateDimensions)
-  },
+  }
 
   scrollToSubject() {
     // scroll to mark when transcribing
@@ -81,11 +77,17 @@ export default createReactClass({
         (this.props.subject.data.y - (this.props.subject.data.height != null)) *
         this.state.scale.vertical -
         100
-      $('html, body')
-        .stop()
-        .animate({ scrollTop: yPos }, 500)
+      this.setState((prevState) => {
+        if (prevState.scrollTarget != yPos) {
+          $('html, body')
+            .stop()
+            .animate({ scrollTop: yPos }, 500)
+        }
+
+        return { scrollTarget: yPos }
+      })
     }
-  },
+  }
 
   componentDidUpdate() {
     const scale = this.getScale()
@@ -98,11 +100,11 @@ export default createReactClass({
         this.scrollToSubject()
       })
     }
-  },
+  }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.updateDimensions)
-  },
+  }
 
   updateDimensions() {
     let props, scale
@@ -131,7 +133,7 @@ export default createReactClass({
       // Also a fix for IE:
       this.setState({ scale: this.getScale() })
     }
-  },
+  }
 
   loadImage(url) {
     this.setState({ loading: true }, () => {
@@ -151,7 +153,7 @@ export default createReactClass({
         )
       }
     })
-  },
+  }
 
   // VARIOUS EVENT HANDLERS
 
@@ -164,12 +166,12 @@ export default createReactClass({
       this.props.onComplete(mark)
     }
     this.setUncommittedMark(null)
-  }, // reset uncommitted mark
+  } // reset uncommitted mark
 
   // Handle initial mousedown:
   handleInitStart(e) {
     if (e.buttons != null && e.button != null && e.button > 0) {
-      return null
+      return
     } // ignore right-click
     const newMark = this.createMark(e)
 
@@ -187,7 +189,7 @@ export default createReactClass({
       this.props.onChange(newMark)
     }
     this.setUncommittedMark(newMark)
-  },
+  }
   // @selectMark newMark
 
   createMark(e) {
@@ -237,12 +239,12 @@ export default createReactClass({
     }
 
     return mark
-  },
+  }
 
   // Handle mouse dragging
   handleInitDrag(e) {
     if (this.state.uncommittedMark == null) {
-      return null
+      return
     }
     const mark = this.state.uncommittedMark
     const MarkComponent = markingTools[mark.toolName] // instantiate appropriate marking tool
@@ -260,12 +262,12 @@ export default createReactClass({
       this.props.onChange(mark)
     }
     this.setState({ uncommittedMark: mark })
-  },
+  }
 
   // Handle mouseup at end of drag:
   handleInitRelease(e) {
     if (this.state.uncommittedMark == null) {
-      return null
+      return
     }
 
     const mark = this.state.uncommittedMark
@@ -290,18 +292,18 @@ export default createReactClass({
     mark.isUncommitted = true
     mark.belongsToUser = true
     this.setUncommittedMark(mark)
-  },
+  }
 
   setUncommittedMark(mark) {
     return this.setState({
       uncommittedMark: mark,
       selectedMark: mark
     })
-  }, //, => @forceUpdate() # not sure if this is needed?
+  } //, => @forceUpdate() # not sure if this is needed?
 
   setView(viewX, viewY, viewWidth, viewHeight) {
     this.setState({ viewX, viewY, viewWidth, viewHeight })
-  },
+  }
 
   // PB This is not returning anything but 0, 0 for me; Seems like @refs.sizeRect is empty when evaluated (though nonempty later)
   getScale() {
@@ -322,7 +324,7 @@ export default createReactClass({
     const offsetY = rect.top + $(window).scrollTop()
     // PB: Adding offsetX and offsetY, which are also necessary to calculate window absolute px coordinates from source-image coordinates
     return { horizontal, vertical, offsetX, offsetY }
-  },
+  }
 
   getEventOffset(e) {
     const rect = ReactDOM.findDOMNode(this.refs.sizeRect).getBoundingClientRect()
@@ -334,7 +336,7 @@ export default createReactClass({
       (e.pageY - window.pageYOffset - rect.top) / scale.vertical +
       this.state.viewY
     return { x, y }
-  },
+  }
 
   // Set mark to currently selected:
   selectMark(mark) {
@@ -353,7 +355,7 @@ export default createReactClass({
     } else {
       sel()
     }
-  },
+  }
 
   // Destroy mark:
   destroyMark(mark) {
@@ -376,7 +378,7 @@ export default createReactClass({
     } else if (mark === this.state.uncommittedMark) {
       this.props.destroyCurrentClassification()
     }
-  },
+  }
 
   handleChange(mark) {
     this.setState({ selectedMark: mark }, () => {
@@ -384,7 +386,7 @@ export default createReactClass({
         this.props.onChange(mark)
       }
     })
-  },
+  }
 
   getMarksFromProps(props) {
     // Previous marks are really just the region hashes of all child subjects
@@ -418,7 +420,7 @@ export default createReactClass({
     }
 
     return marks
-  },
+  }
 
   separateTranscribableMarks(marks) {
     const transcribableMarks = []
@@ -432,7 +434,7 @@ export default createReactClass({
     }
 
     return { transcribableMarks, otherMarks }
-  },
+  }
 
   renderMarks(marks) {
     if (!(marks.length > 0)) {
@@ -472,37 +474,37 @@ export default createReactClass({
             key={mark._key}
             className={`marks-for-annotation${
               mark.groupActive ? ' group-active' : ''
-            }`}
+              }`}
             data-disabled={isPriorMark || null}
           >
             {
               (mark._key != null ? mark._key : (mark._key = Math.random()),
-              (ToolComponent = markingTools[mark.toolName]),
-              (
-                <ToolComponent
-                  key={mark._key}
-                  subject_id={mark.subject_id}
-                  taskKey={
-                    this.props.task != null ? this.props.task.key : undefined
-                  }
-                  mark={mark}
-                  xScale={scale.horizontal}
-                  yScale={scale.vertical}
-                  disabled={!mark.userCreated}
-                  isTranscribable={mark.isTranscribable}
-                  interim={mark.interim_id != null}
-                  isPriorMark={isPriorMark}
-                  subjectCurrentPage={this.props.subjectCurrentPage}
-                  selected={mark === this.state.selectedMark}
-                  getEventOffset={this.getEventOffset}
-                  submitMark={this.submitMark}
-                  sizeRect={this.refs.sizeRect}
-                  displaysTranscribeButton={displaysTranscribeButton}
-                  onSelect={this.selectMark.bind(this, mark)}
-                  onChange={this.handleChange.bind(this, mark)}
-                  onDestroy={this.destroyMark.bind(this, mark)}
-                />
-              ))
+                (ToolComponent = markingTools[mark.toolName]),
+                (
+                  <ToolComponent
+                    key={mark._key}
+                    subject_id={mark.subject_id}
+                    taskKey={
+                      this.props.task != null ? this.props.task.key : undefined
+                    }
+                    mark={mark}
+                    xScale={scale.horizontal}
+                    yScale={scale.vertical}
+                    disabled={!mark.userCreated}
+                    isTranscribable={mark.isTranscribable}
+                    interim={mark.interim_id != null}
+                    isPriorMark={isPriorMark}
+                    subjectCurrentPage={this.props.subjectCurrentPage}
+                    selected={mark === this.state.selectedMark}
+                    getEventOffset={this.getEventOffset.bind(this)}
+                    submitMark={this.submitMark}
+                    sizeRect={this.refs.sizeRect}
+                    displaysTranscribeButton={displaysTranscribeButton}
+                    onSelect={this.selectMark.bind(this, mark)}
+                    onChange={this.handleChange.bind(this, mark)}
+                    onDestroy={this.destroyMark.bind(this, mark)}
+                  />
+                ))
             }
           </g>
         )
@@ -511,7 +513,7 @@ export default createReactClass({
     })()
 
     return marksToRender
-  },
+  }
 
   render() {
     let markingSurfaceContent
@@ -535,16 +537,6 @@ export default createReactClass({
       marks
     )
 
-    const actionButton = this.state.loading ? (
-      <NextButton
-        onClick={this.nextSubject}
-        disabled={true}
-        label="Loading..."
-      />
-    ) : (
-      <NextButton onClick={this.nextSubject} label="Next Page" />
-    )
-
     if (this.state.loading) {
       markingSurfaceContent = <LoadingIndicator />
     } else {
@@ -564,9 +556,9 @@ export default createReactClass({
             height={this.props.subject.height}
           />
           <MouseHandler
-            onStart={this.handleInitStart}
-            onDrag={this.handleInitDrag}
-            onEnd={this.handleInitRelease}
+            onStart={this.handleInitStart.bind(this)}
+            onDrag={this.handleInitDrag.bind(this)}
+            onEnd={this.handleInitRelease.bind(this)}
             inst="marking surface"
           >
             <SVGImage
@@ -598,7 +590,7 @@ export default createReactClass({
                       yScale={scale.vertical}
                       disabled={isPriorMark}
                       selected={mark === this.state.selectedMark}
-                      getEventOffset={this.getEventOffset}
+                      getEventOffset={this.getEventOffset.bind(this)}
                       ref={this.refs.sizeRect}
                       onSelect={this.selectMark.bind(
                         this,
@@ -636,4 +628,4 @@ export default createReactClass({
       </div>
     )
   }
-})
+}

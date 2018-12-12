@@ -275,11 +275,7 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
-<<<<<<< HEAD
-    thor (0.19.1)
-=======
     thor (0.20.0)
->>>>>>> a37c7bd8b2c14b9b57a4a7121118a0fbd6896f84
     thread_safe (0.3.6)
     tilt (1.4.1)
     turbolinks (2.5.3)
@@ -334,14 +330,6 @@ DEPENDENCIES
   rspec-rails (~> 3.6)
   sass-rails
   shoulda-matchers
-<<<<<<< HEAD
-<<<<<<< HEAD
-  sprockets-coffee-react
-  stylus (~> 1.0.1)
-=======
->>>>>>> b1675ad5... Renamed all stylus files to sass. Removed stylus dependencies
-=======
->>>>>>> a37c7bd8b2c14b9b57a4a7121118a0fbd6896f84
   turbolinks
   webpacker (~> 3.5)
 

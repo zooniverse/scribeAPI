@@ -1,31 +1,11 @@
-export default {
-  //   PB: This appears unused. DEP
-  //   showPreviousMarks: ->
-  //     previousMarks =
-  //       for mark, i in @props.subject.child_subjects_info
-  //         toolName = mark.data.toolName
-  //         ToolComponent = markingTools[toolName]
-  //         scale = @getScale()
-  //
-  //         <ToolComponent
-  //           key={mark._key}
-  //           mark={mark.data}
-  //           xScale={scale.horizontal}
-  //           yScale={scale.vertical}
-  //           disabled={true}
-  //           isPriorMark={true}
-  //           selected={true}
-  //           getEventOffset={@getEventOffset}
-  //           ref={@refs.sizeRect}
-  //         />
-  //
-  //     return <g>{previousMarks}</g>
+import React from 'react'
 
-  highlightMark(mark, toolName) {
-    switch (toolName) {
-      case 'rectangleTool':
-        return (
-          <g>
+export default function MarkDrawingMixin(ComponentToWrap) {
+  return class Extended extends ComponentToWrap {
+    highlightMark(mark, toolName) {
+      switch (toolName) {
+        case 'rectangleTool':
+          return <g>
             <rect
               className="mark-rectangle top"
               x={0}
@@ -59,10 +39,8 @@ export default {
               fill="rgba(0,0,0,0.6)"
             />
           </g>
-        )
-      case 'textRowTool':
-        return (
-          <g>
+        case 'textRowTool':
+          return <g>
             <rect
               className="mark-rectangle"
               x={0}
@@ -80,7 +58,7 @@ export default {
               fill="rgba(0,0,0,0.6)"
             />
           </g>
-        )
+      }
     }
   }
 }
