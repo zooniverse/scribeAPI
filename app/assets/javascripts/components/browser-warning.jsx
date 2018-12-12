@@ -1,21 +1,15 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 import React from 'react'
 import GenericButton from './buttons/generic-button.jsx'
-import createReactClass from 'create-react-class'
 
-export default createReactClass({
-  displayName: 'BrowserWarning',
+export default class BrowserWarning extends React.Component {
+  constructor(props) {
+    super(props)
 
-  getInitialState() {
-    return {
+    this.state = {
       showing: !this.browserAcceptable(),
       isTouchDevice: this.isTouchDevice()
     }
-  },
+  }
 
   browserAcceptable() {
     let pass = true
@@ -34,7 +28,7 @@ export default createReactClass({
     }
 
     return pass
-  },
+  }
 
   isTouchDevice() {
     // It's not enough to test Modernizr.touchevents
@@ -50,11 +44,11 @@ export default createReactClass({
       deviceAgent.match(/blackberry/i) ||
       deviceAgent.match(/bada/i)
     return ret
-  },
+  }
 
   close() {
-    return this.setState({ showing: false })
-  },
+    this.setState({ showing: false })
+  }
 
   render() {
     if (!this.state.showing) {
@@ -63,14 +57,12 @@ export default createReactClass({
 
     return (
       <div className="browser-warning">
-        <a className="modal-close-button" onClick={this.closeModal} />
-        {this.state.isTouchDevice ? (
+        {this.state.isTouchDevice ?
           <p>
             Welcome! Thanks for your interest in {project.title}. The app is
             designed for desktops. For the full experience, come back later from
             your laptop or desktop.
-          </p>
-        ) : (
+          </p> :
           <div>
             <p>
               Welcome! Thanks for your interest in {project.title}. Please note
@@ -91,15 +83,15 @@ export default createReactClass({
                 <a href="https://www.apple.com/safari/">Safari</a>
               </li>
               <li>
-                <a href="http://windows.microsoft.com/en-US/internet-explorer/download-ie">
-                  Internet Explorer
+                <a href="https://www.microsoft.com/en-us/windows/microsoft-edge">
+                  Edge
                 </a>
               </li>
             </ul>
           </div>
-        )}
-        <GenericButton label="Dismiss" major={true} onClick={this.close} />
+        }
+        <GenericButton label="Dismiss" major={true} onClick={this.close.bind(this)} />
       </div>
     )
   }
-})
+}
