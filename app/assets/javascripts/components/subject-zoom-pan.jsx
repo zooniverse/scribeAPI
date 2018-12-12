@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { BehaviorSubject } from 'rxjs'
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators'
 
@@ -23,6 +24,10 @@ const PAN_MIN_Y = 0
 const INVERT_PAN = false
 
 export default class SubjectZoomPan extends React.Component {
+  static propTypes = {
+    onChange: PropTypes.func,
+    subject: PropTypes.object
+  }
 
   constructor(props) {
     super(props)
@@ -126,13 +131,6 @@ export default class SubjectZoomPan extends React.Component {
       .animate({
         scrollTop
       }, time)
-  }
-
-  /**
-   * Limits the panning to the displayed content.
-   */
-  getMaxPan(zoom) {
-    return Math.max(0, (zoom.level - 1) / zoom.level)
   }
 
   /**
