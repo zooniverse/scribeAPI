@@ -30,7 +30,9 @@ export default class MainHeader extends React.Component {
                 const
                   title = workflow.name.charAt(0).toUpperCase() + workflow.name.slice(1)
                 return (
-                  <NavLink key={key} to={`/${workflow.name + (groupId && ('?group_id=' + groupId) || '')}`} activeClassName="selected" className={`main-header-item ${workflow.name}`}>{title}</NavLink>
+                  <NavLink key={key}
+                    isActive={(match, location) => new RegExp(`^\\/${workflow.name}(\\/|$)`).test(location.pathname)}
+                    to={`/${workflow.name + (groupId && ('?group_id=' + groupId) || '')}`} activeClassName="selected" className={`main-header-item ${workflow.name}`}>{title}</NavLink>
                 )
               })
           }
