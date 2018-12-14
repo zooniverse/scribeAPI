@@ -68,6 +68,7 @@ export default class AppRouter {
             const component = getComponent(workflow.name)
             return (
               <Route
+                exact
                 key={key}
                 path={'/' + workflow.name}
                 component={component}
@@ -88,6 +89,7 @@ export default class AppRouter {
             const component = getComponent(workflow.name)
             return (
               <Route
+                exact
                 key={key}
                 path={'/' + workflow.name + '/:subject_set_id' + '/:subject_id'}
                 component={component}
@@ -108,6 +110,7 @@ export default class AppRouter {
             const component = getComponent(workflow.name)
             return (
               <Route
+                exact
                 key={key}
                 path={'/' + workflow.name + '/:subject_set_id'}
                 component={component}
@@ -128,6 +131,7 @@ export default class AppRouter {
             const component = getComponent(workflow.name)
             return (
               <Route
+                exact
                 key={key}
                 path={'/' + workflow.name + '/:subject_id'}
                 component={component}
@@ -148,6 +152,7 @@ export default class AppRouter {
             const component = getComponent(workflow.name)
             return (
               <Route
+                exact
                 key={key}
                 path={'/' + workflow.name + '/:workflow_id' + '/:parent_subject_id'}
                 component={component}
@@ -159,6 +164,7 @@ export default class AppRouter {
             project.pages != null && project.pages.map((page, key) => {
               return (
                 <Route
+                  exact
                   key={key}
                   path={'/' + page.name}
                   component={this.controllerForPage(page)}
