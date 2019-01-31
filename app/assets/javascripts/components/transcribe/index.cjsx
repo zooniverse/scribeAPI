@@ -101,7 +101,9 @@ module.exports = React.createClass # rename to Classifier
       page: @props.query.page
 
   render: ->
-    if @props.params.workflow_id? and @props.params.parent_subject_id?
+    if @props.query.from == 'verify'
+      transcribeMode = 'verify'
+    else if @props.params.workflow_id? and @props.params.parent_subject_id?
       transcribeMode = 'page'
     else if @props.params.subject_id
       transcribeMode = 'single'
@@ -113,6 +115,7 @@ module.exports = React.createClass # rename to Classifier
     else isLastSubject = null
 
     currentAnnotation = @getCurrentClassification().annotation
+    currentAnnotation = @props.query.annotation if @props.query.annotation?
     TranscribeComponent = @getCurrentTool() # @state.currentTool
     onFirstAnnotation = currentAnnotation?.task is @getActiveWorkflow().first_task
 
