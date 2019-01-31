@@ -79,9 +79,12 @@ module.exports =
     params = {}; params[k] = v for k,v of _params when v?
 
     API.type('subject_sets').get(params).then (sets) =>
+      if sets.length is 0
+        @setState noMoreSubjectSets: true
 
-      @setState subjectSets: sets, () =>
-        @fetchSubjectsForCurrentSubjectSet 1, null, callback
+      else
+        @setState subjectSets: sets, () =>
+          @fetchSubjectsForCurrentSubjectSet 1, null, callback
 
   # PB: Setting default limit to 120 because it's a multiple of 3 mandated by thumb browser
   fetchSubjectsForCurrentSubjectSet: (page=1, limit=120, callback) ->

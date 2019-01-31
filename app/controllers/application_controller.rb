@@ -10,6 +10,10 @@ class ApplicationController < ActionController::Base
     current_or_guest_user(create_if_missing = true)
   end
 
+  def get_bot_user_from_request(request)
+    BotUser.by_auth request.headers
+  end
+
   # Get currently logged-in user, creating guest as indicated
   def current_or_guest_user(create_if_missing = false)
     if current_user

@@ -6,8 +6,9 @@
   "generates_subjects_method": "most-popular",
   "generates_subjects_after": 3,
   "generates_subjects_max": 20,
-  "generates_subjects_agreement": 0.75,
+  "generates_subjects_agreement": 0.50,
   "subjects_classifiable_by_creator": false,
+  "subjects_editable": false,
 
   "tasks": {
 

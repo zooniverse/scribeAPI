@@ -36,7 +36,7 @@ class User
   field :profile_url,        :type => String    # URI of user profile, if any
   
   field :status,             :type => String, :default => 'active'
-  field :role,               :type => String, :default => 'user'  # user, admin, team
+  field :role,               :type => String, :default => 'user'  # user, admin, team, bot
   field :guest,              :type => Boolean, :default => false
   field :tutorial_complete,  :type => Boolean, :default => false
 
@@ -221,5 +221,4 @@ class User
       h
     end
   end
-
 end

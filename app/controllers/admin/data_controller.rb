@@ -1,28 +1,16 @@
 class Admin::DataController < Admin::AdminBaseController
 
   def index
-    @num_complete = Subject.complete.count
-    @num_non_root = Subject.active_non_root.count
-  end 
-  
-  def download
-    if params[:download_format]
-      redirect_to "#{admin_data_download_path}.#{params[:download_format]}?download_status=#{params[:download_status]}"
-
-    else
-
-      if params[:download_status] == 'complete'
-        @subjects = Subject.complete
-        respond_to do |format|
-          format.json {render json: CompleteSubjectsSerializer.new(@subjects)}
-        end
-
-      else
-        @sets = SubjectSet.all
-        respond_to do |format|
-          format.json {render json: FinalDataSerializer.new(@sets)}
+    @project = Project.current
+    if request.post?
+      if (proj = params[:project])
+        if (v = proj[:downloadable_data])
+          new_val  = v == '1'
+          puts "updating project: #{new_val} because #{v}"
+          @project.update_attributes downloadable_data: new_val
         end
       end
     end
-  end
+    @export = FinalDataExport.most_recent.first
+  end 
 end

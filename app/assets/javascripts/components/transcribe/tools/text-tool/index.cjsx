@@ -1,4 +1,5 @@
 React                  = require 'react'
+{Navigation}           = require 'react-router'
 DraggableModal         = require 'components/draggable-modal'
 SmallButton            = require 'components/buttons/small-button'
 HelpButton             = require 'components/buttons/help-button'
@@ -7,6 +8,7 @@ IllegibleSubjectButton = require 'components/buttons/illegible-subject-button'
 
 TextTool = React.createClass
   displayName: 'TextTool'
+  mixins: [Navigation] # load subjects and set state variables: subjects,  classification
 
   getInitialState: ->
     annotation: @props.annotation ? {}
@@ -119,6 +121,8 @@ TextTool = React.createClass
     if @props.transcribeMode is 'page' or @props.transcribeMode is 'single'
       if @props.isLastSubject and not @props.task.next_task?
         @props.returnToMarking()
+    else if @props.transcribeMode == 'verify'
+      @transitionTo 'verify'
 
   # Get key to use in annotations hash (i.e. typically 'value', unless included in composite tool)
   fieldKey: ->
@@ -158,6 +162,7 @@ TextTool = React.createClass
 
   render: ->
     return null if @props.loading # hide transcribe tool while loading image
+
 
     val = @state.annotation[@fieldKey()]
     val = '' if ! val?
@@ -235,6 +240,8 @@ TextTool = React.createClass
         else
           if @props.isLastSubject and ( @props.transcribeMode is 'page' or @props.transcribeMode is 'single' )
             'Return to Marking'
+          else if @props.transcribeMode is 'verify'
+            'Return to Verify'
           else 'Next Entry'
 
       buttons.push <SmallButton label={buttonLabel} key="done-button" onClick={@commitAnnotation} />

@@ -200,7 +200,7 @@ module.exports = React.createClass
     classes.push 'transcribable' if @props.isTranscribable
     classes.push 'interim' if @props.interim
     classes.push if @props.disabled then 'committed' else 'uncommitted'
-    classes.push "tanscribing" if @checkLocation()
+    classes.push "tanscribing" if @inTranscribeWorkflow()
 
     x1 = @props.mark.x
     width = @props.mark.width

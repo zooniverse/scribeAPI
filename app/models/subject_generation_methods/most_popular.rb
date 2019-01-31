@@ -12,7 +12,11 @@ module SubjectGenerationMethods
 
       ann = classification.annotation
 
-      most_popular = classification.child_subject.calculate_most_popular_parent_classification
+      # Get most popular annotation in all classifications that are siblings to
+      # this classification as well as classifications made upone this classification's
+      # generated subject (effectively combine transcriptions and verify votes)
+      weights = classification.subject.parent_and_descendent_classifications_grouped
+      most_popular = weights.first
       atts[:data] = most_popular[:ann]
 
       num_parent_classifications = classification.child_subject.parent_classifications.count

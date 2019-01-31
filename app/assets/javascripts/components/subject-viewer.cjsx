@@ -40,6 +40,9 @@ module.exports = React.createClass
   componentWillReceiveProps: (new_props) ->
     @setUncommittedMark null if new_props.task?.tool != 'pickOneMarkOne'
 
+    # Useful for debugging prod:
+    console.info "SubjectViewer view: #{new_props.subject.id}" if new_props.subject.id != @props.subject.id
+
     if Object.keys(@props.annotation).length == 0 #prevents back-to-back mark tasks, displaying a duplicate mark from previous tasks.
       @setUncommittedMark null
 
@@ -53,6 +56,16 @@ module.exports = React.createClass
     @setView 0, 0, @props.subject.width, @props.subject.height
     @loadImage @props.subject.location.standard
     window.addEventListener "resize", this.updateDimensions
+
+    $(document).keydown (e) =>
+      # Handle <delete> keypress
+      if e.keyCode == 46
+        mark = @state.selectedMark
+        @destroyMark mark if mark?
+
+      # Handle <enter> keypress
+      else if e.keyCode == 13
+        @submitMark(@state.uncommittedMark) if @state.uncommittedMark?
 
   scrollToSubject: ->
     # scroll to mark when transcribing
@@ -108,10 +121,10 @@ module.exports = React.createClass
   # VARIOUS EVENT HANDLERS
 
   # Commit mark
-  submitMark: (mark) ->
+  submitMark: (mark, oncomplete) ->
     return unless mark?
     @props.onComplete? mark
-    @setUncommittedMark null # reset uncommitted mark
+    @setUncommittedMark null, oncomplete # reset uncommitted mark
 
   # Handle initial mousedown:
   handleInitStart: (e) ->
@@ -198,10 +211,11 @@ module.exports = React.createClass
     mark.belongsToUser = true
     @setUncommittedMark mark
 
-  setUncommittedMark: (mark) ->
+  setUncommittedMark: (mark, oncomplete) ->
     @setState
       uncommittedMark: mark,
-      selectedMark: mark #, => @forceUpdate() # not sure if this is needed?
+      selectedMark: mark, () =>
+        oncomplete() if oncomplete?
 
   setView: (viewX, viewY, viewWidth, viewHeight) ->
     @setState {viewX, viewY, viewWidth, viewHeight}
@@ -235,7 +249,7 @@ module.exports = React.createClass
 
     # First, if we're blurring some other uncommitted mark, commit it:
     if @state.uncommittedMark? && mark != @state.uncommittedMark
-      @submitMark sel
+      @submitMark @state.uncommittedMark, sel
 
     else
       sel()

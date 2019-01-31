@@ -46,6 +46,8 @@
     "google_analytics_client_id": "UA-69673163-1"
   },
 
+  "discuss_url": "http://forum.emigrantcity.nypl.org",
+
   "forum": {
     "type": "discourse",
     "base_url": "http://forum.emigrantcity.nypl.org"
