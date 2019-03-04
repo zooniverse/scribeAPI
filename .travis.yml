@@ -1,0 +1,12 @@
+language: ruby
+rvm:
+  - 2.2.10
+services:
+  - mongodb
+before_install:  
+  - npm install
+script:
+  - npm run test
+env:
+  - DEVISE_SECRET_TOKEN='99559c613539cd802d0be074b8f8ab746838af9625c147740702aa2a81517cb1f33bf2e306df977055c8e4aaae0e461c88ffa8a05cd2082455063030ac210e19'
+  - SECRET_KEY_BASE_TOKEN='cQY9MhkWgBcGkMG8qXCZErHghyuvF4'

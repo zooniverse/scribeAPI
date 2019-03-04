@@ -1,7 +1,7 @@
 {
     "name": "transcribe",
     "label": "Transcribe Workflow",
-    "subject_fetch_limit": "50",
+    "subject_fetch_limit": "30",
     "retire_limit": 3,
     "generates_subjects": true,
     "generates_subjects_for": "verify",
@@ -151,7 +151,7 @@
                 "title": "Transcription Help",
                 "file": "basic_transcribe_help"
             },
-            "instruction": "Transcribe the entry for **height (ft)**.",
+            "instruction": "Transcribe the entry for **height (feet)**.",
             "generates_subject_type": "sa_transcribed_height_ft",
             "next_task": null
         },
@@ -162,7 +162,7 @@
                 "title": "Transcription Help",
                 "file": "basic_transcribe_help"
             },
-            "instruction": "Transcribe the entry for **height (in)**.",
+            "instruction": "Transcribe the entry for **height (inches)**.",
             "generates_subject_type": "sa_transcribed_height_in",
             "next_task": null
         },
@@ -477,18 +477,18 @@
             },
             "tool_config": {
                 "tools": {
-                  "att_transcribe_sight_l": {
-                    "tool": "textTool",
-                    "tool_config": {},
-                    "label": "Transcribe the entry for **left eye**",
-                    "generates_subject_type": "att_transcribed_sight_l"
-                  },
                   "att_transcribe_sight_r": {
                     "tool": "textTool",
                     "tool_config": {},
                     "label": "Transcribe the entry for **right eye**",
                     "generates_subject_type": "att_transcribed_sight_r"
-                   }
+                   },
+                  "att_transcribe_sight_l": {
+                    "tool": "textTool",
+                    "tool_config": {},
+                    "label": "Transcribe the entry for **left eye**",
+                    "generates_subject_type": "att_transcribed_sight_l"
+                  }
                 }
             },
             "next_task": null
@@ -501,18 +501,18 @@
             },
             "tool_config": {
                 "tools": {
-                  "att_transcribe_hearing_l": {
-                    "tool": "textTool",
-                    "tool_config": {},
-                    "label": "Transcribe the entry for **left ear**",
-                    "generates_subject_type": "att_transcribed_hearing_l"
-                  },
                   "att_transcribe_hearing_r": {
                     "tool": "textTool",
                     "tool_config": {},
                     "label": "Transcribe the entry for **right ear**",
                     "generates_subject_type": "att_transcribed_hearing_r"
-                   }
+                   },
+                  "att_transcribe_hearing_l": {
+                    "tool": "textTool",
+                    "tool_config": {},
+                    "label": "Transcribe the entry for **left ear**",
+                    "generates_subject_type": "att_transcribed_hearing_l"
+                  }
                 }
             },
             "next_task": null
@@ -735,6 +735,28 @@
                 "file": "basic_transcribe_help"
             },
             "generates_subject_type": "att_transcribed_classification",
+            "next_task": null
+        },
+        "att_transcribe_m_b_health": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Transcribe the entry for **mental and bodily health**.",
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "generates_subject_type": "att_transcribed_m_b_health",
+            "next_task": null
+        },
+        "att_transcribe_slight_defects": {
+            "tool": "textTool",
+            "tool_config": {},
+            "instruction": "Transcribe the entry for **slight defects**.",
+            "help": {
+                "title": "Transcription Help",
+                "file": "basic_transcribe_help"
+            },
+            "generates_subject_type": "att_transcribed_slight_defects",
             "next_task": null
         },
         "att_transcribe_date_medical_exam": {
@@ -1340,7 +1362,7 @@
         "hs_rectangleTool_sickness": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Transcribe the entry for **cable no.**",
+            "instruction": "Transcribe the cable no. for **sickness**.",
             "help": {
                 "title": "Transcription Help",
                 "file": "basic_transcribe_help"
@@ -1351,7 +1373,7 @@
         "hs_service_sickness_date": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Transcribe the entry for **date of the wound**.",
+            "instruction": "Transcribe the entry for **date of the sickness**.",
             "help": {
                 "title": "Transcription Help",
                 "file": "basic_transcribe_help"
@@ -1367,18 +1389,19 @@
                 "title": "Transcription Help",
                 "file": "basic_transcribe_help"
             },
-            "generates_subject_type": "hs_transcribed_wounds_location.",
+            "generates_subject_type": "hs_transcribed_sickness_location.",
             "next_task": "hs_sickness_mssg_remarks"
         },
         "hs_sickness_mssg_remarks": {
             "tool": "textTool",
             "tool_config": {},
-            "instruction": "Transcribe any **messages or remarks** associated with the wound.",
+            "instruction": "Transcribe any **messages or remarks** associated with the sickness.",
             "help": {
                 "title": "Transcription Help",
                 "file": "basic_transcribe_help"
             },
-            "generates_subject_type": null
+            "generates_subject_type": "hs_transcribed_sickness_mssg_remarks",
+            "next_task": null
         }
     }
 }

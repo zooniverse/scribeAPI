@@ -25,7 +25,7 @@ API::Application.configure do
   config.serve_static_assets = true
 
   # Compress JavaScripts and CSS.
-  config.assets.js_compressor = :uglifier
+  # config.assets.js_compressor = :uglifier
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
@@ -91,11 +91,10 @@ API::Application.configure do
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
-
+  
   # Enable the logstasher logs for the current environment
   config.logstasher.enabled = true
 
-  # React:
-  config.react.variant = :production
-  config.react.addons = true
+  # Enable the logstasher logs for the current environment
+  config.logstasher.enabled = true
 end

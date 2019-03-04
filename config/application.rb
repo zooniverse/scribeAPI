@@ -1,5 +1,6 @@
 require File.expand_path('../boot', __FILE__)
 
+require "rails"
 # Pick the frameworks you want:
 # require "active_record/railtie"
 require "action_controller/railtie"
@@ -9,7 +10,7 @@ require "sprockets/railtie"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
-Bundler.require(:default, Rails.env)
+Bundler.require(*Rails.groups)
 
 module API
   class Application < Rails::Application
@@ -35,15 +36,12 @@ module API
           '.eot',  '.otf', '.svc', '.woff', '.ttf', # Fonts
           '.mp4',                                   # Video
           '.ico',                                   # Icon
-          '.cjsx'
+          '.jsx', '.js'
         ]
       end)
     end
 
-    config.browserify_rails.commandline_options = "-t coffee-reactify --extension=\".cjsx\" "
-    # config.browserify_rails.commandline_options = "-t reactify --extension=\".js.jsx\""
-
-
+    #config.browserify_rails.commandline_options = "-t [ babelify --presets [ react es2015 ] ]"
 
     config.middleware.use Rack::Cors do
       allow do

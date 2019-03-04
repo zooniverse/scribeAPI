@@ -88,7 +88,7 @@ class Classification
     if self.task_key == "flag_bad_subject_task"
       subject.increment_flagged_bad_count_by_one
       # Push user_id onto Subject.deleting_user_ids if appropriate
-      Subject.where({id: subject.id}).find_and_modify({"$addToSet" => {deleting_user_ids: user_id.to_s}})
+      Subject.where({id: subject.id}).find_one_and_update({"$addToSet" => {deleting_user_ids: user_id.to_s}})
     end
 
     if self.task_key == "flag_illegible_subject_task"
@@ -96,7 +96,7 @@ class Classification
     end
     # subject.inc classification_count: 1
     # Push user_id onto Subject.user_ids using mongo's fast addToSet feature, which ensures uniqueness
-    subject_returned = Subject.where({id: subject_id}).find_and_modify({"$addToSet" => {classifying_user_ids: user_id.to_s}, "$inc" => {classification_count: 1}}, new: true)
+    subject_returned = Subject.where({id: subject_id}).find_one_and_update({"$addToSet" => {classifying_user_ids: user_id.to_s}, "$inc" => {classification_count: 1}}, new: true)
     
     #Passing the returned subject as parameters so that we eval the correct classification_count
     check_for_retirement_by_classification_count(subject_returned)

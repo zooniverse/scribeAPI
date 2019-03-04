@@ -11,7 +11,7 @@ class Subject
   scope :active_non_root, -> { where(:type.ne => 'root', :status => 'active') }
   scope :active, -> { where(status: 'active').asc(:order)  }
   scope :not_bad, -> { where(:status.ne => 'bad').asc(:order)  }
-  scope :visible_marks, -> { where(:status.ne => 'bad', :region.ne => nil).asc(:order)  }
+  scope :visible_marks, -> { where(:status.in => ['active', 'retired'], :region.ne => nil).asc(:order)  }
   scope :complete, -> { where(status: 'complete').asc(:order)  }
   scope :by_workflow, -> (workflow_id) { where(workflow_id: workflow_id)  }
   scope :by_subject_set, -> (subject_set_id) { where(subject_set_id: subject_set_id).asc(:order)  }
@@ -69,11 +69,15 @@ class Subject
   after_create :increment_parents_subject_count_by_one, :if => :parent_subject
 
   # Index for typical query when fetching subjects for Transcribe/Verify:
-  index({"status" => 1, "workflow_id" => 1, "classifying_user_ids" => 1}, {background: true})
-  # Index for Marking by subject set:
-  index({"type" => 1, "subject_set_id" => 1}, {background: true})
+  index({workflow_id: 1, status: 1, order: 1, classifying_user_ids: 1})
+
+  # # Index for Marking by subject set:
+  index({subject_set_id: 1, status: 1})
+  index({subject_set_id: 1, type: 1, order: 1})
+  index({subject_set_id: 1, order: 1})
+  
   # Index for fetching child subjects for a parent subject, optionally filtering by region NOT NULL
-  index({parent_subject_id: 1, status: 1, region: 1})
+  index( { parent_subject_id: 1, status: 1, region: 1, order: 1 } )
   
 
   def thumbnail

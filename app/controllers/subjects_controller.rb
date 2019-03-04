@@ -18,14 +18,17 @@ class SubjectsController < ApplicationController
 
     @subjects = Subject.page(page).per(limit)
 
+    # Filter by workflow (There should almost always be a workflow_id filter)
+    @subjects = @subjects.by_workflow(workflow_id) if workflow_id
+
+    # Filter by subject set?
+    @subjects = @subjects.by_subject_set(subject_set_id) if subject_set_id
+
     # Only active subjects?
     @subjects = @subjects.active if status == 'active'
 
     # Filter by subject type (e.g. 'root')
     @subjects = @subjects.by_type(type) if type
-
-    # Filter by workflow (There should almost always be a workflow_id filter)
-    @subjects = @subjects.by_workflow(workflow_id) if workflow_id
 
     # Filter by subject?
     @subjects = @subjects.by_parent_subject(parent_subject_id) if parent_subject_id
@@ -33,8 +36,6 @@ class SubjectsController < ApplicationController
     # Filter by group?
     @subjects = @subjects.by_group(group_id) if group_id
 
-    # Filter by subject set?
-    @subjects = @subjects.by_subject_set(subject_set_id) if subject_set_id
 
     if ! subject_set_id
       # Randomize?
