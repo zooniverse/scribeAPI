@@ -135,8 +135,7 @@ class Subject
     if assesment_classifications > 2
       percentage_for_retire = retire_count / assesment_classifications.to_f
       if percentage_for_retire >= workflow.retire_limit
-        self.retire!
-        increment_parents_subject_count_by -1 if parent_subject
+        increment_parents_subject_count_by -1 if self.retire! && parent_subject
       end
     end
   end
@@ -149,12 +148,13 @@ class Subject
   end
 
   def retire!
-    return if status == "bad"
-    return if classifying_user_ids.length < workflow.retire_limit
+    return false if status == "bad"
+    return false if classifying_user_ids.length < workflow.retire_limit
+
     status! 'retired'
     subject_set.subject_completed_on_workflow(workflow) if ! workflow.nil?
-    
-    # subject_set.inc_complete_secondary_subject 1 if type != 'root'
+
+    true
   end
 
   def activate!
