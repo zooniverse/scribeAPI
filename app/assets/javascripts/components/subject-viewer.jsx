@@ -468,43 +468,39 @@ export default class SubjectViewer extends React.Component {
             ? this.props.task.tool_config.displays_transcribe_button
             : undefined) !== false
         const isPriorMark = !mark.userCreated
+        if (mark._key == null) { mark._key = Math.random() }
+        const ToolComponent = markingTools[mark.toolName]
 
         result.push(
           <g
             key={mark._key}
-            className={`marks-for-annotation${
-              mark.groupActive ? ' group-active' : ''
-              }`}
+            className={`marks-for-annotation${mark.groupActive ? ' group-active' : ''}`}
             data-disabled={isPriorMark || null}
           >
             {
-              (mark._key != null ? mark._key : (mark._key = Math.random()),
-                (ToolComponent = markingTools[mark.toolName]),
-                (
-                  <ToolComponent
-                    key={mark._key}
-                    subject_id={mark.subject_id}
-                    taskKey={
-                      this.props.task != null ? this.props.task.key : undefined
-                    }
-                    mark={mark}
-                    xScale={scale.horizontal}
-                    yScale={scale.vertical}
-                    disabled={!mark.userCreated}
-                    isTranscribable={mark.isTranscribable}
-                    interim={mark.interim_id != null}
-                    isPriorMark={isPriorMark}
-                    subjectCurrentPage={this.props.subjectCurrentPage}
-                    selected={mark === this.state.selectedMark}
-                    getEventOffset={this.getEventOffset.bind(this)}
-                    submitMark={this.submitMark}
-                    sizeRect={this.refs.sizeRect}
-                    displaysTranscribeButton={displaysTranscribeButton}
-                    onSelect={this.selectMark.bind(this, mark)}
-                    onChange={this.handleChange.bind(this, mark)}
-                    onDestroy={this.destroyMark.bind(this, mark)}
-                  />
-                ))
+              <ToolComponent
+                key={mark._key}
+                subject_id={mark.subject_id}
+                taskKey={
+                  this.props.task != null ? this.props.task.key : undefined
+                }
+                mark={mark}
+                xScale={scale.horizontal}
+                yScale={scale.vertical}
+                disabled={!mark.userCreated}
+                isTranscribable={mark.isTranscribable}
+                interim={mark.interim_id != null}
+                isPriorMark={isPriorMark}
+                subjectCurrentPage={this.props.subjectCurrentPage}
+                selected={mark === this.state.selectedMark}
+                getEventOffset={this.getEventOffset.bind(this)}
+                submitMark={this.submitMark.bind(this)}
+                sizeRect={this.refs.sizeRect}
+                displaysTranscribeButton={displaysTranscribeButton}
+                onSelect={this.selectMark.bind(this, mark)}
+                onChange={this.handleChange.bind(this, mark)}
+                onDestroy={this.destroyMark.bind(this, mark)}
+              />
             }
           </g>
         )
