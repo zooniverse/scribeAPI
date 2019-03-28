@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: old-weather-whaling
+  labels:
+    app: old-weather-whaling
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: old-weather-whaling
+  template:
+    metadata:
+      labels:
+        app: old-weather-whaling
+    spec:
+      containers:
+        - name: old-weather-whaling-app
+          image: zooniverse/old-weather-whaling:whaling-__IMAGE_TAG__
+          ports:
+            - containerPort: 80
+          env:
+          - name: RAILS_ENV
+            value: "production"
+          volumeMounts:
+          - name: old-weather-whaling-environment
+            mountPath: "/run/secrets/environment"
+            subPath: "environment"
+            readOnly: true
+          - name: old-weather-whaling-mongoid
+            mountPath: "/run/secrets/mongoid.yml"
+            subPath: "mongoid.yml"
+            readOnly: true
+      volumes:
+      - name: old-weather-whaling-environment
+        secret:
+          secretName: old-weather-whaling-environment
+      - name: old-weather-whaling-mongoid
+        secret:
+          secretName: old-weather-whaling-mongoid
