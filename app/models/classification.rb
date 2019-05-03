@@ -19,8 +19,10 @@ class Classification
   after_create  :increment_subject_classification_count #, :check_for_retirement_by_classification_count
   after_create  :generate_new_subjects
   after_create  :generate_terms
+  after_create  :place_bookmark # save subject_set id and page number to user model
+
   # removing this after create until we have a use case for the information
-  # after_create  :increment_subject_set_classification_count, 
+  # after_create  :increment_subject_set_classification_count,
 
   scope :by_child_subject, -> (id) { where(child_subject_id: id) }
   scope :having_child_subjects, -> { where(:child_subject_id.nin => ['', nil]) }
@@ -73,6 +75,11 @@ class Classification
     end
   end
 
+  def place_bookmark
+    return if self.subject.subject_set_id.nil? || self.subject.order.nil?
+    user.place_bookmark(self.subject.subject_set_id,self.subject.order)
+  end
+
   # removing this from the after_create hook in interest of speed. 10/22/15
   def increment_subject_set_classification_count
     subject.subject_set.inc classification_count: 1
@@ -97,7 +104,7 @@ class Classification
     # subject.inc classification_count: 1
     # Push user_id onto Subject.user_ids using mongo's fast addToSet feature, which ensures uniqueness
     subject_returned = Subject.where({id: subject_id}).find_and_modify({"$addToSet" => {classifying_user_ids: user_id.to_s}, "$inc" => {classification_count: 1}}, new: true)
-    
+
     #Passing the returned subject as parameters so that we eval the correct classification_count
     check_for_retirement_by_classification_count(subject_returned)
   end
