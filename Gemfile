@@ -15,7 +15,7 @@ gem "omniauth-google-oauth2"
 gem 'omniauth-zooniverse', '~> 0.0.3'
 
 gem 'mongoid', '~> 4.0.2'
-gem 'active_model_serializers'
+gem 'active_model_serializers', '~>0.9.4'
 gem 'mongoid-serializer'
 gem 'rack-cors', :require => 'rack/cors'
 gem "bson"
